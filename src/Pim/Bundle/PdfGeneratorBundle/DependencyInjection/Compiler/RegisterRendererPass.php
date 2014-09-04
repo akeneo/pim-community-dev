@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\PdfGeneratorBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -15,8 +15,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterRendererPass implements CompilerPassInterface
 {
-    const REGISTRY_ID      = 'pim_enrich.renderer.registry';
-    const RENDERER_TAG     = 'pim_enrich.renderer';
+    const REGISTRY_ID      = 'pim_pdf_generator.renderer.registry';
+    const RENDERER_TAG     = 'pim_pdf_generator.renderer';
     const DEFAULT_PRIORITY = 100;
 
     /**

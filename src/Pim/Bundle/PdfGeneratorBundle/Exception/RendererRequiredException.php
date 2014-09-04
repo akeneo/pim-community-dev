@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Exception;
+namespace Pim\Bundle\PdfGeneratorBundle\Exception;
 
 /**
  * At least one renderer is required for the object to be rendered

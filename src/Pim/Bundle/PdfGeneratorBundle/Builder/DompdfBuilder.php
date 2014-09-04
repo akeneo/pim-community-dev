@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Renderer\PdfBuilder;
+namespace Pim\Bundle\PdfGeneratorBundle\Builder;
 
 /**
  * PDF builder using DOMPDF wrapper

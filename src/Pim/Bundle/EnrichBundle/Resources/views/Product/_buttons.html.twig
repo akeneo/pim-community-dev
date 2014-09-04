@@ -1,6 +1,6 @@
 {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
-{% if resource_granted('pim_enrich_product_download') %}
-    {{ elements.link('btn.to download', path('pim_enrich_product_generate_pdf', { id: product.id, dataLocale: dataLocale }), { icon: 'download', class: 'no-hash', id: 'download-btn'}) }}
+{% if resource_granted('pim_pdf_generator_product_download') %}
+    {{ elements.link('btn.to download', path('pim_pdf_generator_generate_product_pdf', { id: product.id, dataLocale: dataLocale }), { icon: 'download', class: 'no-hash', id: 'download-btn'}) }}
 {% endif %}
 {{ elements.enabledSwitch(form) }}
 {% if resource_granted("pim_enrich_product_remove") %}
@@ -25,7 +25,7 @@
             ['jquery', 'oro/mediator'],
             function ($, mediator) {
                 var initialScope = '{{ product.scope }}',
-                    url = '{{ path('pim_enrich_product_generate_pdf', { id: form.vars.value.id, dataLocale: dataLocale }) }}' + '&dataScope=',
+                    url = '{{ path('pim_pdf_generator_generate_product_pdf', { id: form.vars.value.id, dataLocale: dataLocale }) }}' + '&dataScope=',
                     button = $('#download-btn');
 
                 button.attr('href', url + initialScope);

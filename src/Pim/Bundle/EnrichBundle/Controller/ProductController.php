@@ -40,7 +40,6 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Exception\RendererRequiredException;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use Pim\Bundle\EnrichBundle\Renderer\RendererRegistry;
 
 /**
  * Product Controller
@@ -65,11 +64,6 @@ class ProductController extends AbstractDoctrineController
      * @var ProductCategoryManager
      */
     protected $productCatManager;
-
-    /**
-     * @var RendererRegistry
-     */
-    protected $rendererRegistry;
 
     /**
      * @var UserContext
@@ -116,7 +110,6 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
-     * @param RendererRegistry         $rendererRegistry
      */
     public function __construct(
         Request $request,
@@ -133,8 +126,7 @@ class ProductController extends AbstractDoctrineController
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager,
-        RendererRegistry $rendererRegistry
+        ProductCategoryManager $prodCatManager
     ) {
         parent::__construct(
             $request,
@@ -154,7 +146,6 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager       = $versionManager;
         $this->securityFacade       = $securityFacade;
         $this->productCatManager    = $prodCatManager;
-        $this->rendererRegistry     = $rendererRegistry;
     }
 
     /**
@@ -171,40 +162,6 @@ class ProductController extends AbstractDoctrineController
         return array(
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-        );
-    }
-
-    /**
-     * Generate Pdf for specific product
-     *
-     * @param Request $request
-     * @param integer $id
-     *
-     * @AclAncestor("pim_enrich_product_download")
-     * @return Response
-     */
-    public function generatePdfAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-        $renderingDate = new \DateTime('now');
-
-        try {
-            $responseContent = $this->rendererRegistry->render($product, 'full', [
-                'locale'        => $request->get('dataLocale', null),
-                'renderingDate' => $renderingDate,
-                'scope'         => $request->get('dataScope', null),
-            ]);
-        } catch (RendererRequiredException $e) {
-            throw new HttpException(500, 'Unable to generate the product PDF', $e);
-        }
-
-        return new Response(
-            $responseContent,
-            200,
-            array(
-                'content-type'        => 'application/pdf',
-                'content-disposition' => sprintf('attachment; filename=%s-%s.pdf', $product->getIdentifier(), $renderingDate->format('Y-m-d_H-i-s')),
-            )
         );
     }
 
