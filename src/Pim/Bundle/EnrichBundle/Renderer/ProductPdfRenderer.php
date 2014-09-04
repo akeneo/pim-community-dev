@@ -53,7 +53,6 @@ class ProductPdfRenderer implements RendererInterface
             $context,
             [
                 'product'           => $object,
-                'renderingDate'     => $this->getRenderingDate(),
                 'groupedAttributes' => $this->getGroupedAttributes($object),
                 'imageAttributes'   => $this->getImagesAttributes($object),
                 'scope'             => 'ecommerce',
@@ -63,6 +62,14 @@ class ProductPdfRenderer implements RendererInterface
         return $this->pdfBuilder->buildPdfOutput(
             $this->templating->render($this->template, $params)
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($object, $format)
+    {
+        return $object instanceof AbstractProduct;
     }
 
     protected function getGroupedAttributes(AbstractProduct $product)
@@ -91,18 +98,5 @@ class ProductPdfRenderer implements RendererInterface
         }
 
         return $attributes;
-    }
-
-    protected function getRenderingDate()
-    {
-        return new \DateTime('now');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($object, $format)
-    {
-        return $object instanceof AbstractProduct;
     }
 }
