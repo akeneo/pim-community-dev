@@ -1,0 +1,22 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
+
+{{ form_start(replyForms[comment.id], {
+    'id': 'pim_comment_comment_reply_' ~ comment.id,
+    'action': path('pim_comment_comment_reply', {'id': comment.id}),
+    'class': 'form-inline'
+}) }}
+    {{ JSFV(replyForms[comment.id]) }}
+
+    {{ elements.form_errors(replyForms[comment.id]) }}
+
+<div class="row-fluid">
+    {{ form_widget(replyForms[comment.id].body, { 'id': 'pim_comment_comment_body_reply_' ~ comment.id }) }}
+    {{ form_row(replyForms[comment.id].resourceName) }}
+    {{ form_row(replyForms[comment.id].resourceId) }}
+    <button class="btn">{{ 'btn.reply'|trans|capitalize }}</button>
+</div>
+{{ form_end(replyForms[comment.id]) }}
