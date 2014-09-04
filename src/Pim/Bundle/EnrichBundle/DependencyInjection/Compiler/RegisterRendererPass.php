@@ -19,6 +19,9 @@ class RegisterRendererPass implements CompilerPassInterface
     const RENDERER_TAG     = 'pim_enrich.renderer';
     const DEFAULT_PRIORITY = 100;
 
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
         $registryId = static::REGISTRY_ID;

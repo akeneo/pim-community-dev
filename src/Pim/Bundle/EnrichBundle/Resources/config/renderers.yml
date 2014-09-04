@@ -1,6 +1,6 @@
 parameters:
-    pim_enrich.renderer.product_pdf.class: Pim\Bundle\EnrichBundle\Renderer\ProductPdfRenderer
-    pim_enrich.renderer.registry.class: Pim\Bundle\EnrichBundle\Renderer\RendererRegistry
+    pim_enrich.renderer.product_pdf.class:    Pim\Bundle\EnrichBundle\Renderer\ProductPdfRenderer
+    pim_enrich.renderer.registry.class:       Pim\Bundle\EnrichBundle\Renderer\RendererRegistry
     pim_enrich.renderer.dompdf_builder.class: Pim\Bundle\EnrichBundle\Renderer\PdfBuilder\DompdfBuilder
 
 services:

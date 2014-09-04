@@ -37,8 +37,11 @@ class ProductPdfRenderer implements RendererInterface
      * @param string              $template
      * @param PdfBuilderInterface $pdfBuilder
      */
-    public function __construct(EngineInterface $templating, $template, PdfBuilderInterface $pdfBuilder)
-    {
+    public function __construct(
+        EngineInterface $templating,
+        $template,
+        PdfBuilderInterface $pdfBuilder
+    ) {
         $this->templating = $templating;
         $this->template   = $template;
         $this->pdfBuilder = $pdfBuilder;
@@ -76,11 +79,12 @@ class ProductPdfRenderer implements RendererInterface
         $groups = [];
 
         foreach ($product->getAttributes() as $attribute) {
-            if (!isset($groups[$attribute->getGroup()->getLabel()])) {
+            $groupLabel = $attribute->getGroup()->getLabel();
+            if (!isset($groups[$groupLabel])) {
                 $groups[$attribute->getGroup()->getLabel()] = [];
             }
 
-            $groups[$attribute->getGroup()->getLabel()][$attribute->getCode()] = $attribute;
+            $groups[$groupLabel][$attribute->getCode()] = $attribute;
         }
 
         return $groups;

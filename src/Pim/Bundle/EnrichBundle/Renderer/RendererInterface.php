@@ -17,7 +17,7 @@ interface RendererInterface
      * @param string $format
      * @param array  $context
      *
-     * @return string
+     * @return mixed
      */
     public function render($object, $format, array $context = []);
 
