@@ -500,13 +500,23 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
-        $form = $this->createForm('pim_comment_comment', $comment);
+        $createForm = $this->createForm('pim_comment_comment', $comment);
+
+        $comments = $this->commentManager->getComments($product);
+
+        $forms = [];
+
+        foreach ($comments as $comment) {
+            $form = $this->createForm('pim_comment_comment', $comment);
+            $forms[$comment->getId()] = $form->createView();
+        }
 
         return $this->render(
             'PimCommentBundle:Comment:_commentList.html.twig',
             [
-                'form' => $form->createView(),
-                'comments' => $this->commentManager->getComments($product),
+                'form' => $createForm->createView(),
+                'replyForms' => $forms,
+                'comments' => $comments,
             ]
         );
     }

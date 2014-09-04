@@ -98,8 +98,9 @@ class CommentController extends AbstractDoctrineController
         );
     }
 
-    public function replyAction($name)
+    public function replyAction(Request $request, $id)
     {
+        die($id);
     }
 
     /**

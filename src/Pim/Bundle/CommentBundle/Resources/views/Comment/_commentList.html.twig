@@ -46,7 +46,7 @@
         </li>
         {% for comment in comments %}
             <li>
-                {% include 'PimCommentBundle:Comment:_thread.html.twig' with {'comment':comment} %}
+                {% include 'PimCommentBundle:Comment:_thread.html.twig' with {'comment': comment} %}
             </li>
         {% else %}
             <li class="no-data" style="display: block;">
