@@ -55,7 +55,6 @@ class ProductPdfRenderer implements RendererInterface
                 'product'           => $object,
                 'groupedAttributes' => $this->getGroupedAttributes($object),
                 'imageAttributes'   => $this->getImagesAttributes($object),
-                'scope'             => 'ecommerce',
             ]
         );
 
