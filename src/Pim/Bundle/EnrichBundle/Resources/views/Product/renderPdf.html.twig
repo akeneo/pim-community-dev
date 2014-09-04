@@ -116,7 +116,7 @@
         </div>
         <div class="images">
             {% block images %}
-                {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media is defined %}
+                {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media is not null %}
                     <img src="{{ product.getValue(attribute.code, locale, scope).media.filePath }}" />
                 {% endfor %}
             {% endblock %}
@@ -139,7 +139,7 @@
                                     {{ attribute.label }}
                                 </td>
                                 <td class="value">
-                                {% if attribute.attributeType == 'pim_catalog_image' %}
+                                {% if attribute.attributeType == 'pim_catalog_image' and product.getValue(attribute.code, locale, scope).media is not null %}
                                     {{ product.getValue(attribute.code, locale, scope).media.originalFilename }}
                                 {% elseif attribute.attributeType == 'pim_catalog_textarea' and attribute.isWysiwygEnabled %}
                                     {{ product.getValue(attribute.code, locale, scope)|raw }}
