@@ -132,10 +132,12 @@
                             {{ attribute.label }}
                         </td>
                         <td class="value">
-                        {% if attribute.code in imageAttributes|keys %}
+                        {% if attribute.attributeType == 'pim_catalog_image' %}
                             {{ product.getValue(attribute.code, locale, scope).media.originalFilename }}
-                        {% else %}
+                        {% elseif attribute.attributeType == 'pim_catalog_textarea' and attribute.isWysiwygEnabled %}
                             {{ product.getValue(attribute.code, locale, scope)|raw }}
+                        {% else %}
+                            {{ product.getValue(attribute.code, locale, scope) }}
                         {% endif %}
                         </td>
                     </tr>
