@@ -56,7 +56,6 @@ class ProductPdfRenderer implements RendererInterface
                 'generationDate'    => $this->getRenderingDate(),
                 'groupedAttributes' => $this->getGroupedAttributes($object),
                 'imageAttributes'   => $this->getImagesAttributes($object),
-                'locale'            => $context['locale'],
                 'scope'             => 'ecommerce',
             ]
         );
