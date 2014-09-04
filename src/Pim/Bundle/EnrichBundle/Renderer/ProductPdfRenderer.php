@@ -71,6 +71,18 @@ class ProductPdfRenderer implements RendererInterface
         return $object instanceof AbstractProduct;
     }
 
+    /**
+     * Get attributes to display
+     * @param AbstractProduct $product
+     * @param string          $locale
+     *
+     * @return AbstractAttribute[]
+     */
+    protected function getAttributes(AbstractProduct $product, $locale)
+    {
+        return $product->getAttributes();
+    }
+
     protected function getGroupedAttributes(AbstractProduct $product)
     {
         $groups = [];
