@@ -12,7 +12,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Transforms associations
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)p
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -26,7 +26,7 @@ class AssociationTransformer extends EntityTransformer
 
     /**
      * Constructor
-     * 
+     *
      * @param ManagerRegistry                $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
@@ -56,7 +56,7 @@ class AssociationTransformer extends EntityTransformer
         $product = $productRepository->findByReference($data['owner']);
         if (!$product) {
             throw new InvalidItemException(
-                'No product with identifier %identifier%', 
+                'No product with identifier %identifier%',
                 $data,
                 ['%identifier%' => $data['owner']]
             );
