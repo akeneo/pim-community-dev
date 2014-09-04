@@ -1,0 +1,11 @@
+parameters:
+    pimee_enrich.renderer.product_pdf.class: PimEnterprise\Bundle\EnrichBundle\Renderer\ProductPdfRenderer
+
+services:
+    pimee_enrich.renderer.product_pdf:
+        class: %pimee_enrich.renderer.product_pdf.class%
+        parent: pim_enrich.renderer.product_pdf
+        arguments:
+            - @pimee_workflow.helper.filter_product_values
+        tags:
+            - { name: pim_enrich.renderer, priority: 100 }
