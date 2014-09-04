@@ -10,7 +10,6 @@ use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-
 /**
  * Transforms associations
  * 
@@ -43,6 +42,7 @@ class AssociationTransformer extends EntityTransformer
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
         $this->productClass = $productClass;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -51,7 +51,8 @@ class AssociationTransformer extends EntityTransformer
         if (!isset($data['owner']) || !isset($data['association_type'])) {
             throw new MissingIdentifierException();
         }
-        $productRepository = $this->doctrine->getManagerForClass($this->productClass)->getRepository($this->productClass);
+        $productRepository = $this->doctrine->getManagerForClass($this->productClass)
+            ->getRepository($this->productClass);
         $product = $productRepository->findByReference($data['owner']);
         if (!$product) {
             throw new InvalidItemException(
