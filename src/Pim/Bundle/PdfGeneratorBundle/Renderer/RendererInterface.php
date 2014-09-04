@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Renderer;
+namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
 /**
  * Interface for every renderers

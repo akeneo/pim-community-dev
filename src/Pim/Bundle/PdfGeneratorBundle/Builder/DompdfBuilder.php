@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Renderer\PdfBuilder;
+namespace Pim\Bundle\PdfGeneratorBundle\Builder;
 
 use Slik\DompdfBundle\Wrapper\DompdfWrapper;
 

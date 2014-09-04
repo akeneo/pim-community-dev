@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Renderer;
+namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
-use Pim\Bundle\EnrichBundle\Exception\RendererRequiredException;
+use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 
 /**
  * Registry used to render an item using registered renderers
