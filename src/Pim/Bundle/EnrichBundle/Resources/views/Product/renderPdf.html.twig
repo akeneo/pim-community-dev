@@ -8,6 +8,11 @@
                 font-weight: 100;
             }
 
+            .fix-clear {
+                display: block;
+                clear: both;
+            }
+
             .header {
                 margin-bottom: 20px;
             }
@@ -22,7 +27,7 @@
             }
 
             .header .rendering-date {
-                font-size: 13px;
+                font-size: 15px;
             }
 
             .header .context {
@@ -55,7 +60,7 @@
                 background: #7887AB;
                 color: white;
                 padding: 2.5px 5px;
-                font-size: 15px;
+                font-size: 20px;
                 text-transform: uppercase;
                 margin: 0px;
             }
@@ -87,6 +92,18 @@
                 padding: 0px 10px;
                 line-height: 20px;
             }
+
+            .images {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .images img {
+                height: 100px;
+                display: inline-block;
+                margin-right: 20px;
+                margin-bottom: 20px;
+            }
         </style>
     </head>
     <body>
@@ -94,6 +111,12 @@
             <h1>{{ product.label }} {{ product.identifier != product.label ? '(' ~ product.identifier ~ ')' : '' }}</h1>
             <span class="rendering-date">{{ renderingDate|date }}</span>
         </div>
+        <div class="images">
+            {% for attribute in imageAttributes %}
+                <img src="{{ product.getValue(attribute.code, locale, scope).media.filePath }}" />
+            {% endfor %}
+        </div>
+        <span class="fix-clear"></span>
         <div class="attribute-group">
             {% for group, attributes in groupedAttributes %}
             <table>
@@ -103,12 +126,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for attribute in attributes if product.hasAttribute(attribute) %}
+                    {% for attribute in attributes %}
                     <tr>
                         <td class="attribute">
                             {{ attribute.label }}
                         </td>
-                        <td class="value">{{ product.getValue(attribute.code, locale, scope) }}</td>
+                        <td class="value">{{ attribute.code not in imageAttributes|keys ? product.getValue(attribute.code, locale, scope) : product.getValue(attribute.code, locale, scope).media.originalFilename }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
