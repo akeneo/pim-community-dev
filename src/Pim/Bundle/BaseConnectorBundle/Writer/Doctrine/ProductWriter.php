@@ -10,7 +10,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 /**
  * Product writer using ORM method
@@ -34,7 +34,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $versionManager;
 
     /**
-     * @var ProductCacheClearer
+     * @var CacheClearer
      */
     protected $cacheClearer;
 
@@ -52,12 +52,12 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * Constructor
      *
      * @param ProductManager      $productManager
-     * @param ProductCacheClearer $cacheClearer
+     * @param CacheClearer $cacheClearer
      * @param VersionManager      $versionManager
      */
     public function __construct(
         ProductManager $productManager,
-        ProductCacheClearer $cacheClearer,
+        CacheClearer $cacheClearer,
         VersionManager $versionManager
     ) {
         $this->productManager  = $productManager;
