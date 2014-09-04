@@ -145,7 +145,7 @@ class ProductController extends BaseProductController
             throw new AccessDeniedException();
         }
 
-        return $parent::generatePdfAction($request, $id);
+        return parent::generatePdfAction($request, $id);
     }
 
     /**
