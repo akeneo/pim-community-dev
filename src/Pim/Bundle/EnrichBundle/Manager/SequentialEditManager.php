@@ -85,9 +85,21 @@ class SequentialEditManager
      */
     public function removeFromUser(UserInterface $user)
     {
-        $sequentialEdit = $this->repository->findOneBy(['user' => $user]);
+        $sequentialEdit = $this->findByUser($user);
         if ($sequentialEdit) {
             $this->remove($sequentialEdit);
         }
+    }
+
+    /**
+     * Find a SequentialEdit entity from a specific User
+     *
+     * @param UserInterface $user
+     *
+     * @return SequentialEdit
+     */
+    public function findByUser(UserInterface $user)
+    {
+        return $this->repository->findOneBy(['user' => $user]);
     }
 }

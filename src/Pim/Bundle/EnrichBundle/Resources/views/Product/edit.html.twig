@@ -20,12 +20,12 @@
         } %}
     {% endif %}
 
+    {% if sequentialEdit %}
 
     {% set previousProduct = 'Lorem Ipsum dolor sit amet Product' %}
     {% set nextProduct = 'consectetur adipiscing eli' %}
     {% set ratio = 70 %}
-
-    <div class="row-fluid buffer-top" id="sequentialEdit">
+        <div class="row-fluid buffer-top" id="sequentialEdit">
         <span class="span3 right-aligned">
             <a href="#" data-original-title="{{ 'pim_enrich.sequential_edit_action.product.previous'|trans({ '%product%': previousProduct }) }}" data-toggle="tooltip" data-placement="bottom" class="left">
                 <i class="icon-chevron-left"></i>&nbsp;&nbsp;{{ previousProduct|length > 25 ? previousProduct|slice(0, 22) ~ '...' }}
@@ -45,6 +45,7 @@
         </span>
     </div>
     <hr class="small" />
+    {% endif %}
 
     {{ JSFV(form) }}
     {{ form_start(form, {
