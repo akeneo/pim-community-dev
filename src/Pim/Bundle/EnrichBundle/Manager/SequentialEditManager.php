@@ -122,14 +122,54 @@ class SequentialEditManager
         $productSet = $sequentialEdit->getProductSet();
         $currentKey = array_search($product->getId(), $productSet);
 
-        // TODO: Manage with rights and deleted products
-        $previousKey = $currentKey - 1;
-        $nextKey     = $currentKey + 1;
-        $previous = isset($productSet[$previousKey]) ? $this->productManager->find($productSet[$previousKey]) : null;
-        $next     = isset($productSet[$nextKey]) ? $this->productManager->find($productSet[$nextKey]) : null;
+        $previous = $this->findPrevious($sequentialEdit, $currentKey);
+        $next     = $this->findNext($sequentialEdit, $currentKey);
 
         $sequentialEdit->setCurrent($product);
         $sequentialEdit->setPrevious($previous);
         $sequentialEdit->setNext($next);
+    }
+
+    /**
+     * Find next sequential edit entity
+     *
+     * @param SequentialEdit $sequentialEdit
+     * @param integer        $currentKey
+     *
+     * @return null|ProductInterface
+     */
+    protected function findNext(SequentialEdit $sequentialEdit, $currentKey)
+    {
+        $productSet = $sequentialEdit->getProductSet();
+        $productCount = $sequentialEdit->countProductSet();
+        while (++$currentKey < $productCount) {
+            $next = $this->productManager->find($productSet[$currentKey]);
+            if (null !== $next) {
+                return $next;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Find previous sequential edit entity
+     *
+     * @param SequentialEdit $sequentialEdit
+     * @param integer        $currentKey
+     *
+     * @return null|ProductInterface
+     */
+    protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
+    {
+        $productSet = $sequentialEdit->getProductSet();
+        while (--$currentKey > 0) {
+            $previous = $this->productManager->find($productSet[$currentKey]);
+            if (null !== $previous) {
+                return $previous;
+            }
+        }
+
+        return null;
     }
 }
