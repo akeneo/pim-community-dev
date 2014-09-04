@@ -45,7 +45,7 @@ class CacheClearer
     /**
      * Clear the Unit of Work of the manager(s) from the clearable entities
      * between batch writes
-     * 
+     *
      * @param bool $full True to clear all entities
      */
     public function clear($full = false)

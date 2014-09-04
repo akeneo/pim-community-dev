@@ -51,9 +51,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Constructor
      *
-     * @param ProductManager      $productManager
-     * @param CacheClearer $cacheClearer
-     * @param VersionManager      $versionManager
+     * @param ProductManager $productManager
+     * @param CacheClearer   $cacheClearer
+     * @param VersionManager $versionManager
      */
     public function __construct(
         ProductManager $productManager,

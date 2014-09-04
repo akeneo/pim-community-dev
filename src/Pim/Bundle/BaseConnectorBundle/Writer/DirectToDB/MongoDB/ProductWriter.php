@@ -113,7 +113,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param EventDispatcherInterface $eventDispatcher
      * @param MongoObjectsFactory      $mongoFactory
      * @param string                   $productClass:
-     * @param CacheClearer      $cacheClearer
+     * @param CacheClearer             $cacheClearer
      */
     public function __construct(
         ProductManager $productManager,
@@ -242,7 +242,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         return array();
     }
 
-    
     /**
      * {@inheritdoc}
      */

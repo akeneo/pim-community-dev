@@ -30,8 +30,8 @@ class Writer extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * @param ManagerRegistry     $registry
-     * @param CacheClearer $cacheClearer
+     * @param ManagerRegistry $registry
+     * @param CacheClearer    $cacheClearer
      */
     public function __construct(
         ManagerRegistry $registry,
