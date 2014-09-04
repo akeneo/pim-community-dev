@@ -74,7 +74,7 @@ class Writer extends AbstractConfigurableStepElement implements
             $manager->flush();
         }
 
-        $this->cacheClearer->clear(true);
+        $this->cacheClearer->clear();
     }
 
     /**

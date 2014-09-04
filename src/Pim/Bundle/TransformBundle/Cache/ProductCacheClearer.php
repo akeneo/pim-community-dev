@@ -45,28 +45,25 @@ class ProductCacheClearer
     /**
      * Clear the Unit of Work of the manager(s) from the clearable entities
      * between batch writes
-     * 
-     * @param bool $full True to clear all entities
      */
-    public function clear($full = false)
+    public function clear()
     {
-        $nonClearableEntities = $full ? [] : $this->nonClearableEntities;
         foreach ($this->managerRegistry->getManagers() as $objectManager) {
 
             $identityMap = $objectManager->getUnitOfWork()->getIdentityMap();
             $managedClasses = array_keys($identityMap);
-            $nonClearableClasses = array_intersect($managedClasses, $nonClearableEntities);
+            $nonClearableClasses = array_intersect($managedClasses, $this->nonClearableEntities);
 
             if (empty($nonClearableClasses)) {
                 $objectManager->clear();
             } else {
-                $clearableClasses = array_diff($managedClasses, $nonClearableEntities);
+                $clearableClasses = array_diff($managedClasses, $this->nonClearableEntities);
                 foreach ($clearableClasses as $clearableClass) {
                     $objectManager->clear($clearableClass);
                 }
             }
         }
-        $this->doctrineCache->clear($nonClearableEntities);
+        $this->doctrineCache->clear($this->nonClearableEntities);
     }
 
     /**
