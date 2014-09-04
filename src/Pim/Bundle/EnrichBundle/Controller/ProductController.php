@@ -88,13 +88,13 @@ class ProductController extends AbstractDoctrineController
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
-    const BACK_TO_GRID  = 'BackGrid';
+    const BACK_TO_GRID = 'BackGrid';
 
     /**
      * Constant used to redirect to create popin when save edit form
      * @staticvar string
      */
-    const CREATE        = 'Create';
+    const CREATE = 'Create';
 
     /**
      * Constant used to redirect to next product in a sequential edition
