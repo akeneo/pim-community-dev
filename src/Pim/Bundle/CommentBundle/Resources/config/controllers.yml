@@ -8,3 +8,4 @@ services:
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_comment.builder.comment'
+            - %pim_comment.entity.comment.class%

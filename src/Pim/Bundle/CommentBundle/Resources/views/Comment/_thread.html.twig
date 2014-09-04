@@ -9,6 +9,9 @@
             <div class="span10">
                 <div><strong>{{ fullname }}</strong>&nbsp;<span style="color: #808080">{{ comment.createdAt|date("F jS \\a\\t g:ia") }}</span></div>
                 {{ comment.body }}
+                <div class="comment-buttons">
+                    {% include 'PimCommentBundle:Comment:_buttons.html.twig' %}
+                </div>
             </div>
         </div>
     </li>

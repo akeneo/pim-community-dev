@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -29,6 +30,9 @@ class CommentController extends AbstractDoctrineController
     /** @var CommentBuilder */
     protected $commentBuilder;
 
+    /** @var string */
+    protected $commentClassName;
+
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -39,7 +43,8 @@ class CommentController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        CommentBuilder $commentBuilder
+        CommentBuilder $commentBuilder,
+        $commentClassName
     ) {
         parent::__construct(
             $request,
@@ -54,6 +59,7 @@ class CommentController extends AbstractDoctrineController
         );
 
         $this->commentBuilder = $commentBuilder;
+        $this->commentClassName = $commentClassName;
     }
 
     /**
@@ -95,7 +101,29 @@ class CommentController extends AbstractDoctrineController
     public function replyAction($name)
     {
     }
-    public function deleteAction($name)
+
+    /**
+     * Delete a comment with his children
+     *
+     * @param Request $request
+     * @param $id
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(Request $request, $id)
     {
+        $manager = $this->getManagerForClass($this->commentClassName);
+
+        $comment = $manager->find($this->commentClassName, $id);
+
+        if (null === $comment) {
+            throw new NotFoundHttpException(sprintf('Comment with id %s not found', $id));
+        }
+
+        $manager->remove($comment);
+        $manager->flush();
+
+        return new JsonResponse('OK');
     }
 }
