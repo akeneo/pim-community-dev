@@ -102,6 +102,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var ProductCacheClearer */
     protected $cacheClearer;
 
+    /** @var StepExecution */
+    protected $stepExecution;
+
     /**
      * @param ProductManager           $productManager
      * @param DocumentManager          $documentManager
