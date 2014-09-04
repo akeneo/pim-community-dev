@@ -91,7 +91,7 @@ class NotificationManager
      * @param string $userId       User id
      * @param string $notifsToMark Can be numeric or 'all'
      *
-     * return void
+     * @return void
      */
     public function markNotificationsAsViewed($userId, $notifsToMark)
     {
