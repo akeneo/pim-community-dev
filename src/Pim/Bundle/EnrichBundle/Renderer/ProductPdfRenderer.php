@@ -86,6 +86,13 @@ class ProductPdfRenderer implements RendererInterface
         return $product->getAttributes();
     }
 
+    /**
+     * get attributes grouped by attribute group
+     * @param AbstractProduct $product
+     * @param string          $locale
+     *
+     * @return []
+     */
     protected function getGroupedAttributes(AbstractProduct $product, $locale)
     {
         $groups = [];
@@ -101,6 +108,13 @@ class ProductPdfRenderer implements RendererInterface
         return $groups;
     }
 
+    /**
+     * Get all image attributes
+     * @param AbstractProduct $product
+     * @param string          $locale
+     *
+     * @return []
+     */
     protected function getImagesAttributes(AbstractProduct $product, $locale)
     {
         $attributes = [];
