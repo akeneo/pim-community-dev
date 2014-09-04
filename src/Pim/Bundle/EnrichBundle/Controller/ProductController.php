@@ -188,13 +188,13 @@ class ProductController extends AbstractDoctrineController
 
         return new Response(
             $this->rendererRegistry->render($product, 'full', [
-                'locale'        => $request->get('dataLocale', $this->userContext->getCurrentLocale()),
+                'locale'        => $request->get('dataLocale', null),
                 'renderingDate' => $renderingDate,
-                'scope'         => '',
+                'scope'         => $request->get('dataScope', null),
             ]),
             200,
             array(
-                'content-type' => 'application/pdf',
+                'content-type'        => 'application/pdf',
                 'content-disposition' => sprintf('attachment; filename=%s-%s.pdf', $product->getIdentifier(), $renderingDate->format('Y-m-d_H-i-s')),
             )
         );
