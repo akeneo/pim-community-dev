@@ -56,7 +56,7 @@ class ProductController
      */
     public function generatePdfAction(Request $request, $id)
     {
-        $product = $this->findProductOr404($id);
+        $product       = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
 
         try {

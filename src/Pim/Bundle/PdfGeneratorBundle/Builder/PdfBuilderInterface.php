@@ -12,8 +12,9 @@ namespace Pim\Bundle\PdfGeneratorBundle\Builder;
 interface PdfBuilderInterface
 {
     /**
-     * @param  string $htmlInput
+     * @param string $htmlInput
+     *
      * @return string
      */
     public function buildPdfOutput($htmlInput);
-} 
+}
