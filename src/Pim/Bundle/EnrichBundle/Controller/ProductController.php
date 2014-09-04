@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -37,6 +38,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Exception\RendererRequiredException;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Renderer\RendererRegistry;
 
@@ -179,19 +181,25 @@ class ProductController extends AbstractDoctrineController
      * @param integer $id
      *
      * @AclAncestor("pim_enrich_product_download")
-     * @return array
+     * @return Response
      */
     public function generatePdfAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
 
-        return new Response(
-            $this->rendererRegistry->render($product, 'full', [
+        try {
+            $responseContent = $this->rendererRegistry->render($product, 'full', [
                 'locale'        => $request->get('dataLocale', null),
                 'renderingDate' => $renderingDate,
                 'scope'         => $request->get('dataScope', null),
-            ]),
+            ]);
+        } catch (RendererRequiredException $e) {
+            throw new HttpException(500, 'Unable to generate the product PDF', $e);
+        }
+
+        return new Response(
+            $responseContent,
             200,
             array(
                 'content-type'        => 'application/pdf',

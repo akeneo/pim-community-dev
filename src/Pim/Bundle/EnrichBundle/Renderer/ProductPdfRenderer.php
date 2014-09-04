@@ -56,8 +56,8 @@ class ProductPdfRenderer implements RendererInterface
             $context,
             [
                 'product'           => $object,
-                'groupedAttributes' => $this->getGroupedAttributes($object),
-                'imageAttributes'   => $this->getImagesAttributes($object),
+                'groupedAttributes' => $this->getGroupedAttributes($object, $context['locale']),
+                'imageAttributes'   => $this->getImagesAttributes($object, $context['locale']),
             ]
         );
 
@@ -74,14 +74,25 @@ class ProductPdfRenderer implements RendererInterface
         return $object instanceof AbstractProduct;
     }
 
-    protected function getGroupedAttributes(AbstractProduct $product)
+    /**
+     * Get attributes to display
+     * @param AbstractProduct $product
+     * @param string          $locale
+     *
+     * @return AbstractAttribute[]
+     */
+    protected function getAttributes(AbstractProduct $product, $locale)
+    {
+        return $product->getAttributes();
+    }
+
+    protected function getGroupedAttributes(AbstractProduct $product, $locale)
     {
         $groups = [];
-
-        foreach ($product->getAttributes() as $attribute) {
+        foreach ($product->getAttributes($product, $locale) as $attribute) {
             $groupLabel = $attribute->getGroup()->getLabel();
             if (!isset($groups[$groupLabel])) {
-                $groups[$attribute->getGroup()->getLabel()] = [];
+                $groups[$groupLabel] = [];
             }
 
             $groups[$groupLabel][$attribute->getCode()] = $attribute;
@@ -90,11 +101,11 @@ class ProductPdfRenderer implements RendererInterface
         return $groups;
     }
 
-    protected function getImagesAttributes(AbstractProduct $product)
+    protected function getImagesAttributes(AbstractProduct $product, $locale)
     {
         $attributes = [];
 
-        foreach ($product->getAttributes() as $attribute) {
+        foreach ($this->getAttributes($product, $locale) as $attribute) {
             if ($attribute->getAttributeType() === static::IMAGE_ATTRIBUTE_TYPE) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
