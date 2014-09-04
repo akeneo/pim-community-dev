@@ -3,6 +3,7 @@
 namespace Pim\Bundle\NotificationBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
@@ -30,15 +31,16 @@ class NotificationController
     /**
      * It lists notifications for a given user
      *
-     * @param User $user
+     * @param User    $user
+     * @param Request $request
      *
      * @Template
      *
      * @return array ['notification' => Notification[]]
      */
-    public function listAction(User $user)
+    public function listAction(User $user, Request $request)
     {
-        return ['notifications' => $this->manager->getNotifications($user)];
+        return ['notifications' => $this->manager->getNotifications($user, $request->get('skip', 0))];
     }
 
     /**

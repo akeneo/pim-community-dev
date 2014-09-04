@@ -76,29 +76,33 @@ class NotificationManager
     }
 
     /**
+     * It returns notifications for the given user
+     *
      * @param User $user
+     * @param int  $offset
+     * @param int  $limit
      *
      * @return Notification[]
      */
-    public function getNotifications(User $user)
+    public function getNotifications(User $user, $offset, $limit = 10)
     {
-        return $this->repository->findBy(['user' => $user]);
+        return $this->repository->findBy(['user' => $user], ['id' => 'DESC'], $limit, $offset);
     }
 
     /**
      * It marks given notifications as viewed for the given user
      *
-     * @param string $userId       User id
-     * @param string $notifsToMark Can be numeric or 'all'
+     * @param string $userId User id
+     * @param string $ids    Can be numeric or 'all'
      *
      * @return void
      */
-    public function markNotificationsAsViewed($userId, $notifsToMark)
+    public function markNotificationsAsViewed($userId, $ids)
     {
         // TODO: use a direct query in repository to mark notifications as viewed directly can be faster
-        if (is_numeric($notifsToMark)) {
-            $findParams = ['user' => $userId, 'id' => $notifsToMark];
-        } elseif ('all' === $notifsToMark) {
+        if (is_numeric($ids)) {
+            $findParams = ['user' => $userId, 'id' => $ids];
+        } elseif ('all' === $ids) {
             $findParams = ['user' => $userId, 'viewed' => false];
         }
         $notifications = $this->repository->findBy($findParams);
