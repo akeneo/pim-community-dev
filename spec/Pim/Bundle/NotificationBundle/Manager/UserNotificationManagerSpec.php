@@ -55,10 +55,8 @@ class UserNotificationManagerSpec extends ObjectBehavior
     ) {
         $factory
             ->createNotification('Some message', 'success', Argument::any())
-            ->shouldBeCalled()
             ->willReturn($notification);
         $factory->createUserNotification($notification, Argument::type('Oro\Bundle\UserBundle\Entity\User'))
-            ->shouldBeCalledTimes(2)
             ->willReturn($userNotification);
 
         $em->persist($notification)->shouldBeCalled();
@@ -78,7 +76,7 @@ class UserNotificationManagerSpec extends ObjectBehavior
     {
         $notificationId = '1';
         $repository->findBy(['user' => $user, 'id' => $notificationId])->shouldBeCalled()->willReturn([$userNotification]);
-        $userNotification->setViewed(true)->shouldBeCalled()->willReturn($userNotification);
+        $userNotification->setViewed(true)->willReturn($userNotification);
 
         $em->persist($userNotification)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
@@ -98,8 +96,8 @@ class UserNotificationManagerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn([$userNotification1, $userNotification2]);
 
-        $userNotification1->setViewed(true)->shouldBeCalled()->willReturn($userNotification1);
-        $userNotification2->setViewed(true)->shouldBeCalled()->willReturn($userNotification2);
+        $userNotification1->setViewed(true)->willReturn($userNotification1);
+        $userNotification2->setViewed(true)->willReturn($userNotification2);
 
         $em->persist($userNotification1)->shouldBeCalled();
         $em->persist($userNotification2)->shouldBeCalled();
@@ -110,7 +108,7 @@ class UserNotificationManagerSpec extends ObjectBehavior
 
     function it_counts_unread_user_notifications_for_a_user(User $user, $repository)
     {
-        $repository->countUnreadForUser($user)->shouldBeCalled()->willReturn(3);
+        $repository->countUnreadForUser($user)->willReturn(3);
 
         $this->countUnreadForUser($user)->shouldReturn(3);
     }

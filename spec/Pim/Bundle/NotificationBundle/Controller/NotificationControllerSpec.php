@@ -30,14 +30,14 @@ class NotificationControllerSpec extends ObjectBehavior
         $context
     ) {
         $context->getUser()->willReturn($user);
-        $manager->getUserNotifications($user, Argument::cetera())->shouldBeCalled()->willReturn([$userNotification]);
+        $manager->getUserNotifications($user, Argument::cetera())->willReturn([$userNotification]);
         $this->listAction($request)->shouldReturn(['userNotifications' => [$userNotification]]);
     }
 
     function it_marks_a_notification_as_viewed_for_a_user(User $user, $manager, $context)
     {
         $notifsToMark = '3';
-        $context->getUser()->shouldBeCalled()->willReturn($user);
+        $context->getUser()->willReturn($user);
         $manager->markAsViewed($user, $notifsToMark)->shouldBeCalled();
 
         $this
