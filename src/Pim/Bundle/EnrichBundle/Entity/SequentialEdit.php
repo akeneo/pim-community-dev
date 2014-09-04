@@ -178,12 +178,26 @@ class SequentialEdit
      * Search the number of indexed products
      * TODO: Be sure that it's never called with an unknown id
      *
-     * @param ProductInterface
+     * @param ProductInterface $product
      *
      * @return integer
      */
     public function countEditedProducts(ProductInterface $product)
     {
         return array_search($product->getId(), $this->productSet) + 1;
+    }
+
+    /**
+     * Get the next Product id from a product
+     *
+     * @param integer $productId
+     *
+     * @return integer
+     */
+    public function getNextId($productId)
+    {
+        $nextKey = array_search($productId, $this->productSet) + 1;
+
+        return $this->productSet[$nextKey];
     }
 }

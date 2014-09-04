@@ -87,6 +87,7 @@ btn:
     save:            save
     save and back:   save and back to grid
     save and create: save and create new
+    save and next:   save and next
     remove:          remove
     delete:          delete
     cancel:          cancel
