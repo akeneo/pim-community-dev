@@ -114,4 +114,16 @@ class UserNotificationManager
 
         $this->entityManager->flush();
     }
+
+    /**
+     * It counts unread for user
+     *
+     * @param User $user
+     *
+     * @return integer
+     */
+    public function countUnreadForUser(User $user)
+    {
+        return $this->repository->countUnreadForUser($user);
+    }
 }

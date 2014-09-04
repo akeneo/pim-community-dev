@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\NotificationBundle\Manager;
 
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
 use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
@@ -14,7 +14,7 @@ use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
 
 class UserNotificationManagerSpec extends ObjectBehavior
 {
-    function let(EntityManager $em, EntityRepository $repository, NotificationFactory $factory, UserManager $userManager)
+    function let(EntityManager $em, UserNotificationRepository $repository, NotificationFactory $factory, UserManager $userManager)
     {
         $this->beConstructedWith($em, $repository, $factory, $userManager);
     }
@@ -106,5 +106,12 @@ class UserNotificationManagerSpec extends ObjectBehavior
         $em->flush()->shouldBeCalled();
 
         $this->markAsViewed($user, 'all');
+    }
+
+    function it_counts_unread_user_notifications_for_a_user(User $user, $repository)
+    {
+        $repository->countUnreadForUser($user)->shouldBeCalled()->willReturn(3);
+
+        $this->countUnreadForUser($user)->shouldReturn(3);
     }
 }
