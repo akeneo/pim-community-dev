@@ -1,8 +1,7 @@
 ol.comment-thread{
     /*border: 1px solid #000000;*/
     margin-top: 10px;
-    box-shadow: 1px 1px 5px #b4b4b4;
-
+    box-shadow: 1px 1px 1px #b4b4b4;
 }
 ol.comment-thread li{
     padding: 15px;
