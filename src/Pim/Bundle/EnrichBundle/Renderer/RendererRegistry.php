@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Renderer;
 
+use Pim\Bundle\EnrichBundle\Exception\RendererRequiredException;
+
 /**
  * Registry used to render an item using registered renderers
  *
@@ -32,6 +34,8 @@ class RendererRegistry
      * @param array  $context
      *
      * @return string
+     *
+     * @throws RendererRequiredException
      */
     public function render($object, $format, $context)
     {
@@ -41,6 +45,8 @@ class RendererRegistry
             }
         }
 
-        return '';
+        throw new RendererRequiredException(
+            sprintf('At least one renderer should be registered to render the object: %s', (string) $object)
+        );
     }
 }
