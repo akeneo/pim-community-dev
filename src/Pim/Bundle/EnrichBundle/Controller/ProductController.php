@@ -193,7 +193,7 @@ class ProductController extends AbstractDoctrineController
             200,
             array(
                 'content-type' => 'application/pdf',
-                'content-disposition' => 'attachment; filename=' . $product->getIdentifier() . '.pdf',
+                'content-disposition' => sprintf('attachment; filename=%s.pdf', $product->getIdentifier()),
             )
         );
     }
