@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\UIBundle\Manager;
 
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
@@ -13,9 +14,9 @@ use Pim\Bundle\UIBundle\Factory\NotificationFactory;
 
 class NotificationManagerSpec extends ObjectBehavior
 {
-    function let(EntityManager $em, EntityRepository $repository, NotificationFactory $factory)
+    function let(EntityManager $em, EntityRepository $repository, NotificationFactory $factory, UserManager $userManager)
     {
-        $this->beConstructedWith($em, $repository, $factory);
+        $this->beConstructedWith($em, $repository, $factory, $userManager);
     }
 
     function it_is_initializable()
