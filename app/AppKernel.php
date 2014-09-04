@@ -53,7 +53,8 @@ class AppKernel extends OroKernel
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
-            new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle()
+            new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
+            new Slik\DompdfBundle\SlikDompdfBundle()
         );
         $bundles = array_merge($bundles, $pimDepBundles);
 
