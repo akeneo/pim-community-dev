@@ -184,16 +184,18 @@ class ProductController extends AbstractDoctrineController
     public function generatePdfAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
+        $renderingDate = new \DateTime('now');
 
         return new Response(
             $this->rendererRegistry->render($product, 'full', [
-                'locale' => $request->get('dataLocale', $this->userContext->getCurrentLocale()),
-                'channel' => '',
+                'locale'        => $request->get('dataLocale', $this->userContext->getCurrentLocale()),
+                'renderingDate' => $renderingDate,
+                'scope'         => '',
             ]),
             200,
             array(
                 'content-type' => 'application/pdf',
-                'content-disposition' => sprintf('attachment; filename=%s.pdf', $product->getIdentifier()),
+                'content-disposition' => sprintf('attachment; filename=%s-%s.pdf', $product->getIdentifier(), $renderingDate->format('Y-m-d_H-i-s')),
             )
         );
     }
