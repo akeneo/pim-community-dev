@@ -5,11 +5,11 @@ namespace spec\Pim\Bundle\NotificationBundle\Entity;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class NotificationEventSpec extends ObjectBehavior
+class NotificationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\NotificationEvent');
+        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_can_have_a_route()

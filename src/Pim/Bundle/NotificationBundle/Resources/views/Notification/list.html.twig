@@ -1,10 +1,10 @@
-{% for notification in notifications %}
+{% for userNotification in userNotifications %}
     <li>
-        <a href="{{ notification.event.route ? path(notification.event.route, notification.event.routeParams) : 'javascript:void(0);'}}"{{ notification.viewed ? '' : ' class="new"' }}>
-            {% set icon = notification.event.type == 'success' ? 'ok' : (notification.event.type == 'warning' ? 'warning-sign' : 'remove') %}
+        <a href="{{ userNotification.notification.route ? path(userNotification.notification.route, userNotification.notification.routeParams) : 'javascript:void(0);'}}"{{ userNotification.viewed ? '' : ' class="new"' }}>
+            {% set icon = userNotification.notification.type == 'success' ? 'ok' : (userNotification.notification.type == 'warning' ? 'warning-sign' : 'remove') %}
             <i class="icon-{{ icon }}"></i>
-            {{ notification.event.message|trans(notification.event.messageParams) }}
-            <i class="icon-trash" data-id="{{ notification.id }}"></i>
+            {{ userNotification.notification.message|trans(userNotification.notification.messageParams) }}
+            <i class="icon-trash" data-id="{{ userNotification.id }}"></i>
         </a>
     </li>
     <li class="divider"></li>

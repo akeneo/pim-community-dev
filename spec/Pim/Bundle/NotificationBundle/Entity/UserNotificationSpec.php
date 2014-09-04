@@ -5,13 +5,13 @@ namespace spec\Pim\Bundle\NotificationBundle\Entity;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\NotificationBundle\Entity\NotificationEvent;
+use Pim\Bundle\NotificationBundle\Entity\Notification;
 
 class UserNotificationSpec extends ObjectBehavior
 {
-    function let(NotificationEvent $event, User $user)
+    function let(Notification $notification, User $user)
     {
-        $this->beConstructedWith($event, $user);
+        $this->beConstructedWith($notification, $user);
     }
 
     function it_is_initializable()
@@ -26,11 +26,11 @@ class UserNotificationSpec extends ObjectBehavior
         $this->isViewed()->shouldReturn(true);
     }
 
-    function it_has_a_notification_event(NotificationEvent $event2, $event)
+    function it_has_a_notification_event(Notification $notification2, $notification)
     {
-        $this->getEvent()->shouldReturn($event);
-        $this->setEvent($event2)->shouldReturn($this);
-        $this->getEvent()->shouldReturn($event2);
+        $this->getNotification()->shouldReturn($notification);
+        $this->setNotification($notification2)->shouldReturn($this);
+        $this->getNotification()->shouldReturn($notification2);
     }
 
     function it_has_a_user(User $user2, $user)

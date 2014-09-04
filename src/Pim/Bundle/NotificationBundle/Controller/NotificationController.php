@@ -36,11 +36,11 @@ class NotificationController
      *
      * @Template
      *
-     * @return array ['notification' => UserNotification[]]
+     * @return array ['userNotifications' => UserNotification[]]
      */
     public function listAction(User $user, Request $request)
     {
-        return ['notifications' => $this->manager->getUserNotifications($user, $request->get('skip', 0))];
+        return ['userNotifications' => $this->manager->getUserNotifications($user, $request->get('skip', 0))];
     }
 
     /**

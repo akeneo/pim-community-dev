@@ -1,6 +1,6 @@
-Pim\Bundle\NotificationBundle\Entity\NotificationEvent:
+Pim\Bundle\NotificationBundle\Entity\Notification:
     type: entity
-    table: pim_notification_notification_event
+    table: pim_notification_notification
     id:
         id:
             type: integer

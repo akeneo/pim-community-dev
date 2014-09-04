@@ -19,20 +19,20 @@ class UserNotification
     /** @var boolean */
     protected $viewed = false;
 
-    /** @var NotificationEvent */
-    protected $event;
+    /** @var Notification */
+    protected $notification;
 
     /** @var User */
     protected $user;
 
     /**
-     * @param NotificationEvent $event
-     * @param User              $user
+     * @param Notification $notification
+     * @param User         $user
      */
-    public function __construct(NotificationEvent $event, User $user)
+    public function __construct(Notification $notification, User $user)
     {
-        $this->event = $event;
-        $this->user  = $user;
+        $this->notification = $notification;
+        $this->user         = $user;
     }
 
     /**
@@ -70,27 +70,27 @@ class UserNotification
     }
 
     /**
-     * Set event
+     * Set notification
      *
-     * @param NotificationEvent $event
+     * @param Notification $notification
      *
      * @return UserNotification
      */
-    public function setEvent(NotificationEvent $event)
+    public function setNotification(Notification $notification)
     {
-        $this->event = $event;
+        $this->notification = $notification;
 
         return $this;
     }
 
     /**
-     * Get event
+     * Get notification
      *
-     * @return NotificationEvent
+     * @return Notification
      */
-    public function getEvent()
+    public function getNotification()
     {
-        return $this->event;
+        return $this->notification;
     }
 
     /**

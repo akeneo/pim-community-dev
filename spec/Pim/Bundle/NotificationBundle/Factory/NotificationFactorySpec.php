@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\Factory;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\NotificationEvent;
 use Prophecy\Argument;
+use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\NotificationBundle\Entity\Notification;
 
 class NotificationFactorySpec extends ObjectBehavior
 {
@@ -14,7 +14,7 @@ class NotificationFactorySpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Factory\NotificationFactory');
     }
 
-    function it_creates_notification_events()
+    function it_creates_notifications()
     {
         $options = [
             'messageParams' => ['foo' => 'bar'],
@@ -23,24 +23,24 @@ class NotificationFactorySpec extends ObjectBehavior
             'context' => ['baz' => 'qux']
         ];
 
-        $event = $this->createNotificationEvent('Some message', 'success', $options);
+        $notification = $this->createNotification('Some message', 'success', $options);
 
-        $event->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\NotificationEvent');
-        $event->getMessage()->shouldReturn('Some message');
-        $event->getMessageParams()->shouldReturn(['foo' => 'bar']);
-        $event->getType()->shouldReturn('success');
-        $event->getRoute()->shouldReturn('index');
-        $event->getRouteParams()->shouldReturn(['bar' => 'foo']);
-        $event->getCreated()->shouldReturnAnInstanceOf('\DateTime');
-        $event->getContext()->shouldReturn(['baz' => 'qux']);
+        $notification->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $notification->getMessage()->shouldReturn('Some message');
+        $notification->getMessageParams()->shouldReturn(['foo' => 'bar']);
+        $notification->getType()->shouldReturn('success');
+        $notification->getRoute()->shouldReturn('index');
+        $notification->getRouteParams()->shouldReturn(['bar' => 'foo']);
+        $notification->getCreated()->shouldReturnAnInstanceOf('\DateTime');
+        $notification->getContext()->shouldReturn(['baz' => 'qux']);
     }
 
-    function it_creates_notifications(NotificationEvent $event, User $user)
+    function it_creates_user_notifications(Notification $notification, User $user)
     {
-        $notification = $this->createUserNotification($event, $user);
+        $userNotification = $this->createUserNotification($notification, $user);
 
-        $notification->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\UserNotification');
-        $notification->getEvent()->shouldReturn($event);
-        $notification->getUser()->shouldReturn($user);
+        $userNotification->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\UserNotification');
+        $userNotification->getNotification()->shouldReturn($notification);
+        $userNotification->getUser()->shouldReturn($user);
     }
 }

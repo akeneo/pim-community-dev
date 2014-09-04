@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Factory;
 
-use Pim\Bundle\NotificationBundle\Entity\NotificationEvent;
+use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -22,9 +22,9 @@ class NotificationFactory
      * @param string $type
      * @param array  $options
      *
-     * @return NotificationEvent
+     * @return Notification
      */
-    public function createNotificationEvent($message, $type, array $options = [])
+    public function createNotification($message, $type, array $options = [])
     {
         $defaults = [
             'messageParams' => [],
@@ -33,27 +33,27 @@ class NotificationFactory
             'context' => []
         ];
 
-        $options = array_merge($defaults, $options);
-        $event   = new NotificationEvent($message, $type);
-        $event
+        $options      = array_merge($defaults, $options);
+        $notification = new Notification($message, $type);
+        $notification
             ->setMessageParams($options['messageParams'])
             ->setRoute($options['route'])
             ->setRouteParams($options['routeParams'])
             ->setContext($options['context']);
 
-        return $event;
+        return $notification;
     }
 
     /**
      * It creates a user notification
      *
-     * @param NotificationEvent $event
-     * @param User              $user
+     * @param Notification $notification
+     * @param User         $user
      *
      * @return UserNotification
      */
-    public function createUserNotification(NotificationEvent $event, User $user)
+    public function createUserNotification(Notification $notification, User $user)
     {
-        return new UserNotification($event, $user);
+        return new UserNotification($notification, $user);
     }
 }

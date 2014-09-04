@@ -6,7 +6,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
 
 /**
- * Twig extension to provide the number of unread notifications
+ * Twig extension to provide the number of unread user notifications
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

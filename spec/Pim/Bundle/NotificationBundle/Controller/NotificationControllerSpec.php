@@ -21,14 +21,14 @@ class NotificationControllerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Controller\NotificationController');
     }
 
-    function it_lists_notifications_linked_to_a_user(
+    function it_lists_user_notifications_linked_to_a_user(
         User $user,
-        UserNotification $notification,
+        UserNotification $userNotification,
         Request $request,
         $manager
     ) {
-        $manager->getUserNotifications($user, Argument::cetera())->shouldBeCalled()->willReturn([$notification]);
-        $this->listAction($user, $request)->shouldReturn(['notifications' => [$notification]]);
+        $manager->getUserNotifications($user, Argument::cetera())->shouldBeCalled()->willReturn([$userNotification]);
+        $this->listAction($user, $request)->shouldReturn(['userNotifications' => [$userNotification]]);
     }
 
     function it_marks_a_notification_as_viewed_for_a_user($manager)

@@ -3,13 +3,13 @@
 namespace Pim\Bundle\NotificationBundle\Entity;
 
 /**
- * Notification event entity
+ * Notification entity
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotificationEvent
+class Notification
 {
     /** @var integer */
     protected $id;
@@ -63,7 +63,7 @@ class NotificationEvent
      *
      * @param string $route
      *
-     * @return NotificationEvent
+     * @return Notification
      */
     public function setRoute($route)
     {
@@ -87,7 +87,7 @@ class NotificationEvent
      *
      * @param array $routeParams
      *
-     * @return NotificationEvent
+     * @return Notification
      */
     public function setRouteParams(array $routeParams)
     {
@@ -111,7 +111,7 @@ class NotificationEvent
      *
      * @param string $message
      *
-     * @return NotificationEvent
+     * @return Notification
      */
     public function setMessage($message)
     {
@@ -135,7 +135,7 @@ class NotificationEvent
      *
      * @param array $messageParams
      *
-     * @return NotificationEvent
+     * @return Notification
      */
     public function setMessageParams(array $messageParams)
     {
@@ -169,7 +169,7 @@ class NotificationEvent
      *
      * @param string $type
      *
-     * @return NotificationEvent
+     * @return Notification
      */
     public function setType($type)
     {
@@ -193,7 +193,7 @@ class NotificationEvent
      *
      * @param array $context
      *
-     * @return NotificationEvent
+     * @return Notification
      */
     public function setContext(array $context)
     {

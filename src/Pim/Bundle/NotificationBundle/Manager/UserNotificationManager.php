@@ -61,15 +61,15 @@ class UserNotificationManager
      */
     public function notify(array $users, $message, $type = 'success', array $options = [])
     {
-        $notificationEvent = $this->factory->createNotificationEvent($message, $type, $options);
+        $notification = $this->factory->createNotification($message, $type, $options);
 
         foreach ($users as $user) {
             $userEntity = is_string($user) ? $this->userManager->findUserByUsername($user) : $user;
-            $notification = $this->factory->createUserNotification($notificationEvent, $userEntity);
-            $this->entityManager->persist($notification);
+            $userNotification = $this->factory->createUserNotification($notification, $userEntity);
+            $this->entityManager->persist($userNotification);
         }
 
-        $this->entityManager->persist($notificationEvent);
+        $this->entityManager->persist($notification);
         $this->entityManager->flush();
 
         return $this;
@@ -105,11 +105,11 @@ class UserNotificationManager
         } elseif ('all' === $ids) {
             $findParams = ['user' => $userId, 'viewed' => false];
         }
-        $notifications = $this->repository->findBy($findParams);
+        $userNotifications = $this->repository->findBy($findParams);
 
-        foreach ($notifications as $notification) {
-            $notification->setViewed(true);
-            $this->entityManager->persist($notification);
+        foreach ($userNotifications as $userNotification) {
+            $userNotification->setViewed(true);
+            $this->entityManager->persist($userNotification);
         }
 
         $this->entityManager->flush();
