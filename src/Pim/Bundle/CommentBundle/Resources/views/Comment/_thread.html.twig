@@ -12,9 +12,11 @@
             </div>
         </div>
     </li>
+    {#
     <li class="comment-reply-action">
         {% include 'PimCommentBundle:Comment:_commentReplyAction.html.twig' %}
     </li>
+    #}
     {% for reply in comment.children %}
         {% include 'PimCommentBundle:Comment:_commentReply.html.twig' with {'reply': reply} %}
     {%  endfor %}

@@ -59,10 +59,15 @@ class CommentController extends AbstractDoctrineController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
      */
     public function createAction(Request $request)
     {
+        if (true !== $request->isXmlHttpRequest()) {
+            throw new \LogicException('The request should be an Xml Http request.');
+        }
+
         $comment = $this->commentBuilder->buildCommentWithoutSubject($this->getUser());
         $form = $this->createForm(
             'pim_comment_comment',
@@ -74,11 +79,17 @@ class CommentController extends AbstractDoctrineController
             $manager = $this->getManagerForClass(ClassUtils::getClass($comment));
             $manager->persist($comment);
             $manager->flush();
+            //TODO: change this
+            $this->addFlash('success', 'flash.comment.create.success');
         } else {
-            $this->addFlash('error', 'flash.comment.invalid');
+            //TODO: change this
+            $this->addFlash('error', 'flash.comment.create.error');
         }
 
-        return new JsonResponse('OK');
+        return $this->render(
+            'PimCommentBundle:Comment:_thread.html.twig',
+            ['comment' => $comment]
+        );
     }
 
     public function replyAction($name)
