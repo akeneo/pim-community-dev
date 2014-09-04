@@ -1,28 +1,53 @@
-ol.comment-thread{
-    margin-top: 10px;
+ol#comment_threads {
+    margin: 20px;
 }
-ol.comment-thread li{
-    padding: 15px;
+
+ol#comment_threads form {
+    margin: 0;
+}
+
+ol#comment_threads .form-horizontal .control-group {
+    margin-bottom: 0;
+}
+
+ol#comment_threads .form-horizontal .control-group .controls {
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+
+ol#comment_threads textarea {
+    width: 100%;
+}
+
+ol.comment-thread li, li.comment-create {
+    padding: 10px;
     border-top: 1px solid rgb(221, 221, 221);
     border-left: 1px solid rgb(221, 221, 221);
     border-right: 1px solid rgb(221, 221, 221);
 }
-ol.comment-thread > :first-child{
+
+ol.comment-thread > :first-child {
+    margin-top: 10px;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
 }
-ol.comment-thread > :last-child{
+
+ol.comment-thread > :last-child {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 }
-li.comment-reply:last-child{
+
+li.comment-reply:last-child {
     border-bottom: 1px solid rgb(221, 221, 221);
 }
-li.comment-topic{
+
+li.comment-topic {
     background-color: #f6f6f6;
     border-bottom: 1px solid rgb(221, 221, 221);
 }
-li.comment-answer{
+
+li.comment-answer, li.comment-create {
     background-color: #eeeeee;
 }
 .comment-reply{
