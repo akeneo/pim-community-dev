@@ -59,6 +59,13 @@
 {% endspaceless %}
 {% endmacro %}
 
+{% macro downloadLink(url, title) %}
+{% spaceless %}
+    {% set title = title|default('btn.to download') %}
+    <a class="btn icons-holder-text no-hash" href="{{ url }}" title="{{ title|trans|capitalize }}"><i class="icon-download"></i>{{ title|trans|capitalize }}</a>
+{% endspaceless %}
+{% endmacro %}
+
 {% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title) %}{% spaceless %}
     {% set message = message|default('confirmation.remove.item') %}
     {% set title = title|default('confirmation.delete'|trans) %}

@@ -94,6 +94,7 @@ btn:
     back:            back
     confirm:         confirm
     to grid:         back to grid
+    to download:     download
     to parent:       back to parent
 
 # Confirmation messages
