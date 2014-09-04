@@ -1,5 +1,5 @@
 {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
-{{ elements.downloadLink(path('pim_enrich_product_generate_pdf', { id: form.vars.value.id }), 'btn.to download') }}
+{{ elements.downloadLink(path('pim_enrich_product_generate_pdf', { id: form.vars.value.id, dataLocale: dataLocale }), 'btn.to download') }}
 {{ elements.enabledSwitch(form) }}
 {% if resource_granted("pim_enrich_product_remove") %}
      {{ elements.deleteLink(

@@ -175,19 +175,19 @@ class ProductController extends AbstractDoctrineController
     /**
      * Generate Pdf for specific product
      *
+     * @param Request $request
      * @param integer $id
      *
      * @AclAncestor("pim_enrich_product_index")
      * @return array
      */
-    public function generatePdfAction($id)
+    public function generatePdfAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $locale  = $this->userContext->getCurrentLocale();
 
         return new Response(
             $this->rendererRegistry->render($product, 'full', [
-                'locale' => $locale,
+                'locale' => $request->get('dataLocale', $this->userContext->getCurrentLocale()),
                 'channel' => '',
             ]),
             200,
