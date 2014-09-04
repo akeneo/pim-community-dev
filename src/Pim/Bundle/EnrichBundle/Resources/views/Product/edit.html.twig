@@ -22,26 +22,33 @@
 
     {% if sequentialEdit %}
 
-    {% set previousProduct = 'Lorem Ipsum dolor sit amet Product' %}
-    {% set nextProduct = 'consectetur adipiscing eli' %}
-    {% set ratio = 70 %}
+    {% set previousProduct = sequentialEdit.previous %}
+    {% set nextProduct = sequentialEdit.next %}
+    {% set ratio = sequentialEdit.countEditedProducts(product) / sequentialEdit.countProductSet * 100 %}
+
     <div class="row-fluid buffer-top" id="sequentialEdit">
         <span class="span3 right-aligned">
-            <a href="#" data-original-title="{{ 'pim_enrich.sequential_edit_action.product.previous'|trans({ '%product%': previousProduct }) }}" data-toggle="tooltip" data-placement="bottom" class="left">
-                <i class="icon-chevron-left"></i>&nbsp;&nbsp;{{ previousProduct|length > 25 ? previousProduct|slice(0, 22) ~ '...' }}
+            {% if previousProduct %}
+            <a href="{{ path('pim_enrich_product_edit', { id: previousProduct.id, dataLocale: dataLocale }) }}" class="left"
+                data-original-title="{{ 'pim_enrich.sequential_edit_action.product.previous'|trans({ '%product%': previousProduct }) }}" data-toggle="tooltip" data-placement="bottom">
+                <i class="icon-chevron-left"></i>&nbsp;&nbsp;{{ previousProduct.label|length > 25 ? previousProduct.label|slice(0, 22) ~ '...' : previousProduct }}
             </a>
+            {% endif %}
         </span>
         <span class="span6">
             <div class="progress progress-bar">
                 <div class="bar" style="width: {{ ratio }}%;">
-                    3 / 11 {{ 'Products'|trans }}
+                    {{ sequentialEdit.countEditedProducts(product) }} / {{ sequentialEdit.countProductSet }} {{ 'Products'|trans }}
                 </div>
             </div>
         </span>
         <span class="span3">
-            <a href="#" data-original-title="{{ 'pim_enrich.sequential_edit_action.product.next'|trans({ '%product%': nextProduct }) }}" data-toggle="tooltip" data-placement="bottom" class="right">
-                {{ nextProduct|length > 25 ? nextProduct|slice(0, 22) ~ '...' }}&nbsp;&nbsp;<i class="icon-chevron-right"></i>
+            {% if nextProduct %}
+            <a href="{{ path('pim_enrich_product_edit', { id: nextProduct.id, dataLocale: dataLocale }) }}" class="right"
+                data-original-title="{{ 'pim_enrich.sequential_edit_action.product.next'|trans({ '%product%': nextProduct }) }}" data-toggle="tooltip" data-placement="bottom">
+                {{ nextProduct.label|length > 25 ? nextProduct.label|slice(0, 22) ~ '...' : nextProduct }}&nbsp;&nbsp;<i class="icon-chevron-right"></i>
             </a>
+            {% endif %}
         </span>
     </div>
     <hr class="small" />
