@@ -650,7 +650,9 @@ class ProductController extends AbstractDoctrineController
         array $trees
     ) {
         $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
-        $this->seqEditManager->findWrap($sequentialEdit, $product);
+        if ($sequentialEdit) {
+            $this->seqEditManager->findWrap($sequentialEdit, $product);
+        }
 
         $defaultParameters = array(
             'form'             => $form->createView(),
