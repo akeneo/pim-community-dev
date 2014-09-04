@@ -76,25 +76,28 @@ class JobExecutionRepository extends EntityRepository
         return $qb;
     }
 
-    public function hasWarnings($jobExecutionId)
-    {
-        $qb = $this->createQueryBuilder('e');
-        $qb
-            ->leftJoin(
-                'e.stepExecutions',
-                'stepExecution'
-            )
-            ->leftJoin(
-                'stepExecution.warnings',
-                'batchWarnings'
-            )
-            ->where(
-                'e.id = :id'
-            )
-            ->setParameter('id', $jobExecutionId)
-            ->addSelect(
-                "COUNT(batchWarnings.id) as countWarnings"
-            );
-        error_log($qb->getQuery()->getArrayResult());
-    }
+//    /**
+//     * @param $jobExecutionId
+//     */
+//    public function countWarnings($jobExecutionId)
+//    {
+//        $qb = $this->createQueryBuilder('e');
+//        $qb
+//            ->leftJoin(
+//                'e.stepExecutions',
+//                'stepExecution'
+//            )
+//            ->leftJoin(
+//                'stepExecution.warnings',
+//                'batchWarnings'
+//            )
+//            ->where(
+//                'e.id = :id'
+//            )
+//            ->setParameter('id', $jobExecutionId)
+//            ->addSelect(
+//                "COUNT(batchWarnings.id) as countWarnings"
+//            );
+//        error_log($qb->getQuery()->getArrayResult());
+//    }
 }

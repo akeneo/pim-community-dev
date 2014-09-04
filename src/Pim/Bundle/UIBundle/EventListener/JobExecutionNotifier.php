@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\UIBundle\EventListener;
 
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\UIBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
@@ -20,16 +19,12 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @var NotificationManager */
     protected $manager;
 
-    /** @var JobExecutionRepository */
-    //protected $repository;
-
     /**
      * @param NotificationManager $manager
      */
-    public function __construct(NotificationManager $manager/*, JobExecutionRepository $repository*/)
+    public function __construct(NotificationManager $manager)
     {
-        $this->manager    = $manager;
-        //$this->repository = $repository;
+        $this->manager = $manager;
     }
 
     /**
@@ -54,9 +49,21 @@ class JobExecutionNotifier implements EventSubscriberInterface
             return;
         }
 
-        //$this->repository->hasWarnings($jobExecution->getId());
+        //TODO: inject ImportExportBundle\Entity\Repository\JobExecutionRepository directly
+//        $this->repository->hasWarnings($jobExecution->getId());
 
-        if ($jobExecution->getExitStatus()->getExitCode() > 4) {
+        $stepExecutions = $jobExecution->getStepExecutions();
+        $hasWarnings = false;
+        foreach ($stepExecutions as $step) {
+            if (0 !== $step->getWarnings()->count()) {
+                $hasWarnings = true;
+                break;
+            }
+        }
+
+        if ($hasWarnings) {
+            $status = 'warning';
+        } elseif ($jobExecution->getExitStatus()->getExitCode() > 4) {
             $status = 'error';
         } else {
             $status = 'success';
@@ -72,7 +79,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
         $this->manager->notify(
             [$user],
             sprintf('pim_import_export.notification.%s.complete', $jobExecution->getJobInstance()->getType()),
-            $jobExecution->getExitStatus(),
+            $status,
             $options
         );
     }

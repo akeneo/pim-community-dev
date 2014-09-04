@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UIBundle\Entity\Notification;
-use Pim\Bundle\UIBundle\Entity\NotificationEvent;
 use Pim\Bundle\UIBundle\Factory\NotificationFactory;
 
 /**
