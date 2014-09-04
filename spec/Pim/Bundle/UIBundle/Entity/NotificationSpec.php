@@ -26,11 +26,11 @@ class NotificationSpec extends ObjectBehavior
         $this->isViewed()->shouldReturn(true);
     }
 
-    function it_has_a_notification_event(NotificationEvent $notificationEvent, $event)
+    function it_has_a_notification_event(NotificationEvent $event2, $event)
     {
-        $this->getNotificationEvent()->shouldReturn($event);
-        $this->setNotificationEvent($notificationEvent)->shouldReturn($this);
-        $this->getNotificationEvent()->shouldReturn($notificationEvent);
+        $this->getEvent()->shouldReturn($event);
+        $this->setEvent($event2)->shouldReturn($this);
+        $this->getEvent()->shouldReturn($event2);
     }
 
     function it_has_a_user(User $user2, $user)

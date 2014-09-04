@@ -43,7 +43,7 @@ class NotificationManager
     }
 
     /**
-     * Send a notification to the given users
+     * Send a notification to given users
      *
      * @param User[] $users   Users which have to be notified
      * @param string $message Message which has to be sent
@@ -62,6 +62,7 @@ class NotificationManager
         }
 
         $this->entityManager->persist($notificationEvent);
+        $this->entityManager->flush();
 
         return $this;
     }
@@ -74,5 +75,31 @@ class NotificationManager
     public function getNotifications(User $user)
     {
         return $this->repository->findBy(['user' => $user]);
+    }
+
+    /**
+     * It marks given notifications as viewed for the given user
+     *
+     * @param string $userId       User id
+     * @param string $notifsToMark Can be numeric or 'all'
+     *
+     * return void
+     */
+    public function markNotificationsAsViewed($userId, $notifsToMark)
+    {
+        // TODO: use a direct query in repository to mark notifications as viewed directly can be faster
+        if (is_numeric($notifsToMark)) {
+            $findParams = ['user' => $userId, 'id' => $notifsToMark];
+        } elseif ('all' === $notifsToMark) {
+            $findParams = ['user' => $userId, 'viewed' => false];
+        }
+        $notifications = $this->repository->findBy($findParams);
+
+        foreach ($notifications as $notification) {
+            $notification->setViewed(true);
+            $this->entityManager->persist($notification);
+        }
+
+        $this->entityManager->flush();
     }
 }

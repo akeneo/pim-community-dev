@@ -12,10 +12,10 @@ Pim\Bundle\UIBundle\Entity\Notification:
         viewed:
             type: boolean
     manyToOne:
-        notificationEvent:
+        event:
             targetEntity: Pim\Bundle\UIBundle\Entity\NotificationEvent
             joinColumns:
-                notification_event:
+                event:
                     referencedColumnName: id
                     onDelete: CASCADE
         user:

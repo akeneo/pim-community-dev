@@ -1,0 +1,11 @@
+parameters:
+    pim_ui.event_listener.job_execution_notifier.class: Pim\Bundle\UIBundle\EventListener\JobExecutionNotifier
+
+services:
+    pim_ui.event_listener.job_execution_notifier:
+        class: %pim_ui.event_listener.job_execution_notifier.class%
+        arguments:
+            - '@pim_ui.manager.notification'
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_subscriber }

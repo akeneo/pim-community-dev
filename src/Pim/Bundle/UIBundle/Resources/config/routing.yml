@@ -1,3 +1,7 @@
 pim_ui_ajaxentity_list:
     path: /list.json
     defaults: { _controller: pim_ui.controller.ajax_option:listAction, _format: json }
+
+pim_ui_notification_list:
+    path: /notification/list/{id}
+    defaults: { _controller: pim_ui.controller.notification:listAction, _format: html }

@@ -1,8 +1,13 @@
 parameters:
     pim_ui.controller.ajax_option.class: Pim\Bundle\UIBundle\Controller\AjaxOptionController
+    pim_ui.controller.notification.class: Pim\Bundle\UIBundle\Controller\NotificationController
 
 services:
     pim_ui.controller.ajax_option:
         class: %pim_ui.controller.ajax_option.class%
         arguments:
             - '@doctrine'
+    pim_ui.controller.notification:
+        class: %pim_ui.controller.notification.class%
+        arguments:
+            - '@pim_ui.manager.notification'
