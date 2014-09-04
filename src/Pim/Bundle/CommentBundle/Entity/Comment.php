@@ -5,6 +5,7 @@ namespace Pim\Bundle\CommentBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Comment model
@@ -90,7 +91,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setAuthor(User $author)
+    public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
 
