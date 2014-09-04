@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Entity;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -13,20 +14,23 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class SequentialEdit
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer $id */
     protected $id;
 
-    /**
-     * @var integer[] $productSet
-     */
+    /** @var integer[] $productSet */
     protected $productSet = [];
 
-    /**
-     * @var UserInterface $user
-     */
+    /** @var UserInterface $user */
     protected $user;
+
+    /** @var ProductInterface */
+    protected $current;
+
+    /** @var ProductInterface */
+    protected $previous;
+
+    /** @var ProductInterface */
+    protected $next;
 
     /**
      * Get id
@@ -98,5 +102,88 @@ class SequentialEdit
         $this->productSet = $productSet;
 
         return $this;
+    }
+
+    /**
+     * @param ProductInterface $current
+     *
+     * @return SequentialEdit
+     */
+    public function setCurrent(ProductInterface $current)
+    {
+        $this->current = $current;
+
+        return $this;
+    }
+
+    /**
+     * @return ProductInterface
+     */
+    public function getCurrent()
+    {
+        return $this->current;
+    }
+
+    /**
+     * @param ProductInterface $next
+     *
+     * @return SequentialEdit
+     */
+    public function setNext(ProductInterface $next = null)
+    {
+        $this->next = $next;
+
+        return $this;
+    }
+
+    /**
+     * @return ProductInterface
+     */
+    public function getNext()
+    {
+        return $this->next;
+    }
+
+    /**
+     * @param ProductInterface $previous
+     *
+     * @return SequentialEdit
+     */
+    public function setPrevious(ProductInterface $previous = null)
+    {
+        $this->previous = $previous;
+
+        return $this;
+    }
+
+    /**
+     * @return ProductInterface
+     */
+    public function getPrevious()
+    {
+        return $this->previous;
+    }
+
+    /**
+     * Count number of products to edit
+     *
+     * @return integer
+     */
+    public function countProductSet()
+    {
+        return count($this->productSet);
+    }
+
+    /**
+     * Search the number of indexed products
+     * TODO: Be sure that it's never called with an unknown id
+     *
+     * @param ProductInterface
+     *
+     * @return integer
+     */
+    public function countEditedProducts(ProductInterface $product)
+    {
+        return array_search($product->getId(), $this->productSet) + 1;
     }
 }

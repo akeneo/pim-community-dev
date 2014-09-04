@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
@@ -26,21 +28,27 @@ class SequentialEditManager
     /** @var SequentialEditFactory */
     protected $factory;
 
+    /** @var ProductManager */
+    protected $productManager;
+
     /**
      * Constructor
      *
      * @param ObjectManager            $om
      * @param SequentialEditRepository $repository
      * @param SequentialEditFactory    $factory
+     * @param ProductManager           $productManager
      */
     public function __construct(
         ObjectManager $om,
         SequentialEditRepository $repository,
-        SequentialEditFactory $factory
+        SequentialEditFactory $factory,
+        ProductManager $productManager
     ) {
-        $this->om         = $om;
-        $this->repository = $repository;
-        $this->factory    = $factory;
+        $this->om             = $om;
+        $this->repository     = $repository;
+        $this->factory        = $factory;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -101,5 +109,27 @@ class SequentialEditManager
     public function findByUser(UserInterface $user)
     {
         return $this->repository->findOneBy(['user' => $user]);
+    }
+
+    /**
+     * Find wrapped products from a product
+     *
+     * @param SequentialEdit   $sequentialEdit
+     * @param ProductInterface $product
+     */
+    public function findWrap(SequentialEdit $sequentialEdit, ProductInterface $product)
+    {
+        $productSet = $sequentialEdit->getProductSet();
+        $currentKey = array_search($product->getId(), $productSet);
+
+        // TODO: Manage with rights and deleted products
+        $previousKey = $currentKey - 1;
+        $nextKey     = $currentKey + 1;
+        $previous = isset($productSet[$previousKey]) ? $this->productManager->find($productSet[$previousKey]) : null;
+        $next     = isset($productSet[$nextKey]) ? $this->productManager->find($productSet[$nextKey]) : null;
+
+        $sequentialEdit->setCurrent($product);
+        $sequentialEdit->setPrevious($previous);
+        $sequentialEdit->setNext($next);
     }
 }

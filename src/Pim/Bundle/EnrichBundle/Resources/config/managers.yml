@@ -8,3 +8,4 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_enrich.repository.sequential_edit'
             - '@pim_enrich.factory.sequential_edit'
+            - '@pim_catalog.manager.product'
