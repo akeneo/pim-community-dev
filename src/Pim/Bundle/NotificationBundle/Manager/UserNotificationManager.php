@@ -64,7 +64,7 @@ class UserNotificationManager
         $notification = $this->factory->createNotification($message, $type, $options);
 
         foreach ($users as $user) {
-            $userEntity = is_string($user) ? $this->userManager->findUserByUsername($user) : $user;
+            $userEntity = is_object($user) ? $user : $this->userManager->findUserByUsername($user);
             $userNotification = $this->factory->createUserNotification($notification, $userEntity);
             $this->entityManager->persist($userNotification);
         }
