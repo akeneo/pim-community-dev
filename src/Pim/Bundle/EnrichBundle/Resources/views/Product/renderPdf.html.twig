@@ -21,7 +21,7 @@
                 width: 100%;
             }
 
-            .header .generation-date {
+            .header .rendering-date {
                 font-size: 13px;
             }
 
@@ -92,7 +92,7 @@
     <body>
         <div class="header">
             <h1>{{ product.label }} {{ product.identifier != product.label ? '(' ~ product.identifier ~ ')' : '' }}</h1>
-            <span class="generation-date">{{ generationDate|date }}</span>
+            <span class="rendering-date">{{ renderingDate|date }}</span>
         </div>
         <div class="attribute-group">
             {% for group, attributes in groupedAttributes %}

@@ -38,7 +38,7 @@ class PimEnrichExtension extends Extension
         $loader->load('event_listeners.yml');
         $loader->load('form_subscribers.yml');
         $loader->load('resolvers.yml');
-        $loader->load('generators.yml');
+        $loader->load('renderers.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

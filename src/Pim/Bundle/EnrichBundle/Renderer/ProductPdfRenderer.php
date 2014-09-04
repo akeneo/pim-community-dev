@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Generator;
+namespace Pim\Bundle\EnrichBundle\Renderer;
 
-use Pim\Bundle\EnrichBundle\Generator\PdfBuilder\PdfBuilderInterface;
+use Pim\Bundle\EnrichBundle\Renderer\PdfBuilder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
- * PDF Generator used to generate PDF for a Product
+ * PDF renderer used to render PDF for a Product
  *
  * @author    Charles Pourcel <charles.pourcel@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductPdfGenerator implements PdfGeneratorInterface
+class ProductPdfRenderer implements RendererInterface
 {
     /**
      * @var EngineInterface
@@ -45,7 +45,7 @@ class ProductPdfGenerator implements PdfGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate($object, $format, array $context = [])
+    public function render($object, $format, array $context = [])
     {
         $params = array_merge(
             $context,
@@ -55,6 +55,7 @@ class ProductPdfGenerator implements PdfGeneratorInterface
                 'groupedAttributes' => $this->getGroupedAttributes($object),
                 'locale'            => 'en_US',
                 'scope'             => 'ecommerce',
+                'renderingDate'     => $this->getRenderingDate()
             ]
         );
 
@@ -78,7 +79,7 @@ class ProductPdfGenerator implements PdfGeneratorInterface
         return $groups;
     }
 
-    protected function getGenerationDate()
+    protected function getRenderingDate()
     {
         return new \DateTime('now');
     }

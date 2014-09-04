@@ -38,7 +38,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use Pim\Bundle\EnrichBundle\Generator\PdfGeneratorRegistry;
+use Pim\Bundle\EnrichBundle\Renderer\RendererRegistry;
 
 /**
  * Product Controller
@@ -65,9 +65,9 @@ class ProductController extends AbstractDoctrineController
     protected $productCatManager;
 
     /**
-     * @var PdfGeneratorRegistry
+     * @var RendererRegistry
      */
-    protected $pdfGeneratorRegistry;
+    protected $rendererRegistry;
 
     /**
      * @var UserContext
@@ -114,7 +114,7 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
-     * @param PdfGeneratorRegistry     $pdfGeneratorRegistry
+     * @param RendererRegistry         $rendererRegistry
      */
     public function __construct(
         Request $request,
@@ -132,7 +132,7 @@ class ProductController extends AbstractDoctrineController
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
         ProductCategoryManager $prodCatManager,
-        PdfGeneratorRegistry $pdfGeneratorRegistry
+        RendererRegistry $rendererRegistry
     ) {
         parent::__construct(
             $request,
@@ -152,7 +152,7 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager       = $versionManager;
         $this->securityFacade       = $securityFacade;
         $this->productCatManager    = $prodCatManager;
-        $this->pdfGeneratorRegistry = $pdfGeneratorRegistry;
+        $this->rendererRegistry     = $rendererRegistry;
     }
 
     /**
@@ -186,7 +186,7 @@ class ProductController extends AbstractDoctrineController
         $locale  = $this->userContext->getCurrentLocale();
 
         return new Response(
-            $this->pdfGeneratorRegistry->generate($product, 'full', [
+            $this->rendererRegistry->render($product, 'full', [
                 'locale' => $locale,
                 'channel' => '',
             ]),
