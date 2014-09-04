@@ -115,7 +115,7 @@
         </div>
         <div class="images">
             {% block images %}
-                {% for attribute in imageAttributes %}
+                {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media is defined %}
                     <img src="{{ product.getValue(attribute.code, locale, scope).media.filePath }}" />
                 {% endfor %}
             {% endblock %}
