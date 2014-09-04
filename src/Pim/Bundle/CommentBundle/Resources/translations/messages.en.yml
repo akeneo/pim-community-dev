@@ -1,0 +1,13 @@
+btn:
+    post: Post
+    reply: Reply
+
+flash:
+    comment:
+        create:
+            success: Your comment has been created successfully.
+            error: An error occured during the creation of your comment.
+
+comment:
+    index:
+        empty: No comment found.

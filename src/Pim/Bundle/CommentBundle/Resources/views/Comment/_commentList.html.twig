@@ -1,15 +1,17 @@
 {% include 'PimCommentBundle:Comment:create.html.twig' %}
 
-{% if comments %}
-    <div class="row span4" >
-        <ol class="unstyled">
-            {% for comment in comments %}
-                <li>
-                    {% include 'PimCommentBundle:Comment:_thread.html.twig' with {'comment':comment} %}
-                </li>
-            {% endfor %}
-        </ol>
-    </div>
-{% else %}
-    NO COMMENT YET
-{% endif %}
+<div class="row span4" >
+    <ol class="unstyled" id="comment_threads">
+        {% for comment in comments %}
+            <li>
+                {% include 'PimCommentBundle:Comment:_thread.html.twig' with {'comment':comment} %}
+            </li>
+        {% else %}
+            <div class="no-data" style="display: block;">
+                <p>
+                    {{ 'comment.index.empty'|trans }}
+                </p>
+            </div>
+        {% endfor %}
+    </ol>
+</div>

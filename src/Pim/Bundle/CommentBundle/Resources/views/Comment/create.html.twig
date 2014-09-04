@@ -4,13 +4,31 @@
 {% endif %}
 {% endspaceless %}
 
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $(function() {
+            $('#{{ form.vars.id }}').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ path('pim_comment_comment_create')}}',
+                    type: 'POST',
+                    data: $('#{{ form.vars.id }}').serialize(),
+                    success: function(data) {
+                        $('#comment_threads').prepend('<li>' + data + '</li>');
+                        $('#pim_comment_comment_body').val('');
+                        if (0 < $('div.no-data').length) {
+                            $('div.no-data').remove();
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 {{ form_start(form, {
     'action': path('pim_comment_comment_create'),
-    'class': 'form-inline',
-    'attr': {
-        'data-title': 'popin.create.comment.title'|trans,
-        'data-button-submit': 'btn.save'|trans|capitalize
-    }
+    'class': 'form-inline'
 }) }}
     {{ JSFV(form) }}
 
@@ -20,6 +38,6 @@
         {{ form_row(form.body) }}
         {{ form_row(form.resourceName) }}
         {{ form_row(form.resourceId) }}
-        {{ form_row(form.save) }}
+        <button class="btn">{{ 'btn.post'|trans|capitalize }}</button>
     </div>
 {{ form_end(form) }}
