@@ -53,8 +53,8 @@ class ProductPdfRenderer implements RendererInterface
             $context,
             [
                 'product'           => $object,
-                'groupedAttributes' => $this->getGroupedAttributes($object),
-                'imageAttributes'   => $this->getImagesAttributes($object),
+                'groupedAttributes' => $this->getGroupedAttributes($object, $context['locale']),
+                'imageAttributes'   => $this->getImagesAttributes($object, $context['locale']),
             ]
         );
 
@@ -83,11 +83,11 @@ class ProductPdfRenderer implements RendererInterface
         return $product->getAttributes();
     }
 
-    protected function getGroupedAttributes(AbstractProduct $product)
+    protected function getGroupedAttributes(AbstractProduct $product, $locale)
     {
         $groups = [];
 
-        foreach ($product->getAttributes() as $attribute) {
+        foreach ($this->getAttributes($product, $locale) as $attribute) {
             if (!isset($groups[$attribute->getGroup()->getLabel()])) {
                 $groups[$attribute->getGroup()->getLabel()] = [];
             }
@@ -98,11 +98,11 @@ class ProductPdfRenderer implements RendererInterface
         return $groups;
     }
 
-    protected function getImagesAttributes(AbstractProduct $product)
+    protected function getImagesAttributes(AbstractProduct $product, $locale)
     {
         $attributes = [];
 
-        foreach ($product->getAttributes() as $attribute) {
+        foreach ($this->getAttributes($product, $locale) as $attribute) {
             if ($attribute->getAttributeType() === static::IMAGE_ATTRIBUTE_TYPE) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
