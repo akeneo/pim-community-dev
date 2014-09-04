@@ -3,11 +3,11 @@
 <ol class="comment-thread unstyled">
     <li class="comment-topic">
         <div class="row-fluid">
-            <div class="span2" style="text-align: right">
+            <div id="thread-image" class="span2">
                 <img width="100" class="img-polaroid" src="{{ comment.author.imagePath ? comment.author.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
             </div>
             <div class="span10">
-                <div><strong>{{ fullname }}</strong>&nbsp;<span style="color: #808080">{{ comment.createdAt|date("F jS \\a\\t g:ia") }}</span></div>
+                <div><strong>{{ fullname }}</strong>&nbsp;<span class="date">{{ comment.createdAt|date("F jS \\a\\t g:ia") }}</span></div>
                 {{ comment.body }}
                 <div class="comment-buttons">
                     {% include 'PimCommentBundle:Comment:_buttons.html.twig' %}
@@ -15,12 +15,12 @@
             </div>
         </div>
     </li>
-    {#
-    <li class="comment-reply-action">
+    <div class="row-fluid comment-reply reply-color">
         {% include 'PimCommentBundle:Comment:_commentReplyAction.html.twig' %}
-    </li>
-    #}
+    </div>
     {% for reply in comment.children %}
-        {% include 'PimCommentBundle:Comment:_commentReply.html.twig' with {'reply': reply} %}
+        <div class="row-fluid comment-reply">
+            {% include 'PimCommentBundle:Comment:_commentReply.html.twig' with {'reply': reply} %}
+        </div>
     {%  endfor %}
 </ol>

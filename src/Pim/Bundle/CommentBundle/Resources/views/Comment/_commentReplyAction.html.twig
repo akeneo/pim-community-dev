@@ -1,1 +1,8 @@
-{{ form(form) }}
+{% set fullname = app.user|oro_format_name|default('N/A') %}
+
+<div class="span2 image-reply-action">
+    <img width="45" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+</div>
+<div class="span10">
+    <textarea placeholder="reply..." style="height: 90%; width: 90%"></textarea>
+</div>
