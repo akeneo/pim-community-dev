@@ -1,0 +1,8 @@
+parameters:
+    pim_comment.form.type.comment.class: Pim\Bundle\CommentBundle\Form\Type\CommentType
+
+services:
+    pim_comment.form.type.comment:
+        class: %pim_comment.form.type.comment.class%
+        tags:
+            - { name: form.type, alias: pim_comment_comment }
