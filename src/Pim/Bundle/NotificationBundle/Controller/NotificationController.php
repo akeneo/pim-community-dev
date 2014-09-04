@@ -37,21 +37,22 @@ class NotificationController
     /**
      * It lists user notifications for a given user
      *
-     * @param User    $user
      * @param Request $request
      *
      * @Template
      *
      * @return array ['userNotifications' => UserNotification[]]
      */
-    public function listAction(User $user, Request $request)
+    public function listAction(Request $request)
     {
+        $user = $this->userContext->getUser();
+
         return ['userNotifications' => $this->manager->getUserNotifications($user, $request->get('skip', 0))];
     }
 
     /**
      * It marks given user notifications as viewed
-
+     *
      * @param string|integer $id Has to be numeric or 'all'
      *
      * @return Response

@@ -1,8 +1,6 @@
 pim_notification_notification_list:
-    path: /notification/list/{id}
+    path: /notification/list
     defaults: { _controller: pim_notification.controller.notification:listAction, _format: html }
-    requirements:
-        userId: \d+
 
 pim_notification_notification_mark_viewed:
     path: /notification/mark_viewed/{id}
