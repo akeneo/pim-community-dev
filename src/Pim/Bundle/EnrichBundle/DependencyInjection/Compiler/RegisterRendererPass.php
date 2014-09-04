@@ -7,16 +7,16 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Registers all defined generators to the PDF generators registry
+ * Registers all defined renderers to the PDF renderers registry
  *
  * @author    Charles Pourcel <charles.pourcel@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterPdfGeneratorPass implements CompilerPassInterface
+class RegisterRendererPass implements CompilerPassInterface
 {
-    const REGISTRY_ID      = 'pim_enrich.generator.pdf_registry';
-    const GENERATOR_TAG    = 'pim_enrich.pdf_generator';
+    const REGISTRY_ID      = 'pim_enrich.renderer.registry';
+    const RENDERER_TAG     = 'pim_enrich.renderer';
     const DEFAULT_PRIORITY = 100;
 
     public function process(ContainerBuilder $container)
@@ -31,7 +31,7 @@ class RegisterPdfGeneratorPass implements CompilerPassInterface
 
         foreach ($this->getServicesByPriority($container) as $serviceIds) {
             foreach ($serviceIds as $serviceId) {
-                $registryDefinition->addMethodCall('addGenerator', array(new Reference($serviceId)));
+                $registryDefinition->addMethodCall('addRenderer', array(new Reference($serviceId)));
             }
         }
     }
@@ -46,7 +46,7 @@ class RegisterPdfGeneratorPass implements CompilerPassInterface
     protected function getServicesByPriority(ContainerBuilder $container)
     {
         $priorities = array();
-        foreach ($container->findTaggedServiceIds(static::GENERATOR_TAG) as $serviceId => $tags) {
+        foreach ($container->findTaggedServiceIds(static::RENDERER_TAG) as $serviceId => $tags) {
             $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : self::DEFAULT_PRIORITY;
             if (!isset($priorities[$priority])) {
                 $priorities[$priority] = array();

@@ -23,6 +23,6 @@ class PimEnrichBundle extends Bundle
         $container
             ->addCompilerPass(new Compiler\RegisterMassEditOperatorsPass())
             ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass())
-            ->addCompilerPass(new Compiler\RegisterPdfGeneratorPass());
+            ->addCompilerPass(new Compiler\RegisterRendererPass());
     }
 }

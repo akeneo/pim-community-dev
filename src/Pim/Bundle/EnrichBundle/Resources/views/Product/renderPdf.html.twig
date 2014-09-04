@@ -86,7 +86,7 @@
     <body>
         <div class="header">
             <h1>{{ product.label }} {{ product.identifier != product.label ? '(' ~ product.identifier ~ ')' : '' }}</h1>
-            <span class="generation-date">{{ generationDate|date }}</span>
+            <span class="generation-date">{{ renderingDate|date }}</span>
         </div>
         <div class="attribute-group">
             {% if product.family is not empty %}
