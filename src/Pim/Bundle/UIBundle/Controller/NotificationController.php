@@ -44,14 +44,14 @@ class NotificationController
     /**
      * It marks given notifications as viewed for a user
      *
-     * @param string $userId       User id
-     * @param string $notifsToMark Has to be numeric or 'all'
+     * @param string $userId User id
+     * @param string $ids    Has to be numeric or 'all'
      *
      * @return Response
      */
-    public function markNotificationsAsViewedAction($userId, $notifsToMark)
+    public function markAsViewedAction($userId, $ids)
     {
-        $this->manager->markNotificationsAsViewed($userId, $notifsToMark);
+        $this->manager->markNotificationsAsViewed($userId, $ids);
 
         return new Response();
     }
