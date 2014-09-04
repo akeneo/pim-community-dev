@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Controller;
 
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,12 +21,17 @@ class NotificationController
     /** @var UserNotificationManager */
     protected $manager;
 
+    /** @var UserContext */
+    private $userContext;
+
     /**
      * @param UserNotificationManager $manager
+     * @param UserContext             $userContext
      */
-    public function __construct(UserNotificationManager $manager)
+    public function __construct(UserNotificationManager $manager, UserContext $userContext)
     {
-        $this->manager = $manager;
+        $this->manager     = $manager;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -45,15 +51,15 @@ class NotificationController
 
     /**
      * It marks given user notifications as viewed
-     *
-     * @param string $userId User id
-     * @param string $ids    Has to be numeric or 'all'
+
+     * @param string|integer $id Has to be numeric or 'all'
      *
      * @return Response
      */
-    public function markAsViewedAction($userId, $ids)
+    public function markAsViewedAction($id)
     {
-        $this->manager->markAsViewed($userId, $ids);
+        $user = $this->userContext->getUser();
+        $this->manager->markAsViewed($user, $id);
 
         return new Response();
     }

@@ -74,28 +74,27 @@ class UserNotificationManagerSpec extends ObjectBehavior
         $this->getUserNotifications($user, 15)->shouldReturn([$userNotification]);
     }
 
-    function it_marks_a_notification_as_viewed(UserNotification $userNotification, $repository, $em)
+    function it_marks_a_notification_as_viewed(UserNotification $userNotification, User $user, $repository, $em)
     {
-        $userId = '2';
         $notificationId = '1';
-        $repository->findBy(['user' => $userId, 'id' => $notificationId])->shouldBeCalled()->willReturn([$userNotification]);
+        $repository->findBy(['user' => $user, 'id' => $notificationId])->shouldBeCalled()->willReturn([$userNotification]);
         $userNotification->setViewed(true)->shouldBeCalled()->willReturn($userNotification);
 
         $em->persist($userNotification)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
 
-        $this->markAsViewed($userId, $notificationId);
+        $this->markAsViewed($user, $notificationId);
     }
 
     function it_marks_all_notifications_as_viewed(
         UserNotification $userNotification1,
         UserNotification $userNotification2,
+        User $user,
         $repository,
         $em
     ) {
-        $userId = '2';
         $repository
-            ->findBy(['user' => $userId, 'viewed' => false])
+            ->findBy(['user' => $user, 'viewed' => false])
             ->shouldBeCalled()
             ->willReturn([$userNotification1, $userNotification2]);
 
@@ -106,6 +105,6 @@ class UserNotificationManagerSpec extends ObjectBehavior
         $em->persist($userNotification2)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
 
-        $this->markAsViewed($userId, 'all');
+        $this->markAsViewed($user, 'all');
     }
 }

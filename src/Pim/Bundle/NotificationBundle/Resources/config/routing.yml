@@ -5,8 +5,7 @@ pim_notification_notification_list:
         userId: \d+
 
 pim_notification_notification_mark_viewed:
-    path: /notification/mark_viewed/{userId}/{ids}
+    path: /notification/mark_viewed/{id}
     defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, _format: html }
     requirements:
-        userId: \d+
-        ids: all|\d+
+        id: all|\d+

@@ -6,3 +6,4 @@ services:
         class: %pim_notification.controller.notification.class%
         arguments:
             - '@pim_notification.manager.user_notification'
+            - '@pim_user.context.user'

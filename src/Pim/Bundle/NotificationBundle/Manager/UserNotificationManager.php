@@ -92,18 +92,18 @@ class UserNotificationManager
     /**
      * It marks given user notifications as viewed
      *
-     * @param string $userId User id
-     * @param string $ids    Can be numeric or 'all'
+     * @param User           $user User
+     * @param string|integer $id   Can be numeric or 'all'
      *
      * @return void
      */
-    public function markAsViewed($userId, $ids)
+    public function markAsViewed(User $user, $id)
     {
         // TODO: use a direct query in repository to mark notifications as viewed directly can be faster
-        if (is_numeric($ids)) {
-            $findParams = ['user' => $userId, 'id' => $ids];
-        } elseif ('all' === $ids) {
-            $findParams = ['user' => $userId, 'viewed' => false];
+        if (is_numeric($id)) {
+            $findParams = ['user' => $user, 'id' => $id];
+        } elseif ('all' === $id) {
+            $findParams = ['user' => $user, 'viewed' => false];
         }
         $userNotifications = $this->repository->findBy($findParams);
 
