@@ -1,71 +1,13 @@
-{#{% if elements is not defined %}#}
-    {#{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}#}
-{#{% endif %}#}
-
-{#{% if resource_granted("pim_enrich_product_remove") %}#}
-     {#{{ elements.deleteLink(#}
-        {#path('pim_comment_comment_delete', { id: comment.id }),#}
-        {#'pim_enrich_product_remove',#}
-        {#path('pim_enrich_product_edit', {id: comment.resourceId}),#}
-        {#'confirmation.remove.comment'|trans(),#}
-        {#'flash.comment.removed'|trans#}
-    {#) }}#}
-{#{% endif %}#}
-
-<script type="text/javascript">
-    require(
-            ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
-                'pim/saveformstate', 'pim/asynctab', 'pim/ui'],
-            function ($, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI) {
-                'use strict';
-                        // DELETE request for delete buttons
-                        $(document).on('click', '[data-comment-dialog]', function () {
-                            console.log('ok');
-                            var $el      = $(this),
-                                    message  = $el.data('message'),
-                                    title    = $el.data('title'),
-                                    doAction = function () {
-                                        $.ajax({
-                                            url: $el.attr('data-url'),
-                                            type: 'POST',
-                                            headers: { accept:'application/json' },
-                                            data: { _method: $el.data('method') },
-                                            success: function() {
-                                                var navigation = Navigation.getInstance();
-                                                if ($el.attr('data-redirect-url').length > 0) {
-                                                    var targetUrl = '#url=' + $el.attr('data-redirect-url');
-                                                    // If already on the desired page, make sure it is refreshed
-                                                    if (targetUrl === window.location.hash) {
-                                                        navigation.navigate(targetUrl.substr(0, targetUrl.length -1));
-                                                    }
-                                                    navigation.navigate(targetUrl, { trigger: true });
-                                                }
-                                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
-                                            },
-                                            error: function(xhr) {
-                                                messenger.notificationFlashMessage(
-                                                        'error',
-                                                        (xhr.responseJSON && xhr.responseJSON.message) ?
-                                                                xhr.responseJSON.message :
-                                                                $el.attr('data-error-message'));
-                                            }
-                                        });
-                                    };
-                            $el.off('click');
-                            if ($el.data('comment-dialog') === 'confirm') {
-                                Dialog.confirm(message, title, doAction);
-                            } else {
-                                Dialog.alert(message, title);
-                            }
-
-                            return false;
-                        });
-                }
-    );
-
-</script>
-
-<a href="javascript:void(0);" data-method="DELETE" data-comment-dialog="confirm" data-title="Delete confirmation" data-message="confirmation.remove.comment"
-   data-redirect-url="" data-url="{{ path('pim_comment_comment_delete', { id: comment.id }) }}" title="{{ 'btn.delete'|trans|capitalize }}">
+<a href="javascript:void(0);"
+   class="comment-dialog"
+   title="{{ 'btn.delete'|trans|capitalize }}"
+   data-comment="#comment{{ comment.id }}"
+   data-method="DELETE"
+   data-message="{{ 'confirmation.remove.comment'|trans }}"
+   data-title="{{ 'confirmation.delete'|trans }}"
+   data-sucess-message="flash.comment.delete.success"
+   data-error-message="flash.comment.delete.error"
+   data-url="{{ path('pim_comment_comment_delete', { id: comment.id }) }}"
+>
     <i class="icon-trash"></i>
 </a>

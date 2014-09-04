@@ -1,12 +1,20 @@
 btn:
-    post: Post
-    reply: Reply
+    post: Post a new comment
+    reply: Reply to this comment
+
+confirmation:
+    remove:
+        comment: Are you sure you want to delete this comment?
 
 flash:
     comment:
         create:
             success: Your comment has been created successfully.
             error: An error occured during the creation of your comment.
+        delete:
+            success: Your comment has been deleted successfully.
+            error: An error occured during the deletion of your comment.
+
 
 comment:
     index:

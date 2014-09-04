@@ -1,6 +1,6 @@
 {% set fullname = comment.author|oro_format_name|default('N/A') %}
 
-<ol class="comment-thread unstyled">
+<ol class="comment-thread unstyled" id="comment{{ comment.id }}">
     <li class="comment-topic">
         <div class="row-fluid">
             <div id="thread-image" class="span2">
