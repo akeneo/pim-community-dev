@@ -1,17 +1,59 @@
-{% include 'PimCommentBundle:Comment:create.html.twig' %}
+<script type="text/javascript">
+    require(
+        ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog'],
+        function ($, __, mediator, Navigation, messenger, Dialog) {
+            'use strict';
+            // DELETE request for delete buttons
+            $(document).on('click', '.comment-dialog', function () {
+                console.log('uyyoo');
+                var $el      = $(this),
+                    $comment = $($el.data('comment')),
+                    message  = $el.data('message'),
+                    title    = $el.data('title'),
+                    doAction = function () {
+                        $.ajax({
+                            url: $el.attr('data-url'),
+                            type: 'POST',
+                            headers: { accept:'application/json' },
+                            data: { _method: $el.data('method') },
+                            success: function() {
+                                var navigation = Navigation.getInstance();
+                                $comment.remove();
+                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                            },
+                            error: function(xhr) {
+                                messenger.notificationFlashMessage(
+                                    'error',
+                                    (xhr.responseJSON && xhr.responseJSON.message) ?
+                                        xhr.responseJSON.message :
+                                        $el.attr('data-error-message'));
+                            }
+                        });
+                    };
+                $el.off('click');
+                Dialog.confirm(message, title, doAction);
+
+                return false;
+            });
+        }
+    );
+</script>
 
 <div class="row span4" >
     <ol class="unstyled" id="comment_threads">
+        <li class="comment-create">
+            {% include 'PimCommentBundle:Comment:_commentCreateAction.html.twig' %}
+        </li>
         {% for comment in comments %}
             <li>
                 {% include 'PimCommentBundle:Comment:_thread.html.twig' with {'comment':comment} %}
             </li>
         {% else %}
-            <div class="no-data" style="display: block;">
+            <li class="no-data" style="display: block;">
                 <p>
                     {{ 'comment.index.empty'|trans }}
                 </p>
-            </div>
+            </li>
         {% endfor %}
     </ol>
 </div>
