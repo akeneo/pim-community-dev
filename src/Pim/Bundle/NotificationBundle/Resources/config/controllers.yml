@@ -1,0 +1,8 @@
+parameters:
+    pim_notification.controller.notification.class: Pim\Bundle\NotificationBundle\Controller\NotificationController
+
+services:
+    pim_notification.controller.notification:
+        class: %pim_notification.controller.notification.class%
+        arguments:
+            - '@pim_notification.manager.notification'

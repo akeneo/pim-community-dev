@@ -1,0 +1,28 @@
+Pim\Bundle\NotificationBundle\Entity\NotificationEvent:
+    type: entity
+    table: pim_notification_notification_event
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        route:
+            type: string
+            length: 255
+            nullable: true
+        routeParams:
+            type: array
+        message:
+            type: string
+            length: 255
+        messageParams:
+            type: array
+        created:
+            type: datetime
+        type:
+            type: string
+            length: 20
+        context:
+            type: array

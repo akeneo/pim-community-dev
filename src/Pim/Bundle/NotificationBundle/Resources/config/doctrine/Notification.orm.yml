@@ -1,0 +1,26 @@
+Pim\Bundle\NotificationBundle\Entity\Notification:
+    type: entity
+    table: pim_notification_notification
+    repositoryClass: Pim\Bundle\NotificationBundle\Entity\NotificationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        viewed:
+            type: boolean
+    manyToOne:
+        event:
+            targetEntity: Pim\Bundle\NotificationBundle\Entity\NotificationEvent
+            joinColumns:
+                event:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        user:
+            targetEntity: Oro\Bundle\UserBundle\Entity\User
+            joinColumns:
+                user:
+                    referencedColumnName: id
+                    onDelete: CASCADE

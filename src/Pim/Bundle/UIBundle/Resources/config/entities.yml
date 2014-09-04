@@ -1,2 +1,0 @@
-parameters:
-    pim_ui.entity.notification.class: Pim\Bundle\UIBundle\Entity\Notification
