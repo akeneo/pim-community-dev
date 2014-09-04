@@ -15,6 +15,8 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
  */
 class ProductPdfRenderer implements RendererInterface
 {
+    const IMAGE_ATTRIBUTE_TYPE = 'pim_catalog_image';
+
     /**
      * @var EngineInterface
      */
@@ -51,8 +53,9 @@ class ProductPdfRenderer implements RendererInterface
             $context,
             [
                 'product'           => $object,
-                'generationDate'    => $this->getGenerationDate(),
+                'generationDate'    => $this->getRenderingDate(),
                 'groupedAttributes' => $this->getGroupedAttributes($object),
+                'imageAttributes'   => $this->getImagesAttributes($object),
                 'locale'            => 'en_US',
                 'scope'             => 'ecommerce',
                 'renderingDate'     => $this->getRenderingDate()
@@ -77,6 +80,19 @@ class ProductPdfRenderer implements RendererInterface
         }
 
         return $groups;
+    }
+
+    protected function getImagesAttributes(AbstractProduct $product)
+    {
+        $attributes = [];
+
+        foreach ($product->getAttributes() as $attribute) {
+            if ($attribute->getAttributeType() === static::IMAGE_ATTRIBUTE_TYPE) {
+                $attributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $attributes;
     }
 
     protected function getRenderingDate()
