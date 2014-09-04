@@ -178,7 +178,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @AclAncestor("pim_enrich_product_index")
+     * @AclAncestor("pim_enrich_product_download")
      * @return array
      */
     public function generatePdfAction(Request $request, $id)
