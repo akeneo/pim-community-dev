@@ -22,7 +22,7 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('body', 'textarea', ['label' => false])
+            ->add('body', 'textarea', ['label' => false, 'attr' => ['placeholder' => 'Write something ...']])
             ->add('resourceName', 'hidden')
             ->add('resourceId', 'hidden')
         ;
