@@ -163,7 +163,7 @@ class SequentialEditManager
     protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
     {
         $productSet = $sequentialEdit->getProductSet();
-        while (--$currentKey > 0) {
+        while ($currentKey-- > 0) {
             $previous = $this->productManager->find($productSet[$currentKey]);
             if (null !== $previous) {
                 return $previous;
