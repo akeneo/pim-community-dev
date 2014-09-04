@@ -166,7 +166,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $this->seqEditManager->removeFromUser($this->userContext->getUser());
+        $this->seqEditManager->removeFromUser($this->getUser());
 
         return array(
             'locales'    => $this->getUserLocales(),
@@ -649,6 +649,8 @@ class ProductController extends AbstractDoctrineController
         array $channels,
         array $trees
     ) {
+        $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+
         $defaultParameters = array(
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocaleCode(),
@@ -661,7 +663,8 @@ class ProductController extends AbstractDoctrineController
             'created'          => $this->versionManager->getOldestLogEntry($product),
             'updated'          => $this->versionManager->getNewestLogEntry($product),
             'locales'          => $this->getUserLocales(),
-            'createPopin'      => $this->getRequest()->get('create_popin')
+            'createPopin'      => $this->getRequest()->get('create_popin'),
+            'sequentialEdit'   => $sequentialEdit
         );
 
         $event = new GenericEvent($this, ['parameters' => $defaultParameters]);

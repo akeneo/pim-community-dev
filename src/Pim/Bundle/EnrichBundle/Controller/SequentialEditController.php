@@ -117,7 +117,13 @@ class SequentialEditController extends AbstractDoctrineController
 
         $this->seqEditManager->save($sequentialEdit);
 
-        // TODO: Redirect on edit view
+        return $this->redirectToRoute(
+            'pim_enrich_product_edit',
+            array(
+                'dataLocale' => $this->request->get('dataLocale'),
+                'id' => current($sequentialEdit->getProductSet())
+            )
+        );
     }
 
     /**
