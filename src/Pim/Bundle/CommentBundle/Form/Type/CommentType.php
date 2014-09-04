@@ -25,7 +25,6 @@ class CommentType extends AbstractType
             ->add('body', 'textarea')
             ->add('resourceName', 'hidden')
             ->add('resourceId', 'hidden')
-            ->add('save', 'submit')
         ;
     }
 
