@@ -178,7 +178,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $this->seqEditManager->removeFromUser($this->getUser());
+        $this->seqEditManager->removeByUser($this->getUser());
 
         return array(
             'locales'    => $this->getUserLocales(),
@@ -354,7 +354,7 @@ class ProductController extends AbstractDoctrineController
     {
         switch ($this->getRequest()->get('action')) {
             case self::SAVE_AND_FINISH:
-                $this->seqEditManager->removeFromUser($this->getUser());
+                $this->seqEditManager->removeByUser($this->getUser());
             case self::BACK_TO_GRID:
                 $route = 'pim_enrich_product_index';
                 $params = array();

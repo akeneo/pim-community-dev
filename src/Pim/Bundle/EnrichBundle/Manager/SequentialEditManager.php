@@ -91,7 +91,7 @@ class SequentialEditManager
      *
      * @param UserInterface $user
      */
-    public function removeFromUser(UserInterface $user)
+    public function removeByUser(UserInterface $user)
     {
         $sequentialEdit = $this->findByUser($user);
         if (null !== $sequentialEdit) {

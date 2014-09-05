@@ -51,7 +51,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $om->remove($sequentialEdit)->shouldBeCalled();
         $om->flush($sequentialEdit)->shouldBeCalled();
 
-        $this->removeFromUser($user)->shouldReturn(null);
+        $this->removeByUser($user)->shouldReturn(null);
     }
 
     function it_does_not_remove_anything_if_user_have_no_sequential_edit($om, $repository, UserInterface $user)
@@ -60,7 +60,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $om->remove(Argument::any())->shouldNotBeCalled();
         $om->flush(Argument::any())->shouldNotBeCalled();
 
-        $this->removeFromUser($user)->shouldReturn(null);
+        $this->removeByUser($user)->shouldReturn(null);
     }
 
     function it_finds_a_sequential_edit_by_user($repository, UserInterface $user, SequentialEdit $sequentialEdit)
@@ -68,5 +68,12 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $repository->findOneBy(['user' => $user])->willReturn($sequentialEdit);
 
         $this->findByUser($user)->shouldReturn($sequentialEdit);
+    }
+
+    function it_returns_null_if_no_sequential_edit_is_found($repository, UserInterface $user)
+    {
+        $repository->findOneBy(['user' => $user])->willReturn(null);
+
+        $this->findByUser($user)->shouldReturn(null);
     }
 }
