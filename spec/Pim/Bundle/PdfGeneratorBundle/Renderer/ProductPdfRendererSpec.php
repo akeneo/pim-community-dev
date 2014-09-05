@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
@@ -15,14 +16,19 @@ class ProductPdfRendererSpec extends ObjectBehavior
 {
     const TEMPLATE_NAME = 'template.html.twig';
 
-    function let(EngineInterface $templating, $template, PdfBuilderInterface $pdfBuilder)
+    function let(EngineInterface $templating, PdfBuilderInterface $pdfBuilder)
     {
         $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder);
     }
 
-    function it_filters_not_compatible_entities(AbstractProduct $blender)
+    function it_does_not_filter_compatible_entities(AbstractProduct $blender)
     {
         $this->supports($blender, 'plain')->shouldReturn(true);
+    }
+
+    function it_filters_not_compatible_entities(Category $printer)
+    {
+        $this->supports($printer, 'plain')->shouldReturn(false);
     }
 
     function it_renders_a_product_without_images(AbstractProduct $blender, AttributeGroup $design, AbstractAttribute $color, $templating)
