@@ -17,6 +17,26 @@
     {{ form_widget(replyForms[comment.id].body, { 'id': 'pim_comment_comment_body_reply_' ~ comment.id }) }}
     {{ form_row(replyForms[comment.id].resourceName) }}
     {{ form_row(replyForms[comment.id].resourceId) }}
-    <button class="btn">{{ 'btn.reply'|trans|capitalize }}</button>
+    <button class="btn toggle-active reply-btn pull-right">{{ 'btn.reply'|trans|capitalize }}</button>
 </div>
 {{ form_end(replyForms[comment.id]) }}
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $(function() {
+            $('#pim_comment_comment_reply_{{ comment.id }}').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ path('pim_comment_comment_reply', {'id': comment.id})}}',
+                    type: 'POST',
+                    data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
+                    success: function(data) {
+                        $('#comment{{ comment.id }}').html(data);
+                    }
+                });
+            });
+        });
+    });
+
+    $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
+    $("#comments .comment-thread, .comment-create").on("focusout", function(){ $("#comments .active").removeClass("active");})
+</script>

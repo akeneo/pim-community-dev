@@ -1,6 +1,6 @@
 btn:
-    post: Post a new comment
-    reply: Reply to this comment
+    post: Post
+    reply: Reply
 
 confirmation:
     remove:

@@ -24,8 +24,18 @@ ol#comment_threads .active .toggle-active {
     display: inherit;
 }
 
+.reply-btn {
+    margin-top: 5px;
+    margin-right: 7%;
+}
+
+.create-btn {
+    margin-top: 5px;
+    margin-right: 7%;
+}
+
 ol#comment_threads textarea {
-    width: 97%;
+    width: 90%;
     height: 70px;
     -webkit-transition: all 1s ease-in-out;
     -moz-transition: all 1s ease-in-out;
