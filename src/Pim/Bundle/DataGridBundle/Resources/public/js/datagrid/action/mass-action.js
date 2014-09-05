@@ -22,7 +22,8 @@ function(_, MassAction) {
 
             var params = {
                 inset: selectionState.inset ? 1 : 0,
-                values: idValues.join(',')
+                values: idValues.join(','),
+                sorters: collection.state.sorters
             };
 
             params = collection.processFiltersParams(params, null, 'filters');
