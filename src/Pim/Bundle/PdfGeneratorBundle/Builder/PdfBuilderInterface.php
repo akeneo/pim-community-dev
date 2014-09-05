@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Renderer\PdfBuilder;
+namespace Pim\Bundle\PdfGeneratorBundle\Builder;
 
 /**
  * Interface for PDF builder
@@ -12,8 +12,9 @@ namespace Pim\Bundle\EnrichBundle\Renderer\PdfBuilder;
 interface PdfBuilderInterface
 {
     /**
-     * @param  string $htmlInput
+     * @param string $htmlInput
+     *
      * @return string
      */
     public function buildPdfOutput($htmlInput);
-} 
+}

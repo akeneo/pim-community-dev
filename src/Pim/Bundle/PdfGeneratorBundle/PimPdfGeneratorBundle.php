@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle;
+namespace Pim\Bundle\PdfGeneratorBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
+use Pim\Bundle\PdfGeneratorBundle\DependencyInjection\Compiler;
 
 /**
- * Enrich bundle
+ * PDF Generator bundle
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Charles Pourcel <charles.pourcel@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimEnrichBundle extends Bundle
+class PimPdfGeneratorBundle extends Bundle
 {
     /**
      * {@inheritdoc}
@@ -21,8 +21,6 @@ class PimEnrichBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\RegisterMassEditOperatorsPass())
-            ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass())
-        ;
+            ->addCompilerPass(new Compiler\RegisterRendererPass());
     }
 }

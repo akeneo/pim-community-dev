@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Renderer;
+namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
-use Pim\Bundle\EnrichBundle\Renderer\PdfBuilder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 
 /**
  * PDF renderer used to render PDF for a Product
@@ -96,7 +96,8 @@ class ProductPdfRenderer implements RendererInterface
     protected function getGroupedAttributes(AbstractProduct $product, $locale)
     {
         $groups = [];
-        foreach ($product->getAttributes($product, $locale) as $attribute) {
+
+        foreach ($this->getAttributes($product, $locale) as $attribute) {
             $groupLabel = $attribute->getGroup()->getLabel();
             if (!isset($groups[$groupLabel])) {
                 $groups[$groupLabel] = [];
