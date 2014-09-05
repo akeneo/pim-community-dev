@@ -1,6 +1,9 @@
 ol#comment_threads {
     margin: 20px;
 }
+ol#comment_threads a {
+    color: #211F24;
+}
 
 ol#comment_threads form {
     margin: 0;
