@@ -19,11 +19,11 @@ ol#comment_threads .form-horizontal .control-group .controls {
     margin-right: 10px;
 }
 
-ol#comment_threads .toggle-active {
+ol#comment-reply .toggle-active {
     display: none;
 }
 
-ol#comment_threads .active .toggle-active {
+ol#comment-reply .active .toggle-active {
     display: inherit;
 }
 
