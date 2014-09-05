@@ -6,4 +6,7 @@
 <div class="span10">
     <div><strong>{{ fullname }}</strong>&nbsp;<span class="date">{{ reply.createdAt|date("F jS \\a\\t g:ia") }}</span></div>
     {{ reply.body }}
+    <div class="comment-buttons">
+        {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {id: reply.id} %}
+    </div>
 </div>
