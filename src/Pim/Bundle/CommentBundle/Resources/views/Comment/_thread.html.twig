@@ -9,12 +9,12 @@
                 <div><strong>{{ fullname }}</strong>&nbsp;<span class="date">{{ comment.createdAt|date("F jS \\a\\t g:ia") }}</span></div>
                 {{ comment.body }}
                 <div class="comment-buttons">
-                    {% include 'PimCommentBundle:Comment:_buttons.html.twig' %}
+                    {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {id: comment.id} %}
                 </div>
             </div>
         </div>
     </li>
-    <div class="row-fluid comment-reply reply-color">
+    <div class="row-fluid comment-reply comment-reply-action reply-color">
         {% include 'PimCommentBundle:Comment:_commentReplyAction.html.twig' %}
     </div>
     {% for reply in comment.children %}
