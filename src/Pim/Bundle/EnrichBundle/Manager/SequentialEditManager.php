@@ -140,16 +140,14 @@ class SequentialEditManager
      */
     protected function findNext(SequentialEdit $sequentialEdit, $currentKey)
     {
+        $next = null;
         $productSet = $sequentialEdit->getProductSet();
         $productCount = $sequentialEdit->countProductSet();
-        while (++$currentKey < $productCount) {
+        while (++$currentKey < $productCount && null === $next) {
             $next = $this->productManager->find($productSet[$currentKey]);
-            if (null !== $next) {
-                return $next;
-            }
         }
 
-        return null;
+        return $next;
     }
 
     /**
@@ -162,14 +160,12 @@ class SequentialEditManager
      */
     protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
     {
+        $previous = null;
         $productSet = $sequentialEdit->getProductSet();
-        while ($currentKey-- > 0) {
+        while ($currentKey-- > 0 && null === $previous) {
             $previous = $this->productManager->find($productSet[$currentKey]);
-            if (null !== $previous) {
-                return $previous;
-            }
         }
 
-        return null;
+        return $previous;
     }
 }
