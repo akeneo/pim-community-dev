@@ -261,7 +261,6 @@ class ProductController extends BaseProductController
         return $this->productCatManager->getProductCountByGrantedTree($product);
     }
 
-
     /**
      * Switch case to redirect after saving a product from the edit form
      *
@@ -282,5 +281,4 @@ class ProductController extends BaseProductController
 
         return $this->redirectToRoute($route, $params);
     }
-
 }
