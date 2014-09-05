@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -79,6 +80,11 @@ class ProductController extends AbstractDoctrineController
     protected $securityFacade;
 
     /**
+     * @var SequentialEditManager
+     */
+    protected $seqEditManager;
+
+    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -88,7 +94,19 @@ class ProductController extends AbstractDoctrineController
      * Constant used to redirect to create popin when save edit form
      * @staticvar string
      */
-    const CREATE       = 'Create';
+    const CREATE = 'Create';
+
+    /**
+     * Constant used to redirect to next product in a sequential edition
+     * @staticvar string
+     */
+    const SAVE_AND_NEXT = 'SaveAndNext';
+
+    /**
+     * Constant used to redirect to the grid once all products are edited in a sequential edition
+     * @staticvar string
+     */
+    const SAVE_AND_FINISH = 'SaveAndFinish';
 
     /**
      * Constructor
@@ -108,6 +126,7 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
+     * @param SequentialEditManager    $seqEditManager
      */
     public function __construct(
         Request $request,
@@ -124,7 +143,8 @@ class ProductController extends AbstractDoctrineController
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager
+        ProductCategoryManager $prodCatManager,
+        SequentialEditManager $seqEditManager
     ) {
         parent::__construct(
             $request,
@@ -144,6 +164,7 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager    = $versionManager;
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
+        $this->seqEditManager    = $seqEditManager;
     }
 
     /**
@@ -157,6 +178,8 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
+        $this->seqEditManager->removeFromUser($this->getUser());
+
         return array(
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
@@ -330,6 +353,8 @@ class ProductController extends AbstractDoctrineController
     protected function redirectAfterEdit($params)
     {
         switch ($this->getRequest()->get('action')) {
+            case self::SAVE_AND_FINISH:
+                $this->seqEditManager->removeFromUser($this->getUser());
             case self::BACK_TO_GRID:
                 $route = 'pim_enrich_product_index';
                 $params = array();
@@ -337,6 +362,11 @@ class ProductController extends AbstractDoctrineController
             case self::CREATE:
                 $route = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
+                break;
+            case self::SAVE_AND_NEXT:
+                $route = 'pim_enrich_product_edit';
+                $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+                $params['id'] = $sequentialEdit->getNextId($params['id']);
                 break;
             default:
                 $route = 'pim_enrich_product_edit';
@@ -638,6 +668,11 @@ class ProductController extends AbstractDoctrineController
         array $channels,
         array $trees
     ) {
+        $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+        if ($sequentialEdit) {
+            $this->seqEditManager->findWrap($sequentialEdit, $product);
+        }
+
         $defaultParameters = array(
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocaleCode(),
@@ -650,7 +685,8 @@ class ProductController extends AbstractDoctrineController
             'created'          => $this->versionManager->getOldestLogEntry($product),
             'updated'          => $this->versionManager->getNewestLogEntry($product),
             'locales'          => $this->getUserLocales(),
-            'createPopin'      => $this->getRequest()->get('create_popin')
+            'createPopin'      => $this->getRequest()->get('create_popin'),
+            'sequentialEdit'   => $sequentialEdit
         );
 
         $event = new GenericEvent($this, ['parameters' => $defaultParameters]);
