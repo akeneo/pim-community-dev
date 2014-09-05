@@ -4,7 +4,7 @@ pim_comment_comment_create:
     methods: [GET, POST]
 
 pim_comment_comment_reply:
-    pattern:  /comment/{id}/reply
+    pattern:  /comment/reply
     defaults: { _controller: pim_comment.controller.comment:replyAction }
     methods: [GET, POST]
 
