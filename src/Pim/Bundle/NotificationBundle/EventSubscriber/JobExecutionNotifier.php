@@ -43,7 +43,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      *
-     * @return void
+     * @return null
      */
     public function afterJobExecution(JobExecutionEvent $event)
     {
