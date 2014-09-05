@@ -672,7 +672,7 @@ class ProductController extends AbstractDoctrineController
         if ($sequentialEdit) {
             $this->seqEditManager->findWrap($sequentialEdit, $product);
         }
-        
+
         $defaultParameters = array(
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocaleCode(),
