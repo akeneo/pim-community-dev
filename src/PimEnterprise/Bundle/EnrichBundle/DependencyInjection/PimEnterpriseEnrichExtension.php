@@ -36,6 +36,5 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('twig.yml');
-        $loader->load('renderers.yml');
     }
 }

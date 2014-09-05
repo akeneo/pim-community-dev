@@ -54,7 +54,6 @@ class AppKernel extends OroKernel
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
             new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
-            new Slik\DompdfBundle\SlikDompdfBundle()
         );
         $bundles = array_merge($bundles, $pimDepBundles);
 
@@ -78,7 +77,8 @@ class AppKernel extends OroKernel
             new Pim\Bundle\WebServiceBundle\PimWebServiceBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle(),
-            new Pim\Bundle\TransformBundle\PimTransformBundle()
+            new Pim\Bundle\TransformBundle\PimTransformBundle(),
+            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
         );
 
         $bundles = array_merge($bundles, $pimBundles);
@@ -98,7 +98,8 @@ class AppKernel extends OroKernel
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
             new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
-            new PimEnterprise\Bundle\TransformBundle\PimEnterpriseTransformBundle()
+            new PimEnterprise\Bundle\TransformBundle\PimEnterpriseTransformBundle(),
+            new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
         );
 
         $bundles = array_merge($bundles, $enterpriseBundles);

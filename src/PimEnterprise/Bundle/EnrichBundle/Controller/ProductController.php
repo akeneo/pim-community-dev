@@ -129,26 +129,6 @@ class ProductController extends BaseProductController
     }
 
     /**
-     * Generate Pdf for specific product
-     *
-     * @param Request $request
-     * @param integer $id
-     *
-     * @AclAncestor("pim_enrich_product_download")
-     * @return Response
-     */
-    public function generatePdfAction(Request $request, $id)
-    {
-        $locale = $this->userContext->getCurrentLocale();
-        $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
-        if (!$viewLocaleGranted) {
-            throw new AccessDeniedException();
-        }
-
-        return parent::generatePdfAction($request, $id);
-    }
-
-    /**
      * Show a product value
      *
      * @param Request $request
