@@ -64,4 +64,16 @@ class NotificationController
 
         return new Response();
     }
+
+    /**
+     * It counts unread notifications for the current user
+     *
+     * @return int
+     */
+    public function countUnreadAction()
+    {
+        $user = $this->userContext->getUser();
+
+        return $this->manager->countUnreadForUser($user);
+    }
 }

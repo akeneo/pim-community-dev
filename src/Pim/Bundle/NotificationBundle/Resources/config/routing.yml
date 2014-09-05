@@ -7,3 +7,7 @@ pim_notification_notification_mark_viewed:
     defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, _format: html }
     requirements:
         id: all|\d+
+
+pim_notification_count_unread:
+    path: /notification/count_unread
+    defaults: { _controller: pim_notification.controller.notification:countUnreadAction, _format: html }
