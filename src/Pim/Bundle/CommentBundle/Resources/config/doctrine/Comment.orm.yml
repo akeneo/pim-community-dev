@@ -33,12 +33,15 @@ Pim\Bundle\CommentBundle\Entity\Comment:
             mappedBy: parent
             orderBy:
                 createdAt: DESC
+
     manyToOne:
         parent:
             targetEntity: Pim\Bundle\CommentBundle\Entity\Comment
             inversedBy: children
+            joinColumn:
+                onDelete: CASCADE
         author:
-          targetEntity: Oro\Bundle\UserBundle\Entity\User
-          joinColumn:
-            name: author_id
-            referencedColumnName: id
+            targetEntity: Oro\Bundle\UserBundle\Entity\User
+            joinColumn:
+                name: author_id
+                referencedColumnName: id

@@ -1,3 +1,11 @@
+{% set fullname = app.user|oro_format_name|default('N/A') %}
+
+<div class="span2 image-reply-action">
+    <img width="45" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+</div>
+<div class="span10">
+    {% include 'PimCommentBundle:Comment:reply.html.twig' %}
+</div>
 <script type="text/javascript">
     require(['jquery'], function($) {
         $(function() {
@@ -8,22 +16,15 @@
                     type: 'POST',
                     data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
                     success: function(data) {
-                        $('#comment{{ comment.id }}').html(data);
+                        $('#comment{{ comment.id }}').remove();
+                        $('#comment_threads > li:first-child').after('<li>' + data + '</li>');
+                        $('#pim_comment_comment_body_reply{{ comment.id }}').val('');
                     }
                 });
             });
         });
     });
-</script>
 
-{% set fullname = app.user|oro_format_name|default('N/A') %}
-
-<div class="span2 image-reply-action">
-    <img width="45" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
-</div>
-<div class="span10">
-    {% include 'PimCommentBundle:Comment:reply.html.twig' %}
-</div>
-<script type="text/javascript">
     $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
+    $("#comments").find(".comment-reply").on("focusout", function(){ $("#comments .active").removeClass("active");})
 </script>
