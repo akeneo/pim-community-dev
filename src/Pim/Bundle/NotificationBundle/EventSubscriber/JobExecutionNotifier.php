@@ -84,7 +84,11 @@ class JobExecutionNotifier implements EventSubscriberInterface
 
         $this->manager->notify(
             [$user],
-            sprintf('pim_import_export.notification.%s.complete', $jobExecution->getJobInstance()->getType()),
+            sprintf(
+                '%s : pim_import_export.notification.%s.complete',
+                $jobExecution->getJobInstance()->getLabel(),
+                $jobExecution->getJobInstance()->getType()
+            ),
             $status,
             $options
         );

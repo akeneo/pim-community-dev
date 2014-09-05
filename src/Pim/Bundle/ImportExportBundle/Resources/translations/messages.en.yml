@@ -23,6 +23,12 @@ pim_import_export:
         input:   download read file|download read files
         invalid: download invalid data
 
+    notification:
+        export:
+            complete: Export finished
+        import:
+            complete: Import finished
+
 # Page titles:
 pim_title.export_profile.index:   Export profiles management
 pim_title.export_profile.edit:    Export profiles %job.label% | Edit

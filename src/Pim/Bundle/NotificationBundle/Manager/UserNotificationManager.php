@@ -63,7 +63,7 @@ class UserNotificationManager
      * @param array  $users   Users which have to be notified
      *                        ['userName', ...] or [Oro\Bundle\UserBundle\Entity\User, ...]
      * @param string $message Message which has to be sent
-     * @param string $type    Success by default
+     * @param string $type    success (default) | warning | error
      * @param array  $options ['route' => '', 'routeParams' => [], 'messageParams' => [], 'context => '']
      *
      * @return UserNotificationManager
