@@ -26,4 +26,5 @@
 </div>
 <script type="text/javascript">
     $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
+    $("#comments .comment-thread, .comment-create").on("focusout", function(){ $("#comments .active").removeClass("active");})
 </script>
