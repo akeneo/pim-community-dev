@@ -4,19 +4,19 @@
 {% endif %}
 {% endspaceless %}
 
-{{ form_start(form, {
+{{ form_start(createForm, {
     'id': 'pim_comment_comment_create',
     'action': path('pim_comment_comment_create'),
     'class': 'form-horizontal'
 }) }}
-    {{ JSFV(form) }}
+    {{ JSFV(createForm) }}
 
-    {{ elements.form_errors(form) }}
+    {{ elements.form_errors(createForm) }}
 
     <div class="row-fluid">
-        {{ form_widget(form.body, { 'id': 'pim_comment_comment_body_create' }) }}
-        {{ form_row(form.resourceName) }}
-        {{ form_row(form.resourceId) }}
-        <button class="btn pull-right create-btn">{{ 'btn.post'|trans|capitalize }}</button>
+        {{ form_widget(createForm.body, { 'id': 'pim_comment_comment_body_create' }) }}
+        {{ form_row(createForm.resourceName) }}
+        {{ form_row(createForm.resourceId) }}
+        <button class="btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
     </div>
-{{ form_end(form) }}
+{{ form_end(createForm) }}
