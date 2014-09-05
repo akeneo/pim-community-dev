@@ -1,21 +1,3 @@
-<script type="text/javascript">
-    require(['jquery'], function($) {
-        $(function() {
-            $('#pim_comment_comment_reply_{{ comment.id }}').on('submit', function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '{{ path('pim_comment_comment_reply', {'id': comment.id})}}',
-                    type: 'POST',
-                    data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
-                    success: function(data) {
-                        $('#comment{{ comment.id }}').html(data);
-                    }
-                });
-            });
-        });
-    });
-</script>
-
 {% set fullname = app.user|oro_format_name|default('N/A') %}
 
 <div class="span2 image-reply-action">
@@ -24,7 +6,3 @@
 <div class="span10">
     {% include 'PimCommentBundle:Comment:reply.html.twig' %}
 </div>
-<script type="text/javascript">
-    $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
-    $("#comments .comment-thread, .comment-create").on("focusout", function(){ $("#comments .active").removeClass("active");})
-</script>
