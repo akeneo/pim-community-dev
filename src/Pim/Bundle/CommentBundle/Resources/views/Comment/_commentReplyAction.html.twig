@@ -19,6 +19,10 @@
                         $('#comment{{ comment.id }}').remove();
                         $('#comment_threads > li:first-child').after('<li>' + data + '</li>');
                         $('#pim_comment_comment_body_reply{{ comment.id }}').val('');
+
+                        $(".reply-btn").click(function(){
+                            $("div").animate({ scrollTop: 0 }, 600);
+                        });
                     }
                 });
             });
