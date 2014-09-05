@@ -22,7 +22,7 @@ class NotificationControllerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Controller\NotificationController');
     }
 
-    function it_lists_user_notifications_linked_to_a_user(
+    function it_lists_user_notifications_linked_to_the_current_user(
         User $user,
         UserNotification $userNotification,
         Request $request,
@@ -45,7 +45,7 @@ class NotificationControllerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_marks_notifications_as_viewed_for_a_user(User $user, $manager, $context)
+    function it_marks_notifications_as_viewed_for_the_current_user(User $user, $manager, $context)
     {
         $notifsToMark = '3';
         $context->getUser()->shouldBeCalled()->willReturn($user);

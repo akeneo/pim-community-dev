@@ -35,7 +35,7 @@ class NotificationController
     }
 
     /**
-     * It lists user notifications for a given user
+     * It lists user notifications for the current user
      *
      * @param Request $request
      *
@@ -51,7 +51,7 @@ class NotificationController
     }
 
     /**
-     * It marks given user notifications as viewed
+     * It marks current user notifications as viewed
      *
      * @param string|integer $id Has to be numeric or 'all'
      *

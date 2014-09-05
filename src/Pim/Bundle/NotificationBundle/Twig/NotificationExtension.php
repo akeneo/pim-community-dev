@@ -23,8 +23,8 @@ class NotificationExtension extends \Twig_Extension
     /**
      * Constructor
      *
-     * @param UserNotificationManager $repository
-     * @param UserContext                $userContext
+     * @param UserNotificationManager $manager
+     * @param UserContext             $userContext
      */
     public function __construct(UserNotificationManager $manager, UserContext $userContext)
     {
