@@ -6,3 +6,25 @@
 <div class="span10">
     {% include 'PimCommentBundle:Comment:reply.html.twig' %}
 </div>
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $(function() {
+            $('#pim_comment_comment_reply_{{ comment.id }}').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ path('pim_comment_comment_reply', {'id': comment.id})}}',
+                    type: 'POST',
+                    data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
+                    success: function(data) {
+                        $('#comment{{ comment.id }}').remove();
+                        $('#comment_threads > li:first-child').after('<li>' + data + '</li>');
+                        $('#pim_comment_comment_body_reply{{ comment.id }}').val('');
+                    }
+                });
+            });
+        });
+    });
+
+    $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
+    $("#comments").find(".comment-reply").on("focusout", function(){ $("#comments .active").removeClass("active");})
+</script>
