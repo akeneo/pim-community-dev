@@ -8,6 +8,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
+use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 
 /**
  * User notification manager
@@ -25,27 +26,35 @@ class UserNotificationManager
     protected $repository;
 
     /** @var NotificationFactory  */
-    protected $factory;
+    protected $notificationFactory;
+
+    /** @var UserNotificationFactory */
+    protected $userNotificationFactory;
 
     /** @var UserManager */
     protected $userManager;
 
     /**
-     * @param EntityManager       $entityManager
-     * @param EntityRepository    $repository
-     * @param NotificationFactory $factory
-     * @param UserManager         $userManager
+     * Construct
+     *
+     * @param EntityManager           $entityManager
+     * @param EntityRepository        $repository
+     * @param NotificationFactory     $notificationFactory
+     * @param UserNotificationFactory $userNotificationFactory
+     * @param UserManager             $userManager
      */
     public function __construct(
         EntityManager $entityManager,
         EntityRepository $repository,
-        NotificationFactory $factory,
+        NotificationFactory $notificationFactory,
+        UserNotificationFactory $userNotificationFactory,
         UserManager $userManager
     ) {
-        $this->entityManager = $entityManager;
-        $this->repository    = $repository;
-        $this->factory       = $factory;
-        $this->userManager   = $userManager;
+        $this->entityManager           = $entityManager;
+        $this->repository              = $repository;
+        $this->notificationFactory     = $notificationFactory;
+        $this->userNotificationFactory = $userNotificationFactory;
+        $this->userManager             = $userManager;
     }
 
     /**
@@ -61,11 +70,11 @@ class UserNotificationManager
      */
     public function notify(array $users, $message, $type = 'success', array $options = [])
     {
-        $notification = $this->factory->createNotification($message, $type, $options);
+        $notification = $this->notificationFactory->createNotification($message, $type, $options);
 
         foreach ($users as $user) {
             $userEntity = is_object($user) ? $user : $this->userManager->findUserByUsername($user);
-            $userNotification = $this->factory->createUserNotification($notification, $userEntity);
+            $userNotification = $this->userNotificationFactory->createUserNotification($notification, $userEntity);
             $this->entityManager->persist($userNotification);
         }
 

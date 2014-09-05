@@ -4,8 +4,6 @@ namespace spec\Pim\Bundle\NotificationBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
 
 class NotificationFactorySpec extends ObjectBehavior
 {
@@ -33,14 +31,5 @@ class NotificationFactorySpec extends ObjectBehavior
         $notification->getRouteParams()->shouldReturn(['bar' => 'foo']);
         $notification->getCreated()->shouldReturnAnInstanceOf('\DateTime');
         $notification->getContext()->shouldReturn(['baz' => 'qux']);
-    }
-
-    function it_creates_user_notifications(Notification $notification, User $user)
-    {
-        $userNotification = $this->createUserNotification($notification, $user);
-
-        $userNotification->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\UserNotification');
-        $userNotification->getNotification()->shouldReturn($notification);
-        $userNotification->getUser()->shouldReturn($user);
     }
 }

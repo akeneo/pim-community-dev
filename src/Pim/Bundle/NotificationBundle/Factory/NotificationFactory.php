@@ -3,8 +3,6 @@
 namespace Pim\Bundle\NotificationBundle\Factory;
 
 use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
-use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Notification factory
@@ -42,18 +40,5 @@ class NotificationFactory
             ->setContext($options['context']);
 
         return $notification;
-    }
-
-    /**
-     * It creates a user notification
-     *
-     * @param Notification $notification
-     * @param User         $user
-     *
-     * @return UserNotification
-     */
-    public function createUserNotification(Notification $notification, User $user)
-    {
-        return new UserNotification($notification, $user);
     }
 }

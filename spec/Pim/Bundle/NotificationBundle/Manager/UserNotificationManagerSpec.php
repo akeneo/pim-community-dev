@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\NotificationBundle\Manager;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
+use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -14,9 +15,14 @@ use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
 
 class UserNotificationManagerSpec extends ObjectBehavior
 {
-    function let(EntityManager $em, UserNotificationRepository $repository, NotificationFactory $factory, UserManager $userManager)
-    {
-        $this->beConstructedWith($em, $repository, $factory, $userManager);
+    function let(
+        EntityManager $em,
+        UserNotificationRepository $repository,
+        NotificationFactory $notificationFactory,
+        UserManager $userManager,
+        UserNotificationFactory $userNotificationFactory
+    ) {
+        $this->beConstructedWith($em, $repository, $notificationFactory, $userNotificationFactory, $userManager);
     }
 
     function it_is_initializable()
@@ -29,13 +35,15 @@ class UserNotificationManagerSpec extends ObjectBehavior
         Notification $notification,
         UserNotification $userNotification,
         $em,
-        $factory
+        $notificationFactory,
+        $userNotificationFactory
     ) {
-        $factory
+        $notificationFactory
             ->createNotification('Some message', 'success', Argument::any())
             ->shouldBeCalled()
             ->willReturn($notification);
-        $factory->createUserNotification($notification, $user)
+        $userNotificationFactory
+            ->createUserNotification($notification, $user)
             ->shouldBeCalled()
             ->willReturn($userNotification);
         $em->persist($notification)->shouldBeCalled();
@@ -51,12 +59,14 @@ class UserNotificationManagerSpec extends ObjectBehavior
         Notification $notification,
         UserNotification $userNotification,
         $em,
-        $factory
+        $notificationFactory,
+        $userNotificationFactory
     ) {
-        $factory
+        $notificationFactory
             ->createNotification('Some message', 'success', Argument::any())
             ->willReturn($notification);
-        $factory->createUserNotification($notification, Argument::type('Oro\Bundle\UserBundle\Entity\User'))
+        $userNotificationFactory
+            ->createUserNotification($notification, Argument::type('Oro\Bundle\UserBundle\Entity\User'))
             ->willReturn($userNotification);
 
         $em->persist($notification)->shouldBeCalled();
