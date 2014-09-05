@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
-use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -99,7 +99,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var Collection */
     protected $collection;
 
-    /** @var ProductCacheClearer */
+    /** @var CacheClearer */
     protected $cacheClearer;
 
     /** @var StepExecution */
@@ -113,7 +113,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param EventDispatcherInterface $eventDispatcher
      * @param MongoObjectsFactory      $mongoFactory
      * @param string                   $productClass:
-     * @param ProductCacheClearer      $cacheClearer
+     * @param CacheClearer             $cacheClearer
      */
     public function __construct(
         ProductManager $productManager,
@@ -123,7 +123,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         EventDispatcherInterface $eventDispatcher,
         MongoObjectsFactory $mongoFactory,
         $productClass,
-        ProductCacheClearer $cacheClearer
+        CacheClearer $cacheClearer
     ) {
         $this->productManager   = $productManager;
         $this->documentManager  = $documentManager;
@@ -240,5 +240,13 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     public function getConfigurationFields()
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        $this->cacheClearer->clear(true);
     }
 }
