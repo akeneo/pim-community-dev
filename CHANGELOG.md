@@ -2,10 +2,13 @@
 
 ## Bug fixes
  - large memory leak fixed for non product import (association, product group, attribute, categories, etc...)
+ - new associations were created at each import
 
 ## BC breaks
  - protected postWrite method not called anymore from BaseConnectorBundle\\Writer\\Doctrine\\Writer.
  If you need it, override the write method, call the parent and add your code after.
+ - constructor of Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer has changed
+ - Pim\Bundle\TransformBundle\Cache\ProductCacheClearer has been renamed Pim\Bundle\TransformBundle\Cache\CacheClearer
 
 # 1.2.0  (2014-08-28)
 

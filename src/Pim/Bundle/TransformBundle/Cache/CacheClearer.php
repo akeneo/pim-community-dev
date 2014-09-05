@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCacheClearer
+class CacheClearer
 {
     /**
      * @var DoctrineCache
@@ -45,25 +45,28 @@ class ProductCacheClearer
     /**
      * Clear the Unit of Work of the manager(s) from the clearable entities
      * between batch writes
+     *
+     * @param bool $full True to clear all entities
      */
-    public function clear()
+    public function clear($full = false)
     {
+        $nonClearableEntities = $full ? [] : $this->nonClearableEntities;
         foreach ($this->managerRegistry->getManagers() as $objectManager) {
 
             $identityMap = $objectManager->getUnitOfWork()->getIdentityMap();
             $managedClasses = array_keys($identityMap);
-            $nonClearableClasses = array_intersect($managedClasses, $this->nonClearableEntities);
+            $nonClearableClasses = array_intersect($managedClasses, $nonClearableEntities);
 
             if (empty($nonClearableClasses)) {
                 $objectManager->clear();
             } else {
-                $clearableClasses = array_diff($managedClasses, $this->nonClearableEntities);
+                $clearableClasses = array_diff($managedClasses, $nonClearableEntities);
                 foreach ($clearableClasses as $clearableClass) {
                     $objectManager->clear($clearableClass);
                 }
             }
         }
-        $this->doctrineCache->clear($this->nonClearableEntities);
+        $this->doctrineCache->clear($nonClearableEntities);
     }
 
     /**
