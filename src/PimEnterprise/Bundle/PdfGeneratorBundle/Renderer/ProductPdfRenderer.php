@@ -21,9 +21,10 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     protected $filterHelper;
 
     /**
-     * @param EngineInterface     $templating
-     * @param string              $template
-     * @param PdfBuilderInterface $pdfBuilder
+     * @param EngineInterface           $templating
+     * @param string                    $template
+     * @param PdfBuilderInterface       $pdfBuilder
+     * @param FilterProductValuesHelper $filterHelper
      */
     public function __construct(
         EngineInterface $templating,

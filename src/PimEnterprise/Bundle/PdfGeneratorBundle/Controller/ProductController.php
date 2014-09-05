@@ -58,7 +58,7 @@ class ProductController extends BaseController
         parent::__construct($productManager, $rendererRegistry);
 
         $this->securityContext = $securityContext;
-        $this->userContext = $userContext;
+        $this->userContext     = $userContext;
     }
 
     /**
@@ -67,11 +67,10 @@ class ProductController extends BaseController
      * @param Request $request
      * @param integer $id
      *
-     * @AclAncestor("pim_pdf_generator_product_download")
-     *
      * @return Response
-     *
      * @throws HttpException
+     *
+     * @AclAncestor("pim_pdf_generator_product_download")
      */
     public function generatePdfAction(Request $request, $id)
     {
