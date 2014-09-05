@@ -61,7 +61,7 @@ class ProductController extends BaseProductController
             return $this->redirectToRoute('oro_default');
         }
 
-        $this->seqEditManager->removeFromUser($this->getUser());
+        $this->seqEditManager->removeByUser($this->getUser());
 
         return array(
             'locales'    => $this->getUserLocales(),
