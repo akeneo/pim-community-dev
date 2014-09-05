@@ -9,42 +9,29 @@
                 font-weight: 100;
             }
 
-            .fix-clear {
-                display: block;
-                clear: both;
-            }
-
             .header {
                 margin-bottom: 20px;
+                width: 100%;
             }
 
             .header h1 {
                 margin-bottom: 5px;
             }
 
-            .header {
-                margin-bottom: 20px;
-                width: 100%;
-            }
-
             .header .rendering-date {
                 font-size: 15px;
             }
 
-            .header .context {
-                width: 100px;
+            .images {
+                width: 100%;
+                overflow: hidden;
             }
 
-            .header .context .label {
-                text-align: right;
-            }
-
-            .header .context .label:after {
-                content: ' :';
-            }
-
-            .header .context .value {
-                font-weight: bold;
+            .images img {
+                height: 100px;
+                display: inline-block;
+                margin-right: 20px;
+                margin-bottom: 20px;
             }
 
             .attribute-group table {
@@ -80,30 +67,8 @@
                 text-align: left;
             }
 
-            table .attribute {
+            .attribute-group table .attribute {
                 width: 300px;
-            }
-
-            .locale, .scope {
-                color: white;
-                background: #aaa;
-                border-radius: 3px;
-                font-size: 15px;
-                text-transform: uppercase;
-                padding: 0px 10px;
-                line-height: 20px;
-            }
-
-            .images {
-                width: 100%;
-                overflow: hidden;
-            }
-
-            .images img {
-                height: 100px;
-                display: inline-block;
-                margin-right: 20px;
-                margin-bottom: 20px;
             }
         </style>
     </head>
@@ -121,7 +86,6 @@
                 {% endfor %}
             {% endblock %}
         </div>
-        <span class="fix-clear"></span>
         <div class="attribute-group">
             {% for group, attributes in groupedAttributes %}
                 {% block attribute_group %}

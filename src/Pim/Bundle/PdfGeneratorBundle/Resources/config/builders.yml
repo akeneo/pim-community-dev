@@ -5,4 +5,8 @@ services:
     pim_pdf_generator.builder.dompdf:
         class: %pim_pdf_generator.builder.dompdf.class%
         arguments:
+<<<<<<< HEAD
             - '@slik_dompdf'
+=======
+            - '%kernel.root_dir%'
+>>>>>>> 8d4705137ac7c61f22fa301ed3ccd51b923cf9d0
