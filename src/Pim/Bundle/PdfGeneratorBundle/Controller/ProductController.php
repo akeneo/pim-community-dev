@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
-use HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
@@ -92,7 +92,7 @@ class ProductController
     {
         $product = $this->productManager->find($id);
 
-        if (!$product) {
+        if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
