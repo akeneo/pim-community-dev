@@ -506,7 +506,8 @@ class ProductController extends AbstractDoctrineController
         $replyForms = [];
 
         foreach ($comments as $comment) {
-            $replyForm = $this->createForm('pim_comment_comment', $comment);
+            $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
+            $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
             $replyForms[$comment->getId()] = $replyForm->createView();
         }
 
