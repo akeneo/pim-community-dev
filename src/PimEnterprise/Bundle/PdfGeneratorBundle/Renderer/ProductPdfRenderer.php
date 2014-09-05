@@ -39,7 +39,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     /**
      * {@inheritdoc}
      */
-    public function getAttributes(AbstractProduct $product, $locale)
+    protected function getAttributes(AbstractProduct $product, $locale)
     {
         $values     = $this->filterHelper->filter($product->getValues()->toArray(), $locale);
         $attributes = [];
