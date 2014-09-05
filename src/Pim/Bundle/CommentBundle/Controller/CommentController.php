@@ -107,12 +107,11 @@ class CommentController extends AbstractDoctrineController
      * Reply to a comment
      *
      * @param Request $request
-     * @param         $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
      */
-    public function replyAction(Request $request, $id)
+    public function replyAction(Request $request)
     {
         if (true !== $request->isXmlHttpRequest()) {
             throw new \LogicException('The request should be an Xml Http request.');
