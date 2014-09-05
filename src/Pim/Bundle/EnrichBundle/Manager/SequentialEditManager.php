@@ -59,7 +59,7 @@ class SequentialEditManager
     public function save(SequentialEdit $sequentialEdit)
     {
         $this->om->persist($sequentialEdit);
-        $this->om->flush();
+        $this->om->flush($sequentialEdit);
     }
 
     /**
@@ -83,7 +83,7 @@ class SequentialEditManager
     public function remove(SequentialEdit $sequentialEdit)
     {
         $this->om->remove($sequentialEdit);
-        $this->om->flush();
+        $this->om->flush($sequentialEdit);
     }
 
     /**
@@ -94,7 +94,7 @@ class SequentialEditManager
     public function removeFromUser(UserInterface $user)
     {
         $sequentialEdit = $this->findByUser($user);
-        if ($sequentialEdit) {
+        if (null !== $sequentialEdit) {
             $this->remove($sequentialEdit);
         }
     }
