@@ -1,0 +1,12 @@
+{% embed "PimEnrichBundle:Product:edit.html.twig" %}
+    {% block sequentialEdit %}
+        {% include 'PimEnterpriseEnrichBundle:Product:_sequentialEdit.html.twig' %}
+    {% endblock %}
+
+    {% block content %}
+        {% set subtitle %}
+            {% include 'PimEnterpriseEnrichBundle:Product:_locale-switcher.html.twig' %}
+        {% endset %}
+        {{ parent() }}
+    {% endblock %}
+{% endembed %}

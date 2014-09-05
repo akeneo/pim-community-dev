@@ -5,6 +5,10 @@
 {% block content %}
     {% set title = 'product.title'|trans %}
 
+    {% block sequentialEdit %}
+        {% include 'PimEnterpriseEnrichBundle:Product:_sequentialEdit.html.twig' %}
+    {% endblock %}
+
     {% set buttons %}
         {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
     {% endset %}

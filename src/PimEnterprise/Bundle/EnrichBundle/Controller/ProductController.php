@@ -91,7 +91,7 @@ class ProductController extends BaseProductController
         if ($editProductGranted && $editLocaleGranted) {
             $parameters = $this->editAction($this->request, $id);
 
-            return $this->render('PimEnrichBundle:Product:edit.html.twig', $parameters);
+            return $this->render('PimEnterpriseEnrichBundle:Product:edit.html.twig', $parameters);
 
         } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
             $parameters = $this->showAction($this->request, $id);
@@ -121,12 +121,19 @@ class ProductController extends BaseProductController
             throw new AccessDeniedException();
         }
 
+        $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+        if ($sequentialEdit) {
+            $this->seqEditManager->findWrap($sequentialEdit, $product);
+        }
         return [
-            'product'    => $product,
-            'dataLocale' => $this->getDataLocaleCode(),
-            'locales'    => $this->getUserLocales(),
-            'created'    => $this->versionManager->getOldestLogEntry($product),
-            'updated'    => $this->versionManager->getNewestLogEntry($product),
+            'product'        => $product,
+            'dataLocale'       => $this->getDataLocaleCode(),
+            'comparisonLocale' => $this->getComparisonLocale(),
+            'dataLocale'     => $this->getDataLocaleCode(),
+            'locales'        => $this->getUserLocales(),
+            'created'        => $this->versionManager->getOldestLogEntry($product),
+            'updated'        => $this->versionManager->getNewestLogEntry($product),
+            'sequentialEdit' => $sequentialEdit,
         ];
     }
 
@@ -253,4 +260,27 @@ class ProductController extends BaseProductController
     {
         return $this->productCatManager->getProductCountByGrantedTree($product);
     }
+
+
+    /**
+     * Switch case to redirect after saving a product from the edit form
+     *
+     * {@inheritdoc}
+     */
+    protected function redirectAfterEdit($params)
+    {
+        if($this->getRequest()->get('action') == self::SAVE_AND_NEXT)
+        {
+            $route = 'pimee_enrich_product_dispatch';
+            $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+            $params['id'] = $sequentialEdit->getNextId($params['id']);
+        }
+        else
+        {
+            return parent::redirectAfterEdit($params);
+        }
+
+        return $this->redirectToRoute($route, $params);
+    }
+
 }
