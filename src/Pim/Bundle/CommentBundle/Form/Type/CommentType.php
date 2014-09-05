@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CommentBundle\Form\Type;
 
+use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -16,16 +17,30 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class CommentType extends AbstractType
 {
+    /** @var CommentRepositoryInterface */
+    protected $repository;
+
+    /**
+     * @param CommentRepositoryInterface $repository
+     */
+    public function __construct(CommentRepositoryInterface $repository)
+    {
+        $this->repository = $repository;    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('body', 'textarea', ['label' => false, 'attr' => ['placeholder' => 'Write something ...']])
+            ->add('body', 'textarea', ['label' => false, 'attr' => ['placeholder' => 'Write something...']])
             ->add('resourceName', 'hidden')
             ->add('resourceId', 'hidden')
         ;
+
+        if (true === $options['is_reply']) {
+            $builder->add('parent', 'pim_object_identifier', ['multiple' => false, 'repository' => $this->repository]);
+        }
     }
 
     /**
@@ -36,6 +51,7 @@ class CommentType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => 'Pim\Bundle\CommentBundle\Entity\Comment',
+                'is_reply' => false
             ]
         );
     }

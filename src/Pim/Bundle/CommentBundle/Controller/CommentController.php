@@ -76,14 +76,8 @@ class CommentController extends AbstractDoctrineController
         }
 
         $comment = $this->commentBuilder->buildCommentWithoutSubject($this->getUser());
-        $createForm = $this->createForm(
-            'pim_comment_comment',
-            $comment
-        );
-        $replyForm = $this->createForm(
-            'pim_comment_comment',
-            $comment
-        );
+        $createForm = $this->createForm('pim_comment_comment', $comment);
+        $replyForm = $this->createForm('pim_comment_comment', $comment, ['is_reply' => true]);
 
         $createForm->submit($this->request);
         if ($createForm->isValid()) {
