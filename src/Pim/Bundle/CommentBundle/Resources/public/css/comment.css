@@ -16,8 +16,35 @@ ol#comment_threads .form-horizontal .control-group .controls {
     margin-right: 10px;
 }
 
+ol#comment_threads .toggle-active {
+    display: none;
+}
+
+ol#comment_threads .active .toggle-active {
+    display: inherit;
+}
+
 ol#comment_threads textarea {
-    width: 100%;
+    width: 97%;
+    height: 70px;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+ol#comment_threads .active textarea {
+    height: 150px;
+}
+
+li.comment-create{
+    border-top: 1px solid rgb(221, 221, 221);
+    border-left: 1px solid rgb(221, 221, 221);
+    border-right: 1px solid rgb(221, 221, 221);
+    border-bottom: 1px solid rgb(221, 221, 221);
+
+    border-radius: 10px;
 }
 
 ol.comment-thread li, li.comment-create {
@@ -25,6 +52,7 @@ ol.comment-thread li, li.comment-create {
     border-top: 1px solid rgb(221, 221, 221);
     border-left: 1px solid rgb(221, 221, 221);
     border-right: 1px solid rgb(221, 221, 221);
+    border-bottom: 1px solid rgb(221, 221, 221);
 }
 
 ol.comment-thread > :first-child {

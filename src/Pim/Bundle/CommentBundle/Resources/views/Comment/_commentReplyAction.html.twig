@@ -1,8 +1,29 @@
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $(function() {
+            $('#pim_comment_comment_reply_{{ comment.id }}').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ path('pim_comment_comment_reply', {'id': comment.id})}}',
+                    type: 'POST',
+                    data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
+                    success: function(data) {
+                        $('#comment{{ comment.id }}').html(data);
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 {% set fullname = app.user|oro_format_name|default('N/A') %}
 
 <div class="span2 image-reply-action">
     <img width="45" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
 </div>
 <div class="span10">
-    <textarea placeholder="reply..." style="height: 90%; width: 90%"></textarea>
+    {% include 'PimCommentBundle:Comment:reply.html.twig' %}
 </div>
+<script type="text/javascript">
+    $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
+</script>

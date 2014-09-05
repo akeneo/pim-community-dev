@@ -5,6 +5,7 @@
 {% endspaceless %}
 
 {{ form_start(form, {
+    'id': 'pim_comment_comment_create',
     'action': path('pim_comment_comment_create'),
     'class': 'form-horizontal'
 }) }}
@@ -13,9 +14,9 @@
     {{ elements.form_errors(form) }}
 
     <div class="row-fluid">
-        {{ form_row(form.body) }}
+        {{ form_widget(form.body, { 'id': 'pim_comment_comment_body_create' }) }}
         {{ form_row(form.resourceName) }}
         {{ form_row(form.resourceId) }}
-        <button class="btn">{{ 'btn.post'|trans|capitalize }}</button>
+        <button class="btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
     </div>
 {{ form_end(form) }}
