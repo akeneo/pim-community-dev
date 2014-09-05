@@ -66,9 +66,10 @@ class JobExecutionNotifier implements EventSubscriberInterface
             }
         }
 
-        if ($hasWarnings) {
+        $exitCode = $jobExecution->getExitStatus()->getExitCode();
+        if ($hasWarnings && $exitCode < BatchStatus::FAILED) {
             $status = 'warning';
-        } elseif ($jobExecution->getExitStatus()->getExitCode() > BatchStatus::STOPPING) {
+        } elseif ($exitCode > BatchStatus::STOPPED) {
             $status = 'error';
         } else {
             $status = 'success';
