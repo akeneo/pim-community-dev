@@ -13,12 +13,12 @@ class JobInstanceFactorySpec extends ObjectBehavior
         $this->beConstructedWith(self::TESTED_CLASS);
     }
 
-    function it_should_create_an_instance_of_my_object()
+    function it_creates_job_instances()
     {
         $this->createJobInstance()->shouldReturnAnInstanceOf(self::TESTED_CLASS);
     }
 
-    function it_should_create_an_instance_of_my_object_with_some_values()
+    function it_creates_job_instances_with_defined_connector_type_and_alias()
     {
         $jobInstance = $this->createJobInstance('foo', 'bar', 'baz');
         $jobInstance->shouldBeAnInstanceOf(self::TESTED_CLASS);

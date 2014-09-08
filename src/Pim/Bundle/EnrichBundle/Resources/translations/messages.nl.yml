@@ -254,8 +254,6 @@ default: Standaard
 Axis: As
 Add attributes: Attributen toevoegen
 Translate from: Vertaal van
-switch_on: true
-switch_off: false
 Close: Sluiten
 Choose a color: Kies een kleur
 Create: Aanmaken
@@ -428,8 +426,6 @@ pim_enrich:
     family:
       create: Familie aanmaken
       remove: Familie verwijderen
-      add_attribute: Voeg attributen toe aan een familie
-      remove_attribute: Verwijder attributen van een familie
     attribute_group:
       create: Attribuutgroep aanmaken
       edit: Attribuutgroep wijzigen

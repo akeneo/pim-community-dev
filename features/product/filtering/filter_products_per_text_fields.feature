@@ -8,6 +8,26 @@ Feature: Filter products by text field
     Given the "default" catalog configuration
     And I am logged in as "Mary"
 
+  Scenario: Successfully filter products with special characters value for text attribute
+    Given the following attribute:
+      | label | type | useable as grid filter | useable as grid column |
+      | name  | text | yes                    | yes                    |
+    And the following products:
+      | sku      | name-en_US                     |
+      | 11026270 | HP LA2206xc + WF722A           |
+      | 13605290 | Canon 5D + EF 24-105 F4L IS    |
+      | 13378171 | Canon 5D + EF 24-105mm f/4L IS |
+      | 13572541 | Canon 5D + EF 24-105 F5L IS    |
+    When I am on the products page
+    And I display the columns sku, name, family, complete, created and updated
+    Then the grid should contain 4 elements
+    And I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
+    And I should be able to use the following filters:
+      | filter | value                | result                                                                                      |
+      | name   | HP LA2206xc + WF722A | HP LA2206xc + WF722A                                                                        |
+      | name   | Canon 5D + EF 24-105 | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |
+
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
       | label       | type     | localizable | scopable | useable as grid filter |

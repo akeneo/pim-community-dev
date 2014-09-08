@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 

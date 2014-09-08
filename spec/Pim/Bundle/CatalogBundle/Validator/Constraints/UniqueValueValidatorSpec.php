@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValue;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;

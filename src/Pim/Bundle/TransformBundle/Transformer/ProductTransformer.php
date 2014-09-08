@@ -219,8 +219,8 @@ class ProductTransformer extends EntityTransformer
             $lastSuffix = array_pop($suffixes);
             if (!isset($associations[$key])) {
                 $associations[$key] = array(
-                    'owner'           => $entity->getReference(),
-                    'associationType' => $columnInfo->getName(),
+                    'association_type' => $columnInfo->getName(),
+                    'owner'            => $entity->getReference(),
                 );
             }
             $associations[$key][$lastSuffix] =  $data[$label];

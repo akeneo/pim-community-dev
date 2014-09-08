@@ -55,5 +55,3 @@ error:
     export profile: Não é possível excluir esse perfil de exportação
     user: Não é possível excluir este usuário
     role: Não é possível excluir esta função
-switch_on: true
-switch_off: false

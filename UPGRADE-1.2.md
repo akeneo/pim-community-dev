@@ -34,6 +34,20 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/TimestampableListener/TimestampableSubscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/InitializeValuesListener/InitializeValuesSubscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/LocalizableListener/LocalizableSubscriber/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/protected function prepareValueFormOptions/public function prepareValueFormOptions/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/protected function defineCustomAttributeProperties/public function defineCustomAttributeProperties/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/pim_flexibleentity.validator.attribute_constraint_guesser/pim_catalog.validator.constraint_guesser.chained_attribute/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/AbstractEntityFlexibleValue implements ProductValueInterface/AbstractProductValue/g'
+    find ./src -name '*.ProductManager.php' -print0 | xargs -0 sed -i '' -e 's/save(ProductInterface $product, $recalculate = true, $flush = true)/save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/Entity\\Repository\\ReferableEntityRepository/Doctrine\\ReferableEntityRepository/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' 's/Form\\Validator\\ConstraintGuesserInterface/Validator\ConstraintGuesserInterface/g'
+    find ./src -type f -name '*.yml' -print0 | xargs -0 sed -i '' 's/pim_base_connector.writer.orm.product/pim_base_connector.writer.doctrine.product/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' 's/implements ReferableInterface/extends AbstractCustomOption/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' 's/use Pim\\Bundle\\CatalogBundle\\Model\\ReferableInterface/use Pim\\Bundle\\CustomEntityBundle\\Entity\\AbstractCustomOption/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/flexible_string/product_value_string/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/flexible_field/product_value_field/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' -e 's/pim_flexibleentity.attributetype/pim_catalog.attribute_type/g'
+    find ./src -type f -print0 | xargs -0 sed -i '' 's/FlexibleValueInterface/ProductValueInterface/g'
 ```
 
 ## Translations
@@ -70,9 +84,31 @@ This can be done thanks to the following queries :
     UPDATE `pim_catalog_attribute` a
     SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='other')
     WHERE a.`group_id` IS NULL;
-    
-    ALTER TABLE `pim_catalog_attribute`
-    DROP `backend_storage`;
+```
+
+Some changes have also been done on attribute and product value model :
+
+```
+    CREATE UNIQUE INDEX searchunique_idx ON pim_catalog_attribute_option_value (locale_code, option_id);
+    ALTER TABLE pim_catalog_attribute DROP backend_storage;
+    ALTER TABLE pim_catalog_product_value DROP FOREIGN KEY FK_93A1BBF3EA9FDD75;
+    ALTER TABLE pim_catalog_product_value ADD CONSTRAINT FK_93A1BBF3EA9FDD75 FOREIGN KEY (media_id) REFERENCES pim_catalog_product_media (id) ON DELETE CASCADE;
+```
+
+## VersioningBundle
+
+Version model has been changed to add the MongoDB support.
+
+In case of standard ORM use, to update and keep your existing history, you can use following queries,
+
+```
+    ALTER TABLE pim_versioning_version DROP FOREIGN KEY FK_A99EF708A76ED395;
+    DROP INDEX IDX_A99EF708A76ED395 ON pim_versioning_version;
+    ALTER TABLE pim_versioning_version ADD author VARCHAR(255) NOT NULL, ADD snapshot LONGTEXT DEFAULT NULL COMMENT '', ADD pending TINYINT(1) NOT NULL, CHANGE changeset changeset LONGTEXT NOT NULL COMMENT '', CHANGE version version INT DEFAULT NULL;
+    UPDATE pim_versioning_version version LEFT JOIN oro_user user ON version.user_id = user.id SET version.author = user.username;
+    UPDATE pim_versioning_version version SET version.snapshot = version.data;
+    ALTER TABLE pim_versioning_version DROP user_id, DROP data;
+    CREATE INDEX pending_idx ON pim_versioning_version (pending);
 ```
 
 ## MongoDB implementation
@@ -112,7 +148,13 @@ media collection with the mongo client:
 
 ## DataGridBundle
 
-Change of ConfiguratorInterface and configurators are now services to make them easier to customize
+Change of ConfiguratorInterface and configurators are now services to make them easier to customize.
+
+A constraint has been added on the dategrid view model :
+
+```
+    ALTER TABLE pim_datagrid_view CHANGE `label` `label` VARCHAR(100) NOT NULL;
+```
 
 ## OroSegmentationTreeBundle
 
