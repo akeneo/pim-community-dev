@@ -36,6 +36,9 @@ btn:
   sent for approval: Soumis à la validation
 pim_enrich:
   mass_edit_action:
+    product:
+      not_editable: |-
+        Vous n'avez pas le droit de modifier les produits "%identifiers%".
     publish:
       label: Publier les produits
       description: Publie les produits sélectionnés, les données produits déjà publiées seront écrasées par celles des copies de travail actuelles.
@@ -74,17 +77,19 @@ pim_enrich:
         error: "Vous n'êtes pas le propriétaire des produits sélectionnés, vous ne pouvez pas les catégoriser."
         warning: |-
           Vous n'êtes pas le propriétaire de tous les produits sélectionnés. Vous ne pouvez pas catégoriser les produits "%notGranted%".
-    limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
-    product:
-      page_subtitle: 'Éditer en masse (1 produit)|Éditer en masse (%count% produits)'
-      title: Choisissez une opération
-      subtitle: "Choisissez l'opération que vous souhaitez appliquer sur le produit sélectionné|Choisissez l'opération que vous souhaitez appliquer aux %count% produits sélectionnés"
-      confirm: "Vous êtes sur le point de mettre à jour un produit avec les informations suivantes, veuillez confirmer s'il vous plaît.|Vous êtes sur le point de mettre à jour %count% produits avec les informations suivantes, veuillez confirmer s'il vous plaît."
-      steps:
-        first: "Choisissez les produits sur lesquels l'opération sera effectuée"
-        second: "Choisissez l'opération à effectuer"
-        third: "Configurez l'opération à effectuer"
-        fourth: Confirmation
+pim_enrich.mass_edit_action:
+  limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
+  product:
+    page_title: Produits
+    page_subtitle: 'Éditer en masse (1 produit)|Éditer en masse (%count% produits)'
+    title: Choisissez une opération
+    subtitle: "Choisissez l'opération que vous souhaitez appliquer sur le produit sélectionné|Choisissez l'opération que vous souhaitez appliquer aux %count% produits sélectionnés"
+    confirm: "Vous êtes sur le point de mettre à jour un produit avec les informations suivantes, veuillez confirmer s'il vous plaît.|Vous êtes sur le point de mettre à jour %count% produits avec les informations suivantes, veuillez confirmer s'il vous plaît."
+    steps:
+      first: "Choisissez les produits sur lesquels l'opération sera effectuée"
+      second: "Choisissez l'opération à effectuer"
+      third: "Configurez l'opération à effectuer"
+      fourth: Confirmation
 flash.product.updated: La copie de travail a bien été mise à jour
 flash.product_draft.updated: Le brouillon a bien été enregistré
 flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
