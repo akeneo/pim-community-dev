@@ -28,7 +28,6 @@ pimee_enrich:
   acl.product_ownership.title: Propriété
   groups:
     label: Groupes propriétaires
-  groups:
     empty: aucun
 btn:
   save working copy: Enregistrer la version de travail
@@ -78,15 +77,6 @@ pim_enrich:
         error: "Vous n'êtes pas le propriétaire des produits sélectionnés, vous ne pouvez pas les catégoriser."
         warning: |-
           Vous n'êtes pas le propriétaire de tous les produits sélectionnés. Vous ne pouvez pas catégoriser les produits "%notGranted%".
-    publish:
-      label: Publier les produits
-    published_product:
-      page_title: Produits publiés
-      title: Choisissez une action
-    unpublish:
-      success_flash: Les produits sélectionnés ont bien été dépubliés.
-      not_editable: |-
-        Vous n'avez pas la permission d'éditer les produits "%identifiers%".
 pim_enrich.mass_edit_action:
   limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
   product:
