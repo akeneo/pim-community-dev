@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Loader;
 class PimPdfGeneratorExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

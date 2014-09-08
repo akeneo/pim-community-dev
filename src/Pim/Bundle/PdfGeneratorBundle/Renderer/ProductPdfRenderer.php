@@ -17,15 +17,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ProductPdfRenderer implements RendererInterface
 {
-    /** string */
+    /** @var string */
     const IMAGE_ATTRIBUTE_TYPE = 'pim_catalog_image';
 
-    /** string */
+    /** @var string */
     const PDF_FORMAT = 'pdf';
 
-    /**
-     * @var EngineInterface
-     */
+    /** @var EngineInterface */
     protected $templating;
 
     /**
@@ -127,7 +125,7 @@ class ProductPdfRenderer implements RendererInterface
      *
      * @return AbstractAttribute[]
      */
-    protected function getImagesAttributes(AbstractProduct $product, $locale)
+    protected function getImageAttributes(AbstractProduct $product, $locale)
     {
         $attributes = [];
 

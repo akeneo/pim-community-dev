@@ -20,6 +20,7 @@
     }
 ) }}
 
+{% if resource_granted('pim_pdf_generator_product_download') %}
 <script type="text/javascript">
     require(
         ['jquery', 'oro/mediator'],
@@ -32,7 +33,8 @@
             button.attr('href', url + initialScope);
             mediator.on('scopablefield:changescope', function (scope) {
                 button.attr('href', url + scope);
-            }, this);
+            });
         }
     );
 </script>
+{% endif %}

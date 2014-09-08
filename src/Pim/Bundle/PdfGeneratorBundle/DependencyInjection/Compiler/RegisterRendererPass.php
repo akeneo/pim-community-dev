@@ -15,11 +15,11 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterRendererPass implements CompilerPassInterface
 {
-    /** string */
+    /** @var string */
     const REGISTRY_ID      = 'pim_pdf_generator.renderer.registry';
-    /** string */
+    /** @var string */
     const RENDERER_TAG     = 'pim_pdf_generator.renderer';
-    /** integer */
+    /** @var integer */
     const DEFAULT_PRIORITY = 100;
 
     /**

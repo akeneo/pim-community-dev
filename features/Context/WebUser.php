@@ -1776,7 +1776,7 @@ class WebUser extends RawMinkContext
     /**
      * @Then /^the response content type should be "([^"]*)"$/
      */
-    public function getContentType($contentType)
+    public function contentTypeShouldBe($contentType)
     {
         $headers = $this->getSession()->getResponseHeaders();
 
