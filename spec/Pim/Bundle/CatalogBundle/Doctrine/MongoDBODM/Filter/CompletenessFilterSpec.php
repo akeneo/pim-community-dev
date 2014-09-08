@@ -21,7 +21,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
     function it_adds_a_equals_filter_on_completeness_in_the_query(Builder $queryBuilder)

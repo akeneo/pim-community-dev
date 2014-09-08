@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 

@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 

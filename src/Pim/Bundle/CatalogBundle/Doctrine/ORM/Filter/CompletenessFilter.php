@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;

@@ -11,7 +11,7 @@ parameters:
     pim_catalog.repository.group_type.class:       Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
     pim_catalog.repository.product_value.class:    Doctrine\ORM\EntityRepository
-    pim_catalog.doctrine.product_query_builder.class: Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilder
+    pim_catalog.doctrine.product_query_builder.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder
 
 services:
     pim_catalog.repository.association_type:

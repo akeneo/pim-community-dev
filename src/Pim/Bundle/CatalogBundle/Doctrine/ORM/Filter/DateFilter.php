@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * TODO : should implement attribute filter interface
+ * TODO : "not between" operator doesnt work
  */
 class DateFilter implements FieldFilterInterface
 {

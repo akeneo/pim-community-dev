@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine;
+namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 

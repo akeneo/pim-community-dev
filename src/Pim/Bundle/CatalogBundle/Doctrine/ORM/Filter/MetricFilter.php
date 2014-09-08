@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine;
+namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 /**
  * Sorter interface

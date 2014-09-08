@@ -1,28 +1,27 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine;
+namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
- * Filter interface
+ * Sorter interface
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AttributeFilterInterface extends FilterInterface
+interface AttributeSorterInterface extends SorterInterface
 {
     /**
-     * Add an attribute to filter
+     * Sort by attribute value
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
+     * @param AbstractAttribute $attribute the attribute to sort on
+     * @param string            $direction the direction to use
      *
-     * @return AttributeFilterInterface
+     * @return AttributeSorterInterface
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction);
 
     /**
      * This filter supports the attribute

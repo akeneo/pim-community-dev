@@ -25,12 +25,12 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
     }
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
     function it_adds_a_less_than_filter_on_an_attribute_value_in_the_query($queryBuilder, AbstractAttribute $date)

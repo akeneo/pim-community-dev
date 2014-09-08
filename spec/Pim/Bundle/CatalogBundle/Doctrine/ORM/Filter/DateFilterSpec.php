@@ -26,7 +26,7 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_is_a_field_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
     function it_adds_a_less_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
