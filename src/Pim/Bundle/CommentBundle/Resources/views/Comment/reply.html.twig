@@ -13,11 +13,13 @@
 
     {{ elements.form_errors(replyForms[comment.id]) }}
 
-<div class="row-fluid">
-    {{ form_widget(replyForms[comment.id].body, { 'id': 'pim_comment_comment_body_reply_' ~ comment.id }) }}
-    {{ form_row(replyForms[comment.id].resourceName) }}
-    {{ form_row(replyForms[comment.id].resourceId) }}
-    {{ form_row(replyForms[comment.id].parent) }}
-    <button class="btn toggle-active reply-btn pull-right">{{ 'btn.reply'|trans|capitalize }}</button>
+<div class="row-fluid toggle-active">
+    <div class="span12">
+        {{ form_widget(replyForms[comment.id].body, { 'id': 'pim_comment_comment_body_reply_' ~ comment.id, 'attr': {'class': 'exclude span12'} }) }}
+        {{ form_row(replyForms[comment.id].resourceName) }}
+        {{ form_row(replyForms[comment.id].resourceId) }}
+        {{ form_row(replyForms[comment.id].parent) }}
+        <button class="btn reply-btn pull-right">{{ 'btn.reply'|trans|capitalize }}</button>
+    </div>
 </div>
 {{ form_end(replyForms[comment.id]) }}

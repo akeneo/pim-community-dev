@@ -10,7 +10,6 @@
     display: inherit;
   }
   textarea {
-    width: 90%;
     height: 20px;
     -webkit-transition: all 1s ease-in-out;
     -moz-transition: all 1s ease-in-out;
@@ -28,8 +27,7 @@
 }
 
 .reply-btn, .create-btn  {
-    margin-top: 5px;
-    margin-right: 7%;
+    margin: 3px;
 }
 
 li.comment-create {
@@ -37,12 +35,11 @@ li.comment-create {
 }
 
 ol.comment-thread li, li.comment-create {
-  padding: 10px;
   border: 1px solid #ddd;
 }
 
 ol.comment-thread > :first-child {
-  margin-top: 10px;
+  margin-top: 15px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
@@ -59,6 +56,13 @@ li.comment-reply:last-child {
 li.comment-topic {
   background-color: #f6f6f6;
   border-bottom: 1px solid #ddd;
+  padding: 3px;
+
+  &:hover {
+    .comment-buttons {
+      display: inherit;
+    }
+  }
 }
 
 li.comment-answer, li.comment-create, .reply-color {
@@ -67,11 +71,21 @@ li.comment-answer, li.comment-create, .reply-color {
 
 .comment-reply {
   border: 1px solid #ddd;
-  padding: 5px 0;
+  padding: 5px;
 
-  &:not(:first-child) {
-    border-top: none;
+  &:hover {
+    .comment-buttons {
+      display: inherit;
+    }
   }
+}
+
+.comment-buttons {
+  display: none;
+}
+
+.comment-reply-action {
+  border-top: none;
 }
 
 .image-reply {

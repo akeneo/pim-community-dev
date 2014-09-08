@@ -29,14 +29,7 @@
     });
 </script>
 
-{% set fullname = app.user|oro_format_name|default('N/A') %}
-
 <div class="row-fluid">
-    <div class="span2">
-        <img width="100" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
-    </div>
-    <div class="span10">
-        {% include 'PimCommentBundle:Comment:create.html.twig' %}
-    </div>
+    {% include 'PimCommentBundle:Comment:create.html.twig' %}
 </div>
 

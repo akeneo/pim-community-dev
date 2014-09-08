@@ -1,5 +1,5 @@
 btn:
-    post: Post
+    post: Add a new comment
     reply: Reply
 
 confirmation:
@@ -23,4 +23,4 @@ comment:
         empty: No comment found.
     placeholder:
         new: Write a new comment...
-        reply: Reply to this new comment...
+        reply: Reply to this comment...

@@ -6,15 +6,18 @@
                 <img width="100" class="img-polaroid" src="{{ comment.author.imagePath ? comment.author.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
             </div>
             <div class="span10">
-                <div><strong>{{ fullname }}</strong>&nbsp;<span class="date">{{ comment.createdAt|date("F jS \\a\\t g:ia") }}</span></div>
-                {{ comment.body }}
-                <div class="comment-buttons">
-                    {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {id: comment.id} %}
+                <div>
+                    <strong>{{ fullname }}</strong>
+                    <span class="date">&nbsp;&#8211;&nbsp;{{ comment.createdAt|date("M jS \\a\\t g:ia") }}</span>
+                    <span class="comment-buttons pull-right">
+                        {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {id: comment.id} %}
+                    </span>
                 </div>
+                {{ comment.body|nl2br }}
             </div>
         </div>
     </li>
-    <li class="row-fluid comment-reply comment-reply-action reply-color">
+    <li class="row-fluid comment-reply-action reply-color">
         {% include 'PimCommentBundle:Comment:_commentReplyAction.html.twig' %}
     </li>
     {% for reply in comment.children %}

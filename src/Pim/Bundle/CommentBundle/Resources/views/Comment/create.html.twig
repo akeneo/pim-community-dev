@@ -14,9 +14,11 @@
     {{ elements.form_errors(createForm) }}
 
     <div class="row-fluid">
-        {{ form_widget(createForm.body, { 'id': 'pim_comment_comment_body_create' }) }}
-        {{ form_row(createForm.resourceName) }}
-        {{ form_row(createForm.resourceId) }}
-        <button class="btn create-btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
+        <div class="span12">
+            {{ form_widget(createForm.body, { 'id': 'pim_comment_comment_body_create', 'attr': {'class': 'exclude span12'} }) }}
+            {{ form_row(createForm.resourceName) }}
+            {{ form_row(createForm.resourceId) }}
+            <button class="btn btn-primary create-btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
+        </div>
     </div>
 {{ form_end(createForm) }}
