@@ -31,6 +31,7 @@ class AssociationTransformer extends EntityTransformer
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $colInfoTransformer
+     * @param string                         $productClass
      */
     public function __construct(
         ManagerRegistry $doctrine,
@@ -48,9 +49,20 @@ class AssociationTransformer extends EntityTransformer
      */
     protected function findEntity($class, array $data)
     {
-        if (!isset($data['owner']) || !isset($data['association_type'])) {
-            throw new MissingIdentifierException();
+        if (!isset($data['owner'])) {
+            throw new InvalidItemException(
+                'No owner for this association.',
+                $data
+            );
         }
+
+        if (!isset($data['association_type'])) {
+            throw new InvalidItemException(
+                'Missing association_type for this association.',
+                $data
+            );
+        }
+
         $productRepository = $this->doctrine->getManagerForClass($this->productClass)
             ->getRepository($this->productClass);
         $product = $productRepository->findByReference($data['owner']);
