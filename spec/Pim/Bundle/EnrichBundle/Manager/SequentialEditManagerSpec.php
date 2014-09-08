@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
@@ -70,10 +71,24 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $this->findByUser($user)->shouldReturn($sequentialEdit);
     }
 
-    function it_returns_null_if_no_sequential_edit_is_found($repository, UserInterface $user)
-    {
-        $repository->findOneBy(['user' => $user])->willReturn(null);
+    function it_find_previous_and_next_products(
+        $productManager,
+        SequentialEdit $sequentialEdit,
+        ProductInterface $product,
+        ProductInterface $previous,
+        ProductInterface $next
+    ) {
+        $sequentialEdit->getProductSet()->willReturn([1, 6, 5, 2]);
+        $sequentialEdit->countProductSet()->willReturn(4);
+        $product->getId()->willReturn(5);
 
-        $this->findByUser($user)->shouldReturn(null);
+        $productManager->find(6)->willReturn($previous);
+        $productManager->find(2)->willReturn($next);
+
+        $sequentialEdit->setCurrent($product)->shouldBeCalled();
+        $sequentialEdit->setPrevious($previous)->shouldBeCalled();
+        $sequentialEdit->setNext($next)->shouldBeCalled();
+
+        $this->findWrap($sequentialEdit, $product);
     }
 }
