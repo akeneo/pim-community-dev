@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;

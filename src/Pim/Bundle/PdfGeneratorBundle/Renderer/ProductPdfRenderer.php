@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -64,7 +65,7 @@ class ProductPdfRenderer implements RendererInterface
             [
                 'product'           => $object,
                 'groupedAttributes' => $this->getGroupedAttributes($object, $context['locale']),
-                'imageAttributes'   => $this->getImagesAttributes($object, $context['locale']),
+                'imageAttributes'   => $this->getImageAttributes($object, $context['locale']),
             ]
         );
 
