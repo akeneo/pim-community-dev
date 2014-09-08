@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    require(['jquery'], function($) {
+    require(['jquery', 'oro/messenger'], function($, messenger) {
         $(function() {
             $('#pim_comment_comment_create').on('submit', function(e) {
                 e.preventDefault();
@@ -13,6 +13,15 @@
                         if (0 < $('li.no-data').length) {
                             $('li.no-data').remove();
                         }
+                        messenger.notificationFlashMessage('success', '{{ 'flash.comment.create.success'|trans }}');
+                    },
+                    error: function(xhr) {
+                        messenger.notificationFlashMessage(
+                            'error',
+                            (xhr.responseJSON && xhr.responseJSON.message) ?
+                                xhr.responseJSON.message :
+                                '{{ 'flash.comment.create.error'|trans }}'
+                        );
                     }
                 });
             });
@@ -23,7 +32,7 @@
 {% set fullname = app.user|oro_format_name|default('N/A') %}
 
 <div class="row-fluid">
-    <div class="span2" style="text-align: right">
+    <div class="span2">
         <img width="100" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
     </div>
     <div class="span10">

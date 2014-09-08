@@ -1,10 +1,9 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog'],
-        function ($, __, mediator, Navigation, messenger, Dialog) {
+        ['jquery', 'oro/messenger', 'pim/dialog'],
+        function ($, messenger, Dialog) {
             'use strict';
-            // DELETE request for delete buttons
-            $(document).on('click', '.comment-dialog', function () {
+            $(document).on('click', '.comment-delete-dialog', function () {
                 var $el      = $(this),
                     $comment = $($el.data('comment')),
                     message  = $el.data('message'),
@@ -16,16 +15,16 @@
                             headers: { accept:'application/json' },
                             data: { _method: $el.data('method') },
                             success: function() {
-                                var navigation = Navigation.getInstance();
                                 $comment.remove();
-                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                                messenger.notificationFlashMessage('success', $el.attr('data-success-message'));
                             },
                             error: function(xhr) {
                                 messenger.notificationFlashMessage(
                                     'error',
                                     (xhr.responseJSON && xhr.responseJSON.message) ?
                                         xhr.responseJSON.message :
-                                        $el.attr('data-error-message'));
+                                        $el.attr('data-error-message')
+                                );
                             }
                         });
                     };

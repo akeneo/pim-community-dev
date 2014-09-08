@@ -80,16 +80,13 @@ class CommentController extends AbstractDoctrineController
         $createForm = $this->createForm('pim_comment_comment', $comment);
         $createForm->submit($this->request);
 
-        if ($createForm->isValid()) {
-            $manager = $this->getManagerForClass(ClassUtils::getClass($comment));
-            $manager->persist($comment);
-            $manager->flush();
-            //TODO: change this
-            $this->addFlash('success', 'flash.comment.create.success');
-        } else {
-            //TODO: change this
-            $this->addFlash('error', 'flash.comment.create.error');
+        if (true !== $createForm->isValid()) {
+            return new JsonResponse('The form is not valid.', 400);
         }
+
+        $manager = $this->getManagerForClass(ClassUtils::getClass($comment));
+        $manager->persist($comment);
+        $manager->flush();
 
         $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
         $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
@@ -121,23 +118,20 @@ class CommentController extends AbstractDoctrineController
         $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
         $replyForm->submit($this->request);
 
-        if ($replyForm->isValid()) {
-            $now = new \DateTime();
-            $reply->setCreatedAt($now);
-            $reply->setRepliedAt($now);
-            $reply->setAuthor($this->getUser());
-            $comment = $reply->getParent();
-            $comment->setRepliedAt($now);
-
-            $manager = $this->getManagerForClass($this->commentClassName);
-            $manager->persist($reply);
-            $manager->flush();
-            //TODO: change this
-            $this->addFlash('success', 'flash.comment.reply.success');
-        } else {
-            //TODO: change this
-            $this->addFlash('error', 'flash.comment.reply.error');
+        if (true !== $replyForm->isValid()) {
+            return new JsonResponse('The form is not valid.', 400);
         }
+
+        $now = new \DateTime();
+        $reply->setCreatedAt($now);
+        $reply->setRepliedAt($now);
+        $reply->setAuthor($this->getUser());
+        $comment = $reply->getParent();
+        $comment->setRepliedAt($now);
+
+        $manager = $this->getManagerForClass($this->commentClassName);
+        $manager->persist($reply);
+        $manager->flush();
 
         return $this->render(
             'PimCommentBundle:Comment:_thread.html.twig',
@@ -156,7 +150,7 @@ class CommentController extends AbstractDoctrineController
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteAction(Request $request, $id)
     {
@@ -164,17 +158,16 @@ class CommentController extends AbstractDoctrineController
         $comment = $manager->find($this->commentClassName, $id);
 
         if (null === $comment) {
-            throw new NotFoundHttpException(sprintf('Comment with id %s not found', $id));
+            throw new NotFoundHttpException(sprintf('Comment with id %s not found.', $id));
         }
 
         if ($comment->getAuthor() !== $this->getUser()) {
-            throw new AccessDeniedException('You are not allowed to delete this comment');
+            throw new AccessDeniedException('You are not allowed to delete this comment.');
         }
 
         $manager->remove($comment);
         $manager->flush();
 
-        //TODO: change this
-        return new JsonResponse('OK');
+        return new JsonResponse();
     }
 }

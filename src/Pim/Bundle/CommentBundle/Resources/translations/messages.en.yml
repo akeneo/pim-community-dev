@@ -14,7 +14,9 @@ flash:
         delete:
             success: Your comment has been deleted successfully.
             error: An error occured during the deletion of your comment.
-
+        reply:
+            success: Your reply has been created successfully.
+            error: An error occured during the creation of your reply.
 
 comment:
     index:
