@@ -1,0 +1,15 @@
+View the product: Voir le produit
+pimee_enrich.product_history.action.revert: Restaurer cette version
+permission-changes:
+  category:
+    grant: 'Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette catégorie'
+    revoke: 'Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette catégorie'
+  locale:
+    grant: 'Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette locale'
+    revoke: 'Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette locale'
+  attribute group:
+    grant: "Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans ce groupe d'attributs"
+    revoke: "Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans ce groupe d'attributs"
+  job profile:
+    grant: 'Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong>'
+    revoke: 'Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong>'
