@@ -102,7 +102,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param AbstractProduct $product
      * @param string          $locale
      *
-     * @return []
+     * @return AttributeGroup[]
      */
     protected function getGroupedAttributes(AbstractProduct $product, $locale)
     {
@@ -125,7 +125,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param AbstractProduct $product
      * @param string          $locale
      *
-     * @return []
+     * @return AbstractAttribute[]
      */
     protected function getImagesAttributes(AbstractProduct $product, $locale)
     {

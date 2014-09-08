@@ -14,7 +14,7 @@ use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 class RendererRegistry
 {
     /**
-     * @var array
+     * @var RendererInterface[]
      */
     protected $renderers = [];
 
