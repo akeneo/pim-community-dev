@@ -100,7 +100,6 @@ pim_enrich.mass_edit_action:
       second: "Choisissez l'opération à effectuer"
       third: "Configurez l'opération à effectuer"
       fourth: Confirmation
-    title: Choisissez une opération
 flash.product.updated: La copie de travail a bien été mise à jour
 flash.product_draft.updated: Le brouillon a bien été enregistré
 flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
