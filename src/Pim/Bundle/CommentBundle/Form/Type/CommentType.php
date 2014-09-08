@@ -48,7 +48,11 @@ class CommentType extends AbstractType
         $placeholder = $this->translator->trans($placeholder);
 
         $builder
-            ->add('body', 'textarea', ['label' => false, 'attr' => ['placeholder' => $placeholder]])
+            ->add(
+                'body',
+                'textarea',
+                ['label' => false, 'attr' => ['placeholder' => $placeholder, 'class' => 'exclude']]
+            )
             ->add('resourceName', 'hidden')
             ->add('resourceId', 'hidden')
         ;
