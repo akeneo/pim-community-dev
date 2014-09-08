@@ -33,7 +33,7 @@ class ProductControllerSpec extends ObjectBehavior
 
         $blender->getIdentifier()->shouldBeCalled();
 
-        $this->generatePdfAction($request, 12);
+        $this->downloadPdfAction($request, 12);
     }
 
     function it_throws_an_exception_if_there_is_no_compatible_renderer(Request $request, AbstractProduct $blender, $rendererRegistry, $productManager)
@@ -51,13 +51,13 @@ class ProductControllerSpec extends ObjectBehavior
             'scope'         => 'mobile',
         ])->willThrow('Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException');
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\HttpException')->during('generatePdfAction', [$request, 12]);
+        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\HttpException')->during('downloadPdfAction', [$request, 12]);
     }
 
     function it_throws_an_exception_if_the_product_doesnt_exist(Request $request, AbstractProduct $blender, $rendererRegistry, $productManager)
     {
         $productManager->find(12)->willReturn(null);
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')->during('generatePdfAction', [$request, 12]);
+        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')->during('downloadPdfAction', [$request, 12]);
     }
 }
