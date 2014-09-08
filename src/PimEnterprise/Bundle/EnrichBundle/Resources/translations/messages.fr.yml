@@ -38,18 +38,6 @@ pim_enrich:
   mass_edit_action:
     publish:
       label: Publier les produits
-    published_product:
-      page_title: Produits publiés
-      title: Choisissez une action
-    unpublish:
-      success_flash: Les produits sélectionnés ont bien été dépubliés.
-      not_editable: |-
-        Vous n'avez pas la permission d'éditer les produits "%identifiers%".
-    product:
-      not_editable: |-
-        Vous n'avez pas le droit de modifier les produits "%identifiers%".
-    publish:
-      label: Publier les produits
       description: Publie les produits sélectionnés, les données produits déjà publiées seront écrasées par celles des copies de travail actuelles.
       success_flash: Les produits sélectionnés ont bien été publiés.
       message:
