@@ -74,7 +74,11 @@ class ProductController
             200,
             array(
                 'content-type'        => 'application/pdf',
-                'content-disposition' => sprintf('attachment; filename=%s-%s.pdf', $product->getIdentifier(), $renderingDate->format('Y-m-d_H-i-s')),
+                'content-disposition' => sprintf(
+                    'attachment; filename=%s-%s.pdf',
+                    $product->getIdentifier(),
+                    $renderingDate->format('Y-m-d_H-i-s')
+                ),
             )
         );
     }

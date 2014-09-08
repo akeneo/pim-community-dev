@@ -15,6 +15,7 @@ use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
  */
 class ProductPdfRenderer implements RendererInterface
 {
+    /** string */
     const IMAGE_ATTRIBUTE_TYPE = 'pim_catalog_image';
 
     /**

@@ -38,7 +38,6 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Exception\RendererRequiredException;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 
 /**
@@ -140,12 +139,12 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->productManager       = $productManager;
-        $this->categoryManager      = $categoryManager;
-        $this->userContext          = $userContext;
-        $this->versionManager       = $versionManager;
-        $this->securityFacade       = $securityFacade;
-        $this->productCatManager    = $prodCatManager;
+        $this->productManager    = $productManager;
+        $this->categoryManager   = $categoryManager;
+        $this->userContext       = $userContext;
+        $this->versionManager    = $versionManager;
+        $this->securityFacade    = $securityFacade;
+        $this->productCatManager = $prodCatManager;
     }
 
     /**

@@ -23,16 +23,17 @@
 
 <script type="text/javascript">
     require(
-            ['jquery', 'oro/mediator'],
-            function ($, mediator) {
-                var initialScope = '{{ product.scope }}',
-                    url = '{{ path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }) }}' + '&dataScope=',
-                    button = $('#download-btn');
+        ['jquery', 'oro/mediator'],
+        function ($, mediator) {
+            var initialScope = '{{ product.scope }}',
+            url = '{{ path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }) }}' +
+                '&dataScope=';
+            button = $('#download-btn');
 
-                button.attr('href', url + initialScope);
-                mediator.on('scopablefield:changescope', function (scope) {
-                    button.attr('href', url + scope);
-                }, this);
-            }
+            button.attr('href', url + initialScope);
+            mediator.on('scopablefield:changescope', function (scope) {
+                button.attr('href', url + scope);
+            }, this);
+        }
     );
 </script>

@@ -41,9 +41,9 @@ class DompdfBuilder implements PdfBuilderInterface
 
     /**
      * Render a pdf document
+     * @param string $html The html to be rendered
      *
-     * @param  string $html    The html to be rendered
-     * @param  string $docname The name of the document to be served
+     * @throws \LogicException
      */
     protected function render($html)
     {
@@ -71,4 +71,4 @@ class DompdfBuilder implements PdfBuilderInterface
     {
         return $this->dompdf->output();
     }
-} 
+}
