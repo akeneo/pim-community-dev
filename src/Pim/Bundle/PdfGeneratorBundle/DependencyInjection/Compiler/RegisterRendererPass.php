@@ -15,8 +15,11 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterRendererPass implements CompilerPassInterface
 {
+    /** string */
     const REGISTRY_ID      = 'pim_pdf_generator.renderer.registry';
+    /** string */
     const RENDERER_TAG     = 'pim_pdf_generator.renderer';
+    /** integer */
     const DEFAULT_PRIORITY = 100;
 
     /**
@@ -40,7 +43,7 @@ class RegisterRendererPass implements CompilerPassInterface
     }
 
     /**
-     * Get tagged guesser services ordered by priority
+     * Get tagged renderer services ordered by priority
      *
      * @param ContainerBuilder $container
      *

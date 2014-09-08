@@ -43,7 +43,7 @@ class ProductController
     }
 
     /**
-     * Generate Pdf for specific product
+     * Generate Pdf and send it to the client for specific product
      *
      * @param Request $request
      * @param integer $id
@@ -54,7 +54,7 @@ class ProductController
      *
      * @throws HttpException
      */
-    public function generatePdfAction(Request $request, $id)
+    public function downloadPdfAction(Request $request, $id)
     {
         $product       = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
