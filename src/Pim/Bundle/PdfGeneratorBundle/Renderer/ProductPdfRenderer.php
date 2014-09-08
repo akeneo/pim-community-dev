@@ -18,6 +18,9 @@ class ProductPdfRenderer implements RendererInterface
     /** string */
     const IMAGE_ATTRIBUTE_TYPE = 'pim_catalog_image';
 
+    /** string */
+    const PDF_FORMAT = 'pdf';
+
     /**
      * @var EngineInterface
      */
@@ -72,7 +75,7 @@ class ProductPdfRenderer implements RendererInterface
      */
     public function supports($object, $format)
     {
-        return $object instanceof AbstractProduct;
+        return $object instanceof AbstractProduct && $format === static::PDF_FORMAT;
     }
 
     /**

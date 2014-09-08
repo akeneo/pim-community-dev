@@ -25,7 +25,7 @@ class ProductControllerSpec extends ObjectBehavior
 
         $now = new \DateTime('now');
 
-        $rendererRegistry->render($blender, 'full', [
+        $rendererRegistry->render($blender, 'pdf', [
             'locale'        => 'fr_FR',
             'renderingDate' => $now,
             'scope'         => 'mobile',
@@ -45,7 +45,7 @@ class ProductControllerSpec extends ObjectBehavior
 
         $now = new \DateTime('now');
 
-        $rendererRegistry->render($blender, 'full', [
+        $rendererRegistry->render($blender, 'pdf', [
             'locale'        => 'fr_FR',
             'renderingDate' => $now,
             'scope'         => 'mobile',

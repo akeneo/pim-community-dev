@@ -18,10 +18,10 @@ class RendererRegistrySpec extends ObjectBehavior
     {
         $this->addRenderer($productPdfRenderer);
 
-        $productPdfRenderer->supports($blender, 'plain')->willReturn(true);
-        $productPdfRenderer->render($blender, 'plain', [])->willReturn('I am a nice blender !');
+        $productPdfRenderer->supports($blender, 'pdf')->willReturn(true);
+        $productPdfRenderer->render($blender, 'pdf', [])->willReturn('I am a nice blender !');
 
-        $this->render($blender, 'plain', [])->shouldReturn('I am a nice blender !');
+        $this->render($blender, 'pdf', [])->shouldReturn('I am a nice blender !');
     }
 
     function it_render_a_document_with_the_renderer_which_have_the_higher_priority(RendererInterface $productPdfRenderer, RendererInterface $betterProductPdfRenderer, AbstractProduct $blender)
@@ -29,12 +29,12 @@ class RendererRegistrySpec extends ObjectBehavior
         $this->addRenderer($betterProductPdfRenderer);
         $this->addRenderer($productPdfRenderer);
 
-        $productPdfRenderer->supports($blender, 'plain')->willReturn(true);
+        $productPdfRenderer->supports($blender, 'pdf')->willReturn(true);
 
-        $betterProductPdfRenderer->supports($blender, 'plain')->willReturn(true);
-        $betterProductPdfRenderer->render($blender, 'plain', [])->willReturn('I am a nicer blender !');
+        $betterProductPdfRenderer->supports($blender, 'pdf')->willReturn(true);
+        $betterProductPdfRenderer->render($blender, 'pdf', [])->willReturn('I am a nicer blender !');
 
-        $this->render($blender, 'plain', [])->shouldReturn('I am a nicer blender !');
+        $this->render($blender, 'pdf', [])->shouldReturn('I am a nicer blender !');
     }
 
     function it_render_a_document_with_the_renderer_which_is_compatible(RendererInterface $productPdfRenderer, RendererInterface $betterProductPdfRenderer, AbstractProduct $blender)
@@ -42,12 +42,12 @@ class RendererRegistrySpec extends ObjectBehavior
         $this->addRenderer($betterProductPdfRenderer);
         $this->addRenderer($productPdfRenderer);
 
-        $productPdfRenderer->supports($blender, 'plain')->willReturn(true);
-        $productPdfRenderer->render($blender, 'plain', [])->willReturn('I am a nice blender !');
+        $productPdfRenderer->supports($blender, 'pdf')->willReturn(true);
+        $productPdfRenderer->render($blender, 'pdf', [])->willReturn('I am a nice blender !');
 
-        $betterProductPdfRenderer->supports($blender, 'plain')->willReturn(false);
+        $betterProductPdfRenderer->supports($blender, 'pdf')->willReturn(false);
 
-        $this->render($blender, 'plain', [])->shouldReturn('I am a nice blender !');
+        $this->render($blender, 'pdf', [])->shouldReturn('I am a nice blender !');
     }
 
     function it_throw_an_exception_If_there_is_no_renderer_available(RendererInterface $productPdfRenderer, RendererInterface $betterProductPdfRenderer, AbstractProduct $blender)
@@ -55,11 +55,11 @@ class RendererRegistrySpec extends ObjectBehavior
         $this->addRenderer($betterProductPdfRenderer);
         $this->addRenderer($productPdfRenderer);
 
-        $productPdfRenderer->supports($blender, 'plain')->willReturn(false);
-        $betterProductPdfRenderer->supports($blender, 'plain')->willReturn(false);
+        $productPdfRenderer->supports($blender, 'pdf')->willReturn(false);
+        $betterProductPdfRenderer->supports($blender, 'pdf')->willReturn(false);
 
         $blender->__toString()->willReturn('I am a unrendered product');
 
-        $this->shouldThrow('Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException')->during('render', [$blender, 'plain', []]);
+        $this->shouldThrow('Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException')->during('render', [$blender, 'pdf', []]);
     }
 }

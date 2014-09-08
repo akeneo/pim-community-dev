@@ -60,7 +60,7 @@ class ProductController
         $renderingDate = new \DateTime('now');
 
         try {
-            $responseContent = $this->rendererRegistry->render($product, 'full', [
+            $responseContent = $this->rendererRegistry->render($product, 'pdf', [
                 'locale'        => $request->get('dataLocale', null),
                 'renderingDate' => $renderingDate,
                 'scope'         => $request->get('dataScope', null),

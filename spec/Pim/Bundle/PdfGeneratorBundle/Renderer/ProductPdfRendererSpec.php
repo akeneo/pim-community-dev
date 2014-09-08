@@ -23,12 +23,12 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
     function it_does_not_filter_compatible_entities(AbstractProduct $blender)
     {
-        $this->supports($blender, 'plain')->shouldReturn(true);
+        $this->supports($blender, 'pdf')->shouldReturn(true);
     }
 
     function it_filters_not_compatible_entities(Category $printer)
     {
-        $this->supports($printer, 'plain')->shouldReturn(false);
+        $this->supports($printer, 'pdf')->shouldReturn(false);
     }
 
     function it_renders_a_product_without_images(AbstractProduct $blender, AttributeGroup $design, AbstractAttribute $color, $templating)
@@ -48,7 +48,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'imageAttributes'   => []
         ])->shouldBeCalled();
 
-        $this->render($blender, 'plain', ['locale' => 'en_US']);
+        $this->render($blender, 'pdf', ['locale' => 'en_US']);
     }
 
     function it_renders_a_product_with_an_image(AbstractProduct $blender, AttributeGroup $media, AbstractAttribute $mainImage, $templating)
@@ -68,6 +68,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'imageAttributes'   => ['main_image' => $mainImage]
         ])->shouldBeCalled();
 
-        $this->render($blender, 'plain', ['locale' => 'en_US']);
+        $this->render($blender, 'pdf', ['locale' => 'en_US']);
     }
 }
