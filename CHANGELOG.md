@@ -3,6 +3,19 @@
 ## Features
 - Export a product as PDF
 
+# 1.2.3 (2014-09-08)
+
+## Bug fixes
+ - association fixtures
+
+# 1.2.2 (2014-09-05)
+
+## Improvements
+ - CacheClearer splits into two services, one for Product and one for other entities
+
+## Bug fixes
+ - association import with MongoDB fixes
+
 # 1.2.1 (2014-09-03)
 
 ## Bug fixes
