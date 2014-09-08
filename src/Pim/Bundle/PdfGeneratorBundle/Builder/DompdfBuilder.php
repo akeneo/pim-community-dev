@@ -48,12 +48,13 @@ class DompdfBuilder implements PdfBuilderInterface
     protected function render($html)
     {
         // DOMPDF doesn't follow PSR convention, it uses classmap in autoload
+        // and it requires some config to be used
         define('DOMPDF_ENABLE_AUTOLOAD', false);
         $filePath = $this->rootDir."/../vendor/dompdf/dompdf/dompdf_config.inc.php";
         if (file_exists($filePath)) {
             require_once($filePath);
         } else {
-            throw new \LogicException('DomPDF cannot be loaded');
+            throw new \RuntimeException('DomPDF cannot be loaded');
         }
 
         $this->dompdf = new \DOMPDF();
