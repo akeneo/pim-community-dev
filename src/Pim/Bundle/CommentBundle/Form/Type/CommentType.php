@@ -6,6 +6,7 @@ use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Comment type
@@ -20,20 +21,34 @@ class CommentType extends AbstractType
     /** @var CommentRepositoryInterface */
     protected $repository;
 
+    /** @var TranslatorInterface  */
+    protected $translator;
+
+    /** @var string */
+    protected $className;
+
     /**
      * @param CommentRepositoryInterface $repository
+     * @param TranslatorInterface        $translator
+     * @param string                     $className
      */
-    public function __construct(CommentRepositoryInterface $repository)
+    public function __construct(CommentRepositoryInterface $repository, TranslatorInterface $translator, $className)
     {
-        $this->repository = $repository;    }
+        $this->repository = $repository;
+        $this->translator = $translator;
+        $this->className = $className;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $placeholder = (true === $options['is_reply']) ? 'comment.placeholder.reply' : 'comment.placeholder.new';
+        $placeholder = $this->translator->trans($placeholder);
+
         $builder
-            ->add('body', 'textarea', ['label' => false, 'attr' => ['placeholder' => 'Write something...']])
+            ->add('body', 'textarea', ['label' => false, 'attr' => ['placeholder' => $placeholder]])
             ->add('resourceName', 'hidden')
             ->add('resourceId', 'hidden')
         ;
@@ -50,7 +65,7 @@ class CommentType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CommentBundle\Entity\Comment',
+                'data_class' => $this->className,
                 'is_reply' => false
             ]
         );

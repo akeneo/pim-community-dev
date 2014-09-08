@@ -14,12 +14,12 @@
             </div>
         </div>
     </li>
-    <div class="row-fluid comment-reply comment-reply-action reply-color">
+    <li class="row-fluid comment-reply comment-reply-action reply-color">
         {% include 'PimCommentBundle:Comment:_commentReplyAction.html.twig' %}
-    </div>
+    </li>
     {% for reply in comment.children %}
-        <div id="comment{{ reply.id }}" class="row-fluid comment-reply">
+        <li id="comment{{ reply.id }}" class="row-fluid comment-reply">
             {% include 'PimCommentBundle:Comment:_commentReply.html.twig' with {'reply': reply} %}
-        </div>
+        </li>
     {%  endfor %}
 </ol>
