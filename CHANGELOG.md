@@ -1,3 +1,8 @@
+# 1.3.*
+
+## Features
+- Export a product as PDF
+
 # 1.2.1 (2014-09-03)
 
 ## Bug fixes
