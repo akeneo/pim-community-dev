@@ -44,11 +44,12 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $templating->render(self::TEMPLATE_NAME, [
             'product'           => $blender,
             'locale'            => 'en_US',
+            'scope'             => 'ecommerce',
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imageAttributes'   => []
         ])->shouldBeCalled();
 
-        $this->render($blender, 'pdf', ['locale' => 'en_US']);
+        $this->render($blender, 'pdf', ['locale' => 'en_US', 'scope' => 'ecommerce']);
     }
 
     function it_renders_a_product_with_an_image(AbstractProduct $blender, AttributeGroup $media, AbstractAttribute $mainImage, $templating)
@@ -64,10 +65,11 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $templating->render(self::TEMPLATE_NAME, [
             'product'           => $blender,
             'locale'            => 'en_US',
+            'scope'             => 'ecommerce',
             'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
             'imageAttributes'   => ['main_image' => $mainImage]
         ])->shouldBeCalled();
 
-        $this->render($blender, 'pdf', ['locale' => 'en_US']);
+        $this->render($blender, 'pdf', ['locale' => 'en_US', 'scope' => 'ecommerce']);
     }
 }

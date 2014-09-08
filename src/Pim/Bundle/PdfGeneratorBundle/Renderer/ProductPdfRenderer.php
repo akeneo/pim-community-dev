@@ -5,6 +5,8 @@ namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * PDF renderer used to render PDF for a Product
@@ -56,6 +58,9 @@ class ProductPdfRenderer implements RendererInterface
      */
     public function render($object, $format, array $context = [])
     {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
         $params = array_merge(
             $context,
             [
@@ -64,6 +69,8 @@ class ProductPdfRenderer implements RendererInterface
                 'imageAttributes'   => $this->getImagesAttributes($object, $context['locale']),
             ]
         );
+
+        $resolver->resolve($params);
 
         return $this->pdfBuilder->buildPdfOutput(
             $this->templating->render($this->template, $params)
@@ -131,5 +138,15 @@ class ProductPdfRenderer implements RendererInterface
         }
 
         return $attributes;
+    }
+
+    /**
+     * Options configuration (for the option resolver)
+     * @param OptionsResolverInterface $resolver
+     */
+    protected function configureOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(array('locale', 'scope', 'product'));
+        $resolver->setDefaults(array('groupedAttributes' => [], 'imageAttributes' => [], 'renderingDate' => new \DateTime()));
     }
 }
