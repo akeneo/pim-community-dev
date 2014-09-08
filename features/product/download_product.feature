@@ -12,6 +12,6 @@ Feature: Download a product
 
   Scenario: Successfully download a product
     Given I am on the "sandal" product page
-    When I press the "Download" button
+    When I press the "Pdf" button
     Then the response status code should be 200
     Then the response content type should be "application/pdf"

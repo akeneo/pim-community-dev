@@ -43,7 +43,7 @@ Feature: Define user rights
       | Remove a group              | "caterpillar_boots" variant group        | Delete                  |
       | Remove a group type         | "RELATED" group type                     | Delete                  |
       | Remove a product            | "boot" product                           | Delete                  |
-      | Download the product as PDF | "boot" product                           | Download                |
+      | Download the product as PDF | "boot" product                           | Pdf                     |
       | Remove an attribute         | "color" attribute                        | Delete                  |
       | Remove an export profile    | "footwear_option_export" export job edit | Delete                  |
       | Remove an import profile    | "footwear_group_import" import job edit  | Delete                  |
