@@ -1,3 +1,8 @@
+# 1.2.3 (2014-09-08)
+
+## Bug fixes
+ - association fixtures
+
 # 1.2.2 (2014-09-05)
 
 ## Improvements

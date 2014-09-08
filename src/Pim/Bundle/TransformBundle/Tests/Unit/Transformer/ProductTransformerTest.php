@@ -199,7 +199,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
                 $this->equalTo(
                     array(
                         'owner' => 'id',
-                        'associationType' => 'association1',
+                        'association_type' => 'association1',
                         'products'        => '1,2,3',
                         'groups'          => '1,2'
                     )
@@ -212,7 +212,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
                 $this->equalTo(
                     array(
                         'owner' => 'id',
-                        'associationType' => 'association2',
+                        'association_type' => 'association2',
                         'products'        => '4,5'
                     )
                 )
