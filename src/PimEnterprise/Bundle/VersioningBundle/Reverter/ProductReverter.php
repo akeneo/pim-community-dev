@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -7,14 +16,12 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Product version reverter that allow to revert a product to a previous snapshot
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductReverter
 {
@@ -31,10 +38,10 @@ class ProductReverter
     protected $validator;
 
     /**
-     * @param ManagerRegistry     $registry
-     * @param SerializerInterface $serializer
-     * @param ProductManager      $productManager
-     * @param ValidatorInterface  $validator
+     * @param ManagerRegistry       $registry
+     * @param DenormalizerInterface $denormalizer
+     * @param ProductManager        $productManager
+     * @param ValidatorInterface    $validator
      */
     public function __construct(
         ManagerRegistry $registry,

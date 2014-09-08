@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
@@ -8,8 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Change set event
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ChangeSetEvent extends Event
 {

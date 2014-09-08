@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use Doctrine\Common\EventSubscriber;
@@ -24,8 +33,7 @@ use Doctrine\ODM\MongoDB\UnitOfWork;
  *
  * This subscriber is only registered when the mongodb support is activated
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
 {
@@ -128,6 +136,8 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      * Synchronize category ids of product draft
      *
      * @param ProductDraft $productDraft
+     *
+     * @return null
      */
     protected function syncProductDraft(ProductDraft $productDraft)
     {
@@ -148,6 +158,8 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      *
      * @param ProductInterface $product
      * @param UnitOfWork       $uow
+     *
+     * @return null
      */
     protected function syncProductDrafts(ProductInterface $product, UnitOfWork $uow)
     {

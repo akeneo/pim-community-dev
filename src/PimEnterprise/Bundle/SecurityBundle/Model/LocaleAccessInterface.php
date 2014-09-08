@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\SecurityBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -7,8 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 /**
  * Locale access interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface LocaleAccessInterface extends AccessInterface
 {

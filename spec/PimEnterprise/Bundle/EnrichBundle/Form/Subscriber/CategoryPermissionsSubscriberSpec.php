@@ -8,7 +8,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 class CategoryPermissionsSubscriberSpec extends ObjectBehavior
@@ -17,7 +17,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         CategoryAccessManager $accessManager,
         SecurityFacade $securityFacade,
         FormEvent $event,
-        Category $category,
+        CategoryInterface $category,
         Form $form,
         Form $viewForm,
         Form $editForm,
@@ -98,7 +98,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $ownForm->getData()->willReturn(['three']);
         $applyForm->getData()->willReturn(false);
 
-        $accessManager->setAccess($category, ['one', 'two'], ['three'], ['three'])->shouldBeCalled();
+        $accessManager->setAccess($category, ['one', 'two'], ['three'], ['three'], true)->shouldBeCalled();
 
         $this->postSubmit($event);
     }
@@ -117,8 +117,10 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $ownForm->getData()->willReturn(['three']);
         $applyForm->getData()->willReturn(true);
 
-        $accessManager->setAccess($category, ['one', 'two'], ['three'], ['three'])->shouldBeCalled();
-        $accessManager->updateChildrenAccesses($category, ['one', 'two'], ['three'], ['three'], [], [], [])->shouldBeCalled();
+        $accessManager->setAccess($category, ['one', 'two'], ['three'], ['three'], true)->shouldBeCalled();
+        $accessManager
+            ->updateChildrenAccesses($category, ['one', 'two'], ['three'], ['three'], [], [], [])
+            ->shouldBeCalled();
 
         $this->postSubmit($event);
     }

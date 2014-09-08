@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
@@ -22,8 +31,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 /**
  * Store product through product drafts
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftPersister implements ProductPersister
 {
@@ -167,9 +175,8 @@ class ProductDraftPersister implements ProductPersister
         }
 
         $username = $this->getUser()->getUsername();
-        $locale = $product->getLocale();
-        if (null === $productDraft = $this->repository->findUserProductDraft($product, $username, $locale)) {
-            $productDraft = $this->factory->createProductDraft($product, $username, $locale);
+        if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {
+            $productDraft = $this->factory->createProductDraft($product, $username);
             $manager->persist($productDraft);
         }
 
@@ -224,9 +231,13 @@ class ProductDraftPersister implements ProductPersister
     {
         if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             foreach ($product->getValues() as $value) {
-                $manager->refresh($value);
-                foreach ($value->getPrices() as $price) {
-                    $manager->refresh($price);
+                if (true === $manager->contains($value)) {
+                    $manager->refresh($value);
+                    foreach ($value->getPrices() as $price) {
+                        if (true === $manager->contains($price)) {
+                            $manager->refresh($price);
+                        }
+                    }
                 }
             }
         } else {

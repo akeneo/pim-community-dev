@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -15,25 +24,21 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Category access manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryAccessManager
 {
-    /**
-     * @var ManagerRegistry
-     */
+    /** @var ManagerRegistry */
     protected $registry;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $categoryAccessClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $categoryClass;
+
+    /** @var string */
+    protected $userGroupClass;
 
     /**
      * Constructor
@@ -41,12 +46,14 @@ class CategoryAccessManager
      * @param ManagerRegistry $registry
      * @param string          $categoryAccessClass
      * @param string          $categoryClass
+     * @param string          $userGroupClass
      */
-    public function __construct(ManagerRegistry $registry, $categoryAccessClass, $categoryClass)
+    public function __construct(ManagerRegistry $registry, $categoryAccessClass, $categoryClass, $userGroupClass)
     {
         $this->registry            = $registry;
         $this->categoryAccessClass = $categoryAccessClass;
         $this->categoryClass       = $categoryClass;
+        $this->userGroupClass      = $userGroupClass;
     }
 
     /**
@@ -122,31 +129,75 @@ class CategoryAccessManager
      * @param Group[]           $viewGroups the view user groups
      * @param Group[]           $editGroups the edit user groups
      * @param Group[]           $ownGroups  the own user groups
+     * @param boolean           $flush      whether to flush the object manager
      */
-    public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups)
+    public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups, $flush = false)
     {
         $grantedGroups = [];
         foreach ($ownGroups as $group) {
-            $this->grantAccess($category, $group, Attributes::OWN_PRODUCTS);
+            $this->grantAccess($category, $group, Attributes::OWN_PRODUCTS, $flush);
             $grantedGroups[] = $group;
         }
 
         foreach ($editGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::EDIT_PRODUCTS);
+                $this->grantAccess($category, $group, Attributes::EDIT_PRODUCTS, $flush);
                 $grantedGroups[] = $group;
             }
         }
 
         foreach ($viewGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::VIEW_PRODUCTS);
+                $this->grantAccess($category, $group, Attributes::VIEW_PRODUCTS, $flush);
                 $grantedGroups[] = $group;
             }
         }
 
-        $this->revokeAccess($category, $grantedGroups);
-        $this->getObjectManager()->flush();
+        if (null !== $category->getId()) {
+            $this->revokeAccess($category, $grantedGroups);
+        }
+
+        if (true === $flush) {
+            $this->getObjectManager()->flush();
+        }
+    }
+
+    /**
+     * Set the accesses of a category like its parent.
+     *
+     * @param CategoryInterface $category
+     * @param bool              $flush
+     */
+    public function setAccessLikeParent(CategoryInterface $category, $flush = false)
+    {
+        // in case we have several new nested categories, we need to find the first ancestor that is managed
+        // (ie: that has an ID and so permissions)
+        $current = $category;
+        do {
+            $ancestor = $current->getParent();
+            $current = $ancestor;
+        } while (null !== $ancestor && null === $ancestor->getId());
+
+        if (null !== $ancestor && null !== $ancestor->getId()) {
+            // let's copy the permissions of the parent
+            $this->setAccess(
+                $category,
+                $this->getViewUserGroups($ancestor),
+                $this->getEditUserGroups($ancestor),
+                $this->getOwnUserGroups($ancestor),
+                $flush
+            );
+        } else {
+            // it a category from a new tree, let's put ALL permissions
+            $defaultUserGroup = $this->getUserGroupRepository()->getDefaultUserGroup();
+            $this->setAccess(
+                $category,
+                [$defaultUserGroup],
+                [$defaultUserGroup],
+                [$defaultUserGroup],
+                $flush
+            );
+        }
     }
 
     /**
@@ -320,8 +371,8 @@ class CategoryAccessManager
                 ->setViewProducts($view)
                 ->setEditProducts($edit)
                 ->setOwnProducts($own)
-                ->setUserGroup($group)
-            ;
+                ->setUserGroup($group);
+
             $this->getObjectManager()->persist($access);
         }
         $this->getObjectManager()->flush();
@@ -439,6 +490,14 @@ class CategoryAccessManager
     protected function getAccessRepository()
     {
         return $this->registry->getRepository($this->categoryAccessClass);
+    }
+
+    /**
+     * @return \Pim\Bundle\UserBundle\Entity\Repository\GroupRepository
+     */
+    protected function getUserGroupRepository()
+    {
+        return $this->registry->getRepository($this->userGroupClass);
     }
 
     /**

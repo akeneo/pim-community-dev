@@ -18,7 +18,7 @@ class EnterpriseFeatureContext extends FeatureContext
     public function __construct(array $parameters = [])
     {
         $this->useContext('fixtures', new EnterpriseFixturesContext());
-        $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
+        $this->useContext('catalogConfiguration', new EnterpriseCatalogConfigurationContext());
         $this->useContext('webUser', new EnterpriseWebUser($parameters['window_width'], $parameters['window_height']));
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());

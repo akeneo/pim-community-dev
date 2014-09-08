@@ -1,14 +1,36 @@
 # 1.0.0-x
+## Improvements
+## Bug fixes
+## BC breaks
+
+# 1.0.0
 
 ## Improvements
 
 ## Bug fixes
+- Fixed read only mode of products page
+- Fixed a regression on product draft submission
+
+## BC breaks
+
+# 1.0.0-RC3
+
+## Improvements
+- Java dependency has been removed
+- Add fallback to en_US locale
+- Application is partially translated in French
+
+## Bug fixes
 - Fixed disabled file input appearing as if it were enabled
-- PIM-2975: validation fails when a draft is submitted
+- Fixed product draft validation
 - Don't allow users without corresponding rights to edit entity permissions
+- Imported categories now have the permissions of their parent
 
 ## BC breaks
 - Change constructor of `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/AttributeGroupPermissionsSubscriber`, `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/CategoryPermissionsSubscriber` and `src/PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/LocalePermissionsSubscriber` to inject `Oro\Bundle\SecurityBundle\SecurityFacade` as the second argument
+- JS and CSS are not minified anymore. We advise to use server side compression for bandwidth savings.
+- Change constructor of `PimEnterprise/Bundle/SecurityBundle/Manager/CategoryAccessManager` to add the user group class as fourth argument
+- Methods `setAccess` of `PimEnterprise/Bundle/SecurityBundle/Manager/CategoryAccessManager` now has a last parameter to handle the flush
 
 # 1.0.0-RC2
 

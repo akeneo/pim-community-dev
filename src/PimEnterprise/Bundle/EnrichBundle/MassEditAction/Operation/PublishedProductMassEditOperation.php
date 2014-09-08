@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
@@ -8,8 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 /**
  * Base class of published product mass edit operations
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 abstract class PublishedProductMassEditOperation extends AbstractMassEditAction
 {

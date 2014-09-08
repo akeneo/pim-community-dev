@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
@@ -9,8 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * Attribute option flat denormalizer used for following attribute types:
  * - pim_catalog_simpleselect
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 {
@@ -18,6 +26,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     protected $repository;
 
     /**
+     * @param string[]                  $supportedTypes
      * @param AttributeOptionRepository $repository
      */
     public function __construct(array $supportedTypes, AttributeOptionRepository $repository)
@@ -43,12 +52,12 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     /**
      * Prepare option code for AttributeOptionRepository::findByReference
      *
-     * @deprecated AttributeOptionRepository::findByReference should take a code as parameter
-     *
      * @param string                $data
      * @param ProductValueInterface $value
      *
      * @return string
+     *
+     * @deprecated AttributeOptionRepository::findByReference should take a code as parameter
      */
     protected function prepareOptionCode($data, ProductValueInterface $value)
     {

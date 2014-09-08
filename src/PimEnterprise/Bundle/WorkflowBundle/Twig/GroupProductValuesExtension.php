@@ -1,15 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Doctrine\Common\Collections\Collection;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\SortProductValuesHelper;
 
 /**
  * Twig extension to group and sort product values to prepare them for display
  *
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class GroupProductValuesExtension extends \Twig_Extension
 {
@@ -53,13 +62,14 @@ class GroupProductValuesExtension extends \Twig_Extension
     /**
      * Group product values
      *
-     * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
-     * @param string                                                  $locale
+     * @param Collection|\Pim\Bundle\CatalogBundle\Model\AbstractProductValue[] $values
+     * @param string                                                            $locale
      *
      * @return array
      */
-    public function groupValues($values, $locale = null)
+    public function groupValues(Collection $values, $locale = null)
     {
+        $values = $values->toArray();
         $values = $this->filterHelper->filter($values, $locale);
         $values = $this->sortHelper->sort($values);
 

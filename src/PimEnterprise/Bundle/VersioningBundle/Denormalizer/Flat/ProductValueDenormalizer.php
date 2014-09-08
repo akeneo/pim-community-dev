@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -9,8 +18,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 /**
  * Product value flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductValueDenormalizer extends AbstractEntityDenormalizer
 {
@@ -30,7 +38,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {

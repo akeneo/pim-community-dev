@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\DataGridBundle\Datasource;
 
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes as BaseDatasourceTypes;
@@ -7,8 +16,7 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes as BaseDatasourceTypes;
 /**
  * Existing datasource types
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class DatasourceTypes extends BaseDatasourceTypes
 {

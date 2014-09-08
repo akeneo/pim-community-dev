@@ -83,7 +83,9 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->countPublishedProductsForFamily($family)->willReturn(1);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove family linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove family linked to a published product')
+            )
             ->duringCheckFamilyLinkedToPublishedProduct($event);
     }
 
@@ -107,7 +109,9 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->countPublishedProductsForAttribute($attribute)->willReturn(1);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove attribute linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove attribute linked to a published product')
+            )
             ->duringCheckAttributeLinkedToPublishedProduct($event);
     }
 
@@ -138,7 +142,9 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->countPublishedProductsForCategoryAndChildren([2, 3, 1])->willReturn(2);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove category linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove category linked to a published product')
+            )
             ->duringCheckCategoryLinkedToPublishedProduct($event);
     }
 
@@ -162,7 +168,9 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->countPublishedProductsForGroup($group)->willReturn(1);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove group linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove group linked to a published product')
+            )
             ->duringCheckGroupLinkedToPublishedProduct($event);
     }
 
@@ -187,7 +195,9 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove association type linked to a published product')
+                new PublishedProductConsistencyException(
+                    'Impossible to remove association type linked to a published product'
+                )
             )
             ->duringCheckAssociationTypeLinkedToPublishedProduct($event);
     }

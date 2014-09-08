@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\View;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -12,8 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 /**
  * Product form view decorator that adds classes and fields on which product draft value is applied
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class HighlightModifiedProductFormView implements ProductFormViewInterface
 {

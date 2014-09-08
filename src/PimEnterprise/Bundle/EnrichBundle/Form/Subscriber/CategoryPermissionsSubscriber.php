@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
 use Symfony\Component\Form\Form;
@@ -14,8 +23,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 /**
  * Subscriber to manage permissions on categories
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryPermissionsSubscriber implements EventSubscriberInterface
 {
@@ -108,7 +116,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             $viewRoles = $form->get('permissions')->get('view')->getData();
             $editRoles = $form->get('permissions')->get('edit')->getData();
             $ownRoles = $form->get('permissions')->get('own')->getData();
-            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles, $ownRoles);
+            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles, $ownRoles, true);
 
             $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
             if ($updateChildren === true) {

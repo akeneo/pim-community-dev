@@ -1,12 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 
 /**
  * Helper for sorting product values
  *
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class SortProductValuesHelper
 {
@@ -17,7 +25,7 @@ class SortProductValuesHelper
      *
      * @return array
      */
-    public function sort($values)
+    public function sort(array $values)
     {
         usort(
             $values,

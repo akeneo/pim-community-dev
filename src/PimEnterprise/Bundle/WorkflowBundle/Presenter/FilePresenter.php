@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -8,8 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Present two files information side by side
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class FilePresenter implements PresenterInterface
 {
@@ -69,7 +77,7 @@ class FilePresenter implements PresenterInterface
     protected function createFileElement($filename, $originalFilename)
     {
         return sprintf(
-            '<i class="icon-file"></i> <a class="no-hash" href="%s">%s</a>',
+            '<i class="icon-file"></i><a class="no-hash" href="%s">%s</a>',
             $this->generator->generate('pim_enrich_media_show', ['filename' => $filename]),
             $originalFilename
         );

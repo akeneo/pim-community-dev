@@ -1,0 +1,210 @@
+AKENEO ENTERPRISE EDITION
+END USER LICENSE AGREEMENT
+
+This End User License Agreement ("Agreement") is entered into by and between Akeneo SAS ("Akeneo"), and the licensee ("User") executing the Akeneo Order Form
+(defined below). The parties agree as follows:
+
+DEFINITIONS
+
+  In this Agreement, capitalised terms and expressions have the meanings indicated below, whether used in the singular or plural.
+  
+  Incident :
+  Nonconformity and/or reproducible bug in the Software and/or its configuration, which prevents it from being used normally.
+  
+  Critical Incident :
+  An Incident preventing the use of a necessary feature of the Software.
+  
+  Significant Incident :
+  An Incident preventing the use of a non-necessary feature of the Software.
+  
+  Minor Incident :
+  An Incident which does not prevent access to one or other of the features of the Software, but which causes slow downs or ergonomic usage difficulties.
+  
+  Channel :
+  Tool or media for the dissemination of product information. Each information dissemination tool (including e-store, mobile and printing) is a distinct channel. The Software license is granted for a strictly defined number of channels.
+  
+  Associate :
+  Person who is employed by the User or who is providing a service to the User and who the User designates as holding User credentials.
+  
+  Quote :
+  Contractual document produced by the Vendor detailing the services the User opts for according to its particular requirements and modalities of execution. It can take the form of a purchase order. It must be signed by both Parties in order to have contractual status.
+  
+  Data :
+  All data transferred by the User and/or its Associates, which is processed by the Software. All of this data is stored on the User's servers.
+  
+  User Credentials :
+  Codes including the name of the User and/or that of one of its Associates and a password, which are required in order to access the Maintenance Platform. The User credentials are unique, personal and confidential. All usage of the User credentials is considered to have been carried out by the User. It is therefore the User's responsibility to ensure that User credentials remain confidential.
+  
+  Integrator :
+  IT provider approved by AKENEO and contractually associated with the User to carry out the installation, configuration and integration of updates to the Software on the User's server. Moreover, the Integrator shall determine the source of any Incident and the Incident type.
+  
+  Software :
+  Multi-channel catalogue management software, made up of a software platform governed by the provisions of the open source license OSL V3 and add-ons under a proprietary license. The User expressly acknowledges and accepts that the Software contains components governed by the provisions of an open source license. The User may refer to the terms of the open source licenses used on the www.opensource.org Website.
+  The version of the Software implemented on behalf of the User is detailed in Appendix 1 - Special Conditions -.
+  
+  Maintenance Platform :
+  Digital space that is accessed via the Site by the User with User credentials. 
+  
+  Site :
+  Website accessed via the URL www.akeneo.com 
+  
+
+TERMS AND CONDITIONS
+
+Article 1 – Purpose
+  The purpose of this Agreement is to provide a framework for the relationship between the Vendor and the User for the use of the Software. 
+  More precisely, this Agreement sets down the conditions under which AKENEO provides the User with a personal license, which is non-assignable and non-exclusive for the use of the Software and the maintenance services supplied.
+
+Article 2 – Integration and Storage of the Software 
+  2.1 - Integration
+    The Software is installed on the User's server by an Integrator. As part of the agreement entered into with the Integrator, the Integrator is required to comply with its duty to give advice to the User.
+    
+    The User may not therefore hold the Vendor liable for this and expressly acknowledges this. 
+    
+    The provision of integration services detailed in the agreement concluded with the Integrator includes in particular the following:
+    -	Installation of the Software on the User's servers,
+    -	Configuration of the Software,
+    -	Development of Software adaptations and connectors,
+    -	Monitoring the correct functioning of the Software.
+    
+    After completing integration, an acceptance report shall be signed by the User and the Integrator, so as to show that the Software integration has been duly carried out.
+2.2 - Storage
+  The Software and the Data are stored by the User or a third party provider contractually bound to the User and are the User's responsibility, such that the User is liable, if necessary, for complying with all Data protection and backup rules.
+  Accordingly, AKENEO is not liable for Data storage and retention.
+ 
+Article 3 – Intellectual Property
+  3.1 - Ownership of the Software
+    The add-ons of the Software are original creations which, as such, are protected by copyright (Article L.111-1 of the French Intellectual Property Code). The Vendor is and shall remain the holder of all the associated intellectual property rights. This Agreement does not entail any transfer of intellectual property rights to the User.
+    
+  3.2 - Software User License
+    Under this Agreement, the Vendor grants for the period set out in Article "Duration of the Agreement", a non-assignable and non-exclusive personal user license to the User, without limit to the number of Associates, for a strictly limited number of channels as set down in Akeneo Order Form.
+    The Vendor may audit the User's servers to check compliance with this Agreement, in particular for compliance with the number of channels and the territory of use.
+    However, in particular,
+    -	the full or partial reproduction or representation of the Software or its documentation,
+    -	any alteration or hiding of trademarks, distinctive signs or authorial labelling on the Software,
+    -	or any modification or attempt to bypass any protection mechanism of the Software is strictly forbidden.
+    
+    The User is not authorised to lay claim to the rights detailed in Article L.122-6-1 of the Intellectual Property Code, without prior notification to the Vendor.
+    The User is not authorised to be granted sublicenses (under the same distribution and/or SaaS model) for the Software.
+
+3.3 - Data Ownership
+  The User is the sole owner of the Data contained in the Software database and is solely responsible for the content, confidentiality and backup of the data. The Vendor may not be held liable for this in any way.
+
+Article 4 – Training and Support
+  AKENEO may provide training and support services to the User in relation to any issues regarding the implementation and use of the Software.
+  Access to support is only available following training. Users who have not followed all the training sessions recommended by AKENEO will not have access to AKENEO support.
+  Any such services shall be provided by means of a distinct agreement to this Agreement between AKENEO and the User.
+  
+Article 5 – Maintenance
+  Corrective maintenance shall generally be carried out by the Vendor -which has the sole authority in this respect- and is available after signature of the final Software integration acceptance report.
+  5.1 - Corrective Maintenance
+    In the event of the occurrence of one or other of the Incidents defined in the glossary, a User who wishes to avail themselves of any maintenance services shall contact an Integrator.
+    Maintenance shall be limited to the last two versions of the Software released by AKENEO.
+    The Integrator is responsible for determining with the User the source and type of the Incident.
+    In the event that the source of the Incident, as defined by the Integrator, is exclusively associated with developments carried out by the Vendor and whatever the type of Incident, the User shall be referred to the Vendor, which has the sole authority in this respect. In order to do so, the Integrator or the User creates an incident ticket on the Maintenance Platform. This then engages a response from the Vendor under the conditions set down in this Agreement.
+    Corrective maintenance has the purpose of providing a direct solution for the User or, if necessary, bypassing the Incident in the event of Significant Incidents or Critical Incidents which prevent the User from using a feature of the Software normally.
+    Response and incident resolution timeframes are set out in the table below and depend on the type of Incident.
+    
+    Time required by AKENEO to register the Incident. (time required from the creation of the Incident ticket on the Maintenance Platform).	
+      Minor Incident	4 working hours*
+      Significant Incident	4 working hours*
+      Critical Incident	4 working hours*
+
+    Time required by AKENEO to resolve the Incident (time required from the registration of the Incident by AKENEO.)
+      Minor Incident	4 working days*
+      Significant Incident	2 working days*
+      Critical Incident 	24 working hours*
+  
+    *: French business hours – from Monday to Friday, from 8:30 am to 6:30 pm.
+  
+  5.2 - Ongoing Maintenance
+    The User can inform AKENEO of desired changes to the Software via the Maintenance Platform. Nevertheless, AKENEO is under no contractual obligation to develop or integrate these changes.
+    This procedure is distinct to that whereby a User places a specific order with the Vendor with the existence of a specifications sheet and a Quote.
+   
+Article 6 – Exclusion of Maintenance
+  As the Software draws on a significant number of applications relating to the User's own internal hardware and software resources, Incidents may originate in various other sources, which are independent of the Software. 
+  Therefore, generally speaking, this Agreement does not cover the Software's technical environment (operating system, web server, database and so on).
+  Moreover, in particular the present Maintenance Agreement does not apply in the following cases:
+    •	Where the source of the Incident, as determined by the Integrator, is not associated with a development carried out by the Vendor;
+    •	Where the User has not installed the updates recommended by the Vendor;
+    •	Where the proprietary features of the Software have been modified by the User or a third party;
+    •	Where the User has not complied with the Vendor or the Integrator’s recommendations with respect to the required technical environment for the Software.
+
+Article 7 – Vendor’s Warranties and Liability
+  7.1- Generally speaking, the Vendor's undertakings under this Agreement shall be based on a best efforts obligation. Thus, the Vendor shall, in order to implement this Agreement, employ the best efforts available to it in accordance with accepted professional standards. The Vendor's liability shall only be invoked where it is demonstrated that a fault is exclusively attributable to it.
+  
+  7.2- It is expressly agreed between the Parties that where the exclusive fault of the Vendor is established, the Vendor's liability shall not include any consequential damage such as operating losses, loss of profits, commercial or financial loss or increase in overheads suffered by the User.
+
+  7.3- It is expressly agreed that where the Vendor's liability is established legally in the execution of the Agreement, the User may not claim any monetary compensation or damages apart from a refund of the monies paid by it for an ongoing year of the Agreement (specific features and Integrator services may not be included in the calculation of sums owed).
+
+  7.4- Exclusion of Liability
+    In the event that the User is based in a country in which the Software patent is legally binding, it is the User's responsibility to check that there is no obstacle to the conclusion of this Agreement. Under these circumstances, the User acknowledges that neither the Vendor's liability, nor the Vendor's warranties, may be invoked in the event that a case for patent infringement of the Software is brought.
+
+Article 8 – User’s Obligations and Liability
+  The User undertakes to comply with the conditions of use of the Software, which have been provided by the Integrator as well as the Vendor's instructions.
+  In particular, the User undertakes to enter and transfer data into the Software in accordance with the formats and transmission methods provided for.
+
+  It is also the User's responsibility to arrange the appropriate configuration, in particular with respect to the hardware, software, networks, terminals, connections and cabling, and to upgrade its hardware in line with the new versions of the Software.
+  The User is responsible for the maintenance of and updates to its software and hardware.
+
+  Aware of the specificity of the Software in terms of its requirements in respect of internal organisational software and hardware resources, the User, in accordance with its obligation to collaborate, undertakes to inform the Vendor of any changes in the said organisation, in particular with respect to changes in hardware, Internet supplier, software and developments to its computer system (hardware and software), etc.
+  The Vendor's liability may not be invoked in the event of non-compliance with this obligation by the User.
+
+  The User undertakes to comply with its obligation to collaborate with the Vendor, in particular when describing an Incident.
+
+  The obligation to collaborate incumbent on the User means that the User actively undertakes to supply the Vendor, in the required period, with the documents, details and information held by the User, which are necessary for the carrying out of services under this Agreement.
+
+  The User is solely liable for the use made of the Software by its Associates.
+
+  The User is solely liable for complying with the right number of channels. Thus, the User undertakes to inform the Vendor in the event of an increase in the number of channels used, such that the Vendor can change the price charged. The User being informed of the cost of an additional channel, this modification to the agreement shall not lead to early termination as provided for in Article "Modification of the Agreement", which is expressly acknowledged by the User.
+
+  The User is solely liable for storing and using the User credentials. The User may ask the Vendor to change the User credentials (loss of User credentials, departure of an Associate, etc.). This request shall be processed as quickly as possible by the Vendor and an administration fee may be charged to the User.
+
+  The User shall inform the Vendor of any third-party software that infringes the Vendor's patent as soon as it becomes aware of this.
+
+Article 9 – Financial Conditions and Payment Terms
+  The financial conditions and payment terms are set out in the Akeneo Order Form.
+  Nevertheless, the Vendor may decide, on the anniversary date of this Agreement, to increase the price, after informing the User in accordance with the conditions set down in Article "Modification of the Agreement".
+
+Article 10 – Late Payments
+  10.1 – By express agreement, and except when a late payment request is made in advance and agreed to by the Vendor specifically and in writing, failure to pay on the agreed date all or part of the amount due under the Agreement shall automatically entail, and without prior formal demand, the immediate payment of all sums due by the User under the Agreement, whatever the payment method used.
+  10.2 – Any disagreement with respect to invoicing shall be notified by registered letter with acknowledgement of receipt within eight days following the issue date of the invoice. Failing this, the User shall be deemed to have accepted said invoice. 
+
+Article 11 - Duration of the Agreement
+  This Agreement is hereby concluded for a fixed period of three (3) years. It shall take effect from the date set down in Appendix 1 - Special Conditions -. At the end of this initial period, this Agreement shall be tacitly renewed for identical periods.
+  In the event that the duration of the Agreement set down in Appendix 1 - Special Conditions - is different to that in the present article "Duration of the Agreement", Appendix 1 shall prevail. Appendix 1 - Special Conditions – shall only prevail for the duration of the Agreement and this is expressly acknowledged by the Parties.
+
+Article 12 – Termination
+  12.2 - Termination for Default
+    Early termination of this Agreement may be requested by one or other of the Parties in the event of non-compliance with one or other of the obligations in the Agreement. 
+    Early termination shall come about one month after formal notice indicating the intention to engage the application of the present express termination clause is sent by registered letter with acknowledgement of receipt to the defaulting Party, having gone totally or partially unheeded and without prejudice to the request for any damages.
+
+  12.3 - Consequences of Termination
+    The termination of this Agreement for the cases cited above shall have the consequence of making payable all sums due to the Vendor by the User, which undertakes to pay, without delay, the said sums. The termination of the Agreement shall prohibit the User from using the Software. Any continued use of the Software by the User shall be considered to be an infringement.
+    As the Data is stored by the User, the Vendor shall have no formalities to carry out to return the Data.
+ 
+Article 13 – Modification of the Agreement
+  The Vendor reserves the right to change the provisions of this Agreement at any time. The User shall be made aware of changes by registered letter with acknowledgement of receipt and said changes shall come into force two months after the User is informed thereof.
+  In the event that the User disagrees, the User may exercise its option to terminate the Agreement by informing the Vendor of this by registered letter with acknowledgement of receipt. Termination shall then take effect thirty (30) days from receipt of the termination letter by the Vendor. 
+
+Article 14 – Confidentiality
+  Each Party acknowledges that the information provided in writing or orally as part of the implementation of this Agreement must be kept strictly confidential by each of them, in particular with respect to the business sector in which each of the Parties operates.
+  Accordingly, each Party undertakes to treat this information as strictly confidential and not to divulge the said secrets and information to any person or legal entity other than the Associates of the other Party and strictly as necessary to perform this Agreement.
+  This confidentiality obligation shall apply beyond the duration of the Agreement, except for information already in the public domain.
+  It is expressly agreed between the Parties that breach of this clause shall lead to the payment of damages to the non-defaulting Party. The amount of said damages has already been set at thirty thousand (30,000) Euros, without prejudice to any judicial remedy in the event of greater loss being incurred.
+
+Article 15 – Assignment of the Agreement
+  The benefits of this Agreement may not be assigned or transferred to a third party without the prior written agreement of the other Party.
+
+Article 16 – Miscellaneous
+  16.1 – In the event that any of the provisions of the Agreement should be declared null and void, in whatever way and for whatever reason, it shall be deemed not to have been written and the other provisions will remain in force.
+  16.2 – Failure by one or other of the Parties to avail itself of any of its rights in accordance with the terms of the Agreement shall not be construed as a waiver of the said rights in the future.
+  16.3 – Should the Agreement be translated, only the English version shall apply. 
+  16.4 - Statement of Mutual Independence
+    Each Party is an independent business and none of the provisions of this Agreement shall entail the creation of a company, in fact or in law, a joint company, a mandate, a franchise or a sales agent agreement or an employer/employee relationship between the Parties.
+  16.5 – Insurance
+    Both Parties declare being insured for their professional liability insurance with an insurance company that is known as being solvent, for all material and non-material damages suffered from the execution of this Agreement by their Associates and shall provide the other Party, at first request, with an insurance certificate.
+
+Article 17 – Applicable Law – Settlement of Disputes
+  This Agreement is exclusively governed by French law.
+  Any dispute with respect to its interpretation, the execution and/or the suspension of this Agreement shall fall under the exclusive jurisdiction of the Paris Commercial Court, except in the event where the dispute falls under the jurisdiction of the Paris High Court (Tribunal de Grande Instance de Paris) pursuant to the applicable provisions of the French Intellectual Property Code.
