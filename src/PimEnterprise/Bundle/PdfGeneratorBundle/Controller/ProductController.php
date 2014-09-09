@@ -62,17 +62,11 @@ class ProductController extends BaseController
     }
 
     /**
-     * Generate Pdf for specific product
-     *
-     * @param Request $request
-     * @param integer $id
-     *
-     * @return Response
-     * @throws HttpException
+     * {@inheritdoc}
      *
      * @AclAncestor("pim_pdf_generator_product_download")
      */
-    public function generatePdfAction(Request $request, $id)
+    public function downloadPdfAction(Request $request, $id)
     {
         $locale = $this->userContext->getCurrentLocale();
         $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
@@ -80,6 +74,6 @@ class ProductController extends BaseController
             throw new AccessDeniedException();
         }
 
-        return parent::generatePdfAction($request, $id);
+        return parent::downloadPdfAction($request, $id);
     }
 }
