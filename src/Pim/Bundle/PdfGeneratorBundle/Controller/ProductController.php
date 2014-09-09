@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;

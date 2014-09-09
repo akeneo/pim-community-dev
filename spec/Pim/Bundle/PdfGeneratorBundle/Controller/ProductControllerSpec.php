@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
-use Symfony\Component\HttpFoundation\Request;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Prophecy\Argument;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductControllerSpec extends ObjectBehavior
 {
