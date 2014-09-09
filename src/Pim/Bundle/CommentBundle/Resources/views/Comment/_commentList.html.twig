@@ -3,7 +3,7 @@
         ['jquery', 'oro/messenger', 'pim/dialog'],
         function ($, messenger, Dialog) {
             'use strict';
-            $(document).on('click', '.comment-delete-dialog', function () {
+            $('#comments').on('click', '.comment-delete-dialog', function () {
                 var $el      = $(this),
                     $comment = $($el.data('comment')),
                     message  = $el.data('message'),
