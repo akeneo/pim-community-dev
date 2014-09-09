@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Controller;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -21,24 +30,16 @@ use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController
  */
 class ProductController extends BaseController
 {
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var RendererRegistry
-     */
+    /** @var RendererRegistry */
     protected $rendererRegistry;
 
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
     /**
