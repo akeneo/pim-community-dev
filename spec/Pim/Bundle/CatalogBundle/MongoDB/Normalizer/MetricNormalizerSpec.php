@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 class MetricNormalizerSpec extends ObjectBehavior

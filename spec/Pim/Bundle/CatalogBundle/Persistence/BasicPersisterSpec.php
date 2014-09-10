@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Persistence;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
