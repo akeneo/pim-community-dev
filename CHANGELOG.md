@@ -3,6 +3,9 @@
 ## Features
 - Export a product as PDF
 
+## Improvements
+ - remove the fixed mysql socket location
+
 # 1.2.3 (2014-09-08)
 
 ## Bug fixes
