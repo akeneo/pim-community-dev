@@ -2,22 +2,24 @@
 <ol class="comment-thread unstyled" id="comment{{ comment.id }}">
     <li class="comment-topic">
         <div class="row-fluid">
-            <div class="span2">
-                <img width="100" class="img-polaroid" src="{{ comment.author.imagePath ? comment.author.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+            <div class="span1 text-right">
+                <img width="35" src="{{ comment.author.imagePath ? comment.author.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
             </div>
-            <div class="span10">
+            <div class="span11">
                 <div>
                     <strong>{{ fullname }}</strong>
                     <span class="date">&nbsp;&#8211;&nbsp;{{ comment.createdAt|date("M jS \\a\\t g:ia") }}</span>
+                </div>
+                <div>
+                    {{ comment.body|nl2br }}
                     <span class="comment-buttons pull-right">
                         {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {id: comment.id} %}
                     </span>
                 </div>
-                {{ comment.body|nl2br }}
             </div>
         </div>
     </li>
-    <li class="row-fluid comment-reply-action reply-color">
+    <li class="row-fluid comment-reply-action toggle-active">
         {% include 'PimCommentBundle:Comment:_commentReplyAction.html.twig' %}
     </li>
     {% for reply in comment.children %}

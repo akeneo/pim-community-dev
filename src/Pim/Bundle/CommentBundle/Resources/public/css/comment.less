@@ -34,7 +34,12 @@ li.comment-create {
   border-radius: 3px;
 }
 
-ol.comment-thread li, li.comment-create {
+ol.comment-thread li {
+  border: 1px solid #ddd;
+  border-top: none;
+}
+
+li.comment-create {
   border: 1px solid #ddd;
 }
 
@@ -42,6 +47,7 @@ ol.comment-thread > :first-child {
   margin-top: 15px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
+  border: 1px solid #ddd;
 }
 
 ol.comment-thread > :last-child {
@@ -65,7 +71,7 @@ li.comment-topic {
   }
 }
 
-li.comment-answer, li.comment-create, .reply-color {
+li.comment-create, .comment-reply-action {
   background-color: #eee;
 }
 

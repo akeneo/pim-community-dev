@@ -18,8 +18,10 @@
             {{ form_widget(createForm.body, { 'id': 'pim_comment_comment_body_create', 'attr': {'class': 'exclude span12'} }) }}
             {{ form_row(createForm.resourceName) }}
             {{ form_row(createForm.resourceId) }}
-            <button class="btn btn-primary comment-btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
-            <input class="btn cancel comment-btn pull-right" type="reset" value="{{ 'btn.cancel'|trans|capitalize }}"/>
+            <span class="comment-buttons toggle-active">
+                <button class="btn btn-primary comment-btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
+                <input class="btn cancel comment-btn pull-right" type="reset" value="{{ 'btn.cancel'|trans|capitalize }}"/>
+            </span>
         </div>
     </div>
 {{ form_end(createForm) }}

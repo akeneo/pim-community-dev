@@ -13,7 +13,7 @@
 
     {{ elements.form_errors(replyForms[comment.id]) }}
 
-<div class="row-fluid toggle-active">
+<div class="row-fluid">
     <div class="span12">
         {{ form_widget(replyForms[comment.id].body, { 'id': 'pim_comment_comment_body_reply_' ~ comment.id, 'attr': {'class': 'exclude span12'} }) }}
         {{ form_row(replyForms[comment.id].resourceName) }}
