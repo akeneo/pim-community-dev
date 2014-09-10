@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
