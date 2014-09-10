@@ -1,5 +1,8 @@
 # 1.0.0-x
 ## Improvements
+
+- remove the fixed mysql socket location
+
 ## Bug fixes
 ## BC breaks
 
