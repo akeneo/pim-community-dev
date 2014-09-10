@@ -95,6 +95,19 @@ Some changes have also been done on attribute and product value model :
     ALTER TABLE pim_catalog_product_value ADD CONSTRAINT FK_93A1BBF3EA9FDD75 FOREIGN KEY (media_id) REFERENCES pim_catalog_product_media (id) ON DELETE CASCADE;
 ```
 
+## UserBundle
+
+The default user group *All* has been introduced. All users should belong to this user group. You can use the following queries to update your database:
+
+```
+INSERT INTO `oro_access_group` (`business_unit_owner_id`, `name`)
+VALUES ((SELECT `id` FROM `oro_business_unit` LIMIT 1), 'All');
+
+INSERT INTO `oro_user_access_group` (`user_id`, `group_id`)
+SELECT u.`id`, (SELECT g.`id` FROM `oro_access_group` g WHERE g.`name`='All' )
+FROM `oro_user` u
+```
+
 ## VersioningBundle
 
 Version model has been changed to add the MongoDB support.
