@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class ProductQueryBuilderSpec extends ObjectBehavior

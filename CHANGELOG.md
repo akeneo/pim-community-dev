@@ -1,3 +1,8 @@
+# 1.3.*
+
+## Improvements
+ - remove the fixed mysql socket location
+
 # 1.2.3 (2014-09-08)
 
 ## Bug fixes
@@ -23,7 +28,7 @@
  - constructor of Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer has changed
  - Pim\Bundle\TransformBundle\Cache\ProductCacheClearer has been renamed Pim\Bundle\TransformBundle\Cache\CacheClearer
 
-# 1.2.0
+# 1.2.0  (2014-08-28)
 
 ## Improvements
 
