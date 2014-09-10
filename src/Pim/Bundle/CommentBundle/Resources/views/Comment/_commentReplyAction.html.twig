@@ -27,9 +27,17 @@
                     }
                 });
             });
+
+            $("#comments .comment-thread, .comment-create").on("click", function() {
+                $("#comments .active").removeClass("active");
+                $(this).addClass("active");
+            });
+
+            $("#comments .cancel").on("click", function(e) {
+                e.stopPropagation();
+                $("#comments .active").removeClass("active");
+                $("#comments textarea").val('');
+            });
         });
     });
-
-    $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
-    $("#comments").find(".comment-reply").on("focusout", function(){ $("#comments .active").removeClass("active");})
 </script>

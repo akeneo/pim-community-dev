@@ -7,7 +7,7 @@
 {{ form_start(createForm, {
     'id': 'pim_comment_comment_create',
     'action': path('pim_comment_comment_create'),
-    'class': 'form-horizontal unspaced'
+    'class': 'unspaced'
 }) }}
     {{ JSFV(createForm) }}
 
@@ -18,7 +18,8 @@
             {{ form_widget(createForm.body, { 'id': 'pim_comment_comment_body_create', 'attr': {'class': 'exclude span12'} }) }}
             {{ form_row(createForm.resourceName) }}
             {{ form_row(createForm.resourceId) }}
-            <button class="btn btn-primary create-btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
+            <button class="btn btn-primary comment-btn pull-right">{{ 'btn.post'|trans|capitalize }}</button>
+            <input class="btn cancel comment-btn pull-right" type="reset" value="{{ 'btn.cancel'|trans|capitalize }}"/>
         </div>
     </div>
 {{ form_end(createForm) }}
