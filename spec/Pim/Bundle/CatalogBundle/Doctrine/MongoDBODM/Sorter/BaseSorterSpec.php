@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;

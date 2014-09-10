@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\MongoDB\Cursor;

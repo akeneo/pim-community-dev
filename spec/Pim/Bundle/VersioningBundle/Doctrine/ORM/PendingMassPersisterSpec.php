@@ -105,13 +105,12 @@ class PendingMassPersisterSpec extends ObjectBehavior
 
         $entityManager->getClassMetadata('VersionClass')->willReturn($versionMetadata);
 
-
         $versionBuilder->createPendingVersion($product1, 'julia', $normalizedProduct1, 'CSV Import')
             ->willReturn($pendingVersion1);
 
         $versionBuilder->createPendingVersion($product2, 'julia', $normalizedProduct2, 'CSV Import')
             ->willReturn($pendingVersion2);
-        
+
         $connection->executeQuery(
             'INSERT INTO version_table'.
             ' (author,changeset,snapshot,resource_name,resource_id,context,logged_at,pending)'.
@@ -135,7 +134,7 @@ class PendingMassPersisterSpec extends ObjectBehavior
                 true
             ]
         )->shouldBeCalled();
-        
+
         $this->persistPendingVersions($products);
     }
 }

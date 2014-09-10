@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;

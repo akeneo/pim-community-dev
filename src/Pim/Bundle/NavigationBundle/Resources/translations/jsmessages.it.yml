@@ -1,0 +1,4 @@
+Sorry, page was not loaded correctly: Spiacenti, la pagina non è stata caricata correttamente
+Your local changes will be lost. Are you sure you want to refresh the page?: Le modifiche effettuate andranno perse. Sei sicuro di voler aggiornare la pagina?
+navigation.message.content.outdated: "Il contenuto della pagina {{ title }} non è aggiornato, prego <a href='#' data-action='page-refresh'>refresh the page</a>"
+Content of pinned page is outdated: Il contenuto della pagina bloccata è scaduto

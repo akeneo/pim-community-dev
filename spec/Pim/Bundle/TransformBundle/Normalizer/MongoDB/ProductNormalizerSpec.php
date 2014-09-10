@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 
 use Symfony\Component\Serializer\SerializerInterface;
@@ -31,7 +31,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_of_product_in_mongodb_document(Product $product)
+    function it_supports_normalization_of_product_in_mongodb_document(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'mongodb_document')->shouldReturn(true);
     }
@@ -41,7 +41,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($object, 'mongodb_document')->shouldReturn(false);
     }
 
-    function it_does_not_support_normalization_of_product_into_other_format(Product $product)
+    function it_does_not_support_normalization_of_product_into_other_format(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'json')->shouldReturn(false);
     }
@@ -49,17 +49,17 @@ class ProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_new_product_into_mongodb_document(
         $mongoFactory,
         $serializer,
-        Product $product,
+        ProductInterface $product,
         \MongoId $mongoId,
         \MongoDate $mongoDate,
         Association $assoc1,
         Association $assoc2,
-        Category $category1,
-        Category $category2,
+        CategoryInterface $category1,
+        CategoryInterface $category2,
         Group $group1,
         Group $group2,
-        ProductValue $value1,
-        ProductValue $value2,
+        AbstractProductValue $value1,
+        AbstractProductValue $value2,
         Family $family
     ) {
         $mongoFactory->createMongoId()->willReturn($mongoId);
@@ -82,10 +82,11 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([$assoc1, $assoc2]);
         $product->getValues()->willReturn([$value1, $value2]);
 
-        
         $context = ['_id' => $mongoId];
 
-        $serializer->normalize($product, 'mongodb_json')->willReturn(['data' => 'data', 'completenesses' => 'completenesses']);
+        $serializer
+            ->normalize($product, 'mongodb_json')
+            ->willReturn(['data' => 'data', 'completenesses' => 'completenesses']);
         $serializer->normalize($value1, 'mongodb_document', $context)->willReturn('my_value_1');
         $serializer->normalize($value2, 'mongodb_document', $context)->willReturn('my_value_2');
         $serializer->normalize($assoc1, 'mongodb_document', $context)->willReturn('my_assoc_1');
@@ -109,17 +110,17 @@ class ProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_existing_product_into_mongodb_document(
         $mongoFactory,
         $serializer,
-        Product $product,
+        ProductInterface $product,
         \MongoId $mongoId,
         \MongoDate $mongoDate,
         Association $assoc1,
         Association $assoc2,
-        Category $category1,
-        Category $category2,
+        CategoryInterface $category1,
+        CategoryInterface $category2,
         Group $group1,
         Group $group2,
-        ProductValue $value1,
-        ProductValue $value2,
+        AbstractProductValue $value1,
+        AbstractProductValue $value2,
         Family $family
     ) {
         $mongoFactory->createMongoId('product1')->willReturn($mongoId);
@@ -144,7 +145,9 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $context = ['_id' => $mongoId];
 
-        $serializer->normalize($product, 'mongodb_json')->willReturn(['data' => 'data', 'completenesses' => 'completenesses']);
+        $serializer
+            ->normalize($product, 'mongodb_json')
+            ->willReturn(['data' => 'data', 'completenesses' => 'completenesses']);
         $serializer->normalize($value1, 'mongodb_document', $context)->willReturn('my_value_1');
         $serializer->normalize($value2, 'mongodb_document', $context)->willReturn('my_value_2');
         $serializer->normalize($assoc1, 'mongodb_document', $context)->willReturn('my_assoc_1');

@@ -339,7 +339,6 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         return $tree;
     }
 
-
     /**
      * Search Segment entities from an array of criterias.
      * Search is done on a "%value%" LIKE expression.
