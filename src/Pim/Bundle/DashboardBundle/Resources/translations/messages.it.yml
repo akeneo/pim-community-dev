@@ -1,0 +1,25 @@
+pim_dashboard:
+  title: Dashboard
+  version: Versione
+  link.label:
+    product: Gestisci prodotti
+    category: Gestisci Categorie
+    attribute: Gestisci Attributi
+    family: Gestisci Famiglie
+  widget:
+    error:
+      title: Errore durante il caricamento dei widget
+      message: "Il widget '%alias%' non esiste"
+    completeness:
+      title: Percentuale di completamento per canale e localizzazione
+    last_operations:
+      title: Ultime operazioni
+      empty: Nessuna operazione trovata
+      status: Stato
+      date: Data
+      type: Tipo
+      profile name: Nome del profilo
+      details: Dettagli
+      job_type:
+        import: Importazione
+        export: Esportazione
