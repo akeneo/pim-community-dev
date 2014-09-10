@@ -8,17 +8,12 @@
             $('#pim_comment_comment_reply_{{ comment.id }}').on('submit', function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: '{{ path('pim_comment_comment_reply', {'id': comment.id})}}',
+                    url: '{{ path('pim_comment_comment_reply')}}',
                     type: 'POST',
                     data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
                     success: function(data) {
-                        $('#comment{{ comment.id }}').remove();
-                        $('#comment_threads > li:first-child').after('<li>' + data + '</li>');
+                        $('#comment{{ comment.id }}').replaceWith(data);
                         $('#pim_comment_comment_body_reply_{{ comment.id }}').val('');
-
-                        $(".reply-btn").click(function(){
-                            $("div").animate({ scrollTop: 0 }, 600);
-                        });
 
                         messenger.notificationFlashMessage('success', '{{ 'flash.comment.reply.success'|trans }}');
                     },

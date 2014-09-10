@@ -21,7 +21,7 @@ class CommentRepository extends EntityRepository implements CommentRepositoryInt
     {
         return $this->findBy(
             ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'parent' => null],
-            ['repliedAt' => 'desc']
+            ['createdAt' => 'desc']
         );
     }
 }

@@ -6,7 +6,7 @@
 
 {{ form_start(replyForms[comment.id], {
     'id': 'pim_comment_comment_reply_' ~ comment.id,
-    'action': path('pim_comment_comment_reply', {'id': comment.id}),
+    'action': path('pim_comment_comment_reply'),
     'class': 'form-inline unspaced'
 }) }}
     {{ JSFV(replyForms[comment.id]) }}

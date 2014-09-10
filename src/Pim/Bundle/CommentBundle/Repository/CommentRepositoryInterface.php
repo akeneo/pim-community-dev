@@ -13,8 +13,7 @@ namespace Pim\Bundle\CommentBundle\Repository;
 interface CommentRepositoryInterface
 {
     /**
-     * Get comments related to a resource, ordered by replied date.
-     * Replied date is set to creation date if there was no reply.
+     * Get comments related to a resource, ordered by creation date.
      * Replies are not returned by this method.
      *
      * @param $resourceName
