@@ -15,7 +15,7 @@ class Version
     const VERSION = '1.2.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = '';
+    const VERSION_CODENAME = 'Acrobatty Bunny';
 
     /** @staticvar string */
     const MAJOR_VERSION = '1';
@@ -24,7 +24,7 @@ class Version
     const MINOR_VERSION = '2';
 
     /** @staticvar string */
-    const PATCH_VERSION = '1';
+    const PATCH_VERSION = '4';
 
     /** @staticvar string */
     const EXTRA_VERSION = '';
