@@ -3,7 +3,7 @@
     {% set nextProduct = sequentialEdit.next %}
     {% set ratio = sequentialEdit.countEditedProducts(product) / sequentialEdit.countProductSet * 100 %}
 
-    <div class="row-fluid buffer-top" id="sequentialEdit">
+    <div class="row-fluid" id="sequentialEdit">
         <span class="span3 right-aligned">
             {% if previousProduct %}
             <a href="{{ path('pim_enrich_product_edit', { id: previousProduct.id, dataLocale: dataLocale, compareWith: comparisonLocale  }) }}" class="left"
