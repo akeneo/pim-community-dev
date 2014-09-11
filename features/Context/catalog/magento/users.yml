@@ -36,7 +36,7 @@ users:
         firstname: Mary
         lastname: Doe
         owner: Main
-        catalogLocale: de_DE
+        catalogLocale: fr_FR
         catalogScope: ecommerce
         defaultTree: default
         roles:

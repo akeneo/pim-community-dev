@@ -12,8 +12,8 @@ jobs:
             wsdlUrl:               /api/soap/?wsdl
             defaultLocale:         en_US
             website:               base
-            storeviewMapping:      'fr_FR:fr_fr'
-            categoryMapping:       'default:2'
+            storeviewMapping:      ''
+            categoryMapping:       ''
             notInPimAnymoreAction: 'disable'
     magento_product_export:
         connector: Magento Connector
@@ -29,10 +29,10 @@ jobs:
             defaultLocale:            en_US
             website:                  base
             enabled:                  true
-            storeviewMapping:         'fr_FR:fr_fr'
+            storeviewMapping:         ''
             visibility:               4
             currency:                 EUR
-            categoryMapping:          'default:2'
+            categoryMapping:          ''
             pimGrouped:               'PACK'
             pimUpSell:                'UPSELL'
             pimCrossSell:             'X_SELL'
@@ -52,8 +52,8 @@ jobs:
             wsdlUrl:               /api/soap/?wsdl
             defaultLocale:         en_US
             website:               base
-            storeviewMapping:      'fr_FR:fr_fr'
-            categoryMapping:       'default:2'
+            storeviewMapping:      ''
+            categoryMapping:       ''
             notInPimAnymoreAction: 'disable'
 
     magento_attribute_export:
@@ -69,7 +69,7 @@ jobs:
             wsdlUrl:          /api/soap/?wsdl
             defaultLocale:    en_US
             website:          base
-            storeviewMapping: 'fr_FR:fr_fr'
+            storeviewMapping: ''
 
     magento_attributeset_export:
         connector: Magento Connector
@@ -99,4 +99,4 @@ jobs:
             wsdlUrl:          /api/soap/?wsdl
             defaultLocale:    en_US
             website:          base
-            storeviewMapping: 'fr_FR:fr_fr'
+            storeviewMapping: ''

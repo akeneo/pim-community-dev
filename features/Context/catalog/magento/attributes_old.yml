@@ -1,4 +1,4 @@
-attributes:
+testattributes:
     sku:
         labels:
             en_US: SKU

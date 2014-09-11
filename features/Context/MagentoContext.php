@@ -10,6 +10,11 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Akeneo\Component\MagentoAdminExtractor\Extractor\ProductAttributeExtractor;
+use Akeneo\Component\MagentoAdminExtractor\Extractor\AttributeExtractor;
+use Akeneo\Component\MagentoAdminExtractor\Extractor\CategoriesExtractor;
+use Akeneo\Component\MagentoAdminExtractor\Manager\MagentoAdminConnexionManager;
+use Akeneo\Component\MagentoAdminExtractor\Manager\NavigationManager;
 
 /**
  * Context for Magento connector
@@ -120,5 +125,127 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getSession()->getPage()->pressButton($button);
         $this->getMainContext()->wait($timeToWait * 1000);
+    }
+
+    /**
+     * @Then /^I check if "([^"]*)" were sent in Magento$/
+     */
+    public function iCheckIfDataWereSentInMagento($data)
+    {
+        $adminUrl   = 'http://magento.local/index.php/admin';
+        $adminLogin = 'root';
+        $adminPwd   = 'akeneo2014';
+
+        $connexionManager  = new MagentoAdminConnexionManager($adminUrl, $adminLogin, $adminPwd);
+        $mainPageCrawler   = $connexionManager->connectToAdminPage();
+        $client            = $connexionManager->getClient();
+        $navigationManager = new NavigationManager($client);
+
+        switch ($data) {
+            case 'attributes':
+            case 'attribute':
+                $extractedData['attributes'] = $this
+                    ->extractAttributesFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                break;
+
+            case 'products':
+            case 'product':
+                $extractedData['products'] = $this
+                    ->extractProductsFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                break;
+
+            case 'categories':
+            case 'category':
+                $extractedData['categories'] = $this
+                    ->extractCategoriesFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                break;
+
+            default:
+                $extractedData['attributes'] = $this
+                    ->extractAttributesFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                $extractedData['products'] = $this
+                    ->extractProductsFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                $extractedData['categories'] = $this
+                    ->extractCategoriesFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                break;
+        }
+
+        foreach ($extractedData as $type => $data) {
+            die(print_r($data));
+        }
+    }
+
+    /**
+     * Allows to extract attributes
+     * Returns ['param_1' => ['value1', ...], ...]
+     *
+     * @param NavigationManager $navigationManager Navigation manager
+     * @param Crawler           $mainPageCrawler   Admin page crawler
+     *
+     * @return array
+     */
+    protected function extractAttributesFromMagentoAdmin(NavigationManager $navigationManager, $mainPageCrawler)
+    {
+        $attributeExtractor = new AttributeExtractor($navigationManager);
+        $attributeCatalogCrawler = $navigationManager->goToAttributeCatalog($mainPageCrawler);
+
+        return $attributeExtractor->filterRowsAndExtract($attributeCatalogCrawler);
+    }
+
+    /**
+     * Allows to extract product attributes
+     * Returns ['param_1' => ['value1', ...], ...]
+     *
+     * @param NavigationManager $navigationManager Navigation manager
+     * @param Crawler           $mainPageCrawler   Admin page crawler
+     *
+     * @return array
+     */
+    protected function extractProductsFromMagentoAdmin(NavigationManager $navigationManager, $mainPageCrawler)
+    {
+        $productAttributeExtractor = new ProductAttributeExtractor($navigationManager);
+        $productCatalogCrawler = $navigationManager->goToProductCatalog($mainPageCrawler);
+
+        return $productAttributeExtractor->filterRowsAndExtract($productCatalogCrawler);;
+    }
+
+    /**
+     * Allows to extract categories
+     * Returns ['param_1' => ['value1', ...], ...]
+     *
+     * @param NavigationManager $navigationManager Navigation manager
+     * @param Crawler           $mainPageCrawler   Admin page crawler
+     *
+     * @return array
+     */
+    protected function extractCategoriesFromMagentoAdmin(NavigationManager $navigationManager, $mainPageCrawler)
+    {
+        $categoriesExtractor = new CategoriesExtractor($navigationManager);
+
+        return $categoriesExtractor->extract($mainPageCrawler);
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return $this->getMainContext()->getContainer();
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
+     */
+    protected function getProductManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function purgeMagentoDatabase()
+    {
+        exec('mysql -u root -proot magento < '. __DIR__ . '/fixtures/dump_magento_1_8.sql');
     }
 }

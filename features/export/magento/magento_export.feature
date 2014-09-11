@@ -6,6 +6,45 @@ Feature: Magento full export
 
   Scenario: Successfully export data to Magento
     Given  a "magento" catalog configuration
+
+    And the following products:
+      | sku     | family  | categories | groups    | price                 | size   | weight   | tax_class_id |
+      | sku-000 | Default | notebooks  |           | 10.00 EUR,50.00 USD   |        | 200 GRAM | 4            |
+      | sku-001 | Shirt   | shirts     | oro_shirt | 5.00 EUR,27.00 USD    | XS     | 360 GRAM | 4            |
+      | sku-002 | Shirt   | shirts     | oro_shirt | 25.00 EUR,48.00 USD   | S      | 360 GRAM | 4            |
+      | sku-003 | Shirt   | shirts     | oro_shirt | 20.00 EUR,48.00 USD   | L      | 360 GRAM | 4            |
+    And the following product values:
+      | product | attribute         | value                                      | locale | scope   |
+      | sku-000 | name              | Product example                            | en_US  | magento |
+      | sku-000 | name              | Exemple de produit                         | fr_FR  | magento |
+      | sku-000 | description       | Description                                | en_US  | magento |
+      | sku-000 | description       | Description                                | fr_FR  | magento |
+      | sku-000 | short_description | Short description                          | en_US  | magento |
+      | sku-000 | short_description | Courte description                         | fr_FR  | magento |
+      | sku-001 | name              | Shirt product example                      | en_US  | magento |
+      | sku-001 | name              | Exemple de produit chemise                 | fr_FR  | magento |
+      | sku-001 | description       | Shirt description                          | en_US  | magento |
+      | sku-001 | description       | Description d'une chemise                  | fr_FR  | magento |
+      | sku-001 | short_description | Short shirt description                    | en_US  | magento |
+      | sku-001 | short_description | Courte description d'une chemise           | fr_FR  | magento |
+      | sku-001 | color             | Blue                                       | en_US  | magento |
+      | sku-001 | color             | Bleu                                       | fr_FR  | magento |
+      | sku-002 | name              | Second shirt product example               | en_US  | magento |
+      | sku-002 | name              | Second exemple de produit chemise          | fr_FR  | magento |
+      | sku-002 | description       | Second shirt description                   | en_US  | magento |
+      | sku-002 | description       | Seconde description d'une chemise          | fr_FR  | magento |
+      | sku-002 | short_description | Second short shirt description             | en_US  | magento |
+      | sku-002 | short_description | Seconde courte description d'une chemise   | fr_FR  | magento |
+      | sku-002 | color             | Red                                        | en_US  | magento |
+      | sku-002 | color             | Rouge                                      | fr_FR  | magento |
+      | sku-003 | name              | Third shirt product example                | en_US  | magento |
+      | sku-003 | name              | Troisième exemple de produit chemise       | fr_FR  | magento |
+      | sku-003 | description       | Third shirt description                    | en_US  | magento |
+      | sku-003 | description       | Troisième description d'une chemise        | fr_FR  | magento |
+      | sku-003 | short_description | Third short shirt description              | en_US  | magento |
+      | sku-003 | short_description | Troisième courte description d'une chemise | fr_FR  | magento |
+      | sku-003 | color             | Black                                      | en_US  | magento |
+      | sku-003 | color             | Noir                                       | fr_FR  | magento |
     And I launched the completeness calculator
     And I am logged in as "peter"
     When I am on the "magento_full_export" export job edit page
@@ -24,3 +63,4 @@ Feature: Magento full export
     And I press the "Save" button and I wait "15"s
     Then I launch the export job
     And I wait for the "magento_product_export" job to finish
+    Then I check if data were sent in Magento
