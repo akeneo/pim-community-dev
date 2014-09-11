@@ -68,8 +68,15 @@ By default, this script initializes the dev environment.
 
 You can download translation packs from crowdin: http://crowdin.net/project/akeneo
 
-The Akeneo PIM archive contains the following directories tree: `<locale>/<version>/<translation_directories>`
-You just have to paste the <translation_directories> in your app/Resources/ directory.
+The Akeneo PIM archive contains a 'Community' directory.
+
+To add a pack you have to :
+* rename the directories by following the rule 'src/Pim/Bundle/EnrichBundle' to 'PimEnrichBundle'
+* move this directory to app/Resources/
+* run php app/console oro:translation:dump fr de en (if you use en, fr and de locales)
+
+To use a pack :
+* go to System > Configuration and select your language
 
 Write permission for the HTTP server
 ------------------------------------
@@ -78,8 +85,6 @@ You must give write permission to the Apache user on the following directories:
 - app/cache
 - app/logs
 - app/entities
-- app/import
-- app/export
 - app/emails
 - web/bundles
 - app/uploads/product
