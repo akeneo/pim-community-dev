@@ -1,0 +1,70 @@
+confirmation:
+  remove:
+    item: Sei sicuro di voler eliminare questo articolo?
+    association type: Sei sicuro di voler eliminare questo tipo di associazione?
+    attribute: Sei sicuro di voler eliminare questo attributo?
+    family: Sei sicuro di voler eliminare questa famiglia?
+    product: Sei sicuro di voler eliminare questo prodotto?
+    channel: Sei sicuro di voler eliminare questo canale?
+    group: Sei sicuro di voler eliminare questo gruppo?
+    variant group: Sei sicuro di voler eliminare questa variante del gruppo?
+    group type: Sei sicuro di voler eliminare questo tipo di gruppo?
+    import profile: Sei sicuro di voler eliminare questo profilo di importazione?
+    export profile: Sei sicuro di voler eliminare questo profilo di esportazione?
+    user: Sei sicuro di voler eliminare questo utente?
+    role: Sei sicuro di voler eliminare questo ruolo?
+flash:
+  item:
+    removed: Articolo rimosso con successo
+  association type:
+    removed: Tipo di associazione rimossa con successo
+  attribute:
+    removed: Attributo rimosso con successo
+  family:
+    removed: Famiglia rimossa con successo
+  product:
+    removed: Prodotto rimosso con successo
+  channel:
+    removed: Canale rimosso con successo
+  group:
+    removed: Gruppo rimosso con successo
+  variant group:
+    removed: Variante gruppo rimossa con successo
+  group type:
+    removed: Tipo di gruppo rimosso con successo
+  import profile:
+    removed: Profilo di importazione rimosso con successo
+  export profile:
+    removed: Profilo di esportazione rimosso con successo
+  user:
+    removed: Utente rimosso con successo
+  role:
+    removed: Ruolo rimosso con successo
+error:
+  removing:
+    item: Non è possibile eliminare questo articolo
+    association type: Non è possibile eliminare questo tipo di associazione
+    attribute: Non è possibile eliminare questo attributo
+    family: Non è possibile eliminare questa famiglia
+    product: Non è possibile eliminare questo prodotto
+    channel: Non è possibile eliminare questo canale
+    group: Non è possibile eliminare questo gruppo
+    variant group: Non è possibile eliminare questa variante del gruppo
+    group type: Non è possibile eliminare questo tipo di gruppo
+    import profile: Non è possibile eliminare questo profilo di importazione
+    export profile: Non è possibile eliminare questo profilo di esportazione
+    user: Non è possibile eliminare questo utente
+    role: Non è possibile eliminare questo ruolo
+Edit: Modifica
+Delete: Elimina
+Edit attributes of the product: Modificare gli attributi del prodotto
+Classify the product: Classificare il prodotto
+Delete the product: Eliminare il prodotto
+Change status: Modificare lo stato
+Toggle status: Stato di conversione
+pim.grid.mass_action.quick_export.csv_all: CSV (tutti gli attributi)
+pim.grid.mass_action.delete: Elimina
+pim.grid.mass_action.mass_edit: Modifica di massa
+jstree.create: Creare
+switch_on: Sì
+switch_off: 'No'
