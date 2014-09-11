@@ -309,6 +309,7 @@ class MassEditActionController extends AbstractDoctrineController
         $params['actionName'] = $this->request->get('actionName');
         $params['values']     = implode(',', $params['values']);
         $params['filters']    = json_encode($params['filters']);
+        $params['sorters']    = json_encode($params['sorters']);
         $params['dataLocale'] = $this->request->get('dataLocale', null);
 
         return $params;

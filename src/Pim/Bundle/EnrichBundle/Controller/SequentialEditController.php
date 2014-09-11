@@ -94,11 +94,11 @@ class SequentialEditController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->parametersParser = $parametersParser;
+        $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->massEditLimit = $massEditLimit;
-        $this->seqEditManager = $seqEditManager;
-        $this->userContext = $userContext;
+        $this->massEditLimit        = $massEditLimit;
+        $this->seqEditManager       = $seqEditManager;
+        $this->userContext          = $userContext;
     }
 
     /**
@@ -127,7 +127,7 @@ class SequentialEditController extends AbstractDoctrineController
             'pim_enrich_product_edit',
             array(
                 'dataLocale' => $this->request->get('dataLocale'),
-                'id' => current($sequentialEdit->getProductSet())
+                'id'         => current($sequentialEdit->getProductSet())
             )
         );
     }
