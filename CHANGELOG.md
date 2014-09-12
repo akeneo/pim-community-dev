@@ -1,3 +1,9 @@
+# 1.2.5
+
+ ## Improvements
+  - Fixtures stop if warnings are encountered
+  - Errors and warnings for fixtures are displayed
+
 # 1.2.4 (2014-09-11)
 
 ## Bug fixes
