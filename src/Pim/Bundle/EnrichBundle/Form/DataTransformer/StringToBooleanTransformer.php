@@ -29,7 +29,7 @@ class StringToBooleanTransformer implements DataTransformerInterface
         if ('0' === $enabled) {
             return false;
         } else {
-            return true;
+            return '0' !== $enabled;
         }
     }
 
@@ -49,7 +49,7 @@ class StringToBooleanTransformer implements DataTransformerInterface
         if ('1' === $enabled) {
             return true;
         } else {
-            return false;
+            return '1' !== $enabled;
         }
     }
 }

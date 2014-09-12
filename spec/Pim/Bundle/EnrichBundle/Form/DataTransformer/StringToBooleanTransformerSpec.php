@@ -7,7 +7,6 @@ use Prophecy\Argument;
 
 class StringToBooleanTransformerSpec extends ObjectBehavior
 {
-
     function it_is_a_form_data_transformer()
     {
         $this->shouldImplement('Symfony\Component\Form\DataTransformerInterface');
