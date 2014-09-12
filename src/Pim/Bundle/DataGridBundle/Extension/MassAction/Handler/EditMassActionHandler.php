@@ -26,7 +26,7 @@ class EditMassActionHandler implements MassActionHandlerInterface
     protected $hydrator;
 
     /**
-     * @var EventDispatcherInterface $eventDispatcher
+     * @var EventDispatcher $eventDispatcher
      */
     protected $eventDispatcher;
 
@@ -36,8 +36,10 @@ class EditMassActionHandler implements MassActionHandlerInterface
      * @param HydratorInterface        $hydrator
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(HydratorInterface $hydrator, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        HydratorInterface $hydrator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->hydrator        = $hydrator;
         $this->eventDispatcher = $eventDispatcher;
     }
