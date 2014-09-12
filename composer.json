@@ -26,6 +26,7 @@
         "gedmo/doctrine-extensions":"2.3.x-dev@dev"
     },
     "require-dev": {
+        "phpunit/phpunit": "3.7.*",
         "squizlabs/php_codesniffer": "1.*",
         "pdepend/pdepend": "1.1.*",
         "phpmd/phpmd": "1.*",
