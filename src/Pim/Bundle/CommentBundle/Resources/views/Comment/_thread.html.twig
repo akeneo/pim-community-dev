@@ -7,11 +7,11 @@
             </div>
             <div class="span11">
                 <div>
-                    <strong>{{ fullname }}</strong>
+                    <span class="author"><strong>{{ fullname }}</strong></span>
                     <span class="date">&nbsp;&#8211;&nbsp;{{ comment.createdAt|date("M jS \\a\\t g:ia") }}</span>
                 </div>
                 <div>
-                    {{ comment.body|nl2br }}
+                    <span class="message">{{ comment.body|nl2br }}</span>
                     <span class="comment-buttons pull-right">
                         {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {id: comment.id} %}
                     </span>

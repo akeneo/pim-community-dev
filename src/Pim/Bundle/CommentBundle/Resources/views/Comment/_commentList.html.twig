@@ -33,6 +33,17 @@
 
                 return false;
             });
+
+            $("#comments .comment-create").on("click", function() {
+                $("#comments .active").removeClass("active");
+                $(this).addClass("active");
+            });
+
+            $("#comments .cancel").on("click", function(e) {
+                e.stopPropagation();
+                $("#comments .active").removeClass("active");
+                $("#comments textarea").val('');
+            });
         }
     );
 </script>
