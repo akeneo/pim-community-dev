@@ -26,7 +26,6 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -647,37 +646,6 @@ class ProductController extends AbstractDoctrineController
     protected function getCreateFormOptions(ProductInterface $product)
     {
         return array();
-    }
-
-    /**
-     * Find a product by its id or the next product if we are currently in a sequential edit or return a 404 response
-     *
-     * @param integer $id the product id
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    protected function findProductOrNextOr404($id)
-    {
-        try {
-            return $this->findProductOr404($id);
-        } catch (NotFoundHttpException $e) {
-            $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
-        }
-
-        if ($sequentialEdit) {
-            $nextId  = $this->seqEditManager->findNext($sequentialEdit, $id);
-            $product = $this->findProductOrNextOr404($nextId);
-
-            if ($product) {
-                return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $nextId));
-            } else {
-                return $this->redirectToRoute('pim_enrich_product_index');
-            }
-        } else {
-            return $this->findProductOr404($id);
-        }
     }
 
     /**
