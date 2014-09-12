@@ -72,7 +72,6 @@ class ProductEditType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $transformer = new StringToBooleanTransformer();
 
         if ($options['enable_state']) {
