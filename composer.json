@@ -21,12 +21,11 @@
         "akeneo/pim-community-dev": "dev-stable_doctrine_twig@dev",
         "oro/platform": "1.0.0-beta13",
         "phpspec/php-diff": "1.0.2",
-        "knplabs/knp-menu-bundle":"v2.0.0-alpha2@dev",
-        "knplabs/knp-menu":"v2.0.0-alpha2@dev",
+        "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
+        "knplabs/knp-menu":"v2.0.0-alpha2",
         "gedmo/doctrine-extensions":"2.3.x-dev@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*",
         "squizlabs/php_codesniffer": "1.*",
         "pdepend/pdepend": "1.1.*",
         "phpmd/phpmd": "1.*",
