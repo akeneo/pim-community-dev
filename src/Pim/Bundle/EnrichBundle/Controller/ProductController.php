@@ -491,6 +491,8 @@ class ProductController extends AbstractDoctrineController
     /**
      * List comments made on a product
      *
+     * @AclAncestor("pim_enrich_product_comment")
+     *
      * @param Request $request
      * @param         $id
      *

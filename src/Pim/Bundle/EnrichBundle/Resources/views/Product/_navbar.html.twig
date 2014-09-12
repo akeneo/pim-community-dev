@@ -14,7 +14,7 @@
 
 {% set form_tabs = form_tabs|merge(['Completeness', 'History']) %}
 
-{% if resource_granted('pim_enrich_associations_view') %}
+{% if resource_granted('pim_enrich_product_comment') %}
     {% set form_tabs = form_tabs|merge(['Comments']) %}
 {% endif %}
 
