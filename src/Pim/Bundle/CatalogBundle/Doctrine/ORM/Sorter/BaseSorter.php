@@ -26,12 +26,6 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     protected $context;
 
     /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate a sorter
      *
      * @param CatalogContext $context
@@ -81,7 +75,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value and sort on

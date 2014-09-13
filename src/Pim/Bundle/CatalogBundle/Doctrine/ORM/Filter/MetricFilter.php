@@ -29,13 +29,6 @@ class MetricFilter implements AttributeFilterInterface
     protected $context;
 
     /**
-     * TODO : replace by a timestamp ?
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate the base filter
      *
      * @param CatalogContext $context
@@ -59,7 +52,7 @@ class MetricFilter implements AttributeFilterInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias = 'filter'.$attribute->getCode();
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -72,7 +65,7 @@ class MetricFilter implements AttributeFilterInterface
                 $condition
             );
 
-            $joinAliasOpt = 'filterM'.$attribute->getCode().$this->aliasCounter;
+            $joinAliasOpt = 'filterM'.$attribute->getCode();
             $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt);
@@ -85,7 +78,7 @@ class MetricFilter implements AttributeFilterInterface
                 $condition
             );
 
-            $joinAliasOpt = 'filterM'.$attribute->getCode().$this->aliasCounter;
+            $joinAliasOpt = 'filterM'.$attribute->getCode();
             $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);

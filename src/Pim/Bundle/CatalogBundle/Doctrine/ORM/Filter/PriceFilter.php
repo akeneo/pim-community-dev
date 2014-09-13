@@ -29,13 +29,6 @@ class PriceFilter implements AttributeFilterInterface
     protected $context;
 
     /**
-     * TODO : replace by a timestamp ?
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate the base filter
      *
      * @param CatalogContext $context
@@ -59,7 +52,7 @@ class PriceFilter implements AttributeFilterInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias = 'filter'.$attribute->getCode();
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
@@ -73,7 +66,7 @@ class PriceFilter implements AttributeFilterInterface
             );
 
             // join to price
-            $joinAliasPrice = 'filterP'.$attribute->getCode().$this->aliasCounter;
+            $joinAliasPrice = 'filterP'.$attribute->getCode();
             $priceData      = $joinAlias.'.'.$backendType;
             $this->qb->leftJoin($priceData, $joinAliasPrice);
 
@@ -90,8 +83,9 @@ class PriceFilter implements AttributeFilterInterface
                 $condition
             );
 
-            $joinAliasPrice = 'filterP'.$attribute->getCode().$this->aliasCounter;
+            $joinAliasPrice = 'filterP'.$attribute->getCode();
             $condition = $this->preparePriceCondition($joinAliasPrice, $operator, $value);
+
             $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasPrice, 'WITH', $condition);
         }
 

@@ -33,9 +33,9 @@ class BaseFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku1.attribute = 42 AND filtersku1.varchar LIKE 'My Sku'";
+        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE 'My Sku'";
 
-        $queryBuilder->innerJoin('p.values', 'filtersku1', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'LIKE', 'My Sku');
     }

@@ -27,12 +27,6 @@ class MetricSorter implements AttributeSorterInterface
     protected $context;
 
     /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate a sorter
      *
      * @param CatalogContext $context
@@ -64,7 +58,7 @@ class MetricSorter implements AttributeSorterInterface
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value
@@ -76,7 +70,7 @@ class MetricSorter implements AttributeSorterInterface
             $condition
         );
 
-        $joinAliasMetric = $aliasPrefix.'M'.$attribute->getCode().$this->aliasCounter;
+        $joinAliasMetric = $aliasPrefix.'M'.$attribute->getCode();
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMetric);
 
         $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);

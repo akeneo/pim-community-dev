@@ -28,13 +28,6 @@ class OptionsFilter implements AttributeFilterInterface
     protected $context;
 
     /**
-     * TODO : replace by a timestamp ?
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate the base filter
      *
      * @param CatalogContext $context
@@ -57,8 +50,8 @@ class OptionsFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $joinAlias    = 'filter'.$attribute->getCode().$this->aliasCounter++;
-        $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
+        $joinAlias    = 'filter'.$attribute->getCode();
+        $joinAliasOpt = 'filterO'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
 
         if (in_array('empty', $value)) {

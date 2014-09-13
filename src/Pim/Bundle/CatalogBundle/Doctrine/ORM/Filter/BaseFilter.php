@@ -29,12 +29,6 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $context;
 
     /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate the base filter
      *
      * @param CatalogContext $context
@@ -57,7 +51,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === 'EMPTY') {
