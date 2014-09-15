@@ -25,14 +25,29 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedAttributes;
+
     /**
      * Instanciate a sorter
      *
      * @param CatalogContext $context
+     * @param array          $extraSupportedAttributes
      */
-    public function __construct(CatalogContext $context)
+    public function __construct(CatalogContext $context, array $extraSupportedAttributes = [])
     {
         $this->context = $context;
+        $this->supportedAttributes = array_merge(
+            [
+                'pim_catalog_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_number',
+                'pim_catalog_boolean',
+                'pim_catalog_date'
+            ],
+            $extraSupportedAttributes
+        );
     }
 
     /**
@@ -58,14 +73,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            [
-                'pim_catalog_identifier',
-                'pim_catalog_text',
-                'pim_catalog_textarea',
-                'pim_catalog_number',
-                'pim_catalog_boolean',
-                'pim_catalog_date'
-            ]
+            $this->supportedAttributes
         );
     }
 
