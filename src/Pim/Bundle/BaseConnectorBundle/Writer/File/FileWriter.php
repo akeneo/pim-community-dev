@@ -27,11 +27,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
      * @Assert\NotBlank(groups={"Execution"})
      * @WritableDirectory(groups={"Execution"})
      */
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    	protected $filePath = sys_get_temp_dir().'/export_%dateWintime%.csv';
-	} else {
-    	protected $filePath = '/tmp/export_%datetime%.csv';
-	}
+    protected $filePath = sys_get_temp_dir().'/export_%datetime%.csv';
 
     /**
      * @var StepExecution
@@ -74,15 +70,25 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     public function getPath()
     {
-        if (!isset($this->resolvedFilePath)) {
-            $this->resolvedFilePath = strtr(
-                $this->filePath,
-                array(
-                    '%datetime%' => date('Y-m-d_H:i:s')
-                    '%dateWintime%' => date('Y-m-d_H-i-s')
-                )
-            );
-        }
+    	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+	        if (!isset($this->resolvedFilePath)) {
+	            $this->resolvedFilePath = strtr(
+	                $this->filePath,
+	                array(
+	                    '%datetime%' => date('Y-m-d_H-i-s')
+	                )
+	            );
+	        }
+	    }else{
+	    	if (!isset($this->resolvedFilePath)) {
+	            $this->resolvedFilePath = strtr(
+	                $this->filePath,
+	                array(
+	                    '%datetime%' => date('Y-m-d_H:i:s')
+	                )
+	            );
+	        }
+	    }
 
         return $this->resolvedFilePath;
     }
