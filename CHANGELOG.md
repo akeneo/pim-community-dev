@@ -2,6 +2,7 @@
 
 ## Improvements
  - remove the fixed mysql socket location
+ - switch to stability stable
 
 # 1.2.3 (2014-09-08)
 
