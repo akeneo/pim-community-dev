@@ -17,22 +17,28 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class DateFilter implements FieldFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedFields;
+
     /**
      * Instanciate the filter
      *
      * @param CatalogContext $context
+     * @param array          $extraSupportedFields
      */
-    public function __construct(CatalogContext $context)
+    public function __construct(CatalogContext $context, array $extraSupportedFields = [])
     {
         $this->context = $context;
+        $this->supportedFields = array_merge(
+            ['created', 'updated'],
+            $extraSupportedFields
+        );
     }
 
     /**
@@ -99,7 +105,7 @@ class DateFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array($field, ['created', 'updated']);
+        return in_array($field, $this->supportedFields);
     }
 
     /**

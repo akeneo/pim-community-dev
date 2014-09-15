@@ -15,22 +15,28 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class EntityFilter implements FieldFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedFields;
+
     /**
      * Instanciate the base filter
      *
      * @param CatalogContext $context
+     * @param array          $extraSupportedFields
      */
-    public function __construct(CatalogContext $context)
+    public function __construct(CatalogContext $context, array $extraSupportedFields = [])
     {
         $this->context = $context;
+        $this->supportedFields = array_merge(
+            ['family', 'groups'],
+            $extraSupportedFields
+        );
     }
 
     /**
@@ -83,7 +89,7 @@ class EntityFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array($field, ['family', 'groups']);
+        return in_array($field, $this->supportedFields);
     }
 
     /**
