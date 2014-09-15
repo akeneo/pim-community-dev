@@ -2,6 +2,7 @@
 ## Improvements
 
 - remove the fixed mysql socket location
+- switch to minimum-stability:stable in composer.json
 
 ## Bug fixes
 ## BC breaks
