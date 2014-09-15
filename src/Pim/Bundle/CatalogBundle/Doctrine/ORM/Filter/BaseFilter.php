@@ -20,22 +20,46 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
+    protected $supportedOperators;
+
     /**
      * Instanciate the base filter
      *
      * @param CatalogContext $context
+     * @param array          $extraSupportedAttributes
+     * @param array          $extraSupportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
+    public function __construct(
+        CatalogContext $context,
+        array $extraSupportedAttributes = [],
+        array $extraSupportedOperators = []
+    ) {
         $this->context = $context;
+        $this->supportedAttributes = array_merge(
+            [
+                'pim_catalog_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_number',
+                'pim_catalog_boolean',
+                'pim_catalog_date'
+            ],
+            $extraSupportedAttributes
+        );
+        $this->supportedOperators = array_merge(
+            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN'],
+            $extraSupportedOperators
+        );
     }
 
     /**
@@ -103,14 +127,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            [
-                'pim_catalog_identifier',
-                'pim_catalog_text',
-                'pim_catalog_textarea',
-                'pim_catalog_number',
-                'pim_catalog_boolean',
-                'pim_catalog_date'
-            ]
+            $this->supportedAttributes
         );
     }
 
@@ -121,7 +138,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         return in_array(
             $operator,
-            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN']
+            $this->supportedOperators
         );
     }
 

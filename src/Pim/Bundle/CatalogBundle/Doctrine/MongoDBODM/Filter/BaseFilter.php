@@ -24,14 +24,39 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
+    protected $supportedOperators;
+
     /**
      * Instanciate the filter
      *
      * @param CatalogContext $context
+     * @param array          $extraSupportedAttributes
+     * @param array          $extraSupportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
+    public function __construct(
+        CatalogContext $context,
+        array $extraSupportedAttributes = [],
+        array $extraSupportedOperators = []
+    ) {
         $this->context = $context;
+        $this->supportedAttributes = array_merge(
+            [
+                'pim_catalog_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_number',
+                'pim_catalog_boolean'
+            ],
+            $extraSupportedAttributes
+        );
+        $this->supportedOperators = array_merge(
+            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'LIKE'],
+            $extraSupportedOperators
+        );
     }
 
     /**
@@ -57,13 +82,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            [
-                'pim_catalog_identifier',
-                'pim_catalog_text',
-                'pim_catalog_textarea',
-                'pim_catalog_number',
-                'pim_catalog_boolean'
-            ]
+            $this->supportedAttributes
         );
     }
 
@@ -74,7 +93,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         return in_array(
             $operator,
-            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'LIKE']
+            $this->supportedOperators
         );
     }
 

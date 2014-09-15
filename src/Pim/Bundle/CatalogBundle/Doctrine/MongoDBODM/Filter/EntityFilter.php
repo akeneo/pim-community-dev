@@ -25,14 +25,22 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedFields;
+
     /**
      * Instanciate the filter
      *
      * @param CatalogContext $context
+     * @param array          $extraSupportedFields
      */
-    public function __construct(CatalogContext $context)
+    public function __construct(CatalogContext $context, array $extraSupportedFields = [])
     {
         $this->context = $context;
+        $this->supportedFields = array_merge(
+            ['family'],
+            $extraSupportedFields
+        );
     }
 
     /**
@@ -48,7 +56,7 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field === 'family';
+        return in_array($field, $this->supportedFields);
     }
 
     /**
