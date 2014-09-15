@@ -15,12 +15,12 @@ class StringToBooleanTransformerSpec extends ObjectBehavior
     function it_transforms_strings_into_boolean()
     {
         $this->transform('0')->shouldReturn(false);
-        $this->transform('1')->shouldReturn(true);
+        $this->transform('1')->shouldReturn('1');
     }
 
     function it_reverse_transforms_strings_into_boolean()
     {
-        $this->transform('1')->shouldReturn(true);
-        $this->transform('0')->shouldReturn(false);
+        $this->reverseTransform('1')->shouldReturn(true);
+        $this->reverseTransform('0')->shouldReturn('0');
     }
 }
