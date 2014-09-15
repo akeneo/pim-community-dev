@@ -111,7 +111,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
      *
      * @param JobExecution $jobExecution
      *
-     * @return true
+     * @return boolean
      */
     protected function executionComplete(JobExecution $jobExecution)
     {
