@@ -264,8 +264,6 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
      */
     protected function checkAttributes($magExtractedAttributes, $attributesToCheck)
     {
-        print_r($attributesToCheck);
-        print_r($magExtractedAttributes);
         foreach ($attributesToCheck as $attribute) {
             $attributeCode = $attribute['attribute_code'];
 
