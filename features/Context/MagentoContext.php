@@ -286,37 +286,51 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
                                 foreach ($param as $storeView => $translatableParams) {
                                     foreach ($translatableParams as $translatableParam) {
 
+                                        if (empty($translatableParam)) {
+                                            break;
+                                        }
+
                                         foreach ($matchingMagAttribute[$paramCode] as $magTranslatableParam) {
                                             if ($translatableParam === $magTranslatableParam[$storeView]) {
                                                 continue 2;
                                             }
                                         }
 
-                                        throw new \InvalidArgumentException("Parameter \"$paramCode\" in
-                                        \"$attributeCode\" in store view \"$storeView\" not matching in Magento");
+                                        throw new \InvalidArgumentException(
+                                            sprintf('Parameter "%s" in "%s" attribute in store view "%s" not found' .
+                                                'in Magento.', $paramCode, $attributeCode, $storeView)
+                                        );
                                     }
                                 }
 
                             } else {
-                                throw new \InvalidArgumentException("Parameter \"$paramCode\" in \"$attributeCode\"
-                                    not matching in Magento");
+                                throw new \InvalidArgumentException(
+                                    sprintf('Parameter "%s" in "%s" attribute not found in Magento',
+                                        $paramCode, $attributeCode)
+                                );
                             }
 
                         } else {
                             if ($matchingMagAttribute[$paramCode] !== $param) {
-                                throw new \InvalidArgumentException("Parameter \"$paramCode\" in \"$attributeCode\"
-                                    not matching in Magento");
+                                throw new \InvalidArgumentException(
+                                    sprintf('Parameter "%s" in "%s" attribute not found in Magento',
+                                        $paramCode, $attributeCode)
+                                );
                             }
                         }
 
                     } else {
-                        throw new \InvalidArgumentException("Attribute \"$attributeCode\" has no parameter
-                            \"$paramCode\" in Magento");
+                        throw new \InvalidArgumentException(
+                            sprintf('Attribute "%s" has no parameter "%s" in Magento',
+                            $attributeCode, $paramCode)
+                        );
                     }
                 }
 
             } else {
-                throw new \InvalidArgumentException("Attribute with code \"$attributeCode\" not found in Magento");
+                throw new \InvalidArgumentException(
+                    sprintf('Attribute with code "%s" not found in Magento', $attributeCode)
+                );
             }
 
         }
