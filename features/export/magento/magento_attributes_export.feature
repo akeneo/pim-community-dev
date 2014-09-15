@@ -80,4 +80,30 @@ Feature: Magento attribute export
     And I press the "Save" button and I wait "15"s
     Then I launch the export job
     And I wait for the "magento_option_export" job to finish
-    Then I check if "attributes" were sent in Magento
+    Then I check if "attributes" were sent in Magento:
+      | attribute_code    | store_view         | title                   | options           | frontend_input | is_global  | is_unique | is_required | is_searchable |
+      | color             | Admin              | color                   | red, black, blue  | Dropdown       | Store View | No        | No          | Yes           |
+      | color             | Default Store View | Color                   | Red, Black, Blue  |                |            |           |             |               |
+      | color             | fr_fr              | Couleur                 | Rouge, Noir, Bleu |                |            |           |             |               |
+      | size              | Admin              | size                    | XS, S, M, L       | Dropdown       | Store View | No        | No          | Yes           |
+      | size              | Default Store View | Size                    | XS, S, M, L       |                |            |           |             |               |
+      | size              | fr_fr              | Taille                  | XS, S, M, L       |                |            |           |             |               |
+      | sku               | Admin              | SKU                     |                   | Text Field     | Global     | Yes       | Yes         | Yes           |
+      | name              | Admin              | name                    |                   | Text Field     | Store View | No        | Yes         | Yes           |
+      | name              | Default Store View | Name                    |                   |                |            |           |             |               |
+      | name              | fr_fr              | Nom                     |                   |                |            |           |             |               |
+      | short_description | Admin              | short_description       |                   | Text Area      | Store View | No        | Yes         | Yes           |
+      | short_description | Default Store View | Short description       |                   |                |            |           |             |               |
+      | short_description | fr_fr              | Courte description      |                   |                |            |           |             |               |
+      | description       | Admin              | description             |                   | Text Area      | Store View | No        | Yes         | Yes           |
+      | description       | Default Store View | Description             |                   |                |            |           |             |               |
+      | description       | fr_fr              | Description             |                   |                |            |           |             |               |
+      | price             | Admin              | price                   |                   | Price          |            | No        | No          | Yes           |
+      | price             | Default Store View | Price                   |                   |                |            |           |             |               |
+      | price             | fr_fr              | Prix                    |                   |                |            |           |             |               |
+      | weight            | Admin              | weight                  |                   | Text Field     | Store View | No        | No          | Yes           |
+      | weight            | Default Store View | Weight                  |                   |                |            |           |             |               |
+      | weight            | fr_fr              | Poids                   |                   |                |            |           |             |               |
+      | tax_class_id      | Admin              | tax_class_id            |                   | Dropdown       | Global     | No        | No          | Yes           |
+      | tax_class_id      | Default Store View | Tax class id            |                   |                |            |           |             |               |
+      | tax_class_id      | fr_fr              | Id de la classe de taxe |                   |                |            |           |             |               |
