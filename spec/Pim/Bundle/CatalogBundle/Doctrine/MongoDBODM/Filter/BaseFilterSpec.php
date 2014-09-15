@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -48,5 +47,4 @@ class BaseFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter('field', 'LIKE', 'test');
     }
-
 }

@@ -7,6 +7,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
@@ -78,9 +79,15 @@ class IsAssociatedFilter extends BooleanFilter
      */
     protected function getAssociationType()
     {
-        $associationTypeId = $this->extractor->getDatagridParameter('associationType');
+        $params = $this->extractor->getDatagridParameter(RequestParameters::ADDITIONAL_PARAMETERS, []);
+        $associationTypeId = isset($params['associationType']) ? $params['associationType'] : null;
+
         if (!$associationTypeId) {
-            throw new \LogicalException('The current association type must be configured');
+            $associationTypeId = $this->extractor->getDatagridParameter('associationType');
+        }
+
+        if (!$associationTypeId) {
+            throw new \LogicException('The current association type must be configured');
         }
 
         $associationType = $this->assocTypeRepository->findOneBy(['id' => $associationTypeId]);
@@ -95,7 +102,7 @@ class IsAssociatedFilter extends BooleanFilter
     {
         $productId = $this->extractor->getDatagridParameter('product');
         if (!$productId) {
-            throw new \LogicalException('The current product type must be configured');
+            throw new \LogicException('The current product type must be configured');
         }
         $product = $this->util->getProductManager()->find($productId);
 

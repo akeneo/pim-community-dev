@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;

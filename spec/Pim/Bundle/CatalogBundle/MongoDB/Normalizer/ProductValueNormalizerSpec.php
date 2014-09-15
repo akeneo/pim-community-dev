@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,8 +17,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_value(ProductValueInterface $value)
-    {
+    function it_supports_normalization_in_mongodb_json_of_value(
+        ProductValueInterface $value,
+        AbstractAttribute $attribute
+    ) {
+        $attribute->getBackendType()->willReturn('foo');
+
         $this->supportsNormalization($value, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($value, 'json')->shouldBe(false);
         $this->supportsNormalization($value, 'xml')->shouldBe(false);
@@ -34,6 +37,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->setSerializer($serializer);
 
         $attribute->getCode()->willReturn('code');
+        $attribute->getBackendType()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
 
@@ -67,7 +71,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $serializer->normalize($price, 'mongodb_json', [])->willReturn(['data' => 42, 'currency' => 'EUR']);
 
-        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => ['EUR' => ['data' => 42, 'currency' => 'EUR']]]);
+        $this
+            ->normalize($value, 'mongodb_json', [])
+            ->shouldReturn(['code' => ['EUR' => ['data' => 42, 'currency' => 'EUR']]]);
     }
 
     function it_normalizes_value_with_empty_collection_data(
@@ -85,5 +91,20 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
 
         $this->normalize($value, 'mongodb_json', [])->shouldReturn(null);
+    }
+
+    function it_normalizes_value_with_decimal_support_backend(
+        ProductValueInterface $value,
+        AbstractAttribute $attribute
+    ) {
+        $attribute->getCode()->willReturn('code');
+        $attribute->getBackendType()->willReturn('decimal');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+
+        $value->getData()->willReturn('42.42');
+        $value->getAttribute()->willReturn($attribute);
+
+        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => 42.42]);
     }
 }

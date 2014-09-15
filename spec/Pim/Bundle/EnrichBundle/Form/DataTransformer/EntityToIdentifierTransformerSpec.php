@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;

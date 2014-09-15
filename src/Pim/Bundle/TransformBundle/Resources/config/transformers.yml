@@ -2,6 +2,7 @@ parameters:
     pim_transform.transformer.registry.class:                    Pim\Bundle\TransformBundle\Transformer\EntityTransformerRegistry
     pim_transform.transformer.entity.class:                      Pim\Bundle\TransformBundle\Transformer\EntityTransformer
     pim_transform.transformer.product.class:                     Pim\Bundle\TransformBundle\Transformer\ProductTransformer
+    pim_transform.transformer.association.class:                 Pim\Bundle\TransformBundle\Transformer\AssociationTransformer
     pim_transform.transformer.family.class:                      Pim\Bundle\TransformBundle\Transformer\FamilyTransformer
     pim_transform.transformer.attribute.class:                   Pim\Bundle\TransformBundle\Transformer\AttributeTransformer
     pim_transform.transformer.attribute_option.class:            Pim\Bundle\TransformBundle\Transformer\AttributeOptionTransformer
@@ -44,6 +45,14 @@ services:
             - '@pim_base_connector.reader.cached_association'
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.product.class% }
+
+    pim_transform.transformer.association:
+        class: %pim_transform.transformer.association.class%
+        parent: pim_transform.transformer.entity
+        arguments:
+            - '%pim_catalog.entity.product.class%'
+        tags:
+            - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.association.class% }
 
     pim_transform.transformer.attribute:
         class: %pim_transform.transformer.attribute.class%

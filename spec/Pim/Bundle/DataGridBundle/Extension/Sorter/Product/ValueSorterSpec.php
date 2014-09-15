@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;

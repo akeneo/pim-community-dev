@@ -281,8 +281,8 @@ default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
 Translate from: Übersetzen von
-switch_on: true
-switch_off: false
+switch_on: Ja
+switch_off: Nein
 Close: Schließen
 Choose a color: Wählen Sie eine Farbe
 Search: Suche
@@ -497,8 +497,6 @@ pim_enrich:
       index: Produktfamilien auflisten
       create: Eine Produktfamilie anlegen
       remove: Eine Produktfamilie löschen
-      add_attribute: Ein Attribut zu einer Produktfamilie hinzufügen
-      remove_attribute: Ein Attribut aus einer Produktfamilie löschen
     attribute_group:
       create: Eine Attributgruppe anlegen
       edit: Eine Attributgruppe bearbeiten

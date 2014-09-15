@@ -91,6 +91,7 @@ btn:
   to grid: Retour à la grille
   to parent: Retour au parent
 confirmation:
+  confirm: Confirmation
   delete: Confirmation de la suppression
   leave: Êtes-vous sûr de vouloir quitter cette page?
   discard changes: "Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page."
@@ -121,6 +122,7 @@ flash:
     updated: Attribut mis à jour avec succès
     removed: Attribut supprimé avec succès
     identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
+    used by groups: 'Cet attribut ne peut pas être supprimé car il est utilisé par %count% groupes de variantes'
     option created: Option créée avec succès
     error creating option: "Une erreur s'est produite durant la création d'une option, merci d'essayer à nouveau"
   attribute group:
@@ -164,6 +166,8 @@ flash:
     attributes added: Attributs ajoutés avec succès au produit
     attribute removed: Attribut retirés avec succès du produit
     attribute not removable: Cet attribut ne peut pas être retiré de ce produit
+    enabled: Produit a été activé
+    disabled: Produit a été désactivé
   group:
     created: Groupe créé avec succès
     updated: Groupe mis à jour avec succès
@@ -278,8 +282,8 @@ default: Défaut
 Axis: Axes
 Add attributes: Ajouter des attributs
 Translate from: Traduire depuis
-switch_on: true
-switch_off: false
+switch_on: Oui
+switch_off: Non
 Close: Fermer
 Choose a color: Choisir une couleur
 Search: Recherche
@@ -384,6 +388,7 @@ pim_catalog_metric: Unité de mesure
 Activated: Activé
 Disable: Désactivé
 pim_enrich.mass_edit_action:
+  limit_exceeded: 'Veuillez sélectionner moins de %limit% éléments à éditer'
   product:
     page_title: Produits
     page_subtitle: 'Edition de masse (1 produit)|Edition de masse (%count% produits)'
@@ -467,6 +472,7 @@ pim_enrich:
     product:
       index: Lister les produits
       create: Créer un produit
+      edit_attributes: Editer les attributs du produit
       remove: Supprimer un produit
       add_attribute: Ajouter un attribut à un produit
       remove_attribute: "Supprimer un attribut d'un produit"
@@ -492,10 +498,11 @@ pim_enrich:
     family:
       index: Liste des familles
       create: Créer une famille
+      edit_properties: "Editer les propriétés d'une famille"
+      edit_attributes: "Editer les attributs d'une famille"
       remove: Supprimer une famille
-      add_attribute: "Ajouter l'attribut à une famille"
-      remove_attribute: "Retirer l'attribut de la famille"
     attribute_group:
+      index: "Liste des groupes d'attributs"
       create: "Créer un groupe d'attributs"
       edit: "Modifier un groupe d'attributs"
       remove: "Supprimer un groupe d'attributs"
@@ -523,6 +530,18 @@ pim_enrich:
       create: "Créer un type d'association"
       edit: "Modifier un type d'association"
       remove: "Supprimer un type d'association"
+  acl_group:
+    association_type: "Types d'associations"
+    attribute: Attributs
+    attribute_group: "Groupes d'attributs"
+    category: Catégories
+    channel: Canaux
+    currency: Devises
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    locale: Locales
+    product: Produits
 pim_menu:
   tab:
     collect: Extraire

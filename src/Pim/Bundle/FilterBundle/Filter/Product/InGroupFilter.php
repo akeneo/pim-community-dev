@@ -51,7 +51,7 @@ class InGroupFilter extends BooleanFilter
 
         $groupId = $this->extractor->getDatagridParameter('currentGroup');
         if (!$groupId) {
-            throw new \LogicalException('The current product group must be configured');
+            throw new \LogicException('The current product group must be configured');
         }
 
         $value = [$groupId];
