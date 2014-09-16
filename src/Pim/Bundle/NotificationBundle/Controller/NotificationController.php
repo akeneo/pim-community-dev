@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\NotificationBundle\Controller;
 
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Notification controller
@@ -25,11 +27,16 @@ class NotificationController
     private $userContext;
 
     /**
+     * @param EngineInterface         $templating
      * @param UserNotificationManager $manager
      * @param UserContext             $userContext
      */
-    public function __construct(UserNotificationManager $manager, UserContext $userContext)
-    {
+    public function __construct(
+        EngineInterface $templating,
+        UserNotificationManager $manager,
+        UserContext $userContext
+    ) {
+        $this->templating  = $templating;
         $this->manager     = $manager;
         $this->userContext = $userContext;
     }
@@ -39,15 +46,19 @@ class NotificationController
      *
      * @param Request $request
      *
-     * @Template
-     *
      * @return array ['userNotifications' => UserNotification[]]
      */
     public function listAction(Request $request)
     {
         $user = $this->userContext->getUser();
 
-        return ['userNotifications' => $this->manager->getUserNotifications($user, $request->get('skip', 0))];
+        return $this->templating->renderResponse(
+            'PimNotificationBundle:Notification:list.json.twig',
+            [
+                'userNotifications'  => $this->manager->getUserNotifications($user, $request->get('skip', 0))
+            ],
+            new JsonResponse()
+        );
     }
 
     /**
@@ -68,12 +79,28 @@ class NotificationController
     /**
      * It counts unread notifications for the current user
      *
-     * @return int
+     * @return JsonResponse
      */
     public function countUnreadAction()
     {
         $user = $this->userContext->getUser();
 
-        return $this->manager->countUnreadForUser($user);
+        return new JsonResponse($this->manager->countUnreadForUser($user));
+    }
+
+    /**
+     * Remove a notification
+     *
+     * @param integer $id
+     *
+     * @return JsonResponse
+     */
+    public function removeAction($id)
+    {
+        $userId = $this->userContext->getUser()->getId();
+
+        $this->manager->remove($userId, $id);
+
+        return new JsonResponse();
     }
 }

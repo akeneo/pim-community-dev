@@ -11,3 +11,9 @@ pim_notification_notification_mark_viewed:
 pim_notification_count_unread:
     path: /notification/count_unread
     defaults: { _controller: pim_notification.controller.notification:countUnreadAction, _format: html }
+
+pim_notification_notification_remove:
+    path: /notification/remove/{id}
+    defaults: { _controller: pim_notification.controller.notification:removeAction, _format: html }
+    requirements:
+        id: \d+

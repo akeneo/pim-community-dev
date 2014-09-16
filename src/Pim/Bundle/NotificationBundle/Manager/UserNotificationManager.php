@@ -135,4 +135,20 @@ class UserNotificationManager
     {
         return $this->repository->countUnreadForUser($user);
     }
+
+    /**
+     * Removes a notification
+     *
+     * @param integer $userId
+     * @param integer $id
+     */
+    public function remove($userId, $id)
+    {
+        $notification = $this->repository->find($id);
+
+        if ($notification) {
+            $this->entityManager->remove($notification);
+            $this->entityManager->flush();
+        }
+    }
 }
