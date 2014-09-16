@@ -316,7 +316,9 @@ class JobProfileController extends AbstractDoctrineController
             $jobExecution
                 ->setJobInstance($jobInstance)
                 ->setUser($this->getUser()->getUsername());
-            $this->persist($jobExecution);
+            $manager = $this->getDoctrine()->getManagerForClass(get_class($jobExecution));
+            $manager->persist($jobExecution);
+            $manager->flush($jobExecution);
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $pathFinder = new PhpExecutableFinder();
