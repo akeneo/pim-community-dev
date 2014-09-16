@@ -30,12 +30,12 @@ class CategoryManagerSpec extends ObjectBehavior
         $this->getObjectManager()->shouldReturn($objectManager);
     }
 
-    function it_instanciates_a_category()
+    function it_instantiates_a_category()
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }
 
-    function it_instanciates_a_tree(CategoryInterface $tree)
+    function it_instantiates_a_tree(CategoryInterface $tree)
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }

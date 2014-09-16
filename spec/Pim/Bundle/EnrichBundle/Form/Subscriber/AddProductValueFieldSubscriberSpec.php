@@ -3,8 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;

@@ -1,7 +1,7 @@
 # this file contains all non local parameters required by the PIM to work
 # if you need to override one of these parameter, you can do it directly in your own parameters.yml file
 parameters:
-    database_unix_socket: /var/run/mysqld/mysqld.sock
+    database_unix_socket: ~
 
     mailer_transport:     smtp
     mailer_host:          localhost

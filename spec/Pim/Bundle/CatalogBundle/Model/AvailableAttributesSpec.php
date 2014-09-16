@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Model;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class AvailableAttributesSpec extends ObjectBehavior

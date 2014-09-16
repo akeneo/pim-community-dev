@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\TransformBundle\Converter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;

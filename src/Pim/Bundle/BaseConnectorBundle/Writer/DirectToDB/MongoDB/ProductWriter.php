@@ -112,7 +112,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param NormalizerInterface      $normalizer
      * @param EventDispatcherInterface $eventDispatcher
      * @param MongoObjectsFactory      $mongoFactory
-     * @param string                   $productClass:
+     * @param string                   $productClass
      * @param CacheClearer             $cacheClearer
      */
     public function __construct(

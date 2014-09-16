@@ -151,7 +151,7 @@ class SorterExtension extends AbstractExtension
         $sorters = $this->getSorters($config);
 
         $defaultSorters = $config->offsetGetByPath(Configuration::DEFAULT_SORTERS_PATH, []);
-        $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
+        $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ?: $defaultSorters;
 
         // if default sorter was not specified, just take first sortable column
         if (!$sortBy && $sorters) {
