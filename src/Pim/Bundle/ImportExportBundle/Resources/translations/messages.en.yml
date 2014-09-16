@@ -25,9 +25,9 @@ pim_import_export:
 
     notification:
         export:
-            complete: Export finished
+            complete: Export <strong>%label%</strong> finished
         import:
-            complete: Import finished
+            complete: Import <strong>%label%</strong> finished
 
 # Page titles:
 pim_title.export_profile.index:   Export profiles management
