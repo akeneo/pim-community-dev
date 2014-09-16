@@ -25,7 +25,7 @@
     {% set activeTab = true %}
 </div>
 
-{% if resource_granted("pim_enrich_product_categories_view") %}
+{% if resource_granted("pim_enrich_product_comment") %}
     <div class="tab-pane{% if not activeTab %} active{% endif %}" id="comments" data-url="{{ path('pim_enrich_product_comments', { id: product.id, dataLocale: dataLocale }) }}">
         {% set activeTab = true %}
     </div>
