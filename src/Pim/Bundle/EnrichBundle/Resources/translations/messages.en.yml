@@ -555,6 +555,7 @@ pim_enrich:
             change_state: Change state of product
             add_to_groups: Add product to groups
             mass_edit: Product mass edit actions
+            comment: Comment products
         category:
             list: List categories
             create: Create a category
