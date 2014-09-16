@@ -48,7 +48,8 @@ class UserNotificationManagerSpec extends ObjectBehavior
             ->willReturn($userNotification);
         $em->persist($notification)->shouldBeCalled();
         $em->persist($userNotification)->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
+        $em->flush($notification)->shouldBeCalled();
+        $em->flush([$userNotification])->shouldBeCalled();
 
         $this->notify([$user], 'Some message')->shouldReturn($this);
     }
@@ -71,7 +72,8 @@ class UserNotificationManagerSpec extends ObjectBehavior
 
         $em->persist($notification)->shouldBeCalled();
         $em->persist(Argument::type('Pim\Bundle\NotificationBundle\Entity\UserNotification'))->shouldBeCalledTimes(2);
-        $em->flush()->shouldBeCalled();
+        $em->flush($notification)->shouldBeCalled();
+        $em->flush([$userNotification, $userNotification])->shouldBeCalled();
 
         $this->notify([$user, $user2], 'Some message')->shouldReturn($this);
     }

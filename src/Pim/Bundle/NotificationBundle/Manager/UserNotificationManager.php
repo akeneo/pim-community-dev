@@ -72,14 +72,19 @@ class UserNotificationManager
     {
         $notification = $this->notificationFactory->createNotification($message, $type, $options);
 
+        $userNotifications = [];
+
         foreach ($users as $user) {
-            $userEntity = is_object($user) ? $user : $this->userManager->findUserByUsername($user);
-            $userNotification = $this->userNotificationFactory->createUserNotification($notification, $userEntity);
-            $this->entityManager->persist($userNotification);
+            $user = is_object($user) ? $user : $this->userManager->findUserByUsername($user);
+            $userNotifications[] = $this->userNotificationFactory->createUserNotification($notification, $user);
         }
 
         $this->entityManager->persist($notification);
-        $this->entityManager->flush();
+        foreach ($userNotifications as $userNotification) {
+            $this->entityManager->persist($userNotification);
+        }
+        $this->entityManager->flush($notification);
+        $this->entityManager->flush($userNotifications);
 
         return $this;
     }
