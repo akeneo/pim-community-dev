@@ -116,7 +116,7 @@ class CommentController extends AbstractDoctrineController
             throw new \LogicException('The request should be an Xml Http request.');
         }
 
-        $reply = new Comment();
+        $reply = $this->commentBuilder->newInstance();
         $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
         $replyForm->submit($this->request);
 

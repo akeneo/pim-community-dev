@@ -29,6 +29,14 @@ class CommentBuilder
     }
 
     /**
+     * @return CommentInterface
+     */
+    public function newInstance()
+    {
+        return new $this->className();
+    }
+
+    /**
      * @param CommentSubjectInterface $subject
      * @param UserInterface           $user
      *
