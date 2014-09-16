@@ -85,7 +85,7 @@ class UserNotificationManager
     }
 
     /**
-     * It returns user notifications for the given user
+     * Returns user notifications for the given user
      *
      * @param User $user
      * @param int  $offset
@@ -99,7 +99,7 @@ class UserNotificationManager
     }
 
     /**
-     * It marks given user notifications as viewed
+     * Marks given user notifications as viewed
      *
      * @param User           $user User
      * @param string|integer $id   Can be numeric or 'all'
@@ -125,30 +125,23 @@ class UserNotificationManager
     }
 
     /**
-     * It counts unread for user
+     * Remove a notification
      *
-     * @param User $user
-     *
-     * @return integer
-     */
-    public function countUnreadForUser(User $user)
-    {
-        return $this->repository->countUnreadForUser($user);
-    }
-
-    /**
-     * Removes a notification
-     *
-     * @param integer $userId
+     * @param User    $user
      * @param integer $id
      */
-    public function remove($userId, $id)
+    public function remove(User $user, $id)
     {
-        $notification = $this->repository->find($id);
+        $notification = $this->repository->findOneBy(
+            [
+                'id' => $id,
+                'user' => $user
+            ]
+        );
 
         if ($notification) {
             $this->entityManager->remove($notification);
-            $this->entityManager->flush();
+            $this->entityManager->flush($notification);
         }
     }
 }

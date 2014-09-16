@@ -5,11 +5,9 @@ namespace Pim\Bundle\NotificationBundle\Controller;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Notification controller
@@ -20,11 +18,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class NotificationController
 {
+    /** @var EngineInterface */
+    protected $templating;
+
     /** @var UserNotificationManager */
     protected $manager;
 
     /** @var UserContext */
-    private $userContext;
+    protected $userContext;
 
     /**
      * @param EngineInterface         $templating
@@ -42,11 +43,11 @@ class NotificationController
     }
 
     /**
-     * It lists user notifications for the current user
+     * List user notifications for the current user
      *
      * @param Request $request
      *
-     * @return array ['userNotifications' => UserNotification[]]
+     * @return JsonResponse
      */
     public function listAction(Request $request)
     {
@@ -62,30 +63,18 @@ class NotificationController
     }
 
     /**
-     * It marks current user notifications as viewed
+     * Mark user notifications as viewed
      *
      * @param string|integer $id Has to be numeric or 'all'
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function markAsViewedAction($id)
     {
         $user = $this->userContext->getUser();
         $this->manager->markAsViewed($user, $id);
 
-        return new Response();
-    }
-
-    /**
-     * It counts unread notifications for the current user
-     *
-     * @return JsonResponse
-     */
-    public function countUnreadAction()
-    {
-        $user = $this->userContext->getUser();
-
-        return new JsonResponse($this->manager->countUnreadForUser($user));
+        return new JsonResponse();
     }
 
     /**
@@ -97,9 +86,11 @@ class NotificationController
      */
     public function removeAction($id)
     {
-        $userId = $this->userContext->getUser()->getId();
+        $user = $this->userContext->getUser();
 
-        $this->manager->remove($userId, $id);
+        if (null !== $user) {
+            $this->manager->remove($user, $id);
+        }
 
         return new JsonResponse();
     }

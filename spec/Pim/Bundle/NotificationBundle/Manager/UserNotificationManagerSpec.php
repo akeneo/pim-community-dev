@@ -115,11 +115,4 @@ class UserNotificationManagerSpec extends ObjectBehavior
 
         $this->markAsViewed($user, 'all');
     }
-
-    function it_counts_unread_user_notifications_for_a_user(User $user, $repository)
-    {
-        $repository->countUnreadForUser($user)->willReturn(3);
-
-        $this->countUnreadForUser($user)->shouldReturn(3);
-    }
 }
