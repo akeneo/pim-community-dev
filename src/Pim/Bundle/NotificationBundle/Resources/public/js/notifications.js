@@ -139,12 +139,12 @@ define(
         return {
             init: function(options) {
                 if (notifications) {
-                    if (_.has(options, 'unreadCount')) {
-                        notifications.collection.trigger('load:unreadCount', options.unreadCount, true);
-                    }
                     notifications.render();
                 } else {
                     notifications = new Notifications(options);
+                }
+                if (_.has(options, 'unreadCount')) {
+                    notifications.collection.trigger('load:unreadCount', options.unreadCount, true);
                 }
             }
         };
