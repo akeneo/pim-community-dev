@@ -2,16 +2,16 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\Manager;
 
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
-use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
+use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
+use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
+use Prophecy\Argument;
 
 class UserNotificationManagerSpec extends ObjectBehavior
 {
@@ -82,37 +82,27 @@ class UserNotificationManagerSpec extends ObjectBehavior
         $this->getUserNotifications($user, 15)->shouldReturn([$userNotification]);
     }
 
-    function it_marks_a_notification_as_viewed(UserNotification $userNotification, User $user, $repository, $em)
+    function it_can_mark_a_notification_as_viewed(User $user, $repository)
     {
-        $notificationId = '1';
-        $repository->findBy(['user' => $user, 'id' => $notificationId])->shouldBeCalled()->willReturn([$userNotification]);
-        $userNotification->setViewed(true)->willReturn($userNotification);
+        $repository->markAsViewed($user, 1)->shouldBeCalled();
 
-        $em->persist($userNotification)->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
-
-        $this->markAsViewed($user, $notificationId);
+        $this->markAsViewed($user, 1);
     }
 
-    function it_marks_all_notifications_as_viewed(
-        UserNotification $userNotification1,
-        UserNotification $userNotification2,
-        User $user,
-        $repository,
-        $em
-    ) {
-        $repository
-            ->findBy(['user' => $user, 'viewed' => false])
-            ->shouldBeCalled()
-            ->willReturn([$userNotification1, $userNotification2]);
-
-        $userNotification1->setViewed(true)->willReturn($userNotification1);
-        $userNotification2->setViewed(true)->willReturn($userNotification2);
-
-        $em->persist($userNotification1)->shouldBeCalled();
-        $em->persist($userNotification2)->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
+    function it_can_mark_all_notifications_as_viewed(User $user, $repository)
+    {
+        $repository->markAsViewed($user, 'all')->shouldBeCalled();
 
         $this->markAsViewed($user, 'all');
+    }
+
+    function it_can_remove_a_notification(UserNotification $userNotification, User $user, $repository, $em)
+    {
+        $repository->findOneBy(['id' => 1, 'user' => $user])->willReturn($userNotification);
+
+        $em->remove($userNotification)->shouldBeCalled();
+        $em->flush($userNotification)->shouldBeCalled();
+
+        $this->remove($user, 1);
     }
 }

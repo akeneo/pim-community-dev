@@ -35,4 +35,27 @@ class UserNotificationRepository extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * Marks user notifications as viewed
+     *
+     * @param User           $user User
+     * @param string|integer $id   Can be numeric or 'all'
+     */
+    public function markAsViewed(User $user, $id)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->update($this->_entityName, 'n')
+            ->set('n.viewed', true)
+            ->where('n.user = :user')
+            ->setParameter('user', $user);
+
+        if (is_numeric($id)) {
+            $qb
+                ->andWhere('n.id = :id')
+                ->setParameter('id', $id);
+        }
+
+        $qb->getQuery()->execute();
+    }
 }

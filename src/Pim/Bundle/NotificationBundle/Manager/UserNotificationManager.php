@@ -103,25 +103,10 @@ class UserNotificationManager
      *
      * @param User           $user User
      * @param string|integer $id   Can be numeric or 'all'
-     *
-     * @return void
      */
     public function markAsViewed(User $user, $id)
     {
-        // TODO: use a direct query in repository to mark notifications as viewed directly can be faster
-        if (is_numeric($id)) {
-            $findParams = ['user' => $user, 'id' => $id];
-        } elseif ('all' === $id) {
-            $findParams = ['user' => $user, 'viewed' => false];
-        }
-        $userNotifications = $this->repository->findBy($findParams);
-
-        foreach ($userNotifications as $userNotification) {
-            $userNotification->setViewed(true);
-            $this->entityManager->persist($userNotification);
-        }
-
-        $this->entityManager->flush();
+        $this->repository->markAsViewed($user, $id);
     }
 
     /**

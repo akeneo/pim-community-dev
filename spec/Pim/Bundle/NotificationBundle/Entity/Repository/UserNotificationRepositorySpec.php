@@ -2,10 +2,9 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\Entity\Repository;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use PhpSpec\ObjectBehavior;
 
 class UserNotificationRepositorySpec extends ObjectBehavior
 {
