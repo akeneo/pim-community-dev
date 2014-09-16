@@ -3,6 +3,7 @@
 ## Improvements
  - remove the fixed mysql socket location
  - switch to stability stable
+ - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 
 # 1.2.3 (2014-09-08)
 
