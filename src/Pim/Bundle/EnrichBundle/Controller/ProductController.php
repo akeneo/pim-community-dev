@@ -38,6 +38,8 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
+use Pim\Bundle\CommentBundle\Manager\CommentManager;
 
 /**
  * Product Controller
@@ -79,6 +81,16 @@ class ProductController extends AbstractDoctrineController
     protected $securityFacade;
 
     /**
+     * @var CommentManager
+     */
+    protected $commentManager;
+
+    /**
+     * @var CommentBuilder
+     */
+    protected $commentBuilder;
+
+    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -108,6 +120,8 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
+     * @param CommentManager           $commentManager
+     * @param CommentBuilder           $commentBuilder
      */
     public function __construct(
         Request $request,
@@ -124,7 +138,9 @@ class ProductController extends AbstractDoctrineController
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager
+        ProductCategoryManager $prodCatManager,
+        CommentManager $commentManager,
+        CommentBuilder $commentBuilder
     ) {
         parent::__construct(
             $request,
@@ -144,6 +160,8 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager    = $versionManager;
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
+        $this->commentManager    = $commentManager;
+        $this->commentBuilder    = $commentBuilder;
     }
 
     /**
@@ -468,6 +486,41 @@ class ProductController extends AbstractDoctrineController
         $trees = $this->getFilledTree($parent, $categories);
 
         return array('trees' => $trees, 'categories' => $categories);
+    }
+
+    /**
+     * List comments made on a product
+     *
+     * @AclAncestor("pim_enrich_product_comment")
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return Response
+     */
+    public function listCommentsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+        $comment = $this->commentBuilder->buildComment($product, $this->getUser());
+        $createForm = $this->createForm('pim_comment_comment', $comment);
+
+        $comments = $this->commentManager->getComments($product);
+        $replyForms = [];
+
+        foreach ($comments as $comment) {
+            $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
+            $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
+            $replyForms[$comment->getId()] = $replyForm->createView();
+        }
+
+        return $this->render(
+            'PimCommentBundle:Comment:_commentList.html.twig',
+            [
+                'createForm' => $createForm->createView(),
+                'replyForms' => $replyForms,
+                'comments' => $comments,
+            ]
+        );
     }
 
     /**

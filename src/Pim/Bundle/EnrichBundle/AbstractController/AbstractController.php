@@ -295,7 +295,7 @@ abstract class AbstractController
      * @param mixed                    $data    The initial data for the form
      * @param array                    $options Options for the form
      *
-     * @return Form
+     * @return \Symfony\Component\Form\Form
      */
     public function createForm($type, $data = null, array $options = array())
     {
