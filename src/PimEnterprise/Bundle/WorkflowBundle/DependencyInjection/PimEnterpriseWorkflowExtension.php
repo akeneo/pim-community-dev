@@ -19,7 +19,7 @@ use Symfony\Component\Config\FileLocator;
 /**
  * PimEnterprise\Bundle\WorkflowBundle\DependencyInjection
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class PimEnterpriseWorkflowExtension extends Extension
 {

@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
  * Publisher for product related associations.
  * When a product A is published, this class will update all the associations where A is referred.
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RelatedAssociationPublisher implements PublisherInterface
 {

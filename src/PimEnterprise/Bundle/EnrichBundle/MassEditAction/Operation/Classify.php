@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Batch operation to classify products
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class Classify extends BaseClassify
 {

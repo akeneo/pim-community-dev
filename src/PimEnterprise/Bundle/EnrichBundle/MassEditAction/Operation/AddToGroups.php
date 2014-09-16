@@ -16,7 +16,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups as BaseAddToGro
 /**
  * Adds many products to many groups
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AddToGroups extends BaseAddToGroups
 {

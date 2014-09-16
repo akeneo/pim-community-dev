@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepo
 /**
  * Overriden product mass action repository
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductMassActionRepository extends BaseProductMassActionRepository
 {

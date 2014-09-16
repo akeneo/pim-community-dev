@@ -24,7 +24,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 /**
  * Override attribute handler
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeHandler extends BaseAttributeHandler
 {

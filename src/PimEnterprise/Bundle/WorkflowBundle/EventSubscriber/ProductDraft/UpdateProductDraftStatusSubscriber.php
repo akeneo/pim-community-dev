@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 /**
  * Update the product draft with the current request data
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class UpdateProductDraftStatusSubscriber implements EventSubscriberInterface
 {

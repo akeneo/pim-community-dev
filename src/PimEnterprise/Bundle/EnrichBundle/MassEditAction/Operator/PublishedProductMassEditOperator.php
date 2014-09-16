@@ -19,7 +19,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
  * A batch operation operator
  * Applies batch operations to published products passed in the form of QueryBuilder
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PublishedProductMassEditOperator extends AbstractMassEditOperator
 {

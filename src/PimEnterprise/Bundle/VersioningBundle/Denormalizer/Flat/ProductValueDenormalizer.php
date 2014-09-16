@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 /**
  * Product value flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductValueDenormalizer extends AbstractEntityDenormalizer
 {
@@ -38,7 +38,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {

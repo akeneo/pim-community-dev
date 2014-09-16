@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
 
 class MetricComparatorSpec extends ObjectBehavior
@@ -33,7 +32,7 @@ class MetricComparatorSpec extends ObjectBehavior
     function it_detects_changes_when_changing_metric_data(
         $value,
         Model\Metric $metric
-    ){
+    ) {
         $submittedData = [
             'metric' => [
                 'data' => '100',
@@ -57,7 +56,7 @@ class MetricComparatorSpec extends ObjectBehavior
     function it_detects_changes_when_changing_metric_unit(
         $value,
         Model\Metric $metric
-    ){
+    ) {
         $submittedData = [
             'metric' => [
                 'data' => '100',

@@ -18,7 +18,7 @@ use Symfony\Component\Form\AbstractType;
 /**
  * Form type for AttributeGroup permissions
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class AttributeGroupPermissionsType extends AbstractType
 {

@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Datagrid view access manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class DatagridViewAccessManager
 {

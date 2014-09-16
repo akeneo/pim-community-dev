@@ -13,8 +13,11 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class AttributeGroupAccessManagerSpec extends ObjectBehavior
 {
-    function let(SmartManagerRegistry $registry, ObjectManager $objectManager, AttributeGroupAccessRepository $repository)
-    {
+    function let(
+        SmartManagerRegistry $registry,
+        ObjectManager $objectManager,
+        AttributeGroupAccessRepository $repository
+    ) {
         $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
         $registry->getRepository(Argument::any())->willReturn($repository);
 

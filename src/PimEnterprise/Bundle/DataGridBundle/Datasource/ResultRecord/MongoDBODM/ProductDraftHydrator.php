@@ -18,7 +18,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 /**
  * Hydrator for product draft (MongoDB support)
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ProductDraftHydrator implements HydratorInterface
 {

@@ -16,13 +16,12 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Product version reverter that allow to revert a product to a previous snapshot
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductReverter
 {
@@ -39,10 +38,10 @@ class ProductReverter
     protected $validator;
 
     /**
-     * @param ManagerRegistry     $registry
-     * @param SerializerInterface $serializer
-     * @param ProductManager      $productManager
-     * @param ValidatorInterface  $validator
+     * @param ManagerRegistry       $registry
+     * @param DenormalizerInterface $denormalizer
+     * @param ProductManager        $productManager
+     * @param ValidatorInterface    $validator
      */
     public function __construct(
         ManagerRegistry $registry,

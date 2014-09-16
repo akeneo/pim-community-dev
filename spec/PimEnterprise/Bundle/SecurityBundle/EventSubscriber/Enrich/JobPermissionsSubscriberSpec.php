@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;

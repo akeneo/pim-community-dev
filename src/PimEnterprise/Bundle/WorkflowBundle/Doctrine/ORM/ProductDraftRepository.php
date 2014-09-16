@@ -24,7 +24,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 /**
  * ProductDraft ORM repository
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftRepository extends EntityRepository implements
     ProductDraftRepositoryInterface,

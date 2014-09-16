@@ -35,9 +35,15 @@ class RegisterProductDraftPresentersPassSpec extends ObjectBehavior
         $barDefinition->setPublic(false)->shouldBeCalled();
         $fooDefinition->setPublic(false)->shouldBeCalled();
         $bazDefinition->setPublic(false)->shouldBeCalled();
-        $twigExt->addMethodCall('addPresenter', $this->isAnArrayContainingAReferenceAndAPriority('presenter.bar', -10))->shouldBeCalled();
-        $twigExt->addMethodCall('addPresenter', $this->isAnArrayContainingAReferenceAndAPriority('presenter.foo', 10))->shouldBeCalled();
-        $twigExt->addMethodCall('addPresenter', $this->isAnArrayContainingAReferenceAndAPriority('presenter.baz', 0))->shouldBeCalled();
+        $twigExt
+            ->addMethodCall('addPresenter', $this->isAnArrayContainingAReferenceAndAPriority('presenter.bar', -10))
+            ->shouldBeCalled();
+        $twigExt
+            ->addMethodCall('addPresenter', $this->isAnArrayContainingAReferenceAndAPriority('presenter.foo', 10))
+            ->shouldBeCalled();
+        $twigExt
+            ->addMethodCall('addPresenter', $this->isAnArrayContainingAReferenceAndAPriority('presenter.baz', 0))
+            ->shouldBeCalled();
 
         $this->process($container);
     }

@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositor
 /**
  * Published association repository
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PublishedAssociationRepository extends EntityRepository implements PublishedAssociationRepositoryInterface
 {

@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 /**
  * ProductDraft ownership repository for MongoDB
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ProductDraftOwnershipRepository implements ProductDraftOwnershipRepositoryInterface
 {

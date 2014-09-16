@@ -19,7 +19,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\DateTim
 /**
  * Hydrator for product history (MongoDB support)
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductHistoryHydrator implements HydratorInterface
 {

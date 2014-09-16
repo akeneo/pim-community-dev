@@ -49,7 +49,7 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         $this->setAccess($jobProfile, [$user, $admin], [$admin]);
     }
 
-    function it_should_not_revoke_access_to_a_job_profile_on_creation(
+    function it_does_not_revoke_access_to_a_job_profile_on_creation(
         JobInstance $jobProfile,
         $repository,
         $objectManager,

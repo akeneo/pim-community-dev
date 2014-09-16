@@ -29,7 +29,7 @@ use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
 /**
  * Product version controller
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductVersionController extends AbstractDoctrineController
 {
@@ -84,7 +84,7 @@ class ProductVersionController extends AbstractDoctrineController
     /**
      * Revert the entity to the current version
      *
-     * @param Version $version
+     * @param string|integer $id
      *
      * @return RedirectResponse
      *

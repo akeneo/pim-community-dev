@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * Installer bundle
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PimEnterpriseInstallerBundle extends Bundle
 {

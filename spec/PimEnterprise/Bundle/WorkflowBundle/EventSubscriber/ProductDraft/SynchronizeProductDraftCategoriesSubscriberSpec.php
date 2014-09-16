@@ -52,7 +52,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
     ) {
         $event->getDocument()->willReturn($productDraft);
         $productDraft->getProduct()->willReturn($product);
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
@@ -70,7 +72,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
     ) {
         $event->getDocument()->willReturn($productDraft);
         $productDraft->getProduct()->willReturn($product);
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
@@ -95,7 +99,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $event->getDocumentManager()->willReturn($dm);
         $dm->getUnitOfWork()->willReturn($uow);
 
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
@@ -172,7 +178,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $event->getDocumentManager()->willReturn($dm);
         $dm->getUnitOfWork()->willReturn($uow);
 
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 

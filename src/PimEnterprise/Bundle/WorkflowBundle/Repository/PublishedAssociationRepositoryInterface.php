@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 /**
  * Published association repository contract
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface PublishedAssociationRepositoryInterface
 {

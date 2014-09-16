@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;

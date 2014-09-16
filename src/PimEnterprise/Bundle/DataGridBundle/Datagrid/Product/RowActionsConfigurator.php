@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Row actions configurator for product grid
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RowActionsConfigurator implements ConfiguratorInterface
 {

@@ -24,7 +24,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Override to apply permissions on attribute groups
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ProductFieldsBuilder extends BaseProductFieldsBuilder
 {

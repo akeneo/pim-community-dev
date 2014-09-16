@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormFactoryInterface;
-use Prophecy\Argument;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;

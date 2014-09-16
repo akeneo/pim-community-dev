@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
 /**
  * Diff renderer based on the PHP-Diff library
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class PhpDiffRenderer implements RendererInterface
 {

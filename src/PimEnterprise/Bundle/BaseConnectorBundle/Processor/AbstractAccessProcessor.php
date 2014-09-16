@@ -16,7 +16,7 @@ use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
 /**
  * Allows to bind data into an access and validate them
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 abstract class AbstractAccessProcessor extends TransformerProcessor
 {
@@ -56,7 +56,7 @@ abstract class AbstractAccessProcessor extends TransformerProcessor
      *      'userGroup': 'group B',
      *      'permission1': true,
      * ]
-     * @param $data
+     * @param array $data
      *
      * @return array usable items
      */

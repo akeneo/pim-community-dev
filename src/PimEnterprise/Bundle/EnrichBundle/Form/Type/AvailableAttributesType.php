@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Override available attributes type to remove attributes where permissions are revoked
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AvailableAttributesType extends BaseAvailableAttributesType
 {

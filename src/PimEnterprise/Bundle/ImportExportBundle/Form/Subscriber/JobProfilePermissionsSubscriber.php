@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 /**
  * Subscriber to manager permissions on job profiles
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfilePermissionsSubscriber implements EventSubscriberInterface
 {

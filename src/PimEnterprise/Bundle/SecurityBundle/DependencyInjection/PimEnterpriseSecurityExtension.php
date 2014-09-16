@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * Enterprise Security extension
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class PimEnterpriseSecurityExtension extends Extension
 {

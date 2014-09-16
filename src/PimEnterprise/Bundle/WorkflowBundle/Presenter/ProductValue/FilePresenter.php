@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAware;
 /**
  * Present a file value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class FilePresenter implements ProductValuePresenterInterface, TwigAwareInterface
 {
