@@ -336,8 +336,10 @@ span.link-label {
       li {
         border-top: 1px solid @backgroundColor-white;
         border-bottom: 1px solid #ccc;
+        position: relative;
         &>a {
           padding: 10px;
+          padding-right: 55px;
           display: block;
           &:hover {
             background-color: lighten(@color-purple_hover, 2%);
@@ -356,6 +358,8 @@ span.link-label {
           i.icon-warning-sign { color: orange; }
           i.icon-remove { color: red; }
           i.action {
+            position: absolute;
+            right: 3px;
             width: 28px;
             text-align: center;
             background-color: @backgroundColor-white;
