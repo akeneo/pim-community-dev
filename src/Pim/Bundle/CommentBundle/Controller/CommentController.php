@@ -67,8 +67,9 @@ class CommentController extends AbstractDoctrineController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -105,8 +106,9 @@ class CommentController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
      * @throws \LogicException
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function replyAction(Request $request)
     {
@@ -146,10 +148,11 @@ class CommentController extends AbstractDoctrineController
      * Delete a comment with its children
      *
      * @param Request $request
-     * @param $id
+     * @param string  $id
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteAction(Request $request, $id)
