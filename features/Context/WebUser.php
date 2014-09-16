@@ -1798,7 +1798,7 @@ class WebUser extends RawMinkContext
                     $expectedParent = $comments[$data['parent']];
                     if (true !== $this->getCurrentPage()->isReplyOfComment($comment, $expectedParent)) {
                         throw $this->createExpectationException(
-                            sprintf('The comment #%s is not a reply of the comment #%s',$data['#'], $data['parent'])
+                            sprintf('The comment #%s is not a reply of the comment #%s', $data['#'], $data['parent'])
                         );
                     }
                 }

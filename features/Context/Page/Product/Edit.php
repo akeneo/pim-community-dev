@@ -340,7 +340,7 @@ class Edit extends Form
      * @param $message
      * @param $author
      *
-     * @return NodeElement the comment
+     * @return NodeElement     the comment
      * @throws \LogicException in case the comment does not exist
      */
     public function findComment($message, $author)
