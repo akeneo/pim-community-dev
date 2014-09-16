@@ -314,47 +314,69 @@ span.link-label {
 }
 
 /** Notifications *****************************************************************************************************/
-.nav.pull-right #notifications {
+#oroplatform-header .nav #notifications {
   i.icon-bullhorn {
     font-size: 16px;
-    padding-top: 2px;
+    padding-top: 3px;
   }
-  ul.dropdown-menu.scroll-menu {
+  ul.dropdown-menu {
     width: auto;
     margin-right: 17px;
     padding-top: 1px;
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
-    li > a {
-      padding-right: 18px;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      &.new {
-        background: @color-light_grey;
-      }
-      i.icon-ok { color: green; }
-      i.icon-warning-sign { color: orange; }
-      i.icon-remove { color: red; }
-      i.icon-trash {
-        .border-radius(3px);
-        padding: 6px;
-        border: 1px solid @textColor + #888;
-        &:hover {
-          background-color: @textColor + #888;
+    padding-bottom: 0;
+    ol.scroll-menu {
+      list-style: none;
+      margin: 0;
+      width: auto;
+      height: auto;
+      min-width: 160px;
+      max-height: 200px;
+      overflow-x: hidden;
+      white-space: nowrap;
+      li {
+        border-top: 1px solid @backgroundColor-white;
+        border-bottom: 1px solid #ccc;
+        &>a {
+          padding: 10px;
+          display: block;
+          &:hover {
+            background-color: lighten(@color-purple_hover, 2%);
+            background-color: darken(@backgroundColor-white, 3%);
+          }
+          &.new {
+            background: @color-light_grey;
+            &:hover {
+              background-color: darken(@color-purple_hover, 2%);
+            }
+          }
+          i {
+            padding-right: 5px;
+          }
+          i.icon-ok { color: green; }
+          i.icon-warning-sign { color: orange; }
+          i.icon-remove { color: red; }
+          i.action {
+            width: 28px;
+            text-align: center;
+            background-color: @backgroundColor-white;
+            .border-radius(3px);
+            font-size: 14px;
+            padding: 2px 6px;
+            border: 1px solid @textColor + #888;
+            &:hover {
+              background-color: @color-light_grey;
+            }
+          }
         }
       }
-    }
-    li.divider {
-      margin: 0;
-      border-top: 1px solid #ccc;
-      border-bottom: 1px solid @backgroundColor-white;
     }
     button {
       margin: 0 5px;
     }
     p {
-      padding: 5px 0;
+      span {
+        padding: 0 10px;
+      }
     }
   }
 }
