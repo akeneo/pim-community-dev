@@ -16,7 +16,7 @@ class StringToBooleanTransformer implements DataTransformerInterface
     /**
      * Convert booleans into a string
      *
-     * @param string $enabled
+     * @param bool $enabled
      *
      * @return null|string
      */
