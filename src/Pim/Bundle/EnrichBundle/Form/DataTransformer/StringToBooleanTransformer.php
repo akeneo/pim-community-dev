@@ -14,11 +14,11 @@ use Symfony\Component\Form\DataTransformerInterface;
 class StringToBooleanTransformer implements DataTransformerInterface
 {
     /**
-     * Convert '0' string into a real false boolean
+     * Convert booleans into a string
      *
      * @param string $enabled
      *
-     * @return bool|null
+     * @return null|string
      */
     public function transform($enabled)
     {
@@ -26,15 +26,11 @@ class StringToBooleanTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ('0' === $enabled) {
-            return false;
-        } else {
-            return $enabled;
-        }
+        return $enabled ? '1' : '0';
     }
 
     /**
-     * Convert '1' string into a real true boolean
+     * Convert string into a boolean
      *
      * @param string $enabled
      *
@@ -46,10 +42,7 @@ class StringToBooleanTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ('1' === $enabled) {
-            return true;
-        } else {
-            return $enabled;
-        }
+        return (bool) $enabled;
+
     }
 }
