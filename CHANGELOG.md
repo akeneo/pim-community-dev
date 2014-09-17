@@ -1,5 +1,16 @@
-CHANGELOG 
+CHANGELOG
 =========
+
+0.3.0
+------------------
+
+### Features
+
+- Added a user property in JobExecution to allow to store the user who launched the job
+
+### BC Breaks
+
+ - Database schema has changed. Please read UPGRADE.md
 
 0.2.0
 -----
@@ -11,7 +22,7 @@ CHANGELOG
 ### BC Breaks
 
  - Warnings are now objects of the Akeneo\BatchBundle\Entity\Warning type
- - Database schema has changed. Please read UPGRADE-0.2.md
+ - Database schema has changed. Please read UPGRADE.md
 
 
 0.1.8 (2014-06-24)
