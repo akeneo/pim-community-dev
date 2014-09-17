@@ -18,7 +18,7 @@ Pim\Bundle\NotificationBundle\Entity\UserNotification:
                     referencedColumnName: id
                     onDelete: CASCADE
         user:
-            targetEntity: Oro\Bundle\UserBundle\Entity\User
+            targetEntity: Symfony\Component\Security\Core\User\UserInterface
             joinColumns:
                 user:
                     referencedColumnName: id

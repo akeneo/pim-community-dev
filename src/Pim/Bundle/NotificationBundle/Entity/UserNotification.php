@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * UserNotification entity
@@ -22,7 +22,7 @@ class UserNotification
     /** @var Notification */
     protected $notification;
 
-    /** @var User */
+    /** @var UserInterface */
     protected $user;
 
     /**
@@ -62,11 +62,11 @@ class UserNotification
     /**
      * Set user
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return UserNotification
      */
-    public function setUser(User $user)
+    public function setUser(UserInterface $user)
     {
         $this->user = $user;
 
@@ -76,7 +76,7 @@ class UserNotification
     /**
      * Get user
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

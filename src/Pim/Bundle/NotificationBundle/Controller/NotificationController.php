@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\NotificationBundle\Controller;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -72,7 +71,10 @@ class NotificationController
     public function markAsViewedAction($id)
     {
         $user = $this->userContext->getUser();
-        $this->manager->markAsViewed($user, $id);
+
+        if (null !== $user) {
+            $this->manager->markAsViewed($user, $id);
+        }
 
         return new JsonResponse();
     }

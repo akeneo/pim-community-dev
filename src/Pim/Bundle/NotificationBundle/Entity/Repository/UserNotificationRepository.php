@@ -3,7 +3,7 @@
 namespace Pim\Bundle\NotificationBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * UserNotification entity repository
@@ -17,11 +17,11 @@ class UserNotificationRepository extends EntityRepository
     /**
      * Returns the number of user notifications the user hasn't viewed
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return integer
      */
-    public function countUnreadForUser(User $user)
+    public function countUnreadForUser(UserInterface $user)
     {
         $qb = $this->createQueryBuilder('n');
 
@@ -39,10 +39,10 @@ class UserNotificationRepository extends EntityRepository
     /**
      * Marks user notifications as viewed
      *
-     * @param User           $user User
+     * @param UserInterface  $user The user
      * @param string|integer $id   Can be numeric or 'all'
      */
-    public function markAsViewed(User $user, $id)
+    public function markAsViewed(UserInterface $user, $id)
     {
         $qb = $this->_em->createQueryBuilder()
             ->update($this->_entityName, 'n')

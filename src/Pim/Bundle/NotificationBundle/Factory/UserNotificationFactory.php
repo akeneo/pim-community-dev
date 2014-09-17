@@ -3,8 +3,8 @@
 namespace Pim\Bundle\NotificationBundle\Factory;
 
 use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Entity\UserNotification;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * UserNotification factory
@@ -29,12 +29,12 @@ class UserNotificationFactory
     /**
      * Creates a user notification
      *
-     * @param Notification $notification
-     * @param User         $user
+     * @param Notification  $notification
+     * @param UserInterface $user
      *
      * @return UserNotification
      */
-    public function createUserNotification(Notification $notification, User $user)
+    public function createUserNotification(Notification $notification, UserInterface $user)
     {
         $entity = new $this->className();
 
