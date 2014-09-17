@@ -2,23 +2,40 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\EventSubscriber;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Oro\Bundle\UserBundle\Entity\User;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\UserBundle\Entity\User;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Prophecy\Argument;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
-    function let(UserNotificationManager $manager, UserContext $context)
-    {
-        $this->beConstructedWith($manager, $context);
+    function let(
+        UserNotificationManager $manager,
+        JobExecutionEvent $event,
+        JobExecution $jobExecution,
+        StepExecution $stepExecution,
+        ArrayCollection $warnings,
+        JobInstance $jobInstance,
+        User $user,
+        BatchStatus $status
+    ) {
+        $this->beConstructedWith($manager);
+
+        $jobExecution->getUser()->willReturn($user);
+        $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
+        $jobExecution->getStatus()->willReturn($status);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $stepExecution->getWarnings()->willReturn($warnings);
+        $jobExecution->getId()->willReturn(5);
+        $jobInstance->getType()->willReturn('export');
+        $jobInstance->getLabel()->willReturn('Foo export');
+        $event->getJobExecution()->willReturn($jobExecution);
     }
 
     function it_is_initializable()
@@ -35,55 +52,27 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_notify_if_job_execution_has_no_user(
-        JobExecutionEvent $event,
-        JobExecution $jobExecution,
-        $manager
-    ) {
-        $event->getJobExecution()->willReturn($jobExecution);
-
+    function it_does_not_notify_if_job_execution_has_no_user($event, $jobExecution, $manager)
+    {
         $jobExecution->getUser()->willReturn(null);
-        $jobExecution->getStepExecutions()->shouldNotBeCalled();
 
+        $jobExecution->getStatus()->shouldNotBeCalled();
         $manager->notify(Argument::cetera())->shouldNotBeCalled();
-        $this->afterJobExecution($event)->shouldReturn(null);
+
+        $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_end_of_the_succeed_job_execution(
-        JobExecutionEvent $event,
-        JobExecution $jobExecution,
-        StepExecution $stepExecution,
-        ArrayCollection $collection,
-        JobInstance $jobInstance,
-        User $user,
-        ExitStatus $exitStatus,
-        $manager
-    ) {
-        $event->getJobExecution()->willReturn($jobExecution);
-
-        $jobExecution->getUser()->willReturn($user);
-        $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
-        $jobExecution->getExitStatus()->willReturn($exitStatus);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(5);
-
-        $stepExecution->getWarnings()->willReturn($collection);
-        $collection->count()->willReturn(0);
-
-        $exitStatus->getExitCode()->willReturn(1);
-
-        $jobInstance->getType()->willReturn('export');
-
+    function it_notifies_a_user_of_the_completion_of_job_execution($event, $user, $manager)
+    {
         $manager
             ->notify(
                 [$user],
-                'pim_import_export.notification.export.complete',
+                'pim_import_export.notification.export.success',
                 'success',
                 [
                     'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => [
-                        'id' => 5
-                    ]
+                    'routeParams' => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Foo export']
                 ]
             )
             ->shouldBeCalled();
@@ -91,41 +80,23 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_end_of_the_job_execution_which_has_encountered_a_warning(
-        JobExecutionEvent $event,
-        JobExecution $jobExecution,
-        StepExecution $stepExecution,
-        ArrayCollection $collection,
-        JobInstance $jobInstance,
-        ExitStatus $exitStatus,
-        User $user,
+    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_a_warning(
+        $event,
+        $warnings,
+        $user,
         $manager
     ) {
-        $event->getJobExecution()->willReturn($jobExecution);
-
-        $jobExecution->getUser()->willReturn($user);
-        $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
-        $jobExecution->getExitStatus()->willReturn($exitStatus);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(5);
-
-        $stepExecution->getWarnings()->willReturn($collection);
-        $collection->count()->willReturn(2);
-
-        $exitStatus->getExitCode()->willReturn(1);
-
-        $jobInstance->getType()->willReturn('export');
+        $warnings->count()->willReturn(2);
 
         $manager
             ->notify(
                 [$user],
-                'pim_import_export.notification.export.complete',
+                'pim_import_export.notification.export.warning',
                 'warning',
                 [
                     'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => [
-                        'id' => 5
-                    ]
+                    'routeParams' => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Foo export']
                 ]
             )
             ->shouldBeCalled();
@@ -133,41 +104,23 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_end_of_the_job_execution_which_has_encountered_an_error(
-        JobExecutionEvent $event,
-        JobExecution $jobExecution,
-        StepExecution $stepExecution,
-        ArrayCollection $collection,
-        JobInstance $jobInstance,
-        User $user,
-        ExitStatus $exitStatus,
+    function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_an_error(
+        $event,
+        $user,
+        $status,
         $manager
     ) {
-        $event->getJobExecution()->willReturn($jobExecution);
-
-        $jobExecution->getUser()->willReturn($user);
-        $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
-        $jobExecution->getExitStatus()->willReturn($exitStatus);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobExecution->getId()->willReturn(5);
-
-        $stepExecution->getWarnings()->willReturn($collection);
-        $collection->count()->willReturn(2);
-
-        $exitStatus->getExitCode()->willReturn(6);
-
-        $jobInstance->getType()->willReturn('export');
+        $status->isUnsuccessful()->willReturn(true);
 
         $manager
             ->notify(
                 [$user],
-                'pim_import_export.notification.export.complete',
+                'pim_import_export.notification.export.error',
                 'error',
                 [
                     'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => [
-                        'id' => 5
-                    ]
+                    'routeParams' => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Foo export']
                 ]
             )
             ->shouldBeCalled();
