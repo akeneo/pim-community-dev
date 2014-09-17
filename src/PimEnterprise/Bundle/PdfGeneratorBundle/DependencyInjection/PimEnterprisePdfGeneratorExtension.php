@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
