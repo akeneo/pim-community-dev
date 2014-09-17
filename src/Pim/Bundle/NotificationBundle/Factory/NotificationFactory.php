@@ -46,7 +46,6 @@ class NotificationFactory
 
         $entity = new $this->className();
 
-
         $entity
             ->setMessage($message)
             ->setType($type)
