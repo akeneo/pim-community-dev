@@ -183,12 +183,24 @@ class ReferencedCollection extends AbstractLazyCollection
             );
         }
 
-        $this->collection = new ArrayCollection(
-            $this
-                ->registry
-                ->getRepository($this->entityClass)
-                ->findBy([$classIdentifier[0] => $this->identifiers])
+        $entities = $this
+            ->registry
+            ->getRepository($this->entityClass)
+            ->findBy([$classIdentifier[0] => $this->identifiers]);
+        $method = sprintf('get%s', ucfirst($classIdentifier[0]));
+        $positions = array_flip(
+            array_map (
+                function ($entity) use ($method) {
+                    return $entity->$method();
+                },
+                $entities
+            )
         );
+        $this->collection = new ArrayCollection();
+        foreach ($this->identifiers as $identifier) {
+            $position = $positions[$identifier];
+            $this->collection->add($entities[$position]);
+        }
     }
 
     /**

@@ -4,6 +4,9 @@
   - Fixtures stop if warnings are encountered
   - Errors and warnings for fixtures are displayed
 
+ ## Bug fixes
+  - Entity collections in MongoDb are now returned in the correct order
+
 # 1.2.4 (2014-09-11)
 
 ## Bug fixes
