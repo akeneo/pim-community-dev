@@ -94,7 +94,6 @@ btn:
     back:            back
     confirm:         confirm
     to grid:         back to grid
-    to download:     PDF
     to parent:       back to parent
 
 # Confirmation messages
@@ -556,6 +555,7 @@ pim_enrich:
             change_state: Change state of product
             add_to_groups: Add product to groups
             mass_edit: Product mass edit actions
+            comment: Comment products
             download: Download the product as PDF
         category:
             list: List categories

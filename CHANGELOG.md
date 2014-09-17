@@ -5,6 +5,19 @@
 
 ## Improvements
  - remove the fixed mysql socket location
+ - switch to stability stable
+ - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
+# 1.2.5
+
+ ## Improvements
+  - Fixtures stop if warnings are encountered
+  - Errors and warnings for fixtures are displayed
+
+# 1.2.4 (2014-09-11)
+
+## Bug fixes
+ - Fixed job profile controller doing a global flush after launching job execution
 
 # 1.2.3 (2014-09-08)
 
@@ -31,7 +44,7 @@
  - constructor of Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer has changed
  - Pim\Bundle\TransformBundle\Cache\ProductCacheClearer has been renamed Pim\Bundle\TransformBundle\Cache\CacheClearer
 
-# 1.2.0  (2014-08-28)
+# 1.2.0 (2014-08-28)
 
 ## Improvements
 
