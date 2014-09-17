@@ -27,6 +27,9 @@ pim_versioning:
 pim_comment:
     resource: "@PimCommentBundle/Resources/config/routing.yml"
 
+pim_pdf_generator:
+    resource: "@PimEnterprisePdfGeneratorBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
