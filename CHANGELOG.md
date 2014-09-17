@@ -1,5 +1,8 @@
 # 1.3.*
 
+## Features
+- Export a product as PDF
+
 ## Improvements
  - remove the fixed mysql socket location
  - switch to stability stable
