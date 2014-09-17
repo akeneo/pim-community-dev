@@ -95,6 +95,7 @@ btn:
     confirm:         confirm
     to grid:         back to grid
     to parent:       back to parent
+    download_pdf:    PDF
 
 # Confirmation messages
 confirmation:
