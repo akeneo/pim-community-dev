@@ -37,14 +37,9 @@ class Notification
 
     /**
      * Constructor
-     *
-     * @param string $message
-     * @param string $type
      */
-    public function __construct($message = null, $type = null)
+    public function __construct()
     {
-        $this->message = $message;
-        $this->type    = $type;
         $this->created = new \DateTime('now');
     }
 
@@ -56,6 +51,54 @@ class Notification
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set message
+     *
+     * @param string $message
+     *
+     * @return Notification
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Notification
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -107,30 +150,6 @@ class Notification
     }
 
     /**
-     * Set message
-     *
-     * @param string $message
-     *
-     * @return Notification
-     */
-    public function setMessage($message)
-    {
-        $this->message = $message;
-
-        return $this;
-    }
-
-    /**
-     * Get message
-     *
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
      * Set messageParams
      *
      * @param array $messageParams
@@ -162,30 +181,6 @@ class Notification
     public function getCreated()
     {
         return $this->created;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     *
-     * @return Notification
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

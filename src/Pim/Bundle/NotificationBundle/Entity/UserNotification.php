@@ -26,16 +26,6 @@ class UserNotification
     protected $user;
 
     /**
-     * @param Notification $notification
-     * @param User         $user
-     */
-    public function __construct(Notification $notification, User $user)
-    {
-        $this->notification = $notification;
-        $this->user         = $user;
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -43,30 +33,6 @@ class UserNotification
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set viewed
-     *
-     * @param boolean $viewed
-     *
-     * @return UserNotification
-     */
-    public function setViewed($viewed)
-    {
-        $this->viewed = $viewed;
-
-        return $this;
-    }
-
-    /**
-     * Get viewed
-     *
-     * @return boolean
-     */
-    public function isViewed()
-    {
-        return $this->viewed;
     }
 
     /**
@@ -115,5 +81,29 @@ class UserNotification
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set viewed
+     *
+     * @param boolean $viewed
+     *
+     * @return UserNotification
+     */
+    public function setViewed($viewed)
+    {
+        $this->viewed = $viewed;
+
+        return $this;
+    }
+
+    /**
+     * Get viewed
+     *
+     * @return boolean
+     */
+    public function isViewed()
+    {
+        return $this->viewed;
     }
 }

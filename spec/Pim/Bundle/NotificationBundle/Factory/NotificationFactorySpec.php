@@ -3,10 +3,14 @@
 namespace spec\Pim\Bundle\NotificationBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class NotificationFactorySpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('Pim\Bundle\NotificationBundle\Entity\Notification');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Factory\NotificationFactory');

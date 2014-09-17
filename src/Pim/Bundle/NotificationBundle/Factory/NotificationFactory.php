@@ -13,8 +13,19 @@ use Pim\Bundle\NotificationBundle\Entity\Notification;
  */
 class NotificationFactory
 {
+    /** @var string */
+    protected $className;
+
     /**
-     * It creates a notification
+     * @param string $className
+     */
+    public function __construct($className)
+    {
+        $this->className = $className;
+    }
+
+    /**
+     * Creates a notification
      *
      * @param string $message
      * @param string $type
@@ -31,14 +42,19 @@ class NotificationFactory
             'context' => []
         ];
 
-        $options      = array_merge($defaults, $options);
-        $notification = new Notification($message, $type);
-        $notification
+        $options = $options + $defaults;
+
+        $entity = new $this->className();
+
+
+        $entity
+            ->setMessage($message)
+            ->setType($type)
             ->setMessageParams($options['messageParams'])
             ->setRoute($options['route'])
             ->setRouteParams($options['routeParams'])
             ->setContext($options['context']);
 
-        return $notification;
+        return $entity;
     }
 }

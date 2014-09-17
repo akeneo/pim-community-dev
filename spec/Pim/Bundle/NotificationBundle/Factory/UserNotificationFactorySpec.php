@@ -9,6 +9,11 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class UserNotificationFactorySpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('Pim\Bundle\NotificationBundle\Entity\UserNotification');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory');

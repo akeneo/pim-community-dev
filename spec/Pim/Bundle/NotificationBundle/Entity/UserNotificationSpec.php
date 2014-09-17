@@ -9,11 +9,6 @@ use Pim\Bundle\NotificationBundle\Entity\Notification;
 
 class UserNotificationSpec extends ObjectBehavior
 {
-    function let(Notification $notification, User $user)
-    {
-        $this->beConstructedWith($notification, $user);
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\UserNotification');
@@ -26,17 +21,17 @@ class UserNotificationSpec extends ObjectBehavior
         $this->isViewed()->shouldReturn(true);
     }
 
-    function it_has_a_notification_event(Notification $notification2, $notification)
+    function it_has_a_notification_event(Notification $notification)
     {
+        $this->getNotification()->shouldReturn(null);
+        $this->setNotification($notification)->shouldReturn($this);
         $this->getNotification()->shouldReturn($notification);
-        $this->setNotification($notification2)->shouldReturn($this);
-        $this->getNotification()->shouldReturn($notification2);
     }
 
-    function it_has_a_user(User $user2, $user)
+    function it_has_a_user(User $user)
     {
+        $this->getUser()->shouldReturn(null);
+        $this->setUser($user)->shouldReturn($this);
         $this->getUser()->shouldReturn($user);
-        $this->setUser($user2)->shouldReturn($this);
-        $this->getUser()->shouldReturn($user2);
     }
 }

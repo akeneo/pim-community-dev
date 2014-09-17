@@ -15,8 +15,19 @@ use Pim\Bundle\NotificationBundle\Entity\UserNotification;
  */
 class UserNotificationFactory
 {
+    /** @var string */
+    protected $className;
+
     /**
-     * It creates a user notification
+     * @param string $className
+     */
+    public function __construct($className)
+    {
+        $this->className = $className;
+    }
+
+    /**
+     * Creates a user notification
      *
      * @param Notification $notification
      * @param User         $user
@@ -25,6 +36,12 @@ class UserNotificationFactory
      */
     public function createUserNotification(Notification $notification, User $user)
     {
-        return new UserNotification($notification, $user);
+        $entity = new $this->className();
+
+        $entity
+            ->setNotification($notification)
+            ->setUser($user);
+
+        return $entity;
     }
 }
