@@ -57,8 +57,6 @@ class JobExecutionNotifier implements EventSubscriberInterface
             $status = 'error';
         } else {
             $status = 'success';
-            // TODO: inject ImportExportBundle\Entity\Repository\JobExecutionRepository directly
-            // $this->repository->hasWarnings($jobExecution->getId());
             foreach ($jobExecution->getStepExecutions() as $stepExecution) {
                 if ($stepExecution->getWarnings()->count()) {
                     $status = 'warning';
