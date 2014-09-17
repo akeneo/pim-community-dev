@@ -17,7 +17,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 interface JobInterface
 {
     /**
-     * @return the name of this job
+     * @return string the name of this job
      */
     public function getName();
 

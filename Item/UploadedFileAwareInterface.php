@@ -21,7 +21,7 @@ interface UploadedFileAwareInterface
     /**
      * Set uploaded file
      *
-     * @param UploadedFile $uploadedFile
+     * @param File $uploadedFile
      */
     public function setUploadedFile(File $uploadedFile);
 }

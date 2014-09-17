@@ -21,7 +21,7 @@ class ItemMapping
      * @param string  $destination  destination field name
      * @param boolean $isIdentifier define is field is an identifier
      *
-     * @return \Akeneo\Bundle\BatchBundle\Model\Mapping\ItemMapping
+     * @return ItemMapping
      */
     public function add($source, $destination, $isIdentifier = false)
     {
@@ -39,7 +39,7 @@ class ItemMapping
      * Remove a field from list
      * @param FieldMapping $field
      *
-     * @return \Akeneo\Bundle\BatchBundle\Model\Mapping\ItemMapping
+     * @return ItemMapping
      */
     public function remove(FieldMapping $field)
     {

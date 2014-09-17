@@ -32,7 +32,7 @@ class FieldMapping
      *
      * @param string $source
      *
-     * @return \Akeneo\Bundle\BatchBundle\Mapping\FieldMapping
+     * @return FieldMapping
      */
     public function setSource($source)
     {
@@ -53,9 +53,9 @@ class FieldMapping
 
     /**
      * Set destination
-     * @param param $destination
+     * @param string $destination
      *
-     * @return \Akeneo\Bundle\BatchBundle\Mapping\FieldMapping
+     * @return FieldMapping
      */
     public function setDestination($destination)
     {
@@ -79,7 +79,7 @@ class FieldMapping
      *
      * @param boolean $identifier
      *
-     * @return \Akeneo\Bundle\BatchBundle\Mapping\FieldMapping
+     * @return FieldMapping
      */
     public function setIdentifier($identifier)
     {

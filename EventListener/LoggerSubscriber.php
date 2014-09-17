@@ -8,7 +8,6 @@ use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\StepExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -232,7 +231,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * Log invalid item event
      *
-     * @param StepExecutionEvent $event
+     * @param InvalidItemEvent $event
      */
     public function invalidItem(InvalidItemEvent $event)
     {

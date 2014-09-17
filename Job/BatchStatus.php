@@ -95,7 +95,7 @@ class BatchStatus
     /**
      * Convenience method to decide if a status indicates work is starting.
      *
-     * @return true if the status is STARTING
+     * @return boolean true if the status is STARTING
      */
     public function isStarting()
     {
@@ -105,7 +105,7 @@ class BatchStatus
     /**
      * Convenience method to decide if a status indicates work is in progress.
      *
-     * @return true if the status is STARTING, STARTED
+     * @return boolean true if the status is STARTING, STARTED
      */
     public function isRunning()
     {
@@ -116,7 +116,7 @@ class BatchStatus
      * Convenience method to decide if a status indicates execution was
      * unsuccessful.
      *
-     * @return true if the status is FAILED or greater
+     * @return boolean true if the status is FAILED or greater
      */
     public function isUnsuccessful()
     {
@@ -146,7 +146,7 @@ class BatchStatus
      *
      * @param integer $otherStatus another status to compare to
      *
-     * @return either this or the other status depending on their priority
+     * @return BatchStatus with either this or the other status depending on their priority
      */
     public function upgradeTo($otherStatus)
     {

@@ -169,9 +169,7 @@ class ConnectorRegistry
      * @param array  $connector
      * @param string $jobAlias
      *
-     * @return mixed
-     *
-     * TODO: Return mixed.. string or null?
+     * @return Job|null
      */
     private function getConnectorJob($connector, $jobAlias)
     {

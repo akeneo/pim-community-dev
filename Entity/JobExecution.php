@@ -60,7 +60,7 @@ class JobExecution
     private $pid;
 
     /**
-     * @var string The user who launched the job
+     * @var string|null The user who launched the job
      *
      * @ORM\Column(name="user", type="string", nullable=true)
      */
@@ -210,7 +210,7 @@ class JobExecution
     /**
      * Sets the time that this execution ended
      *
-     * @param mixed $endTime the time that this execution ended
+     * @param \DateTime $endTime the time that this execution ended
      *
      * @return JobExecution
      */
@@ -234,7 +234,7 @@ class JobExecution
     /**
      * Sets the time this execution started
      *
-     * @param mixed $startTime the time this execution started
+     * @param \DateTime $startTime the time this execution started
      *
      * @return JobExecution
      */
@@ -257,7 +257,7 @@ class JobExecution
     /**
      * Sets the time this execution has been created
      *
-     * @param mixed $createTime the time this execution has been created
+     * @param \DateTime $createTime the time this execution has been created
      *
      * @return JobExecution
      */
@@ -281,7 +281,7 @@ class JobExecution
     /**
      * Sets the time this execution has been updated
      *
-     * @param mixed $updatedTime the time this execution has been updated
+     * @param \DateTime $updatedTime the time this execution has been updated
      *
      * @return JobExecution
      */

@@ -18,7 +18,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 interface StepInterface
 {
     /**
-     * @return The name of this step
+     * @return string The name of this step
      */
     public function getName();
 

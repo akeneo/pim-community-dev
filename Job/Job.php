@@ -21,6 +21,7 @@ use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
  */
 class Job implements JobInterface
 {
+    /** @var string */
     protected $name;
 
     /* @var EventDispatcherInterface */
@@ -56,7 +57,7 @@ class Job implements JobInterface
     /**
      * Get the job's name
      *
-     * @return name
+     * @return string
      */
     public function getName()
     {
@@ -442,9 +443,9 @@ class Job implements JobInterface
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
      *
-     * @param Exception $e the cause of the failure
+     * @param \Exception $e the cause of the failure
      *
-     * @return an {@link ExitStatus}
+     * @return ExitStatus an {@link ExitStatus}
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
     {

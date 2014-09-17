@@ -3,7 +3,6 @@
 namespace Akeneo\Bundle\BatchBundle\Manager;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Symfony\Component\Process\Process;
 use Doctrine\ORM\EntityManager;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
