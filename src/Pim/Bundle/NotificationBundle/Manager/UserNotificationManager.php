@@ -115,6 +115,18 @@ class UserNotificationManager
     }
 
     /**
+     * Count unread notifications for the given user
+     *
+     * @param User $user
+     *
+     * @return integer
+     */
+    public function countUnreadForUser(User $user)
+    {
+        return $this->repository->countUnreadForUser($user);
+    }
+
+    /**
      * Remove a notification
      *
      * @param User    $user

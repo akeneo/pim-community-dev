@@ -4,15 +4,15 @@ namespace spec\Pim\Bundle\NotificationBundle\Twig;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
+use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 
 class NotificationExtensionSpec extends ObjectBehavior
 {
-    function let(UserNotificationRepository $repository, UserContext $context)
+    function let(UserNotificationManager $manager, UserContext $context)
     {
-        $this->beConstructedWith($repository, $context);
+        $this->beConstructedWith($manager, $context);
     }
 
     function it_is_initializable()
@@ -20,17 +20,17 @@ class NotificationExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Twig\NotificationExtension');
     }
 
-    function it_provides_the_unread_notification_count(User $user, $context, $repository)
+    function it_provides_the_unread_notification_count(User $user, $context, $manager)
     {
         $context->getUser()->willReturn($user);
-        $repository->countUnreadForUser($user)->willReturn(3);
+        $manager->countUnreadForUser($user)->willReturn(3);
 
         $this->countNotifications()->shouldReturn(3);
     }
 
-    function it_returns_zero_if_no_user_is_present_in_the_context($repository)
+    function it_returns_zero_if_no_user_is_present_in_the_context($manager)
     {
-        $repository->countUnreadForUser(Argument::cetera())->shouldNotBeCalled();
+        $manager->countUnreadForUser(Argument::cetera())->shouldNotBeCalled();
 
         $this->countNotifications()->shouldReturn(0);
     }
