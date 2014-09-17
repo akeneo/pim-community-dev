@@ -321,7 +321,7 @@ span.link-label {
   }
   ul.dropdown-menu {
     width: auto;
-    margin-right: 17px;
+    margin-right: 15px;
     padding-top: 1px;
     padding-bottom: 0;
     ol.scroll-menu {
@@ -329,8 +329,7 @@ span.link-label {
       margin: 0;
       width: auto;
       height: auto;
-      min-width: 160px;
-      max-height: 200px;
+      max-height: 211px;
       overflow-x: hidden;
       white-space: nowrap;
       li {
@@ -338,8 +337,7 @@ span.link-label {
         border-bottom: 1px solid #ccc;
         position: relative;
         &>a {
-          padding: 10px;
-          padding-right: 55px;
+          padding: 10px 55px 10px 10px;
           display: block;
           &:hover {
             background-color: lighten(@color-purple_hover, 2%);
@@ -354,7 +352,7 @@ span.link-label {
           i {
             padding-right: 5px;
           }
-          i.icon-ok { color: green; }
+          i.icon-ok { color: #33be00; }
           i.icon-warning-sign { color: orange; }
           i.icon-remove { color: red; }
           i.action {
@@ -363,10 +361,10 @@ span.link-label {
             width: 28px;
             text-align: center;
             background-color: @backgroundColor-white;
+            border: 1px solid @textColor + #888;
             .border-radius(3px);
             font-size: 14px;
             padding: 2px 6px;
-            border: 1px solid @textColor + #888;
             &:hover {
               background-color: @color-light_grey;
             }
