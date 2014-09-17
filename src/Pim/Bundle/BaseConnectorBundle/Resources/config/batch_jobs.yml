@@ -68,6 +68,11 @@ connector:
             title: pim_base_connector.jobs.csv_product_import.title
             type:  import
             steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_product_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
                     title:     pim_base_connector.jobs.csv_product_import.import.title
                     services:
@@ -84,6 +89,11 @@ connector:
             title: pim_base_connector.jobs.csv_category_import.title
             type:  import
             steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_category_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
                     title:     pim_base_connector.jobs.csv_category_import.import.title
                     services:
@@ -94,6 +104,11 @@ connector:
             title: pim_base_connector.jobs.csv_attribute_import.title
             type:  import
             steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_attribute_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
                     title:     pim_base_connector.jobs.csv_attribute_import.import.title
                     services:
@@ -104,6 +119,11 @@ connector:
             title: pim_base_connector.jobs.csv_attribute_option_import.title
             type:  import
             steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_attribute_option_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
                     title:     pim_base_connector.jobs.csv_attribute_option_import.import.title
                     services:
@@ -114,6 +134,11 @@ connector:
             title: pim_base_connector.jobs.csv_association_type_import.title
             type: import
             steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_association_type_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
                     title:     pim_base_connector.jobs.csv_association_type_import.import.title
                     services:
@@ -124,6 +149,11 @@ connector:
             title: pim_base_connector.jobs.csv_group_import.title
             type: import
             steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_group_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
                     title:     pim_base_connector.jobs.csv_group_import.import.title
                     services:
