@@ -2,13 +2,12 @@ Pim\Bundle\NotificationBundle\Entity\UserNotification:
     type: entity
     table: pim_notification_user_notification
     repositoryClass: Pim\Bundle\NotificationBundle\Entity\UserNotificationRepository
-    id:
+    fields:
         id:
             type: integer
             id: true
             generator:
                 strategy: AUTO
-    fields:
         viewed:
             type: boolean
     manyToOne:

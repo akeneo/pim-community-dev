@@ -1,13 +1,12 @@
 Pim\Bundle\NotificationBundle\Entity\Notification:
     type: entity
     table: pim_notification_notification
-    id:
+    fields:
         id:
             type: integer
             id: true
             generator:
                 strategy: AUTO
-    fields:
         route:
             type: string
             length: 255
