@@ -14,13 +14,20 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
  */
 class JobExecutionEvent extends Event implements EventInterface
 {
+    /** @var JobExecution */
     protected $jobExecution;
 
+    /**
+     * @param JobExecution $jobExecution
+     */
     public function __construct(JobExecution $jobExecution)
     {
         $this->jobExecution = $jobExecution;
     }
 
+    /**
+     * @return JobExecution
+     */
     public function getJobExecution()
     {
         return $this->jobExecution;

@@ -20,6 +20,8 @@ class ExecutionContext
 
     /**
      * Get the dirty state
+     *
+     * @return boolean
      */
     public function isDirty()
     {
@@ -42,6 +44,8 @@ class ExecutionContext
      * Get the value associated with the key
      *
      * @param string $key
+     *
+     * @return mixed
      */
     public function get($key)
     {

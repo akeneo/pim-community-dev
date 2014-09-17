@@ -130,6 +130,9 @@ class JobInstance
         $this->jobExecutions = new ArrayCollection();
     }
 
+    /**
+     * Reset id and clone job executions
+     */
     public function __clone()
     {
         $this->id = null;

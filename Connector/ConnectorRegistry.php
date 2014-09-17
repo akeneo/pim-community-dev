@@ -35,7 +35,8 @@ class ConnectorRegistry
     /**
      * Get a registered job definition from a JobInstance
      *
-     * @param  JobInstance     $jobInstance
+     * @param JobInstance $jobInstance
+     *
      * @return JobInterface
      * @throws \LogicException
      */
@@ -104,10 +105,10 @@ class ConnectorRegistry
     /**
      * Set job show template
      *
-     * @param string $jobConnector
-     * @param string $jobType
-     * @param string $jobAlias
-     * @param string $template     reference to the template (format: bundle:section:template.format.engine)
+     * @param string $jobConnector The connector
+     * @param string $jobType      The job type
+     * @param string $jobAlias     The job alias
+     * @param string $template     Reference to the template (format: bundle:section:template.format.engine)
      */
     public function setJobShowTemplate($jobConnector, $jobType, $jobAlias, $template)
     {
@@ -129,10 +130,10 @@ class ConnectorRegistry
     /**
      * Set job edit template
      *
-     * @param string $jobConnector
-     * @param string $jobType
-     * @param string $jobAlias
-     * @param string $template     reference to the template (format: bundle:section:template.format.engine)
+     * @param string $jobConnector The connector
+     * @param string $jobType      The job type
+     * @param string $jobAlias     The job alias
+     * @param string $template     Reference to the template (format: bundle:section:template.format.engine)
      */
     public function setJobEditTemplate($jobConnector, $jobType, $jobAlias, $template)
     {
@@ -156,7 +157,8 @@ class ConnectorRegistry
      * @param string $type
      *
      * @return mixed
-     * TODO : Return mixed.. string or null ?
+     *
+     * TODO: Return mixed.. string or null?
      */
     public function getConnector($connector, $type)
     {
@@ -168,7 +170,8 @@ class ConnectorRegistry
      * @param string $jobAlias
      *
      * @return mixed
-     * TODO : Return mixed.. string or null ?
+     *
+     * TODO: Return mixed.. string or null?
      */
     private function getConnectorJob($connector, $jobAlias)
     {
@@ -177,6 +180,8 @@ class ConnectorRegistry
 
     /**
      * Get list of connectors
+     *
+     * @param string $jobType
      *
      * @return array
      */

@@ -34,7 +34,7 @@ interface ItemWriterInterface
      * @throw InvalidItemException if there is a warning, step execution will continue to the
      * next item.
      * @throws \Exception if there are errors. The framework will catch the
-     * exception and convert or rethrow it as appropriate.
+     *                    exception and convert or rethrow it as appropriate.
      */
     public function write(array $items);
 }

@@ -156,12 +156,13 @@ class BatchCommand extends ContainerAwareCommand
 
     /**
      * Writes failure exceptions to the output
-     * 
+     *
      * @param OutputInterface $output
      * @param array[]         $exceptions
      * @param boolean         $verbose
      */
-    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose) {
+    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose)
+    {
         foreach ($exceptions as $exception) {
             $output->write(
                 sprintf(
@@ -175,7 +176,7 @@ class BatchCommand extends ContainerAwareCommand
             if ($verbose) {
                 $output->write(sprintf('<error>%s</error>', $exception['trace']), true);
             }
-        }        
+        }
     }
 
     /**
@@ -218,6 +219,11 @@ class BatchCommand extends ContainerAwareCommand
         return $this->getContainer()->get('akeneo_batch.connectors');
     }
 
+    /**
+     * @param ConstraintViolationList $errors
+     *
+     * @return string
+     */
     private function getErrorMessages(ConstraintViolationList $errors)
     {
         $errorsStr = '';
@@ -229,6 +235,11 @@ class BatchCommand extends ContainerAwareCommand
         return $errorsStr;
     }
 
+    /**
+     * @param string $data
+     *
+     * @return array
+     */
     private function decodeConfiguration($data)
     {
         $config = json_decode($data, true);

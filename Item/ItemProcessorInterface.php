@@ -27,7 +27,7 @@ interface ItemProcessorInterface
      * @return mixed Potentially modified or new item for continued processing
      *
      * @throws InvalidItemException if there is a problem processing the current record
-     * (but the next one may still be valid)
+     *                              (but the next one may still be valid)
      * @throws \Exception
      */
     public function process($item);

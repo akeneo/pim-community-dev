@@ -23,9 +23,9 @@ interface ItemReaderInterface
      * data set.
      *
      * @throws InvalidItemException if there is a problem reading the current record
-     * (but the next one may still be valid)
-     * @throws \Exception if an there is a non-specific error. (step execution will
-     * be stopped in that case)
+     *                              (but the next one may still be valid)
+     * @throws \Exception           if an there is a non-specific error. (step execution will
+     *                              be stopped in that case)
      *
      * @return null|mixed
      */

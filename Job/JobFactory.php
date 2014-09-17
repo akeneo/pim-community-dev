@@ -16,8 +16,9 @@ class JobFactory
     protected $jobRepository;
 
     /**
-     * @param JobRepositoryInterface $jobRepository Object responsible
-     *     for persisting jobExecution and stepExection states
+     * @param EventDispatcherInterface $eventDispatcher The event dispatcher
+     * @param JobRepositoryInterface   $jobRepository   Object responsible
+     *                                                  for persisting jobExecution and stepExection states
      */
     public function __construct(EventDispatcherInterface $eventDispatcher, JobRepositoryInterface $jobRepository)
     {

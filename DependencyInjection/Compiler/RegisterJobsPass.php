@@ -116,6 +116,8 @@ class RegisterJobsPass implements CompilerPassInterface
 
     /**
      * @param array $config
+     *
+     * @return array
      */
     protected function processConfig(array $config)
     {

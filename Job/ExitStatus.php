@@ -134,8 +134,7 @@ class ExitStatus
      *
      * @param ExitStatus $status an {@link ExitStatus} to combine with this one.
      *
-     * @return ExisStatus a new {@link ExitStatus} combining the current value and the
-     * argument provided.
+     * @return ExitStatus a new {@link ExitStatus} combining the current value and the argument provided.
      */
     public function logicalAnd(ExitStatus $status)
     {
@@ -210,10 +209,9 @@ class ExitStatus
      * semicolon.
      *
      * @param string $description the description to add. Can be an exception.
-     *  In this case, the stack trace is used as description
+     *                            In this case, the stack trace is used as description
      *
-     * @return a new {@link ExitStatus} with the same properties but a new exit
-     * description
+     * @return ExitStatus a new {@link ExitStatus} with the same properties but a new exit description
      */
     public function addExitDescription($description)
     {

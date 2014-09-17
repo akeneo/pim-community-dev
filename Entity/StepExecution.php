@@ -135,7 +135,6 @@ class StepExecution
      */
     private $errors = array();
 
-
     /**
      * @var ArrayCollection
      *
@@ -177,6 +176,9 @@ class StepExecution
         $this->startTime = new \DateTime();
     }
 
+    /**
+     * Reset id on clone
+     */
     public function __clone()
     {
         $this->id = null;
@@ -469,6 +471,9 @@ class StepExecution
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getFailureExceptionMessages()
     {
         return implode(
@@ -482,6 +487,11 @@ class StepExecution
         );
     }
 
+    /**
+     * @param string $message
+     *
+     * @return StepExecution
+     */
     public function addError($message)
     {
         $this->errors[] = $message;
@@ -489,6 +499,9 @@ class StepExecution
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public function getErrors()
     {
         return $this->errors;
@@ -497,7 +510,7 @@ class StepExecution
     /**
      * Add a warning
      *
-     * @param string $class
+     * @param string $name
      * @param string $reason
      * @param array  $reasonParameters
      * @param mixed  $item

@@ -32,12 +32,17 @@ class BatchLogHandler extends StreamHandler
 
     /**
      * Get the filename of the log file
+     *
+     * @return string
      */
     public function getFilename()
     {
         return $this->url;
     }
 
+    /**
+     * @param string $subDirectory
+     */
     public function setSubDirectory($subDirectory)
     {
         $this->url = $this->getRealPath($this->generateLogFilename(), $subDirectory);

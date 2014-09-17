@@ -15,6 +15,10 @@ class RuntimeErrorException extends \RuntimeException
     /** @var array */
     protected $messageParameters;
 
+    /**
+     * @param string $message
+     * @param array  $messageParameters
+     */
     public function __construct($message, array $messageParameters = array())
     {
         parent::__construct($message);
@@ -22,6 +26,9 @@ class RuntimeErrorException extends \RuntimeException
         $this->messageParameters = $messageParameters;
     }
 
+    /**
+     * @return array
+     */
     public function getMessageParameters()
     {
         return $this->messageParameters;

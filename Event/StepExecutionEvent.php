@@ -14,13 +14,20 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
  */
 class StepExecutionEvent extends Event implements EventInterface
 {
+    /** @var StepExecution */
     protected $stepExecution;
 
+    /**
+     * @param StepExecution $stepExecution
+     */
     public function __construct(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
     }
 
+    /**
+     * @return StepExecution
+     */
     public function getStepExecution()
     {
         return $this->stepExecution;

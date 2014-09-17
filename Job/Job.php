@@ -153,7 +153,7 @@ class Job implements JobInterface
     /**
      * Convenience method for adding a single step to the job.
      *
-     * @param string        $stepName
+     * @param string        $stepName the name of the step
      * @param StepInterface $step     a {@link Step} to add
      */
     public function addStep($stepName, StepInterface $step)
@@ -280,8 +280,7 @@ class Job implements JobInterface
      * @param JobExecution $jobExecution
      *
      * @see Job#execute(JobExecution)
-     * @throws StartLimitExceededException
-     *             if start limit of one of the steps was exceeded
+     * @throws StartLimitExceededException if start limit of one of the steps was exceeded
      */
     final public function execute(JobExecution $jobExecution)
     {

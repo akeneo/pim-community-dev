@@ -189,6 +189,8 @@ class LoggerSubscriber implements EventSubscriberInterface
      * Log the step execution when the step execution was errored
      *
      * @param StepExecutionEvent $event
+     *
+     * @return null
      */
     public function stepExecutionErrored(StepExecutionEvent $event)
     {

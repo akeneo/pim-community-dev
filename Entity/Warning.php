@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
+ *
  * @ORM\Table(name="akeneo_batch_warning")
  * @ORM\Entity()
  */
@@ -68,7 +68,7 @@ class Warning
      * @param array         $reasonParameters
      * @param array         $item
      */
-    function __construct(StepExecution $stepExecution, $name, $reason, array $reasonParameters, array $item)
+    public function __construct(StepExecution $stepExecution, $name, $reason, array $reasonParameters, array $item)
     {
         $this->stepExecution = $stepExecution;
         $this->name = $name;
@@ -89,7 +89,7 @@ class Warning
 
     /**
      * Returns the step execution
-     * 
+     *
      * @return StepExecution
      */
     public function getStepExecution()
@@ -99,7 +99,7 @@ class Warning
 
     /**
      * Sets the step execution
-     * 
+     *
      * @param StepExecution $stepExecution
      *
      * @return $this
@@ -113,7 +113,7 @@ class Warning
 
     /**
      * Returns the name
-     * 
+     *
      * @return string
      */
     public function getName()
@@ -123,7 +123,7 @@ class Warning
 
     /**
      * Sets the name
-     * 
+     *
      * @param string $name
      *
      * @return $this
@@ -137,7 +137,7 @@ class Warning
 
     /**
      * Returns the reason
-     * 
+     *
      * @return string
      */
     public function getReason()
@@ -161,7 +161,7 @@ class Warning
 
     /**
      * Returns the reason parameters
-     * 
+     *
      * @return array
      */
     public function getReasonParameters()
@@ -171,7 +171,7 @@ class Warning
 
     /**
      * Sets  the reason parameters
-     * 
+     *
      * @param array $reasonParameters
      *
      * @return $this
@@ -185,7 +185,7 @@ class Warning
 
     /**
      * Returns the item over which the warning is set
-     * 
+     *
      * @return array
      */
     public function getItem()
@@ -209,7 +209,7 @@ class Warning
 
     /**
      * Returns a representation of the warning as an array
-     * 
+     *
      * @return array
      */
     public function toArray()

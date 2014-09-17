@@ -30,6 +30,7 @@ class InvalidItemEvent extends Event implements EventInterface
      *
      * @param string $class
      * @param string $reason
+     * @param array  $reasonParameters
      * @param array  $item
      */
     public function __construct($class, $reason, array $reasonParameters, array $item)

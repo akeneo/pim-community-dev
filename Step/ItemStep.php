@@ -3,7 +3,6 @@
 namespace Akeneo\Bundle\BatchBundle\Step;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;

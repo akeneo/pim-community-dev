@@ -148,6 +148,9 @@ class JobExecution
         $this->failureExceptions = array();
     }
 
+    /**
+     * Clones the step executions and execution context along with the JobExecution
+     */
     public function __clone()
     {
         $this->id = null;
@@ -469,6 +472,7 @@ class JobExecution
      * Signal the JobExecution to stop. Iterates through the associated
      * StepExecution, calling StepExecution::setTerminateOnly().
      *
+     * @return JobExecution
      */
     public function stop()
     {
@@ -513,8 +517,7 @@ class JobExecution
      * Return all failure causing exceptions for this JobExecution, including
      * step executions.
      *
-     * @return array containing all exceptions causing failure for
-     * this JobExecution.
+     * @return array containing all exceptions causing failure for this JobExecution.
      */
     public function getAllFailureExceptions()
     {
@@ -593,8 +596,8 @@ class JobExecution
      */
     public function __toString()
     {
-        $startTime       = self::formatDate($this ->startTime);
-        $endTime         = self::formatDate($this ->endTime);
+        $startTime       = self::formatDate($this->startTime);
+        $endTime         = self::formatDate($this->endTime);
         $updatedTime     = self::formatDate($this->updatedTime);
         $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode() : '';
 
@@ -615,8 +618,8 @@ class JobExecution
     /**
      * Format a date or return empty string if null
      *
-     * @param \DateTime date
-     * @param string $format date format
+     * @param \DateTime $date
+     * @param string    $format
      *
      * @return string Date formatted
      */
