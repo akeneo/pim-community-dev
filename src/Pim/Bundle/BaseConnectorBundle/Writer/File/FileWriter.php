@@ -22,10 +22,15 @@ class FileWriter extends AbstractConfigurableStepElement implements
     StepExecutionAwareInterface
 {
     /**
+     * @staticvar string
+     */
+    static protected $defaultFilename = 'export_%datetime%.csv';
+
+    /**
      * @Assert\NotBlank(groups={"Execution"})
      * @WritableDirectory(groups={"Execution"})
      */
-    protected $filePath = '/tmp/export_%datetime%.csv';
+    protected $filePath;
 
     /**
      * @var StepExecution
@@ -58,6 +63,10 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     public function getFilePath()
     {
+        if (null === $this->filePath) {
+            $this->filePath = sys_get_temp_dir().DIRECTORY_SEPARATOR.static::$defaultFilename;
+        }
+
         return $this->filePath;
     }
 
@@ -72,7 +81,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
             $this->resolvedFilePath = strtr(
                 $this->filePath,
                 array(
-                    '%datetime%' => date('Y-m-d_H:i:s')
+                    '%datetime%' => date('Y-m-d_H-i-s')
                 )
             );
         }
