@@ -52,7 +52,7 @@ class DompdfBuilder implements PdfBuilderInterface
         define('DOMPDF_ENABLE_AUTOLOAD', false);
         $filePath = $this->rootDir."/../vendor/dompdf/dompdf/dompdf_config.inc.php";
         if (file_exists($filePath)) {
-            require_once($filePath);
+            require_once $filePath;
         } else {
             throw new \RuntimeException('DomPDF cannot be loaded');
         }
