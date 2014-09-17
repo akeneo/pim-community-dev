@@ -1,5 +1,10 @@
 # 1.0.0-x
 ## Improvements
+
+- remove the fixed mysql socket location
+- switch to minimum-stability:stable in composer.json
+- base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
 ## Bug fixes
 ## BC breaks
 
