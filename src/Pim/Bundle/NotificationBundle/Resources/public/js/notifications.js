@@ -55,11 +55,11 @@ define(
 
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('pim_notification_notification_mark_viewed', {id: 'all'}),
+                    url: Routing.generate('pim_notification_notification_mark_viewed'),
                     async: true
                 });
 
-                this.collection.trigger('mark_as_read', 'all');
+                this.collection.trigger('mark_as_read', null);
                 _.each(this.collection.models, function (model) {
                     model.set('viewed', true);
                 });
@@ -86,12 +86,12 @@ define(
                 }, this);
 
                 this.collection.on('mark_as_read', function(id) {
-                    var value = 'all' === id ? 0 : this.indicator.get('value') - 1;
+                    var value = null === id ? 0 : this.indicator.get('value') - 1;
                     this.indicator.set('value', value);
                     if (0 === value) {
                         this.renderFooter();
                     }
-                    if ('all' !== id) {
+                    if (null !== id) {
                         this.freezeCount = true;
                     }
                 }, this);

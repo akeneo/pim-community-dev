@@ -44,7 +44,8 @@ define(
             remove: function() {
                 this.model.destroy({
                     url: Routing.generate('pim_notification_notification_remove', { id: this.model.get('id') }),
-                    wait: false
+                    wait: false,
+                    _method: 'DELETE'
                 });
 
                 this.$el.fadeOut(function() {

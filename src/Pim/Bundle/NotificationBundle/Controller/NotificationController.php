@@ -64,7 +64,7 @@ class NotificationController
     /**
      * Mark user notifications as viewed
      *
-     * @param string|integer $id Has to be numeric or 'all'
+     * @param integer|null $id If null, all notifications will be marked as viewed
      *
      * @return JsonResponse
      */

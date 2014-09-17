@@ -4,12 +4,14 @@ pim_notification_notification_list:
 
 pim_notification_notification_mark_viewed:
     path: /notification/mark_viewed/{id}
-    defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, _format: json }
+    defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, _format: json, id: ~ }
     requirements:
-        id: all|\d+
+        id: \d+
+        _method: POST
 
 pim_notification_notification_remove:
     path: /notification/remove/{id}
     defaults: { _controller: pim_notification.controller.notification:removeAction, _format: json }
     requirements:
         id: \d+
+        _method: DELETE

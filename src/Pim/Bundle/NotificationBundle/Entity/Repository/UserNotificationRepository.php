@@ -39,8 +39,8 @@ class UserNotificationRepository extends EntityRepository
     /**
      * Marks user notifications as viewed
      *
-     * @param UserInterface  $user The user
-     * @param string|integer $id   Can be numeric or 'all'
+     * @param UserInterface $user The user
+     * @param integer|null  $id   If null all notifications will be marked as viewed
      */
     public function markAsViewed(UserInterface $user, $id)
     {
@@ -50,7 +50,7 @@ class UserNotificationRepository extends EntityRepository
             ->where('n.user = :user')
             ->setParameter('user', $user);
 
-        if (is_numeric($id)) {
+        if (null !== $id) {
             $qb
                 ->andWhere('n.id = :id')
                 ->setParameter('id', $id);
