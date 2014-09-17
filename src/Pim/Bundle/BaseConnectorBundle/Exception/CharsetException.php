@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pim\Bundle\BaseConnectorBundle\Exception;
-
 
 /**
  * Exception thrown when a file is not well encoded.
@@ -14,4 +12,4 @@ namespace Pim\Bundle\BaseConnectorBundle\Exception;
 class CharsetException extends \Exception
 {
 
-} 
+}
