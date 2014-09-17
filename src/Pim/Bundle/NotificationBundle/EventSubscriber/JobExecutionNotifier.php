@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
@@ -54,45 +53,35 @@ class JobExecutionNotifier implements EventSubscriberInterface
             return;
         }
 
-        //TODO: inject ImportExportBundle\Entity\Repository\JobExecutionRepository directly
-//        $this->repository->hasWarnings($jobExecution->getId());
-
-        $stepExecutions = $jobExecution->getStepExecutions();
-        $hasWarnings = false;
-        foreach ($stepExecutions as $step) {
-            if (0 !== $step->getWarnings()->count()) {
-                $hasWarnings = true;
-                break;
-            }
-        }
-
-        $exitCode = $jobExecution->getExitStatus()->getExitCode();
-        if ($hasWarnings && $exitCode < BatchStatus::FAILED) {
-            $status = 'warning';
-        } elseif ($exitCode > BatchStatus::STOPPED) {
+        if ($jobExecution->getStatus()->isUnsuccessful()) {
             $status = 'error';
         } else {
             $status = 'success';
+            // TODO: inject ImportExportBundle\Entity\Repository\JobExecutionRepository directly
+            // $this->repository->hasWarnings($jobExecution->getId());
+            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+                if ($stepExecution->getWarnings()->count()) {
+                    $status = 'warning';
+                    break;
+                }
+            }
         }
 
-        $options = [
-            'route' => sprintf('pim_importexport_%s_execution_show', $jobExecution->getJobInstance()->getType()),
-            'routeParams' => [
-                'id' => $jobExecution->getId()
-            ],
-            'messageParams' => [
-                '%label%' => $jobExecution->getJobInstance()->getLabel()
-            ]
-        ];
+        $type = $jobExecution->getJobInstance()->getType();
 
         $this->manager->notify(
             [$user],
-            sprintf(
-                'pim_import_export.notification.%s.complete',
-                $jobExecution->getJobInstance()->getType()
-            ),
+            sprintf('pim_import_export.notification.%s.%s', $type, $status),
             $status,
-            $options
+            [
+                'route' => sprintf('pim_importexport_%s_execution_show', $type),
+                'routeParams' => [
+                    'id' => $jobExecution->getId()
+                ],
+                'messageParams' => [
+                    '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ]
+            ]
         );
     }
 }
