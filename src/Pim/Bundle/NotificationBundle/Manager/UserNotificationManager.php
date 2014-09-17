@@ -20,7 +20,7 @@ use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 class UserNotificationManager
 {
     /** @var EntityManager */
-    protected $entityManager;
+    protected $em;
 
     /** @var EntityRepository */
     protected $repository;
@@ -37,20 +37,20 @@ class UserNotificationManager
     /**
      * Construct
      *
-     * @param EntityManager           $entityManager
+     * @param EntityManager           $em
      * @param EntityRepository        $repository
      * @param NotificationFactory     $notificationFactory
      * @param UserNotificationFactory $userNotificationFactory
      * @param UserManager             $userManager
      */
     public function __construct(
-        EntityManager $entityManager,
+        EntityManager $em,
         EntityRepository $repository,
         NotificationFactory $notificationFactory,
         UserNotificationFactory $userNotificationFactory,
         UserManager $userManager
     ) {
-        $this->entityManager           = $entityManager;
+        $this->em                      = $em;
         $this->repository              = $repository;
         $this->notificationFactory     = $notificationFactory;
         $this->userNotificationFactory = $userNotificationFactory;
@@ -79,12 +79,12 @@ class UserNotificationManager
             $userNotifications[] = $this->userNotificationFactory->createUserNotification($notification, $user);
         }
 
-        $this->entityManager->persist($notification);
+        $this->em->persist($notification);
         foreach ($userNotifications as $userNotification) {
-            $this->entityManager->persist($userNotification);
+            $this->em->persist($userNotification);
         }
-        $this->entityManager->flush($notification);
-        $this->entityManager->flush($userNotifications);
+        $this->em->flush($notification);
+        $this->em->flush($userNotifications);
 
         return $this;
     }
@@ -142,8 +142,8 @@ class UserNotificationManager
         );
 
         if ($notification) {
-            $this->entityManager->remove($notification);
-            $this->entityManager->flush($notification);
+            $this->em->remove($notification);
+            $this->em->flush($notification);
         }
     }
 }
