@@ -37,7 +37,8 @@
         "nelmio/api-doc-bundle": "2.4.*",
         "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
         "knplabs/knp-menu":"v2.0.0-alpha2",
-        "gedmo/doctrine-extensions":"2.3.x-dev@dev"
+        "gedmo/doctrine-extensions":"2.3.x-dev@dev",
+        "dompdf/dompdf" : "0.6.1"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
