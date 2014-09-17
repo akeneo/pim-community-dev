@@ -129,6 +129,9 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string    $type
+     * @param TableNode $table
+     *
      * @Then /^I check if "([^"]*)" were sent in Magento:$/
      */
     public function iCheckIfWereSentInMagento($type, TableNode $table)
@@ -165,15 +168,18 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
 
             case 'categories':
             case 'category':
-                $extractedData = $this
+                $categoriesToCheck      = $this->categoriesTransformer($table->getHash());
+                $magExtractedCategories = $this
                     ->extractCategoriesFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                $magentoCategoryTree = $this->extractedMagentoCategoriesTransformer($magExtractedCategories);
+                $this->checkCategories($categoriesToCheck, $magentoCategoryTree);
                 break;
         }
     }
 
     /**
      * Transform an array of attributes
-     * Return ['attribute1' => 'value1', 'store_view' => [ 'store_view1' => ['title' => '', 'options => ['value', '']]]]
+     * Returns ['attribute1' => 'value1', 'store_view' => [ 'store_view1' => ['title' => '', 'options => ['value', '']]]]
      *
      * @param array $table Given attributes
      *
@@ -200,6 +206,57 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
         unset($dataToCheck[0]);
 
         return $dataToCheck;
+    }
+
+    /**
+     * Remove " (.*)" from the name of extracted magento categories
+     *
+     * @param array $extractedMagentoCategories
+     *
+     * @return array
+     */
+    protected function extractedMagentoCategoriesTransformer(array $extractedMagentoCategories)
+    {
+        foreach ($extractedMagentoCategories as &$tree) {
+            array_walk_recursive(
+                $tree,
+                function (&$category) {
+                    if (preg_match('#(.*) \(.*\)#', $category, $matches)) {
+                        $category = $matches[1];
+                    }
+                }
+            );
+        }
+
+        return $extractedMagentoCategories;
+    }
+
+    /**
+     * Transform and prune the given categories gherkin array
+     * Returns ['store view label 1' => [['text' => 'cat label', 'parent' => 'parent label'], ...], ... ]
+     *
+     * @param array $table
+     *
+     * @return array
+     */
+    protected function categoriesTransformer(array $table)
+    {
+        $sortedCategories      = [];
+        $rootCategoryStoreView = [];
+
+        foreach ($table as $category) {
+            $categoryStoreView = $category['store_view'];
+
+            if (!empty($category['root'])) {
+                $rootCategoryStoreView[$categoryStoreView] = $category['root'];
+            }
+
+            unset($category['store_view']);
+            unset($category['root']);
+            $sortedCategories[$categoryStoreView][] = $category;
+        }
+
+        return $sortedCategories;
     }
 
     /**
@@ -238,7 +295,7 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * Allows to extract categories
-     * Returns ['param_1' => ['value1', ...], ...]
+     * Returns ['store view label 1' => ['param_1' => 'value', ..., 'children' => idem], ...]
      *
      * @param NavigationManager $navigationManager Navigation manager
      * @param Crawler           $mainPageCrawler   Admin page crawler
@@ -334,6 +391,63 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
             }
 
         }
+    }
+
+    /**
+     * Checks if given categories are in the given tree
+     *
+     * @param array $categoriesToCheck      ['store view label' => [['text' => 'cat label', 'parent' => 'parent label'],...],...]
+     * @param array $magExtractedCategories Extracted Magento categories
+     *
+     * @throws \InvalidArgumentException If one of categories to check is not found
+     *
+     * @return null
+     */
+    protected function checkCategories(array $categoriesToCheck, array $magExtractedCategories)
+    {
+        foreach ($categoriesToCheck as $storeView => $categories) {
+            foreach ($categories as $category) {
+                if($this->isCategoryInTree($category, $magExtractedCategories[$storeView]) === false) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Category "%s" with "%s" parent not found in store view "%s" in Magento category tree',
+                            $category['text'], $category['parent'], $storeView)
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks if a category is in the given tree with good name and parent
+     * Recursive function
+     *
+     * @param array  $needle Category to search in tree ['text' => 'cat label', 'parent' => 'parent label']
+     * @param array  $tree   Extracted Magento categories
+     * @param string $parent Label of the previous child used to check the parent
+     *
+     * @return bool
+     */
+    protected function isCategoryInTree(array $needle, array $tree, $parent = null)
+    {
+        $needleFound = false;
+
+        foreach ($tree as $child) {
+
+            if ($child['text'] === $needle['text'] && $parent === $needle['parent']) {
+                $needleFound = true;
+                break;
+
+            } else if (!empty($child['children'])) {
+                if ($this->isCategoryInTree($needle, $child['children'], $child['text']) === true) {
+                    $needleFound = true;
+                    break;
+                } else {
+                    $needleFound = false;
+                }
+            }
+        }
+
+        return $needleFound;
     }
 
     /**
