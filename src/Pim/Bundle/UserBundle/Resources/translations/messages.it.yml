@@ -1,0 +1,124 @@
+oro.user.controller:
+  group.message.saved: Gruppo salvato
+  role.message.saved: Ruolo salvato
+  user.message.saved: Utente salvato
+  status.message.saved: Stato salvato
+oro.user.grid.users:
+  columns:
+    username: Nome utente
+    email: Email
+    firstName: Nome
+    lastName: Cognome
+    createdAt: Creato il
+    updatedAt: Caricato il
+    enabled: Stato
+oro.user.grid.roles:
+  columns:
+    label: Etichetta
+oro.user.grid.groups:
+  columns:
+    name: Nome
+pim_title:
+  user.index: Utenti
+  user_role.index: Ruoli
+  user_group.index: Gruppi
+  system_configuration.index: Configurazione
+user.title: Utente
+Users Management: Gestione degli utenti
+Create user: Crea utente
+New user: Nuovo utente
+Additional: Aggiuntive
+Groups and Roles: Gruppi e Ruoli
+Username: Nome utente
+Password: Password
+Re-enter password: Reinserisci password
+Name prefix: Prefisso del nome
+First name: Nome
+Middle name: Secondo nome
+Last name: Cognome
+Name suffix: Suffisso del nome
+Date of birth: Data di nascita
+Avatar: Avatar
+Additional emails: Email aggiuntive
+Add another email: Aggiungi un altro indirizzo email
+Catalog locale: Catalogo impostazioni locali
+Catalog scope: Catalogo canali
+Default tree: Struttura predefinita
+Business Units: Business Unit
+Email synchronization settings: Impostazioni per la sincronizzazione email
+Host: Host
+Port: Port
+Ssl: Ssl
+Last logged in: Ultimo accesso
+Login count: Conteggio login
+Additional Information: Informazioni aggiuntive
+Basic Information: Informazioni di base
+Contact Information: Informazioni di contatto
+User name: Nome utente
+Birthday: Data di nascita
+API key: Chiave API
+Generate key: Genera chiave
+Primary: primaria
+Removed user: Utente rimosso
+Role: Ruolo
+Owner: Proprietario
+General: Generale
+Entity: Soggetto
+Capabilities: Funzionalità
+Save and close: Salva e chiudi
+Has role: Ha il ruolo
+role:
+  title: ruolo
+  edit: Modifica ruolo
+  create: Crea Ruolo
+rights:
+  action: Autorizzazioni
+oro_security:
+  acl_group:
+    user: Utenti
+    role: Ruoli
+    group: Gruppi degli utenti
+  acl:
+    user:
+      view: Elenco utenti
+      create: Crea un utente
+      edit: Modifica gli utenti
+      delete: Rimuovi un utente
+    role:
+      view: Elenco ruoli
+      create: Crea un ruolo
+      edit: Modifica ruolo
+      delete: Rimuovi un ruolo
+    group:
+      view: Elenco gruppi di utenti
+      create: Crea gruppo di utenti
+      edit: Modifica gruppo utenti
+      delete: Rimuovi gruppo utenti
+(default): Autorizzazione predefinita su entità
+VIEW: Visualizzazione
+CREATE: Crea
+EDIT: Modifica
+DELETE: Elimina
+ASSIGN: Assegna
+SHARE: Condividi
+oro:
+  security:
+    access-level:
+      BASIC: Utente
+      LOCAL: Business Unit
+      DEEP: Divisione
+      GLOBAL: Organizzazione
+      SYSTEM: Sistema
+      NONE: Nessun
+Create group: Crea gruppo
+Has group: Ha gruppo
+Save and Close: Salva e chiudi
+Log in: Accedi
+Remember me on this computer: Ricordami su questo computer
+Forgot your password?: Hai dimenticato la password?
+Username or Email: Nome utente o Email
+Forgot Password: Password Dimenticata
+Request: Richiesta
+Check Email: Controlla la tua email
+password_reset_email_sent: 'Una email è stata inviata a %email%. Cliccare sul link contenuto per reimpostare la password.'
+Go to homepage: Vai alla Homepage
