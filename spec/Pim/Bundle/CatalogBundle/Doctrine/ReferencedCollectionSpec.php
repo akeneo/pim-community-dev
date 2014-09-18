@@ -54,8 +54,28 @@ class ReferencedCollectionSpec extends ObjectBehavior
         EntityStub $entity8,
         EntityStub $entity15
     ) {
+        $entity4->getId()->willReturn(4);
+        $entity8->getId()->willReturn(8);
+        $entity15->getId()->willReturn(15);
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
+
+        $this->toArray()->shouldReturn([$entity4, $entity8, $entity15]);
+    }
+
+
+    function it_keeps_entities_order_when_hydrating_the_collection(
+        ObjectRepository $repository,
+        ClassMetadata $classMetadata,
+        EntityStub $entity4,
+        EntityStub $entity8,
+        EntityStub $entity15
+    ) {
+        $entity4->getId()->willReturn(4);
+        $entity8->getId()->willReturn(8);
+        $entity15->getId()->willReturn(15);
+        $classMetadata->getIdentifier()->willReturn(['id']);
+        $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity8, $entity15, $entity4]);
 
         $this->toArray()->shouldReturn([$entity4, $entity8, $entity15]);
     }
@@ -85,6 +105,10 @@ class ReferencedCollectionSpec extends ObjectBehavior
         EntityStub $entity15,
         EntityStub $newEntity
     ) {
+        $entity4->getId()->willReturn(4);
+        $entity8->getId()->willReturn(8);
+        $entity15->getId()->willReturn(15);
+        $newEntity->getId()->willReturn(null);
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
@@ -105,6 +129,9 @@ class ReferencedCollectionSpec extends ObjectBehavior
         EntityStub $entity8,
         EntityStub $entity15
     ) {
+        $entity4->getId()->willReturn(4);
+        $entity8->getId()->willReturn(8);
+        $entity15->getId()->willReturn(15);
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
@@ -125,6 +152,9 @@ class ReferencedCollectionSpec extends ObjectBehavior
         EntityStub $entity8,
         EntityStub $entity15
     ) {
+        $entity4->getId()->willReturn(4);
+        $entity8->getId()->willReturn(8);
+        $entity15->getId()->willReturn(15);
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
@@ -146,6 +176,9 @@ class ReferencedCollectionSpec extends ObjectBehavior
         EntityStub $entity15,
         EntityStub $newEntity
     ) {
+        $entity4->getId()->willReturn(4);
+        $entity8->getId()->willReturn(8);
+        $entity15->getId()->willReturn(15);
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
@@ -160,6 +193,9 @@ class ReferencedCollectionSpec extends ObjectBehavior
 
 class EntityStub
 {
+    public function getId()
+    {
+    }
 }
 
 class DocumentStub
