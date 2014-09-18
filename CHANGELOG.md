@@ -1,6 +1,10 @@
 # 1.2.5
 
- ## Improvements
+## Bug fixes
+  - File that contains non UTF-8 characters can not be imported anymore
+  - Mimetype check on file import has been removed
+
+## Improvements
   - Fixtures stop if warnings are encountered
   - Errors and warnings for fixtures are displayed
 

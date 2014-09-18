@@ -3,9 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
-use Pim\Bundle\TransformBundle\Transformer\EntityTransformer;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;

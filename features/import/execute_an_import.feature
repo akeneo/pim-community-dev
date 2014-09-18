@@ -6,8 +6,9 @@ Feature: Execute a job
 
   Background:
     Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
 
   Scenario: Fail to see the import button of a job with validation errors
-    Given I am logged in as "Julia"
     When I am on the "footwear_product_import" import job page
     Then I should not see the "Import now" link
+
