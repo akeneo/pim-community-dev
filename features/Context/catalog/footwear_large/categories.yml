@@ -1,0 +1,420 @@
+categories:
+    2014_collection:
+        labels:
+            en_US: 2014 collection
+    summer_collection:
+        labels:
+            en_US: Summer collection
+        parent: 2014_collection
+    winter_collection:
+        labels:
+            en_US: Winter collection
+        parent: 2014_collection
+    winter_boots:
+        labels:
+            en_US: Winter boots
+        parent: winter_collection
+    sandals:
+        labels:
+            en_US: Sandals
+        parent: summer_collection
+    sandals1:
+        labels:
+            en_US: Sandals1
+        parent: summer_collection
+    sandals2:
+        labels:
+            en_US: Sandals2
+        parent: summer_collection
+    sandals3:
+        labels:
+            en_US: Sandals3
+        parent: summer_collection
+    sandals4:
+        labels:
+            en_US: Sandals4
+        parent: summer_collection
+    sandals5:
+        labels:
+            en_US: Sandals5
+        parent: summer_collection
+    sandals6:
+        labels:
+            en_US: Sandals6
+        parent: summer_collection
+    sandals7:
+        labels:
+            en_US: Sandals7
+        parent: summer_collection
+    sandals8:
+        labels:
+            en_US: Sandals8
+        parent: summer_collection
+    sandals9:
+        labels:
+            en_US: Sandals9
+        parent: summer_collection
+    sandals10:
+        labels:
+            en_US: Sandals10
+        parent: summer_collection
+    sandals11:
+        labels:
+            en_US: Sandals11
+        parent: summer_collection
+    sandals12:
+        labels:
+            en_US: Sandals12
+        parent: summer_collection
+    sandals13:
+        labels:
+            en_US: Sandals13
+        parent: summer_collection
+    sandals14:
+        labels:
+            en_US: Sandals14
+        parent: summer_collection
+    sandals15:
+        labels:
+            en_US: Sandals15
+        parent: summer_collection
+    sandals16:
+        labels:
+            en_US: Sandals16
+        parent: summer_collection
+    sandals17:
+        labels:
+            en_US: Sandals17
+        parent: summer_collection
+    sandals18:
+        labels:
+            en_US: Sandals18
+        parent: summer_collection
+    sandals19:
+        labels:
+            en_US: Sandals19
+        parent: summer_collection
+    sandals20:
+        labels:
+            en_US: Sandals20
+        parent: summer_collection
+    sandals21:
+        labels:
+            en_US: Sandals21
+        parent: summer_collection
+    sandals22:
+        labels:
+            en_US: Sandals23
+        parent: summer_collection
+    sandals23:
+        labels:
+            en_US: Sandals24
+        parent: summer_collection
+    sandals24:
+        labels:
+            en_US: Sandals25
+        parent: summer_collection
+    sandals25:
+        labels:
+            en_US: Sandals26
+        parent: summer_collection
+    sandals26:
+        labels:
+            en_US: Sandals27
+        parent: summer_collection
+    sandals27:
+        labels:
+            en_US: Sandals28
+        parent: summer_collection
+    sandals28:
+        labels:
+            en_US: Sandals29
+        parent: summer_collection
+    sandals29:
+        labels:
+            en_US: Sandals30
+        parent: summer_collection
+    sandals30:
+        labels:
+            en_US: Sandals31
+        parent: summer_collection
+    sandals31:
+        labels:
+            en_US: Sandals32
+        parent: summer_collection
+    sandals32:
+        labels:
+            en_US: Sandals33
+        parent: summer_collection
+    sandals33:
+        labels:
+            en_US: Sandals34
+        parent: summer_collection
+    sandals34:
+        labels:
+            en_US: Sandals35
+        parent: summer_collection
+    sandals35:
+        labels:
+            en_US: Sandals36
+        parent: summer_collection
+    sandals36:
+        labels:
+            en_US: Sandals37
+        parent: summer_collection
+    sandals37:
+        labels:
+            en_US: Sandals38
+        parent: summer_collection
+    sandals38:
+        labels:
+            en_US: Sandals39
+        parent: summer_collection
+    sandals39:
+        labels:
+            en_US: Sandals40
+        parent: summer_collection
+    sandals40:
+        labels:
+            en_US: Sandals41
+        parent: summer_collection
+    sandals41:
+        labels:
+            en_US: Sandals42
+        parent: summer_collection
+    sandals42:
+        labels:
+            en_US: Sandals43
+        parent: summer_collection
+    sandals43:
+        labels:
+            en_US: Sandals44
+        parent: summer_collection
+    sandals44:
+        labels:
+            en_US: Sandals45
+        parent: summer_collection
+    sandals45:
+        labels:
+            en_US: Sandals46
+        parent: summer_collection
+    sandals46:
+        labels:
+            en_US: Sandals47
+        parent: summer_collection
+    sandals47:
+        labels:
+            en_US: Sandals48
+        parent: summer_collection
+    sandals48:
+        labels:
+            en_US: Sandals49
+        parent: summer_collection
+    sandals49:
+        labels:
+            en_US: Sandals50
+        parent: summer_collection
+    sandals50:
+        labels:
+            en_US: Sandals51
+        parent: summer_collection
+    sandals151:
+        labels:
+            en_US: Sandals52
+        parent: summer_collection
+    sandals52:
+        labels:
+            en_US: Sandals53
+        parent: summer_collection
+    sandals53:
+        labels:
+            en_US: Sandals54
+        parent: summer_collection
+    sandals54:
+        labels:
+            en_US: Sandals55
+        parent: summer_collection
+    sandals55:
+        labels:
+            en_US: Sandals56
+        parent: summer_collection
+    sandals56:
+        labels:
+            en_US: Sandals57
+        parent: summer_collection
+    sandals57:
+        labels:
+            en_US: Sandals58
+        parent: summer_collection
+    sandals58:
+        labels:
+            en_US: Sandals59
+        parent: summer_collection
+    sandals59:
+        labels:
+            en_US: Sandals60
+        parent: summer_collection
+    sandals60:
+        labels:
+            en_US: Sandals61
+        parent: summer_collection
+    sandals61:
+        labels:
+            en_US: Sandals62
+        parent: summer_collection
+    sandals62:
+        labels:
+            en_US: Sandals63
+        parent: summer_collection
+    sandals63:
+        labels:
+            en_US: Sandals64
+        parent: summer_collection
+    sandals64:
+        labels:
+            en_US: Sandals65
+        parent: summer_collection
+    sandals65:
+        labels:
+            en_US: Sandals66
+        parent: summer_collection
+    sandals66:
+        labels:
+            en_US: Sandals67
+        parent: summer_collection
+    sandals67:
+        labels:
+            en_US: Sandals68
+        parent: summer_collection
+    sandals68:
+        labels:
+            en_US: Sandals69
+        parent: summer_collection
+    sandals69:
+        labels:
+            en_US: Sandals70
+        parent: summer_collection
+    sandals70:
+        labels:
+            en_US: Sandals71
+        parent: summer_collection
+    sandals80:
+        labels:
+            en_US: Sandals72
+        parent: summer_collection
+    sandals81:
+        labels:
+            en_US: Sandals73
+        parent: summer_collection
+    sandals82:
+        labels:
+            en_US: Sandals74
+        parent: summer_collection
+    sandals83:
+        labels:
+            en_US: Sandals75
+        parent: summer_collection
+    sandals84:
+        labels:
+            en_US: Sandals76
+        parent: summer_collection
+    sandals85:
+        labels:
+            en_US: Sandals77
+        parent: summer_collection
+    sandals86:
+        labels:
+            en_US: Sandals78
+        parent: summer_collection
+    sandals87:
+        labels:
+            en_US: Sandals79
+        parent: summer_collection
+    sandals88:
+        labels:
+            en_US: Sandals80
+        parent: summer_collection
+    sandals89:
+        labels:
+            en_US: Sandals81
+        parent: summer_collection
+    sandals90:
+        labels:
+            en_US: Sandals82
+        parent: summer_collection
+    sandals91:
+        labels:
+            en_US: Sandals83
+        parent: summer_collection
+    sandals92:
+        labels:
+            en_US: Sandals84
+        parent: summer_collection
+    sandals93:
+        labels:
+            en_US: Sandals85
+        parent: summer_collection
+    sandals94:
+        labels:
+            en_US: Sandals86
+        parent: summer_collection
+    sandals95:
+        labels:
+            en_US: Sandals87
+        parent: summer_collection
+    sandals96:
+        labels:
+            en_US: Sandals88
+        parent: summer_collection
+    sandals97:
+        labels:
+            en_US: Sandals89
+        parent: summer_collection
+    sandals98:
+        labels:
+            en_US: Sandals90
+        parent: summer_collection
+    sandals99:
+        labels:
+            en_US: Sandals91
+        parent: summer_collection
+    sandals100:
+        labels:
+            en_US: Sandals92
+        parent: summer_collection
+    sandals101:
+        labels:
+            en_US: Sandals93
+        parent: summer_collection
+    sandals102:
+        labels:
+            en_US: Sandals94
+        parent: summer_collection
+    sandals103:
+        labels:
+            en_US: Sandals95
+        parent: summer_collection
+    sandals104:
+        labels:
+            en_US: Sandals96
+        parent: summer_collection
+    sandals105:
+        labels:
+            en_US: Sandals97
+        parent: summer_collection
+    sandals106:
+        labels:
+            en_US: Sandals98
+        parent: summer_collection
+    sandals107:
+        labels:
+            en_US: Sandals99
+        parent: summer_collection
+    sandals108:
+        labels:
+            en_US: Sandals100
+        parent: summer_collection
+    sandals109:
+        labels:
+            en_US: Sandals101
+        parent: summer_collection

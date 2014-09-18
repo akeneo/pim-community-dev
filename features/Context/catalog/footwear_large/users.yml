@@ -1,0 +1,35 @@
+users:
+    admin:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
+        roles:         [ ROLE_ADMINISTRATOR ]
+        groups:        [ IT support ]
+    Julia:
+        catalogLocale: en_US
+        catalogScope:  tablet
+        defaultTree:   2014_collection
+        last_name:     Stark
+        roles:         [ ROLE_CATALOG_MANAGER ]
+        groups:        [ Manager ]
+    Peter:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
+        last_name:     Williams
+        roles:         [ ROLE_ADMINISTRATOR ]
+        groups:        [ IT support ]
+    Mary:
+        catalogLocale: en_US
+        catalogScope:  tablet
+        defaultTree:   summer_collection
+        last_name:     Smith
+        roles:         [ ROLE_USER ]
+        groups:        [ Redactor ]
+    Sandra:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   winter_collection
+        last_name:     Harvey
+        roles:         [ ROLE_USER ]
+        groups:        [ Redactor ]

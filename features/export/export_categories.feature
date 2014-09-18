@@ -19,3 +19,15 @@ Feature: Export categories
       | sandals           |
       | winter_collection |
       | winter_boots      |
+
+  @javascript
+  Scenario: Successfully export large number of categories with a correct written number at the end of the export
+    Given a "footwear_large" catalog configuration
+    And the following job "footwear_category_export" configuration:
+      | filePath | %tmp%/category_export/category_export.csv |
+    And I am logged in as "Julia"
+    And I am on the "footwear_category_export" export job page
+    When I launch the export job
+    And I wait for the "footwear_category_export" job to finish
+    Then I should see "read 105"
+    Then I should see "written 105"
