@@ -66,8 +66,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
             $condition
         );
         $this->qb->addOrderBy($joinAlias.'.'.$backendType, $direction);
-        $this->qb->addOrderBy(current($this->qb->getRootAliases()).'.id', $direction);
-
+        $this->qb->addOrderBy(current($this->qb->getRootAliases()).'.id', 'ASC');
         // Reapply previous join after the orderBy related join
         $this->applyJoins($joinsSet);
 
@@ -81,7 +80,8 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
         $this->qb->addOrderBy($field, $direction);
-
+        $idField = current($this->qb->getRootAliases()).'.id';
+        $this->qb->addOrderBy($idField, 'ASC');
         return $this;
     }
 
