@@ -21,6 +21,9 @@ pim_comment:
 pim_pdf_generator:
     resource: "@PimPdfGeneratorBundle/Resources/config/routing.yml"
 
+pim_notification:
+    resource: "@PimNotificationBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:

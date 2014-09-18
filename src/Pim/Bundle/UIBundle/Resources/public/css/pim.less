@@ -312,3 +312,73 @@ span.link-label {
     text-decoration: none;
   }
 }
+
+/** Notifications *****************************************************************************************************/
+#oroplatform-header .nav #notifications {
+  i.icon-bullhorn {
+    font-size: 16px;
+    padding-top: 2px;
+  }
+  ul.dropdown-menu {
+    width: auto;
+    margin-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 0;
+    ol.scroll-menu {
+      list-style: none;
+      margin: 0;
+      width: auto;
+      height: auto;
+      max-height: 211px;
+      overflow-x: hidden;
+      white-space: nowrap;
+      li {
+        border-top: 1px solid @backgroundColor-white;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        &>a {
+          padding: 10px 55px 10px 10px;
+          display: block;
+          &:hover {
+            background-color: lighten(@color-purple_hover, 2%);
+            background-color: darken(@backgroundColor-white, 3%);
+          }
+          &.new {
+            background: @color-light_grey;
+            &:hover {
+              background-color: darken(@color-purple_hover, 2%);
+            }
+          }
+          i {
+            padding-right: 5px;
+          }
+          i.icon-ok { color: #33be00; }
+          i.icon-warning-sign { color: orange; }
+          i.icon-remove { color: red; }
+          i.action {
+            position: absolute;
+            right: 3px;
+            width: 28px;
+            text-align: center;
+            background-color: @backgroundColor-white;
+            border: 1px solid @textColor + #888;
+            .border-radius(3px);
+            font-size: 14px;
+            padding: 2px 6px;
+            &:hover {
+              background-color: @color-light_grey;
+            }
+          }
+        }
+      }
+    }
+    button {
+      margin: 0 5px;
+    }
+    p {
+      span {
+        padding: 0 10px;
+      }
+    }
+  }
+}

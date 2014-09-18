@@ -11,6 +11,7 @@ assetic:
         - PimUIBundle
         - PimCatalogBundle
         - PimEnrichBundle
+        - PimNotificationBundle
     filters:
         lessphp:
             file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
