@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -43,5 +42,4 @@ class BaseSorterSpec extends ObjectBehavior
 
         $this->addAttributeSorter($sku, 'DESC');
     }
-
 }
