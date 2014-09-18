@@ -13,7 +13,7 @@ use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Prophecy\Argument;
 
-class UserNotificationManagerSpec extends ObjectBehavior
+class NotificationManagerSpec extends ObjectBehavior
 {
     function let(
         EntityManager $em,
@@ -27,7 +27,7 @@ class UserNotificationManagerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Manager\UserNotificationManager');
+        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Manager\NotificationManager');
     }
 
     function it_can_create_a_notification(

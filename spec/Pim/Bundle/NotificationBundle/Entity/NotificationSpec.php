@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\NotificationBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class NotificationSpec extends ObjectBehavior
 {

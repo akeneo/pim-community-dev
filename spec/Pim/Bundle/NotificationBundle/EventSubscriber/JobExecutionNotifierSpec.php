@@ -10,13 +10,13 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Prophecy\Argument;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
     function let(
-        UserNotificationManager $manager,
+        NotificationManager $manager,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         StepExecution $stepExecution,

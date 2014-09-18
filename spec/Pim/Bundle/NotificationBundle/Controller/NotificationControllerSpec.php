@@ -5,16 +5,15 @@ namespace spec\Pim\Bundle\NotificationBundle\Controller;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\UserNotification;
-use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\Request;
 
 class NotificationControllerSpec extends ObjectBehavior
 {
-    function let(DelegatingEngine $templating, UserNotificationManager $manager, UserContext $context)
+    function let(DelegatingEngine $templating, NotificationManager $manager, UserContext $context)
     {
         $this->beConstructedWith($templating, $manager, $context);
     }

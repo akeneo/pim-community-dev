@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\NotificationBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Oro\Bundle\UserBundle\Entity\User;
 

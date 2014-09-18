@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserNotificationManager
+class NotificationManager
 {
     /** @var EntityManager */
     protected $em;
@@ -67,7 +67,7 @@ class UserNotificationManager
      * @param string $type    success (default) | warning | error
      * @param array  $options ['route' => '', 'routeParams' => [], 'messageParams' => [], 'context => '']
      *
-     * @return UserNotificationManager
+     * @return NotificationManager
      */
     public function notify(array $users, $message, $type = 'success', array $options = [])
     {
