@@ -1,21 +1,6 @@
 imports:
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
 
-assetic:
-    bundles:
-        - OroAsseticBundle
-        - OroUIBundle
-        - OroUserBundle
-        - OroFilterBundle
-        - OroNavigationBundle
-        - OroWindowsBundle
-        - OroEntityExtendBundle
-        - OroSecurityBundle
-        - PimUIBundle
-        - PimCatalogBundle
-        - PimEnrichBundle
-        - PimEnterpriseEnrichBundle
-
 twig:
     globals:
         bap:

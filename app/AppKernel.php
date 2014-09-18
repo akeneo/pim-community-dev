@@ -79,7 +79,8 @@ class AppKernel extends OroKernel
             new Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle(),
             new Pim\Bundle\TransformBundle\PimTransformBundle(),
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
-            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle()
+            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
+            new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
         );
 
         $bundles = array_merge($bundles, $pimBundles);
