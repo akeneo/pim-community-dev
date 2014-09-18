@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Zend\Stdlib\DateTime;
 
 /**
  * Normalizer of StepExecution instance
@@ -65,13 +66,17 @@ class StepExecutionNormalizer implements NormalizerInterface
      *
      * @return null|string
      */
-    protected function normalizeDateTime($datetime)
+    protected function normalizeDateTime($utcDatetime)
     {
-        if (!$datetime instanceof \DateTime) {
+        if (!$utcDatetime instanceof \DateTime) {
             return;
         }
 
-        return $datetime->format('Y-m-d H:i:s');
+        $datetime = new DateTime();
+
+        $datetime->setTimestamp($utcDatetime->getTimestamp());
+
+        return $datetime->format('Y-m-d g:i:s A');
     }
 
     /**
