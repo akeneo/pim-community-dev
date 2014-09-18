@@ -1,0 +1,2 @@
+parameters:
+    pim_base_connector.step.validator.class:  Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep

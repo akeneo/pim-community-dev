@@ -107,7 +107,7 @@ class StepExecutionNormalizer implements NormalizerInterface
         $result = [];
         foreach ($summary as $key => $value) {
             $key = sprintf('job_execution.summary.%s', $key);
-            $result[$this->translator->trans($key)] = $value;
+            $result[$this->translator->trans($key)] = $this->translator->trans($value);
         }
 
         return $result;
