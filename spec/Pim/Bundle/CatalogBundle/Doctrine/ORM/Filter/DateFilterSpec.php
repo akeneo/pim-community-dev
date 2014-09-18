@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -53,8 +52,12 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_a_between_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'")->willReturn($qb);
-        $expr->andX("p.release_date > '2014-03-15'", "p.release_date < '2014-03-20 23:59:59'")->willReturn("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'");
+        $qb
+            ->andWhere("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'")
+            ->willReturn($qb);
+        $expr
+            ->andX("p.release_date > '2014-03-15'", "p.release_date < '2014-03-20 23:59:59'")
+            ->willReturn("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'");
         $qb->expr()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-15')->willReturn("p.release_date > '2014-03-15'");
@@ -68,7 +71,9 @@ class DateFilterSpec extends ObjectBehavior
     function it_adds_an_equal_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
         $qb->andWhere("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'")->willReturn($qb);
-        $expr->andX("p.release_date > '2014-03-20'", "p.release_date < '2014-03-20 23:59:59'")->willReturn("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'");
+        $expr
+            ->andX("p.release_date > '2014-03-20'", "p.release_date < '2014-03-20 23:59:59'")
+            ->willReturn("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'");
         $qb->expr()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-20')->willReturn("p.release_date > '2014-03-20'");
@@ -82,7 +87,9 @@ class DateFilterSpec extends ObjectBehavior
     function it_adds_a_not_between_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
         $qb->andWhere("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'")->willReturn($qb);
-        $expr->orX("p.release_date < '2014-03-15'", "p.release_date > '2014-03-20 23:59:59'")->willReturn("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'");
+        $expr
+            ->orX("p.release_date < '2014-03-15'", "p.release_date > '2014-03-20 23:59:59'")
+            ->willReturn("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'");
         $qb->expr()->willReturn($expr);
 
         $expr->lt('p.release_date', '2014-03-15')->willReturn("p.release_date < '2014-03-15'");

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
@@ -43,7 +43,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AbstractAttribute $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -64,7 +64,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AbstractAttribute $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(true);
@@ -118,7 +118,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_scopable_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AbstractAttribute $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -151,7 +151,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_price_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AbstractAttribute $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);

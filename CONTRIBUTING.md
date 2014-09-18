@@ -15,6 +15,8 @@ Every PR should start with:
 | PMD issues?**        |
 | Changelog updated?   |
 | Fixed tickets        |
+| DB schema updated?   |
+| Migration script?    |
 | Doc PR               |
 ```
 
