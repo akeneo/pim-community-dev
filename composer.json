@@ -24,7 +24,21 @@
         "akeneo/measure-bundle": "0.2.*@stable",
         "akeneo/batch-bundle": "0.2.*@stable",
         "oro/platform": "1.0.0-beta13",
-        "apy/jsfv-bundle": "2.0.1"
+        "apy/jsfv-bundle": "2.0.1",
+        "doctrine/common": "2.4.*",
+        "doctrine/doctrine-bundle": "1.2.*",
+        "doctrine/doctrine-fixtures-bundle": "2.2.*",
+        "friendsofsymfony/rest-bundle": "0.12.*",
+        "liip/imagine-bundle": "0.17.*",
+        "jms/serializer-bundle": "0.13.*",
+        "symfony/monolog-bundle": "2.3.*",
+        "symfony/symfony": "2.3.18",
+        "sensio/framework-extra-bundle": "2.3.*",
+        "nelmio/api-doc-bundle": "2.4.*",
+        "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
+        "knplabs/knp-menu":"v2.0.0-alpha2",
+        "gedmo/doctrine-extensions":"2.3.x-dev@dev",
+        "dompdf/dompdf" : "0.6.1"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
