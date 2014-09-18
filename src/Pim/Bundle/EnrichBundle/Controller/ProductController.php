@@ -369,6 +369,8 @@ class ProductController extends AbstractDoctrineController
         switch ($this->getRequest()->get('action')) {
             case self::SAVE_AND_FINISH:
                 $this->seqEditManager->removeFromUser($this->getUser());
+                $route = 'pim_enrich_product_edit';
+                break;
             case self::BACK_TO_GRID:
                 $route = 'pim_enrich_product_index';
                 $params = array();

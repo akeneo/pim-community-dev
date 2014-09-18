@@ -35,6 +35,13 @@ function(_, MassAction) {
 
             return params;
         },
+        /**
+         * Get extra parameters (sorters and )
+         * @param {array}  params
+         * @param {object} state
+         *
+         * @return {object}
+         */
         getExtraParameters: function(params, state) {
             params['product-grid'] = {};
 
@@ -45,6 +52,12 @@ function(_, MassAction) {
 
             return params;
         },
+        /**
+         * Get active sorters
+         * @param {object} state
+         *
+         * @return {object}
+         */
         getActiveSorters: function(state) {
             var result = {};
 
@@ -56,6 +69,12 @@ function(_, MassAction) {
 
             return result;
         },
+        /**
+         * Get active columns
+         * @param {object} state
+         *
+         * @return {object}
+         */
         getActiveColumns: function(state) {
             var result = {};
 
