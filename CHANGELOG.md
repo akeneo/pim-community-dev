@@ -20,6 +20,9 @@
 ## Bug fixes
  - Fixed job profile controller doing a global flush after launching job execution
 
+## Bug fixes
+ - Incorrect written number after csv export
+
 # 1.2.3 (2014-09-08)
 
 ## Bug fixes
