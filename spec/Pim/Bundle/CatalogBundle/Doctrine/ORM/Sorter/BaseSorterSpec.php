@@ -36,6 +36,9 @@ class BaseSorterSpec extends ObjectBehavior
         $queryBuilder->getDQLPart('join')->willReturn([]);
         $queryBuilder->resetDQLPart('join')->shouldBeCalled();
 
+        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->addOrderBy("p.id")->shouldBeCalled();
+
         $condition = "sorterVsku1.attribute = 42";
         $queryBuilder->leftJoin('p.values', 'sorterVsku1', 'WITH', $condition)->shouldBeCalled();
         $queryBuilder->addOrderBy('sorterVsku1.varchar', 'DESC')->shouldBeCalled();

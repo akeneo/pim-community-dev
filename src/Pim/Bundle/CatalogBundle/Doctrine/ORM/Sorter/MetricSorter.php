@@ -37,7 +37,7 @@ class MetricSorter extends BaseSorter
 
         $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
 
-        $idField = current($this->qb->getRootAliases()).'.id';
+        $idField = $this->qb->getRootAlias().'.id';
         $this->qb->addOrderBy($idField);
 
         return $this;
