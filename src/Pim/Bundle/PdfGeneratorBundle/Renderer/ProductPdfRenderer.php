@@ -145,10 +145,12 @@ class ProductPdfRenderer implements RendererInterface
     protected function configureOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('locale', 'scope', 'product'));
-        $resolver->setDefaults(array(
-            'groupedAttributes' => [],
-            'imageAttributes' => [],
-            'renderingDate' => new \DateTime()
-        ));
+        $resolver->setDefaults(
+            array(
+                'groupedAttributes' => [],
+                'imageAttributes' => [],
+                'renderingDate' => new \DateTime()
+            )
+        );
     }
 }
