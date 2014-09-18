@@ -1,0 +1,18 @@
+{% if app.user == comment.author %}
+    <a href="javascript:void(0);"
+       class="comment-delete-dialog pull-right"
+       title="{{ 'btn.delete'|trans|capitalize }}"
+       data-comment="#comment{{ comment.id }}"
+       data-method="DELETE"
+       data-message="{{ 'confirmation.remove.comment'|trans }}"
+       data-title="{{ 'confirmation.delete'|trans }}"
+       data-success-message="{{ 'flash.comment.delete.success'|trans }}"
+       data-error-message="{{ 'flash.comment.delete.error'|trans }}"
+       data-url="{{ path('pim_comment_comment_delete', { 'id': comment.id }) }}"
+    >
+        <i class="icon-trash"></i>
+    </a>
+{% endif %}
+<a href="javascript:void(0);" title="{{ 'btn.reply'|trans|capitalize }}">
+    <i class="icon-reply pull-right"></i>
+</a>

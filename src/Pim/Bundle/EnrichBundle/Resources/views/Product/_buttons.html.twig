@@ -1,4 +1,7 @@
 {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
+{% if resource_granted('pim_pdf_generator_product_download') %}
+    {{ elements.link('btn.download_pdf', path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }), { icon: 'download', class: 'no-hash', id: 'download-btn'}) }}
+{% endif %}
 {{ elements.enabledSwitch(form) }}
 {% if resource_granted("pim_enrich_product_remove") %}
      {{ elements.deleteLink(
@@ -25,3 +28,22 @@
 {% endif %}
 
 {{ elements.submitDropdownBtn(saveOptions) }}
+
+{% if resource_granted('pim_pdf_generator_product_download') %}
+<script type="text/javascript">
+    require(
+        ['jquery', 'oro/mediator'],
+        function ($, mediator) {
+            var initialScope = '{{ product.scope }}',
+            url = '{{ path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }) }}' +
+                '&dataScope=';
+            button = $('#download-btn');
+
+            button.attr('href', url + initialScope);
+            mediator.on('scopablefield:changescope', function (scope) {
+                button.attr('href', url + scope);
+            });
+        }
+    );
+</script>
+{% endif %}

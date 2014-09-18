@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
+use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
@@ -81,6 +83,16 @@ class ProductController extends AbstractDoctrineController
     protected $seqEditManager;
 
     /**
+     * @var CommentManager
+     */
+    protected $commentManager;
+
+    /**
+     * @var CommentBuilder
+     */
+    protected $commentBuilder;
+
+    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -123,6 +135,8 @@ class ProductController extends AbstractDoctrineController
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
      * @param SequentialEditManager    $seqEditManager
+     * @param CommentManager           $commentManager
+     * @param CommentBuilder           $commentBuilder
      */
     public function __construct(
         Request $request,
@@ -140,7 +154,9 @@ class ProductController extends AbstractDoctrineController
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
         ProductCategoryManager $prodCatManager,
-        SequentialEditManager $seqEditManager
+        SequentialEditManager $seqEditManager,
+        CommentManager $commentManager,
+        CommentBuilder $commentBuilder
     ) {
         parent::__construct(
             $request,
@@ -161,6 +177,8 @@ class ProductController extends AbstractDoctrineController
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
         $this->seqEditManager    = $seqEditManager;
+        $this->commentManager    = $commentManager;
+        $this->commentBuilder    = $commentBuilder;
     }
 
     /**
@@ -351,6 +369,8 @@ class ProductController extends AbstractDoctrineController
         switch ($this->getRequest()->get('action')) {
             case self::SAVE_AND_FINISH:
                 $this->seqEditManager->removeFromUser($this->getUser());
+                $route = 'pim_enrich_product_edit';
+                break;
             case self::BACK_TO_GRID:
                 $route = 'pim_enrich_product_index';
                 $params = array();
@@ -494,6 +514,41 @@ class ProductController extends AbstractDoctrineController
         $trees = $this->getFilledTree($parent, $categories);
 
         return array('trees' => $trees, 'categories' => $categories);
+    }
+
+    /**
+     * List comments made on a product
+     *
+     * @AclAncestor("pim_enrich_product_comment")
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return Response
+     */
+    public function listCommentsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+        $comment = $this->commentBuilder->buildComment($product, $this->getUser());
+        $createForm = $this->createForm('pim_comment_comment', $comment);
+
+        $comments = $this->commentManager->getComments($product);
+        $replyForms = [];
+
+        foreach ($comments as $comment) {
+            $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
+            $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
+            $replyForms[$comment->getId()] = $replyForm->createView();
+        }
+
+        return $this->render(
+            'PimCommentBundle:Comment:_commentList.html.twig',
+            [
+                'createForm' => $createForm->createView(),
+                'replyForms' => $replyForms,
+                'comments' => $comments,
+            ]
+        );
     }
 
     /**
