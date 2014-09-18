@@ -45,6 +45,9 @@ class InGroupSorter implements FieldSorterInterface
             ->addSelect(sprintf('%s AS %s', $inGroupExpr, $alias))
             ->addOrderBy($alias, $direction);
 
+        $idField = current($this->qb->getRootAliases()).'.id';
+        $this->qb->addOrderBy($idField);
+
         return $this;
     }
 }
