@@ -45,6 +45,7 @@ class FamilySorter implements FieldSorterInterface
         );
 
         $this->qb->sort($field, $direction);
+        $this->qb->sort('_id');
 
         return $this;
     }

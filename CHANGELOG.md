@@ -3,6 +3,7 @@
 ## Features
 - Export a product as PDF
 - Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add the sequential edit for a selected list of products
 
 ## Improvements
  - remove the fixed mysql socket location
@@ -14,6 +15,9 @@
  ## Improvements
   - Fixtures stop if warnings are encountered
   - Errors and warnings for fixtures are displayed
+
+ ## Bug fixes
+  - Incorrect written number after csv export
 
 # 1.2.4 (2014-09-11)
 

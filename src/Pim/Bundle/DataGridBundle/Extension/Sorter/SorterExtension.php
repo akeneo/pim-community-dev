@@ -184,10 +184,10 @@ class SorterExtension extends AbstractExtension
             case in_array($direction, [self::DIRECTION_ASC, self::DIRECTION_DESC], true):
                 break;
             case ($direction == false):
-                $direction = self::DIRECTION_ASC;
+                $direction = self::DIRECTION_DESC;
                 break;
             default:
-                $direction = self::DIRECTION_DESC;
+                $direction = self::DIRECTION_ASC;
         }
 
         return $direction;

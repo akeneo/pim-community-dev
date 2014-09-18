@@ -39,6 +39,7 @@ class InGroupSorter implements FieldSorterInterface
     {
         $field = sprintf("%s.%s", ProductQueryUtility::NORMALIZED_FIELD, $field);
         $this->qb->sort($field, $direction);
+        $this->qb->sort('_id');
 
         return $this;
     }

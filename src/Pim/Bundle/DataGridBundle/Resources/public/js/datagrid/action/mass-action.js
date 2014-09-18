@@ -43,11 +43,11 @@ function(_, MassAction) {
          * @return {object}
          */
         getExtraParameters: function(params, state) {
-            params['product-grid'] = {};
+            params[this.datagrid.name] = {};
 
             if (state != undefined) {
-                params['product-grid']['_parameters'] = this.getActiveSorters(state);
-                params['product-grid']['_sort_by']    = this.getActiveColumns(state);
+                params[this.datagrid.name]['_parameters'] = this.getActiveSorters(state);
+                params[this.datagrid.name]['_sort_by']    = this.getActiveColumns(state);
             }
 
             return params;
