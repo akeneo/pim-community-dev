@@ -19,12 +19,31 @@ function(_, MassAction) {
             var idValues = _.map(selectionState.selectedModels, function(model) {
                 return model.get(this.identifierFieldName);
             }, this);
-
             var params = {
                 inset: selectionState.inset ? 1 : 0,
-                values: idValues.join(','),
-                sorters: collection.state.sorters
+                values: idValues.join(',')
             };
+
+            if (collection.state != undefined) {
+                if (collection.state.parameters != undefined) {
+                    params['product-grid'] = {
+                        '_parameters': {
+                            view: {
+                                columns: collection.state.parameters.view.columns
+                            }
+                        }
+                    };
+                }
+
+                for (var key in collection.state.sorters) {
+                    if (params['product-grid'] == undefined)  {
+                        params['product-grid'] = {};
+                    }
+
+                    params['product-grid']['_sort_by'] = {};
+                    params['product-grid']['_sort_by'][key] = collection.state.sorters[key] === 1 ? 'DESC' : 'ASC';
+                }
+            }
 
             params = collection.processFiltersParams(params, null, 'filters');
 
@@ -34,7 +53,27 @@ function(_, MassAction) {
             }
 
             return params;
-        }
+        },
+        getExtraParameters: function
+        getActiveSorters: function(state) {
+            if (state.parameters != undefined) {
+                return {
+                    '_parameters': {
+                        view: {
+                            columns: state.parameters.view.columns
+                        }
+                    }
+                };
+            }
+        },
+        getActiveColumns: function(state) {
+            var result = {};
 
+            for (var sorterKey in state.sorters) {
+                result.push({'sorterKey': state.sorters[sorterKey] === 1 ? 'DESC' : 'ASC'});
+            }
+
+            return result;
+        }
     });
 });
