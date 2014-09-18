@@ -60,11 +60,15 @@ class ProductController
         $renderingDate = new \DateTime('now');
 
         try {
-            $responseContent = $this->rendererRegistry->render($product, 'pdf', [
-                'locale'        => $request->get('dataLocale', null),
-                'renderingDate' => $renderingDate,
-                'scope'         => $request->get('dataScope', null),
-            ]);
+            $responseContent = $this->rendererRegistry->render(
+                $product,
+                'pdf',
+                [
+                    'locale'        => $request->get('dataLocale', null),
+                    'renderingDate' => $renderingDate,
+                    'scope'         => $request->get('dataScope', null),
+                ]
+            );
         } catch (RendererRequiredException $e) {
             throw new HttpException(500, 'Unable to generate the product PDF', $e);
         }
