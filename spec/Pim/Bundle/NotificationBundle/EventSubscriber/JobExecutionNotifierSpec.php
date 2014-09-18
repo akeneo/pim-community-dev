@@ -8,10 +8,10 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
@@ -22,7 +22,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         StepExecution $stepExecution,
         ArrayCollection $warnings,
         JobInstance $jobInstance,
-        User $user,
+        UserInterface $user,
         BatchStatus $status
     ) {
         $this->beConstructedWith($manager);

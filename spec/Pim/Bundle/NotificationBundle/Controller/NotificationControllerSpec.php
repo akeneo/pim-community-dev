@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\Controller;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
@@ -10,6 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotificationControllerSpec extends ObjectBehavior
 {
@@ -24,7 +24,7 @@ class NotificationControllerSpec extends ObjectBehavior
     }
 
     function it_lists_user_notifications_linked_to_the_current_user(
-        User $user,
+        UserInterface $user,
         UserNotification $userNotification,
         Request $request,
         $manager,
@@ -45,7 +45,7 @@ class NotificationControllerSpec extends ObjectBehavior
         $this->listAction($request);
     }
 
-    function it_marks_a_notification_as_viewed_for_a_user(User $user, $manager, $context)
+    function it_marks_a_notification_as_viewed_for_a_user(UserInterface $user, $manager, $context)
     {
         $notifsToMark = '3';
         $context->getUser()->willReturn($user);
@@ -56,7 +56,7 @@ class NotificationControllerSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf('Symfony\Component\HttpFoundation\Response');
     }
 
-    function it_marks_notifications_as_viewed_for_the_current_user(User $user, $manager, $context)
+    function it_marks_notifications_as_viewed_for_the_current_user(UserInterface $user, $manager, $context)
     {
         $notifsToMark = '3';
         $context->getUser()->shouldBeCalled()->willReturn($user);

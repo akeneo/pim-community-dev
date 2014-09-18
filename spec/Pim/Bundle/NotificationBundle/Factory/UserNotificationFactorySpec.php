@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\NotificationBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserNotificationFactorySpec extends ObjectBehavior
 {
@@ -18,7 +18,7 @@ class UserNotificationFactorySpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory');
     }
 
-    function it_creates_user_notifications(Notification $notification, User $user)
+    function it_creates_user_notifications(Notification $notification, UserInterface $user)
     {
         $userNotification = $this->createUserNotification($notification, $user);
 

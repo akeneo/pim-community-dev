@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\Twig;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotificationExtensionSpec extends ObjectBehavior
 {
@@ -20,7 +20,7 @@ class NotificationExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Twig\NotificationExtension');
     }
 
-    function it_provides_the_unread_notification_count(User $user, $context, $manager)
+    function it_provides_the_unread_notification_count(UserInterface $user, $context, $manager)
     {
         $context->getUser()->willReturn($user);
         $manager->countUnreadForUser($user)->willReturn(3);

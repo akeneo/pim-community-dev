@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\NotificationBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserNotificationSpec extends ObjectBehavior
 {
@@ -27,7 +27,7 @@ class UserNotificationSpec extends ObjectBehavior
         $this->getNotification()->shouldReturn($notification);
     }
 
-    function it_has_a_user(User $user)
+    function it_has_a_user(UserInterface $user)
     {
         $this->getUser()->shouldReturn(null);
         $this->setUser($user)->shouldReturn($this);
