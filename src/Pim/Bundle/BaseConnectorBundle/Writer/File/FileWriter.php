@@ -25,7 +25,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
      * @Assert\NotBlank(groups={"Execution"})
      * @WritableDirectory(groups={"Execution"})
      */
-    protected $filePath = '/tmp/export_%datetime%.csv';
+    protected $filePath = "%tmpdir%/export_%datetime%";
 
     /**
      * @var StepExecution
@@ -69,12 +69,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     public function getPath()
     {
         if (!isset($this->resolvedFilePath)) {
-            $this->resolvedFilePath = strtr(
-                $this->filePath,
-                array(
-                    '%datetime%' => date('Y-m-d_H:i:s')
-                )
-            );
+            $this->resolvedFilePath = PathPatternResolver::resolve($this->filePath);
         }
 
         return $this->resolvedFilePath;

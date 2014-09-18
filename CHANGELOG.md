@@ -9,6 +9,10 @@
  - switch to stability stable
  - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 
+## BC breaks
+ - %datetime% pattern in export filename now uses the 'Y-m-d_H-i-s' instead of 'Y-m-d_H:i:s'
+ to accomodate OS like Windows that does not allow ":" in path
+
 # 1.2.5
 
 ## Bug fixes

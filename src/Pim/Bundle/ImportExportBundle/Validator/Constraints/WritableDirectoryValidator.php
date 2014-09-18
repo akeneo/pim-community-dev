@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
+use Pim\Bundle\BaseConnectorBundle\Writer\File\PathPatternResolver;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+
 
 /**
  * Validator for writable directory constraint
@@ -22,6 +24,8 @@ class WritableDirectoryValidator extends ConstraintValidator
         if (null === $value) {
             return;
         }
+
+        $value = PathPatternResolver::resolve($value);
 
         if (!is_string($value) || strpos(dirname($value), DIRECTORY_SEPARATOR) !== 0) {
             $this->context->addViolation($constraint->invalidMessage);

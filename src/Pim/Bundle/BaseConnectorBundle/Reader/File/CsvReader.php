@@ -232,7 +232,8 @@ class CsvReader extends FileReader implements
     public function read()
     {
         if (null === $this->csv) {
-            if (mime_content_type($this->filePath) === 'application/zip') {
+            $file = new File($this->filePath);
+            if ($file->getMimeType() === 'application/zip') {
                 $this->extractZipArchive();
             }
 
