@@ -55,8 +55,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
 
         if (!in_array($file->getExtension(), $this->whiteListExtension)) {
             $this->validateEncoding();
-        }
-        else {
+        } else {
             $this->stepExecution->addSummaryInfo(
                 'charset_validator.title',
                 'job_execution.summary.charset_validator.skipped'
