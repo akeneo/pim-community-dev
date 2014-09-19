@@ -98,10 +98,6 @@ define(
 
                 this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
 
-                this.indicator.on('change:value', function(model, value) {
-                    model.set('type', value > 0 ? 'important': '');
-                }, this);
-
                 this.render();
             },
 
