@@ -14,6 +14,8 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 /**
  * Base filter
  *
+ * TODO : should be splitted in smaller classes, now we support any operator
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -30,6 +32,9 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $supportedAttributes;
 
     /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
@@ -42,6 +47,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     public function __construct(
         CatalogContext $context,
         array $extraSupportedAttributes = [],
+        array $extraSupportedFields = [],
         array $extraSupportedOperators = []
     ) {
         $this->context = $context;
@@ -56,8 +62,12 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             ],
             $extraSupportedAttributes
         );
+        $this->supportedFields = array_merge(
+            [],
+            $extraSupportedFields
+        );
         $this->supportedOperators = array_merge(
-            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN'],
+            ['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN'],
             $extraSupportedOperators
         );
     }
@@ -117,7 +127,10 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return true;
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**

@@ -15,26 +15,17 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 interface ProductQueryBuilderInterface
 {
     /**
-     * Add a filter condition on an attribute
-     *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
-
-    /**
      * Add a filter condition on a field
      *
      * @param string $field    the field
      * @param string $operator the used operator
      * @param string $value    the value to filter
      *
+     * @throws \LogicException
+     *
      * @return ProductQueryBuilderInterface
      */
-    public function addFieldFilter($field, $operator, $value);
+    public function addFilter($field, $operator, $value);
 
     /**
      * Sort by attribute value

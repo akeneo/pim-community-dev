@@ -437,11 +437,11 @@ class ProductRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('p');
         $pqb = $this->getProductQueryBuilder($qb);
         foreach ($criteria as $field => $data) {
+            // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
+                $data = $data['value'];
             }
+            $pqb->addFilter($field, '=', $data);
         }
 
         $result = $qb->getQuery()->execute();
@@ -535,16 +535,12 @@ class ProductRepository extends EntityRepository implements
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeFilter($attribute, '=', $attValue);
-                } else {
-                    $productQb->addFieldFilter($attCode, '=', $attValue);
-                }
+                $productQb->addFilter($attCode, '=', $attValue);
             }
         }
         if (!is_null($orderBy)) {
             foreach ($orderBy as $attCode => $direction) {
+                // TODO once refactored remove the getAttributeByCode
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
                     $productQb->addAttributeSorter($attribute, $direction);

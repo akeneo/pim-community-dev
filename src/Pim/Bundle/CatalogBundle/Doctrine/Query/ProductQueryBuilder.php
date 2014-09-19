@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Builds a product query builder by using  shortcuts to easily select, filter or sort products
@@ -14,6 +15,9 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
     /** @var mixed */
     protected $qb;
 
@@ -35,11 +39,13 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Constructor
      *
-     * @param CatalogContext $catalogContext
+     * @param CatalogContext      $catalogContext
+     * @param AttributeRepository $attributeRepository
      */
-    public function __construct(CatalogContext $catalogContext)
+    public function __construct(CatalogContext $catalogContext, AttributeRepository $attributeRepository)
     {
         $this->context = $catalogContext;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -73,48 +79,77 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addFilter($field, $operator, $value)
+    {
+        $applied = $this->addFieldFilter($field, $operator, $value);
+
+        if (!$applied) {
+            $attribute = $this->attributeRepository->findOneByCode($field);
+            if (!$attribute) {
+                throw new \LogicException(
+                    sprintf('There is no field or attribute "%s"', $field)
+                );
+            }
+            $applied = $this->addAttributeFilter($attribute, $operator, $value);
+        }
+
+        if (!$applied) {
+            throw new \LogicException(
+                sprintf(
+                    'Filter on field "%s" with operator "%s" is not supported',
+                    $field,
+                    $operator
+                )
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add a filter condition on an attribute
+     *
+     * @param AbstractAttribute $attribute the attribute
+     * @param string|array      $operator  the used operator
+     * @param string|array      $value     the value(s) to filter
+     *
+     * @return boolean a filter has been applied
+     */
+    protected function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         foreach ($this->attributeFilters as $filter) {
             if ($filter->supportsAttribute($attribute) && $filter->supportsOperator($operator)) {
                 $filter->setQueryBuilder($this->getQueryBuilder());
                 $filter->addAttributeFilter($attribute, $operator, $value);
 
-                return $this;
+                return true;
             }
         }
 
-        throw new \LogicException(
-            sprintf(
-                'Filter attribute "%s" (%s) with operator "%s" is not supported',
-                $attribute->getCode(),
-                $attribute->getAttributeType(),
-                $operator
-            )
-        );
+        return false;
     }
 
     /**
-     * {@inheritdoc}
+     * Add a filter condition on a field
+     *
+     * @param string $field    the field
+     * @param string $operator the used operator
+     * @param string $value    the value to filter
+     *
+     * @return boolean a filter has been applied
      */
-    public function addFieldFilter($field, $operator, $value)
+    protected function addFieldFilter($field, $operator, $value)
     {
         foreach ($this->fieldFilters as $filter) {
             if ($filter->supportsField($field) && $filter->supportsOperator($operator)) {
                 $filter->setQueryBuilder($this->getQueryBuilder());
                 $filter->addFieldFilter($field, $operator, $value);
 
-                return $this;
+                return true;
             }
         }
 
-        throw new \LogicException(
-            sprintf(
-                'Filter field "%s" with operator "%s" is not supported',
-                $field,
-                $operator
-            )
-        );
+        return false;
     }
 
     /**

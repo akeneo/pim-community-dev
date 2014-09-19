@@ -44,6 +44,8 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
+     * TODO : could be drop if we change choice filter
+     *
      * @param string $code
      *
      * @return AbstractAttribute
@@ -57,6 +59,8 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
+     * TODO : could be renamed, caution to BC break
+     *
      * Applies filter to query by attribute
      *
      * @param FilterDatasourceAdapterInterface $ds
@@ -66,12 +70,7 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $attribute = $this->getAttribute($field);
         $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
-        if ($attribute) {
-            $productQueryBuilder->addAttributeFilter($attribute, $operator, $value);
-        } else {
-            $productQueryBuilder->addFieldFilter($field, $operator, $value);
-        }
+        $productQueryBuilder->addFilter($field, $operator, $value);
     }
 }
