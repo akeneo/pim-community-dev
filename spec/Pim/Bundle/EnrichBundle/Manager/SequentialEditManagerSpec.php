@@ -78,7 +78,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
         ProductInterface $previous,
         ProductInterface $next
     ) {
-        $sequentialEdit->getProductSet()->willReturn([1, 6, 5, 2]);
+        $sequentialEdit->getObjectSet()->willReturn([1, 6, 5, 2]);
         $sequentialEdit->countProductSet()->willReturn(4);
         $product->getId()->willReturn(5);
 
