@@ -5,15 +5,14 @@ define(
 
         var Indicator = Backbone.Model.extend({
             defaults: {
-                value: null,
-                type: ''
+                value: null
             }
         });
 
         var IndicatorView = Backbone.View.extend({
             model: Indicator,
 
-            template: _.template('<span class="badge<%= type ? \' badge-\' + type : \'\' %>"><%= value %></span>'),
+            template: _.template('<span class="notification-count<%= value > 0 ? \' visible \'  : \'\' %>"><%= value >= 100 ? \'99+\' : value %></span>'),
 
             initialize: function() {
                 this.listenTo(this.model, 'change', this.render);
@@ -24,8 +23,7 @@ define(
             render: function() {
                 this.$el.html(
                     this.template({
-                        value: this.model.get('value'),
-                        type: this.model.get('type')
+                        value: this.model.get('value')
                     })
                 );
 
