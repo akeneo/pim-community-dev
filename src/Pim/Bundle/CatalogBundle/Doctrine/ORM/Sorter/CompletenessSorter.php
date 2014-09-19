@@ -47,6 +47,9 @@ class CompletenessSorter implements FieldSorterInterface
         $util->addJoins($alias);
         $this->qb->addOrderBy($alias.'.ratio', $direction);
 
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
+
         return $this;
     }
 }

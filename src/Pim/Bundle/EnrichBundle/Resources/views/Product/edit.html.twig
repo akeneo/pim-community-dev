@@ -20,9 +20,18 @@
         } %}
     {% endif %}
 
+    {% include 'PimEnrichBundle:Product:_sequentialEdit.html.twig' %}
+
+    {% set formAction = path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }) %}
+    {% if sequentialEdit and sequentialEdit.next is not null %}
+        {% set formAction = formAction ~ '&action=SaveAndNext' %}
+    {% elseif sequentialEdit and sequentialEdit.next is null %}
+        {% set formAction = formAction ~ '&action=SaveAndFinish' %}
+    {% endif %}
+
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
+        'action': formAction,
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,

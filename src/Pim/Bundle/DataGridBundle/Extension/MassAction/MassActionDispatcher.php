@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Symfony\Component\HttpFoundation\Request;
-
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -11,9 +9,10 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
+use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterExtension;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Mass action dispatcher
@@ -74,6 +73,7 @@ class MassActionDispatcher
         $inset   = isset($parameters['inset'])   ? $parameters['inset']   : true;
         $values  = isset($parameters['values'])  ? $parameters['values']  : [];
         $filters = isset($parameters['filters']) ? $parameters['filters'] : [];
+        $sorters = isset($parameters['sorters']) ? $parameters['sorters'] : [];
 
         if ($inset && empty($values)) {
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
@@ -82,6 +82,7 @@ class MassActionDispatcher
         $datagrid   = $this->manager->getDatagrid($datagridName);
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
+        $this->requestParams->set(SorterExtension::SORTERS_ROOT_PARAM, $sorters);
 
         return $this->performMassAction($datagrid, $massAction, $inset, $values);
     }
