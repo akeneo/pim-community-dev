@@ -141,8 +141,8 @@ class SequentialEditManager
     protected function findNext(SequentialEdit $sequentialEdit, $currentKey)
     {
         $next = null;
-        $objectSet = $sequentialEdit->getProductSet();
-        $productCount = $sequentialEdit->countProductSet();
+        $objectSet = $sequentialEdit->getObjectSet();
+        $productCount = $sequentialEdit->countObjectSet();
         while (++$currentKey < $productCount && null === $next) {
             $next = $this->productManager->find($objectSet[$currentKey]);
         }
@@ -161,7 +161,7 @@ class SequentialEditManager
     protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
     {
         $previous = null;
-        $objectSet = $sequentialEdit->getProductSet();
+        $objectSet = $sequentialEdit->getObjectSet();
         while ($currentKey-- > 0 && null === $previous) {
             $previous = $this->productManager->find($objectSet[$currentKey]);
         }

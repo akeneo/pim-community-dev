@@ -382,7 +382,10 @@ class ProductController extends AbstractDoctrineController
             case self::SAVE_AND_NEXT:
                 $route = 'pim_enrich_product_edit';
                 $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
-                $params['id'] = $sequentialEdit->getNextId($params['id']);
+
+                if (null !== $sequentialEdit) {
+                    $params['id'] = $sequentialEdit->getNextId($params['id']);
+                }
                 break;
             default:
                 $route = 'pim_enrich_product_edit';
