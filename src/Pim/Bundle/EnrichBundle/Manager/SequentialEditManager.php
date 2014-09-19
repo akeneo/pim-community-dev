@@ -119,7 +119,7 @@ class SequentialEditManager
      */
     public function findWrap(SequentialEdit $sequentialEdit, ProductInterface $product)
     {
-        $productSet = $sequentialEdit->getProductSet();
+        $productSet = $sequentialEdit->getObjectSet();
         $currentKey = array_search($product->getId(), $productSet);
 
         $previous = $this->findPrevious($sequentialEdit, $currentKey);

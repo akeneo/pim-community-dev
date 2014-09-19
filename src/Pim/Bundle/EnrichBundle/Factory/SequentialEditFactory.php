@@ -35,7 +35,7 @@ class SequentialEditFactory
     public function create(array $productSet, UserInterface $user)
     {
         $sequentialEdit = new $this->sequentialEditClass();
-        $sequentialEdit->setProductSet($productSet);
+        $sequentialEdit->setObjectSet($productSet);
         $sequentialEdit->setUser($user);
 
         return $sequentialEdit;

@@ -171,6 +171,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
         if (!empty($userColumns)) {
             $this->displayedColumns = $this->editableColumns  + $this->primaryColumns;
+
             foreach ($userColumns as $column) {
                 if (array_key_exists($column, $this->availableColumns)) {
                     $this->displayedColumns[$column] = $this->availableColumns[$column];

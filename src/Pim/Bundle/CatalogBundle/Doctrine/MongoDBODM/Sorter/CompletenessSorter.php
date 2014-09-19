@@ -45,6 +45,7 @@ class CompletenessSorter implements FieldSorterInterface
             $this->context->getLocaleCode()
         );
         $this->qb->sort($field, $direction);
+        $this->qb->sort('_id');
 
         return $this;
     }
