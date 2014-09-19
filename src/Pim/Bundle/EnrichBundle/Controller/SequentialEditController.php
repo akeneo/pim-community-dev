@@ -2,24 +2,21 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Sequential edit action controller for products
@@ -112,7 +109,7 @@ class SequentialEditController extends AbstractDoctrineController
     {
         $sequentialEdit = $this->seqEditManager->createEntity(
             $this->getObjects(),
-            $this->userContext->getUser()
+            $this->getUser()
         );
 
         if ($this->seqEditManager->findByUser($this->getUser())) {
@@ -127,7 +124,7 @@ class SequentialEditController extends AbstractDoctrineController
             'pim_enrich_product_edit',
             array(
                 'dataLocale' => $this->request->get('dataLocale'),
-                'id' => current($sequentialEdit->getProductSet())
+                'id' => current($sequentialEdit->getObjectSet())
             )
         );
     }

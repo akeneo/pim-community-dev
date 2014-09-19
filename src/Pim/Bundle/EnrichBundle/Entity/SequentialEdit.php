@@ -17,8 +17,8 @@ class SequentialEdit
     /** @var integer $id */
     protected $id;
 
-    /** @var integer[] $productSet */
-    protected $productSet = [];
+    /** @var integer[] $objectSet */
+    protected $objectSet = [];
 
     /** @var UserInterface $user */
     protected $user;
@@ -85,21 +85,21 @@ class SequentialEdit
      *
      * @return integer[]
      */
-    public function getProductSet()
+    public function getObjectSet()
     {
-        return $this->productSet;
+        return $this->objectSet;
     }
 
     /**
      * Set product set
      *
-     * @param integer[] $productSet
+     * @param integer[] $objectSet
      *
      * @return SequentialEdit
      */
-    public function setProductSet(array $productSet)
+    public function setObjectSet(array $objectSet)
     {
-        $this->productSet = $productSet;
+        $this->objectSet = $objectSet;
 
         return $this;
     }
@@ -169,14 +169,13 @@ class SequentialEdit
      *
      * @return integer
      */
-    public function countProductSet()
+    public function countObjectSet()
     {
-        return count($this->productSet);
+        return count($this->objectSet);
     }
 
     /**
      * Search the number of indexed products
-     * TODO: Be sure that it's never called with an unknown id
      *
      * @param ProductInterface $product
      *
@@ -184,7 +183,7 @@ class SequentialEdit
      */
     public function countEditedProducts(ProductInterface $product)
     {
-        return array_search($product->getId(), $this->productSet) + 1;
+        return array_search($product->getId(), $this->objectSet) + 1;
     }
 
     /**
@@ -196,8 +195,8 @@ class SequentialEdit
      */
     public function getNextId($productId)
     {
-        $nextKey = array_search($productId, $this->productSet) + 1;
+        $nextKey = array_search($productId, $this->objectSet) + 1;
 
-        return $this->productSet[$nextKey];
+        return $this->objectSet[$nextKey];
     }
 }

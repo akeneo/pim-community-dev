@@ -119,7 +119,7 @@ class SequentialEditManager
      */
     public function findWrap(SequentialEdit $sequentialEdit, ProductInterface $product)
     {
-        $productSet = $sequentialEdit->getProductSet();
+        $productSet = $sequentialEdit->getObjectSet();
         $currentKey = array_search($product->getId(), $productSet);
 
         $previous = $this->findPrevious($sequentialEdit, $currentKey);
@@ -140,8 +140,8 @@ class SequentialEditManager
      */
     protected function findNext(SequentialEdit $sequentialEdit, $currentKey)
     {
-        $productSet = $sequentialEdit->getProductSet();
-        $productCount = $sequentialEdit->countProductSet();
+        $productSet = $sequentialEdit->getObjectSet();
+        $productCount = $sequentialEdit->countObjectSet();
         while (++$currentKey < $productCount) {
             $next = $this->productManager->find($productSet[$currentKey]);
             if (null !== $next) {
@@ -162,7 +162,7 @@ class SequentialEditManager
      */
     protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
     {
-        $productSet = $sequentialEdit->getProductSet();
+        $productSet = $sequentialEdit->getObjectSet();
         while ($currentKey-- > 0) {
             $previous = $this->productManager->find($productSet[$currentKey]);
             if (null !== $previous) {

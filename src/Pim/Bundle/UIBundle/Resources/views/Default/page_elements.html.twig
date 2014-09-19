@@ -42,7 +42,7 @@
     <div class="btn-group submit-form">
         {% for actionKey, action in actions %}
             {% if loop.first %}
-                <button type="submit" onclick="" class="btn btn-primary" title="{{ action.text|default('')|trans|capitalize }}">{{ action.text|default('')|trans|capitalize }}</button>
+                <button type="submit" class="btn btn-primary" title="{{ action.text|default('')|trans|capitalize }}">{{ action.text|default('')|trans|capitalize }}</button>
                 <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
                 <ul class="dropdown-menu right-align">
             {% else %}
