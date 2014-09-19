@@ -65,14 +65,14 @@ class SequentialEditManager
     /**
      * Returns a sequential edit entity
      *
-     * @param array         $productSet
+     * @param array         $objectSet
      * @param UserInterface $user
      *
      * @return SequentialEdit
      */
-    public function createEntity(array $productSet, UserInterface $user)
+    public function createEntity(array $objectSet, UserInterface $user)
     {
-        return $this->factory->create($productSet, $user);
+        return $this->factory->create($objectSet, $user);
     }
 
     /**
@@ -119,8 +119,8 @@ class SequentialEditManager
      */
     public function findWrap(SequentialEdit $sequentialEdit, ProductInterface $product)
     {
-        $productSet = $sequentialEdit->getObjectSet();
-        $currentKey = array_search($product->getId(), $productSet);
+        $objectSet = $sequentialEdit->getObjectSet();
+        $currentKey = array_search($product->getId(), $objectSet);
 
         $previous = $this->findPrevious($sequentialEdit, $currentKey);
         $next     = $this->findNext($sequentialEdit, $currentKey);
@@ -141,10 +141,10 @@ class SequentialEditManager
     protected function findNext(SequentialEdit $sequentialEdit, $currentKey)
     {
         $next = null;
-        $productSet = $sequentialEdit->getProductSet();
+        $objectSet = $sequentialEdit->getProductSet();
         $productCount = $sequentialEdit->countProductSet();
         while (++$currentKey < $productCount && null === $next) {
-            $next = $this->productManager->find($productSet[$currentKey]);
+            $next = $this->productManager->find($objectSet[$currentKey]);
         }
 
         return $next;
@@ -161,9 +161,9 @@ class SequentialEditManager
     protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
     {
         $previous = null;
-        $productSet = $sequentialEdit->getProductSet();
+        $objectSet = $sequentialEdit->getProductSet();
         while ($currentKey-- > 0 && null === $previous) {
-            $previous = $this->productManager->find($productSet[$currentKey]);
+            $previous = $this->productManager->find($objectSet[$currentKey]);
         }
 
         return $previous;

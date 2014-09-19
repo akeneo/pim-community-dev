@@ -8,9 +8,9 @@ Pim\Bundle\EnrichBundle\Entity\SequentialEdit:
             id: true
             generator:
                 strategy: AUTO
-        productSet:
+        objectSet:
             type: array
-            column: product_set
+            column: object_set
     oneToOne:
         user:
             targetEntity: Symfony\Component\Security\Core\User\UserInterface

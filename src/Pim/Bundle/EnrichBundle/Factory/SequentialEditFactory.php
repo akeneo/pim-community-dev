@@ -27,15 +27,15 @@ class SequentialEditFactory
     /**
      * Create and configure a sequential edit instance
      *
-     * @param integer[]     $productSet
+     * @param integer[]     $objectSet
      * @param UserInterface $user
      *
      * @return SequentialEdit
      */
-    public function create(array $productSet, UserInterface $user)
+    public function create(array $objectSet, UserInterface $user)
     {
         $sequentialEdit = new $this->sequentialEditClass();
-        $sequentialEdit->setObjectSet($productSet);
+        $sequentialEdit->setObjectSet($objectSet);
         $sequentialEdit->setUser($user);
 
         return $sequentialEdit;
