@@ -28,7 +28,7 @@ class CompletenessSorterSpec extends ObjectBehavior
     ) {
         $datasource->getQueryBuilder()->willReturn($qb);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldSorter('completeness', 'ASC')->shouldBeCalled();
+        $pqb->addSorter('completeness', 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, 'completeness', 'ASC');
     }

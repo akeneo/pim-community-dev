@@ -31,7 +31,7 @@ class InGroupSorterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $params->get('currentGroup', null)->willReturn(12);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldSorter('in_group_12', 'ASC')->shouldBeCalled();
+        $pqb->addSorter('in_group_12', 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, 'in_group', 'ASC');
     }

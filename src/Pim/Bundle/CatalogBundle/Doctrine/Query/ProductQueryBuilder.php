@@ -87,7 +87,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $attribute = $this->attributeRepository->findOneByCode($field);
             if (!$attribute) {
                 throw new \LogicException(
-                    sprintf('There is no field or attribute "%s"', $field)
+                    sprintf(
+                        'Filter on field "%s" with operator "%s" is not supported or attribute %s not exists',
+                        $field,
+                        $operator,
+                        $field
+                    )
                 );
             }
             $applied = $this->addAttributeFilter($attribute, $operator, $value);
@@ -153,43 +158,87 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sort by field
+     *
+     * @param string $field     the field to sort on
+     * @param string $direction the direction to use
+     *
+     * @throws \LogicException
+     *
+     * @return ProductQueryBuilderInterface
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addSorter($field, $direction)
+    {
+        $applied = $this->addFieldSorter($field, $direction);
+
+        if (!$applied) {
+            $attribute = $this->attributeRepository->findOneByCode($field);
+            if (!$attribute) {
+                throw new \LogicException(
+                    sprintf(
+                        'Sorter on field "%s" is not supported or there is no attribute %s',
+                        $field,
+                        $field
+                    )
+                );
+            }
+            $applied = $this->addAttributeSorter($attribute, $direction);
+        }
+
+        if (!$applied) {
+            throw new \LogicException(
+                sprintf(
+                    'Sorter on field "%s" is not supported',
+                    $field
+                )
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sort by attribute value
+     *
+     * @param AbstractAttribute $attribute the attribute to sort on
+     * @param string            $direction the direction to use
+     *
+     * @return boolean a sorter has been applied
+     */
+    protected function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         foreach ($this->attributeSorters as $sorter) {
             if ($sorter->supportsAttribute($attribute)) {
                 $sorter->setQueryBuilder($this->getQueryBuilder());
                 $sorter->addAttributeSorter($attribute, $direction);
 
-                return $this;
+                return true;
             }
         }
 
-        throw new \LogicException(
-            sprintf(
-                'Sort attribute "%s" (%s) is not supported',
-                $attribute->getCode(),
-                $attribute->getAttributeType()
-            )
-        );
+        return false;
     }
 
     /**
-     * {@inheritdoc}
+     * Sort by field
+     *
+     * @param string $field     the field to sort on
+     * @param string $direction the direction to use
+     *
+     * @return boolean a sorter has been applied
      */
-    public function addFieldSorter($field, $direction)
+    protected function addFieldSorter($field, $direction)
     {
         foreach ($this->fieldSorters as $sorter) {
             if ($sorter->supportsField($field)) {
                 $sorter->setQueryBuilder($this->getQueryBuilder());
                 $sorter->addFieldSorter($field, $direction);
 
-                return $this;
+                return true;
             }
         }
 
-        throw new \LogicException(sprintf('Sort field "%s" is not supported', $field));
+        return false;
     }
 
     /**

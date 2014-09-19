@@ -35,6 +35,6 @@ class FamilySorter implements SorterInterface
     {
         $qb  = $datasource->getQueryBuilder();
         $pqb = $this->repository->getProductQueryBuilder($qb);
-        $pqb->addFieldSorter('family', $direction);
+        $pqb->addSorter('family', $direction);
     }
 }

@@ -28,14 +28,21 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /** @var array */
     protected $supportedAttributes;
 
+    /** @var array */
+    protected $supportedFields;
+
     /**
      * Instanciate a sorter
      *
      * @param CatalogContext $context
      * @param array          $extraSupportedAttributes
+     * @param array          $extraSupportedFields
      */
-    public function __construct(CatalogContext $context, array $extraSupportedAttributes = [])
-    {
+    public function __construct(
+        CatalogContext $context,
+        array $extraSupportedAttributes = [],
+        array $extraSupportedFields = []
+    ) {
         $this->context = $context;
         $this->supportedAttributes = array_merge(
             [
@@ -47,6 +54,10 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
                 'pim_catalog_date'
             ],
             $extraSupportedAttributes
+        );
+        $this->supportedFields = array_merge(
+            ['enabled', 'created', 'updated'],
+            $extraSupportedFields
         );
     }
 
@@ -63,7 +74,10 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      */
     public function supportsField($field)
     {
-        return true;
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**

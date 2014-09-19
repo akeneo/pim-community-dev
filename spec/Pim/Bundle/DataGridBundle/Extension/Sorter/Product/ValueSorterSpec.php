@@ -6,15 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 class ValueSorterSpec extends ObjectBehavior
 {
-    function let(ProductRepositoryInterface $repository, AttributeRepository $attributeRepository)
+    function let(ProductRepositoryInterface $repository)
     {
-        $this->beConstructedWith($repository, $attributeRepository);
+        $this->beConstructedWith($repository);
     }
 
     function it_is_a_sorter()
@@ -27,26 +26,15 @@ class ValueSorterSpec extends ObjectBehavior
         $repository,
         ProductQueryBuilderInterface $pqb,
         QueryBuilder $qb,
-        CustomAttributeRepository $attributeRepository,
         AbstractAttribute $sku
     ) {
-        // TODO : how to mock the following magic method ?
-        $attributeRepository->findOneByCode('sku')->willReturn($sku);
         $sku->getCode()->willReturn('sku');
         $sku->__toString()->willReturn('sku');
 
         $datasource->getQueryBuilder()->willReturn($qb);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addAttributeSorter($sku, 'ASC')->shouldBeCalled();
+        $pqb->addSorter('sku', 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, $sku, 'ASC');
-    }
-}
-
-class CustomAttributeRepository extends AttributeRepository
-{
-    public function findOneByCode()
-    {
-        return null;
     }
 }

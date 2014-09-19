@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Product repository
@@ -272,18 +271,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Returns the Attribute
-     *
-     * @param string $code
-     *
-     * @return AbstractAttribute
-     */
-    protected function getAttributeByCode($code)
-    {
-        return $this->attributeRepository->findOneByCode($code);
-    }
-
-    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -540,13 +527,7 @@ class ProductRepository extends EntityRepository implements
         }
         if (!is_null($orderBy)) {
             foreach ($orderBy as $attCode => $direction) {
-                // TODO once refactored remove the getAttributeByCode
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeSorter($attribute, $direction);
-                } else {
-                    $productQb->addFieldSorter($attCode, $direction);
-                }
+                $productQb->addSorter($attCode, $direction);
             }
         }
 

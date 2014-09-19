@@ -28,7 +28,7 @@ class FamilySorterSpec extends ObjectBehavior
     ) {
         $datasource->getQueryBuilder()->willReturn($qb);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldSorter('family', 'ASC')->shouldBeCalled();
+        $pqb->addSorter('family', 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, 'family', 'ASC');
     }

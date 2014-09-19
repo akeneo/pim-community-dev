@@ -28,7 +28,7 @@ class FieldSorterSpec extends ObjectBehavior
     ) {
         $datasource->getQueryBuilder()->willReturn($qb);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldSorter('updated', 'ASC')->shouldBeCalled();
+        $pqb->addSorter('updated', 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, 'updated', 'ASC');
     }

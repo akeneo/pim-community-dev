@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * Base filter
  *
  * TODO : should be splitted in smaller classes, now we support any operator
+ * TODO : useless on fields ?
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -42,6 +43,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      *
      * @param CatalogContext $context
      * @param array          $extraSupportedAttributes
+     * @param array          $extraSupportedFields
      * @param array          $extraSupportedOperators
      */
     public function __construct(
