@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\StringToBooleanTransformer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -71,8 +72,12 @@ class ProductEditType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $transformer = new StringToBooleanTransformer();
+
         if ($options['enable_state']) {
-            $builder->add('enabled', 'hidden');
+            $builder->add(
+                $builder->create('enabled', 'hidden')->addModelTransformer($transformer)
+            );
         }
         $builder
             ->add(
