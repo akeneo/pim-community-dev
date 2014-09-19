@@ -7,7 +7,7 @@ define(
             Indicator = require('pim/indicator');
 
         var Notifications = Backbone.View.extend({
-            el: '#notifications',
+            el: '#header-notification-widget',
 
             options: {
                 imgUrl:                 '',
@@ -21,7 +21,7 @@ define(
             template: _.template(
                 [
                     '<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">',
-                        '<i class="icon-bullhorn"></i>',
+                        '<i class="icon-bell"></i>',
                         '<span class="indicator"></span>',
                     '</a>',
                     '<ul class="dropdown-menu"></ul>'
@@ -108,7 +108,7 @@ define(
             },
 
             render: function() {
-                this.setElement($('#notifications'));
+                this.setElement($('#header-notification-widget'));
                 this.$el.html(this.template());
                 this.collection.setElement(this.$('ul'));
                 this.indicator.setElement(this.$('span.indicator'));
