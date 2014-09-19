@@ -416,22 +416,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findAllByAttributes(
         array $attributes = array(),
         array $criteria = null,

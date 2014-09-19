@@ -9,6 +9,9 @@
  - switch to stability stable
  - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 
+## BC breaks
+ - Remove useless applySorterByAttribute, applySorterByField from Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
+
 # 1.2.5
 
 ## Bug fixes
