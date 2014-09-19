@@ -21,6 +21,7 @@
 
  ## Bug fixes
   - Incorrect written number after csv export
+  - Incorrect date display between export/import widget and job execution page and job history
 
 # 1.2.4 (2014-09-11)
 
