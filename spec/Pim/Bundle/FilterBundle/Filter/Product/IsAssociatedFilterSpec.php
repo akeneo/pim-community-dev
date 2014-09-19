@@ -64,7 +64,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($prodRepository);
         $prodRepository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('id', 'IN', [12, 13])->shouldBeCalled();
+        $pqb->addFilter('id', 'IN', [12, 13])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }

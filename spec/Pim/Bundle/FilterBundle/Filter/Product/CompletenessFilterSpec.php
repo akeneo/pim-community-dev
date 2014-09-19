@@ -32,7 +32,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('completeness', '=', 100)->shouldBeCalled();
+        $pqb->addFilter('completeness', '=', 100)->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }
@@ -47,7 +47,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('completeness', '<', 100)->shouldBeCalled();
+        $pqb->addFilter('completeness', '<', 100)->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 2]);
     }

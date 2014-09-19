@@ -32,7 +32,7 @@ class EnabledFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('enabled', '=', 1)->shouldBeCalled();
+        $pqb->addFilter('enabled', '=', 1)->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => [0 => 1]]);
     }

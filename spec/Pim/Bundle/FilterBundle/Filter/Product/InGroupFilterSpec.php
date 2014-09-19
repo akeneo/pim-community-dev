@@ -38,7 +38,7 @@ class InGroupFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('groups', 'IN', [12])->shouldBeCalled();
+        $pqb->addFilter('groups', 'IN', [12])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }
