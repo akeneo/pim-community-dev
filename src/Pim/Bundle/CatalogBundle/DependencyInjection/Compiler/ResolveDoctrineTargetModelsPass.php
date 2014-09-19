@@ -18,9 +18,14 @@ class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModel
     {
         return array(
             'Symfony\Component\Security\Core\User\UserInterface'   => 'oro_user.entity.class',
-            'Pim\Bundle\CatalogBundle\Model\ProductValueInterface' => 'pim_catalog.entity.product_value.class',
-            'Pim\Bundle\CatalogBundle\Model\AbstractAttribute'     => 'pim_catalog.entity.attribute.class',
+            'Pim\Bundle\CatalogBundle\Model\AssociationInterface'  => 'pim_catalog.entity.association.class',
+            'Pim\Bundle\CatalogBundle\Model\AttributeInterface'    => 'pim_catalog.entity.attribute.class',
+            'Pim\Bundle\CatalogBundle\Model\CompletenessInterface' => 'pim_catalog.entity.completeness.class',
+            'Pim\Bundle\CatalogBundle\Model\MetricInterface'       => 'pim_catalog.entity.metric.class',
             'Pim\Bundle\CatalogBundle\Model\ProductInterface'      => 'pim_catalog.entity.product.class',
+            'Pim\Bundle\CatalogBundle\Model\ProductMediaInterface' => 'pim_catalog.entity.product_media.class',
+            'Pim\Bundle\CatalogBundle\Model\ProductPriceInterface' => 'pim_catalog.entity.product_price.class',
+            'Pim\Bundle\CatalogBundle\Model\ProductValueInterface' => 'pim_catalog.entity.product_value.class',
             'Pim\Bundle\CatalogBundle\Model\CategoryInterface'     => 'pim_catalog.entity.category.class',
         );
     }
