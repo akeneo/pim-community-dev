@@ -3,6 +3,7 @@
 ## Features
 - Export a product as PDF
 - Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add comments on a product
 
 ## Improvements
  - remove the fixed mysql socket location
@@ -14,18 +15,16 @@
  - Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
  - Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
 
-# 1.2.5
+# 1.2.5 (2014-09-19)
 
 ## Bug fixes
   - File that contains non UTF-8 characters can not be imported anymore
   - Mimetype check on file import has been removed
+  - Incorrect written number after csv export
 
 ## Improvements
   - Fixtures stop if warnings are encountered
   - Errors and warnings for fixtures are displayed
-
- ## Bug fixes
-  - Incorrect written number after csv export
 
 # 1.2.4 (2014-09-11)
 
