@@ -3,24 +3,23 @@
 ## Features
 - Export a product as PDF
 - Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add comments on a product
 
 ## Improvements
  - remove the fixed mysql socket location
  - switch to stability stable
  - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 
-# 1.2.5
+# 1.2.5 (2014-09-19)
 
 ## Bug fixes
   - File that contains non UTF-8 characters can not be imported anymore
   - Mimetype check on file import has been removed
+  - Incorrect written number after csv export
 
 ## Improvements
   - Fixtures stop if warnings are encountered
   - Errors and warnings for fixtures are displayed
-
- ## Bug fixes
-  - Incorrect written number after csv export
 
 # 1.2.4 (2014-09-11)
 
