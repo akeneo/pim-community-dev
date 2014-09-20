@@ -26,5 +26,12 @@ interface FilterInterface
      *
      * @return boolean
      */
-    public function supportsOperator($field);
+    public function supportsOperator($operator);
+
+    /**
+     * Filter operators
+     *
+     * @return array
+     */
+    public function getOperators();
 }

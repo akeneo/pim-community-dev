@@ -26,6 +26,9 @@ class DateFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
+    /** @var array */
+    protected $supportedOperators;
+
     /**
      * Instanciate the filter
      *
@@ -39,6 +42,7 @@ class DateFilter implements FieldFilterInterface
             ['created', 'updated'],
             $extraSupportedFields
         );
+        $this->supportedOperators = ['=', '<', '>', 'BETWEEN', 'EMPTY'];
     }
 
     /**
@@ -113,10 +117,15 @@ class DateFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array(
-            $operator,
-            ['=', '<', '>', 'BETWEEN', 'EMPTY']
-        );
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

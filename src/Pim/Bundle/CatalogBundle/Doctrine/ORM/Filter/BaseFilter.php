@@ -65,7 +65,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $extraSupportedAttributes
         );
         $this->supportedFields = array_merge(
-            [],
+            ['id', 'enabled'],
             $extraSupportedFields
         );
         $this->supportedOperators = array_merge(
@@ -155,6 +155,14 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $operator,
             $this->supportedOperators
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

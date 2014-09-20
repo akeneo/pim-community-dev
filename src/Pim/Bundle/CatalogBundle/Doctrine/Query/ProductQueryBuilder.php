@@ -79,6 +79,44 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function getFilter($field)
+    {
+        foreach ($this->fieldFilters as $filter) {
+            if ($filter->supportsField($field)) {
+                return $filter;
+            }
+        }
+
+        $attribute = $this->attributeRepository->findOneByCode($field);
+        if (!$attribute) {
+            return false;
+/*            throw new \LogicException(
+                sprintf(
+                    'Filter on field "%s" is not supported or attribute %s not exists',
+                    $field,
+                    $field
+                )
+            );*/
+        }
+
+        foreach ($this->attributeFilters as $filter) {
+            if ($filter->supportsAttribute($attribute)) {
+                return $filter;
+            }
+        }
+
+        return false;
+        /*throw new \LogicException(
+            sprintf(
+                'No appliable filter on field "%s"',
+                $field
+            )
+        );*/
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addFilter($field, $operator, $value)
     {
         $applied = $this->addFieldFilter($field, $operator, $value);

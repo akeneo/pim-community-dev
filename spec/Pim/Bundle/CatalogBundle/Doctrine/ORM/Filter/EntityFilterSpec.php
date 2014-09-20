@@ -22,6 +22,13 @@ class EntityFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['IN', 'NOT IN']);
+        $this->supportsOperator('IN')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
     function it_adds_a_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
         $qb->getRootAlias()->willReturn('f');

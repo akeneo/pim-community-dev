@@ -23,6 +23,13 @@ class BaseFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
     }
 
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN']);
+        $this->supportsOperator('LIKE')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
     function it_adds_a_like_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $sku)
     {
         $sku->getId()->willReturn(42);
