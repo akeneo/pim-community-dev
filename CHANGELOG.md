@@ -1,3 +1,15 @@
+# 1.3.*
+
+## Features
+- Export a product as PDF
+- Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add comments on a product
+
+## Improvements
+ - remove the fixed mysql socket location
+ - switch to stability stable
+ - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
 # 1.2.5 (2014-09-19)
 
 ## Bug fixes
@@ -39,7 +51,7 @@
  - constructor of Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer has changed
  - Pim\Bundle\TransformBundle\Cache\ProductCacheClearer has been renamed Pim\Bundle\TransformBundle\Cache\CacheClearer
 
-# 1.2.0 (2014-08-28)
+# 1.2.0
 
 ## Improvements
 

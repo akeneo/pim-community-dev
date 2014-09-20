@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\UserBundle\Form\Transformer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 
 class AccessLevelToBooleanTransformerSpec extends ObjectBehavior

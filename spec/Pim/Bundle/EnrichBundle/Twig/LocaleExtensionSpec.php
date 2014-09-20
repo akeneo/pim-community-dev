@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 class LocaleExtensionSpec extends ObjectBehavior

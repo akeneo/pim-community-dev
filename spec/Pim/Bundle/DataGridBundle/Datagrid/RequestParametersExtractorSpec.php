@@ -3,14 +3,13 @@
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 
 class RequestParametersExtractorSpec extends ObjectBehavior
 {
-    function let(RequestParameters $requestParams) {
+    function let(RequestParameters $requestParams)
+    {
         $this->beConstructedWith($requestParams);
     }
 
