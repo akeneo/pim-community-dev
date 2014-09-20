@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class DateFilterSpec extends ObjectBehavior
 {
@@ -29,12 +30,32 @@ class DateFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
+    function it_is_an_attribute_filter()
+    {
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
+    }
+
     function it_supports_operators()
     {
         $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'EMPTY']);
 
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
+    function it_supports_date_fields()
+    {
+        $this->supportsField('created')->shouldReturn(true);
+        $this->supportsField('updated')->shouldReturn(true);
+        $this->supportsField('other')->shouldReturn(false);
+    }
+
+    function it_supports_date_attributes(AbstractAttribute $dateAtt, AbstractAttribute $otherAtt)
+    {
+        $dateAtt->getAttributeType()->willReturn('pim_catalog_date');
+        $this->supportsAttribute($dateAtt)->shouldReturn(true);
+        $otherAtt->getAttributeType()->willReturn('pim_catalog_other');
+        $this->supportsAttribute($otherAtt)->shouldReturn(false);
     }
 
     function it_adds_a_less_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)

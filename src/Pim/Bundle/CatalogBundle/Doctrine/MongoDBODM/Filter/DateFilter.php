@@ -78,7 +78,6 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
         return in_array($operator, $this->supportedOperators);
     }
 
-
     /**
      * {@inheritdoc}
      */

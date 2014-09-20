@@ -25,7 +25,7 @@ class BaseFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN']);
+        $this->getOperators()->shouldReturn(['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY']);
         $this->supportsOperator('LIKE')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }

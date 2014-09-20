@@ -53,15 +53,13 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         array $extraSupportedOperators = []
     ) {
         $this->context = $context;
-        // TODO : date attribute uses date filter
         $this->supportedAttributes = array_merge(
             [
                 'pim_catalog_identifier',
                 'pim_catalog_text',
                 'pim_catalog_textarea',
                 'pim_catalog_number',
-                'pim_catalog_boolean',
-                'pim_catalog_date'
+                'pim_catalog_boolean'
             ],
             $extraSupportedAttributes
         );
@@ -70,7 +68,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $extraSupportedFields
         );
         $this->supportedOperators = array_merge(
-            ['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN'],
+            ['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY'],
             $extraSupportedOperators
         );
     }
