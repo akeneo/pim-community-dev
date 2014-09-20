@@ -24,6 +24,13 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['=', '<']);
+        $this->supportsOperator('=')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
     function it_adds_a_equals_filter_on_completeness_in_the_query(Builder $queryBuilder)
     {
         $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->willReturn($queryBuilder);

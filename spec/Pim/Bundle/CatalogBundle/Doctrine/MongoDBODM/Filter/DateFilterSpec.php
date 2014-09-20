@@ -33,6 +33,14 @@ class DateFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'EMPTY']);
+
+        $this->supportsOperator('=')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
     function it_adds_a_less_than_filter_on_an_attribute_value_in_the_query($queryBuilder, AbstractAttribute $date)
     {
         $date->getCode()->willReturn('release_date');

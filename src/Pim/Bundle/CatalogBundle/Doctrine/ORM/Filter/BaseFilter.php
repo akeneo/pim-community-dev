@@ -53,6 +53,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         array $extraSupportedOperators = []
     ) {
         $this->context = $context;
+        // TODO : date attribute uses date filter
         $this->supportedAttributes = array_merge(
             [
                 'pim_catalog_identifier',

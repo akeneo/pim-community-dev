@@ -47,11 +47,13 @@ parameters:
     pim_catalog.doctrine.query.filter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter
     pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter
     pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter
-    pim_catalog.doctrine.query.filter.entity.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter
+    pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter
     pim_catalog.doctrine.query.filter.groups.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter
     pim_catalog.doctrine.query.filter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter
     pim_catalog.doctrine.query.filter.option.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionFilter
     pim_catalog.doctrine.query.filter.options.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionsFilter
+    pim_catalog.doctrine.query.filter.metric.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter
+    pim_catalog.doctrine.query.filter.price.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter
 
     pim_catalog.doctrine.query.sorter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
     pim_catalog.doctrine.query.sorter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter
@@ -370,7 +372,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-	# PQB filters
+    # PQB filters
     pim_catalog.doctrine.query.filter.base:
         class: %pim_catalog.doctrine.query.filter.base.class%
         arguments:
@@ -392,8 +394,8 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.entity:
-        class: %pim_catalog.doctrine.query.filter.entity.class%
+    pim_catalog.doctrine.query.filter.family:
+        class: %pim_catalog.doctrine.query.filter.family.class%
         arguments:
             - @pim_catalog.context.catalog
         tags:
@@ -427,7 +429,21 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-	# PQB sorters
+    pim_catalog.doctrine.query.filter.metric:
+        class: %pim_catalog.doctrine.query.filter.metric.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.price:
+        class: %pim_catalog.doctrine.query.filter.price.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    # PQB sorters
     pim_catalog.doctrine.query.sorter.base:
         class: %pim_catalog.doctrine.query.sorter.base.class%
         arguments:

@@ -68,6 +68,7 @@ class EntityFilter implements FieldFilterInterface
                 )
             );
         } else {
+            // TODO: fix this weird support of EMPTY operator
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
                 $exprNull = $this->qb->expr()->isNull($entityAlias.'.id');

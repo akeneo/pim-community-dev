@@ -22,6 +22,9 @@ class CompletenessFilter implements FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedOperators;
+
     /**
      * Instanciate the filter
      *
@@ -30,6 +33,7 @@ class CompletenessFilter implements FieldFilterInterface
     public function __construct(CatalogContext $context)
     {
         $this->context = $context;
+        $this->supportedOperators = ['=', '<'];
     }
 
     /**
@@ -45,7 +49,7 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field = 'completeness';
+        return $field === 'completeness';
     }
 
     /**
@@ -53,7 +57,15 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, ['=', '<']);
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

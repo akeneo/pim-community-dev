@@ -25,7 +25,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['=', '<', '<=', '>', '>=', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }

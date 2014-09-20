@@ -23,6 +23,9 @@ class MetricFilter implements AttributeFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedOperators;
+
     /**
      * Instanciate the filter
      *
@@ -31,6 +34,7 @@ class MetricFilter implements AttributeFilterInterface
     public function __construct(CatalogContext $context)
     {
         $this->context = $context;
+        $this->supportedOperators = ['<', '<=', '=', '>=', '>', 'EMPTY'];
     }
 
     /**
@@ -54,7 +58,15 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, ['<', '<=', '=', '>=', '>', 'EMPTY']);
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

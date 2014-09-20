@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 
 /**
  * Multi options filter for MongoDB
@@ -14,16 +15,36 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO : avoid to extend entity filter
  */
-class OptionsFilter extends EntityFilter
+class OptionsFilter implements AttributeFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
 
     /** @var CatalogContext */
     protected $context;
+
+    /** @var array */
+    protected $supportedOperators;
+
+    /**
+     * Instanciate the filter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+        $this->supportedOperators = ['IN', 'NOT IN', 'EMPTY'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
 
     /**
      * {@inheritdoc}
@@ -38,7 +59,15 @@ class OptionsFilter extends EntityFilter
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, ['IN', 'NOT IN', 'EMPTY']);
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

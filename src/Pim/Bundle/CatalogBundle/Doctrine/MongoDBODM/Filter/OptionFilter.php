@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\MongoDB\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Simple option filter for MongoDB implementation
@@ -13,10 +15,37 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO : avoid to extend entity filter
  */
-class OptionFilter extends EntityFilter
+class OptionFilter implements AttributeFilterInterface
 {
+    /** @var QueryBuilder */
+    protected $qb;
+
+    /** @var CatalogContext */
+    protected $context;
+
+    /** @var array */
+    protected $supportedOperators;
+
+    /**
+     * Instanciate the filter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+        $this->supportedOperators = ['IN', 'NOT IN'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,7 +59,15 @@ class OptionFilter extends EntityFilter
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, ['IN', 'EMPTY']);
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

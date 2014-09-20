@@ -39,7 +39,7 @@ class MetricFilter implements AttributeFilterInterface
     public function __construct(CatalogContext $context)
     {
         $this->context = $context;
-        $this->supportedOperators = ['=', '<', '<=', '>', '>=', 'EMPTY'];
+        $this->supportedOperators = ['<', '<=', '=', '>=', '>', 'EMPTY'];
     }
 
     /**

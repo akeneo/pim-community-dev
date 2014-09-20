@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
  */
-class EntityFilterSpec extends ObjectBehavior
+class FamilyFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb, CatalogContext $context)
     {
@@ -23,14 +23,16 @@ class EntityFilterSpec extends ObjectBehavior
         $this->setQueryBuilder($qb);
     }
 
-    function it_is_an_attribute_filter()
-    {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
-    }
-
     function it_is_a_field_filter()
     {
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
+    }
+
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['IN', 'NOT IN']);
+        $this->supportsOperator('IN')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
     function it_adds_a_in_filter_on_an_attribute_value_in_the_query($qb, AbstractAttribute $color)

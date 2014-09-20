@@ -25,6 +25,13 @@ class PriceFilterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
     }
 
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->supportsOperator('=')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
     function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
     {
         $price->getCode()->willReturn('price');

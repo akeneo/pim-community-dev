@@ -25,6 +25,9 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $context;
 
     /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
     protected $supportedAttributes;
 
     /** @var array */
@@ -54,9 +57,10 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $extraSupportedAttributes
         );
         $this->supportedOperators = array_merge(
-            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'LIKE'],
+            ['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY'],
             $extraSupportedOperators
         );
+        $this->supportedFields = ['id', 'enabled'];
     }
 
     /**
@@ -72,7 +76,10 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return true;
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**
@@ -95,6 +102,14 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $operator,
             $this->supportedOperators
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**
