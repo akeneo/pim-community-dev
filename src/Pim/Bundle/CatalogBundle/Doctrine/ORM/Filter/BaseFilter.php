@@ -12,10 +12,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
- * Base filter
- *
- * TODO : should be splitted in smaller classes, now we support any operator
- * TODO : useless on fields ?
+ * Base filter, may be used with different configuration for strings, numbers, booleans, etc
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -42,18 +39,22 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      * Instanciate the base filter
      *
      * @param CatalogContext $context
-     * @param array          $extraSupportedAttributes
-     * @param array          $extraSupportedFields
-     * @param array          $extraSupportedOperators
+     * @param array          $supportedAttributes
+     * @param array          $supportedFields
+     * @param array          $supportedOperators
      */
     public function __construct(
         CatalogContext $context,
-        array $extraSupportedAttributes = [],
-        array $extraSupportedFields = [],
-        array $extraSupportedOperators = []
+        array $supportedAttributes = [],
+        array $supportedFields = [],
+        array $supportedOperators = []
     ) {
         $this->context = $context;
-        $this->supportedAttributes = array_merge(
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
+        /*
+            array_merge(
             [
                 'pim_catalog_identifier',
                 'pim_catalog_text',
@@ -71,6 +72,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             ['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY'],
             $extraSupportedOperators
         );
+         */
     }
 
     /**

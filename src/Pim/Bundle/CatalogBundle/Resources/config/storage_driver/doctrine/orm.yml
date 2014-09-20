@@ -86,17 +86,60 @@ services:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.product.class%
 
-    pim_catalog.doctrine.query.filter.base:
-        class: %pim_catalog.doctrine.query.filter.base.class%
+    pim_catalog.doctrine.query.filter.entity:
+        class: %pim_catalog.doctrine.query.filter.entity.class%
         arguments:
             - @pim_catalog.context.catalog
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
-    pim_catalog.doctrine.query.filter.entity:
-        class: %pim_catalog.doctrine.query.filter.entity.class%
+    pim_catalog.doctrine.query.filter.identifier:
+        class: %pim_catalog.doctrine.query.filter.base.class%
         arguments:
             - @pim_catalog.context.catalog
+            - ['pim_catalog_identifier']
+            - []
+            - ['LIKE', 'NOT LIKE', '=', 'IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.string:
+        class: %pim_catalog.doctrine.query.filter.base.class%
+        arguments:
+            - @pim_catalog.context.catalog
+            - ['pim_catalog_text', 'pim_catalog_textarea']
+            - []
+            - ['LIKE', '=', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.product_id:
+        class: %pim_catalog.doctrine.query.filter.base.class%
+        arguments:
+            - @pim_catalog.context.catalog
+            - []
+            - ['id']
+            - ['=']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.number:
+        class: %pim_catalog.doctrine.query.filter.base.class%
+        arguments:
+            - @pim_catalog.context.catalog
+            - ['pim_catalog_number']
+            - []
+            - ['<', '<=', '=', '>=', '>', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.boolean:
+        class: %pim_catalog.doctrine.query.filter.base.class%
+        arguments:
+            - @pim_catalog.context.catalog
+            - ['pim_catalog_boolean']
+            - ['enabled']
+            - ['=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

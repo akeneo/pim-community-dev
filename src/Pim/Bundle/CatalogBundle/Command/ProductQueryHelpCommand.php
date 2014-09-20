@@ -39,7 +39,15 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
         foreach ($fields as $field) {
             // TODO a filter and a sorter registry, PQB use them ?
             $filter = $pqb->getFilter($field);
-            $rows[]= [$field, get_class($filter), implode(', ', $pqb->getFilter($field)->getOperators())];
+            if ($filter) {
+                $class = get_class($filter);
+                $operators = implode(', ', $pqb->getFilter($field)->getOperators());
+            } else {
+                $class = 'Not supported';
+                $operators = '';
+            }
+            $filter = $pqb->getFilter($field);
+            $rows[]= [$field, $class, $operators];
         }
         $table = $this->getHelper('table');
         $table->setHeaders(['field', 'filter_class', 'operators'])->setRows($rows);
