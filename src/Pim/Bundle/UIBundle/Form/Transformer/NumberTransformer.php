@@ -5,20 +5,28 @@ namespace Pim\Bundle\UIBundle\Form\Transformer;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * Transforms numbers into integers
+ * Transforms numbers into numbers or integers
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IntegerTransformer implements DataTransformerInterface
+class NumberTransformer implements DataTransformerInterface
 {
     /**
      * {@inheritdoc}
      */
     public function reverseTransform($value)
     {
-        return (double) $value;
+        if ('' === $value) {
+            return null;
+        }
+
+        if (is_numeric($value)) {
+            return $value == (int) $value ? (int) $value : (double) $value;
+        }
+
+        return $value;
     }
 
     /**
@@ -30,6 +38,10 @@ class IntegerTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
+        if (null === $value) {
+            return '';
+        }
+
         return (is_numeric($value) && $value == floor($value))
             ? floor($value)
             : $value;

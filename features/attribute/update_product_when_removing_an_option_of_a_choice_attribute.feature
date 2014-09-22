@@ -45,3 +45,20 @@ Feature: Update product when removing an option of a choice attribute
       | version | property           | value               |
       | 2       | weather_conditions | snowy               |
       | 2       | sku                | weather_conditions2 |
+
+  Scenario: Successfully update product when removing multiple options of a multi select attribute
+    Given the following product:
+      | sku | weather_conditions    |
+      | foo | dry, hot, cold, snowy |
+    And I am on the "weather_conditions" attribute page
+    And I visit the "Values" tab
+    And I remove the "hot" option
+    And I remove the "cold" option
+    And I remove the "snowy" option
+    And I save the attribute
+    When I edit the "foo" product
+    Then the product Weather conditions should be "Dry"
+    When I visit the "History" tab
+    Then I should see history:
+      | version | property           | value |
+      | 2       | weather_conditions | dry   |
