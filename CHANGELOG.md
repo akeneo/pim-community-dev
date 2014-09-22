@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+  - Fix installer fail on requirements when you change the archive and uploads folder
+
 # 1.2.5 (2014-09-19)
 
 ## Bug fixes
