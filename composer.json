@@ -37,7 +37,7 @@
         "phpmd/phpmd": "1.*@stable",
         "pdepend/pdepend": "1.1.*@stable",
         "phpspec/phpspec": "2.1.0-RC1",
-        "akeneo/phpspec-skip-example-extension": "1.0.*@dev"
+        "akeneo/phpspec-skip-example-extension": "1.0.*@stable"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"
