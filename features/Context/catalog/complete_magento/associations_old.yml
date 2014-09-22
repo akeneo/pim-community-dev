@@ -1,12 +1,12 @@
 associations:
     - owner: sku-000
-      associationType: X_SELL
+      association_type: X_SELL
       products:
         - sku-001
         - sku-002
 
     - owner: sku-001
-      associationType: UPSELL
+      association_type: UPSELL
       products:
         - sku-000
         - sku-002

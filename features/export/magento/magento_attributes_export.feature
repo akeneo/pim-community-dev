@@ -2,7 +2,7 @@
 Feature: Magento attribute export
   In order to view attributes in Magento
   As an Administrator
-  I need to be able to export attributes in Magento
+  I need to be able to export attributes to Magento
 
   Scenario: Successfully export attributes to Magento
     Given a "magento" catalog configuration

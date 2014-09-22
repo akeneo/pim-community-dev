@@ -1,0 +1,5 @@
+group_types:
+    variant:
+        variant: 1
+    related:
+        variant: 0

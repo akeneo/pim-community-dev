@@ -1,12 +1,11 @@
 @javascript
-Feature: Magento full export
+Feature: Magento product export
   In order to view products in Magento
   As an Administrator
-  I need to be able to export my data in Magento
+  I need to be able to export my products to Magento
 
-  Scenario: Successfully export data to Magento
-    Given  a "magento" catalog configuration
-
+  Scenario: Successfully export products to Magento
+    Given  a "complete_magento" catalog configuration
     And the following products:
       | sku     | family  | categories | groups    | price                 | size   | weight   | tax_class_id |
       | sku-000 | Default | notebooks  |           | 10.00 EUR,50.00 USD   |        | 200 GRAM | 4            |
@@ -63,4 +62,35 @@ Feature: Magento full export
     And I press the "Save" button and I wait "15"s
     Then I launch the export job
     And I wait for the "magento_product_export" job to finish
-    Then I check if data were sent in Magento
+    Then I check if "products" were sent in Magento:
+      | product | attribute         | value                                      | store_view         |
+      | sku-000 | name              | Product example                            | Default Store View |
+      | sku-000 | name              | Exemple de produit                         | fr_fr              |
+      | sku-000 | description       | Description                                | Default Store View |
+      | sku-000 | description       | Description                                | fr_fr              |
+      | sku-000 | short_description | Short description                          | Default Store View |
+      | sku-000 | short_description | Courte description                         | fr_fr              |
+      | sku-001 | name              | Shirt product example                      | Default Store View |
+      | sku-001 | name              | Exemple de produit chemise                 | fr_fr              |
+      | sku-001 | description       | Shirt description                          | Default Store View |
+      | sku-001 | description       | Description d'une chemise                  | fr_fr              |
+      | sku-001 | short_description | Short shirt description                    | Default Store View |
+      | sku-001 | short_description | Courte description d'une chemise           | fr_fr              |
+      | sku-001 | color             | Blue                                       | Default Store View |
+      | sku-001 | color             | Bleu                                       | fr_fr              |
+      | sku-002 | name              | Second shirt product example               | Default Store View |
+      | sku-002 | name              | Second exemple de produit chemise          | fr_fr              |
+      | sku-002 | description       | Second shirt description                   | Default Store View |
+      | sku-002 | description       | Seconde description d'une chemise          | fr_fr              |
+      | sku-002 | short_description | Second short shirt description             | Default Store View |
+      | sku-002 | short_description | Seconde courte description d'une chemise   | fr_fr              |
+      | sku-002 | color             | Red                                        | Default Store View |
+      | sku-002 | color             | Rouge                                      | fr_fr              |
+      | sku-003 | name              | Third shirt product example                | Default Store View |
+      | sku-003 | name              | Troisième exemple de produit chemise       | fr_fr              |
+      | sku-003 | description       | Third shirt description                    | Default Store View |
+      | sku-003 | description       | Troisième description d'une chemise        | fr_fr              |
+      | sku-003 | short_description | Third short shirt description              | Default Store View |
+      | sku-003 | short_description | Troisième courte description d'une chemise | fr_fr              |
+      | sku-003 | color             | Black                                      | Default Store View |
+      | sku-003 | color             | Noir                                       | fr_fr              |

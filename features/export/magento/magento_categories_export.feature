@@ -1,8 +1,8 @@
 @javascript
-Feature: Magento attribute export
-  In order to view attributes in Magento
+Feature: Magento category export
+  In order to view categories in Magento
   As an Administrator
-  I need to be able to export attributes in Magento
+  I need to be able to export categories to Magento
 
   Scenario: Successfully export attributes to Magento
     Given a "magento" catalog configuration

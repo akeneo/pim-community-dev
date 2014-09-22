@@ -162,7 +162,7 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
 
             case 'products':
             case 'product':
-                $extractedData = $this
+                $magExtractedProduct = $this
                     ->extractProductsFromMagentoAdmin($navigationManager, $mainPageCrawler);
                 break;
 

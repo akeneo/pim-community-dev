@@ -1,0 +1,102 @@
+jobs:
+    magento_full_export:
+        connector: Magento Connector
+        alias:     magento_full_export
+        label:     Magento full export
+        type:      export
+        configuration:
+            channel:               magento
+            soapUsername:          soap
+            soapApiKey:            magento1
+            magentoUrl:            http://magento.local/index.php
+            wsdlUrl:               /api/soap/?wsdl
+            defaultLocale:         en_US
+            website:               base
+            storeviewMapping:      ''
+            categoryMapping:       ''
+            notInPimAnymoreAction: 'disable'
+    magento_product_export:
+        connector: Magento Connector
+        alias:     magento_product_export
+        label:     Magento product export
+        type:      export
+        configuration:
+            channel:                  magento
+            soapUsername:             soap
+            soapApiKey:               magento1
+            magentoUrl:               http://magento.local/index.php
+            wsdlUrl:                  /api/soap/?wsdl
+            defaultLocale:            en_US
+            website:                  base
+            enabled:                  true
+            storeviewMapping:         ''
+            visibility:               4
+            currency:                 EUR
+            categoryMapping:          ''
+            pimGrouped:               'PACK'
+            pimUpSell:                'UPSELL'
+            pimCrossSell:             'X_SELL'
+            pimRelated:               'RELATED'
+            notCompleteAnymoreAction: 'disable'
+            notInPimAnymoreAction:    'disable'
+    magento_category_export:
+        connector: Magento Connector
+        alias:     magento_category_export
+        label:     Magento category export
+        type:      export
+        configuration:
+            channel:               magento
+            soapUsername:          soap
+            soapApiKey:            magento1
+            magentoUrl:            http://magento.local/index.php
+            wsdlUrl:               /api/soap/?wsdl
+            defaultLocale:         en_US
+            website:               base
+            storeviewMapping:      ''
+            categoryMapping:       ''
+            notInPimAnymoreAction: 'disable'
+
+    magento_attribute_export:
+        connector: Magento Connector
+        alias:     magento_attribute_export
+        label:     Magento attribute export
+        type:      export
+        configuration:
+            channel:          magento
+            soapUsername:     soap
+            soapApiKey:       magento1
+            magentoUrl:       http://magento.local/index.php
+            wsdlUrl:          /api/soap/?wsdl
+            defaultLocale:    en_US
+            website:          base
+            storeviewMapping: ''
+
+    magento_attributeset_export:
+        connector: Magento Connector
+        alias:     magento_attributeset_export
+        label:     Magento attributeset export
+        type:      export
+        configuration:
+            channel:          magento
+            soapUsername:     soap
+            soapApiKey:       magento1
+            magentoUrl:       http://magento.local/index.php
+            wsdlUrl:          /api/soap/?wsdl
+            defaultLocale:    en_US
+            website:          base
+            storeviewMapping: 'default'
+
+    magento_option_export:
+        connector: Magento Connector
+        alias:     magento_option_export
+        label:     Magento option export
+        type:      export
+        configuration:
+            channel:          magento
+            soapUsername:     soap
+            soapApiKey:       magento1
+            magentoUrl:       http://magento.local/index.php
+            wsdlUrl:          /api/soap/?wsdl
+            defaultLocale:    en_US
+            website:          base
+            storeviewMapping: ''
