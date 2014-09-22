@@ -1,15 +1,13 @@
-# 1.2.5
+# 1.2.5 (2014-09-19)
 
 ## Bug fixes
   - File that contains non UTF-8 characters can not be imported anymore
   - Mimetype check on file import has been removed
+  - Incorrect written number after csv export
 
 ## Improvements
   - Fixtures stop if warnings are encountered
   - Errors and warnings for fixtures are displayed
-
- ## Bug fixes
-  - Incorrect written number after csv export
 
 ## BC breaks
   - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
@@ -44,7 +42,7 @@
  - constructor of Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer has changed
  - Pim\Bundle\TransformBundle\Cache\ProductCacheClearer has been renamed Pim\Bundle\TransformBundle\Cache\CacheClearer
 
-# 1.2.0
+# 1.2.0 (2014-08-28)
 
 ## Improvements
 
