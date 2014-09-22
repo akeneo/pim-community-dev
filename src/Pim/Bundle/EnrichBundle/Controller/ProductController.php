@@ -2,7 +2,29 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
+use Pim\Bundle\CommentBundle\Manager\CommentManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -15,31 +37,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\EventDispatcher\Event;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Collections\Collection;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
-use Pim\Bundle\CommentBundle\Manager\CommentManager;
 
 /**
  * Product Controller
@@ -81,6 +78,11 @@ class ProductController extends AbstractDoctrineController
     protected $securityFacade;
 
     /**
+     * @var SequentialEditManager
+     */
+    protected $seqEditManager;
+
+    /**
      * @var CommentManager
      */
     protected $commentManager;
@@ -100,7 +102,19 @@ class ProductController extends AbstractDoctrineController
      * Constant used to redirect to create popin when save edit form
      * @staticvar string
      */
-    const CREATE       = 'Create';
+    const CREATE = 'Create';
+
+    /**
+     * Constant used to redirect to next product in a sequential edition
+     * @staticvar string
+     */
+    const SAVE_AND_NEXT = 'SaveAndNext';
+
+    /**
+     * Constant used to redirect to the grid once all products are edited in a sequential edition
+     * @staticvar string
+     */
+    const SAVE_AND_FINISH = 'SaveAndFinish';
 
     /**
      * Constructor
@@ -120,6 +134,7 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
+     * @param SequentialEditManager    $seqEditManager
      * @param CommentManager           $commentManager
      * @param CommentBuilder           $commentBuilder
      */
@@ -139,6 +154,7 @@ class ProductController extends AbstractDoctrineController
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
         ProductCategoryManager $prodCatManager,
+        SequentialEditManager $seqEditManager,
         CommentManager $commentManager,
         CommentBuilder $commentBuilder
     ) {
@@ -160,6 +176,7 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager    = $versionManager;
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
+        $this->seqEditManager    = $seqEditManager;
         $this->commentManager    = $commentManager;
         $this->commentBuilder    = $commentBuilder;
     }
@@ -175,6 +192,8 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
+        $this->seqEditManager->removeByUser($this->getUser());
+
         return array(
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
@@ -348,6 +367,10 @@ class ProductController extends AbstractDoctrineController
     protected function redirectAfterEdit($params)
     {
         switch ($this->getRequest()->get('action')) {
+            case self::SAVE_AND_FINISH:
+                $this->seqEditManager->removeByUser($this->getUser());
+                $route = 'pim_enrich_product_edit';
+                break;
             case self::BACK_TO_GRID:
                 $route = 'pim_enrich_product_index';
                 $params = array();
@@ -355,6 +378,14 @@ class ProductController extends AbstractDoctrineController
             case self::CREATE:
                 $route = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
+                break;
+            case self::SAVE_AND_NEXT:
+                $route = 'pim_enrich_product_edit';
+                $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+
+                if (null !== $sequentialEdit) {
+                    $params['id'] = $sequentialEdit->getNextId($params['id']);
+                }
                 break;
             default:
                 $route = 'pim_enrich_product_edit';
@@ -691,6 +722,11 @@ class ProductController extends AbstractDoctrineController
         array $channels,
         array $trees
     ) {
+        $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+        if ($sequentialEdit) {
+            $this->seqEditManager->findWrap($sequentialEdit, $product);
+        }
+
         $defaultParameters = array(
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocaleCode(),
@@ -703,7 +739,8 @@ class ProductController extends AbstractDoctrineController
             'created'          => $this->versionManager->getOldestLogEntry($product),
             'updated'          => $this->versionManager->getNewestLogEntry($product),
             'locales'          => $this->getUserLocales(),
-            'createPopin'      => $this->getRequest()->get('create_popin')
+            'createPopin'      => $this->getRequest()->get('create_popin'),
+            'sequentialEdit'   => $sequentialEdit
         );
 
         $event = new GenericEvent($this, ['parameters' => $defaultParameters]);

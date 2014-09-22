@@ -20,9 +20,20 @@
         } %}
     {% endif %}
 
+    {% block sequentialEdit %}
+        {% include 'PimEnrichBundle:Product:_sequentialEdit.html.twig' %}
+    {% endblock %}
+
+    {% set formAction = path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }) %}
+    {% if sequentialEdit and sequentialEdit.next is not null %}
+        {% set formAction = formAction ~ '&action=SaveAndNext' %}
+    {% elseif sequentialEdit and sequentialEdit.next is null %}
+        {% set formAction = formAction ~ '&action=SaveAndFinish' %}
+    {% endif %}
+
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
+        'action': formAction,
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,
@@ -36,10 +47,12 @@
             {% include 'PimEnrichBundle:Product:_buttons.html.twig' %}
         {% endset %}
 
-        {% set subtitle %}
-            {% include 'PimEnrichBundle:Product:_locale-switcher.html.twig' %}
-            {{ elements.enabledLabel(form) }}
-        {% endset %}
+        {% if subtitle is not defined %}
+            {% set subtitle %}
+                {% include 'PimEnrichBundle:Product:_locale-switcher.html.twig' %}
+                {{ elements.enabledLabel(form) }}
+            {% endset %}
+        {% endif %}
 
         {% set left %}
             <ul class="inline">

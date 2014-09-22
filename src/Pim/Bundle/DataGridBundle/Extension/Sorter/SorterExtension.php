@@ -149,7 +149,6 @@ class SorterExtension extends AbstractExtension
         $result = [];
 
         $sorters = $this->getSorters($config);
-
         $defaultSorters = $config->offsetGetByPath(Configuration::DEFAULT_SORTERS_PATH, []);
         $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ?: $defaultSorters;
 
@@ -184,7 +183,7 @@ class SorterExtension extends AbstractExtension
         switch (true) {
             case in_array($direction, [self::DIRECTION_ASC, self::DIRECTION_DESC], true):
                 break;
-            case ($direction === false):
+            case ($direction == false):
                 $direction = self::DIRECTION_DESC;
                 break;
             default:
