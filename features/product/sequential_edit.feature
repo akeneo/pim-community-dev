@@ -1,4 +1,4 @@
-@javascript
+@javascript @ce
 Feature: Edit sequentially some products
   In order to enrich the catalog
   As a regular user
