@@ -1,6 +1,8 @@
 # 1.0.0-x
 ## Improvements
 ## Bug fixes
+- Fixed icecat-demo-dev fixtures
+
 ## BC breaks
 
 # 1.0.0
