@@ -1,6 +1,18 @@
-# 1.0.0-x
-## Improvements
+# 1.0.x
+
 ## Bug fixes
+- Fix installer fail on requirements when you change the archive and uploads folder
+
+## Improvements
+
+## BC breaks
+
+# 1.0.1
+
+## Bug fixes
+
+## Improvements
+
 ## BC breaks
 
 # 1.0.0
