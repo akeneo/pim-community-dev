@@ -1,7 +1,67 @@
-# 1.2.0-x
+# 1.3.*
+
+## Features
+- Export a product as PDF
+- Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add the sequential edit for a selected list of products
+- Add comments on a product
+
 ## Improvements
-## Bug fixes
+ - remove the fixed mysql socket location
+ - switch to stability stable
+ - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
 ## BC breaks
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass`
+
+# 1.2.5 (2014-09-19)
+
+## Bug fixes
+  - File that contains non UTF-8 characters can not be imported anymore
+  - Mimetype check on file import has been removed
+  - Incorrect written number after csv export
+
+## Improvements
+  - Fixtures stop if warnings are encountered
+  - Errors and warnings for fixtures are displayed
+
+# 1.2.4 (2014-09-11)
+
+## Bug fixes
+ - Fixed job profile controller doing a global flush after launching job execution
+
+# 1.2.3 (2014-09-08)
+
+## Bug fixes
+ - association fixtures
+
+# 1.2.2 (2014-09-05)
+
+## Improvements
+ - CacheClearer splits into two services, one for Product and one for other entities
+
+## Bug fixes
+ - association import with MongoDB fixes
+
+# 1.2.1 (2014-09-03)
+
+## Bug fixes
+ - large memory leak fixed for non product import (association, product group, attribute, categories, etc...)
+ - new associations were created at each import
+
+## BC breaks
+ - protected postWrite method not called anymore from BaseConnectorBundle\\Writer\\Doctrine\\Writer.
+ If you need it, override the write method, call the parent and add your code after.
+ - constructor of Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer has changed
+ - Pim\Bundle\TransformBundle\Cache\ProductCacheClearer has been renamed Pim\Bundle\TransformBundle\Cache\CacheClearer
+
+# 1.2.0 (2014-08-28)
+
+## Improvements
+
+## Bug fixes
+- Fix a bug on entity `Pim/Bundle/CatalogBundle/Model/AbstractProduct`
 
 # 1.2.0-RC4
 

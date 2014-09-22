@@ -18,6 +18,11 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: Nom
+pim_title:
+  user.index: Utilisateurs
+  user_role.index: Rôles
+  user_group.index: Groupes
+  system_configuration.index: Configuration
 user.title: Utilisateur
 Users Management: Gestion des utilisateurs
 Create user: Créer un utilisateur

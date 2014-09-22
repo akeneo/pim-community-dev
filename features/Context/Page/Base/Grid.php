@@ -829,6 +829,14 @@ class Grid extends Index
     }
 
     /**
+     * Press the sequential edit button
+     */
+    public function sequentialEdit()
+    {
+        $this->pressButton('Sequential Edit');
+    }
+
+    /**
      * Select all rows
      *
      * @throws \InvalidArgumentException

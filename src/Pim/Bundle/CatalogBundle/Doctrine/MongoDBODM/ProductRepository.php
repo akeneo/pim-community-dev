@@ -122,12 +122,7 @@ class ProductRepository extends DocumentRepository implements
         $result = $qb->getQuery()->execute();
 
         if ($result->count() > 1) {
-            throw new \LogicException(
-                sprintf(
-                    'Many products have been found that match criteria:' . "\n" . '%s',
-                    print_r($criteria, true)
-                )
-            );
+            throw new \LogicException('Many products have been found that match criteria.');
         }
 
         return $result->getNext();

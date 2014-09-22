@@ -7,7 +7,6 @@ use Akeneo\Bundle\BatchBundle\Entity\Warning;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
@@ -62,6 +61,8 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
             )
         );
         $translator->trans('a_warning')->willReturn('Reader');
+        $translator->trans(12)->willReturn(12);
+        $translator->trans(50)->willReturn(50);
         $translator->trans('warning_reason', ['foo' => 'bar'])->willReturn('WARNING!');
 
         $stepExecution->getFailureExceptions()->willReturn(

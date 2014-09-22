@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
@@ -15,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Collection;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -33,7 +32,7 @@ class ProductWriterSpec extends ObjectBehavior
         MongoObjectsFactory $mongoFactory,
         StepExecution $stepExecution,
         Collection $collection,
-        ProductCacheClearer $clearer
+        CacheClearer $clearer
     ) {
         $documentManager->getDocumentCollection('pim_product')->willReturn($collection);
         $collection->getName()->willReturn('pim_product_collection');
@@ -94,10 +93,18 @@ class ProductWriterSpec extends ObjectBehavior
 
         $pendingPersister->persistPendingVersions([$product1, $product2])->shouldBeCalled();
 
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.pre_insert', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.pre_update', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.post_insert', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.post_update', Argument::any())->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.pre_insert', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.pre_update', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.post_insert', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.post_update', Argument::any())
+            ->shouldBeCalled();
 
         $documentManager->clear()->shouldBeCalled();
         $this->write([$product1, $product2]);
@@ -147,10 +154,18 @@ class ProductWriterSpec extends ObjectBehavior
 
         $pendingPersister->persistPendingVersions([$product1, $product2])->shouldBeCalled();
 
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.pre_insert', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.pre_update', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.post_insert', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.post_update', Argument::any())->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.pre_insert', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.pre_update', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.post_insert', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.post_update', Argument::any())
+            ->shouldBeCalled();
 
         $documentManager->clear()->shouldBeCalled();
         $this->write([$product1, $product2]);
@@ -223,10 +238,18 @@ class ProductWriterSpec extends ObjectBehavior
 
         $pendingPersister->persistPendingVersions([$product1, $product2, $product3, $product4])->shouldBeCalled();
 
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.pre_insert', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.pre_update', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.post_insert', Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_base_connector.direct_to_db_writer.post_update', Argument::any())->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.pre_insert', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.pre_update', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.post_insert', Argument::any())
+            ->shouldBeCalled();
+        $eventDispatcher
+            ->dispatch('pim_base_connector.direct_to_db_writer.post_update', Argument::any())
+            ->shouldBeCalled();
 
         $documentManager->clear()->shouldBeCalled();
         $this->write([$product1, $product2, $product3, $product4]);

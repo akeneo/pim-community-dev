@@ -95,14 +95,7 @@ class CsvReader extends FileReader implements
             new Assert\NotBlank(),
             new AssertFile(
                 array(
-                    'allowedExtensions' => array('csv', 'zip'),
-                    'mimeTypes'         => array(
-                        'text/csv',
-                        'text/comma-separated-values',
-                        'text/plain',
-                        'application/csv',
-                        'application/zip'
-                    )
+                    'allowedExtensions' => array('csv', 'zip')
                 )
             )
         );
