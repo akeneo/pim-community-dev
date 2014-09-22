@@ -33,7 +33,7 @@ use Doctrine\ODM\MongoDB\UnitOfWork;
  *
  * This subscriber is only registered when the mongodb support is activated
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
 {
@@ -136,6 +136,8 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      * Synchronize category ids of product draft
      *
      * @param ProductDraft $productDraft
+     *
+     * @return null
      */
     protected function syncProductDraft(ProductDraft $productDraft)
     {
@@ -156,6 +158,8 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      *
      * @param ProductInterface $product
      * @param UnitOfWork       $uow
+     *
+     * @return null
      */
     protected function syncProductDrafts(ProductInterface $product, UnitOfWork $uow)
     {

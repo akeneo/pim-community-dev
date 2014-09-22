@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Form type for job profile permissions
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfilePermissionsType extends AbstractType
 {

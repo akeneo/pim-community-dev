@@ -16,6 +16,10 @@
 
 {% set form_tabs = form_tabs|merge(['Completeness', 'History']) %}
 
+{% if resource_granted('pim_enrich_product_comment') %}
+    {% set form_tabs = form_tabs|merge(['Comments']) %}
+{% endif %}
+
 {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
     {% set form_tabs = form_tabs|merge(['Proposals']) %}
 {% endif %}

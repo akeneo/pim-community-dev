@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * A product value diff presenter
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 abstract class AbstractProductValuePresenter implements PresenterInterface, RendererAwareInterface
 {

@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * Enterprise Enrich extension
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PimEnterpriseEnrichExtension extends Extension
 {

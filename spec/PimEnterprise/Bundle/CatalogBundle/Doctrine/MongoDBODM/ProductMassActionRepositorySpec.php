@@ -13,8 +13,11 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepo
  */
 class ProductMassActionRepositorySpec extends ObjectBehavior
 {
-    function let(DocumentManager $dm, FamilyRepository $familyRepository, PublishedProductRepository $publishedRepository)
-    {
+    function let(
+        DocumentManager $dm,
+        FamilyRepository $familyRepository,
+        PublishedProductRepository $publishedRepository
+    ) {
         $this->beConstructedWith($dm, Argument::any(), $familyRepository, $publishedRepository);
     }
 
@@ -25,7 +28,9 @@ class ProductMassActionRepositorySpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new \Exception('Impossible to mass delete products. You should not have any published products in your selection.')
+                new \Exception(
+                    'Impossible to mass delete products. You should not have any published products in your selection.'
+                )
             )
             ->duringDeleteFromIds($ids);
     }

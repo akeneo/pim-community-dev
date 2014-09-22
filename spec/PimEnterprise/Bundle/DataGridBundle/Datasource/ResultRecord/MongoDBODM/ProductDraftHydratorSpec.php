@@ -1,9 +1,8 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
+namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Query\Query;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;

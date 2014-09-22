@@ -19,7 +19,7 @@ use Gaufrette\Filesystem;
 /**
  * Enterprise edition media manager
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class MediaManager extends BaseMediaManager
 {

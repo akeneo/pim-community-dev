@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Product voter, allows to know if products can be published, reviewed, edited, consulted by a
  * user depending on his user groups
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductVoter implements VoterInterface
 {

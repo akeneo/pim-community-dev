@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 /**
  * Subscriber to manage permissions on attribute groups
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
 {

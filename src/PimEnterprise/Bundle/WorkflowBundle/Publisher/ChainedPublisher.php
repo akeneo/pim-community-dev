@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 /**
  * Chained publisher, it knows other publishers and allow to publish an object by using the relevant publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ChainedPublisher implements PublisherInterface
 {

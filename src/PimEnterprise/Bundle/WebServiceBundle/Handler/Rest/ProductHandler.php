@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Owerride product handler to apply permissions
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ProductHandler extends BaseProductHandler
 {

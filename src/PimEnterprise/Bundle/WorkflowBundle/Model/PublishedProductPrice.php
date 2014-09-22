@@ -17,9 +17,9 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 /**
  * Published product price
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
-class PublishedProductPrice extends AbstractProductPrice
+class PublishedProductPrice extends AbstractProductPrice implements PublishedProductPriceInterface
 {
 }

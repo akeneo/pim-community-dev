@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -38,7 +37,7 @@ class OptionsComparatorSpec extends ObjectBehavior
         AttributeOption $blue,
         AttributeOption $yellow,
         AttributeOption $green
-    ){
+    ) {
         $submittedData = [
             'options' => '42,24,76',
         ];

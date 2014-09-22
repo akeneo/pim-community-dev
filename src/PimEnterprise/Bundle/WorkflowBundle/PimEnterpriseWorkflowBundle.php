@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
 /**
  * PIM Enterprise Workflow Bundle
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PimEnterpriseWorkflowBundle extends Bundle
 {
@@ -31,6 +31,8 @@ class PimEnterpriseWorkflowBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass());
+
         $mappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\WorkflowBundle\Model'
         );

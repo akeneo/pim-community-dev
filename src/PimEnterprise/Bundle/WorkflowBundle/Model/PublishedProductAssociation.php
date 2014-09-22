@@ -17,10 +17,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
 /**
  * Association entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  *
  * @ExclusionPolicy("all")
  */
-class PublishedProductAssociation extends AbstractAssociation
+class PublishedProductAssociation extends AbstractAssociation implements PublishedProductAssociationInterface
 {
 }

@@ -19,7 +19,7 @@ use Symfony\Component\Config\FileLocator;
 /**
  * EE Transform bundle extension
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PimEnterpriseTransformExtension extends Extension
 {

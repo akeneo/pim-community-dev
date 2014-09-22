@@ -17,7 +17,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 /**
  * Helper for product draft datagrid
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class GridHelper
 {

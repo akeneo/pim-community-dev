@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 /**
  * Helper for sorting product values
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class SortProductValuesHelper
 {

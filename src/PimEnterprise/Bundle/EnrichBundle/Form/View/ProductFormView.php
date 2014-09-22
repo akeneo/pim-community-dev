@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Extending product form view adding permissions
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductFormView extends BaseProductFormView
 {

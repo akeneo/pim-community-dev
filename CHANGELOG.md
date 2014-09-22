@@ -1,3 +1,16 @@
+# 1.1.0
+
+## Improvements
+
+- remove the fixed mysql socket location
+- switch to minimum-stability:stable in composer.json
+- base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
+## Bug fixes
+
+## BC breaks
+- `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
+
 # 1.0.x
 
 ## Bug fixes
@@ -5,14 +18,13 @@
 - Fixed icecat-demo-dev fixtures
 
 ## Improvements
+- Setup relationships of published products with interfaces in order to easy overriding
 
 ## BC breaks
 
 # 1.0.1
 
 ## Bug fixes
-
-## Improvements
 
 ## BC breaks
 

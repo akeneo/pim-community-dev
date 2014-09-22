@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Attribute group access manager
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class AttributeGroupAccessManager
 {

@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;

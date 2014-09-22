@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 /**
  * Published product repository interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
 {

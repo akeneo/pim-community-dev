@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Gaufrette\Filesystem;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;

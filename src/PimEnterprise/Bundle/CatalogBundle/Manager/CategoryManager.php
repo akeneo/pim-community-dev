@@ -24,7 +24,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Category manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryManager extends BaseCategoryManager
 {

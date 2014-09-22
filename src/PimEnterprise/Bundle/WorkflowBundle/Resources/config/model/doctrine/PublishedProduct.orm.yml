@@ -49,13 +49,13 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociationInterface
             mappedBy: owner
             cascade:
                 - persist
                 - refresh
         values:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
             orphanRemoval: true
             mappedBy: entity
             cascade:
@@ -63,7 +63,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - persist
                 - refresh
         completenesses:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface
             mappedBy: product
             cascade:
                 - remove

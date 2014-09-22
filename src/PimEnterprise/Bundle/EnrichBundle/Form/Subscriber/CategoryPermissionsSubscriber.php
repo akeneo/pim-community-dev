@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 /**
  * Subscriber to manage permissions on categories
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryPermissionsSubscriber implements EventSubscriberInterface
 {

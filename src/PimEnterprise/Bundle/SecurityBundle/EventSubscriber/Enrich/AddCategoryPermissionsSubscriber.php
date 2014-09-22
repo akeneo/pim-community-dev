@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 /**
  * Add parent permission when create a new category
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
 {

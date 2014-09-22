@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 /**
  * Inject the product id for product draft datagrid
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class InjectProductForProductDraftSubscriber
 {

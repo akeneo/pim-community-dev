@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Product category manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductCategoryManager extends BaseProductCategoryManager
 {

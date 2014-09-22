@@ -16,9 +16,9 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * A comparator that delegates comparison to a chain of comparators
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  *
- * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class ChainedComparator implements ComparatorInterface
 {

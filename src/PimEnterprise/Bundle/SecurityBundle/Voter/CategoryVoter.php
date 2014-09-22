@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Category voter, allows to know if products of a category can be edited or consulted by a
  * user depending on his user groups
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryVoter implements VoterInterface
 {

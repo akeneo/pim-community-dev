@@ -26,7 +26,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Edit common attributes of given products
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class EditCommonAttributes extends BaseEditCommonAttributes
 {
@@ -41,6 +41,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
      * @param ProductBuilder           $productBuilder
      * @param ProductMassActionManager $massActionManager
      * @param MetricFactory            $metricFactory
+     * @param array                    $classes
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(

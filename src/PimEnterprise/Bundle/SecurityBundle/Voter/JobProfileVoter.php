@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Job profile voter, allows to know if a job profile can be executed or edited by
  * a user depending on his user groups
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfileVoter implements VoterInterface
 {

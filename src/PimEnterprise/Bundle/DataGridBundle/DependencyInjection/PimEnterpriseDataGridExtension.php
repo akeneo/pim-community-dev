@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * Enterprise DataGrid extension
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PimEnterpriseDataGridExtension extends Extension
 {

@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Job profile access manager
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfileAccessManager
 {
@@ -134,8 +134,7 @@ class JobProfileAccessManager
             $access = new $this->objectAccessClass();
             $access
                 ->setJobProfile($jobProfile)
-                ->setUserGroup($group)
-            ;
+                ->setUserGroup($group);
         }
 
         return $access;

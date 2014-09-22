@@ -29,7 +29,7 @@ use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 /**
  * Product Controller
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ProductController extends BaseProductController
 {

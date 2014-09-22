@@ -23,7 +23,7 @@ use Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener as Base
  * Grid listener to configure columns, filters, sorters and rows actions
  * based on product attributes, business rules and permissions
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ConfigureProductGridListener extends BaseConfigureProductGridListener
 {
