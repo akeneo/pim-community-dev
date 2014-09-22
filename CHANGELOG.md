@@ -1,4 +1,4 @@
-# 1.3.*
+# 1.3.x
 
 ## Features
 - Export a product as PDF
@@ -14,6 +14,11 @@
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass`
+
+# 1.2.x
+
+## Bug fixes
+  - Fix installer fail on requirements when you change the archive and uploads folder
 
 # 1.2.5 (2014-09-19)
 
