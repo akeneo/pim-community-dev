@@ -7,6 +7,9 @@
 
     {% set buttons %}
         {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
+        {% if resource_granted('pim_pdf_generator_product_download') %}
+            {{ elements.link('btn.download_pdf', path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }), { icon: 'download', class: 'no-hash', id: 'download-btn'}) }}
+        {% endif %}
     {% endset %}
 
     {% set subtitle %}
