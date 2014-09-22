@@ -1,4 +1,4 @@
-# 1.1.0-x
+# 1.1.0
 
 ## Improvements
 
@@ -11,10 +11,18 @@
 ## BC breaks
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
 
-# 1.0.0-x
+# 1.0.x
+
+## Bug fixes
+- Fix installer fail on requirements when you change the archive and uploads folder
+- Fixed icecat-demo-dev fixtures
 
 ## Improvements
 - Setup relationships of published products with interfaces in order to easy overriding
+
+## BC breaks
+
+# 1.0.1
 
 ## Bug fixes
 
