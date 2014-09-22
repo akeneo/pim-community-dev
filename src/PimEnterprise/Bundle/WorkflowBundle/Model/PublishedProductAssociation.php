@@ -21,6 +21,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
  *
  * @ExclusionPolicy("all")
  */
-class PublishedProductAssociation extends AbstractAssociation
+class PublishedProductAssociation extends AbstractAssociation implements PublishedProductAssociationInterface
 {
 }

@@ -41,7 +41,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness:
                     onDelete: CASCADE
                     nullable: false
         product:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
             inversedBy: completenesses
             joinColumns:
                 product_id:
