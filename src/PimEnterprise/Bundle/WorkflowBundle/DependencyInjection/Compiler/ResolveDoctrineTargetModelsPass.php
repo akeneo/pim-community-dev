@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass;
 
 /**
- * Resolves doctrine ORM Target entities
+ * Resolves doctrine target models mapping
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ResolveDoctrineOrmTargetEntitiesPass extends AbstractResolveDoctrineOrmTargetEntitiesPass
+class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModelsPass
 {
     /**
      * {@inheritdoc}

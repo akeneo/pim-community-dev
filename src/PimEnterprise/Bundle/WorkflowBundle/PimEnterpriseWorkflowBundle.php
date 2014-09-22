@@ -31,7 +31,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass());
+        $container->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass());
 
         $mappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\WorkflowBundle\Model'
