@@ -1,3 +1,20 @@
+# 1.3.x
+
+## Features
+- Export a product as PDF
+- Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add the sequential edit for a selected list of products
+- Add comments on a product
+
+## Improvements
+ - remove the fixed mysql socket location
+ - switch to stability stable
+ - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
+## BC breaks
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass`
+
 # 1.2.x
 
 ## Bug fixes

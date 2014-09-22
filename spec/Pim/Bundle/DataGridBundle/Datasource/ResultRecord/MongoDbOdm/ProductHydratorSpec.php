@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Query\Query;
 

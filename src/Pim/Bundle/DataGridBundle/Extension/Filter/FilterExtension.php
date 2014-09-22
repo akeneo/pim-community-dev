@@ -211,7 +211,7 @@ class FilterExtension extends AbstractExtension
         $filters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         $defaultFilters = $config->offsetGetByPath(Configuration::DEFAULT_FILTERS_PATH, []);
-        $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
+        $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ?: $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
             if (isset($filters[$column])) {

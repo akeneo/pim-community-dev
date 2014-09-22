@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
 
-
 /**
  * @require \MongoId
  */
