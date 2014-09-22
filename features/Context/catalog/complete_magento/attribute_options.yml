@@ -75,4 +75,3 @@ options:
         code: uc_white
         attribute: unique_color
         labels: { fr_FR: 'Blanc', en_US: 'White' }
-
