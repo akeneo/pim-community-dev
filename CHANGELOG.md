@@ -11,6 +11,9 @@
  ## Bug fixes
   - Incorrect written number after csv export
 
+## BC breaks
+  - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
+
 # 1.2.4 (2014-09-11)
 
 ## Bug fixes

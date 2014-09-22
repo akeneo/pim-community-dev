@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Gaufrette\Filesystem;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
@@ -46,8 +47,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 continue;
             }
             $writer = $step->getWriter();
-            if ($writer instanceof FileWriter &&
-                $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
+            if ($this->isWriterUsable($writer)) {
                     $filesystem = $this->getZipFilesystem(
                         $jobExecution,
                         sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
@@ -58,6 +58,23 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 }
             }
         }
+    }
+
+    /**
+     * Verify if the writer is usable or not
+     *
+     * @param ItemWriterInterface $writer
+     *
+     * @return bool
+     */
+    protected function isWriterUsable(ItemWriterInterface $writer)
+    {
+        if ($writer instanceof FileWriter &&
+            $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -88,5 +105,25 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 )
             )
         );
+    }
+
+    /**
+     * Check if the job execution is supported
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return bool
+     */
+    public function supports(JobExecution $jobExecution)
+    {
+        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+            if ($step instanceof ItemStep) {
+                if ($this->isWriterUsable($step->getWriter())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
