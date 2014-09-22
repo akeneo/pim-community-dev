@@ -335,7 +335,6 @@ span.link-label {
     .notification-count {
       font-size: 11px;
       font-weight: 100;
-      display: inline-block;
       height: 14px;
       line-height: 14px;
       color: white;
@@ -343,6 +342,11 @@ span.link-label {
       border-radius: 2px;
       background: linear-gradient(RGB(249, 58, 67), RGB(221, 14, 24));
       box-shadow: 0px 0.7px 0px RGBa(0,0,0, 0.3), 0px 0px 3px rGBa(0,0,0,0.35);
+      display: none;
+
+      &.notification-count-important {
+        display: inline-block;
+      }
     }
   }
 

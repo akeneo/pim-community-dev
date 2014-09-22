@@ -68,7 +68,11 @@ define(
             initialize: function(opts) {
                 this.options = _.extend({}, this.options, opts);
                 this.collection = new NotificationList();
-                this.indicator  = new Indicator({el: this.$('span.indicator'), value: 0});
+                this.indicator  = new Indicator({
+                    el: this.$('span.indicator'),
+                    value: 0,
+                    baseClass: 'notification-count'
+                });
 
                 this.collection.on('load:unreadCount', function(count, reset) {
                     if (this.freezeCount) {
@@ -97,6 +101,11 @@ define(
                 }, this);
 
                 this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
+
+                this.indicator.on('change:value', function(model, value) {
+                     model.set('type', value > 0 ? 'important': '');
+                     model.set('baseClass', 'notification-count');
+                 }, this);
 
                 this.render();
             },
