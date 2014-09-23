@@ -169,7 +169,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             'label'           => $value->getAttribute()->getLabel(),
             'required'        => $value->getAttribute()->isRequired(),
             'auto_initialize' => false,
-            'label_attr'      => ['max_length' => 24]
+            'label_attr'      => ['truncate' => true]
         );
     }
 
