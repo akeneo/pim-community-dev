@@ -49,6 +49,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected $fieldSorters = [
         'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
         'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
+        'is_associated' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\IsAssociatedSorter',
     ];
 
     /**
