@@ -3,6 +3,7 @@
 ## Bug fixes
 - Fix installer fail on requirements when you change the archive and uploads folder
 - Fixed icecat-demo-dev fixtures
+- Setup relationships of published products with interfaces in order to ease overriding
 
 ## Improvements
 
@@ -13,7 +14,6 @@
 ## Bug fixes
 
 ## Improvements
-- Setup relationships of published products with interfaces in order to ease overriding
 
 ## BC breaks
 
