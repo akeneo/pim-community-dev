@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener;
 
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**

@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * ProductDraft ownership repository for MongoDB

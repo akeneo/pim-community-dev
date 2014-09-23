@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM;
 
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Hydrator for product draft (ORM support)

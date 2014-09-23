@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
 /**
  * A batch operation operator

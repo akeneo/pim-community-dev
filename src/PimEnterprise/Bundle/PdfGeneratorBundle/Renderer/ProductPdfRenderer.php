@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
 
-use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
+use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
+use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
  * PDF renderer used to render PDF for a Product

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
  * Helper for product draft datagrid

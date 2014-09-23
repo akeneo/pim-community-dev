@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\UserBundle\Entity\Group;
 use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
 
 /**

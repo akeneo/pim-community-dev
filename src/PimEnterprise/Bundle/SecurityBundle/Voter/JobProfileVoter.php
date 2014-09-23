@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Job profile voter, allows to know if a job profile can be executed or edited by

@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAware;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 
 /**
  * Present a file value

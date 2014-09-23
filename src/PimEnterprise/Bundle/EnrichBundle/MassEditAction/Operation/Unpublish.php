@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Batch operation to unpublish products

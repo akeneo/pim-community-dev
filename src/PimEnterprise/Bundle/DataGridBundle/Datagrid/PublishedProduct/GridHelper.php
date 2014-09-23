@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct;
 
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Helper for published datagrid

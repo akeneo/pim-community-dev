@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Manager;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager as BaseDatagridViewManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
+use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager as BaseDatagridViewManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
