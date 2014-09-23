@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - Fix installer fail on requirements when you change the archive and uploads folder
+- Fix display of multi-byte characters in long form labels that are truncated
 
 # 1.2.5 (2014-09-19)
 
