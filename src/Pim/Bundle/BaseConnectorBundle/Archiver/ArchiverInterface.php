@@ -23,6 +23,15 @@ interface ArchiverInterface
     public function archive(JobExecution $jobExecution);
 
     /**
+     * Check if the job execution is supported
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return bool
+     */
+    public function supports(JobExecution $jobExecution);
+
+    /**
      * Get the archives of a job execution
      *
      * @param JobExecution $jobExecution
