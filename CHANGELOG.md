@@ -31,6 +31,9 @@
 - Fixtures stop if warnings are encountered
 - Errors and warnings for fixtures are displayed
 
+## BC breaks
+  - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
+
 # 1.2.4 (2014-09-11)
 
 ## Bug fixes
