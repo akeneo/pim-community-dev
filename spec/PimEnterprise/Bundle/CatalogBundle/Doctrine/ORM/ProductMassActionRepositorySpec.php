@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository;
+use Prophecy\Argument;
 
 class ProductMassActionRepositorySpec extends ObjectBehavior
 {

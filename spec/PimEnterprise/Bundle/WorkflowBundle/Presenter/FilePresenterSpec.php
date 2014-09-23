@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class FilePresenterSpec extends ObjectBehavior
 {

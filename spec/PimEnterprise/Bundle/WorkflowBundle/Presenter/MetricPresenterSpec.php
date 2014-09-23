@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class MetricPresenterSpec extends ObjectBehavior

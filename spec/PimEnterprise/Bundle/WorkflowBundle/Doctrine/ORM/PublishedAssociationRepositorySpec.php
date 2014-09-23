@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use PhpSpec\ObjectBehavior;
 
 class PublishedAssociationRepositorySpec extends ObjectBehavior
 {

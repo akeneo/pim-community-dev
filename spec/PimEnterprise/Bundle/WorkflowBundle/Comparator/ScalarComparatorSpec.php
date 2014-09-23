@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Pim\Bundle\CatalogBundle\Model;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ScalarComparatorSpec extends ObjectBehavior
 {

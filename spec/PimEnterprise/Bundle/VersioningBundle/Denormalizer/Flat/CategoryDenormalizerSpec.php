@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Prophecy\Argument;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 
 class CategoryDenormalizerSpec extends ObjectBehavior
 {

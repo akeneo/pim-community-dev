@@ -2,17 +2,17 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Translation\TranslatorInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductDraftChangesExtensionSpec extends ObjectBehavior
 {

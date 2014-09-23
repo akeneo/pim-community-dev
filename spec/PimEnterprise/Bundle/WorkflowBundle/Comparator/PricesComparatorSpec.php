@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model;
 
 class PricesComparatorSpec extends ObjectBehavior
