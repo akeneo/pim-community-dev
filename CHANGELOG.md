@@ -4,6 +4,7 @@
 - Fix installer fail on requirements when you change the archive and uploads folder
 - Fixed icecat-demo-dev fixtures
 - Setup relationships of published products with interfaces in order to ease overriding
+- Fixed problem on view rights on attribute groups which were not displayed on family configuration
 
 ## Improvements
 
