@@ -1,6 +1,8 @@
 # 1.0.0-x
 ## Improvements
 ## Bug fixes
+- Fixed problem on view rights on attribute groups which were not displayed on family configuration
+
 ## BC breaks
 
 # 1.0.0
