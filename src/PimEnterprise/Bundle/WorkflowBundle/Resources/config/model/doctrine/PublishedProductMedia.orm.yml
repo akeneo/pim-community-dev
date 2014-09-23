@@ -27,7 +27,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia:
             column: mime_type
     oneToOne:
         value:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
             mappedBy: media
             joinColumns:
                 value_id:
