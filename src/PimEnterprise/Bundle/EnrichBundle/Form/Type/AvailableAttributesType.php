@@ -57,7 +57,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
     {
         $revokedAttributeIds = $this->attGroupAccessRepo->getRevokedAttributeIds(
             $this->userContext->getUser(),
-            Attributes::EDIT_ATTRIBUTES
+            Attributes::VIEW_ATTRIBUTES
         );
 
         $builder->add(
