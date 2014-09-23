@@ -2,7 +2,7 @@
 Feature: Update product when removing an option of a choice attribute
   In order to keep my data consistent
   As a product manager
-  I need to products to be updated when removing options of a choice attribute
+  I need products to be updated when removing options of a choice attribute
 
   Background:
     Given a "footwear" catalog configuration
@@ -17,15 +17,11 @@ Feature: Update product when removing an option of a choice attribute
     And I remove the "Converse" option
     And I save the attribute
     When I edit the "foo" product
-    And I fill in the following information:
-      | SKU | manufacturer2 |
-    And I save the product
     Then the product Manufacturer should be empty
     When I visit the "History" tab
     Then I should see history:
-      | version | property     | value         |
-      | 2       | manufacturer |               |
-      | 2       | sku          | manufacturer2 |
+      | version | property     | value |
+      | 2       | manufacturer |       |
 
   Scenario: Successfully update product when removing an option of a multi select attribute
     Given the following product:
@@ -36,15 +32,11 @@ Feature: Update product when removing an option of a choice attribute
     And I remove the "cold" option
     And I save the attribute
     When I edit the "foo" product
-    And I fill in the following information:
-      | SKU | weather_conditions2 |
-    And I save the product
     Then the product Weather conditions should be "Snowy"
     When I visit the "History" tab
     Then I should see history:
-      | version | property           | value               |
-      | 2       | weather_conditions | snowy               |
-      | 2       | sku                | weather_conditions2 |
+      | version | property           | value |
+      | 2       | weather_conditions | snowy |
 
   Scenario: Successfully update product when removing multiple options of a multi select attribute
     Given the following product:
