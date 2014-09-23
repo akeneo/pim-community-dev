@@ -62,7 +62,9 @@ class JobExecutionArchivist implements EventSubscriberInterface
         $jobExecution = $event->getJobExecution();
 
         foreach ($this->archivers as $archiver) {
-            $archiver->archive($jobExecution);
+            if ($archiver->supports($jobExecution)) {
+                $archiver->archive($jobExecution);
+            }
         }
     }
 

@@ -21,7 +21,10 @@
 - Fix installer fail on requirements when you change the archive and uploads folder
 - Fix display of multi-byte characters in long form labels that are truncated
 - Incorrect date display between export/import widget and job execution page and job history
+- Fix archiver bug with yml imports
 
+## BC breaks
+  - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
 
 # 1.2.5 (2014-09-19)
 
