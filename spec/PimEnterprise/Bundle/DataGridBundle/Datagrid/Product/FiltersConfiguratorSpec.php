@@ -12,7 +12,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
 {
     function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
     {
-        $this->beConstructedWith($registry, 'Pim/Catalog/Product');
+        $this->beConstructedWith($registry, 'Pim/Catalog/ProductInterface');
     }
 
     function it_is_a_configurator()

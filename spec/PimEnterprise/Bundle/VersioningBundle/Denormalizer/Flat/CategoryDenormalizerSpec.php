@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 
 class CategoryDenormalizerSpec extends ObjectBehavior
 {
-    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Category';
+    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\CategoryInterface';
     const FORMAT_CSV   = 'csv';
 
     function let(ManagerRegistry $registry, CategoryRepository $repository)

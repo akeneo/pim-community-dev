@@ -24,7 +24,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
 
         $accessClass = 'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess';
-        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\Category';
+        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\CategoryInterface';
         $userGroupClass = 'Pim\Bundle\SecurityBundle\Entity\Group';
         $registry->getRepository($accessClass)->willReturn($accessRepository);
         $registry->getRepository($categoryClass)->willReturn($categoryRepository);
