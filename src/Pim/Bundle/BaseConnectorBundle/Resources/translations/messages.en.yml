@@ -22,22 +22,28 @@ pim_base_connector:
             export.title: Group export
         csv_product_import:
             title: Product import in CSV
+            validation.title: File validation
             import.title: Product import
             import_associations.title: Association import
         csv_category_import:
             title: Category import in CSV
+            validation.title: File validation
             import.title: Category import
         csv_attribute_import:
             title: Attribute import in CSV
+            validation.title: File validation
             import.title: Attribute import
         csv_attribute_option_import:
             title: Attribute option import in CSV
+            validation.title: File validation
             import.title: Attribute option import
         csv_association_type_import:
             title: Association type import in CSV
+            validation.title: File validation
             import.title: Association type import
         csv_group_import:
             title: Group import in CSV
+            validation.title: File validation
             import.title: Group import
 
     steps:

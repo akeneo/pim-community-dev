@@ -26,6 +26,7 @@ class InGroupSorterSpec extends ObjectBehavior
     function it_adds_a_order_by_in_group_in_the_query(Builder $queryBuilder)
     {
         $queryBuilder->sort('normalizedData.in_group_12', 'desc')->willReturn($queryBuilder);
+        $queryBuilder->sort('_id')->shouldBeCalled();
 
         $this->addFieldSorter('in_group_12', 'desc');
     }
