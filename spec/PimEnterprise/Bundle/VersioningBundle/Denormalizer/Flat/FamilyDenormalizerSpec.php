@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Serializer;
 
 class FamilyDenormalizerSpec extends ObjectBehavior

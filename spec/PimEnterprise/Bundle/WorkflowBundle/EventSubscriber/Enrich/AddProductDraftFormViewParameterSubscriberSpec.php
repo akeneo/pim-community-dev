@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
 {

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractCompleteness;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\Model\AbstractCompleteness;
 
 /**
  * Published product completeness
@@ -20,6 +20,6 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
-class PublishedProductCompleteness extends AbstractCompleteness
+class PublishedProductCompleteness extends AbstractCompleteness implements PublishedProductCompletenessInterface
 {
 }

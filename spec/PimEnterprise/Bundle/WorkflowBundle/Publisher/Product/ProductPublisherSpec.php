@@ -5,10 +5,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
+use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 class ProductPublisherSpec extends ObjectBehavior
 {

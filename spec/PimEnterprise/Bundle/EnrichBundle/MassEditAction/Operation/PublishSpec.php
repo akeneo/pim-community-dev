@@ -3,11 +3,11 @@
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class PublishSpec extends ObjectBehavior
 {

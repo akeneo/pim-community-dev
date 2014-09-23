@@ -1,0 +1,47 @@
+pimee_workflow:
+  product_draft:
+    author: Auteur
+    created: Proposé le
+    changes: Changements
+    locale: Locale contextuelle
+    status:
+      label: Statut
+      working_copy: Version de travail
+      in_progress: En cours
+      ready: En attente d’approbation
+    action:
+      approve: Accepter
+      refuse: Refuser
+      remove: Supprimer
+  published_product:
+    index: Produits publiés
+    title: Produit publié
+  acl.published_product:
+    index: Gérer les produits publiés
+  product:
+    permission:
+      label: Permissions
+      own: Examiner / publier
+      edit: Modifier
+      view: Voir
+btn.publish: Publier
+btn.unpublish: Dépublier
+flash.product.published: Le produit a été publié avec succès.
+flash.product.unpublished: Le produit a été depublié avec succès.
+flash.product_draft.approve.success: Le brouillon du produit a été appliqué avec succès.
+flash.product_draft.approve.error: "Le brouillon du produit ne peut pas être appliqué en raison de l'erreur suivante. %error%"
+pim_menu:
+  item:
+    published_product: Produits publiés
+pim_title:
+  published_product:
+    index: Produits publiés
+    view: 'Produits publiés %product.sku% | Voir'
+  product:
+    dispatch: 'Produits %product.sku%'
+    show: 'Produits %product.sku% | Voir'
+btn.editworkingcopy: Editer la copie de travail
+confirmation:
+  product:
+    publish: Êtes-vous sûr de vouloir publier ce produit ?
+    unpublish: Êtes-vous sûr de vouloir dépublier ce produit ?

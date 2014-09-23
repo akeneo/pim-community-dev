@@ -2,14 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
+use Prophecy\Argument;
 
 class JobProfileAccessManagerSpec extends ObjectBehavior
 {

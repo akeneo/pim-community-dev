@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 
 class ProductDraftHydratorSpec extends ObjectBehavior

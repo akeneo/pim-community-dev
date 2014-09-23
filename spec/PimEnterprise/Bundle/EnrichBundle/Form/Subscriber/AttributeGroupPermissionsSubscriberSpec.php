@@ -2,14 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
 {

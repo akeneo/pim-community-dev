@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Present two files information side by side

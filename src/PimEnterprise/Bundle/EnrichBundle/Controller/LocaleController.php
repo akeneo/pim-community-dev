@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\EnrichBundle\Controller\LocaleController as BaseLocaleController;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\EnrichBundle\Controller\LocaleController as BaseLocaleController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Locale controller for configuration

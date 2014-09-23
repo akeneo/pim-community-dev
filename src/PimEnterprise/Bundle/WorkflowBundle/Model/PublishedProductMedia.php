@@ -20,6 +20,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
  * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
-class PublishedProductMedia extends AbstractProductMedia
+class PublishedProductMedia extends AbstractProductMedia implements PublishedProductMediaInterface
 {
 }

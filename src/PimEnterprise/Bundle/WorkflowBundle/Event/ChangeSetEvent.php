@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Change set event

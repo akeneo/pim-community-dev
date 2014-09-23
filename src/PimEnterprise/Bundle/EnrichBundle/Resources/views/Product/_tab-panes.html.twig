@@ -29,7 +29,14 @@
 {% endif %}
 
 <div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id, dataLocale: dataLocale }) }}">
+    {% set activeTab = true %}
 </div>
+
+{% if resource_granted("pim_enrich_product_comment") %}
+    <div class="tab-pane{% if not activeTab %} active{% endif %}" id="comments" data-url="{{ path('pim_enrich_product_comments', { id: product.id, dataLocale: dataLocale }) }}">
+        {% set activeTab = true %}
+    </div>
+{% endif %}
 
 <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_product_history', { id: product.id }) }}">
 </div>

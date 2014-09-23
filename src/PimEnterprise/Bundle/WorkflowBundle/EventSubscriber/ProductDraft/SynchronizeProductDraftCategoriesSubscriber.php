@@ -17,12 +17,12 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs as MongoDBODMLifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs as MongoDBODMPreUpdateEventsArgs;
 use Doctrine\ODM\MongoDB\Events as MongoDBODMEvents;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use Doctrine\ORM\Events as ORMEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
  * Keeps product draft categoryIds field synchronized with its related product's categories

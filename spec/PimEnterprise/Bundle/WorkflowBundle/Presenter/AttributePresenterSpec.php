@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\EnrichBundle\Twig\LocaleExtension;
+use Prophecy\Argument;
 
 class AttributePresenterSpec extends ObjectBehavior
 {
