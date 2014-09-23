@@ -21,5 +21,3 @@ Feature: Edit sequentially some products
   Scenario: Successfully sequentially edit some products
     Given I select rows white_sandal, boot and sneaker
     When I press sequential-edit button
-    Then I should be on the product "boot" edit page
-    Then I should see "Save working copy and next"
