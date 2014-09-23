@@ -15,7 +15,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation:
             type: collection
     referenceOne:
         owner:
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
     referenceMany:
         products:
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface

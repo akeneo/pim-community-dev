@@ -20,6 +20,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
-class PublishedProductMetric extends AbstractMetric
+class PublishedProductMetric extends AbstractMetric implements PublishedProductMetricInterface
 {
 }
