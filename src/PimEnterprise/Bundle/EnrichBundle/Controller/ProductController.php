@@ -115,7 +115,8 @@ class ProductController extends BaseProductController
     public function showAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $locale = $this->userContext->getCurrentLocale();
+        $locale  = $this->userContext->getCurrentLocale();
+
         $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
         if (!$viewLocaleGranted) {
             throw new AccessDeniedException();
@@ -125,15 +126,16 @@ class ProductController extends BaseProductController
         if ($sequentialEdit) {
             $this->seqEditManager->findWrap($sequentialEdit, $product);
         }
+
         return [
-            'product'        => $product,
+            'product'          => $product,
             'dataLocale'       => $this->getDataLocaleCode(),
             'comparisonLocale' => $this->getComparisonLocale(),
-            'dataLocale'     => $this->getDataLocaleCode(),
-            'locales'        => $this->getUserLocales(),
-            'created'        => $this->versionManager->getOldestLogEntry($product),
-            'updated'        => $this->versionManager->getNewestLogEntry($product),
-            'sequentialEdit' => $sequentialEdit,
+            'dataLocale'       => $this->getDataLocaleCode(),
+            'locales'          => $this->getUserLocales(),
+            'created'          => $this->versionManager->getOldestLogEntry($product),
+            'updated'          => $this->versionManager->getNewestLogEntry($product),
+            'sequentialEdit'   => $sequentialEdit,
         ];
     }
 
@@ -268,14 +270,11 @@ class ProductController extends BaseProductController
      */
     protected function redirectAfterEdit($params)
     {
-        if($this->getRequest()->get('action') == self::SAVE_AND_NEXT)
-        {
-            $route = 'pimee_enrich_product_dispatch';
+        if ($this->getRequest()->get('action') == self::SAVE_AND_NEXT) {
+            $route          = 'pimee_enrich_product_dispatch';
             $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
-            $params['id'] = $sequentialEdit->getNextId($params['id']);
-        }
-        else
-        {
+            $params['id']   = $sequentialEdit->getNextId($params['id']);
+        } else {
             return parent::redirectAfterEdit($params);
         }
 

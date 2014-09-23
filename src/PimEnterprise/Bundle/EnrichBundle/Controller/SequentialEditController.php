@@ -35,13 +35,14 @@ class SequentialEditController extends BaseSequentialEditController
                 ['dataLocale' => $this->request->get('dataLocale')]
             );
         }
+
         $this->seqEditManager->save($sequentialEdit);
 
         return $this->redirectToRoute(
             'pimee_enrich_product_dispatch',
             array(
                 'dataLocale' => $this->request->get('dataLocale'),
-                'id' => current($sequentialEdit->getProductSet())
+                'id'         => current($sequentialEdit->getProductSet())
             )
         );
     }
