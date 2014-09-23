@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Query\Query;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 
 /**

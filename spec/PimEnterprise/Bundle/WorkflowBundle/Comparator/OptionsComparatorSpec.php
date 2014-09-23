@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model;
 
 class OptionsComparatorSpec extends ObjectBehavior
 {

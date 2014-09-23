@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model;
 
 class OptionComparatorSpec extends ObjectBehavior
 {

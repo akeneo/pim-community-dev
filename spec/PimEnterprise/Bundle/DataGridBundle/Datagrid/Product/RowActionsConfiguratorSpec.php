@@ -3,18 +3,18 @@
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
 {

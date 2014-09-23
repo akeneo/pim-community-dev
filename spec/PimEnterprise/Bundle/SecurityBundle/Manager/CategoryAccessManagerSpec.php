@@ -5,13 +5,13 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Prophecy\Argument;
 
 class CategoryAccessManagerSpec extends ObjectBehavior
 {
@@ -24,7 +24,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
 
         $accessClass = 'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess';
-        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\Category';
+        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\CategoryInterface';
         $userGroupClass = 'Pim\Bundle\SecurityBundle\Entity\Group';
         $registry->getRepository($accessClass)->willReturn($accessRepository);
         $registry->getRepository($categoryClass)->willReturn($categoryRepository);

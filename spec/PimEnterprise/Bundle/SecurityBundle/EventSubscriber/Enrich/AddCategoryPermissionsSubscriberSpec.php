@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
 {

@@ -2,16 +2,16 @@
 
 namespace spec\PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
 {

@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\UserBundle\Entity\User;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 
 class ProductDraftWidgetSpec extends ObjectBehavior
