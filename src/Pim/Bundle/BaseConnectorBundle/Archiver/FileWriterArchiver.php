@@ -52,7 +52,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     }
 
     /**
-     * Verify if the witter is usable or not
+     * Verify if the writer is usable or not
      *
      * @param ItemWriterInterface $writer
      *
@@ -61,7 +61,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     protected function isUsableWriter(ItemWriterInterface $writer)
     {
         if ($writer instanceof FileWriter && is_file($writer->getPath()) &&
-            !$writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) <= 1) {
+            $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) <= 1) {
             return true;
         }
 
