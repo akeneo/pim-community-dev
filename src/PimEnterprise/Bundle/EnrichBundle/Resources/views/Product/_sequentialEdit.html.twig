@@ -1,7 +1,7 @@
 {% if sequentialEdit %}
     {% set previousProduct = sequentialEdit.previous %}
     {% set nextProduct = sequentialEdit.next %}
-    {% set ratio = sequentialEdit.countEditedProducts(product) / sequentialEdit.countProductSet * 100 %}
+    {% set ratio = sequentialEdit.countEditedProducts(product) / sequentialEdit.countObjectSet * 100 %}
 
     <div class="row-fluid buffer-top" id="sequentialEdit">
         <span class="span3 right-aligned">
@@ -16,7 +16,7 @@
             <div class="progress progress-bar">
                 <div class="bar" style="width: {{ ratio }}%;">
                 {{ ratio < 30  ? '</div>&nbsp;&nbsp;' }}
-                    {{ sequentialEdit.countEditedProducts(product) }} / {{ sequentialEdit.countProductSet }} {{ 'Products'|trans }}
+                    {{ sequentialEdit.countEditedProducts(product) }} / {{ sequentialEdit.countObjectSet }} {{ 'Products'|trans }}
                 {{ ratio >= 30 ? '</div>' }}
             </div>
         </span>

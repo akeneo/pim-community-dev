@@ -42,7 +42,7 @@ class SequentialEditController extends BaseSequentialEditController
             'pimee_enrich_product_dispatch',
             array(
                 'dataLocale' => $this->request->get('dataLocale'),
-                'id'         => current($sequentialEdit->getProductSet())
+                'id'         => current($sequentialEdit->getObjectSet())
             )
         );
     }
