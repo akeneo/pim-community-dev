@@ -11,18 +11,14 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Overriden category controller

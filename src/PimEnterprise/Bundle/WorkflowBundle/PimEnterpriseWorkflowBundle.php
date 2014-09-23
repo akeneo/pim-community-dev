@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * PIM Enterprise Workflow Bundle

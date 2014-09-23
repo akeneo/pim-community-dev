@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Locale voter, allows to know if products of a category can be edited or consulted by a

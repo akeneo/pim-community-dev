@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Comparator which calculate change set for scalars

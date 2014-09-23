@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport;
 
+use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events as DoctrineEvents;
-use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 

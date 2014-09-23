@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Product category manager

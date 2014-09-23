@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Override available attributes type to remove attributes where permissions are revoked

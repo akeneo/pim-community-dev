@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type that provides a choice of available user groups

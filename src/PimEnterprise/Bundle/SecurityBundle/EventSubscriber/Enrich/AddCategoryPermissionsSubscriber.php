@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Add parent permission when create a new category

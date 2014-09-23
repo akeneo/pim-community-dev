@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Prepare the data before submitting them to the form

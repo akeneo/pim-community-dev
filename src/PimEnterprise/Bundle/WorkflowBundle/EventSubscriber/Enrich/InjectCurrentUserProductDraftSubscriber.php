@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**

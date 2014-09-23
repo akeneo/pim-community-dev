@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController;
+use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController;
 
 /**
  * Product Controller

@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AccessRepositoryInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Add permissions to datagrid listener

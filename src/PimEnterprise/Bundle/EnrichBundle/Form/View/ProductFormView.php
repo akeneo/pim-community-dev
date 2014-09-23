@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View;
 
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as BaseProductFormView;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Extending product form view adding permissions

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * ProductDraft event

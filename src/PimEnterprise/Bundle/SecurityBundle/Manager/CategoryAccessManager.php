@@ -14,11 +14,11 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

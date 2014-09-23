@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Merge values to keep previous product draft changes that

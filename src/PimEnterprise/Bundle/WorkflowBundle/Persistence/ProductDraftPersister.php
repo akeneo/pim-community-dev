@@ -11,12 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
@@ -27,6 +24,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Store product through product drafts

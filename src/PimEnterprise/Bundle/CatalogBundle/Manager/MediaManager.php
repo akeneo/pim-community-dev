@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use Gaufrette\Filesystem;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager as BaseMediaManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
-use Gaufrette\Filesystem;
 
 /**
  * Enterprise edition media manager

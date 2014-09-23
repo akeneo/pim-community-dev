@@ -11,17 +11,17 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Twig extension to present product draft changes

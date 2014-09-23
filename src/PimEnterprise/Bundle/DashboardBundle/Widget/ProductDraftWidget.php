@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 /**
  * Widget to display product product drafts
