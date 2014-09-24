@@ -10,11 +10,11 @@ matrix:
 
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - composer self-update --no-interaction
+    - php -r "readfile('https://getcomposer.org/installer');" | php
     - echo "extension=mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - composer require --no-update doctrine/mongodb-odm v1.0.0-beta10@dev
-    - composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev
-    - composer update --prefer-dist --no-scripts --no-interaction
+    - hhvm composer.phar require --no-update doctrine/mongodb-odm v1.0.0-beta10@dev
+    - hhvm composer.phar require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev
+    - hhvm composer.phar update --prefer-dist --no-scripts --no-interaction
 
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
