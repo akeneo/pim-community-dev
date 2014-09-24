@@ -66,8 +66,11 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $this->getArchive($jobExecution, 'output', 'key');
     }
 
-    function it_blablabal(JobExecutionEvent $event, JobExecution $jobExecution, ArchiverInterface $archiver)
-    {
+    function it_register_an_event_and_verify_if_job_is_supported(
+        JobExecutionEvent $event,
+        JobExecution $jobExecution,
+        ArchiverInterface $archiver
+    ) {
         $archiver->getName()->willReturn('output');
         $this->registerArchiver($archiver);
 
