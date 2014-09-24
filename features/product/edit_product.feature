@@ -27,3 +27,18 @@ Feature: Edit a product
     When I am on the "sandal" product page
     Then I should not see "Attributes"
     And I reset the "Administrator" rights
+
+  Scenario Outline: Edit a product with my default channel
+    Given I am logged in as "<user>"
+    And the following product values:
+      | product | attribute   | value                  | locale | scope  |
+      | sandal  | description | description for tablet | en_US  | tablet |
+      | sandal  | description | description for mobile | en_US  | mobile |
+    And I am on the "sandal" product page
+    Then I should see "<see>"
+    And I should not see "<not_see>"
+
+    Examples:
+      | user   | see                    | not_see                |
+      | Julia  | description for tablet | description for mobile |
+      | Sandra | description for mobile | description for tablet |
