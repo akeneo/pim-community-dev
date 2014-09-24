@@ -7,13 +7,15 @@ define(
             Indicator = require('pim/indicator');
 
         var Notifications = Backbone.View.extend({
-            el: '#notifications',
+            el: '#header-notification-widget',
 
             options: {
                 imgUrl:                 '',
                 loadingText:            null,
                 noNotificationsMessage: null,
-                markAsReadMessage:      null
+                markAsReadMessage:      null,
+                indicatorBaseClass:     'badge badge-square',
+                indicatorEmptyClass:    'hide'
             },
 
             freezeCount: false,
@@ -21,7 +23,7 @@ define(
             template: _.template(
                 [
                     '<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">',
-                        '<i class="icon-bullhorn"></i>',
+                        '<i class="icon-bell"></i>',
                         '<span class="indicator"></span>',
                     '</a>',
                     '<ul class="dropdown-menu"></ul>'
@@ -38,7 +40,7 @@ define(
                             '<span><%= options.noNotificationsMessage %></span>',
                         '<% } %>',
                         '<% if (hasNotifications && hasUnread) { %>',
-                            '<button class="btn btn-mini pull-right mark-as-read"><%= options.markAsReadMessage %></button>',
+                            '<button class="btn btn-mini mark-as-read"><%= options.markAsReadMessage %></button>',
                         '<% } %>',
                     '</p>'
                 ].join('')
@@ -68,7 +70,12 @@ define(
             initialize: function(opts) {
                 this.options = _.extend({}, this.options, opts);
                 this.collection = new NotificationList();
-                this.indicator  = new Indicator({el: this.$('span.indicator'), value: 0});
+                this.indicator  = new Indicator({
+                    el: this.$('span.indicator'),
+                    value: 0,
+                    className: this.options.indicatorBaseClass,
+                    emptyClass: this.options.indicatorEmptyClass
+                });
 
                 this.collection.on('load:unreadCount', function(count, reset) {
                     if (this.freezeCount) {
@@ -98,10 +105,6 @@ define(
 
                 this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
 
-                this.indicator.on('change:value', function(model, value) {
-                    model.set('type', value > 0 ? 'important': '');
-                }, this);
-
                 this.render();
             },
 
@@ -112,7 +115,7 @@ define(
             },
 
             render: function() {
-                this.setElement($('#notifications'));
+                this.setElement($('#header-notification-widget'));
                 this.$el.html(this.template());
                 this.collection.setElement(this.$('ul'));
                 this.indicator.setElement(this.$('span.indicator'));
