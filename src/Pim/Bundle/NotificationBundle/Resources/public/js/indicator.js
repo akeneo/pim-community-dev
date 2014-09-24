@@ -6,15 +6,16 @@ define(
         var Indicator = Backbone.Model.extend({
             defaults: {
                 value: null,
-                type: '',
-                baseClass: 'badge'
+                className: 'badge',
+                emptyClass: '',
+                nonEmptyClass: 'badge-important'
             }
         });
 
         var IndicatorView = Backbone.View.extend({
             model: Indicator,
 
-            template: _.template('<span class="<%= baseClass %> <%= type ? baseClass + \'-\' + type : \'\' %>"><%= value %></span>'),
+            template: _.template('<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'),
 
             initialize: function() {
                 this.listenTo(this.model, 'change', this.render);
@@ -23,22 +24,17 @@ define(
             },
 
             render: function() {
-                this.$el.html(
-                    this.template({
-                        value: this.model.get('value'),
-                        type: this.model.get('type'),
-                        baseClass: this.model.get('baseClass')
-                    })
-                );
+                this.$el.html(this.template(this.model.toJSON()));
 
                 return this;
             }
         });
 
         return function(opts) {
-            var options = _.extend({}, { el: null }, opts);
-            var indicator = new Indicator(options);
-            var indicatorView = new IndicatorView({el: options.el, model: indicator});
+            var el = opts.el || null;
+            delete opts.el;
+            var indicator = new Indicator(opts);
+            var indicatorView = new IndicatorView({el: el, model: indicator});
             indicator.setElement = function() {
                 indicatorView.setElement.apply(indicatorView, arguments);
                 return indicatorView.render();
