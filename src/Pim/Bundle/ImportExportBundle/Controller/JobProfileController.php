@@ -313,7 +313,9 @@ class JobProfileController extends AbstractDoctrineController
 
         if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
-            $jobExecution->setJobInstance($jobInstance);
+            $jobExecution
+                ->setJobInstance($jobInstance)
+                ->setUser($this->getUser()->getUsername());
             $manager = $this->getDoctrine()->getManagerForClass(get_class($jobExecution));
             $manager->persist($jobExecution);
             $manager->flush($jobExecution);

@@ -7,13 +7,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Parameter;
 
 /**
- * Resolves doctrine ORM Target entities
+ * Resolves doctrine ORM Target models
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerPassInterface
+abstract class AbstractResolveDoctrineTargetModelsPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}

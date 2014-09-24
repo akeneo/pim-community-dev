@@ -221,7 +221,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $this->parseData('foo')->shouldReturn(false);
         $this->parseData(0)->shouldReturn(false);
         $this->parseData(true)->shouldReturn(false);
-        $this->parseData(new \StdClass)->shouldReturn(false);
+        $this->parseData(new \StdClass())->shouldReturn(false);
     }
 
     function it_does_not_parse_array_without_value_key()

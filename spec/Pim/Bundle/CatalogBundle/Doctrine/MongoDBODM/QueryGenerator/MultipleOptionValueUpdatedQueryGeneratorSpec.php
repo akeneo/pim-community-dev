@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Prophecy\Argument;
 
 class MultipleOptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
@@ -16,12 +15,18 @@ class MultipleOptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($namingUtility, 'Pim\Bundle\CatalogBundle\Model\AttributeOptionValue', 'value');
     }
 
-    function it_generates_a_query_to_update_product_select_attributes($namingUtility, AttributeOptionValue $bleu, AttributeOption $blue, AbstractAttribute $color)
-    {
+    function it_generates_a_query_to_update_product_select_attributes(
+        $namingUtility,
+        AttributeOptionValue $bleu,
+        AttributeOption $blue,
+        AbstractAttribute $color
+    ) {
         $bleu->getOption()->willReturn($blue);
         $bleu->getLocale()->willReturn('fr_FR');
         $blue->getAttribute()->willReturn($color);
-        $namingUtility->getAttributeNormFields($color)->willReturn(['normalizedData.color-fr_FR', 'normalizedData.color-en_US']);
+        $namingUtility
+            ->getAttributeNormFields($color)
+            ->willReturn(['normalizedData.color-fr_FR', 'normalizedData.color-en_US']);
 
         $blue->getCode()->willReturn('blue');
         $this->generateQuery($bleu, 'value', 'Bleu', 'Bleus')->shouldReturn([
