@@ -10,7 +10,6 @@
 ## BC breaks
 - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
 - Two new methods have been added to Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface: `findAllWithAttribute` and `findAllWithAttributeOption`
-- Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer has been renamed to Pim\Bundle\UIBundle\Form\Transformer\IntegerTransformer
 - Constructor of Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser has been changed
 
 ## Improvements
