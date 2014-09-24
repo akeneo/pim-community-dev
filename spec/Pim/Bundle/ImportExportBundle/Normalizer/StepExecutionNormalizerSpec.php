@@ -46,7 +46,9 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
 
         $stepExecution->getStartTime()->willReturn($startTime);
         $stepExecution->getEndTime()->willReturn(null);
-        $startTime->format('Y-m-d H:i:s')->willReturn('yesterday');
+
+        $startTime->getTimestamp()->willReturn(1411400461);
+        $startTime->format('Y-m-d g:i:s A');
 
         $stepExecution->getWarnings()->willReturn(
             new ArrayCollection(
@@ -81,7 +83,7 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
                'label'     => 'Export step',
                'status'    => 'PENDING',
                'summary'   => ['Read' => 12, 'Write' => 50],
-               'startedAt' => 'yesterday',
+               'startedAt' => '2014-09-22 5:41:01 PM',
                'endedAt'   => null,
                'warnings'  => [
                    [
