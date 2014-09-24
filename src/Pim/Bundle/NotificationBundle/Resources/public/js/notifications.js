@@ -13,7 +13,9 @@ define(
                 imgUrl:                 '',
                 loadingText:            null,
                 noNotificationsMessage: null,
-                markAsReadMessage:      null
+                markAsReadMessage:      null,
+                indicatorBaseClass:     'badge badge-square',
+                indicatorEmptyClass:    'hide'
             },
 
             freezeCount: false,
@@ -71,7 +73,8 @@ define(
                 this.indicator  = new Indicator({
                     el: this.$('span.indicator'),
                     value: 0,
-                    baseClass: 'notification-count'
+                    className: this.options.indicatorBaseClass,
+                    emptyClass: this.options.indicatorEmptyClass
                 });
 
                 this.collection.on('load:unreadCount', function(count, reset) {
@@ -101,11 +104,6 @@ define(
                 }, this);
 
                 this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
-
-                this.indicator.on('change:value', function(model, value) {
-                     model.set('type', value > 0 ? 'important': '');
-                     model.set('baseClass', 'notification-count');
-                 }, this);
 
                 this.render();
             },
