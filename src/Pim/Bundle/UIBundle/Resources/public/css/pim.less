@@ -22,6 +22,10 @@ a:focus {
   color: darken(@color-purple_dark, 5%);
 }
 
+.badge-square {
+  border-radius: 2px;
+}
+
 /* Grids */
 .table-hover tbody tr:hover > td {
   background-color: @color-purple_hover;
@@ -350,21 +354,13 @@ span.link-label {
     right: 3px;
     top: 2px;
 
-    .notification-count {
+    .badge-square {
       font-size: 11px;
-      font-weight: 100;
-      height: 14px;
-      line-height: 14px;
-      color: white;
+      font-weight: initial;
       padding: 0px 3px;
-      border-radius: 2px;
-      background: linear-gradient(RGB(249, 58, 67), RGB(221, 14, 24));
+      background: linear-gradient(#f93a43, darken(#f93a43, 20%));
       box-shadow: 0px 0.7px 0px RGBa(0, 0, 0, 0.3), 0px 0px 3px rGBa(0, 0, 0, 0.35);
-      display: none;
-
-      &.notification-count-important {
-        display: inline-block;
-      }
+      text-shadow: 0px 1px 0px darken(#f93a43, 20%);
     }
   }
 
