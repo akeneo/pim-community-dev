@@ -60,6 +60,7 @@ define(
 
                     var encodedStateData = collection.encodeStateData(collection.state);
                     DatagridState.set(this.gridName, 'filters', encodedStateData);
+                    DatagridState.set(this.gridName, 'sorters', encodedStateData);
                 }
             },
 

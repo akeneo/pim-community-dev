@@ -18,7 +18,7 @@
                     urlParams.alias = '{{ name }}';
                     urlParams.params = {{ params|json_encode|raw }};
 
-                    var state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+                    var state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns', 'sorters']);
 
                     if (state.view) {
                         urlParams['{{ name }}[_parameters][view][id]'] = state.view;
@@ -28,6 +28,18 @@
                         var collection = new PageableCollection();
                         var filters = collection.decodeStateData(state.filters);
                         collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
+                    }
+
+                    if (state.sorters) {
+                        var collection = new PageableCollection();
+                        var sorters = collection.decodeStateData(state.sorters);
+
+                        for (var column in sorters.sorters) {
+                            urlParams['{{ name }}[_sort_by][' + column + ']'] = sorters.sorters[column] === 1 ?
+                                'DESC' :
+                                'ASC';
+                        }
+
                     }
 
                     if (state.columns) {
