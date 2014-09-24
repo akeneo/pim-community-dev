@@ -7,11 +7,13 @@ use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Job\Job;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
 use Prophecy\Argument;
 
@@ -47,13 +49,11 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $adapter = new LocalAdapter('/tmp');
         $fs = new Filesystem($adapter);
 
-        $fs->write('tmp', '');
+        $fs->write('tmp', '', true);
 
         $filesystem->write("type/alias/12/input/tmp", "", true)->shouldBeCalled();
 
         $this->archive($jobExecution);
-
-        $fs->delete('tmp');
     }
 
     function it_doesnt_create_a_file_when_writer_is_invalid(
@@ -75,5 +75,64 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $filesystem->write(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
+    }
+
+    function it_returns_the_name_of_the_archiver() {
+        $this->getName()->shouldReturn('input');
+    }
+
+    function it_doesnt_create_a_file_if_step_is_not_an_item_step(
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        AbstractStep $step,
+        $filesystem
+    ) {
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobExecution->getId()->willReturn(12);
+        $jobInstance->getJob()->willReturn($job);
+        $jobInstance->getType()->willReturn('type');
+        $jobInstance->getAlias()->willReturn('alias');
+        $job->getSteps()->willReturn([$step]);
+
+        $filesystem->write(Argument::any())->shouldNotBeCalled();
+
+        $this->archive($jobExecution);
+    }
+
+    function it_returns_true_for_the_supported_job(
+        FileReader $reader,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $step
+    ) {
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobExecution->getId()->willReturn(12);
+        $jobInstance->getJob()->willReturn($job);
+        $jobInstance->getType()->willReturn('type');
+        $jobInstance->getAlias()->willReturn('alias');
+        $job->getSteps()->willReturn([$step]);
+        $step->getReader()->willReturn($reader);
+
+        $this->supports($jobExecution)->shouldReturn(true);
+    }
+
+    function it_returns_false_for_the_unsupported_job(
+        ItemReaderInterface $reader,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        Job $job,
+        ItemStep $step
+    ) {
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobExecution->getId()->willReturn(12);
+        $jobInstance->getJob()->willReturn($job);
+        $jobInstance->getType()->willReturn('type');
+        $jobInstance->getAlias()->willReturn('alias');
+        $job->getSteps()->willReturn([$step]);
+        $step->getReader()->willReturn($reader);
+
+        $this->supports($jobExecution)->shouldReturn(false);
     }
 }
