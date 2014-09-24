@@ -26,6 +26,9 @@
 ## BC breaks
   - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
 
+## Improvements
+  - Add images in icecat_demo_dev installer fixtures
+
 # 1.2.5 (2014-09-19)
 
 ## Bug fixes
