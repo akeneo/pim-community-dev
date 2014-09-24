@@ -40,6 +40,9 @@ class IsAssociatedSorter implements FieldSorterInterface
     {
         $this->qb->addOrderBy($field, $direction);
 
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
+
         return $this;
     }
 }

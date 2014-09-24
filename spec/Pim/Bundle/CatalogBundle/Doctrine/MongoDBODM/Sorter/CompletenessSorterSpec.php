@@ -26,6 +26,7 @@ class CompletenessSorterSpec extends ObjectBehavior
     function it_adds_a_order_by_completeness_in_the_query(Builder $queryBuilder)
     {
         $queryBuilder->sort('normalizedData.completenesses.mobile-en_US', 'desc')->willReturn($queryBuilder);
+        $queryBuilder->sort('_id')->shouldBeCalled();
 
         $this->addFieldSorter('completenesses', 'desc');
     }

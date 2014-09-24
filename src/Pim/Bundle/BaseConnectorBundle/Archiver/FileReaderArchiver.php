@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Gaufrette\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
@@ -37,16 +38,28 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
             }
             $reader = $step->getReader();
 
-            if ($reader instanceof FileReader) {
+            if ($this->isReaderUsable($reader)) {
                 $key = strtr(
                     $this->getRelativeArchivePath($jobExecution),
-                    array(
+                    [
                         '%filename%' => basename($reader->getFilePath()),
-                    )
+                    ]
                 );
                 $this->filesystem->write($key, file_get_contents($reader->getFilePath()), true);
             }
         }
+    }
+
+    /**
+     * Verify if the reader is usable or not
+     *
+     * @param ItemReaderInterface $reader
+     *
+     * @return bool
+     */
+    protected function isReaderUsable(ItemReaderInterface $reader)
+    {
+        return $reader instanceof FileReader;
     }
 
     /**
@@ -55,5 +68,23 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
     public function getName()
     {
         return 'input';
+    }
+
+    /**
+     * Check if the job execution is supported
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return bool
+     */
+    public function supports(JobExecution $jobExecution)
+    {
+        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+            if ($step instanceof ItemStep && $this->isReaderUsable($step->getReader())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

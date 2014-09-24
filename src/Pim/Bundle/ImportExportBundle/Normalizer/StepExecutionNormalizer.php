@@ -61,17 +61,21 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * Normalizes DateTime object
      *
-     * @param null|\DateTime $datetime
+     * @param null|\Datetime $utcDatetime
      *
      * @return null|string
      */
-    protected function normalizeDateTime($datetime)
+    protected function normalizeDateTime($utcDatetime)
     {
-        if (!$datetime instanceof \DateTime) {
+        if (!$utcDatetime instanceof \DateTime) {
             return;
         }
 
-        return $datetime->format('Y-m-d H:i:s');
+        $datetime = new \DateTime();
+
+        $datetime->setTimestamp($utcDatetime->getTimestamp());
+
+        return $datetime->format('Y-m-d g:i:s A');
     }
 
     /**
@@ -107,7 +111,7 @@ class StepExecutionNormalizer implements NormalizerInterface
         $result = [];
         foreach ($summary as $key => $value) {
             $key = sprintf('job_execution.summary.%s', $key);
-            $result[$this->translator->trans($key)] = $value;
+            $result[$this->translator->trans($key)] = $this->translator->trans($value);
         }
 
         return $result;
