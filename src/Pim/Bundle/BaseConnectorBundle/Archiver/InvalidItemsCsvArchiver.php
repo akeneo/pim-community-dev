@@ -84,13 +84,15 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
     public function supports(JobExecution $jobExecution)
     {
         if ($this->collector->getInvalidItems()) {
-            foreach ($this->collector->getInvalidItems() as $element) {
-                if (is_array($element)) {
-                    return true;
+            foreach ($this->collector->getInvalidItems() as $elements) {
+                foreach ($elements as $element) {
+                    if (is_array($element)) {
+                        return false;
+                    }
                 }
             }
-        }
 
-        return false;
+            return true;
+        }
     }
 }
