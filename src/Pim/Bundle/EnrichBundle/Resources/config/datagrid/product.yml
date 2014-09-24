@@ -49,6 +49,7 @@ datagrid:
                 params:
                     - id
                     - dataLocale
+                    - dataScope
             delete_link:
                 type: url
                 route: pim_enrich_product_remove

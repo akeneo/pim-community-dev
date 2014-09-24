@@ -20,6 +20,7 @@ class ProductHydrator implements HydratorInterface
     public function hydrate($qb, array $options = [])
     {
         $localeCode = $options['locale_code'];
+        $scopeCode = $options['scope_code'];
 
         $query = $qb->getQuery();
         $results = $query->getArrayResult();
@@ -36,6 +37,7 @@ class ProductHydrator implements HydratorInterface
             $result = $this->prepareValues($result);
             $result = $this->prepareGroups($result);
             $result['dataLocale'] = $localeCode;
+            $result['dataScope'] = $scopeCode;
 
             $rows[] = new ResultRecord($result);
         }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Context;
 
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -21,6 +22,9 @@ class UserContext
 {
     /** @staticvar string */
     const REQUEST_LOCALE_PARAM = 'dataLocale';
+
+    /** @staticvar string */
+    const REQUEST_CHANNEL_PARAM = 'dataScope';
 
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -104,6 +108,26 @@ class UserContext
     }
 
     /**
+     * Returns the current channel from the request or the user's catalog channel
+     *
+     * @return Channel
+     *
+     * @throws \LogicException When there are no activated locales
+     */
+    public function getCurrentChannel()
+    {
+        if (null !== $channel = $this->getRequestChannel()) {
+            return $channel;
+        }
+
+        if (null !== $channel = $this->getUserChannel()) {
+            return $channel;
+        }
+
+        throw new \LogicException('There are no available channel');
+    }
+
+    /**
      * Returns the current locale code
      *
      * @return string
@@ -111,6 +135,16 @@ class UserContext
     public function getCurrentLocaleCode()
     {
         return $this->getCurrentLocale()->getCode();
+    }
+
+    /**
+     * Returns the current channel code
+     *
+     * @return string
+     */
+    public function getCurrentChannelCode()
+    {
+        return $this->getCurrentChannel()->getCode();
     }
 
     /**
@@ -207,6 +241,23 @@ class UserContext
                 if ($locale && $this->isLocaleAvailable($locale)) {
                     return $locale;
                 }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the request channel
+     *
+     * @return Channel|null
+     */
+    protected function getRequestChannel()
+    {
+        if ($this->request) {
+            $channelCode = $this->request->get(self::REQUEST_CHANNEL_PARAM);
+            if ($channelCode) {
+                return $this->channelManager->getChannelByCode($channelCode);
             }
         }
 
