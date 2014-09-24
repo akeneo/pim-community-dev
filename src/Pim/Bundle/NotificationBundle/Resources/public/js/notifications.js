@@ -38,7 +38,7 @@ define(
                             '<span><%= options.noNotificationsMessage %></span>',
                         '<% } %>',
                         '<% if (hasNotifications && hasUnread) { %>',
-                            '<button class="btn btn-mini pull-right mark-as-read"><%= options.markAsReadMessage %></button>',
+                            '<button class="btn btn-mini mark-as-read"><%= options.markAsReadMessage %></button>',
                         '<% } %>',
                     '</p>'
                 ].join('')
