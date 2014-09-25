@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\DashboardBundle\Controller;
 
+use Pim\Bundle\DashboardBundle\Widget\Registry;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\DashboardBundle\Widget\Registry;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Widget controller

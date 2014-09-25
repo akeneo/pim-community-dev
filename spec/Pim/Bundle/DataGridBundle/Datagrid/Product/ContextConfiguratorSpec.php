@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 class ContextConfiguratorSpec extends ObjectBehavior
 {

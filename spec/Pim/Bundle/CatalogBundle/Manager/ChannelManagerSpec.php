@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\SecurityContext;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class ChannelManagerSpec extends ObjectBehavior
 {

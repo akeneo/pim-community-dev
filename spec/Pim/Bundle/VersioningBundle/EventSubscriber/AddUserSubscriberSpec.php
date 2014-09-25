@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Oro\Bundle\UserBundle\Entity\User;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Prophecy\Argument;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class AddUserSubscriberSpec extends ObjectBehavior
 {

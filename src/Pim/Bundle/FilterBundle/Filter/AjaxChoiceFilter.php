@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 
 /**

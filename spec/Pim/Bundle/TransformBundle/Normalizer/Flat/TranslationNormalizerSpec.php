@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 class TranslationNormalizerSpec extends ObjectBehavior
 {

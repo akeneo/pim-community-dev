@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 
 /**
  * Product in group sorter

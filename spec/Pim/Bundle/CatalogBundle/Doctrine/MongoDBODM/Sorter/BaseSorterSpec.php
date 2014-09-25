@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder

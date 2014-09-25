@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {

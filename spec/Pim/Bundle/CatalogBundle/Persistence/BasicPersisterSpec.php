@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Persistence;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 

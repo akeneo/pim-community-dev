@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer;
 use Symfony\Component\HttpFoundation\File\File;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 
 /**
  * Tests related class

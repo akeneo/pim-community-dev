@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Form\FormFactory;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Symfony\Component\Form\FormFactory;
 
 class TextTypeSpec extends ObjectBehavior
 {

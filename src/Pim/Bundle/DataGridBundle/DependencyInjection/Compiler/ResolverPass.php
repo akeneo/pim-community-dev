@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Setup the the pager resolver and the datasource adapter resolver for the MongoDB support.

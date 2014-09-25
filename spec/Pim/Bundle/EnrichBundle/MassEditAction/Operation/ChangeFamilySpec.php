@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\AbstractQuery;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class ChangeFamilySpec extends ObjectBehavior
 {
