@@ -1,1 +1,1 @@
-sed -i 's/"require"/{"ext-mongo" : "*"},"require"/g' ./composer.json
+sed -i 's/"require"/"provide":{"ext-mongo" : "*"},"require"/g' ./composer.json
