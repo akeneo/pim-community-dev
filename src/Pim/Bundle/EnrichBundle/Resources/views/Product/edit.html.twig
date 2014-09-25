@@ -66,25 +66,4 @@
     <a href="javascript:void(0);"
         id="create-product"
         data-form-url="{{ path('pim_enrich_product_create', { 'dataLocale': dataLocale }) }}"></a>
-
-    <script type="text/javascript">
-        require(
-            ['jquery', 'underscore', 'oro/mediator'],
-            function ($, _, mediator) {
-                'use strict';
-                $(function () {
-                    mediator.on('scopablefield:rendered', function() {
-                        setTimeout(function() {
-                            console.log('{{ dataScope }}');
-                            mediator.trigger('scopablefield:changescope', '{{ dataScope }}');
-                        }, 0);
-                    });
-                    {#setTimeout(_.bind(function() {#}
-                        {#console.log('{{ dataScope }}');#}
-                        {#mediator.trigger('scopablefield:changescope', '{{ dataScope }}');#}
-                    {#}, this), 20);#}
-                });
-            }
-        );
-    </script>
 {% endblock %}
