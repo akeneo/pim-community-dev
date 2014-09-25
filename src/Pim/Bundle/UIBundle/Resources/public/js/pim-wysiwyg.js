@@ -1,3 +1,4 @@
+/* global tinymce */
 define(
     ['jquery', 'underscore', 'backbone', 'tinymce'],
     function($, _, Backbone) {
@@ -10,12 +11,16 @@ define(
             toolbar:   'bold italic underline strikethrough | bullist numlist | outdent indent | link | preview code',
             readonly:  false,
             setup:     function(ed) {
+                var $el = $('#' + ed.id);
+                $el.data('value', $el.val());
                 ed.on('change', function() {
-                    var $el = $('#' + ed.id);
-                    if (!_.isUndefined($el.data('disabled'))) {
-                        $el.prop('disabled', $el.data('disabled'));
-                    }
+                    $el.data('dirty', true);
                     $el.trigger('change');
+                });
+                ed.on('saveContent', function(e) {
+                    if (true !== $el.data('dirty')) {
+                        e.content = $el.data('value');
+                    }
                 });
             }
         };
@@ -32,32 +37,29 @@ define(
             }
         });
         return {
-            init: function($el, options, forceSubmit) {
-                var disabled = $el.is('[disabled]');
-                if (!forceSubmit) {
-                    $el.data('disabled', disabled).prop('disabled', true);
-                }
-                var settings = _.extend(_.clone(config), { selector: '#' + $el.attr('id'), readonly: disabled }, options);
+            init: function($el, options) {
+                var settings = _.extend(
+                    _.clone(config),
+                    { selector: '#' + $el.attr('id'), readonly: $el.is('[disabled]') },
+                    options
+                );
                 tinymce.init(settings);
 
                 return this;
             },
             destroy: function($el) {
-                if (!_.isUndefined($el.data('disabled'))) {
-                    $el.prop('disabled', $el.data('disabled'));
-                }
                 destroyEditor($el.attr('id'));
 
                 return this;
             },
-            reinit: function($el, forceSubmit) {
+            reinit: function($el) {
                 var id = $el.attr('id');
                 var settings = tinymce.editors[id] ? tinymce.editors[id].settings : {};
 
-                return this.destroy($el).init($el, settings, forceSubmit);
+                return this.destroy($el).init($el, settings);
             },
-            readonly: function($el, state, forceSubmit) {
-                this.destroy($el).init($el, { readonly: state }, forceSubmit);
+            readonly: function($el, state) {
+                this.destroy($el).init($el, { readonly: state });
 
                 return this;
             }

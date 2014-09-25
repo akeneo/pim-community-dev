@@ -24,10 +24,11 @@
 - Fix archiver bug with yml imports
 
 ## BC breaks
-  - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
+- Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
 
 ## Improvements
-  - Add images in icecat_demo_dev installer fixtures
+- Add images in icecat_demo_dev installer fixtures
+- Add sorter to the grid state
 
 # 1.2.5 (2014-09-19)
 
