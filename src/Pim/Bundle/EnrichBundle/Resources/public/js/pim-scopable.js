@@ -128,7 +128,7 @@ define(
                 '<%= label %>'
             ),
 
-            initialize: function () {
+            initialize: function (options) {
                 this.fieldViews = [];
                 this.fields     = [];
                 this.expanded   = true;
@@ -166,6 +166,10 @@ define(
                         self._expand();
                     }
                 });
+
+                if (_.has(options, 'initialScope')) {
+                    mediator.trigger('scopablefield:changescope', options.initialScope);
+                }
             },
 
             render: function () {

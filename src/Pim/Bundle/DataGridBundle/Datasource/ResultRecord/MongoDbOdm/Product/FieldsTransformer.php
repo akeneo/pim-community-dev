@@ -14,14 +14,16 @@ class FieldsTransformer
     /**
      * @param array  $result
      * @param string $locale
+     * @param string $scope
      *
      * @return array
      */
-    public function transform(array $result, $locale)
+    public function transform(array $result, $locale, $scope = null)
     {
         $result['id'] = $result['_id']->__toString();
         unset($result['_id']);
         $result['dataLocale'] = $locale;
+        $result['dataScope'] = $scope;
         $dateTransformer = new DateTimeTransformer();
         $result['created'] = isset($result['created']) ? $dateTransformer->transform($result['created']) : null;
         $result['updated'] = isset($result['updated']) ? $dateTransformer->transform($result['updated']) : null;

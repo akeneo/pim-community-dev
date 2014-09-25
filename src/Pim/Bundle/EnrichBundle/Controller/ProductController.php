@@ -612,6 +612,18 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
+     * Get data locale code
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    protected function getDataScopeCode()
+    {
+        return $this->userContext->getCurrentChannelCode();
+    }
+
+    /**
      * Get data locale object
      *
      * @throws \Exception
@@ -730,6 +742,7 @@ class ProductController extends AbstractDoctrineController
         $defaultParameters = array(
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocaleCode(),
+            'dataScope'        => $this->getDataScopeCode(),
             'comparisonLocale' => $this->getComparisonLocale(),
             'channels'         => $channels,
             'attributesForm'   =>

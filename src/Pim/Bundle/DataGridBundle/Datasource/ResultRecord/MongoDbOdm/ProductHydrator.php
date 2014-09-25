@@ -49,7 +49,7 @@ class ProductHydrator implements HydratorInterface
         $assocTramsformer  = new AssociationTransformer();
 
         foreach ($results as $result) {
-            $result = $fieldsTransformer->transform($result, $locale);
+            $result = $fieldsTransformer->transform($result, $locale, $scope);
             $result = $valuesTransformer->transform($result, $attributes, $locale, $scope);
             $result = $familyTransformer->transform($result, $locale);
             $result = $complTransformer->transform($result, $locale, $scope);
