@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Choice filter

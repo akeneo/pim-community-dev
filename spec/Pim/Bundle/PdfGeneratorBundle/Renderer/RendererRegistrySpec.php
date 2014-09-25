@@ -2,10 +2,9 @@
 
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererInterface;
-use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class RendererRegistrySpec extends ObjectBehavior

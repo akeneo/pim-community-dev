@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeNormalizer;
-use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
-use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
 /**
  * Test class for AttributeNormalizer

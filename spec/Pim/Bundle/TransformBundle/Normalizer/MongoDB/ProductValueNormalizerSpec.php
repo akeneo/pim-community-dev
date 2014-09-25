@@ -2,13 +2,11 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
-use Symfony\Component\Serializer\SerializerInterface;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @require \MongoId

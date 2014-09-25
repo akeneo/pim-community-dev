@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type related to availableLocales property of AbstractAttribute

@@ -1,9 +1,9 @@
 <?php
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Boolean filter type

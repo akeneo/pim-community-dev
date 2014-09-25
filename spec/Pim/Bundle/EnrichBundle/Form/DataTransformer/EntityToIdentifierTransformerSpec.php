@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class EntityToIdentifierTransformerSpec extends ObjectBehavior
 {

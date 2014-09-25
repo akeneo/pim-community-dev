@@ -2,10 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
-
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 
 class ResolveTargetRepositorySubscriberSpec extends ObjectBehavior

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraints\ChoiceValidator;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\ChoiceValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**

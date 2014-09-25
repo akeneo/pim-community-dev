@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\ORMException;
 use Doctrine\ODM\MongoDB\MongoDBException;
+use Doctrine\ORM\ORMException;
 use PhpSpec\Exception\Example\SkippingException;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @require Doctrine\ODM\MongoDB\MongoDBException

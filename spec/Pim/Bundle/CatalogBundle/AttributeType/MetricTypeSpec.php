@@ -2,15 +2,15 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Symfony\Component\Form\FormFactory;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\Metric;
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Symfony\Component\Form\FormFactory;
 
 class MetricTypeSpec extends ObjectBehavior
 {

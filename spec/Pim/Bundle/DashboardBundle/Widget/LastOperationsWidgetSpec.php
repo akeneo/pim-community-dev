@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
+use Prophecy\Argument;
 
 class LastOperationsWidgetSpec extends ObjectBehavior
 {

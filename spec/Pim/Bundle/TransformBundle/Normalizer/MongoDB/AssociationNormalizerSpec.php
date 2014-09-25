@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-use PhpSpec\ObjectBehavior;
 
 /**
  * @require \MongoId

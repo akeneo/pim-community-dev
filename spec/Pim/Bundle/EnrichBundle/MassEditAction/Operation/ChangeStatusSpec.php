@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\AbstractQuery;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class ChangeStatusSpec extends ObjectBehavior

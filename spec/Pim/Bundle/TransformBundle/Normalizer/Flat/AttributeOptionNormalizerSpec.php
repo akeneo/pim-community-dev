@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {

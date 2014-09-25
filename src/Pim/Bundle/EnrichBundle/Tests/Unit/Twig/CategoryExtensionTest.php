@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Twig;
 
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\EnrichBundle\Twig\CategoryExtension;
 
 /**

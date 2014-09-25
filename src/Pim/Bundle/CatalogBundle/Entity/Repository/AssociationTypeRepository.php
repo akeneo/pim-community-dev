@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Association repository

@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 class InGroupSorterSpec extends ObjectBehavior

@@ -2,21 +2,18 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB;
 
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Doctrine\MongoDB\Collection;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\MongoDB\Collection;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

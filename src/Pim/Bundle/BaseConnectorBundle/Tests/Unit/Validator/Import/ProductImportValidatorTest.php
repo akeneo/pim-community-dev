@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Validator\Import;
 
-use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ProductImportValidator;
+use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 
 /**
  * Tests related class
