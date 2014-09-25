@@ -101,6 +101,15 @@
 
 {% block form_errors %}{% spaceless %}
     {% if errors|length > 0 %}
+        <script type="text/javascript">
+            require(['jquery'], function ($) {
+                'use strict';
+
+                $(function() {
+                    $('#{{ form.vars.id }}').trigger('change');
+                });
+            });
+        </script>
         {% if form.parent %}
             {% set combinedError = '' %}
             {% for error in errors %}
