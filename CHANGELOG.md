@@ -5,6 +5,7 @@
 - Fixed icecat-demo-dev fixtures
 - Setup relationships of published products with interfaces in order to ease overriding
 - Fixed problem on view rights on attribute groups which were not displayed on family configuration
+- Fixed a bug with wysiwyg values disappearing from drafts when saved without modifications
 
 ## Improvements
 
