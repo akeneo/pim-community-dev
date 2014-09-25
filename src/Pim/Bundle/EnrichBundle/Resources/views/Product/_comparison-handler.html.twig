@@ -35,7 +35,7 @@
                         } else if ($source.is('textarea.wysiwyg')) {
                             wysiwyg.destroy($target);
                             $target.val($source.val()).trigger('change');
-                            wysiwyg.init($target, {}, true);
+                            wysiwyg.init($target);
                         } else {
                             $target.val($source.val()).trigger('change');
                         }
