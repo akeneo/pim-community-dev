@@ -5,9 +5,12 @@
 - Fix display of multi-byte characters in long form labels that are truncated
 - Incorrect date display between export/import widget and job execution page and job history
 - Fix archiver bug with yml imports
+- Fix missing product versioning data when a category, attribute or attribute option linked to a product is removed
 
 ## BC breaks
 - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
+- Two new methods have been added to Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface: `findAllWithAttribute` and `findAllWithAttributeOption`
+- Constructor of Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser has been changed
 
 ## Improvements
 - Add images in icecat_demo_dev installer fixtures
