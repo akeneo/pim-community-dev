@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
@@ -15,6 +16,22 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
  */
 class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
 {
+    /** @var ManagerRegistry */
+    protected $registry;
+
+    /** @var string */
+    protected $productClass;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param string          $productClass
+     */
+    public function __construct(ManagerRegistry $registry, $productClass)
+    {
+        $this->registry     = $registry;
+        $this->productClass = $productClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,6 +51,18 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
         $pendings = array();
         if ($entity instanceof AttributeOption) {
             $pendings[] = $entity->getAttribute();
+
+            if ($action === UpdateGuesserInterface::ACTION_DELETE) {
+                set_time_limit(0);
+                $products = $this
+                    ->registry
+                    ->getRepository($this->productClass)
+                    ->findAllWithAttributeOption($entity);
+
+                foreach ($products as $product) {
+                    $pendings[] = $product;
+                }
+            }
         } elseif ($entity instanceof AttributeOptionValue) {
             $pendings[] = $entity->getOption()->getAttribute();
         }
