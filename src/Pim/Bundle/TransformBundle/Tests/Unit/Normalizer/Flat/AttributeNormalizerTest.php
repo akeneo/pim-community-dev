@@ -66,7 +66,6 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'default_metric_unit'    => '',
                     'scope'                  => 'Global',
                     'options'                => 'Code:green,en:Green,fr:Vert|Code:red,en:Red,fr:Rouge',
-                    'useable_as_grid_column' => 1,
                     'useable_as_grid_filter' => 0,
                 )
             ),
@@ -88,7 +87,6 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'default_metric_unit'    => '',
                     'scope'                  => 'Channel',
                     'options'                => '',
-                    'useable_as_grid_column' => 1,
                     'useable_as_grid_filter' => 1,
                     'max_characters'         => '200',
                     'validation_rule'        => 'regexp',

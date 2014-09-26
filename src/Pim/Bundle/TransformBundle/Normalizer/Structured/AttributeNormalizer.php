@@ -58,7 +58,6 @@ class AttributeNormalizer implements NormalizerInterface
             array(
                 'group'                   => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
                 'unique'                  => (int) $object->isUnique(),
-                'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
                 'metric_family'           => $object->getMetricFamily(),

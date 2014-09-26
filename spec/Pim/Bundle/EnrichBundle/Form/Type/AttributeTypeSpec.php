@@ -115,7 +115,6 @@ class AttributeTypeSpec extends ObjectBehavior
     function it_adds_grid_parameter_fields_to_the_form($builder)
     {
         $this->buildForm($builder, []);
-        $builder->add('useableAsGridColumn', 'switch')->shouldHaveBeenCalled();
         $builder->add('useableAsGridFilter', 'switch')->shouldHaveBeenCalled();
     }
 

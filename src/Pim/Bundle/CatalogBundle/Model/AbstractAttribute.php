@@ -112,9 +112,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     /** @var AttributeGroup $group */
     protected $group;
 
-    /** @var boolean $useableAsGridColumn */
-    protected $useableAsGridColumn;
-
     /** @var boolean $useableAsGridFilter */
     protected $useableAsGridFilter;
 
@@ -194,7 +191,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         $this->defaultValue        = null;
         $this->localizable         = false;
         $this->scopable            = false;
-        $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
         $this->families            = new ArrayCollection();
@@ -675,30 +671,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     public function setGroup(AttributeGroup $group = null)
     {
         $this->group = $group;
-
-        return $this;
-    }
-
-    /**
-     * Predicate for useableAsGridColumn property
-     *
-     * @return boolean $useableAsGridColumn
-     */
-    public function isUseableAsGridColumn()
-    {
-        return $this->useableAsGridColumn;
-    }
-
-    /**
-     * Set useableAsGridColumn
-     *
-     * @param boolean $useableAsGridColumn
-     *
-     * @return AbstractAttribute
-     */
-    public function setUseableAsGridColumn($useableAsGridColumn)
-    {
-        $this->useableAsGridColumn = $useableAsGridColumn;
 
         return $this;
     }

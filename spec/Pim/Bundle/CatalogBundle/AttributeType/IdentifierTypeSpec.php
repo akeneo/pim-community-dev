@@ -20,7 +20,7 @@ class IdentifierTypeSpec extends ObjectBehavior
 
     function it_builds_the_attribute_forms(FormFactory $factory, $sku)
     {
-        $this->buildAttributeFormTypes($factory, $sku)->shouldHaveCount(8);
+        $this->buildAttributeFormTypes($factory, $sku)->shouldHaveCount(7);
     }
 
     function it_prepares_the_product_value_form($value, $sku)
