@@ -16,6 +16,8 @@
 ## Bug fixes
 - Fix installer fail on requirements when you change the archive and uploads folder
 - Fixed icecat-demo-dev fixtures
+- Fixed problem on view rights on attribute groups which were not displayed on family configuration
+- Fixed a bug with wysiwyg values disappearing from drafts when saved without modifications
 
 ## Improvements
 - Setup relationships of published products with interfaces in order to easy overriding
