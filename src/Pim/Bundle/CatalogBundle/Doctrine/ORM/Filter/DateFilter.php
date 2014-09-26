@@ -120,7 +120,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
             );
         }
 
-        // TODO missing oprators ?! check BaseFilter
+        // TODO missing operators ?! check BaseFilter
 
         return $this;
     }
@@ -170,15 +170,6 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
 
             case 'EMPTY':
                 $this->qb->andWhere($this->qb->expr()->isNull($field));
-                break;
-
-            default:
-                $this->qb->andWhere(
-                    $this->qb->expr()->orX(
-                        $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value['from'])),
-                        $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value['to'], true))
-                    )
-                );
                 break;
         }
 
