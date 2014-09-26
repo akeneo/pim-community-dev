@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model;
@@ -41,7 +40,9 @@ class OptionsPresenterSpec extends ObjectBehavior
         $green->__toString()->willReturn('Green');
         $blue->__toString()->willReturn('Blue');
 
-        $renderer->renderDiff(['Red', 'Green'], ['Red', 'Green', 'Blue'])->willReturn('diff between two options collections');
+        $renderer
+            ->renderDiff(['Red', 'Green'], ['Red', 'Green', 'Blue'])
+            ->willReturn('diff between two options collections');
 
         $this->setRenderer($renderer);
         $this->present($value, ['options' => '1,2,3'])->shouldReturn('diff between two options collections');

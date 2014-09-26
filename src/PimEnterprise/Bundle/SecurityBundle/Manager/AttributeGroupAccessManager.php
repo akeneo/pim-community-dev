@@ -15,16 +15,16 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group as UserGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Attribute group access manager
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class AttributeGroupAccessManager
 {

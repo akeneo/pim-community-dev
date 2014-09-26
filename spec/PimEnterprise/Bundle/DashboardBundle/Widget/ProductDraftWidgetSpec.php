@@ -2,24 +2,23 @@
 
 namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\User;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 
 class ProductDraftWidgetSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftOwnershipRepositoryInterface $ownershipRepository,
-        CategoryAccessRepository $accessRepository,
+        ProductDraftOwnershipRepositoryInterface $ownershipRepo,
+        CategoryAccessRepository $accessRepo,
         UserContext $context,
         User $user
     ) {
         $context->getUser()->willReturn($user);
 
-        $this->beConstructedWith($accessRepository, $ownershipRepository, $context);
+        $this->beConstructedWith($accessRepo, $ownershipRepo, $context);
     }
 
     function it_is_a_widget()
@@ -37,16 +36,16 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($accessRepository, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($accessRepo, $user)
     {
-        $accessRepository->isOwner($user)->willReturn(false);
+        $accessRepo->isOwner($user)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
     }
 
-    function it_passes_product_drafts_from_the_repository_to_the_template($accessRepository, $user, $ownershipRepository)
+    function it_passes_product_drafts_from_the_repository_to_the_template($accessRepo, $user, $ownershipRepo)
     {
-        $accessRepository->isOwner($user)->willReturn(true);
-        $ownershipRepository->findApprovableByUser($user, 10)->willReturn(['product draft one', 'product draft two']);
+        $accessRepo->isOwner($user)->willReturn(true);
+        $ownershipRepo->findApprovableByUser($user, 10)->willReturn(['product draft one', 'product draft two']);
 
         $this->getParameters()->shouldReturn(['show' => true, 'params' => ['product draft one', 'product draft two']]);
     }

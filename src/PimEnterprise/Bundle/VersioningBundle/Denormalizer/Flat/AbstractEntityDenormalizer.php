@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Abstract denormalizer class for flat entity denormalizers
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, DenormalizerInterface
 {

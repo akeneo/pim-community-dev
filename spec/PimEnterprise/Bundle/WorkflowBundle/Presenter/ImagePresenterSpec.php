@@ -3,9 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ImagePresenterSpec extends ObjectBehavior
 {
@@ -65,15 +64,21 @@ class ImagePresenterSpec extends ObjectBehavior
         $media->getFilename()->willReturn('foo.jpg');
         $media->getOriginalFilename()->willReturn('original_foo.jpg');
 
-        $generator->generate('pim_enrich_media_show', ['filename' => 'foo.jpg', 'filter' => 'thumbnail'])->willReturn('/media/foo.jpg');
-        $generator->generate('pim_enrich_media_show', ['filename' => 'bar.jpg', 'filter' => 'thumbnail'])->willReturn('/media/bar.jpg');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'foo.jpg', 'filter' => 'thumbnail'])
+            ->willReturn('/media/foo.jpg');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'bar.jpg', 'filter' => 'thumbnail'])
+            ->willReturn('/media/bar.jpg');
 
-        $this->present($value, ['media' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])->shouldReturn(
-            '<ul class="diff">' .
-            '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
-            '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .
-            '</ul>'
-        );
+        $this
+            ->present($value, ['media' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
+            ->shouldReturn(
+                '<ul class="diff">' .
+                    '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
+                    '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .
+                '</ul>'
+            );
     }
 
     function it_presents_only_old_image_if_no_new_one_is_provided(
@@ -85,11 +90,13 @@ class ImagePresenterSpec extends ObjectBehavior
         $media->getFilename()->willReturn('foo.jpg');
         $media->getOriginalFilename()->willReturn('original_foo.jpg');
 
-        $generator->generate('pim_enrich_media_show', ['filename' => 'foo.jpg', 'filter' => 'thumbnail'])->willReturn('/media/foo.jpg');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'foo.jpg', 'filter' => 'thumbnail'])
+            ->willReturn('/media/foo.jpg');
 
         $this->present($value, ['media' => []])->shouldReturn(
             '<ul class="diff">' .
-            '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
+                '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
             '</ul>'
         );
     }
@@ -100,12 +107,16 @@ class ImagePresenterSpec extends ObjectBehavior
     ) {
         $value->getMedia()->willReturn(null);
 
-        $generator->generate('pim_enrich_media_show', ['filename' => 'bar.jpg', 'filter' => 'thumbnail'])->willReturn('/media/bar.jpg');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'bar.jpg', 'filter' => 'thumbnail'])
+            ->willReturn('/media/bar.jpg');
 
-        $this->present($value, ['media' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])->shouldReturn(
-            '<ul class="diff">' .
-            '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .
-            '</ul>'
-        );
+        $this
+            ->present($value, ['media' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
+            ->shouldReturn(
+                '<ul class="diff">' .
+                    '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .
+                '</ul>'
+            );
     }
 }

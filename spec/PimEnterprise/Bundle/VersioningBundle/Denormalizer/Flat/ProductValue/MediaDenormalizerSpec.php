@@ -3,8 +3,7 @@
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager;
 
 class MediaDenormalizerSpec extends ObjectBehavior
@@ -42,21 +41,15 @@ class MediaDenormalizerSpec extends ObjectBehavior
         $this->supportsDenormalization('readme.md', 'pim_catalog_image', 'xml')->shouldBe(false);
     }
 
-    function it_dernomalizes_media(
-        $manager,
-        $factory,
-        Model\AbstractProductMedia $media
-    ) {
+    function it_dernomalizes_media($manager, $factory, AbstractProductMedia $media)
+    {
         $manager->createFromFilename('preview.jpg')->willReturn($media);
 
         $this->denormalize('preview.jpg', 'pim_catalog_image')->shouldReturn($media);
     }
 
-    function it_does_not_create_media_for_empty_filename(
-        $manager,
-        $factory,
-        Model\AbstractProductMedia $media
-    ) {
+    function it_does_not_create_media_for_empty_filename($manager, $factory, AbstractProductMedia $media)
+    {
         $this->denormalize(null, 'pim_catalog_image')->shouldReturn(null);
         $this->denormalize('', 'pim_catalog_image')->shouldReturn(null);
     }

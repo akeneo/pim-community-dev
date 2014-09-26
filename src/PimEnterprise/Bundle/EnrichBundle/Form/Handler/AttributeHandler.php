@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Handler;
 
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
@@ -20,11 +18,13 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler as BaseAttributeHandler;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Override attribute handler
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeHandler extends BaseAttributeHandler
 {

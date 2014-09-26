@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 /**
  * Product completeness publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class CompletenessPublisher implements PublisherInterface
 {

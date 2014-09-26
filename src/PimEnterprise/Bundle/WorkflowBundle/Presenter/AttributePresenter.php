@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 /**
  * Present an attribute
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class AttributePresenter implements PresenterInterface, TwigAwareInterface
 {

@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product media publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class MediaPublisher implements PublisherInterface
 {

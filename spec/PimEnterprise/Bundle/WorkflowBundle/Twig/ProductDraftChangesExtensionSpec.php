@@ -2,18 +2,17 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Translation\TranslatorInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductDraftChangesExtensionSpec extends ObjectBehavior
 {
@@ -27,7 +26,14 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         ProductManager $productManager,
         AttributeManager $attributeManager
     ) {
-        $this->beConstructedWith($valueRepository, $attributeRepository, $renderer, $translator, $productManager, $attributeManager);
+        $this->beConstructedWith(
+            $valueRepository,
+            $attributeRepository,
+            $renderer,
+            $translator,
+            $productManager,
+            $attributeManager
+        );
 
         $this->addPresenter($attributePresenter, 0);
         $this->addPresenter($valuePresenter, 1);
@@ -114,7 +120,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraft $productDraft
-    ){
+    ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
@@ -147,7 +153,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraft $productDraft
-    ){
+    ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
@@ -181,7 +187,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         PresenterInterface $presenter,
         \Twig_Environment $twig,
         ProductDraft $productDraft
-    ){
+    ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);

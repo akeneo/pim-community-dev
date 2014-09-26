@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\BaseConnectorBundle\Processor;
  * Attribute group accesses import processor
  * Allows to bind data into an attribute group access and validate them
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class AttributeGroupAccessProcessor extends AbstractAccessProcessor
 {
