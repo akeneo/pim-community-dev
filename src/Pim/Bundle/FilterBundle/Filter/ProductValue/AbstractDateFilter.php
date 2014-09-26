@@ -115,21 +115,13 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
      */
     protected function applyFilterByAttributeNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
-        $values    = array();
-        $operators = array();
-
-        if ($dateStartValue) {
-            $values['from']    = $dateStartValue;
-            $operators['from'] = '<';
-        }
-
-        if ($dateEndValue) {
-            $values['to']    = $dateEndValue;
-            $operators['to'] = '>';
-        }
-
-        if ($values && $operators) {
-            $this->util->applyFilterByAttribute($ds, $fieldName, $values, $operators);
+        if ($dateStartValue && $dateEndValue) {
+            $this->util->applyFilterByAttribute(
+                $ds,
+                $fieldName,
+                array($dateStartValue, $dateEndValue),
+                'NOT BETWEEN'
+            );
         }
     }
 

@@ -15,8 +15,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO : "not between" operator doesnt work
  */
 class DateFilter implements FieldFilterInterface, AttributeFilterInterface
 {
@@ -49,7 +47,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
             ['created', 'updated'],
             $extraSupportedFields
         );
-        $this->supportedOperators = ['=', '<', '>', 'BETWEEN', 'EMPTY'];
+        $this->supportedOperators = ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY'];
     }
 
     /**
@@ -122,6 +120,8 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
             );
         }
 
+        // TODO missing oprators ?! check BaseFilter
+
         return $this;
     }
 
@@ -138,6 +138,15 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                     $this->qb->expr()->andX(
                         $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value[0])),
                         $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value[1], true))
+                    )
+                );
+                break;
+
+            case 'NOT BETWEEN':
+                $this->qb->andWhere(
+                    $this->qb->expr()->orX(
+                        $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value[0])),
+                        $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value[1], true))
                     )
                 );
                 break;

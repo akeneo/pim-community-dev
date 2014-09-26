@@ -37,7 +37,7 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']);
 
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -127,6 +127,6 @@ class DateFilterSpec extends ObjectBehavior
         $expr->literal('2014-03-15')->willReturn('2014-03-15');
         $expr->literal('2014-03-20 23:59:59')->willReturn('2014-03-20 23:59:59');
 
-        $this->addFieldFilter('release_date', 'NOT BETWEEN', array('from' => '2014-03-15', 'to' => '2014-03-20'));
+        $this->addFieldFilter('release_date', 'NOT BETWEEN', array('2014-03-15', '2014-03-20'));
     }
 }

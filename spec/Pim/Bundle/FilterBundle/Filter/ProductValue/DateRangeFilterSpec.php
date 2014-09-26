@@ -304,8 +304,8 @@ class DateRangeFilterSpec extends ObjectBehavior
             ->applyFilterByAttribute(
                 $datasource,
                 'data_name_key',
-                ['from' => '1987-05-14', 'to' => '2014-01-23'],
-                ['from' => '<', 'to' => '>']
+                ['1987-05-14', '2014-01-23'],
+                'NOT BETWEEN'
             )
             ->shouldBeCalled();
 
