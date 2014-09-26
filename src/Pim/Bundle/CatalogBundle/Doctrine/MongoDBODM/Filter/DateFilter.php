@@ -43,7 +43,7 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
             ['created', 'updated'],
             $extraSupportedFields
         );
-        $this->supportedOperators = ['=', '<', '>', 'BETWEEN', 'EMPTY'];
+        $this->supportedOperators = ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY'];
     }
 
     /**
@@ -104,10 +104,20 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
+        // TODO : between and not between doesn't work
+
         switch ($operator) {
             case 'BETWEEN':
                 $this->qb->field($field)->gte($this->getTimestamp($value[0]));
                 $this->qb->field($field)->lte($this->getTimestamp($value[1], true));
+                break;
+
+            case 'NOT BETWEEN':
+                $this->qb->addAnd(
+                    $this->qb->expr()
+                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value[0])))
+                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value[1], true)))
+                );
                 break;
 
             case '>':
@@ -126,13 +136,6 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
             case 'EMPTY':
                 $this->qb->field($field)->exists(false);
                 break;
-
-            default:
-                $this->qb->addAnd(
-                    $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value['from'])))
-                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value['to'], true)))
-                );
         }
 
         return $this;
