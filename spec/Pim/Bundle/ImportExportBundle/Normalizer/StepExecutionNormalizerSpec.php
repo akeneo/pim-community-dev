@@ -47,7 +47,10 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $stepExecution->getEndTime()->willReturn(null);
 
         $startTime->getTimestamp()->willReturn(1411400461);
-        $startTime->format('Y-m-d g:i:s A');
+
+        $utcStartTime = new \DateTime();
+        $utcStartTime->setTimestamp(1411400461);
+        $finalDate = $utcStartTime->format('Y-m-d g:i:s A');
 
         $stepExecution->getWarnings()->willReturn(
             new ArrayCollection(
@@ -82,7 +85,7 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
                'label'     => 'Export step',
                'status'    => 'PENDING',
                'summary'   => ['Read' => 12, 'Write' => 50],
-               'startedAt' => '2014-09-22 5:41:01 PM',
+               'startedAt' => $finalDate,
                'endedAt'   => null,
                'warnings'  => [
                    [
