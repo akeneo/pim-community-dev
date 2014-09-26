@@ -1,6 +1,10 @@
 # 1.2.x
 
 ## Bug fixes
+
+# 1.2.6 (2014-09-26)
+
+## Bug fixes
 - Fix installer fail on requirements when you change the archive and uploads folder
 - Fix display of multi-byte characters in long form labels that are truncated
 - Incorrect date display between export/import widget and job execution page and job history
