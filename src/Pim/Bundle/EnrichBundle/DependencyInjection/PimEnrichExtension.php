@@ -41,6 +41,7 @@ class PimEnrichExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('entities.yml');
         $loader->load('repositories.yml');
+        $loader->load('normalizers.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
