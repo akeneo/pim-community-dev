@@ -68,8 +68,6 @@ class AttributeType extends AbstractType
 
         $this->addFieldLabel($builder);
 
-        $this->addFieldUseableAsGridColumn($builder);
-
         $this->addFieldUseableAsGridFilter($builder);
 
         $this->addFieldAttributeGroup($builder);
@@ -167,15 +165,6 @@ class AttributeType extends AbstractType
                 'select2'     => true
             )
         );
-    }
-
-    /**
-     * Add a field for useableAsGridColumn
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
-    {
-        $builder->add('useableAsGridColumn', 'switch');
     }
 
     /**
