@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Attribute group manager
@@ -41,14 +41,12 @@ class AttributeGroupManager
     /**
      * Remove an attribute from a group and link it to the default group
      *
-     * @param AttributeGroup    $group
-     * @param AbstractAttribute $attribute
+     * @param AttributeGroup     $group
+     * @param AttributeInterface $attribute
      *
      * @throws \LogicException
-     *
-     * @return AbstractAttribute
      */
-    public function removeAttribute(AttributeGroup $group, AbstractAttribute $attribute)
+    public function removeAttribute(AttributeGroup $group, AttributeInterface $attribute)
     {
         if (null === $default = $this->repository->findDefaultAttributeGroup()) {
             throw new \LogicException('The default attribute group should exist.');

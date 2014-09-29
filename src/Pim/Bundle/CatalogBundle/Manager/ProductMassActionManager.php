@@ -47,7 +47,7 @@ class ProductMassActionManager
      *
      * @param array $productIds
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface[]
      */
     public function findCommonAttributes(array $productIds)
     {

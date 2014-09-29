@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
@@ -233,13 +233,13 @@ class CompletenessManager
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param string            $locale
-     * @param string            $scope
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
      *
      * @return string
      */
-    protected function getValueCode(AbstractAttribute $attribute, $locale, $scope)
+    protected function getValueCode(AttributeInterface $attribute, $locale, $scope)
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isLocalizable()) {

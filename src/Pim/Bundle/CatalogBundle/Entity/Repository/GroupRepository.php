@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Group repository
@@ -56,11 +56,11 @@ class GroupRepository extends ReferableEntityRepository
 
     /**
      * Return the number of groups containing the provided attribute
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return interger
      */
-    public function countVariantGroupAxis(AbstractAttribute $attribute)
+    public function countVariantGroupAxis(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('g');
 

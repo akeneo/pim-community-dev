@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -178,7 +178,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithAttribute(AbstractAttribute $attribute)
+    public function findAllWithAttribute(AttributeInterface $attribute)
     {
         return $this
             ->createQueryBuilder('p')
@@ -318,7 +318,7 @@ class ProductRepository extends EntityRepository implements
      *
      * @param string $code
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     protected function getAttributeByCode($code)
     {
@@ -458,7 +458,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
+    public function applySorterByAttribute($qb, AttributeInterface $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }

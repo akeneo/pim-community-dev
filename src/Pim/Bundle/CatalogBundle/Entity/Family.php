@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -52,7 +51,7 @@ class Family implements FamilyInterface, TranslatableInterface, ReferableInterfa
     protected $translations;
 
     /**
-     * @var AbstractAttribute $attributeAsLabel
+     * @var AttributeInterface $attributeAsLabel
      */
     protected $attributeAsLabel;
 
@@ -204,7 +203,7 @@ class Family implements FamilyInterface, TranslatableInterface, ReferableInterfa
     /**
      * Get grouped attributes
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     public function getGroupedAttributes()
     {

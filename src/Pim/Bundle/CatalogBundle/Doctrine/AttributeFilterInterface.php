@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Filter interface
@@ -16,11 +16,11 @@ interface AttributeFilterInterface
     /**
      * Add an attribute to filter
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
+     * @param AttributeInterface $attribute the attribute
+     * @param string|array       $operator  the used operator
+     * @param string|array       $value     the value(s) to filter
      *
      * @return AttributeFilterInterface
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value);
 }

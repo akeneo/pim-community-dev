@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
@@ -17,13 +17,13 @@ interface ProductQueryBuilderInterface
     /**
      * Add a filter condition on an attribute
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
+     * @param AttributeInterface $attribute the attribute
+     * @param string|array       $operator  the used operator
+     * @param string|array       $value     the value(s) to filter
      *
      * @return ProductQueryBuilderInterface
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value);
 
     /**
      * Add a filter condition on a field
@@ -39,12 +39,12 @@ interface ProductQueryBuilderInterface
     /**
      * Sort by attribute value
      *
-     * @param AbstractAttribute $attribute the attribute to sort on
-     * @param string            $direction the direction to use
+     * @param AttributeInterface $attribute the attribute to sort on
+     * @param string             $direction the direction to use
      *
      * @return ProductQueryBuilderInterface
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction);
+    public function addAttributeSorter(AttributeInterface $attribute, $direction);
 
     /**
      * Sort by field
