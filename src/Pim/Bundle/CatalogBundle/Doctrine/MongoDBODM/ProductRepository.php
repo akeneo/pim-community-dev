@@ -12,7 +12,6 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -161,11 +160,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return string[]
      */
-    public function findAllIdsForAttribute(AbstractAttribute $attribute)
+    public function findAllIdsForAttribute(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('p')
             ->hydrate(false)
