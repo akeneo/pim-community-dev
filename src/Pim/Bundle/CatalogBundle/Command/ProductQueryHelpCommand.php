@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFilterRegistryInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Helps to query products
@@ -31,9 +32,19 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->printFieldFilters($output);
+        $this->printAttributeFilters($output);
+    }
+
+    /**
+     * Print the field filters
+     *
+     * @param OutputInterface $output
+     */
+    protected function printFieldFilters(OutputInterface $output)
+    {
         $output->writeln("<info>Useable field filters...<info>");
         $registry = $this->getFilterRegistry();
-
         $fields = ['id', 'created', 'updated', 'enabled', 'completeness', 'family', 'groups'];
         $rows = [];
         foreach ($fields as $field) {
@@ -48,10 +59,20 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
             $rows[]= [$field, $class, $operators];
         }
         $table = $this->getHelper('table');
-        $table->setHeaders(['field', 'filter_class', 'operators'])->setRows($rows);
+        $headers = ['field', 'filter_class', 'operators'];
+        $table->setHeaders($headers)->setRows($rows);
         $table->render($output);
+    }
 
+    /**
+     * Print the attribute filters
+     *
+     * @param OutputInterface $output
+     */
+    protected function printAttributeFilters(OutputInterface $output)
+    {
         $output->writeln("<info>Useable attributes filters...<info>");
+        $registry = $this->getFilterRegistry();
         $attributes = $this->getAttributeRepository()->findAll();
         $rows = [];
         foreach ($attributes as $attribute) {
@@ -64,15 +85,23 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
                 $class = 'Not supported';
                 $operators = '';
             }
-            $rows[]= [$field, $attribute->getAttributeType(), $class, $operators];
+            $rows[]= [
+                $field,
+                $attribute->isLocalizable() ? 'yes' : 'no',
+                $attribute->isScopable() ? 'yes' : 'no',
+                $attribute->getAttributeType(),
+                $class,
+                $operators
+            ];
         }
         $table = $this->getHelper('table');
-        $table->setHeaders(['attribute', 'attribute type', 'filter_class', 'operators'])->setRows($rows);
+        $headers = ['attribute', 'localizable', 'scopable', 'attribute type', 'filter_class', 'operators'];
+        $table->setHeaders($headers)->setRows($rows);
         $table->render($output);
     }
 
     /**
-     * @return ProductQueryBuilderInterface
+     * @return ProductQueryFilterRegistryInterface
      */
     protected function getFilterRegistry()
     {
