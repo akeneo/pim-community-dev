@@ -4,12 +4,12 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler;
@@ -160,13 +160,13 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Edit a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
      * @return array
      */
-    public function editAction(Family $family)
+    public function editAction(FamilyInterface $family)
     {
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.updated');
@@ -184,11 +184,11 @@ class FamilyController extends AbstractDoctrineController
     /**
      * History of a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
-    public function historyAction(Family $family)
+    public function historyAction(FamilyInterface $family)
     {
         return $this->render(
             'PimEnrichBundle:Family:_history.html.twig',
@@ -201,12 +201,12 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Remove a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @AclAncestor("pim_enrich_family_remove")
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAction(Family $family)
+    public function removeAction(FamilyInterface $family)
     {
         $this->familyManager->remove($family);
 
@@ -220,12 +220,12 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Add attributes to a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addAttributesAction(Family $family)
+    public function addAttributesAction(FamilyInterface $family)
     {
         $availableAttributes = new AvailableAttributes();
         $attributesForm      = $this->getAvailableAttributesForm(

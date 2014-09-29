@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -19,7 +21,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Family implements TranslatableInterface, ReferableInterface, VersionableInterface
+class Family implements FamilyInterface, TranslatableInterface, ReferableInterface, VersionableInterface
 {
     /**
      * @var integer $id
@@ -90,9 +92,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -148,9 +148,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Get code
-     *
-     * @return string $code
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -158,11 +156,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return Family
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -172,13 +166,9 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Add attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return Family
+     * {@inheritdoc}
      */
-    public function addAttribute(AbstractAttribute $attribute)
+    public function addAttribute(AttributeInterface $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes->add($attribute);
@@ -188,15 +178,11 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Remove attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return Family
+     * {@inheritdoc}
      *
      * @throws InvalidArgumentException
      */
-    public function removeAttribute(AbstractAttribute $attribute)
+    public function removeAttribute(AttributeInterface $attribute)
     {
         if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
@@ -208,9 +194,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Get attributes
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getAttributes()
     {
@@ -233,23 +217,17 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Check if family has an attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function hasAttribute(AbstractAttribute $attribute)
+    public function hasAttribute(AttributeInterface $attribute)
     {
         return $this->attributes->contains($attribute);
     }
 
     /**
-     * @param AbstractAttribute $attributeAsLabel
-     *
-     * @return Family
+     * {@inheritdoc}
      */
-    public function setAttributeAsLabel($attributeAsLabel)
+    public function setAttributeAsLabel(AttributeInterface $attributeAsLabel)
     {
         $this->attributeAsLabel = $attributeAsLabel;
 
@@ -257,7 +235,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function getAttributeAsLabel()
     {
@@ -378,11 +356,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Add attribute requirement
-     *
-     * @param AttributeRequirement $requirement
-     *
-     * @return Family
+     * {@inheritdoc}
      */
     public function addAttributeRequirement(AttributeRequirement $requirement)
     {
@@ -400,11 +374,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Set attribute requirements
-     *
-     * @param array $requirements
-     *
-     * @return Family
+     * {@inheritdoc}
      */
     public function setAttributeRequirements(array $requirements)
     {
@@ -417,9 +387,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
-     * Get attribute requirements
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAttributeRequirements()
     {
