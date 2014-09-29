@@ -18,6 +18,11 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: 名前
+pim_title:
+  user.index: ユーザー
+  user_role.index: 権限
+  user_group.index: グループ
+  system_configuration.index: 設定
 user.title: ユーザー
 Users Management: ユーザー管理
 Create user: ユーザー作成
