@@ -12,6 +12,8 @@ parameters:
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
     pim_catalog.repository.product_value.class:    Doctrine\ORM\EntityRepository
     pim_catalog.doctrine.product_query_builder.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder
+    pim_catalog.doctrine.query.product_filter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFilterRegistry
+    pim_catalog.doctrine.query.product_sorter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQuerySorterRegistry
 
 services:
     pim_catalog.repository.association_type:
@@ -121,3 +123,13 @@ services:
         arguments:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.doctrine.query.product_filter_registry'
+            - '@pim_catalog.doctrine.query.product_sorter_registry'
+
+    pim_catalog.doctrine.query.product_filter_registry:
+        class: %pim_catalog.doctrine.query.product_filter_registry.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.doctrine.query.product_sorter_registry:
+        class: %pim_catalog.doctrine.query.product_sorter_registry.class%

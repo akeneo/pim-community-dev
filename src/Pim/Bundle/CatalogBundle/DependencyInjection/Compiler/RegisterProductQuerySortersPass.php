@@ -7,22 +7,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Register product query filters and sorters
+ * Register product query sorters in dedicated registry
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterProductQueryBuilderPass implements CompilerPassInterface
+class RegisterProductQuerySortersPass implements CompilerPassInterface
 {
     /** @staticvar integer */
     const DEFAULT_PRIORITY = 25;
 
     /** @staticvar string */
-    const QUERY_BUILDER_SERVICE = 'pim_catalog.doctrine.product_query_builder';
-
-    /** @staticvar string */
-    const QUERY_FILTER_TAG = 'pim_catalog.doctrine.query.filter';
+    const QUERY_SORTER_REGISTRY = 'pim_catalog.doctrine.query.product_sorter_registry';
 
     /** @staticvar string */
     const QUERY_SORTER_TAG = 'pim_catalog.doctrine.query.sorter';
@@ -32,20 +29,23 @@ class RegisterProductQueryBuilderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::QUERY_BUILDER_SERVICE)) {
+        $this->registerSorters($container);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function registerSorters(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition(self::QUERY_SORTER_REGISTRY)) {
             throw new \LogicException('ProductQueryBuilder must be configured');
         }
 
-        $service = $container->getDefinition(self::QUERY_BUILDER_SERVICE);
-
-        $filters = $this->findAndSortTaggedServices(self::QUERY_FILTER_TAG, $container);
-        foreach ($filters as $filter) {
-            $service->addMethodCall('registerFilter', [$filter]);
-        }
+        $registry = $container->getDefinition(self::QUERY_SORTER_REGISTRY);
 
         $sorters = $this->findAndSortTaggedServices(self::QUERY_SORTER_TAG, $container);
         foreach ($sorters as $sorter) {
-            $service->addMethodCall('registerSorter', [$sorter]);
+            $registry->addMethodCall('registerSorter', [$sorter]);
         }
     }
 
