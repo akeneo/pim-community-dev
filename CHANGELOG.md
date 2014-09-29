@@ -1,4 +1,4 @@
-# 1.1.0
+# 1.1.0 (based on CE 1.2.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/1.2/CHANGELOG.md))
 
 ## Improvements
 
@@ -31,7 +31,7 @@
 
 ## BC breaks
 
-# 1.0.0
+# 1.0.0 (based on CE 1.2.0, see [changelog](https://github.com/akeneo/pim-community-dev/blob/dd64effbe173f595e4afea08d0e80528fd441741/CHANGELOG.md))
 
 ## Improvements
 
