@@ -32,21 +32,19 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("<info>Useable field filters...<info>");
-        $pqb = $this->getProductQueryBuilder();
+        $registry = $this->getFilterRegistry();
 
         $fields = ['id', 'created', 'updated', 'enabled', 'completeness', 'family', 'groups'];
         $rows = [];
         foreach ($fields as $field) {
-            // TODO a filter and a sorter registry, PQB use them ?
-            $filter = $pqb->getFilter($field);
+            $filter = $registry->getFieldFilter($field);
             if ($filter) {
                 $class = get_class($filter);
-                $operators = implode(', ', $pqb->getFilter($field)->getOperators());
+                $operators = implode(', ', $filter->getOperators());
             } else {
                 $class = 'Not supported';
                 $operators = '';
             }
-            $filter = $pqb->getFilter($field);
             $rows[]= [$field, $class, $operators];
         }
         $table = $this->getHelper('table');
@@ -58,16 +56,14 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
         $rows = [];
         foreach ($attributes as $attribute) {
             $field = $attribute->getCode();
-            // TODO a filter and a sorter registry, PQB use them ?
-            $filter = $pqb->getFilter($field);
+            $filter = $registry->getAttributeFilter($attribute);
             if ($filter) {
                 $class = get_class($filter);
-                $operators = implode(', ', $pqb->getFilter($field)->getOperators());
+                $operators = implode(', ', $filter->getOperators());
             } else {
                 $class = 'Not supported';
                 $operators = '';
             }
-
             $rows[]= [$field, $attribute->getAttributeType(), $class, $operators];
         }
         $table = $this->getHelper('table');
@@ -78,9 +74,9 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
     /**
      * @return ProductQueryBuilderInterface
      */
-    protected function getProductQueryBuilder()
+    protected function getFilterRegistry()
     {
-        return $this->getContainer()->get('pim_catalog.doctrine.product_query_builder');
+        return $this->getContainer()->get('pim_catalog.doctrine.query.product_filter_registry');
     }
 
     /**
