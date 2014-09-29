@@ -3,11 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Builder;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Test related class

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Constraint

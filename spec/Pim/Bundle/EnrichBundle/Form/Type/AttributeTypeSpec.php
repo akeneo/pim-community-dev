@@ -3,12 +3,11 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 
 class AttributeTypeSpec extends ObjectBehavior
 {

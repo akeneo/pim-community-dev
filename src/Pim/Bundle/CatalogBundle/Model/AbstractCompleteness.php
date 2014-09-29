@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Abstract product completeness entity

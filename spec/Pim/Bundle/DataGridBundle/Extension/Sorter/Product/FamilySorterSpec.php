@@ -2,12 +2,10 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 class FamilySorterSpec extends ObjectBehavior

@@ -2,31 +2,30 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
+use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
-use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
-use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Job Profile controller
@@ -313,7 +312,9 @@ class JobProfileController extends AbstractDoctrineController
 
         if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
-            $jobExecution->setJobInstance($jobInstance);
+            $jobExecution
+                ->setJobInstance($jobInstance)
+                ->setUser($this->getUser()->getUsername());
             $manager = $this->getDoctrine()->getManagerForClass(get_class($jobExecution));
             $manager->persist($jobExecution);
             $manager->flush($jobExecution);

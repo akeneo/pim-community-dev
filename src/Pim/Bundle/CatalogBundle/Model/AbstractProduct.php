@@ -3,13 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Abstract product
@@ -27,10 +27,10 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /** @var mixed $id */
     protected $id;
 
-    /** @var datetime $created */
+    /** @var \Datetime $created */
     protected $created;
 
-    /** @var datetime $updated */
+    /** @var \Datetime $updated */
     protected $updated;
 
     /**
@@ -134,7 +134,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get created datetime
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getCreated()
     {
@@ -158,7 +158,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get updated datetime
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getUpdated()
     {
@@ -168,7 +168,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Set updated datetime
      *
-     * @param datetime $updated
+     * @param \Datetime $updated
      *
      * @return TimestampableInterface
      */

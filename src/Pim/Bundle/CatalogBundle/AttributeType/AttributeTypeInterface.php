@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * The attribute type interface

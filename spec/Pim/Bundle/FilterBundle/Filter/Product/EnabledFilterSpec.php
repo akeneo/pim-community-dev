@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class EnabledFilterSpec extends ObjectBehavior
 {

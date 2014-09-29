@@ -87,6 +87,8 @@ btn:
     save:            save
     save and back:   save and back to grid
     save and create: save and create new
+    save and next:   save and next
+    save and finish: save and finish
     remove:          remove
     delete:          delete
     cancel:          cancel
@@ -95,6 +97,7 @@ btn:
     confirm:         confirm
     to grid:         back to grid
     to parent:       back to parent
+    download_pdf:    PDF
 
 # Confirmation messages
 confirmation:
@@ -438,6 +441,12 @@ Activated: Activated
 Edit:      Edit
 Disable:   Disable
 
+# Sequential edit operations
+pim_enrich.sequential_edit_action:
+    product:
+        previous: Skip back to "%product%" without saving.
+        next: Skip to "%product%" without saving.
+
 # Mass edit operations
 pim_enrich.mass_edit_action:
     limit_exceeded: Please choose less than %limit% items to edit
@@ -555,6 +564,8 @@ pim_enrich:
             change_state: Change state of product
             add_to_groups: Add product to groups
             mass_edit: Product mass edit actions
+            comment: Comment products
+            download: Download the product as PDF
         category:
             list: List categories
             create: Create a category

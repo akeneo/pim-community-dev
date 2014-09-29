@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -12,8 +10,10 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Manages completeness

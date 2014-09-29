@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
  * Family sorter
@@ -45,6 +45,7 @@ class FamilySorter implements FieldSorterInterface
         );
 
         $this->qb->sort($field, $direction);
+        $this->qb->sort('_id');
 
         return $this;
     }

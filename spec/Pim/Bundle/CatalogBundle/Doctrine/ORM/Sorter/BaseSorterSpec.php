@@ -2,12 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class BaseSorterSpec extends ObjectBehavior
 {
@@ -37,11 +36,13 @@ class BaseSorterSpec extends ObjectBehavior
         $queryBuilder->getDQLPart('join')->willReturn([]);
         $queryBuilder->resetDQLPart('join')->shouldBeCalled();
 
+        $queryBuilder->getRootAlias()->willReturn('p');
+        $queryBuilder->addOrderBy("p.id")->shouldBeCalled();
+
         $condition = "sorterVsku1.attribute = 42";
         $queryBuilder->leftJoin('p.values', 'sorterVsku1', 'WITH', $condition)->shouldBeCalled();
         $queryBuilder->addOrderBy('sorterVsku1.varchar', 'DESC')->shouldBeCalled();
 
         $this->addAttributeSorter($sku, 'DESC');
     }
-
 }

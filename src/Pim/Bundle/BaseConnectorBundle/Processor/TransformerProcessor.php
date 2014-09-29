@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
@@ -10,6 +9,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Abstract processor for transformer based imports

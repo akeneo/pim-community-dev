@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
+use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
  * Register widget into registry compiler pass

@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
-use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Validates an imported product

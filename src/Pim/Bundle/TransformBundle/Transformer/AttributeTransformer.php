@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Attribute transformer

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter as OroAbstractDateFilter;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter as OroAbstractDateFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**

@@ -3,10 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 
 /**
  * Product interface
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductInterface
+interface ProductInterface extends CommentSubjectInterface
 {
     /**
      * Get the ID of the product

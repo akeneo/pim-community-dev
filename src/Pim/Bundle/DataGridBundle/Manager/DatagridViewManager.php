@@ -3,10 +3,10 @@
 namespace Pim\Bundle\DataGridBundle\Manager;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
  * Datagrid view manager

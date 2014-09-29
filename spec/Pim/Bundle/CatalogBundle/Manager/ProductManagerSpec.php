@@ -2,25 +2,22 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductManagerSpec extends ObjectBehavior
 {

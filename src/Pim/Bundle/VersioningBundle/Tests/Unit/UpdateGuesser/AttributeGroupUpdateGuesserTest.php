@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
-use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 /**
  * Test related class

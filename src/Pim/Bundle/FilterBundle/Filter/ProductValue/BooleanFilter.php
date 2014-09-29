@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 

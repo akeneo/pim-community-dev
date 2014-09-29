@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 

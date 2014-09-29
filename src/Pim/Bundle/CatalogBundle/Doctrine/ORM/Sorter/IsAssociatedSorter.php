@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 
 /**
  * Is associated sorter
@@ -39,6 +39,9 @@ class IsAssociatedSorter implements FieldSorterInterface
     public function addFieldSorter($field, $direction)
     {
         $this->qb->addOrderBy($field, $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

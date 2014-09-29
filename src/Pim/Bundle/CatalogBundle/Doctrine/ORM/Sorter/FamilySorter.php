@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 
 /**
  * Family sorter
@@ -53,6 +53,9 @@ class FamilySorter implements FieldSorterInterface
             ->addSelect('COALESCE('.$trans.'.label, CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
 
         $this->qb->addOrderBy($field, $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

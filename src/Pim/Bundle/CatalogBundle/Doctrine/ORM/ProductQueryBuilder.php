@@ -3,11 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product

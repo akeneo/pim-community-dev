@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**

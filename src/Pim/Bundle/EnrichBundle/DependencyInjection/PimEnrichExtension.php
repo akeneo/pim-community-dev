@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Enrich extension
@@ -38,6 +38,9 @@ class PimEnrichExtension extends Extension
         $loader->load('event_listeners.yml');
         $loader->load('form_subscribers.yml');
         $loader->load('resolvers.yml');
+        $loader->load('managers.yml');
+        $loader->load('entities.yml');
+        $loader->load('repositories.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

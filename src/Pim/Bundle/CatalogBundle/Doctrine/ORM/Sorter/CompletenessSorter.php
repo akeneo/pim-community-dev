@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness sorter
@@ -46,6 +46,9 @@ class CompletenessSorter implements FieldSorterInterface
         $util = new CompletenessJoin($this->qb);
         $util->addJoins($alias);
         $this->qb->addOrderBy($alias.'.ratio', $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

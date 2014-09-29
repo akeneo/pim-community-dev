@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
-use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
@@ -36,6 +35,9 @@ class MetricSorter extends BaseSorter
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMetric);
 
         $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }
