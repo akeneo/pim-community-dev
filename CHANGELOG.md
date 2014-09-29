@@ -20,6 +20,7 @@
 # 1.2.x
 
 ## Bug fixes
+- Fix no warning message when leaving a product form after a submit with errors
 
 # 1.2.6 (2014-09-26)
 

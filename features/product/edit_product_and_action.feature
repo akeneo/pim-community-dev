@@ -25,6 +25,26 @@ Feature: Product edition clicking on another action
       | sku    | sandal    |
       | name   | My Sandal |
 
+  Scenario: Display a message when form submission fails and I try to leave the page
+    Given I am on the "sandal" product page
+    And I visit the "Marketing" group
+    Given I change the "$ Price" to "wrong value"
+    And I save the product
+    Then I should see flash message "Please check your entry and try again"
+    Then I click back to grid
+    And I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                   |
+      | content | You will lose changes to the product if you leave the page. |
+
+  Scenario: Display a message when I try to leave the page and there are unsaved values
+    Given I am on the "sandal" product page
+    And I visit the "Marketing" group
+    Given I change the "$ Price" to "1234"
+    Then I click back to grid
+    And I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                   |
+      | content | You will lose changes to the product if you leave the page. |
+
   Scenario: Successfully edit a product and create a new one
     Given I am on the "sandal" product page
     And I fill in the following information:
