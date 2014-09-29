@@ -89,14 +89,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         $attribute = $this->attributeRepository->findOneByCode($field);
         if (!$attribute) {
-            return false;
-/*            throw new \LogicException(
-                sprintf(
-                    'Filter on field "%s" is not supported or attribute %s not exists',
-                    $field,
-                    $field
-                )
-            );*/
+            return null;
         }
 
         foreach ($this->attributeFilters as $filter) {
@@ -105,13 +98,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             }
         }
 
-        return false;
-        /*throw new \LogicException(
-            sprintf(
-                'No appliable filter on field "%s"',
-                $field
-            )
-        );*/
+        return null;
     }
 
     /**

@@ -39,13 +39,12 @@ interface ProductQueryBuilderInterface
 
     /**
      * Get the field filter
+     *
      * TODO : introduce registry filter and sorter and use them in PQB
      *
      * @param string $field the field
      *
-     * @throws \LogicException
-     *
-     * @return FilterInterface
+     * @return FilterInterface|null
      */
     public function getFilter($field);
 }
