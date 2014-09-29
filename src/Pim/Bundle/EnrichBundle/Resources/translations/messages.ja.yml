@@ -90,7 +90,9 @@ btn:
   confirm: 確認
   to grid: グリッドに戻る
   to parent: 親に戻る
+  download_pdf: PDF
 confirmation:
+  confirm: 確認
   delete: 削除の確認
   leave: このページから移動してもよろしいですか？
   discard changes: 'このページから移動する場合は %entity% に対する変更が失われます。'
@@ -281,6 +283,8 @@ default: デフォルト
 Axis: 軸
 Add attributes: 属性を追加
 Translate from: 言語の選択
+switch_on: はい
+switch_off: いいえ
 Close: 閉じる
 Choose a color: 色を選択
 Search: 検索
@@ -469,6 +473,7 @@ pim_enrich:
     product:
       index: 製品一覧
       create: 製品作成
+      edit_attributes: 製品の属性を編集
       remove: 製品削除
       add_attribute: 製品に属性を追加
       remove_attribute: 製品から属性を削除
@@ -478,6 +483,8 @@ pim_enrich:
       change_state: 製品状態を変更
       add_to_groups: 製品をグループに追加
       mass_edit: 製品一括編集操作
+      comment: 製品のコメント
+      download: 製品情報をPDFでダウンロード
     category:
       list: カテゴリリスト
       create: カテゴリ作成
@@ -494,8 +501,11 @@ pim_enrich:
     family:
       index: ファミリーのリスト
       create: ファミリーを作成
+      edit_properties: ファミリーのプロパティを編集
+      edit_attributes: ファミリーの属性を編集
       remove: ファミリー削除
     attribute_group:
+      index: 属性グループの一覧
       create: 属性グループを作成
       edit: 属性グループを編集
       remove: 属性グループを削除
