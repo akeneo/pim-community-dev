@@ -61,17 +61,21 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * Normalizes DateTime object
      *
-     * @param null|\DateTime $datetime
+     * @param null|\Datetime $utcDatetime
      *
      * @return null|string
      */
-    protected function normalizeDateTime($datetime)
+    protected function normalizeDateTime($utcDatetime)
     {
-        if (!$datetime instanceof \DateTime) {
+        if (!$utcDatetime instanceof \DateTime) {
             return;
         }
 
-        return $datetime->format('Y-m-d H:i:s');
+        $datetime = new \DateTime();
+
+        $datetime->setTimestamp($utcDatetime->getTimestamp());
+
+        return $datetime->format('Y-m-d g:i:s A');
     }
 
     /**

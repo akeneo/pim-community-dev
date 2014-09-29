@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Pim Catalog Bundle
@@ -51,7 +51,7 @@ class PimCatalogBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
+            ->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass())
             ->addCompilerPass(new Compiler\ResolveDoctrineTargetRepositoriesPass())
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new Compiler\AddAttributeTypeCompilerPass())

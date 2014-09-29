@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * Abstract attribute type
@@ -169,7 +169,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             'label'           => $value->getAttribute()->getLabel(),
             'required'        => $value->getAttribute()->isRequired(),
             'auto_initialize' => false,
-            'label_attr'      => ['max_length' => 24]
+            'label_attr'      => ['truncate' => true]
         );
     }
 

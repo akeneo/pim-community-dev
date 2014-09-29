@@ -2,15 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * Ensure that all attribute requirements are displayed for a family

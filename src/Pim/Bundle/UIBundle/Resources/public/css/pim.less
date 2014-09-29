@@ -22,6 +22,10 @@ a:focus {
   color: darken(@color-purple_dark, 5%);
 }
 
+.badge-square {
+  border-radius: 2px;
+}
+
 /* Grids */
 .table-hover tbody tr:hover > td {
   background-color: @color-purple_hover;
@@ -131,6 +135,12 @@ a.back-link i {
   padding-left: 5px;
 }
 
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /** Dashboard ********************************************************************************************************/
 .dashboard {
   background-color:#f1f1f1;
@@ -164,6 +174,16 @@ a.back-link i {
     padding: 5px 20px;
     border-bottom: 1px solid #f7f7f7;
   }
+}
+
+#sequentialEdit {
+    font-weight: bold;
+    .progress .bar {
+        #gradient .horizontal(@color-purple_light, @color-purple_dark);
+    }
+}
+hr.small {
+    margin: 4px 0;
 }
 
 /** widgets **********************************************************************************************************/
@@ -313,15 +333,59 @@ span.link-label {
   }
 }
 
-/** Notifications *****************************************************************************************************/
-#oroplatform-header .nav #notifications {
-  i.icon-bullhorn {
-    font-size: 16px;
-    padding-top: 2px;
+#sequentialEdit {
+  margin:6px;
+
+  .progress {
+    margin-bottom: 0px;
   }
+
+  [class*="span"] {
+    min-height: 5px;
+  }
+}
+
+/** Notifications *****************************************************************************************************/
+#header-notification-widget {
+
+  i.icon-bell {
+    font-size: 18px !important;
+    line-height: 20px;
+    height: 20px;
+    text-align: center;
+  }
+  .indicator {
+    position: absolute;
+    text-align: center;
+    right: 3px;
+    top: 2px;
+
+    .badge-square {
+      font-size: 11px;
+      font-weight: initial;
+      padding: 0px 3px;
+      background: linear-gradient(#f93a43, darken(#f93a43, 20%));
+      box-shadow: 0px 0.7px 0px RGBa(0, 0, 0, 0.3), 0px 0px 3px rGBa(0, 0, 0, 0.35);
+      text-shadow: 0px 1px 0px darken(#f93a43, 20%);
+    }
+  }
+
+  .mark-as-read {
+    border: none;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+#oroplatform-header .nav #header-notification-widget {
+  .dropdown-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
   ul.dropdown-menu {
     width: auto;
-    margin-right: 15px;
+    margin: -3px -1px 0 0 !important;
     padding-top: 1px;
     padding-bottom: 0;
     ol.scroll-menu {
@@ -371,9 +435,6 @@ span.link-label {
           }
         }
       }
-    }
-    button {
-      margin: 0 5px;
     }
     p {
       span {

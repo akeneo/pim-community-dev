@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Gaufrette\Filesystem;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
+use Gaufrette\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 
 /**
  * Archive job execution files into conventional directories
@@ -46,8 +47,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 continue;
             }
             $writer = $step->getWriter();
-            if ($writer instanceof FileWriter &&
-                $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
+            if ($this->isWriterUsable($writer)) {
                     $filesystem = $this->getZipFilesystem(
                         $jobExecution,
                         sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
@@ -58,6 +58,19 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 }
             }
         }
+    }
+
+    /**
+     * Verify if the writer is usable or not
+     *
+     * @param ItemWriterInterface $writer
+     *
+     * @return bool
+     */
+    protected function isWriterUsable(ItemWriterInterface $writer)
+    {
+        return $writer instanceof FileWriter &&
+            $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1;
     }
 
     /**
@@ -88,5 +101,23 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 )
             )
         );
+    }
+
+    /**
+     * Check if the job execution is supported
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return bool
+     */
+    public function supports(JobExecution $jobExecution)
+    {
+        foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
+            if ($step instanceof ItemStep && $this->isWriterUsable($step->getWriter())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

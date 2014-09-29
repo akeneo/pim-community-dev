@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 class ValueSorterSpec extends ObjectBehavior

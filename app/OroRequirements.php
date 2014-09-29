@@ -101,8 +101,6 @@ class OroRequirements extends SymfonyRequirements
             'web/bundles',
             'app/cache',
             'app/logs',
-            'app/archive',
-            'app/uploads/product'
         );
         foreach ($directories as $directory) {
             $this->addOroRequirement(

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Test related class

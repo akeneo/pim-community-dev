@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Test related class

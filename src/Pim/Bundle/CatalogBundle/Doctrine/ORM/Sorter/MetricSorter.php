@@ -75,6 +75,9 @@ class MetricSorter implements AttributeSorterInterface
 
         $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
 
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
+
         return $this;
     }
 

@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
+use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

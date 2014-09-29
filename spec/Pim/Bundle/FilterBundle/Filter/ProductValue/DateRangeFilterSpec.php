@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Prophecy\Argument;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 
 class DateRangeFilterSpec extends ObjectBehavior

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;

@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Symfony\Component\Serializer\Serializer;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {

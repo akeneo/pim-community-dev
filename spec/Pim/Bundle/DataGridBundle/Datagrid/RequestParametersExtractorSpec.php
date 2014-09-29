@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 
 class RequestParametersExtractorSpec extends ObjectBehavior
 {

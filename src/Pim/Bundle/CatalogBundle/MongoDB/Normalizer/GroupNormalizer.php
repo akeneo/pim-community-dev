@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Group normalizer

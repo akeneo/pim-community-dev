@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Process a product to an array

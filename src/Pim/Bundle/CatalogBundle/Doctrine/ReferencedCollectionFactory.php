@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Factory of referenced collection

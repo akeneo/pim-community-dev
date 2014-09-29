@@ -61,4 +61,26 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
 
         $this->archive($jobExecution);
     }
+
+    function it_returns_the_name_of_the_archiver() {
+        $this->getName()->shouldReturn('invalid');
+    }
+
+    function it_returns_true_for_the_supported_job(
+        $collector,
+        JobExecution $jobExecution
+    ) {
+        $collector->getInvalidItems()->willReturn(['a' => ['a'], 'b' => ['b'], 'c' => ['c']]);
+
+        $this->supports($jobExecution)->shouldReturn(true);
+    }
+
+    function it_returns_false_for_the_unsupported_job(
+        $collector,
+        JobExecution $jobExecution
+    ) {
+        $collector->getInvalidItems()->willReturn(['a' => ['a' => ['b']], 'b' => ['b'], 'c' => ['c']]);
+
+        $this->supports($jobExecution)->shouldReturn(false);
+    }
 }

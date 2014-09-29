@@ -2,17 +2,17 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Doctrine\ODM\MongoDB\Events;
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
-use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
-use Doctrine\ODM\MongoDB\UnitOfWork;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
+use Doctrine\ODM\MongoDB\Events;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\UnitOfWork;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
+use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\Events

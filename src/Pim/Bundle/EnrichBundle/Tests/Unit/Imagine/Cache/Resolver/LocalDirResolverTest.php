@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Imagine\Cache\Resolver;
 
-use Symfony\Component\Filesystem\Filesystem;
 use Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver\LocalDirResolver;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Test related class

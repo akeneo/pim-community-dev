@@ -2,15 +2,14 @@
 
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Prophecy\Argument;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
 {

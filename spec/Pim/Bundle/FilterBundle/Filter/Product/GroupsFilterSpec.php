@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class GroupsFilterSpec extends ObjectBehavior
 {

@@ -3,10 +3,10 @@
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataAuditBundle\EventListener\AuditHistoryGridListener;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 
 /**
  * Listener to configure history grids.

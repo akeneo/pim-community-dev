@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**

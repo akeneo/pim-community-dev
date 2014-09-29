@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\TransformBundle\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class FieldNameBuilderSpec extends ObjectBehavior
 {

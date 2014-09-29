@@ -86,6 +86,9 @@ class EntitySorter implements AttributeSorterInterface
         $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
         $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
 
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
+
         return $this;
     }
 

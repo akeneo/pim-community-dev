@@ -77,4 +77,22 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
     {
         return 'invalid';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(JobExecution $jobExecution)
+    {
+        if ($this->collector->getInvalidItems()) {
+            foreach ($this->collector->getInvalidItems() as $elements) {
+                foreach ($elements as $element) {
+                    if (is_array($element)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+    }
 }

@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class EntityFilterSpec extends ObjectBehavior

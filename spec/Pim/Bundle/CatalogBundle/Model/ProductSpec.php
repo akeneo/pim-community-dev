@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Model;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 class ProductSpec extends ObjectBehavior

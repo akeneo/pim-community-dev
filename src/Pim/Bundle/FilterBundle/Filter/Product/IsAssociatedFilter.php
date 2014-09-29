@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Form\FormFactoryInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Product is associated filter (used by association product grid)

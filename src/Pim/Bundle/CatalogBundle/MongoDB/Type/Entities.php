@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Type;
 
-use Doctrine\ODM\MongoDB\Types\Type;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 /**
  * Stores a collection of entity identifiers

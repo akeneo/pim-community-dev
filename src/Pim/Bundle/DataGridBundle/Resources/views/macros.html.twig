@@ -26,8 +26,16 @@
 
                     if (state.filters) {
                         var collection = new PageableCollection();
+
                         var filters = collection.decodeStateData(state.filters);
                         collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
+
+                        for (var column in filters.sorters) {
+                            urlParams['{{ name }}[_sort_by][' + column + ']'] =
+                                filters.sorters[column] === 1 ?
+                                    'ASC' :
+                                    'DESC';
+                        }
                     }
 
                     if (state.columns) {

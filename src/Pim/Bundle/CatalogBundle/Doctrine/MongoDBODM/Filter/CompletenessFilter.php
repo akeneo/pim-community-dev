@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness filter
