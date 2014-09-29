@@ -99,6 +99,10 @@
     {% endspaceless %}
 {% endblock form_info %}
 
+{% macro getRootId(form) -%}
+    {{ form.parent ? _self.getRootId(form.parent) : form.vars.id }}
+{%- endmacro %}
+
 {% block form_errors %}{% spaceless %}
     {% if errors|length > 0 %}
         <script type="text/javascript">
@@ -106,7 +110,7 @@
                 'use strict';
 
                 $(function() {
-                    $('#{{ form.vars.id }}').trigger('change');
+                    $('#{{ _self.getRootId(form) }}').trigger('change');
                 });
             });
         </script>
