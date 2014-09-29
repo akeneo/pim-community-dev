@@ -101,7 +101,9 @@ class AppKernel extends OroKernel
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
             new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
             new PimEnterprise\Bundle\TransformBundle\PimEnterpriseTransformBundle(),
-            new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle()
+            new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
+            new PimEnterprise\Bundle\RuleEngineBundle\PimEnterpriseRuleEngineBundle(),
+            new PimEnterprise\Bundle\ProductRuleBundle\PimEnterpriseProductRuleBundle(),
         );
 
         $bundles = array_merge($bundles, $enterpriseBundles);
