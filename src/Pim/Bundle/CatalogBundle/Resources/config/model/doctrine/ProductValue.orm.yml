@@ -62,7 +62,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             column: scope_code
     manyToOne:
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id
@@ -103,7 +103,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                         onDelete: CASCADE
     oneToOne:
         media:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductMedia
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
             cascade:
                 - remove
                 - persist
@@ -114,7 +114,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                     referencedColumnName: id
                     onDelete: CASCADE
         metric:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Metric
+            targetEntity: Pim\Bundle\CatalogBundle\Model\MetricInterface
             cascade:
                 - remove
                 - persist
@@ -125,7 +125,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                     onDelete: 'SET NULL'
     oneToMany:
         prices:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductPrice
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
             cascade:
                 - remove
                 - persist
