@@ -17,6 +17,15 @@ pim_import_export:
     output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
     input: 読み込んだファイルをダウンロード | 読み込んだファイルをダウンロード
     invalid: 無効なデータをダウンロード
+  notification:
+    export:
+      error: 'エクスポート<strong>%label%</strong> が失敗しました'
+      warning: 'エクスポート <strong>%label%</strong> がいくつかのエラーで終了しました'
+      success: 'エクスポート <strong>%label%</strong> が完了しました'
+    import:
+      error: 'インポート <strong>%label%</strong> が失敗しました'
+      warning: 'インポート <strong>%label%</strong> がいくつかのエラーで終了しました'
+      success: 'インポート <strong>%label%</strong> が完了しました'
 pim_title.export_profile.index: エクスポート プロファイルの管理
 pim_title.export_profile.edit: '%job.label% のエクスポート プロファイル |編集'
 pim_title.export_profile.show: '%job.label% のエクスポート プロファイル |表示'
@@ -118,6 +127,9 @@ job_execution.summary:
   skip: スキップ
   create: 作成
   update: 更新
+  charset_validator:
+    title: 'ファイルの文字コード:'
+    skipped: スキップしました。拡張子がホワイトリストにあります
 Step: ステップ
 Status: ステータス
 Summary: サマリ
