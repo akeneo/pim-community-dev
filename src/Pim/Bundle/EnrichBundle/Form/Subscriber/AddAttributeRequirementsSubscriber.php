@@ -4,9 +4,9 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -53,7 +53,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     {
         $family = $event->getData();
 
-        if (null === $family || !$family instanceof Family) {
+        if (null === $family || !$family instanceof FamilyInterface) {
             return;
         }
 
@@ -82,7 +82,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     {
         $family = $event->getData();
 
-        if (null === $family || !$family instanceof Family) {
+        if (null === $family || !$family instanceof FamilyInterface) {
             return;
         }
 
@@ -99,14 +99,17 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     /**
      * Create attribute requirement entity
      *
-     * @param Channel           $channel
-     * @param AbstractAttribute $attribute
-     * @param Family            $family
+     * @param Channel            $channel
+     * @param AttributeInterface $attribute
+     * @param FamilyInterface    $family
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
      */
-    protected function createAttributeRequirement(Channel $channel, AbstractAttribute $attribute, Family $family)
-    {
+    protected function createAttributeRequirement(
+        Channel $channel,
+        AttributeInterface $attribute,
+        FamilyInterface $family
+    ) {
         $requirement = new AttributeRequirement();
         $requirement->setChannel($channel);
         $requirement->setAttribute($attribute);

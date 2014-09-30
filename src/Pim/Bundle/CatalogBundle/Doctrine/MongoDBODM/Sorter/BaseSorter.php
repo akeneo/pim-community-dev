@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Base sorter
@@ -37,7 +37,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction)
     {
         $sortField = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$sortField, $direction);

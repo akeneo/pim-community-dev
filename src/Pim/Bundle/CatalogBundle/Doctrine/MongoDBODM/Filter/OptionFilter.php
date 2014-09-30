@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Simple option filter for MongoDB implementation
@@ -18,7 +18,7 @@ class OptionFilter extends EntityFilter
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value)
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);

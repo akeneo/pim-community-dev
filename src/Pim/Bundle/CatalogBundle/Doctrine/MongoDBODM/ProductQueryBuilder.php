@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
@@ -92,7 +92,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value)
     {
         $attributeType = $attribute->getAttributeType();
         if (isset($this->attributeFilters[$attributeType])) {
@@ -127,7 +127,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction)
     {
         $attributeType = $attribute->getAttributeType();
         if (isset($this->attributeSorters[$attributeType])) {

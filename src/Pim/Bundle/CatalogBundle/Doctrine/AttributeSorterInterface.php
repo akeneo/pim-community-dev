@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Sorter interface
@@ -16,10 +16,10 @@ interface AttributeSorterInterface
     /**
      * Sort by attribute value
      *
-     * @param AbstractAttribute $attribute the attribute to sort on
-     * @param string            $direction the direction to use
+     * @param AttributeInterface $attribute the attribute to sort on
+     * @param string             $direction the direction to use
      *
      * @return AttributeSorterInterface
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction);
+    public function addAttributeSorter(AttributeInterface $attribute, $direction);
 }

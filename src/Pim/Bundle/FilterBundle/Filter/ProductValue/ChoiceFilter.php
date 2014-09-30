@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class ChoiceFilter extends AjaxChoiceFilter
 {
-    /** @var AbstractAttribute */
+    /** @var AttributeInterface */
     protected $attribute;
 
     /** @var string */

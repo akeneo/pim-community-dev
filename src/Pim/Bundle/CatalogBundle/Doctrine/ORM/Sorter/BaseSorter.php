@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Base sorter
@@ -46,7 +46,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
@@ -92,12 +92,12 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $joinAlias the value join alias
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias)
     {
         $joinHelper = new ValueJoin($this->qb, $this->context);
 

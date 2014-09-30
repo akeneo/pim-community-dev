@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Attribute update guesser
@@ -45,7 +45,7 @@ class AttributeUpdateGuesser implements UpdateGuesserInterface
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = array();
-        if ($entity instanceof AbstractAttribute) {
+        if ($entity instanceof AttributeInterface) {
             set_time_limit(0);
             $products = $this
                 ->registry

@@ -419,7 +419,7 @@ class AttributeRepository extends EntityRepository implements
      * Get the identifier attribute
      * Only one identifier attribute can exists
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     public function getIdentifier()
     {

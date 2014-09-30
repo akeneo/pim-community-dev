@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use PIm\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -61,11 +61,11 @@ class FamilyHandler
     /**
      * Process method for handler
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return boolean
      */
-    public function process(Family $family)
+    public function process(FamilyInterface $family)
     {
         $this->form->setData($family);
 
@@ -85,9 +85,9 @@ class FamilyHandler
     /**
      * Call when form is valid
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      */
-    protected function onSuccess(Family $family)
+    protected function onSuccess(FamilyInterface $family)
     {
         $this->manager->persist($family);
         $this->completenessManager->scheduleForFamily($family);

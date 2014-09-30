@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Filtering by simple option backend type
@@ -16,7 +16,7 @@ class OptionFilter extends EntityFilter
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value)
     {
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
 

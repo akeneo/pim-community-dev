@@ -7,11 +7,11 @@ use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -321,13 +321,13 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Get the name of a normalized data field
      *
-     * @param AbstractAttribute $attribute
-     * @param Channel           $channel
-     * @param Locale            $locale
+     * @param AttributeInterface $attribute
+     * @param Channel            $channel
+     * @param Locale             $locale
      *
      * @return string
      */
-    protected function getNormalizedFieldName(AbstractAttribute $attribute, Channel $channel, Locale $locale)
+    protected function getNormalizedFieldName(AttributeInterface $attribute, Channel $channel, Locale $locale)
     {
         $suffix = '';
 
@@ -411,7 +411,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function scheduleForFamily(Family $family)
+    public function scheduleForFamily(FamilyInterface $family)
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 

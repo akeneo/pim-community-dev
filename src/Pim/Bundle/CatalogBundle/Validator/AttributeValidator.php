@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
@@ -35,10 +35,10 @@ class AttributeValidator
     /**
      * Validation rule for attribute option values
      *
-     * @param AbstractAttribute $attribute
-     * @param ExecutionContext  $context
+     * @param AttributeInterface $attribute
+     * @param ExecutionContext   $context
      */
-    public static function areOptionsValid(AbstractAttribute $attribute, ExecutionContext $context)
+    public static function areOptionsValid(AttributeInterface $attribute, ExecutionContext $context)
     {
         $existingValues = array();
         foreach ($attribute->getOptions() as $option) {
