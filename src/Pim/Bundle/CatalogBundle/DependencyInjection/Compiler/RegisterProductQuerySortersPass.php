@@ -19,7 +19,7 @@ class RegisterProductQuerySortersPass implements CompilerPassInterface
     const DEFAULT_PRIORITY = 25;
 
     /** @staticvar string */
-    const QUERY_SORTER_REGISTRY = 'pim_catalog.doctrine.query.product_sorter_registry';
+    const QUERY_SORTER_REGISTRY = 'pim_catalog.doctrine.query.sorter_registry';
 
     /** @staticvar string */
     const QUERY_SORTER_TAG = 'pim_catalog.doctrine.query.sorter';
