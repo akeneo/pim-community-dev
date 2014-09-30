@@ -14,7 +14,7 @@ interface SorterInterface
     /**
      * Inject the query builder
      *
-     * @param mixed $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
      */
     public function setQueryBuilder($queryBuilder);
 }
