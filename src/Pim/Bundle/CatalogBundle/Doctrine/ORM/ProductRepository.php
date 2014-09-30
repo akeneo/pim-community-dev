@@ -469,6 +469,8 @@ class ProductRepository extends EntityRepository implements
         foreach ($criteria as $field => $data) {
             // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
+                $attribute = $data['attribute'];
+                $field = $attribute->getCode();
                 $data = $data['value'];
             }
             $pqb->addFilter($field, '=', $data);
