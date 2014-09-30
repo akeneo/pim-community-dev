@@ -3,10 +3,16 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use FOS\RestBundle\View\View as RestVIew;
+use FOS\RestBundle\View\ViewHandlerInterface;
 
 /**
  * Attribute option controller
@@ -24,9 +30,16 @@ class AttributeOptionController
      *
      * @param SerializerInterface $serializer
      */
-    public function __construct(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        SerializerInterface $serializer,
+        EntityManager $entityManager,
+        FormFactoryInterface $formFactory,
+        ViewHandlerInterface $viewHandler
+    ) {
+        $this->serializer    = $serializer;
+        $this->entityManager = $entityManager;
+        $this->formFactory   = $formFactory;
+        $this->viewHandler   = $viewHandler;
     }
 
     /**
@@ -41,8 +54,55 @@ class AttributeOptionController
      */
     public function indexAction(AbstractAttribute $attribute)
     {
-        $options = $this->serializer->normalize($attribute->getOptions(), 'array', ['onlyOptions' => true]);
+        $options = $this->serializer->normalize($attribute->getOptions(), 'array', ['onlyActivatedLocales' => true]);
 
         return new JsonResponse($options);
+    }
+
+    /**
+     * Update an option of an attribute
+     *
+     * @param AbstractAttribute $attribute
+     *
+     * @return AttributeOption[]
+     *
+     * @ParamConverter("attribute", class="PimCatalogBundle:Attribute", options={"id" = "attribute_id"})
+     * @ParamConverter("attributeOption", class="PimCatalogBundle:AttributeOption", options={"id" = "option_id"})
+     * @AclAncestor("pim_enrich_attribute_edit")
+     */
+    public function updateAction(Request $request, AbstractAttribute $attribute, AttributeOption $attributeOption)
+    {
+        $form = $this->formFactory->createNamed('option', 'pim_enrich_attribute_option', $attributeOption);
+
+        //Should be replaced by a paramConverter
+        $data = json_decode($request->getContent(), true);
+
+        $form->submit($data, false);
+
+        if ($form->isValid()) {
+            $this->entityManager->persist($attributeOption);
+            $this->entityManager->flush($attributeOption);
+        }
+
+        return $this->viewHandler->handle(RestView::create($form));
+    }
+
+    /**
+     * Delete an option of an attribute
+     *
+     * @param AbstractAttribute $attribute
+     *
+     * @return AttributeOption[]
+     *
+     * @ParamConverter("attribute", class="PimCatalogBundle:Attribute", options={"id" = "attribute_id"})
+     * @ParamConverter("attributeOption", class="PimCatalogBundle:AttributeOption", options={"id" = "option_id"})
+     * @AclAncestor("pim_enrich_attribute_edit")
+     */
+    public function deleteAction(AbstractAttribute $attribute, AttributeOption $attributeOption)
+    {
+        $this->entityManager->remove($attributeOption);
+        $this->entityManager->flush($attributeOption);
+
+        return new JsonResponse();
     }
 }

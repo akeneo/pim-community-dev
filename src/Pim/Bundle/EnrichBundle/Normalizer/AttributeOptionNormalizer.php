@@ -31,7 +31,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
             'default'       => $object->isDefault(),
             'translatable'  => $object->isTranslatable(),
             'sort_order'    => $object->getSortOrder(),
-            'option_values' => $optionValues
+            'optionValues' => $optionValues
         ];
     }
 

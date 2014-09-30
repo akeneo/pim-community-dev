@@ -1,6 +1,20 @@
 pim_enrich_attributeoption_index:
     path: /{attribute_id}
-    defaults: { _controller: pim_enrich.controller.attribute_option:indexAction }
+    defaults: { _controller: pim_enrich.controller.attribute_option:indexAction, _format: json }
     requirements:
         attribute_id: \d+
         _method:  GET
+pim_enrich_attributeoption_update:
+    path: /{attribute_id}/{option_id}
+    defaults: { _controller: pim_enrich.controller.attribute_option:updateAction, _format: json }
+    requirements:
+        attribute_id: \d+
+        option_id: \d+
+        _method:  PUT
+pim_enrich_attributeoption_delete:
+    path: /{attribute_id}/{option_id}
+    defaults: { _controller: pim_enrich.controller.attribute_option:deleteAction, _format: json }
+    requirements:
+        attribute_id: \d+
+        option_id: \d+
+        _method:  DELETE
