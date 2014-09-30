@@ -60,22 +60,34 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_a_less_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date < '2014-03-15'")->willReturn($qb);
-        $qb->expr()->willReturn($expr);
+        $qb->andWhere("p.release_date < '2014-03-15'")->shouldBeCalled()->willReturn($qb);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $expr->lt('p.release_date', '2014-03-15')->willReturn("p.release_date < '2014-03-15'");
-        $expr->literal('2014-03-15')->willReturn('2014-03-15');
+        $expr->lt('p.release_date', '2014-03-15')->shouldBeCalled()->willReturn("p.release_date < '2014-03-15'");
+        $expr->literal('2014-03-15')->shouldBeCalled()->willReturn('2014-03-15');
 
         $this->addFieldFilter('release_date', '<', '2014-03-15');
     }
 
+
+    function it_adds_a_empty_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
+    {
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $expr->isNull('p.release_date')->shouldBeCalled()->willReturn('p.release_date IS NULL');
+        $qb->andWhere('p.release_date IS NULL')->shouldBeCalled();
+
+        $this->addFieldFilter('release_date', 'EMPTY', '');
+    }
+
     function it_adds_a_greater_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date > '2014-03-15 23:59:59'")->willReturn($qb);
-        $qb->expr()->willReturn($expr);
+        $qb->andWhere("p.release_date > '2014-03-15 23:59:59'")->shouldBeCalled()->willReturn($qb);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $expr->gt('p.release_date', '2014-03-15 23:59:59')->willReturn("p.release_date > '2014-03-15 23:59:59'");
-        $expr->literal('2014-03-15 23:59:59')->willReturn('2014-03-15 23:59:59');
+        $expr->gt('p.release_date', '2014-03-15 23:59:59')
+            ->shouldBeCalled()
+            ->willReturn("p.release_date > '2014-03-15 23:59:59'");
+        $expr->literal('2014-03-15 23:59:59')->shouldBeCalled()->willReturn('2014-03-15 23:59:59');
 
         $this->addFieldFilter('release_date', '>', '2014-03-15');
     }
@@ -84,49 +96,131 @@ class DateFilterSpec extends ObjectBehavior
     {
         $qb
             ->andWhere("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'")
+            ->shouldBeCalled()
             ->willReturn($qb);
         $expr
             ->andX("p.release_date > '2014-03-15'", "p.release_date < '2014-03-20 23:59:59'")
+            ->shouldBeCalled()
             ->willReturn("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'");
-        $qb->expr()->willReturn($expr);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $expr->gt('p.release_date', '2014-03-15')->willReturn("p.release_date > '2014-03-15'");
-        $expr->lt('p.release_date', '2014-03-20 23:59:59')->willReturn("p.release_date < '2014-03-20 23:59:59'");
-        $expr->literal('2014-03-15')->willReturn('2014-03-15');
-        $expr->literal('2014-03-20 23:59:59')->willReturn('2014-03-20 23:59:59');
+        $expr->gt('p.release_date', '2014-03-15')
+            ->shouldBeCalled()
+            ->willReturn("p.release_date > '2014-03-15'");
+        $expr->lt('p.release_date', '2014-03-20 23:59:59')
+            ->shouldBeCalled()
+            ->willReturn("p.release_date < '2014-03-20 23:59:59'");
+        $expr->literal('2014-03-15')
+            ->shouldBeCalled()
+            ->willReturn('2014-03-15');
+        $expr->literal('2014-03-20 23:59:59')->shouldBeCalled()->willReturn('2014-03-20 23:59:59');
 
         $this->addFieldFilter('release_date', 'BETWEEN', array('2014-03-15', '2014-03-20'));
     }
 
     function it_adds_an_equal_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'")->willReturn($qb);
+        $qb->andWhere("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'")
+            ->shouldBeCalled()
+            ->willReturn($qb);
         $expr
             ->andX("p.release_date > '2014-03-20'", "p.release_date < '2014-03-20 23:59:59'")
+            ->shouldBeCalled()
             ->willReturn("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'");
-        $qb->expr()->willReturn($expr);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $expr->gt('p.release_date', '2014-03-20')->willReturn("p.release_date > '2014-03-20'");
-        $expr->lt('p.release_date', '2014-03-20 23:59:59')->willReturn("p.release_date < '2014-03-20 23:59:59'");
-        $expr->literal('2014-03-20')->willReturn('2014-03-20');
-        $expr->literal('2014-03-20 23:59:59')->willReturn('2014-03-20 23:59:59');
+        $expr->gt('p.release_date', '2014-03-20')
+            ->shouldBeCalled()
+            ->willReturn("p.release_date > '2014-03-20'");
+        $expr->lt('p.release_date', '2014-03-20 23:59:59')
+            ->shouldBeCalled()
+            ->willReturn("p.release_date < '2014-03-20 23:59:59'");
+        $expr->literal('2014-03-20')
+            ->shouldBeCalled()
+            ->willReturn('2014-03-20');
+        $expr->literal('2014-03-20 23:59:59')
+            ->shouldBeCalled()
+            ->willReturn('2014-03-20 23:59:59');
 
         $this->addFieldFilter('release_date', '=', '2014-03-20');
     }
 
     function it_adds_a_not_between_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'")->willReturn($qb);
+        $qb->andWhere("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'")
+            ->shouldBeCalled()
+            ->willReturn($qb);
         $expr
             ->orX("p.release_date < '2014-03-15'", "p.release_date > '2014-03-20 23:59:59'")
+            ->shouldBeCalled()
             ->willReturn("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'");
-        $qb->expr()->willReturn($expr);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $expr->lt('p.release_date', '2014-03-15')->willReturn("p.release_date < '2014-03-15'");
-        $expr->gt('p.release_date', '2014-03-20 23:59:59')->willReturn("p.release_date > '2014-03-20 23:59:59'");
-        $expr->literal('2014-03-15')->willReturn('2014-03-15');
-        $expr->literal('2014-03-20 23:59:59')->willReturn('2014-03-20 23:59:59');
+        $expr->lt('p.release_date', '2014-03-15')->shouldBeCalled()->willReturn("p.release_date < '2014-03-15'");
+        $expr->gt('p.release_date', '2014-03-20 23:59:59')
+            ->shouldBeCalled()
+            ->willReturn("p.release_date > '2014-03-20 23:59:59'");
+        $expr->literal('2014-03-15')
+            ->shouldBeCalled()
+            ->willReturn('2014-03-15');
+        $expr->literal('2014-03-20 23:59:59')
+            ->shouldBeCalled()
+            ->willReturn('2014-03-20 23:59:59');
 
         $this->addFieldFilter('release_date', 'NOT BETWEEN', array('2014-03-15', '2014-03-20'));
+    }
+
+    function it_adds_an_empty_operator_filter_on_an_attribute_to_the_query(
+        AbstractAttribute $attribute,
+        QueryBuilder $qb,
+        Expr $expr
+    ) {
+        $qb->getRootAlias()->willReturn('p');
+        $attribute->getBackendType()->willReturn('backend_type');
+        $attribute->getCode()->willReturn('code');
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->andWhere(null)->shouldBeCalled()->willReturn($expr);
+
+        $qb->leftJoin(
+            'p.values',
+            'filtercode',
+            'WITH',
+            'filtercode.attribute = 42'
+        )->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'EMPTY', null);
+    }
+
+    function it_adds_a_greater_than_filter_on_an_attribute_to_the_query(
+        AbstractAttribute $attribute,
+        QueryBuilder $qb,
+        Expr $expr,
+        Expr\Comparison $comparison
+    ) {
+        $qb->getRootAlias()->willReturn('p');
+        $attribute->getBackendType()->willReturn('backend_type');
+        $attribute->getCode()->willReturn('code');
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $expr->literal('2014-03-15')->willReturn('code');
+        $expr->literal('en_US')->willReturn('code');
+        $expr->literal('mobile')->willReturn('code');
+
+        $expr->gt('filtercode.backend_type', 'code')->willReturn($comparison)->shouldBeCalled();
+        $comparison->__toString()->willReturn();
+
+        $qb->innerJoin(
+            'p.values',
+            'filtercode',
+            'WITH',
+            'filtercode.attribute = 42 AND '
+        )->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, '>', '2014-03-15');
     }
 }

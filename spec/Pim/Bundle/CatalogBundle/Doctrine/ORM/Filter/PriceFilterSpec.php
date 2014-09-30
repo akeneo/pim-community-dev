@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Doctrine\ORM\Query\Expr\Comparison;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
@@ -130,8 +131,13 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '<=', '12 EUR');
     }
 
-    /** TODO : to fix
-    function it_adds_an_empty_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price)
+    function it_checks_if_attribute_is_supported(AbstractAttribute $attribute)
+    {
+        $attribute->getAttributeType()->shouldBeCalled()->willReturn('pim_catalog_price_collection');
+        $this->supportsAttribute($attribute)->shouldReturn(true);
+    }
+
+    function it_adds_an_empty_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price, Expr $expr, Comparison $comparison)
     {
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
@@ -147,11 +153,17 @@ class PriceFilterSpec extends ObjectBehavior
 
         $queryBuilder->leftJoin('filterprice.prices', 'filterPprice')->shouldBeCalled();
 
-//        $queryBuilder->expr()->isNull('filterPprice.id')->shouldBeCalled();
-//        $queryBuilder->expr()->orX('filterPprice.currency = '' AND filterPprice.data IS NULL')->shouldBeCalled();
+        $queryBuilder->expr()->willReturn($expr);
 
-//        $queryBuilder->where();
+        $expr->literal('')->shouldBeCalled()->willReturn('ok');
+        $expr->eq('filterPprice.currency', 'ok')->willReturn($comparison);
+        $expr->isNull('filterPprice.data')->shouldBeCalled()->willReturn('filterPprice.data IS NULL');
+        $expr->isNull('filterPprice.id')->shouldBeCalled()->willReturn('filterPprice.id IS NULL');
+        $expr->orX(' AND filterPprice.data IS NULL', 'filterPprice.id IS NULL')->shouldBeCalled();
+        $queryBuilder->andWhere(null)->shouldBeCalled();
+
+
 
         $this->addAttributeFilter($price, 'EMPTY', ' ');
-    }*/
+    }
 }
