@@ -38,7 +38,7 @@ class OptionFilter implements AttributeFilterInterface
     public function __construct(CatalogContext $context)
     {
         $this->context = $context;
-        $this->supportedOperators = ['IN', 'NOT IN'];
+        $this->supportedOperators = ['IN'];
     }
 
     /**
@@ -58,6 +58,7 @@ class OptionFilter implements AttributeFilterInterface
 
         // prepare join value condition
         $optionAlias = $joinAlias .'.option';
+        //TODO: the value should not contain empty  (comes from the frontend) => it should be in the operator
         if (in_array('empty', $value)) {
             unset($value[array_search('empty', $value)]);
             $expr = $this->qb->expr()->isNull($optionAlias);

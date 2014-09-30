@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
+use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
@@ -35,7 +36,7 @@ class OptionFilter implements AttributeFilterInterface
     public function __construct(CatalogContext $context)
     {
         $this->context = $context;
-        $this->supportedOperators = ['IN', 'NOT IN'];
+        $this->supportedOperators = ['IN'];
     }
 
     /**
@@ -79,19 +80,17 @@ class OptionFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.id', $field);
 
+        // TODO: empty should not be present in the value, it comes from the front
         if (in_array('empty', $value)) {
             unset($value[array_search('empty', $value)]);
 
-            $expr = new Expr();
-            $expr = $expr->field($field)->exists(false);
+            $expr = $this->qb->expr()->field($field)->exists(false);
             $this->qb->addOr($expr);
         }
 
         if (count($value) > 0) {
             $value = array_map('intval', $value);
-            $expr = new Expr();
-            $expr->field($field)->in($value);
-
+            $expr = $this->qb->expr()->field($field)->in($value);
             $this->qb->addOr($expr);
         }
 

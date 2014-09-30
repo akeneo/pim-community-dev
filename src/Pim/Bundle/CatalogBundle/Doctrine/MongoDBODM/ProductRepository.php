@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -33,14 +34,10 @@ class ProductRepository extends DocumentRepository implements
     ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface
 {
-    /** @var ProductQueryBuilder */
+    /** @var ProductQueryBuilderInterface */
     protected $productQB;
 
-    /**
-     * ORM EntityManager to access ORM entities
-     *
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
     /** @var AttributeRepository */

@@ -35,7 +35,7 @@ class OptionsFilter implements AttributeFilterInterface
     public function __construct(CatalogContext $context)
     {
         $this->context = $context;
-        $this->supportedOperators = ['IN', 'NOT IN', 'EMPTY'];
+        $this->supportedOperators = ['IN', 'NOT IN'];
     }
 
     /**
@@ -83,9 +83,13 @@ class OptionsFilter implements AttributeFilterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|array $field
+     * @param string       $operator
+     * @param string|array $value
+     *
+     * @return OptionsFilter
      */
-    public function addFieldFilter($field, $operator, $value)
+    protected function addFieldFilter($field, $operator, $value)
     {
         $value = is_array($value) ? $value : [$value];
 
@@ -95,15 +99,13 @@ class OptionsFilter implements AttributeFilterInterface
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
 
-                $expr = new Expr();
-                $expr = $expr->field($field)->exists(false);
+                $expr = $this->qb->expr()->field($field)->exists(false);
                 $this->qb->addOr($expr);
             }
 
             if (count($value) > 0) {
-                $expr = new Expr();
                 $value = array_map('intval', $value);
-                $expr->field($field .'.id')->in($value);
+                $expr = $this->qb->expr()->field($field .'.id')->in($value);
                 $this->qb->addOr($expr);
             }
         }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
@@ -53,9 +54,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Get query builder
      *
-     * @param mixed $qb
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
      *
-     * @return ProductQueryBuilder
+     * @return ProductQueryBuilderInterface
      */
     public function setQueryBuilder($qb)
     {
@@ -67,7 +68,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Get query builder
      *
-     * @return string
+     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     * @throws \LogicException
      */
     public function getQueryBuilder()
     {

@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -30,6 +31,15 @@ class MetricFilterSpec extends ObjectBehavior
         $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
+    function it_supports_metric_attribute(AbstractAttribute $attribute)
+    {
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $this->supportsAttribute($attribute)->shouldReturn(true);
+
+        $attribute->getAttributeType()->willReturn(Argument::any());
+        $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
     function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)

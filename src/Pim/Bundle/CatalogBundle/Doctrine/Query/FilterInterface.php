@@ -15,7 +15,7 @@ interface FilterInterface
      * Inject the query builder
      * TODO : QueryBuilderAwareInterface ?
      *
-     * @param mixed $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
      */
     public function setQueryBuilder($queryBuilder);
 
