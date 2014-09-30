@@ -13,12 +13,14 @@ interface ScopableInterface
 {
     /**
      * Get used scope
+     *
      * @return string $scope
      */
     public function getScope();
 
     /**
      * Set used scope
+     *
      * @param string $scope
      *
      * @return ScopableInterface

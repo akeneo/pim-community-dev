@@ -91,7 +91,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                         'green' => array('en' => 'Green', 'fr' => 'Vert'),
                         'red'   => array('en' => 'Red', 'fr' => 'Rouge')
                     ),
-                    'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '0',
                 )
             ),
@@ -112,7 +111,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'default_metric_unit'    => '',
                     'scope'                  => 'Channel',
                     'options'                => array(),
-                    'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '1',
                     'max_characters'         => '200',
                     'validation_rule'        => 'regexp',
@@ -171,7 +169,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
         $attribute->setUnique($data['unique']);
         $attribute->setLocalizable($data['localizable']);
         $attribute->setScopable(strtolower($data['scope']) !== 'global');
-        $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
         $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);
         $attribute->setMetricFamily($data['metric_family']);
         $attribute->setDefaultMetricUnit($data['default_metric_unit']);

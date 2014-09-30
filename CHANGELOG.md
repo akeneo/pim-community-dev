@@ -7,9 +7,11 @@
 - Add comments on a product
 
 ## Improvements
- - remove the fixed mysql socket location
- - switch to stability stable
- - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+ - Remove the fixed mysql socket location
+ - Switch to stability stable
+ - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+ - Remove deprecated attribute property *Usable as a grid column*
+ - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -22,6 +24,7 @@
 # 1.2.x
 
 ## Bug fixes
+- Fix no warning message when leaving a product form after a submit with errors
 
 # 1.2.6 (2014-09-26)
 

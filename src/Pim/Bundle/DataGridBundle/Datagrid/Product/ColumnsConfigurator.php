@@ -119,7 +119,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $this->attributesColumns = array();
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $showColumn        = $attribute['useableAsGridColumn'];
             $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
@@ -133,7 +132,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 );
             }
 
-            if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
+            if ($attributeTypeConf && $attributeTypeConf['column']) {
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
                     'label' => $attribute['label'],
