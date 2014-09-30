@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
-class ProductQueryFilterRegistrySpec extends ObjectBehavior
+class QueryFilterRegistrySpec extends ObjectBehavior
 {
     function let(FieldFilterInterface $fieldFilter, AttributeFilterInterface $attributeFilter)
     {
@@ -18,7 +18,7 @@ class ProductQueryFilterRegistrySpec extends ObjectBehavior
 
     function it_is_a_filter_registry()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFilterRegistryInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface');
     }
 
     function it_returns_a_supported_field_filter($fieldFilter)

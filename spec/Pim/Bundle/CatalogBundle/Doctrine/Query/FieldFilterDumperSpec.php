@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\TableHelper;
 
 class FieldFilterDumperSpec extends ObjectBehavior
 {
-    function let(ProductQueryFilterRegistryInterface $registry)
+    function let(QueryFilterRegistryInterface $registry)
     {
         $this->beConstructedWith($registry);
     }

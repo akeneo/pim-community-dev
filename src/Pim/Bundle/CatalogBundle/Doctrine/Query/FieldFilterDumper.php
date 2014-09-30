@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 
@@ -15,13 +15,13 @@ use Symfony\Component\Console\Helper\HelperSet;
  */
 class FieldFilterDumper implements DumperInterface
 {
-    /** @var ProductQueryFilterRegistryInterface */
+    /** @var QueryFilterRegistryInterface */
     protected $registry;
 
     /**
-     * @param ProductQueryFilterRegistryInterface $registry
+     * @param QueryFilterRegistryInterface $registry
      */
-    public function __construct(ProductQueryFilterRegistryInterface $registry)
+    public function __construct(QueryFilterRegistryInterface $registry)
     {
         $this->registry = $registry;
     }

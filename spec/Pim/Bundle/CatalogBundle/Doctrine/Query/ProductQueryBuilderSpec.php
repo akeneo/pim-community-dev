@@ -7,8 +7,8 @@ use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {
-    function let(CatalogContext $context, CustomAttributeRepository $repository, ProductQueryFilterRegistryInterface $filterRegistry, ProductQuerySorterRegistryInterface $sorterRegistry)
+    function let(CatalogContext $context, CustomAttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry)
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');

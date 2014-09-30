@@ -24,25 +24,25 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var CatalogContext */
     protected $context;
 
-    /** ProductQueryFilterRegistryInterface */
+    /** QueryFilterRegistryInterface */
     protected $filterRegistry;
 
-    /** ProductQuerySorterRegistryInterface */
+    /** QuerySorterRegistryInterface */
     protected $sorterRegistry;
 
     /**
      * Constructor
      *
-     * @param CatalogContext                      $catalogContext
-     * @param AttributeRepository                 $attributeRepository
-     * @param ProductQueryFilterRegistryInterface $filterRegistry
-     * @param ProductQuerySorterRegistryInterface $sorterRegistry
+     * @param CatalogContext               $catalogContext
+     * @param AttributeRepository          $attributeRepository
+     * @param QueryFilterRegistryInterface $filterRegistry
+     * @param QuerySorterRegistryInterface $sorterRegistry
      */
     public function __construct(
         CatalogContext $catalogContext,
         AttributeRepository $attributeRepository,
-        ProductQueryFilterRegistryInterface $filterRegistry,
-        ProductQuerySorterRegistryInterface $sorterRegistry
+        QueryFilterRegistryInterface $filterRegistry,
+        QuerySorterRegistryInterface $sorterRegistry
     ) {
         $this->context = $catalogContext;
         $this->attributeRepository = $attributeRepository;

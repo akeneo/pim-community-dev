@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductQueryFilterRegistry implements ProductQueryFilterRegistryInterface
+class QueryFilterRegistry implements QueryFilterRegistryInterface
 {
     /** @var AttributeFilterInterface[] priorized attribute filters */
     protected $attributeFilters = [];
