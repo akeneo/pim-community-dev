@@ -24,28 +24,30 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var CatalogContext */
     protected $context;
 
-    /** @var AttributeFilterInterface[] priorized attribute filters */
-    protected $attributeFilters = [];
+    /** QueryFilterRegistryInterface */
+    protected $filterRegistry;
 
-    /** @var FieldSorterInterface[] priorized field filters */
-    protected $fieldFilters = [];
-
-    /** @var AttributeSorterInterface[] priorized attribute sorters */
-    protected $attributeSorters = [];
-
-    /** @var FieldSorterInterface[] priorized field sorters */
-    protected $fieldSorters = [];
+    /** QuerySorterRegistryInterface */
+    protected $sorterRegistry;
 
     /**
      * Constructor
      *
-     * @param CatalogContext      $catalogContext
-     * @param AttributeRepository $attributeRepository
+     * @param CatalogContext               $catalogContext
+     * @param AttributeRepository          $attributeRepository
+     * @param QueryFilterRegistryInterface $filterRegistry
+     * @param QuerySorterRegistryInterface $sorterRegistry
      */
-    public function __construct(CatalogContext $catalogContext, AttributeRepository $attributeRepository)
-    {
+    public function __construct(
+        CatalogContext $catalogContext,
+        AttributeRepository $attributeRepository,
+        QueryFilterRegistryInterface $filterRegistry,
+        QuerySorterRegistryInterface $sorterRegistry
+    ) {
         $this->context = $catalogContext;
         $this->attributeRepository = $attributeRepository;
+        $this->filterRegistry = $filterRegistry;
+        $this->sorterRegistry = $sorterRegistry;
     }
 
     /**
@@ -79,107 +81,35 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFilter($field)
-    {
-        foreach ($this->fieldFilters as $filter) {
-            if ($filter->supportsField($field)) {
-                return $filter;
-            }
-        }
-
-        $attribute = $this->attributeRepository->findOneByCode($field);
-        if (!$attribute) {
-            return null;
-        }
-
-        foreach ($this->attributeFilters as $filter) {
-            if ($filter->supportsAttribute($attribute)) {
-                return $filter;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addFilter($field, $operator, $value)
     {
-        $applied = $this->addFieldFilter($field, $operator, $value);
+        $attribute = $this->attributeRepository->findOneByCode($field);
 
-        if (!$applied) {
-            $attribute = $this->attributeRepository->findOneByCode($field);
-            if (!$attribute) {
-                throw new \LogicException(
-                    sprintf(
-                        'Filter on field "%s" with operator "%s" is not supported or attribute %s not exists',
-                        $field,
-                        $operator,
-                        $field
-                    )
-                );
-            }
-            $applied = $this->addAttributeFilter($attribute, $operator, $value);
+        if ($attribute !== null) {
+            $filter = $this->filterRegistry->getAttributeFilter($attribute);
+        } else {
+            $filter = $this->filterRegistry->getFieldFilter($field);
         }
 
-        if (!$applied) {
+        if ($filter === null) {
             throw new \LogicException(
-                sprintf(
-                    'Filter on field "%s" with operator "%s" is not supported',
-                    $field,
-                    $operator
-                )
+                sprintf('Filter on field "%s" is not supported', $field)
             );
         }
 
+        if ($filter->supportsOperator($operator) === false) {
+            throw new \LogicException(
+                sprintf('Filter on field "%s" doesn\'t provide operator "%s"', $field, $operator)
+            );
+        }
+
+        if ($attribute !== null) {
+            $this->addAttributeFilter($filter, $attribute, $operator, $value);
+        } else {
+            $this->addFieldFilter($filter, $field, $operator, $value);
+        }
+
         return $this;
-    }
-
-    /**
-     * Add a filter condition on an attribute
-     *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
-     *
-     * @return boolean a filter has been applied
-     */
-    protected function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
-    {
-        foreach ($this->attributeFilters as $filter) {
-            if ($filter->supportsAttribute($attribute) && $filter->supportsOperator($operator)) {
-                $filter->setQueryBuilder($this->getQueryBuilder());
-                $filter->addAttributeFilter($attribute, $operator, $value);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Add a filter condition on a field
-     *
-     * @param string $field    the field
-     * @param string $operator the used operator
-     * @param string $value    the value to filter
-     *
-     * @return boolean a filter has been applied
-     */
-    protected function addFieldFilter($field, $operator, $value)
-    {
-        foreach ($this->fieldFilters as $filter) {
-            if ($filter->supportsField($field) && $filter->supportsOperator($operator)) {
-                $filter->setQueryBuilder($this->getQueryBuilder());
-                $filter->addFieldFilter($field, $operator, $value);
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -194,30 +124,82 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addSorter($field, $direction)
     {
-        $applied = $this->addFieldSorter($field, $direction);
+        $attribute = $this->attributeRepository->findOneByCode($field);
 
-        if (!$applied) {
-            $attribute = $this->attributeRepository->findOneByCode($field);
-            if (!$attribute) {
-                throw new \LogicException(
-                    sprintf(
-                        'Sorter on field "%s" is not supported or there is no attribute %s',
-                        $field,
-                        $field
-                    )
-                );
-            }
-            $applied = $this->addAttributeSorter($attribute, $direction);
+        if ($attribute !== null) {
+            $sorter = $this->sorterRegistry->getAttributeSorter($attribute);
+        } else {
+            $sorter = $this->sorterRegistry->getFieldSorter($field);
         }
 
-        if (!$applied) {
+        if ($sorter === null) {
             throw new \LogicException(
-                sprintf(
-                    'Sorter on field "%s" is not supported',
-                    $field
-                )
+                sprintf('Sorter on field "%s" is not supported', $field)
             );
         }
+
+        if ($attribute !== null) {
+            $this->addAttributeSorter($sorter, $attribute, $direction);
+        } else {
+            $this->addFieldSorter($sorter, $field, $direction);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add a filter condition on a field
+     *
+     * @param FieldFilterInterface $filter   the filter
+     * @param string               $field    the field
+     * @param string               $operator the operator
+     * @param mixed                $value    the value to filter
+     *
+     * @return ProductQueryBuilderInterface
+     */
+    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value)
+    {
+        $filter->setQueryBuilder($this->getQueryBuilder());
+        $filter->addFieldFilter($field, $operator, $value);
+
+        return $this;
+    }
+
+    /**
+     * Add a filter condition on an attribute
+     *
+     * @param AttributeFilterInterface $filter    the filter
+     * @param AbstractAttribute        $attribute the attribute
+     * @param string                   $operator  the operator
+     * @param mixed                    $value     the value to filter
+     *
+     * @return ProductQueryBuilderInterface
+     */
+    protected function addAttributeFilter(
+        AttributeFilterInterface $filter,
+        AbstractAttribute $attribute,
+        $operator,
+        $value
+    ) {
+        $filter->setQueryBuilder($this->getQueryBuilder());
+        $filter->addAttributeFilter($attribute, $operator, $value);
+
+        return $this;
+    }
+
+    /**
+     * Sort by field
+     *
+     * @param FieldSorterInterface $sorter    the sorter
+     * @param string               $field     the field to sort on
+     * @param string               $direction the direction to use
+     *
+     * @return ProductQueryBuilderInterface
+     */
+    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction)
+    {
+        $sorter->setQueryBuilder($this->getQueryBuilder());
+        $sorter->addFieldSorter($field, $direction);
 
         return $this;
     }
@@ -225,74 +207,17 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Sort by attribute value
      *
-     * @param AbstractAttribute $attribute the attribute to sort on
-     * @param string            $direction the direction to use
+     * @param AttributeSorterInterface $sorter    the sorter
+     * @param AbstractAttribute        $attribute the attribute to sort on
+     * @param string                   $direction the direction to use
      *
-     * @return boolean a sorter has been applied
+     * @return ProductQueryBuilderInterface
      */
-    protected function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    protected function addAttributeSorter(AttributeSorterInterface $sorter, AbstractAttribute $attribute, $direction)
     {
-        foreach ($this->attributeSorters as $sorter) {
-            if ($sorter->supportsAttribute($attribute)) {
-                $sorter->setQueryBuilder($this->getQueryBuilder());
-                $sorter->addAttributeSorter($attribute, $direction);
+        $sorter->setQueryBuilder($this->getQueryBuilder());
+        $sorter->addAttributeSorter($attribute, $direction);
 
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Sort by field
-     *
-     * @param string $field     the field to sort on
-     * @param string $direction the direction to use
-     *
-     * @return boolean a sorter has been applied
-     */
-    protected function addFieldSorter($field, $direction)
-    {
-        foreach ($this->fieldSorters as $sorter) {
-            if ($sorter->supportsField($field)) {
-                $sorter->setQueryBuilder($this->getQueryBuilder());
-                $sorter->addFieldSorter($field, $direction);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Register the filter
-     *
-     * @param FilterInterface $filter
-     */
-    public function registerFilter(FilterInterface $filter)
-    {
-        if ($filter instanceof FieldFilterInterface) {
-            $this->fieldFilters[]= $filter;
-        }
-        if ($filter instanceof AttributeFilterInterface) {
-            $this->attributeFilters[]= $filter;
-        }
-    }
-
-    /**
-     * Register the sorter
-     *
-     * @param SorterInterface $sorter
-     */
-    public function registerSorter(SorterInterface $sorter)
-    {
-        if ($sorter instanceof FieldSorterInterface) {
-            $this->fieldSorters[]= $sorter;
-        }
-        if ($sorter instanceof AttributeSorterInterface) {
-            $this->attributeSorters[]= $sorter;
-        }
+        return $this;
     }
 }

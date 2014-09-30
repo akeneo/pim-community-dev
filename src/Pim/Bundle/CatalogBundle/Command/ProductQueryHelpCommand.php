@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Pim\Bundle\CatalogBundle\Doctrine\Query\DumperInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Helps to query products
@@ -31,63 +31,24 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<info>Useable field filters...<info>");
-        $pqb = $this->getProductQueryBuilder();
-
-        $fields = ['id', 'created', 'updated', 'enabled', 'completeness', 'family', 'groups'];
-        $rows = [];
-        foreach ($fields as $field) {
-            // TODO a filter and a sorter registry, PQB use them ?
-            $filter = $pqb->getFilter($field);
-            if ($filter) {
-                $class = get_class($filter);
-                $operators = implode(', ', $pqb->getFilter($field)->getOperators());
-            } else {
-                $class = 'Not supported';
-                $operators = '';
-            }
-            $filter = $pqb->getFilter($field);
-            $rows[]= [$field, $class, $operators];
-        }
-        $table = $this->getHelper('table');
-        $table->setHeaders(['field', 'filter_class', 'operators'])->setRows($rows);
-        $table->render($output);
-
-        $output->writeln("<info>Useable attributes filters...<info>");
-        $attributes = $this->getAttributeRepository()->findAll();
-        $rows = [];
-        foreach ($attributes as $attribute) {
-            $field = $attribute->getCode();
-            // TODO a filter and a sorter registry, PQB use them ?
-            $filter = $pqb->getFilter($field);
-            if ($filter) {
-                $class = get_class($filter);
-                $operators = implode(', ', $pqb->getFilter($field)->getOperators());
-            } else {
-                $class = 'Not supported';
-                $operators = '';
-            }
-
-            $rows[]= [$field, $attribute->getAttributeType(), $class, $operators];
-        }
-        $table = $this->getHelper('table');
-        $table->setHeaders(['attribute', 'attribute type', 'filter_class', 'operators'])->setRows($rows);
-        $table->render($output);
+        $helperSet = $this->getHelperSet();
+        $this->getFieldFilterDumper()->dump($output, $helperSet);
+        $this->getAttributeFilterDumper()->dump($output, $helperSet);
     }
 
     /**
-     * @return ProductQueryBuilderInterface
+     * @return DumperInterface
      */
-    protected function getProductQueryBuilder()
+    protected function getFieldFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.doctrine.product_query_builder');
+        return $this->getContainer()->get('pim_catalog.doctrine.query.field_filter_dumper');
     }
 
     /**
-     * @return AttributeRepository
+     * @return DumperInterface
      */
-    protected function getAttributeRepository()
+    protected function getAttributeFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.repository.attribute');
+        return $this->getContainer()->get('pim_catalog.doctrine.query.attribute_filter_dumper');
     }
 }
