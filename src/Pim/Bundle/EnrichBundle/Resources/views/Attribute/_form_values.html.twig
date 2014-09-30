@@ -7,7 +7,7 @@
 
 
 {% set optionsContent %}
-    <table id="attribute-option-grid" data-attribute-id="{{ form.vars.value.id }}"></table>
+    <div id="attribute-option-grid" data-attribute-id="{{ form.vars.value.id }}" data-locales="{{ locales|json_encode() }}"></div>
     <script type="text/javascript">
         require(['jquery', 'pim/attributeoptionview'], function($, attributeoptiongrid) {
             attributeoptiongrid($('#attribute-option-grid'));

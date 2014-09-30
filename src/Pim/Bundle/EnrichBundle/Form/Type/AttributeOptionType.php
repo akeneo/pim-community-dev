@@ -79,10 +79,10 @@ class AttributeOptionType extends AbstractType
             'optionValues',
             'collection',
             array(
-                'type'         => 'pim_enrich_attribute_option_value',
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'by_reference' => false
+                'type'            => 'pim_enrich_attribute_option_value',
+                'allow_add'       => true,
+                'allow_delete'    => true,
+                'by_reference'    => false,
             )
         );
     }
@@ -103,7 +103,8 @@ class AttributeOptionType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption'
+                'data_class'      => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
+                'csrf_protection' => false
             )
         );
     }

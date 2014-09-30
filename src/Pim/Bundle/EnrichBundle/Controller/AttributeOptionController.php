@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use FOS\RestBundle\View\View as RestVIew;
 use FOS\RestBundle\View\ViewHandlerInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 /**
  * Attribute option controller
@@ -72,16 +73,24 @@ class AttributeOptionController
      */
     public function updateAction(Request $request, AbstractAttribute $attribute, AttributeOption $attributeOption)
     {
+        foreach ($attributeOption->getOptionValues() as $value) {
+            $attributeOption->removeOptionValue($value);
+            $this->entityManager->remove($value);
+            $this->entityManager->flush($value);
+        }
+
         $form = $this->formFactory->createNamed('option', 'pim_enrich_attribute_option', $attributeOption);
 
         //Should be replaced by a paramConverter
         $data = json_decode($request->getContent(), true);
-
         $form->submit($data, false);
+
 
         if ($form->isValid()) {
             $this->entityManager->persist($attributeOption);
-            $this->entityManager->flush($attributeOption);
+            $this->entityManager->flush();
+
+            return new JsonResponse();
         }
 
         return $this->viewHandler->handle(RestView::create($form));

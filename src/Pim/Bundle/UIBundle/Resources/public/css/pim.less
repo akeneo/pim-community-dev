@@ -454,3 +454,69 @@ span.link-label {
     }
   }
 }
+
+.attribute-option-view {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  border-radius: 2px;
+  table-layout: fixed;
+
+  td {
+    border: 1px solid #ddd;
+    line-height: 12px;
+    vertical-align: middle;
+    padding: 5px 6px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+
+  th {
+    text-align: center;
+    padding: 5px 0px !important;
+    background: #f3f3f3;
+  }
+
+  .btn-small {
+    margin-right: 3px;
+
+    i {
+      width: 10px;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+
+  .editable {
+    .field-cell {
+      padding: 2px;
+
+      input[type="text"] {
+        padding: 2px 3px;
+        font-size: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        height: 24px;
+      }
+    }
+  }
+
+  .fields {
+
+    &:first-child {
+      min-width: 50px;
+    }
+  }
+
+  .default {
+    width: 50px;
+  }
+
+  .action {
+    width: 99px;
+  }
+}

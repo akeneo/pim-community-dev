@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 /**
  * Attribute normalizer
@@ -14,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
+class AttributeOptionValueCollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     protected $serializer;
 
@@ -26,7 +28,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
         $normalizedItems = [];
 
         foreach ($object as $item) {
-            $normalizedItems[] = $this->serializer->normalize($item, $format, $context);
+            $normalizedItems[$item->getLocale()] = $this->serializer->normalize($item, $format, $context);
         }
 
         return $normalizedItems;
@@ -37,7 +39,9 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Collection && $format === 'array';
+        return $data instanceof Collection &&
+            $data->first() instanceof AttributeOptionValue &&
+            $format === 'array';
     }
 
     /**

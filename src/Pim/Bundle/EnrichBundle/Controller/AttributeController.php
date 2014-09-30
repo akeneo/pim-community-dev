@@ -165,7 +165,7 @@ class AttributeController extends AbstractDoctrineController
 
         return [
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveLocales(),
+            'locales'         => $this->localeManager->getActiveCodes(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'attributeType'   => $attributeType
@@ -193,7 +193,7 @@ class AttributeController extends AbstractDoctrineController
 
         return array(
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveLocales(),
+            'locales'         => $this->localeManager->getActiveCodes(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'created'         => $this->versionManager->getOldestLogEntry($attribute),
