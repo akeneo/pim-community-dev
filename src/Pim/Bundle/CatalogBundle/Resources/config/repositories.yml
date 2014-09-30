@@ -14,6 +14,8 @@ parameters:
     pim_catalog.doctrine.product_query_builder.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder
     pim_catalog.doctrine.query.product_filter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFilterRegistry
     pim_catalog.doctrine.query.product_sorter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQuerySorterRegistry
+    pim_catalog.doctrine.query.field_filter_dumper.class: Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterDumper
+    pim_catalog.doctrine.query.attribute_filter_dumper.class: Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterDumper
 
 services:
     pim_catalog.repository.association_type:
@@ -133,3 +135,14 @@ services:
 
     pim_catalog.doctrine.query.product_sorter_registry:
         class: %pim_catalog.doctrine.query.product_sorter_registry.class%
+
+    pim_catalog.doctrine.query.field_filter_dumper:
+        class: %pim_catalog.doctrine.query.field_filter_dumper.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.product_filter_registry'
+
+    pim_catalog.doctrine.query.attribute_filter_dumper:
+        class: %pim_catalog.doctrine.query.attribute_filter_dumper.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.product_filter_registry'
+            - '@pim_catalog.repository.attribute'
