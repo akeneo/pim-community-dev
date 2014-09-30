@@ -12,8 +12,8 @@ class ProductQueryFilterRegistrySpec extends ObjectBehavior
 {
     function let(FieldFilterInterface $fieldFilter, AttributeFilterInterface $attributeFilter)
     {
-        $this->registerFilter($fieldFilter);
-        $this->registerFilter($attributeFilter);
+        $this->register($fieldFilter);
+        $this->register($attributeFilter);
     }
 
     function it_is_a_filter_registry()

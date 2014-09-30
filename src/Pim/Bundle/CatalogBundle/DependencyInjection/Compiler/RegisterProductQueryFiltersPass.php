@@ -45,7 +45,7 @@ class RegisterProductQueryFiltersPass implements CompilerPassInterface
 
         $filters = $this->findAndSortTaggedServices(self::QUERY_FILTER_TAG, $container);
         foreach ($filters as $filter) {
-            $registry->addMethodCall('registerFilter', [$filter]);
+            $registry->addMethodCall('register', [$filter]);
         }
     }
 

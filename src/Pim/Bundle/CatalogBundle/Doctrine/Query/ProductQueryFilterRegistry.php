@@ -22,7 +22,7 @@ class ProductQueryFilterRegistry implements ProductQueryFilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function registerFilter(FilterInterface $filter)
+    public function register(FilterInterface $filter)
     {
         if ($filter instanceof FieldFilterInterface) {
             $this->fieldFilters[]= $filter;

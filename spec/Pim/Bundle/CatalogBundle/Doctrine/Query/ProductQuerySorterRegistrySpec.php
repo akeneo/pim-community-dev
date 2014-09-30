@@ -12,8 +12,8 @@ class ProductQuerySorterRegistrySpec extends ObjectBehavior
 {
     function let(FieldSorterInterface $fieldSorter, AttributeSorterInterface $attributeSorter)
     {
-        $this->registerSorter($fieldSorter);
-        $this->registerSorter($attributeSorter);
+        $this->register($fieldSorter);
+        $this->register($attributeSorter);
     }
 
     function it_is_a_sorter_registry()

@@ -18,7 +18,7 @@ interface ProductQueryFilterRegistryInterface
      *
      * @param FilterInterface $filter
      */
-    public function registerFilter(FilterInterface $filter);
+    public function register(FilterInterface $filter);
 
     /**
      * Get the field filter

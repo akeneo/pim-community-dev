@@ -18,7 +18,7 @@ interface ProductQuerySorterRegistryInterface
      *
      * @param SorterInterface $sorter
      */
-    public function registerSorter(SorterInterface $sorter);
+    public function register(SorterInterface $sorter);
 
     /**
      * Get the field sorter

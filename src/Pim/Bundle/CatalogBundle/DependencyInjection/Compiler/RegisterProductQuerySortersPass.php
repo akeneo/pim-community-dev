@@ -45,7 +45,7 @@ class RegisterProductQuerySortersPass implements CompilerPassInterface
 
         $sorters = $this->findAndSortTaggedServices(self::QUERY_SORTER_TAG, $container);
         foreach ($sorters as $sorter) {
-            $registry->addMethodCall('registerSorter', [$sorter]);
+            $registry->addMethodCall('register', [$sorter]);
         }
     }
 

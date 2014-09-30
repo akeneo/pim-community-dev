@@ -22,7 +22,7 @@ class ProductQuerySorterRegistry implements ProductQuerySorterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function registerSorter(SorterInterface $sorter)
+    public function register(SorterInterface $sorter)
     {
         if ($sorter instanceof FieldSorterInterface) {
             $this->fieldSorters[]= $sorter;

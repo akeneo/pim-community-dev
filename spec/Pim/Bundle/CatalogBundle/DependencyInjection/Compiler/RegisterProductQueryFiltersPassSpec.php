@@ -28,7 +28,7 @@ class RegisterProductQueryFiltersPassSpec extends ObjectBehavior
         $container->findTaggedServiceIds(RegisterProductQueryFiltersPass::QUERY_FILTER_TAG)
             ->willReturn(['filterId' => [['priority' => '22']]]);
 
-        $registryDefinition->addMethodCall('registerFilter', Argument::any())->shouldBeCalled();
+        $registryDefinition->addMethodCall('register', Argument::any())->shouldBeCalled();
 
         $this->process($container);
     }
