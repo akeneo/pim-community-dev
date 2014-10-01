@@ -194,6 +194,10 @@ hr.small {
   border-bottom: 1px solid #ccc;
 }
 
+.widget-content {
+  position: relative;
+}
+
 a[data-toggle-channel] {
   padding: 5px;
   color: @textColor;
@@ -224,7 +228,7 @@ a[data-toggle-channel] {
     }
   }
   tr.channel {
-    &.first {
+    &:first-of-type {
       border-top: none;
     }
     border-top: 1px solid #c2c2c2;

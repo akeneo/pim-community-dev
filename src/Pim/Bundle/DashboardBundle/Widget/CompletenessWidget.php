@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 
 /**
@@ -20,10 +21,12 @@ class CompletenessWidget implements WidgetInterface
 
     /**
      * @param CompletenessRepositoryInterface $completenessRepo
+     * @param LocaleHelper                    $localeHelper
      */
-    public function __construct(CompletenessRepositoryInterface $completenessRepo)
+    public function __construct(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper)
     {
         $this->completenessRepo = $completenessRepo;
+        $this->localeHelper     = $localeHelper;
     }
 
     /**
@@ -47,24 +50,7 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $channels = $this->completenessRepo->getProductsCountPerChannels();
-        $completeProducts = $this->completenessRepo->getCompleteProductsCountPerChannels();
-
-        $params = array();
-        foreach ($channels as $channel) {
-            $params[$channel['label']] = array(
-                'total' => $channel['total'],
-                'complete' => 0,
-            );
-        }
-        foreach ($completeProducts as $completeProduct) {
-            $params[$completeProduct['label']]['locales'][$completeProduct['locale']] = $completeProduct['total'];
-            $params[$completeProduct['label']]['complete'] += $completeProduct['total'];
-        }
-
-        return array(
-            'params' => $params
-        );
+        return [];
     }
 
     /**
@@ -72,6 +58,22 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getData()
     {
-        return null;
+        $channels = $this->completenessRepo->getProductsCountPerChannels();
+        $completeProducts = $this->completenessRepo->getCompleteProductsCountPerChannels();
+
+        $data = [];
+        foreach ($channels as $channel) {
+            $data[$channel['label']] = [
+                'total' => (int) $channel['total'],
+                'complete' => 0,
+            ];
+        }
+        foreach ($completeProducts as $completeProduct) {
+            $localeLabel = $this->localeHelper->getLocaleLabel($completeProduct['locale']);
+            $data[$completeProduct['label']]['locales'][$localeLabel] = (int) $completeProduct['total'];
+            $data[$completeProduct['label']]['complete'] += $completeProduct['total'];
+        }
+
+        return $data;
     }
 }
