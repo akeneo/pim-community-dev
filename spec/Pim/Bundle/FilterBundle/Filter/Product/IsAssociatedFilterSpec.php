@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -64,7 +64,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($prodRepository);
         $prodRepository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('id', 'IN', [12, 13])->shouldBeCalled();
+        $pqb->addFilter('id', 'IN', [12, 13])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }

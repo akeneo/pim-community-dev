@@ -60,7 +60,7 @@ class InGroupFilter extends BooleanFilter
         $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
         $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('groups', $operator, $value);
+        $pqb->addFilter('groups', $operator, $value);
 
         return true;
     }

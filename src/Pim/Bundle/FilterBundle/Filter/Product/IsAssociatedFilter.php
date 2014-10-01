@@ -69,7 +69,7 @@ class IsAssociatedFilter extends BooleanFilter
         $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
         $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('id', $operator, $productIds);
+        $pqb->addFilter('id', $operator, $productIds);
 
         return true;
     }

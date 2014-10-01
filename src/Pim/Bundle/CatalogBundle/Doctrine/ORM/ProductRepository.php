@@ -314,18 +314,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Returns the Attribute
-     *
-     * @param string $code
-     *
-     * @return AbstractAttribute
-     */
-    protected function getAttributeByCode($code)
-    {
-        return $this->attributeRepository->findOneByCode($code);
-    }
-
-    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -458,22 +446,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findAllByAttributes(
         array $attributes = array(),
         array $criteria = null,
@@ -495,11 +467,13 @@ class ProductRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('p');
         $pqb = $this->getProductQueryBuilder($qb);
         foreach ($criteria as $field => $data) {
+            // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
+                $attribute = $data['attribute'];
+                $field = $attribute->getCode();
+                $data = $data['value'];
             }
+            $pqb->addFilter($field, '=', $data);
         }
 
         $result = $qb->getQuery()->execute();
@@ -593,22 +567,12 @@ class ProductRepository extends EntityRepository implements
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeFilter($attribute, '=', $attValue);
-                } else {
-                    $productQb->addFieldFilter($attCode, '=', $attValue);
-                }
+                $productQb->addFilter($attCode, '=', $attValue);
             }
         }
         if (!is_null($orderBy)) {
             foreach ($orderBy as $attCode => $direction) {
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeSorter($attribute, $direction);
-                } else {
-                    $productQb->addFieldSorter($attCode, $direction);
-                }
+                $productQb->addSorter($attCode, $direction);
             }
         }
 

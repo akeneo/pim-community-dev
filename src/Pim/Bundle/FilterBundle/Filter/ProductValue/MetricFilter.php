@@ -104,7 +104,7 @@ class MetricFilter extends OroNumberFilter
             $baseValue = null;
         }
 
-        $this->util->applyFilterByAttribute(
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $baseValue,

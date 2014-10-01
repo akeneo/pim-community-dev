@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -33,14 +34,10 @@ class ProductRepository extends DocumentRepository implements
     ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface
 {
-    /** @var ProductQueryBuilder */
+    /** @var ProductQueryBuilderInterface */
     protected $productQB;
 
-    /**
-     * ORM EntityManager to access ORM entities
-     *
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
     /** @var AttributeRepository */
@@ -112,17 +109,24 @@ class ProductRepository extends DocumentRepository implements
         $qb = $this->createQueryBuilder('p');
         $pqb = $this->getProductQueryBuilder($qb);
         foreach ($criteria as $field => $data) {
+            // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
+                $attribute = $data['attribute'];
+                $field = $attribute->getCode();
+                $data = $data['value'];
             }
+            $pqb->addFilter($field, '=', $data);
         }
 
         $result = $qb->getQuery()->execute();
 
         if ($result->count() > 1) {
-            throw new \LogicException('Many products have been found that match criteria.');
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
         }
 
         return $result->getNext();
@@ -455,7 +459,7 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder();
         $productQueryBuilder = $this->getProductQueryBuilder($qb);
-        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
         if (0 === $result->count() ||

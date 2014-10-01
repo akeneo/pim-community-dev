@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
@@ -28,7 +28,7 @@ class FamilySorterSpec extends ObjectBehavior
     ) {
         $datasource->getQueryBuilder()->willReturn($qb);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldSorter('family', 'ASC')->shouldBeCalled();
+        $pqb->addSorter('family', 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, 'family', 'ASC');
     }

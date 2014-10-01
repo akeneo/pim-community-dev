@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Gaufrette\StreamMode;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;

@@ -15,12 +15,13 @@ class GroupsFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($queryBuilder, $context);
+        $this->beConstructedWith($context);
+        $this->setQueryBuilder($queryBuilder);
     }
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
     }
 
     function it_adds_a_in_filter_on_the_groups_field_in_the_query(Builder $queryBuilder)

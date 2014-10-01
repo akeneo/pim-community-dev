@@ -43,6 +43,7 @@ class PimCatalogExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('entities.yml');
         $loader->load('repositories.yml');
+        $loader->load('query_builders.yml');
 
         $this->loadStorageDriver($config, $container);
         $this->loadValidationFiles($container);

@@ -15,9 +15,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, UserContext $userContext)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, UserContext $userContext, CustomAttributeRepository $repository)
     {
-        $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass');
+        $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass', $repository);
 
         $this->init(
             'foo',
@@ -41,7 +41,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -59,7 +59,7 @@ class ChoiceFilterSpec extends ObjectBehavior
     ) {
         $collection->count()->willReturn(2);
         $collection->getValues()->willReturn(['foo', 'bar']);
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -74,7 +74,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'NOT IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'NOT IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -89,7 +89,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -108,9 +108,10 @@ class ChoiceFilterSpec extends ObjectBehavior
         AttributeRepository $attributeRepository,
         AbstractAttribute $attribute,
         $utility,
-        $factory
+        $factory,
+        $repository
     ) {
-        $utility->getAttribute('data_name_key')->willReturn($attribute);
+        $repository->findOneByCode('data_name_key')->willReturn($attribute);
 
         $factory->create(AjaxChoiceFilterType::NAME, [], [
             'csrf_protection' => false,
@@ -125,5 +126,13 @@ class ChoiceFilterSpec extends ObjectBehavior
         ])->willReturn($form);
 
         $this->getForm()->shouldReturn($form);
+    }
+}
+
+class CustomAttributeRepository extends AttributeRepository
+{
+    public function findOneByCode()
+    {
+        return null;
     }
 }

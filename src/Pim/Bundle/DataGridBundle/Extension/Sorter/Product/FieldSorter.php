@@ -35,6 +35,6 @@ class FieldSorter implements SorterInterface
     {
         $qb  = $datasource->getQueryBuilder();
         $pqb = $this->repository->getProductQueryBuilder($qb);
-        $pqb->addFieldSorter($field, $direction);
+        $pqb->addSorter($field, $direction);
     }
 }
