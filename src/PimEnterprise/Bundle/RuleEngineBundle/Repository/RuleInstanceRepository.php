@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Entity\Repository;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Repository;
 
 class RuleInstanceRepository
 {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Entity;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 interface RuleInstanceInterface
 {

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Manager;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Entity\RuleInstanceInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInstanceInterface;
 
 class RuleInstanceManager
 {

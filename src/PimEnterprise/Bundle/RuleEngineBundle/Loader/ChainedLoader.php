@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Loader;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Entity\RuleInstanceInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInstanceInterface;
 
 /**
  * Chained rule loader

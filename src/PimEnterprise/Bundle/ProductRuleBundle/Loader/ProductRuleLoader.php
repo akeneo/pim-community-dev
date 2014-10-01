@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ProductRuleBundle\Loader;
 
 use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRule;
-use PimEnterprise\Bundle\RuleEngineBundle\Entity\RuleInstanceInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInstanceInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Loader\LoaderInterface;
 
 class ProductRuleLoader implements LoaderInterface
