@@ -27,6 +27,14 @@ class LastOperationsWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
+    public function getAlias()
+    {
+        return 'last_operations';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTemplate()
     {
         return 'PimDashboardBundle:Widget:last_operations.html.twig';

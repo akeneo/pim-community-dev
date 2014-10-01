@@ -29,6 +29,14 @@ class CompletenessWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
+    public function getAlias()
+    {
+        return 'completeness';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTemplate()
     {
         return 'PimDashboardBundle:Widget:completeness.html.twig';

@@ -17,6 +17,11 @@ class CompletenessWidgetSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
+    function it_has_an_alias()
+    {
+        $this->getAlias()->shouldReturn('completeness');
+    }
+
     function it_exposes_the_completeness_widget_template()
     {
         $this->getTemplate()->shouldReturn('PimDashboardBundle:Widget:completeness.html.twig');
