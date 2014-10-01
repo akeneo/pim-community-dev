@@ -89,18 +89,23 @@ class CriteriaCondition
     /**
      * Prepare single criteria condition with field, operator and value
      *
-     * @param string $field    the backend field name
-     * @param string $operator the operator used to filter
-     * @param string $value    the value(s) to filter
-     *
-     * @throws ProductQueryException
+     * @param string       $field    the backend field name
+     * @param string       $operator the operator used to filter
+     * @param string|array $value    the value(s) to filter
      *
      * @return string
+     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     * @throws \InvalidArgumentException
      */
     protected function prepareSingleCriteriaCondition($field, $operator, $value)
     {
         $operators = array('=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like');
         if (array_key_exists($operator, $operators)) {
+            if (!is_scalar($value)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Only scalar values are allowed for operators %s.', implode(', ', $operators))
+                );
+            }
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field, $this->qb->expr()->literal($value))->__toString();
@@ -121,10 +126,18 @@ class CriteriaCondition
         }
 
         if ('NOT LIKE' === $operator) {
+            if (!is_scalar($value)) {
+                throw new \InvalidArgumentException(sprintf('Only scalar values are allowed for operator NOT LIKE'));
+            }
+
             return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
         }
 
         if ('BETWEEN' === $operator) {
+            if (!is_array($value)) {
+                throw new \InvalidArgumentException(sprintf('Only array values are allowed for operator BETWEEN'));
+            }
+
             return sprintf(
                 '%s BETWEEN %s AND %s',
                 $field,
