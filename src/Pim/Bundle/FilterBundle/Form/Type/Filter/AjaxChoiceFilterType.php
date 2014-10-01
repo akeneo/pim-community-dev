@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
 /**
  * Form type for ajax choice filter

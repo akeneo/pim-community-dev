@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Job execution archivist

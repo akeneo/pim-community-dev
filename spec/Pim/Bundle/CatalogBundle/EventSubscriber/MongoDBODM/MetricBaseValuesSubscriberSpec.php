@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\UnitOfWork;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

@@ -3,15 +3,14 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
+use Gaufrette\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
 use Prophecy\Argument;
 

@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Converter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class MetricConverterSpec extends ObjectBehavior
 {

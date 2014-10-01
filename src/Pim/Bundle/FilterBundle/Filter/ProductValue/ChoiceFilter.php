@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Choice filter
@@ -26,6 +27,9 @@ class ChoiceFilter extends AjaxChoiceFilter
     /** @var UserContext */
     protected $userContext;
 
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
     /**
      * Constructor
      *
@@ -33,17 +37,20 @@ class ChoiceFilter extends AjaxChoiceFilter
      * @param ProductFilterUtility $util
      * @param UserContext          $userContext
      * @param string               $optionRepoClass
+     * @param AttributeRepository  $attributeRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
-        $optionRepoClass
+        $optionRepoClass,
+        AttributeRepository $attributeRepository
     ) {
         parent::__construct($factory, $util);
 
         $this->userContext     = $userContext;
         $this->optionRepoClass = $optionRepoClass;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -58,7 +65,7 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $this->util->applyFilterByAttribute(
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $data['value'],
@@ -102,7 +109,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     {
         if (null === $this->attribute) {
             $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
-            $attribute = $this->util->getAttribute($fieldName);
+            $attribute = $this->attributeRepository->findOneByCode($fieldName);
 
             if (!$attribute) {
                 throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));

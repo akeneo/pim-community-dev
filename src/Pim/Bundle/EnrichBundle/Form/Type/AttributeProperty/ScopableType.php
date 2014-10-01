@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type related to scopable property of AbstractAttribute

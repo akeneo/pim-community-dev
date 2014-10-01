@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
@@ -44,20 +44,23 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
-     * @param string $code
+     * Applies filter to query by attribute
      *
-     * @return AbstractAttribute
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $field
+     * @param mixed                            $value
+     * @param string                           $operator
      */
-    public function getAttribute($code)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $attributeRepo = $this->productManager->getAttributeRepository();
-        $attribute     = $attributeRepo->findOneByCode($code);
-
-        return $attribute;
+        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
+        $productQueryBuilder->addFilter($field, $operator, $value);
     }
 
     /**
      * Applies filter to query by attribute
+     *
+     * @deprecated will be removed in 1.4
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
@@ -66,12 +69,6 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $attribute = $this->getAttribute($field);
-        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
-        if ($attribute) {
-            $productQueryBuilder->addAttributeFilter($attribute, $operator, $value);
-        } else {
-            $productQueryBuilder->addFieldFilter($field, $operator, $value);
-        }
+        $this->applyFilter($ds, $field, $value, $operator);
     }
 }

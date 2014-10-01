@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
-use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Fixture Loader

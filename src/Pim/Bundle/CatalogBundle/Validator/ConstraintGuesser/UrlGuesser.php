@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Guesser

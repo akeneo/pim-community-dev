@@ -3,9 +3,8 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 class MediaNormalizerSpec extends ObjectBehavior
 {

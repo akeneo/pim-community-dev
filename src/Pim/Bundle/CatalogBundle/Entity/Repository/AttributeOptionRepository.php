@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 
 /**
  * Repository for AttributeOption entity

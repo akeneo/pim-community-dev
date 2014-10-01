@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 
 /**
  * Metric filter type for products

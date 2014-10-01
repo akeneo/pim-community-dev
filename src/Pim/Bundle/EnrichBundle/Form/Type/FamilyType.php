@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for family form

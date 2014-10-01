@@ -1,3 +1,27 @@
+# 1.3.x
+
+## Features
+- Export a product as PDF
+- Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add the sequential edit for a selected list of products
+- Add comments on a product
+
+## Improvements
+ - Remove the fixed mysql socket location
+ - Switch to stability stable
+ - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+ - Remove deprecated attribute property *Usable as a grid column*
+ - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
+
+## BC breaks
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass`
+- Rename `Pim\Bundle\UIBundle\Form\Transformer\IntegerTransformer` to `Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer`
+- Remove useless applySorterByAttribute, applySorterByField from Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
+- Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
+- Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
+- Remove ProductFilterUtility::getAttribute()
+
 # 1.2.x
 
 ## Bug fixes

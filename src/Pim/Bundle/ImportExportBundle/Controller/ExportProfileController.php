@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Export controller

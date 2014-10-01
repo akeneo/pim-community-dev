@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Symfony\Component\Validator\ExecutionContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * Validator for options and default value of AbstractAttribute entity
