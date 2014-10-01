@@ -13,29 +13,47 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Loader;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Entity\RuleInstanceInterface;
 
+/**
+ * Chained rule loader
+ *
+ * @author Nicolas Dupont <nicolas@akeneo.com>
+ */
 class ChainedLoader implements LoaderInterface
 {
-    /** LoaderInterface[] ordered loaders with priority */
+    /** @var LoaderInterface[] ordered loaders by priority */
     protected $loaders;
 
-    public function registerLoader(LoaderInterface $loader)
+    /**
+     * @param LoaderInterface $loader
+     *
+     * @return ChainedLoader
+     */
+    public function addLoader(LoaderInterface $loader)
     {
-        $this->loaders[]= $loader;
+        $this->loaders[] = $loader;
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(RuleInstanceInterface $instance)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function load(RuleInstanceInterface $instance)
     {
         foreach ($this->loaders as $loader) {
-            if ($loader->supports($loader)) {
+            if ($loader->supports($instance)) {
                 return $loader->load($instance);
             }
         }
 
-        throw new \LogicException('No loader available');
+        throw new \LogicException(sprintf('No loader available for the instance "%s".', $instance->getCode()));
     }
 }
