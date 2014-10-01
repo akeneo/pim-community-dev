@@ -29,13 +29,21 @@ class CriteriaConditionSpec extends ObjectBehavior
             ;
         }
 
-        $operators = array('BETWEEN');
+        $operators = array('BETWEEN', 'IN', 'NOT IN');
         foreach ($operators as $operator) {
             $this
                 ->shouldThrow('\InvalidArgumentException')
                 ->duringPrepareCriteriaCondition('my_field', $operator, 'my_value')
             ;
         }
+    }
+
+    function it_throws_an_exception_when_the_operator_is_not_supported()
+    {
+        $this
+            ->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ProductQueryException')
+            ->duringPrepareCriteriaCondition('my_field', 'NOT SUPPORTED', Argument::any())
+        ;
     }
 
     function it_processes_an_equal_criteria($qb, Expr $expr, Expr\Comparison $comp, Expr\Literal $literal)

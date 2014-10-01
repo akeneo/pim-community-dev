@@ -120,6 +120,12 @@ class CriteriaCondition
 
         $operators = array('IN' => 'in', 'NOT IN' => 'notIn');
         if (array_key_exists($operator, $operators)) {
+            if (!is_array($value)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Only scalar values are allowed for operators %s.', implode(', ', $operators))
+                );
+            }
+
             $method = $operators[$operator];
 
             return $this->qb->expr()->$method($field, $value)->__toString();
