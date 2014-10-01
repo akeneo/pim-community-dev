@@ -11,36 +11,84 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
+/**
+ * Rule
+ *
+ * @author Nicolas Dupont <nicolas@akeneo.com>
+ */
 class Rule implements RuleInterface
 {
+    /** @var int */
     protected $id;
 
+    /** @var string */
     protected $code;
 
-    protected $ruleFqcn;
+    /** @var string */
+    protected $type;
 
+    /** @var string */
     protected $content;
 
+    /**
+     * {@inheritdoc}
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCode()
     {
         return $this->code;
     }
 
-    public function getRuleFQCN()
+    /**
+     * {@inheritdoc}
+     */
+    public function setContent($content)
     {
-        return $this->ruleFqcn;
+        $this->content = $content;
+
+        return $this;
     }
 
     /**
-     * string JSON encoded content
+     * {@inheritdoc}
      */
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

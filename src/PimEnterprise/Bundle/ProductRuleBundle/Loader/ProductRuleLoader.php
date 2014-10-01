@@ -43,8 +43,8 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $instance)
+    public function supports(RuleInterface $rule)
     {
-        return $instance->getRuleFQCN() === 'PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRule';
+        return 'Product' === $rule->getType();
     }
 }

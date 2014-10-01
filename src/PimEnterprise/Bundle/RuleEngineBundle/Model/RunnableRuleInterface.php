@@ -11,6 +11,11 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
+/**
+ * Runnable rule interface
+ *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
+ */
 interface RunnableRuleInterface
 {
     /**
