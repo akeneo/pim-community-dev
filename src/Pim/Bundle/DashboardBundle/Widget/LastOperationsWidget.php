@@ -49,4 +49,12 @@ class LastOperationsWidget implements WidgetInterface
             'params' => $this->manager->getLastOperationsData(['import', 'export'])
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        return null;
+    }
 }

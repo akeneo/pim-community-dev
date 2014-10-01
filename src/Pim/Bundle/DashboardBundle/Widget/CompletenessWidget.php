@@ -66,4 +66,12 @@ class CompletenessWidget implements WidgetInterface
             'params' => $params
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        return null;
+    }
 }

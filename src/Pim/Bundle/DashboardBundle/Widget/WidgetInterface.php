@@ -33,4 +33,11 @@ interface WidgetInterface
      * @return array
      */
     public function getParameters();
+
+    /**
+     * Get the widget data
+     *
+     * @return mixed
+     */
+    public function getData();
 }

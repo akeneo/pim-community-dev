@@ -57,4 +57,12 @@ class LinksWidget implements WidgetInterface
             ),
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        return null;
+    }
 }
