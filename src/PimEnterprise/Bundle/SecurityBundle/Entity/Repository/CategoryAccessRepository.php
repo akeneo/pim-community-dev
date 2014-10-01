@@ -103,6 +103,40 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
+     * Get granted categories QB from the provided QB.
+     * The provided QB will be used to generate a subquery from which
+     * only granted categories will be extracted.
+     *
+     * @param QueryBuilder $categoryQB
+     * @param User         $user
+     * @param string       $accessLevel
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, User $user, $accessLevel)
+    {
+        $categoryRootAlias = current($categoryQB->getRootAliases());
+
+        $categoryQB->resetDQLParts(['select']);
+        $categoryQB->select($categoryRootAlias.'.id');
+
+        $qb = $this->createQueryBuilder('ca');
+        $qb
+            ->innerJoin('ca.category', 'c', 'c.id')
+            ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
+            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
+            ->andWhere($qb->expr()->in('c.id', $categoryQB->getDQL()));
+
+        $qb->setParameter('groups', $user->getGroups()->toArray());
+
+        foreach ($categoryQB->getParameters() as $param) {
+            $qb->getParameters()->add($param);
+        }
+
+        return $this->hydrateAsIds($qb);
+    }
+
+    /**
      * Get revoked category query builder
      *
      * @param User   $user
