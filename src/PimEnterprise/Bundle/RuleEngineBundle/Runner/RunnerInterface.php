@@ -13,9 +13,22 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
+/**
+ * Executes a business instance
+ */
 interface RunnerInterface
 {
+    /**
+     * @param RuleInterface $rule
+     *
+     * @return mixed
+     */
     public function run(RuleInterface $rule);
 
+    /**
+     * @param RuleInterface $rule
+     *
+     * @return bool
+     */
     public function supports(RuleInterface $rule);
 }

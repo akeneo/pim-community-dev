@@ -11,9 +11,35 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class RegisterRunnerPass implements CompilerPassInterface
+/**
+ * Register all rule runners by priority
+ *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
+ */
+class RegisterRunnerPass extends AbstractOrderedPass
 {
-    // REGISTER RunnerInterface tagged services by priority
+    /** @staticvar */
+    const CHAINED_RUNNER_DEF = 'pimee_rule_engine.runner.chained';
+
+    /** @staticvar */
+    const RUNNER_TAG = 'pimee_rule_engine.runner';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition(self::CHAINED_RUNNER_DEF)) {
+            return;
+        }
+
+        $chainedLoader = $container->getDefinition(self::CHAINED_RUNNER_DEF);
+        $loaders = $this->findAndSortTaggedServices($container, self::RUNNER_TAG);
+
+        foreach ($loaders as $loader) {
+            $chainedLoader->addMethodCall('addRunner', [$loader]);
+        }
+    }
 }

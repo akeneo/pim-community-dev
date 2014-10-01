@@ -1,0 +1,7 @@
+parameters:
+    pimee_rule_engine.runner.chained.class: PimEnterprise\Bundle\RuleEngineBundle\Runner\ChainedRunner
+
+services:
+    pimee_rule_engine.runner.chained:
+        class: %pimee_rule_engine.runner.chained.class%
+
