@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - Fix no warning message when leaving a product form after a submit with errors
+- Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
 
 # 1.2.6 (2014-09-26)
 
