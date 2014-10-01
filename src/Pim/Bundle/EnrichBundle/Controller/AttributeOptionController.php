@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -24,20 +24,33 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
  */
 class AttributeOptionController
 {
-    protected $serializer;
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var EntityManager */
+    protected $entityManager;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var ViewHandlerInterface */
+    protected $viewHandler;
 
     /**
      * Constructor
      *
-     * @param SerializerInterface $serializer
+     * @param NormalizerInterface  $normalizer
+     * @param EntityManager        $entityManager
+     * @param FormFactoryInterface $formFactory
+     * @param ViewHandlerInterface $viewHandler
      */
     public function __construct(
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         EntityManager $entityManager,
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewHandler
     ) {
-        $this->serializer    = $serializer;
+        $this->normalizer    = $normalizer;
         $this->entityManager = $entityManager;
         $this->formFactory   = $formFactory;
         $this->viewHandler   = $viewHandler;
@@ -55,7 +68,7 @@ class AttributeOptionController
      */
     public function indexAction(AbstractAttribute $attribute)
     {
-        $options = $this->serializer->normalize($attribute->getOptions(), 'array', ['onlyActivatedLocales' => true]);
+        $options = $this->normalizer->normalize($attribute->getOptions(), 'array', ['onlyActivatedLocales' => true]);
 
         return new JsonResponse($options);
     }
@@ -63,7 +76,9 @@ class AttributeOptionController
     /**
      * Update an option of an attribute
      *
+     * @param Request           $request
      * @param AbstractAttribute $attribute
+     * @param AttributeOption   $attributeOption
      *
      * @return AttributeOption[]
      *
@@ -94,6 +109,7 @@ class AttributeOptionController
      * Delete an option of an attribute
      *
      * @param AbstractAttribute $attribute
+     * @param AttributeOption   $attributeOption
      *
      * @return AttributeOption[]
      *
