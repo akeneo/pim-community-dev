@@ -59,9 +59,23 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
-     * TODO : could be renamed, caution to BC break
-     *
      * Applies filter to query by attribute
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $field
+     * @param mixed                            $value
+     * @param string                           $operator
+     */
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
+    {
+        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
+        $productQueryBuilder->addFilter($field, $operator, $value);
+    }
+
+    /**
+     * Applies filter to query by attribute
+     *
+     * @deprecated will be removed in 1.4
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
@@ -70,7 +84,6 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
-        $productQueryBuilder->addFilter($field, $operator, $value);
+        $this->applyFilter($ds, $field, $value, $operator);
     }
 }

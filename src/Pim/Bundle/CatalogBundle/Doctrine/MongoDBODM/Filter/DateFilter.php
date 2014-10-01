@@ -104,8 +104,6 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        // TODO : between and not between doesn't work
-
         switch ($operator) {
             case 'BETWEEN':
                 $this->qb->field($field)->gte($this->getTimestamp($value[0]));

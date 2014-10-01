@@ -13,7 +13,6 @@ interface FilterInterface
 {
     /**
      * Inject the query builder
-     * TODO : QueryBuilderAwareInterface ?
      *
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
      */

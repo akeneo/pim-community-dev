@@ -41,7 +41,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -59,7 +59,7 @@ class ChoiceFilterSpec extends ObjectBehavior
     ) {
         $collection->count()->willReturn(2);
         $collection->getValues()->willReturn(['foo', 'bar']);
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -74,7 +74,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'NOT IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'NOT IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -89,7 +89,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
 
         $this->apply(
             $datasource,

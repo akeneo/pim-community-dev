@@ -6,7 +6,7 @@ parameters:
     pim_catalog.doctrine.query.attribute_filter_dumper.class: Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterDumper
 
 services:
-    # deprecated : will be drop in 1.3
+    # deprecated : will be drop in 1.4
     pim_catalog.doctrine.product_query_builder:
         alias: pim_catalog.doctrine.query.product_query_builder
 

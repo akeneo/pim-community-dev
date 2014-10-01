@@ -36,7 +36,5 @@ class ValueSorter implements SorterInterface
         $qb = $datasource->getQueryBuilder();
         $pqb = $this->productRepository->getProductQueryBuilder($qb);
         $pqb->addSorter($field, $direction);
-
-        // TODO : add sorter by id ?
     }
 }
