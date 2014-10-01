@@ -121,7 +121,6 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
         }
 
         // TODO missing operators ?! check BaseFilter
-
         return $this;
     }
 
