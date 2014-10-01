@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Model;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
-interface ProductRuleInterface extends RuleInterface
+interface ProductRunnableRuleInterface extends RunnableRuleInterface
 {
     public function getExpression();
     public function setExpression($expression);

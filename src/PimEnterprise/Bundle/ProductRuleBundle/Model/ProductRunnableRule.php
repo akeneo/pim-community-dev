@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Model;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
-class ProductRule implements ProductRuleInterface, RuleInterface
+class ProductRunnableRule implements ProductRunnableRuleInterface, RunnableRuleInterface
 {
     /** @var string */
     protected $expression;

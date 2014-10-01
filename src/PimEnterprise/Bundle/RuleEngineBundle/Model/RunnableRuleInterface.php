@@ -11,13 +11,17 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
-interface RuleInterface
+interface RunnableRuleInterface
 {
-    public function getId();
+    /**
+     * @return RuleInterface
+     */
+    public function getRule();
 
-    public function getCode();
-
-    public function getRuleFQCN();
-
-    public function getContent();
+    /**
+     * @param RuleInterface $rule
+     *
+     * @return RunnableRuleInterface
+     */
+    public function setRule(RuleInterface $rule);
 }

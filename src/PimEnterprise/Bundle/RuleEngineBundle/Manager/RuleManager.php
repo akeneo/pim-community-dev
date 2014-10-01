@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Manager;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInstanceInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
-class RuleInstanceManager
+class RuleManager
 {
-    public function save(RuleInstanceInterface $instance)
+    public function save(RuleInterface $instance)
     {
     }
 
-    public function delete(RuleInstanceInterface $instance)
+    public function delete(RuleInterface $instance)
     {
     }
 }

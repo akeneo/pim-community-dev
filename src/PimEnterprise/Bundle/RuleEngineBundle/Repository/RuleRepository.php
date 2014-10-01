@@ -9,15 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Repository;
 
-interface RuleInstanceInterface
+class RuleRepository
 {
-    public function getId();
-
-    public function getCode();
-
-    public function getRuleFQCN();
-
-    public function getContent();
 }

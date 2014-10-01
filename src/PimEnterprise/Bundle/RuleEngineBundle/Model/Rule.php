@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
-class RuleInstance implements RuleInstanceInterface
+class Rule implements RuleInterface
 {
     protected $id;
 

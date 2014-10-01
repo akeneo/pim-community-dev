@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Runner;
 
-use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 
 class ProductRuleRunner implements RunnerInterface
 {
-    public function run(RuleInterface $rule)
+    public function run(RunnableRuleInterface $rule)
     {
         $queryBuilder = $rule->getQueryBuilder();
         $products = $queryBuilder->getQuery()->execute();
@@ -25,8 +25,8 @@ class ProductRuleRunner implements RunnerInterface
         // TODO execute actions
     }
 
-    public function supports(RuleInterface $rule)
+    public function supports(RunnableRuleInterface $rule)
     {
-        return $rule instanceof ProductRuleInterface;
+        return $rule instanceof ProductRunnableRuleInterface;
     }
 }

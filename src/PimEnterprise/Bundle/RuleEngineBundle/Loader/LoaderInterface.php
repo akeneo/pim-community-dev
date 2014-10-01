@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Loader;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInstanceInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
 /**
  * Transform an rule instance (an entity) to a business rule
@@ -20,16 +20,19 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 interface LoaderInterface
 {
     /**
-     * @param RuleInstanceInterface $instance
-     *
-     * @return RuleInterface
+     * @param RuleInterface $instance
+
+
+*
+*@return RunnableRuleInterface
      */
-    public function load(RuleInstanceInterface $instance);
+    public function load(RuleInterface $instance);
 
     /**
-     * @param RuleInstanceInterface $instance
+     * @param RuleInterface $instance
+
      *
-     * @return bool
+*@return bool
      */
-    public function supports(RuleInstanceInterface $instance);
+    public function supports(RuleInterface $instance);
 }

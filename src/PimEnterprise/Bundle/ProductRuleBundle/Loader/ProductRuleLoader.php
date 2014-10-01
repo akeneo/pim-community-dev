@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Loader;
 
-use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRule;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInstanceInterface;
+use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRule;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Loader\LoaderInterface;
 
 class ProductRuleLoader implements LoaderInterface
@@ -20,9 +20,9 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInstanceInterface $instance)
+    public function load(RuleInterface $instance)
     {
-        $rule = new ProductRule();
+        $rule = new ProductRunnableRule();
 
         // load expression from content
         $jsonContent = $instance->getContent();
@@ -43,7 +43,7 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInstanceInterface $instance)
+    public function supports(RuleInterface $instance)
     {
         return $instance->getRuleFQCN() === 'PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRule';
     }

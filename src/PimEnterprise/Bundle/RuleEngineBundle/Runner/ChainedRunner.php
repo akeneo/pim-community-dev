@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
 /**
  * Chained rule runner
@@ -38,7 +38,7 @@ class ChainedRunner implements RunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule)
+    public function supports(RunnableRuleInterface $rule)
     {
         return true;
     }
@@ -46,14 +46,14 @@ class ChainedRunner implements RunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule)
+    public function run(RunnableRuleInterface $runnable)
     {
         foreach ($this->runners as $runner) {
-            if ($runner->supports($rule)) {
-                return $runner->run($rule);
+            if ($runner->supports($runnable)) {
+                return $runner->run($runnable);
             }
         }
 
-        throw new \LogicException(sprintf('No runner available for the rule "%s".', $rule->__toString()));
+        throw new \LogicException(sprintf('No runner available for the rule "%s".', $runnable->getRule()->getCode()));
     }
 }
