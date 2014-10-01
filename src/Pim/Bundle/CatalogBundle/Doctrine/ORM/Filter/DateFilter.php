@@ -109,6 +109,21 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias)
             );
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
+
+        } elseif ($operator === 'NOT BETWEEN') {
+            $this->qb->leftJoin(
+                $this->qb->getRootAlias().'.values',
+                $joinAlias,
+                'WITH',
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+            );
+            $this->qb->andWhere(
+                $this->qb->expr()->orX(
+                    $this->qb->expr()->lt($backendField, $this->getDateLiteralExpr($value[0])),
+                    $this->qb->expr()->gt($backendField, $this->getDateLiteralExpr($value[1], true))
+                )
+            );
+
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
