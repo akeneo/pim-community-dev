@@ -37,6 +37,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     oneToMany:
         optionValues:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
+            indexBy: locale
             cascade:
                 - persist
                 - remove

@@ -73,18 +73,12 @@ class AttributeOptionController
      */
     public function updateAction(Request $request, AbstractAttribute $attribute, AttributeOption $attributeOption)
     {
-        foreach ($attributeOption->getOptionValues() as $value) {
-            $attributeOption->removeOptionValue($value);
-            $this->entityManager->remove($value);
-            $this->entityManager->flush($value);
-        }
-
         $form = $this->formFactory->createNamed('option', 'pim_enrich_attribute_option', $attributeOption);
 
         //Should be replaced by a paramConverter
         $data = json_decode($request->getContent(), true);
-        $form->submit($data, false);
 
+        $form->submit($data, false);
 
         if ($form->isValid()) {
             $this->entityManager->persist($attributeOption);
