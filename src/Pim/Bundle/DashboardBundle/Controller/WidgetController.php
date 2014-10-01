@@ -3,15 +3,7 @@
 namespace Pim\Bundle\DashboardBundle\Controller;
 
 use Pim\Bundle\DashboardBundle\Widget\Registry;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Widget controller
@@ -20,62 +12,32 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WidgetController extends AbstractController
+class WidgetController
 {
     /** @var Registry */
     protected $widgetRegistry;
 
     /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Registry                 $widgetRegistry
+     * @param Registry $widgetRegistry
      */
-    public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        Registry $widgetRegistry
-    ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher
-        );
-
+    public function __construct(Registry $widgetRegistry)
+    {
         $this->widgetRegistry = $widgetRegistry;
     }
 
     /**
-     * Returned a rendered widget
+     * Return data for a widget
      *
      * @param string $alias
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
-    public function showAction($alias)
+    public function dataAction($alias)
     {
-        if (null === $widget = $this->widgetRegistry->get($alias)) {
-            return $this->render('PimDashboardBundle:Widget:error.html.twig', array('alias' => $alias));
-        }
+        $widget = $this->widgetRegistry->get($alias);
 
-        return $this->render($widget->getTemplate(), array('widget' => $widget->getParameters()));
+        $data = null !== $widget ? $widget->getData() : null;
+
+        return new JsonResponse($data);
     }
 }
