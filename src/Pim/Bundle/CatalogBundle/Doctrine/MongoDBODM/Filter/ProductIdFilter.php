@@ -32,6 +32,7 @@ class ProductIdFilter implements FieldFilterInterface
     public function __construct(CatalogContext $context)
     {
         $this->context = $context;
+        // TODO weird cause different of ORM id, could be =, IN, NOT IN
         $this->supportedOperators = ['IN', 'NOT IN'];
     }
 

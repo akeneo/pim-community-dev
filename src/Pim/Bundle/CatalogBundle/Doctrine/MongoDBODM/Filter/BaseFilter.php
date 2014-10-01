@@ -25,10 +25,10 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $context;
 
     /** @var array */
-    protected $supportedFields;
+    protected $supportedAttributes;
 
     /** @var array */
-    protected $supportedAttributes;
+    protected $supportedFields;
 
     /** @var array */
     protected $supportedOperators;
@@ -37,30 +37,20 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      * Instanciate the filter
      *
      * @param CatalogContext $context
-     * @param array          $extraSupportedAttributes
-     * @param array          $extraSupportedOperators
+     * @param array          $supportedAttributes
+     * @param array          $supportedFields
+     * @param array          $supportedOperators
      */
     public function __construct(
         CatalogContext $context,
-        array $extraSupportedAttributes = [],
-        array $extraSupportedOperators = []
+        array $supportedAttributes = [],
+        array $supportedFields = [],
+        array $supportedOperators = []
     ) {
         $this->context = $context;
-        $this->supportedAttributes = array_merge(
-            [
-                'pim_catalog_identifier',
-                'pim_catalog_text',
-                'pim_catalog_textarea',
-                'pim_catalog_number',
-                'pim_catalog_boolean'
-            ],
-            $extraSupportedAttributes
-        );
-        $this->supportedOperators = array_merge(
-            ['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY'],
-            $extraSupportedOperators
-        );
-        $this->supportedFields = ['id', 'enabled'];
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

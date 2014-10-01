@@ -86,13 +86,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.product.class%
 
-    pim_catalog.doctrine.query.filter.entity:
-        class: %pim_catalog.doctrine.query.filter.entity.class%
-        arguments:
-            - @pim_catalog.context.catalog
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
-
+    # PQB filters
     pim_catalog.doctrine.query.filter.identifier:
         class: %pim_catalog.doctrine.query.filter.base.class%
         arguments:
@@ -142,6 +136,13 @@ services:
             - ['=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.entity:
+        class: %pim_catalog.doctrine.query.filter.entity.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
     pim_catalog.doctrine.query.filter.date:
         class: %pim_catalog.doctrine.query.filter.date.class%

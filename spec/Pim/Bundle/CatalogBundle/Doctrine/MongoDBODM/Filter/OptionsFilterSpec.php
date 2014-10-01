@@ -29,9 +29,8 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN', 'NOT IN']);
+        $this->getOperators()->shouldReturn(['IN']);
         $this->supportsOperator('IN')->shouldReturn(true);
-        $this->supportsOperator('NOT IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 

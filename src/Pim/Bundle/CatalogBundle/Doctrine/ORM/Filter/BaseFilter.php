@@ -53,26 +53,6 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
-        /*
-            array_merge(
-            [
-                'pim_catalog_identifier',
-                'pim_catalog_text',
-                'pim_catalog_textarea',
-                'pim_catalog_number',
-                'pim_catalog_boolean'
-            ],
-            $extraSupportedAttributes
-        );
-        $this->supportedFields = array_merge(
-            ['id', 'enabled'],
-            $extraSupportedFields
-        );
-        $this->supportedOperators = array_merge(
-            ['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY'],
-            $extraSupportedOperators
-        );
-         */
     }
 
     /**

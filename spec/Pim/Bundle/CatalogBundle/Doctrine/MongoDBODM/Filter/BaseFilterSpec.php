@@ -16,7 +16,7 @@ class BaseFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith($context, ['pim_catalog_identifier'], [], ['LIKE', 'NOT LIKE', '=', 'IN']);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -32,7 +32,7 @@ class BaseFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['LIKE', 'IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY']);
+        $this->getOperators()->shouldReturn(['LIKE', 'NOT LIKE', '=', 'IN']);
         $this->supportsOperator('LIKE')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
