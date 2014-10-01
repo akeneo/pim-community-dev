@@ -1,6 +1,10 @@
 # 1.2.x
 
 ## Bug fixes
+
+# 1.2.7 (2014-10-01)
+
+## Bug fixes
 - Fix no warning message when leaving a product form after a submit with errors
 - Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
 
