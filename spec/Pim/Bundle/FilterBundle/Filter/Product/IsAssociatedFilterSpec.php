@@ -2,20 +2,20 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Prophecy\Argument;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class IsAssociatedFilterSpec extends ObjectBehavior
 {
@@ -64,7 +64,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($prodRepository);
         $prodRepository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('id', 'IN', [12, 13])->shouldBeCalled();
+        $pqb->addFilter('id', 'IN', [12, 13])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }

@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 class MediaNormalizerSpec extends ObjectBehavior
@@ -25,6 +24,8 @@ class MediaNormalizerSpec extends ObjectBehavior
         $media->getFilename()->willReturn('myfile.pdf');
         $media->getOriginalFilename()->willReturn('myfile.pdf');
 
-        $this->normalize($media, 'mongodb_json', [])->shouldReturn(['filename' => 'myfile.pdf', 'originalFilename' => 'myfile.pdf']);
+        $this
+            ->normalize($media, 'mongodb_json', [])
+            ->shouldReturn(['filename' => 'myfile.pdf', 'originalFilename' => 'myfile.pdf']);
     }
 }

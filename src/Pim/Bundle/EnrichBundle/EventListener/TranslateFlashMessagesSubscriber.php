@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\EnrichBundle\Flash\Message;
-use Symfony\Component\HttpKernel\Event\KernelEvent;
 
 /**
  * Translate all flash messages

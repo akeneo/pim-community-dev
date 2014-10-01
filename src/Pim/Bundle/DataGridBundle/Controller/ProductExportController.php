@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\SerializerInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Override ExportController for product exports

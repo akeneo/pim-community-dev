@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\VersioningBundle\Model\Version;
-use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
-use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Interface for service to massively insert pending versions.

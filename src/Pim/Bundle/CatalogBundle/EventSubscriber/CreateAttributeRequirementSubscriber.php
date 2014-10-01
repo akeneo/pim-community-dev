@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 
 /**

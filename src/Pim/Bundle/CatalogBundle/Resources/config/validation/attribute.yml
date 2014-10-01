@@ -56,8 +56,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - 'False':
                 message: An unique attribute can not be scopable
                 groups: [unique]
-        useableAsGridColumn:
-            - Type: bool
         useableAsGridFilter:
             - Type: bool
             - 'False':

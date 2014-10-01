@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Normalize a product price into an array

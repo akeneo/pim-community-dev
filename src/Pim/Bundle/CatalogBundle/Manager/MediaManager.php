@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Gaufrette\Filesystem;
 use Gedmo\Sluggable\Util\Urlizer;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Media Manager actually implements with Gaufrette Bundle and Local adapter

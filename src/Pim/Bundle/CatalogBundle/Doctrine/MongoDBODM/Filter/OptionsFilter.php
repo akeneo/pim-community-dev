@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 
 /**
  * Multi options filter for MongoDB
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionsFilter extends EntityFilter
+class OptionsFilter implements AttributeFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -23,14 +24,50 @@ class OptionsFilter extends EntityFilter
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedOperators;
+
     /**
-     * @param QueryBuilder   $qb      the query builder
-     * @param CatalogContext $context the catalog context
+     * Instanciate the filter
+     *
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+        $this->supportedOperators = ['IN'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_multiselect';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**
@@ -46,9 +83,13 @@ class OptionsFilter extends EntityFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|array $field
+     * @param string       $operator
+     * @param string|array $value
+     *
+     * @return OptionsFilter
      */
-    public function addFieldFilter($field, $operator, $value)
+    protected function addFieldFilter($field, $operator, $value)
     {
         $value = is_array($value) ? $value : [$value];
 
@@ -58,15 +99,13 @@ class OptionsFilter extends EntityFilter
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
 
-                $expr = new Expr();
-                $expr = $expr->field($field)->exists(false);
+                $expr = $this->qb->expr()->field($field)->exists(false);
                 $this->qb->addOr($expr);
             }
 
             if (count($value) > 0) {
-                $expr = new Expr();
                 $value = array_map('intval', $value);
-                $expr->field($field .'.id')->in($value);
+                $expr = $this->qb->expr()->field($field .'.id')->in($value);
                 $this->qb->addOr($expr);
             }
         }

@@ -2,11 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Prophecy\Argument;
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;

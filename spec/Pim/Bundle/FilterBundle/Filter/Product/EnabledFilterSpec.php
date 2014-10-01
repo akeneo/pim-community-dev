@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class EnabledFilterSpec extends ObjectBehavior
 {
@@ -33,7 +32,7 @@ class EnabledFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('enabled', '=', 1)->shouldBeCalled();
+        $pqb->addFilter('enabled', '=', 1)->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => [0 => 1]]);
     }
