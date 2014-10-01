@@ -123,6 +123,7 @@ services:
             - '@pim_filter.product_utility'
             - '@pim_user.context.user'
             - %pim_catalog.entity.attribute_option.class%
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_choice }
 

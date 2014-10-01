@@ -44,21 +44,6 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
-     * TODO : could be drop if we change choice filter
-     *
-     * @param string $code
-     *
-     * @return AbstractAttribute
-     */
-    public function getAttribute($code)
-    {
-        $attributeRepo = $this->productManager->getAttributeRepository();
-        $attribute     = $attributeRepo->findOneByCode($code);
-
-        return $attribute;
-    }
-
-    /**
      * Applies filter to query by attribute
      *
      * @param FilterDatasourceAdapterInterface $ds

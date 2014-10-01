@@ -33,7 +33,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
         $dateEndValue = $data['date_end'];
         $type         = $data['type'];
 
-        $this->applyFilterDependingOnType(
+        $this->applyFilterByAttributeDependingOnType(
             $type,
             $ds,
             $dateStartValue,
@@ -60,17 +60,17 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     /**
      * {@inheritdoc}
      */
-    protected function applyFilterDependingOnType($type, $ds, $dateStartValue, $dateEndValue, $fieldName)
+    protected function applyFilterByAttributeDependingOnType($type, $ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         switch ($type) {
             case DateRangeFilterType::TYPE_MORE_THAN:
-                $this->applyFilterLessMore($ds, $dateStartValue, $fieldName, false);
+                $this->applyFilterByAttributeLessMore($ds, $dateStartValue, $fieldName, false);
                 break;
             case DateRangeFilterType::TYPE_LESS_THAN:
-                $this->applyFilterLessMore($ds, $dateEndValue, $fieldName, true);
+                $this->applyFilterByAttributeLessMore($ds, $dateEndValue, $fieldName, true);
                 break;
             case DateRangeFilterType::TYPE_NOT_BETWEEN:
-                $this->applyFilterNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
+                $this->applyFilterByAttributeNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
                 break;
             case FilterType::TYPE_EMPTY:
                 $this->util->applyFilter(
@@ -82,7 +82,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 break;
             default:
             case DateRangeFilterType::TYPE_BETWEEN:
-                $this->applyFilterBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
+                $this->applyFilterByAttributeBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
                 break;
         }
     }
@@ -90,7 +90,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     /**
      * {@inheritdoc}
      */
-    protected function applyFilterBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
+    protected function applyFilterByAttributeBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         if ($dateStartValue && $dateEndValue) {
             $this->util->applyFilter(
@@ -105,7 +105,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     /**
      * {@inheritdoc}
      */
-    protected function applyFilterLessMore($ds, $dateValue, $fieldName, $isLess)
+    protected function applyFilterByAttributeLessMore($ds, $dateValue, $fieldName, $isLess)
     {
         $this->util->applyFilter($ds, $fieldName, $dateValue, $isLess ? '<' : '>');
     }
@@ -113,7 +113,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     /**
      * {@inheritdoc}
      */
-    protected function applyFilterNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
+    protected function applyFilterByAttributeNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         if ($dateStartValue && $dateEndValue) {
             $this->util->applyFilter(
