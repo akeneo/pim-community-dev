@@ -53,14 +53,19 @@ class FamilySorter implements FieldSorterInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        $field = sprintf(
+        $fieldLabel = sprintf(
             "%s.%s.label.%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
             $this->context->getLocaleCode()
         );
-
-        $this->qb->sort($field, $direction);
+        $fieldCode = sprintf(
+            "%s.%s.code",
+            ProductQueryUtility::NORMALIZED_FIELD,
+            $field
+        );
+        $this->qb->sort($fieldLabel, $direction);
+        $this->qb->sort($fieldCode, $direction);
         $this->qb->sort('_id');
 
         return $this;
