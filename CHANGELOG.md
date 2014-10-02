@@ -6,12 +6,13 @@
 - Setup relationships of published products with interfaces in order to ease overriding
 - Fixed problem on view rights on attribute groups which were not displayed on family configuration
 - Fixed a bug with wysiwyg values disappearing from drafts when saved without modifications
+- Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
 
 ## Improvements
 
 ## BC breaks
 
-# 1.0.1
+# 1.0.1 (2014-09-10)
 
 ## Bug fixes
 
@@ -19,7 +20,7 @@
 
 ## BC breaks
 
-# 1.0.0
+# 1.0.0 (2014-08-29)
 
 ## Improvements
 
@@ -29,7 +30,7 @@
 
 ## BC breaks
 
-# 1.0.0-RC3
+# 1.0.0-RC3 (2014-08-27)
 
 ## Improvements
 - Java dependency has been removed
@@ -48,7 +49,7 @@
 - Change constructor of `PimEnterprise/Bundle/SecurityBundle/Manager/CategoryAccessManager` to add the user group class as fourth argument
 - Methods `setAccess` of `PimEnterprise/Bundle/SecurityBundle/Manager/CategoryAccessManager` now has a last parameter to handle the flush
 
-# 1.0.0-RC2
+# 1.0.0-RC2 (2014-08-14)
 
 ## Improvements
 - Apply permissions on REST API
