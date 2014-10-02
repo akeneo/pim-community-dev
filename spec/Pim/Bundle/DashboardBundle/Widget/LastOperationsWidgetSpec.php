@@ -5,12 +5,13 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Prophecy\Argument;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class LastOperationsWidgetSpec extends ObjectBehavior
 {
-    function let(JobExecutionManager $manager)
+    function let(JobExecutionManager $manager, TranslatorInterface $translator)
     {
-        $this->beConstructedWith($manager);
+        $this->beConstructedWith($manager, $translator);
     }
 
     function it_is_a_widget()
@@ -28,18 +29,26 @@ class LastOperationsWidgetSpec extends ObjectBehavior
         $this->getTemplate()->shouldReturn('PimDashboardBundle:Widget:last_operations.html.twig');
     }
 
-    function it_exposes_the_last_operations_template_parameters($manager)
+    function it_has_no_template_parameters()
+    {
+        $this->getParameters()->shouldReturn([]);
+    }
+
+    function it_exposes_the_last_operations_data($manager, $translator)
     {
         $operation = [
             'date'   => new \DateTime(),
             'type'   => 'import',
             'label'  => 'My import',
-            'status' => 'pim_import_export.batch_status.1',
+            'status' => 1,
             'id'     => 3
         ];
 
         $manager->getLastOperationsData(Argument::type('array'))->willReturn([$operation]);
 
-        $this->getParameters()->shouldReturn(['params' => [$operation]]);
+        $translator->trans('pim_import_export.batch_status.' . $operation['status'])->willReturn('Completed');
+
+        $operation['status'] = 'Completed';
+        $this->getData()->shouldReturn([$operation]);
     }
 }

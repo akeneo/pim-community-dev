@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Widget to display last import/export operations
@@ -18,10 +19,12 @@ class LastOperationsWidget implements WidgetInterface
 
     /**
      * @param JobExecutionManager $manager
+     * @param TranslatorInterface $translator
      */
-    public function __construct(JobExecutionManager $manager)
+    public function __construct(JobExecutionManager $manager, TranslatorInterface $translator)
     {
-        $this->manager = $manager;
+        $this->manager    = $manager;
+        $this->translator = $translator;
     }
 
     /**
@@ -45,9 +48,7 @@ class LastOperationsWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        return [
-            'params' => $this->manager->getLastOperationsData(['import', 'export'])
-        ];
+        return [];
     }
 
     /**
@@ -55,6 +56,12 @@ class LastOperationsWidget implements WidgetInterface
      */
     public function getData()
     {
-        return null;
+        $operations = $this->manager->getLastOperationsData(['import', 'export']);
+
+        foreach ($operations as &$operation) {
+            $operation['status'] = $this->translator->trans('pim_import_export.batch_status.' . $operation['status']);
+        }
+
+        return $operations;
     }
 }

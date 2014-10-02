@@ -28,5 +28,6 @@ services:
         class: %pim_dashboard.widget.last_operations.class%
         arguments:
             - '@pim_import_export.manager.job_execution'
+            - '@translator'
         tags:
             - { name: pim_dashboard.widget, position: 30 }

@@ -199,16 +199,16 @@ define(
             }
         });
 
-        var completenessWidget = null;
+        var instance = null;
 
         return {
             init: function(options) {
-                if (!completenessWidget) {
-                    completenessWidget = new CompletenessWidget(options);
+                if (!instance) {
+                    instance = new CompletenessWidget(options);
                 } else if (_.has(options, 'el')) {
-                    completenessWidget.setElement(options.el);
+                    instance.setElement(options.el);
                 }
-                completenessWidget.render().delayedLoad();
+                instance.render().delayedLoad();
             }
         };
     }
