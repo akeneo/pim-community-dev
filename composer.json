@@ -22,8 +22,6 @@
         "akeneo/pim-community-dev": "1.2.*",
         "oro/platform": "1.0.0-beta13",
         "phpspec/php-diff": "1.0.2",
-        "akeneo/measure-bundle": "0.2.*",
-        "akeneo/batch-bundle": "0.2.*",
         "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
         "knplabs/knp-menu":"v2.0.0-alpha2",
         "gedmo/doctrine-extensions":"2.3.x-dev@dev"
