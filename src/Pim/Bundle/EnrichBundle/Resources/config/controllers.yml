@@ -109,6 +109,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@form.factory'
             - '@fos_rest.view_handler'
+            - '@pim_catalog.manager.attribute'
 
     pim_enrich.controller.product:
         scope: request

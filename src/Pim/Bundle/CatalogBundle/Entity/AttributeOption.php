@@ -326,20 +326,6 @@ class AttributeOption implements ReferableInterface
      */
     public function getOptionValue()
     {
-        $translatable = $this->translatable;
-        $locale = $this->getLocale();
-        $values = $this->getOptionValues()->filter(
-            function ($value) use ($translatable, $locale) {
-                // return relevant translated value
-                if ($translatable && $value->getLocale() == $locale) {
-                    return true;
-                } elseif (!$translatable) {
-                    return true;
-                }
-            }
-        );
-        $value = $values->first();
-
-        return $value;
+        return $this->getOptionValues()->get($this->getLocale());
     }
 }
