@@ -1,0 +1,2 @@
+parameters:
+    pimee_rule_engine.entity.rule.class: PimEnterprise\Bundle\RuleEngineBundle\Model\Rule

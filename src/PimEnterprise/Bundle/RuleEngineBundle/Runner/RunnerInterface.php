@@ -20,17 +20,15 @@ interface RunnerInterface
 {
     /**
      * @param RunnableRuleInterface $rule
-
      *
-*@return mixed
+      *@return mixed
      */
     public function run(RunnableRuleInterface $rule);
 
     /**
      * @param RunnableRuleInterface $rule
-
      *
-*@return bool
+     * @return bool
      */
     public function supports(RunnableRuleInterface $rule);
 }
