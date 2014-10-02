@@ -122,6 +122,7 @@ class CategoryAccessRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('ca');
         $qb
+            ->select('DISTINCT c.id')
             ->innerJoin('ca.category', 'c', 'c.id')
             ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
             ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
