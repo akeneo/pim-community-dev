@@ -18,6 +18,7 @@
     },
     "require": {
         "akeneo/pim-community-dev": "1.2.*",
+        "monolog/monolog": "1.10.*",
         "symfony/icu": "1.1.0",
         "oro/platform": "1.0.0-beta13",
         "phpspec/php-diff": "1.0.2",
