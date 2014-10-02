@@ -6,6 +6,7 @@
 - Setup relationships of published products with interfaces in order to ease overriding
 - Fixed problem on view rights on attribute groups which were not displayed on family configuration
 - Fixed a bug with wysiwyg values disappearing from drafts when saved without modifications
+- Fixes products count by tree performances problem with lots of categories
 
 ## Improvements
 
