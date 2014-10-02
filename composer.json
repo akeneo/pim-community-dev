@@ -17,9 +17,8 @@
         }
     },
     "require": {
-        "php": ">=5.4.4",
-        "symfony/icu": "1.1.0",
         "akeneo/pim-community-dev": "1.2.*",
+        "symfony/icu": "1.1.0",
         "oro/platform": "1.0.0-beta13",
         "phpspec/php-diff": "1.0.2",
         "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
