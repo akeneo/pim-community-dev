@@ -27,7 +27,7 @@ define(
             ),
 
             initialize: function(options) {
-                this.options = _.extend(this.defaults, this.options, options);
+                this.options = _.extend({}, this.defaults, this.options, options);
 
                 mediator.on('hash_navigation_request:complete', function () {
                     if (this.isDashboardPage()) {

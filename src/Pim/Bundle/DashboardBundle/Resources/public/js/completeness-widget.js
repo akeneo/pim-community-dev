@@ -1,9 +1,9 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/mediator', 'oro/navigation'],
-    function ($, _, Backbone, Routing, LoadingMask, mediator, Navigation) {
+    ['jquery', 'underscore', 'pimdashboard/js/abstract-widget'],
+    function ($, _, AbstractWidget) {
         'use strict';
 
-        var CompletenessWidget = Backbone.View.extend({
+        var CompletenessWidget = AbstractWidget.extend({
             tagName: 'table',
 
             id: 'completeness-widget',
@@ -11,19 +11,7 @@ define(
             options: {
                 completeBar: 'bar-success',
                 inCompleteBar: 'bar-warning',
-                delayedLoadTimeout: 1000,
-                minRefreshInterval: 10000
             },
-
-            data: {},
-
-            loadingMask: null,
-
-            $refreshBtn: null,
-
-            loadTimeout: null,
-
-            needsData: true,
 
             template: _.template(
                 [
@@ -61,39 +49,8 @@ define(
                 ].join('')
             ),
 
-            refreshBtnTemplate: _.template(
-                '<button class="btn btn-mini pull-right"><i class="icon-refresh"></i></button>'
-            ),
-
             events: {
                 'click a[data-toggle-channel]': 'toggleChannel'
-            },
-
-            initialize: function(options) {
-                if (options) {
-                    this.options = _.extend(this.options, options);
-                }
-
-                mediator.on('hash_navigation_request:complete', function () {
-                    if (this.isDashboardPage()) {
-                        this.delayedLoad();
-                    }
-                }, this);
-            },
-
-            render: function() {
-                this.$el.html(this.template({ data: this.data, options: this.options }));
-
-                return this;
-            },
-
-            setElement: function() {
-                Backbone.View.prototype.setElement.apply(this, arguments);
-
-                this._createLoadingMask();
-                this._createRefreshBtn();
-
-                return this;
             },
 
             toggleChannel: function(e) {
@@ -103,75 +60,6 @@ define(
                 this.$('tr[data-channel="' + channel + '"]').toggle();
                 this.$('a[data-toggle-channel="' + channel + '"] i')
                     .toggleClass('icon-caret-right icon-caret-down');
-            },
-
-            isDashboardPage: function() {
-                return Navigation.getInstance().url === Routing.generate('oro_default');
-            },
-
-            loadData: function() {
-                if (!this.needsData || !this.isDashboardPage()) {
-                    this.loadTimeout = null;
-
-                    return;
-                }
-                this.needsData = false;
-                this._beforeLoad();
-
-                $.get(Routing.generate('pim_dashboard_widget_data', { alias: 'completeness' }))
-                    .then(_.bind(function(resp) {
-                        this.data = this._processResponse(resp);
-                        this.render();
-                        this._afterLoad();
-                    }, this));
-            },
-
-            reload: function() {
-                this.needsData = true;
-
-                this.loadData();
-            },
-
-            delayedLoad: function() {
-                if (!this.loadTimeout) {
-                    this.loadTimeout = setTimeout(_.bind(function() {
-                        this.loadData();
-                    }, this), this.options.delayedLoadTimeout);
-                }
-            },
-
-            _beforeLoad: function() {
-                this.loadingMask.$el.css('min-height', _.isEmpty(this.data) ? 100 : 0);
-                this.$refreshBtn.prop('disabled', true).find('i').addClass('icon-spin');
-                this.loadingMask.show();
-            },
-
-            _afterLoad: function() {
-                this.loadingMask.hide();
-                this.$refreshBtn.prop('disabled', false).find('i').removeClass('icon-spin');
-                this.loadTimeout = null;
-                setTimeout(_.bind(function() {
-                    this.needsData = true;
-                }, this), this.options.minRefreshInterval);
-            },
-
-            _createLoadingMask: function() {
-                if (this.loadingMask) {
-                    this.loadingMask.remove();
-                }
-                this.loadingMask = new LoadingMask();
-                this.loadingMask.render().$el.insertAfter(this.$el);
-            },
-
-            _createRefreshBtn: function() {
-                if (this.$refreshBtn) {
-                    this.$refreshBtn.remove();
-                }
-
-                this.$refreshBtn = $(this.refreshBtnTemplate());
-                this.$refreshBtn.on('click', _.bind(this.reload, this));
-
-                this.$el.parent().siblings('.widget-header').append(this.$refreshBtn);
             },
 
             _processResponse: function(data) {
