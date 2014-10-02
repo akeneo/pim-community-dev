@@ -11,20 +11,20 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Inject current user product draft in a product before editing a product
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterface
 {
@@ -78,11 +78,8 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
         $product = $event->getSubject();
 
         if ((null !== $user = $this->userContext->getUser())
-            && (null !== $productDraft = $this->getProductDraft(
-                $product,
-                $user->getUsername(),
-                $this->catalogContext->getLocaleCode()
-            ))) {
+            && (null !== $productDraft = $this->getProductDraft($product, $user->getUsername()))
+        ) {
             try {
                 $this->applier->apply($product, $productDraft);
             } catch (ValidatorException $e) {
@@ -97,12 +94,11 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
      *
      * @param AbstractProduct $product
      * @param string          $username
-     * @param string          $locale
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
      */
-    protected function getProductDraft(AbstractProduct $product, $username, $locale)
+    protected function getProductDraft(AbstractProduct $product, $username)
     {
-        return $this->repository->findUserProductDraft($product, $username, $locale);
+        return $this->repository->findUserProductDraft($product, $username);
     }
 }

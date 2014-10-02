@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify as BaseClassify;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation to classify products
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class Classify extends BaseClassify
 {

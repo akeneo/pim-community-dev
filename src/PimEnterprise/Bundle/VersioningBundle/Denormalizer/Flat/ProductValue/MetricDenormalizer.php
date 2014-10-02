@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
  * Metric flat denormalizer used for attribute types:
  * - pim_catalog_metric
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class MetricDenormalizer extends AbstractValueDenormalizer
 {

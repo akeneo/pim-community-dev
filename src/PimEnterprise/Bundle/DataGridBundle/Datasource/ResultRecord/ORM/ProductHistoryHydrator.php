@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 /**
  * Hydrator for product history (ORM support)
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductHistoryHydrator implements HydratorInterface
 {

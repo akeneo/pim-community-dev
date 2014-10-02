@@ -1,3 +1,18 @@
+# 1.1.x
+
+# 1.1.0 (based on CE 1.2.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/1.2/CHANGELOG.md))
+
+## Improvements
+
+- remove the fixed mysql socket location
+- switch to minimum-stability:stable in composer.json
+- base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
+## Bug fixes
+
+## BC breaks
+- `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
+
 # 1.0.x
 
 ## Bug fixes
@@ -9,18 +24,18 @@
 - Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
 
 ## Improvements
+- Setup relationships of published products with interfaces in order to easy overriding
 
 ## BC breaks
 
 # 1.0.1 (2014-09-10)
 
 ## Bug fixes
-
-## Improvements
+- Fixed problem on view rights on attribute groups which were not displayed on family configuration
 
 ## BC breaks
 
-# 1.0.0 (2014-08-29)
+# 1.0.0 (2014-08-29) (based on CE 1.2.0, see [changelog](https://github.com/akeneo/pim-community-dev/blob/dd64effbe173f595e4afea08d0e80528fd441741/CHANGELOG.md))
 
 ## Improvements
 

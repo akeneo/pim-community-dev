@@ -2,16 +2,16 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
 {
@@ -36,9 +36,8 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($product);
         $userContext->getUser()->willReturn($user);
-        $catalogContext->getLocaleCode()->willReturn('en_US');
         $user->getUsername()->willReturn('julia');
-        $repository->findUserProductDraft($product, 'julia', 'en_US')->willReturn($productDraft);
+        $repository->findUserProductDraft($product, 'julia')->willReturn($productDraft);
         $applier->apply($product, $productDraft)->shouldBeCalled();
 
         $this->inject($event);
@@ -79,8 +78,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($product);
         $userContext->getUser()->willReturn($user);
         $user->getUsername()->willReturn('julia');
-        $catalogContext->getLocaleCode()->willReturn('en_US');
-        $repository->findUserProductDraft($product, 'julia', 'en_US')->willReturn(null);
+        $repository->findUserProductDraft($product, 'julia')->willReturn(null);
         $applier->apply($product, Argument::any())->shouldNotBeCalled();
 
         $this->inject($event);

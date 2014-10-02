@@ -77,7 +77,10 @@ class AppKernel extends OroKernel
             new Pim\Bundle\WebServiceBundle\PimWebServiceBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle(),
-            new Pim\Bundle\TransformBundle\PimTransformBundle()
+            new Pim\Bundle\TransformBundle\PimTransformBundle(),
+            new Pim\Bundle\CommentBundle\PimCommentBundle(),
+            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
+            new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
         );
 
         $bundles = array_merge($bundles, $pimBundles);
@@ -97,7 +100,8 @@ class AppKernel extends OroKernel
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
             new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
-            new PimEnterprise\Bundle\TransformBundle\PimEnterpriseTransformBundle()
+            new PimEnterprise\Bundle\TransformBundle\PimEnterpriseTransformBundle(),
+            new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle()
         );
 
         $bundles = array_merge($bundles, $enterpriseBundles);

@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Symfony\Component\HttpKernel\KernelEvents;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\EnrichBundle\Flash\Message;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 
 /**
  * Replace "product updated" flash by "product draft updated" if necessary
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInterface
 {

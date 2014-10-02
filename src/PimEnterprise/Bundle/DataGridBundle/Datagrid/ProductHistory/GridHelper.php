@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Helper for product history to display revert action
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class GridHelper
 {

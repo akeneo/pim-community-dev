@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * PimEnterprise\Bundle\WorkflowBundle\DependencyInjection
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class PimEnterpriseWorkflowExtension extends Extension
 {

@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Present images side by side
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ImagePresenter implements PresenterInterface
 {

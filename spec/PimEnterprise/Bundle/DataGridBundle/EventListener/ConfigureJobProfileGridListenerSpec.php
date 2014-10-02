@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\EventListener;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class ConfigureJobProfileGridListenerSpec extends ObjectBehavior
 {

@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * Attribute option flat denormalizer used for following attribute types:
  * - pim_catalog_simpleselect
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 {
@@ -26,6 +26,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     protected $repository;
 
     /**
+     * @param string[]                  $supportedTypes
      * @param AttributeOptionRepository $repository
      */
     public function __construct(array $supportedTypes, AttributeOptionRepository $repository)
@@ -51,12 +52,12 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     /**
      * Prepare option code for AttributeOptionRepository::findByReference
      *
-     * @deprecated AttributeOptionRepository::findByReference should take a code as parameter
-     *
      * @param string                $data
      * @param ProductValueInterface $value
      *
      * @return string
+     *
+     * @deprecated AttributeOptionRepository::findByReference should take a code as parameter
      */
     protected function prepareOptionCode($data, ProductValueInterface $value)
     {

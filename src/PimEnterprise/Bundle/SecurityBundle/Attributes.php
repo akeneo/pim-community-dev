@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle;
 /**
  * Security voter attributes
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 final class Attributes
 {

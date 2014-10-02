@@ -17,7 +17,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
  *
  * TODO: Should be used for \DateTime objects
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class DateTimeDenormalizer extends AbstractValueDenormalizer
 {
