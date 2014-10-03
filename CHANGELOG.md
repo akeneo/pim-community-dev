@@ -5,6 +5,7 @@
 - Add a widget in the navigation bar to display notifications when import/export jobs finish
 - Add the sequential edit for a selected list of products
 - Add comments on a product
+- Load dashboard widgets asynchronously and allow to refresh the data
 
 ## Improvements
  - Remove the fixed mysql socket location
@@ -21,6 +22,11 @@
 - Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
 - Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
 - Remove ProductFilterUtility::getAttribute()
+- Two new methods have been added to `Pim\Bundle\DashboardBundle\Widget\WidgetInterface`: `getAlias` and `getData`
+- Constructor of `Pim\Bundle\DashboardBundle\Controller\WidgetController` has been changed (most dependencies have been removed)
+- Method `Pim\Bundle\DashboardBundle\Controller\WidgetController::showAction()` has been removed in favor of `listAction` to render all widgets and `dataAction` to provide widget data
+- Constructors of `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` and `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` have been changed
+- `Pim\Bundle\DashboardBundle\Widget\Registry:add()` now accepts the widget (`WidgetInterface`) as the first argument and position as the second
 
 # 1.2.x
 

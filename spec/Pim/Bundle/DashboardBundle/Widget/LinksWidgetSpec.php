@@ -11,6 +11,11 @@ class LinksWidgetSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
+    function it_has_an_alias()
+    {
+        $this->getAlias()->shouldReturn('links');
+    }
+
     function it_exposes_the_links_widget_template()
     {
         $this->getTemplate()->shouldReturn('PimDashboardBundle:Widget:links.html.twig');
