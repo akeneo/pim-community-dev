@@ -54,6 +54,8 @@ class DatasourceAdapterResolver
             return $this->mongodbAdapterClass;
         }
 
+        // TODO : inject PQB ?
+
         return $this->ormAdapterClass;
     }
 

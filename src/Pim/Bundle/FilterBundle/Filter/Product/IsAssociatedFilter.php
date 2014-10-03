@@ -67,8 +67,7 @@ class IsAssociatedFilter extends BooleanFilter
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
 
         $qb = $ds->getQueryBuilder();
-        $repository = $this->util->getProductRepository();
-        $pqb = $repository->getProductQueryBuilder($qb);
+        $pqb = $this->util->getProductQueryBuilderInstance();
         $pqb->addFilter('id', $operator, $productIds);
 
         return true;

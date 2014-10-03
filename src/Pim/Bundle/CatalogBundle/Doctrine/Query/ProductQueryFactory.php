@@ -41,11 +41,11 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(array $options)
+    public function create(array $options = [])
     {
         // TODO locale and scope check with option resolver ?
-        $this->context->setLocaleCode($options['locale_code']);
-        $this->context->setScopeCode($options['scope_code']);
+//        $this->context->setLocaleCode($options['locale_code']);
+//        $this->context->setScopeCode($options['scope_code']);
 
         $qb = $this->repository->createQueryBuilder('p');
         $this->productQueryBuilder->setQueryBuilder($qb);

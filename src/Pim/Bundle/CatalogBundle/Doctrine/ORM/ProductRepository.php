@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 
 /**
  * Product repository
@@ -25,28 +27,20 @@ class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
-    /**
-     * @var ProductQueryBuilder
-     */
-    protected $productQB;
+    /** @var ProductQueryFactoryInterface */
+    protected $productQueryFactory;
 
-    /**
-     * @var AttributeRepository
-     */
+    /** @var AttributeRepository */
     protected $attributeRepository;
 
     /**
-     * Set product query builder
+     * @param ProductQueryFactoryInterface
      *
-     * @param ProductQueryBuilder $productQB
-     *
-     * @return ProductRepositoryInterface
+     * @return ProductQueryBuilderInterface
      */
-    public function setProductQueryBuilder($productQB)
+    public function setProductQueryFactory($factory)
     {
-        $this->productQB = $productQB;
-
-        return $this;
+        $this->productQueryFactory = $factory;
     }
 
     /**
@@ -464,8 +458,8 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneBy(array $criteria)
     {
-        $qb = $this->createQueryBuilder('p');
-        $pqb = $this->getProductQueryBuilder($qb);
+        $pqb = $this->createProductQueryBuilder();
+        $qb = $pqb->getQueryBuilder();
         foreach ($criteria as $field => $data) {
             // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
@@ -519,15 +513,10 @@ class ProductRepository extends EntityRepository implements
      *
      * @return ProductQueryBuilder
      */
-    public function getProductQueryBuilder($qb)
+    public function createProductQueryBuilder()
     {
-        if (!$this->productQB) {
-            throw new \LogicException('Product query builder must be configured');
-        }
-
-        $this->productQB->setQueryBuilder($qb);
-
-        return $this->productQB;
+        // TODO locale and scope
+        return $this->productQueryFactory->create();
     }
 
     /**
@@ -561,9 +550,8 @@ class ProductRepository extends EntityRepository implements
         $limit = null,
         $offset = null
     ) {
-        $qb = $this->createQueryBuilder('Entity');
-        $this->addJoinToValueTables($qb);
-        $productQb = $this->getProductQueryBuilder($qb);
+        $productQb = $this->createProductQueryBuilder();
+        $qb = $productQb->getQueryBuilder();
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {

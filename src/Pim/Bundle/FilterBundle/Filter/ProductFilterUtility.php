@@ -9,6 +9,8 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 /**
  * Product filter utility
  *
+ * TODO : rename this utility class cause it should be used by Filters and Sorters
+ *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,6 +19,9 @@ class ProductFilterUtility extends BaseFilterUtility
 {
     /** @var ProductManager */
     protected $productManager;
+
+    /** @var ProductQueryBuilderInterface */
+    protected $productQueryBuilder;
 
     /**
      * @param ProductManager $manager
@@ -43,6 +48,23 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
+     * @param FilterDatasourceAdapterInterface $ds
+     *
+     * TODO : we would avoid to inject $qb from outside
+     *
+     * @return ProductQueryBuilderInterface
+     */
+    public function getProductQueryBuilderInstance($qb = null)
+    {
+        if (null === $this->productQueryBuilder) {
+            // TODO : inject catalog context ?
+            $this->productQueryBuilder = $this->getProductRepository()->createProductQueryBuilder(['qb' => $qb]);
+        }
+
+        return $this->productQueryBuilder;
+    }
+
+    /**
      * Applies filter to query by attribute
      *
      * @param FilterDatasourceAdapterInterface $ds
@@ -52,8 +74,7 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
-        $productQueryBuilder->addFilter($field, $operator, $value);
+        $this->getProductQueryBuilderInstance($ds)->addFilter($field, $operator, $value);
     }
 
     /**

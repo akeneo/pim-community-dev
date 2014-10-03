@@ -34,7 +34,7 @@ class IsAssociatedSorter implements SorterInterface
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
         $qb = $datasource->getQueryBuilder();
-        $pqb = $this->repository->getProductQueryBuilder($qb);
-        $pqb->addSorter('is_associated', $direction);
+//        $pqb = $this->repository->getProductQueryBuilder($qb);
+//        $pqb->addSorter('is_associated', $direction);
     }
 }

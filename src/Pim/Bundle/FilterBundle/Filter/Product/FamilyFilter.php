@@ -26,10 +26,7 @@ class FamilyFilter extends ChoiceFilter
 
         $ids = $data['value'];
 
-        $qb = $ds->getQueryBuilder();
-        $repository = $this->util->getProductRepository();
-        $pqb = $repository->getProductQueryBuilder($qb);
-
+        $pqb = $this->util->getProductQueryBuilderInstance();
         $pqb->addFilter('family', 'IN', $ids);
 
         return true;

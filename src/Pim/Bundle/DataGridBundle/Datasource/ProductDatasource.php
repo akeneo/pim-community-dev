@@ -13,6 +13,10 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
  */
 class ProductDatasource extends Datasource
 {
+
+    // TODO : PQB as instance variable !!!!
+    // TODO : be sure to inject it in a dedicated datasource adapter, cf ./vendor/oro/platform/src/Oro/Bundle/FilterBundle/Grid/Extension/OrmFilterExtension.php:
+
     /**
      * {@inheritdoc}
      */

@@ -34,7 +34,7 @@ class ValueSorter implements SorterInterface
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
         $qb = $datasource->getQueryBuilder();
-        $pqb = $this->productRepository->getProductQueryBuilder($qb);
-        $pqb->addSorter($field, $direction);
+//        $pqb = $this->productRepository->getProductQueryBuilder($qb);
+//        $pqb->addSorter($field, $direction);
     }
 }

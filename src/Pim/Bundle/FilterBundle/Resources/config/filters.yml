@@ -26,7 +26,7 @@ services:
         class: %pim_filter.ajax_choice_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: ajax_choice }
 
@@ -34,7 +34,7 @@ services:
         class: %pim_filter.product_scope_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
             - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
         tags:
@@ -44,7 +44,7 @@ services:
         class: %pim_filter.product_category_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
             - '@pim_catalog.manager.product_category'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_category }

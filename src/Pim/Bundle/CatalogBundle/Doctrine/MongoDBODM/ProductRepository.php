@@ -34,8 +34,8 @@ class ProductRepository extends DocumentRepository implements
     ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface
 {
-    /** @var ProductQueryBuilderInterface */
-    protected $productQB;
+    /** @var ProductQueryFactoryInterface */
+    protected $productQueryFactory;
 
     /** @var EntityManager */
     protected $entityManager;
@@ -106,8 +106,9 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneBy(array $criteria)
     {
-        $qb = $this->createQueryBuilder('p');
-        $pqb = $this->getProductQueryBuilder($qb);
+        $pqb = $this->createProductQueryBuilder();
+        $qb = $pqb->getQueryBuilder();
+
         foreach ($criteria as $field => $data) {
             // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
@@ -457,8 +458,9 @@ class ProductRepository extends DocumentRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $qb = $this->createQueryBuilder();
-        $productQueryBuilder = $this->getProductQueryBuilder($qb);
+        $productQueryBuilder = $this->createProductQueryBuilder();
+        $qb = $productQueryBuilder->getQueryBuilder();
+
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
@@ -474,9 +476,9 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function setProductQueryBuilder($productQB)
+    public function setProductQueryFactory($factory)
     {
-        $this->productQB = $productQB;
+        $this->productQueryFactory = $factory;
 
         return $this;
 
@@ -484,16 +486,15 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return ProductQueryBuilder
      */
-    public function getProductQueryBuilder($qb)
+    public function createProductQueryBuilder()
     {
-        if (!$this->productQB) {
-            throw new \LogicException('Product query builder must be configured');
-        }
-
-        $this->productQB->setQueryBuilder($qb);
-
-        return $this->productQB;
+        // TODO locale and scope
+        return $this->productQueryFactory->create();
     }
 
     /**

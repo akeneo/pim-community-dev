@@ -49,7 +49,7 @@ class InGroupSorter implements SorterInterface
         }
 
         $field = 'in_group_'.$groupId;
-        $pqb = $this->repository->getProductQueryBuilder($qb);
-        $pqb->addSorter($field, $direction);
+//        $pqb = $this->repository->getProductQueryBuilder($qb);
+//        $pqb->addSorter($field, $direction);
     }
 }

@@ -8,6 +8,8 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 
 /**
  * Product repository interface
@@ -123,20 +125,16 @@ interface ProductRepositoryInterface
     public function valueExists(ProductValueInterface $value);
 
     /**
-     * @param mixed $qb
-     *
-     * @return ProductQueryBuilder
+     * @return ProductQueryBuilderInterface
      */
-    public function getProductQueryBuilder($qb);
+    public function createProductQueryBuilder();
 
     /**
-     * Set product query builder
+     * @param ProductQueryFactoryInterface
      *
-     * @param ProductQueryBuilder $productQB
-     *
-     * @return ProductRepositoryInterface
+     * @return ProductQueryBuilderInterface
      */
-    public function setProductQueryBuilder($productQB);
+    public function setProductQueryFactory($factory);
 
     /**
      * Get available attribute ids from a product ids list
