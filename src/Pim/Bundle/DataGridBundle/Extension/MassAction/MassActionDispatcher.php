@@ -38,7 +38,7 @@ class MassActionDispatcher
      * Constructor
      *
      * @param MassActionHandlerRegistry  $handlerRegistry
-     * @param Manager                    $manager
+     * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
      */

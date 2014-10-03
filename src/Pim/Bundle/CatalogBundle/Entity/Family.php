@@ -60,12 +60,12 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     protected $requirements;
 
     /**
-     * @var datetime $created
+     * @var \DateTime $created
      */
     protected $created;
 
     /**
-     * @var datetime $updated
+     * @var \DateTime $updated
      */
     protected $updated;
 
@@ -102,7 +102,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     /**
      * Get created datetime
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -112,9 +112,9 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     /**
      * Set created datetime
      *
-     * @param datetime $created
+     * @param \DateTime $created
      *
-     * @return TimestampableInterface
+     * @return Family
      */
     public function setCreated($created)
     {
@@ -126,7 +126,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     /**
      * Get updated datetime
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -136,9 +136,9 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     /**
      * Set updated datetime
      *
-     * @param datetime $updated
+     * @param \DateTime $updated
      *
-     * @return TimestampableInterface
+     * @return Family
      */
     public function setUpdated($updated)
     {

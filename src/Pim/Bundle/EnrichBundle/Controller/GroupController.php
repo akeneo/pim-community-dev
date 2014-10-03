@@ -192,7 +192,7 @@ class GroupController extends AbstractController
      *
      * @param Group $group
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return Response
      */
     public function historyAction(Group $group)
     {

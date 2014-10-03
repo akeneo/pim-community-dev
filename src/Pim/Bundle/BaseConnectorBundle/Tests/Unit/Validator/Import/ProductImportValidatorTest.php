@@ -177,15 +177,55 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         $this->assertEquals('scope', $scope);
         if (!isset($this->values[$name])) {
             $this->values[$name] = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-                ->setMethods(array(
-                        'setText', 'setDatetime', 'setInteger', 'setId', 'getOption', 'getMedia', 'getDecimal',
-                        'setDecimal', 'setAttribute', 'addOption', 'getBoolean', 'setOptions', 'setPrices',
-                        'getId', 'setVarchar', 'setBoolean', 'getData', 'getMetric', 'getDate', 'getAttribute',
-                        'getEntity', 'setMedia', 'getPrices', 'getOptions', 'getLocale', 'setMetric', 'addPrice',
-                        'getVarchar', 'removePrice', 'hasData', 'setScope', 'removeOption', 'getText', 'setData',
-                        'setOption', 'getPrice', 'setDate', 'addData', 'setLocale', 'isRemovable', 'getScope',
-                        'getDatetime', 'setEntity', 'getInteger', '__toString'
-                    ))
+                ->setMethods(
+                    [
+                        'setText',
+                        'setDatetime',
+                        'setInteger',
+                        'setId',
+                        'getOption',
+                        'getMedia',
+                        'getDecimal',
+                        'setDecimal',
+                        'setAttribute',
+                        'addOption',
+                        'getBoolean',
+                        'setOptions',
+                        'setPrices',
+                        'getId',
+                        'setVarchar',
+                        'setBoolean',
+                        'getData',
+                        'getMetric',
+                        'getDate',
+                        'getAttribute',
+                        'getEntity',
+                        'setMedia',
+                        'getPrices',
+                        'getOptions',
+                        'getLocale',
+                        'setMetric',
+                        'addPrice',
+                        'getVarchar',
+                        'removePrice',
+                        'hasData',
+                        'setScope',
+                        'removeOption',
+                        'getText',
+                        'setData',
+                        'setOption',
+                        'getPrice',
+                        'setDate',
+                        'addData',
+                        'setLocale',
+                        'isRemovable',
+                        'getScope',
+                        'getDatetime',
+                        'setEntity',
+                        'getInteger',
+                        '__toString'
+                    ]
+                )
                 ->getMock();
             $this->values[$name]->expects($this->any())
                 ->method('getData')

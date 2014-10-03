@@ -81,11 +81,11 @@ class UserContextListener implements EventSubscriberInterface
             return;
         }
 
-        // If there are no activated locales, skip configuring the listener and productmanager
         try {
             $this->configureTranslatableListener();
             $this->configureCatalogContext();
         } catch (\LogicException $e) {
+            // If there are no activated locales, skip configuring the listener and productmanager
         }
     }
 

@@ -121,7 +121,7 @@ class ProductManager
      *
      * @param integer $id
      *
-     * @return Product|null
+     * @return ProductInterface|null
      */
     public function find($id)
     {

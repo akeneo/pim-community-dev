@@ -20,6 +20,9 @@ class WidgetController
     /** @var Registry */
     protected $widgetRegistry;
 
+    /** @var EngineInterface */
+    protected $templating;
+
     /**
      * @param Registry        $widgetRegistry
      * @param EngineInterface $templating

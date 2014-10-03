@@ -522,11 +522,10 @@ class ProductController extends AbstractDoctrineController
     /**
      * List comments made on a product
      *
+     * @param Request        $request
+     * @param integer|string $id
+     *
      * @AclAncestor("pim_enrich_product_comment")
-     *
-     * @param Request $request
-     * @param         $id
-     *
      * @return Response
      */
     public function listCommentsAction(Request $request, $id)
@@ -616,7 +615,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @throws \Exception
      *
-     * @return string
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
      */
     protected function getDataLocale()
     {

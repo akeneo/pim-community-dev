@@ -139,7 +139,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
-     * @return template|RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function configureAction($operationAlias)
     {
@@ -184,7 +184,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
-     * @return template|RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function performAction($operationAlias)
     {

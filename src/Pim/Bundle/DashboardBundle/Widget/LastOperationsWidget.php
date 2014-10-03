@@ -17,6 +17,9 @@ class LastOperationsWidget implements WidgetInterface
     /** @var JobExecutionManager */
     protected $manager;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * @param JobExecutionManager $manager
      * @param TranslatorInterface $translator

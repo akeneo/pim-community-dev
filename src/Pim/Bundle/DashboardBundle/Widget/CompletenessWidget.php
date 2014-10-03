@@ -14,10 +14,11 @@ use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
  */
 class CompletenessWidget implements WidgetInterface
 {
-    /**
-     * @var CompletenessRepositoryInterface
-     */
+    /** @var CompletenessRepositoryInterface */
     protected $completenessRepo;
+
+    /** @var LocaleHelper */
+    protected $localeHelper;
 
     /**
      * @param CompletenessRepositoryInterface $completenessRepo

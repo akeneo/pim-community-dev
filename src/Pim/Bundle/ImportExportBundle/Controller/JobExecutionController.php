@@ -118,7 +118,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return template
+     * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
     public function showAction(Request $request, $id)
     {

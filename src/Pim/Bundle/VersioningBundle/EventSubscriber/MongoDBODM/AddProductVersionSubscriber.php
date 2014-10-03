@@ -113,7 +113,7 @@ class AddProductVersionSubscriber implements EventSubscriber
     /**
      * @param object $versionable
      *
-     * @return Version
+     * @return Version[]
      */
     protected function createVersion($versionable)
     {

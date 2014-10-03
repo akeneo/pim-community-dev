@@ -33,11 +33,11 @@ class CategoryProcessor extends TransformerProcessor
     /**
      * Constructor
      *
-     * @param ImportValidatorInterface $validator
-     * @param TranslatorInterface      $translator
-     * @param ORMTransformer           $transformer
-     * @param DoctrineCache            $doctrineCache
-     * @param string                   $class
+     * @param ImportValidatorInterface   $validator
+     * @param TranslatorInterface        $translator
+     * @param EntityTransformerInterface $transformer
+     * @param DoctrineCache              $doctrineCache
+     * @param string                     $class
      */
     public function __construct(
         ImportValidatorInterface $validator,

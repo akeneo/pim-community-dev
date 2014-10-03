@@ -91,9 +91,8 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
 
         if (count($errors) > 0) {
             $message = count($errors) === $this->maxErrors ?
-                sprintf('The first %s erroneous lines are %s.', $this->maxErrors, implode(', ', $errors)):
-                sprintf('The lines %s are erroneous.', implode(', ', $errors))
-            ;
+                sprintf('The first %s erroneous lines are %s.', $this->maxErrors, implode(', ', $errors)) :
+                sprintf('The lines %s are erroneous.', implode(', ', $errors));
 
             throw new CharsetException(
                 sprintf('The file "%s" is not correctly encoded in %s. ', $this->filePath, $this->charset) .
