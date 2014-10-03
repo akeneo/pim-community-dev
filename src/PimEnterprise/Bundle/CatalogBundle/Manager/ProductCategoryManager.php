@@ -12,12 +12,13 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Doctrine\ORM\QueryBuilder;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -30,20 +31,26 @@ class ProductCategoryManager extends BaseProductCategoryManager
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var CategoryAccessRepository */
+    protected $categoryAccessRepo;
+
     /**
      * Constructor
      *
-     * @param ProductCategoryRepositoryInterface $productRepo     Product repository
-     * @param CategoryRepository                 $categoryRepo    Category repository
-     * @param SecurityContextInterface           $securityContext Security context
+     * @param ProductCategoryRepositoryInterface $productRepo        Product repository
+     * @param CategoryRepository                 $categoryRepo       Category repository
+     * @param SecurityContextInterface           $securityContext    Security context
+     * @param CategoryAccessRepository           $categoryAccessRepo Category Access repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
         CategoryRepository $categoryRepo,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        CategoryAccessRepository $categoryAccessRepo
     ) {
         parent::__construct($productRepo, $categoryRepo);
 
+        $this->categoryAccessRepo = $categoryAccessRepo;
         $this->securityContext = $securityContext;
     }
 
@@ -150,18 +157,17 @@ class ProductCategoryManager extends BaseProductCategoryManager
      */
     protected function getAllGrantedChildrenQueryBuilder(QueryBuilder $childrenQb)
     {
-        $categories = $childrenQb->getQuery()->execute();
-        foreach ($categories as $index => $category) {
-            if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
-                unset($categories[$index]);
-            }
-        }
+        $categoryIds = $this->categoryAccessRepo->getGrantedCategoryIdsFromQB(
+            $childrenQb,
+            $this->securityContext->getToken()->getUser(),
+            Attributes::VIEW_PRODUCTS
+        );
 
         $rootAlias  = current($childrenQb->getRootAliases());
         $grantedQb = $this->categoryRepository->createQueryBuilder($rootAlias);
         $grantedQb->select($rootAlias.'.id');
-        $grantedQb->where($grantedQb->expr()->in($rootAlias.'.id', ':categories'));
-        $grantedQb->setParameter('categories', $categories);
+        $grantedQb->where($grantedQb->expr()->in($rootAlias.'.id', ':categoryIds'));
+        $grantedQb->setParameter('categoryIds', $categoryIds);
 
         return $grantedQb;
     }
