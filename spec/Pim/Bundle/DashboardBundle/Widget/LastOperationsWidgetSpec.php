@@ -48,7 +48,7 @@ class LastOperationsWidgetSpec extends ObjectBehavior
 
         $translator->trans('pim_import_export.batch_status.' . $operation['status'])->willReturn('Completed');
 
-        $operation['status'] = 'Completed';
+        $operation['statusLabel'] = 'Completed';
         $this->getData()->shouldReturn([$operation]);
     }
 }

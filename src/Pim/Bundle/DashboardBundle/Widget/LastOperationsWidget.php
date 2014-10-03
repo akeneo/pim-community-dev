@@ -59,7 +59,7 @@ class LastOperationsWidget implements WidgetInterface
         $operations = $this->manager->getLastOperationsData(['import', 'export']);
 
         foreach ($operations as &$operation) {
-            $operation['status'] = $this->translator->trans('pim_import_export.batch_status.' . $operation['status']);
+            $operation['statusLabel'] = $this->translator->trans('pim_import_export.batch_status.' . $operation['status']);
         }
 
         return $operations;

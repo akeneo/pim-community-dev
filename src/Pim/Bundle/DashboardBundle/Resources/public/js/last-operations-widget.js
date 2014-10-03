@@ -10,7 +10,7 @@ define(
 
             className: 'table table-condensed table-light groups unspaced',
 
-            statusLabels: {
+            labelClasses: {
                 1: 'success',
                 3: 'info',
                 4: 'important',
@@ -46,8 +46,8 @@ define(
                                     '<td><%= _.__("pim_dashboard.widget.last_operations.job_type." + operation.type) %></td>',
                                     '<td><%= operation.label %></td>',
                                     '<td>',
-                                        '<span class="label<%= operation.statusLabel %> fullwidth">',
-                                            '<%= operation.status %>',
+                                        '<span class="label <%= operation.labelClass %> fullwidth">',
+                                            '<%= operation.statusLabel %>',
                                         '</span>',
                                     '</td>',
                                     '<td>',
@@ -87,11 +87,11 @@ define(
                 this.options.contentLoaded = true;
 
                 _.each(data, function(operation) {
-                    operation.labelClass = this.statusLabels[operation.status] ?
-                        'label-' + this.statusLabels[operation.status]
+                    operation.labelClass = this.labelClasses[operation.status] ?
+                        'label-' + this.labelClasses[operation.status]
                         : '';
-                    operation.status = operation.status.slice(0, 1).toUpperCase() +
-                        operation.status.slice(1).toLowerCase();
+                    operation.statusLabel = operation.statusLabel.slice(0, 1).toUpperCase() +
+                        operation.statusLabel.slice(1).toLowerCase();
                 }, this);
 
                 return data;
