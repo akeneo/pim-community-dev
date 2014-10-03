@@ -1248,6 +1248,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I wait for (the )?widgets to load$/
+     */
+    public function iWaitForTheWidgetsToLoad()
+    {
+        $this->wait(2000, false);
+        $this->wait();
+    }
+
+    /**
      * @param string $file
      *
      * @Given /^I upload and import the file "([^"]*)"$/
