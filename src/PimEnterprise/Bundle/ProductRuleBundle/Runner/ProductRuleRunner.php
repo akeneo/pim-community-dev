@@ -11,18 +11,23 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Runner;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 
 class ProductRuleRunner implements RunnerInterface
 {
-    public function run(RunnableRuleInterface $rule)
+    public function run(RunnableRuleInterface $rule, $dryRun = false)
     {
-        $queryBuilder = $rule->getQueryBuilder();
-        $products = $queryBuilder->getQuery()->execute();
+        /** @var ProductInterface[] $products */
+        $products = $rule->getQueryBuilder()->getQueryBuilder()->getQuery()->execute();
 
-        // TODO execute actions
+        foreach ($products as $product) {
+            echo sprintf("Applying rule %s on product %s.\n", $rule->getCode(), $product->getIdentifier());
+            $name = $product->getValue('name')->getData();
+            $product->getValue('name')->setData($name . ' // ' . $product->getIdentifier());
+        }
     }
 
     public function supports(RunnableRuleInterface $rule)

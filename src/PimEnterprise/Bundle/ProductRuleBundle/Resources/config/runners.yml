@@ -1,6 +1,8 @@
 parameters:
-    pimee_product_rule.runner.product.class: PimEnterprise\Bundle\ProductRuleBundle\runner\ProductRulerunner
+    pimee_product_rule.runner.product.class: PimEnterprise\Bundle\ProductRuleBundle\Runner\ProductRuleRunner
 
 services:
     pimee_product_rule.runner.product:
         class: %pimee_product_rule.runner.product.class%
+        tags:
+            - { name: pimee_rule_engine.runner }

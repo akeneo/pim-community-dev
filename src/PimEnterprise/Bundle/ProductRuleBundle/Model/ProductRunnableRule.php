@@ -11,14 +11,15 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Model;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 
 class ProductRunnableRule implements ProductRunnableRuleInterface
 {
+    /** @var string */
     protected $code;
 
-    /** @var string */
-    protected $expression;
+    /** @var ProductQueryBuilderInterface */
+    protected $qb;
 
     /** @var array */
     protected $context;
@@ -29,30 +30,16 @@ class ProductRunnableRule implements ProductRunnableRuleInterface
     /** @var ActionInterface[] */
     protected $actions;
 
-    public function getExpression()
-    {
-        return $this->expression;
-    }
-
-    public function setExpression($expression)
-    {
-        $this->expression = $expression;
-
-        return $this;
-    }
-
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
-        return $this->getCode();
+        return $this->code;
     }
 
     /**
-     * @param string $code
-     *
-     * @return RunnableRuleInterface
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -61,5 +48,21 @@ class ProductRunnableRule implements ProductRunnableRuleInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getQueryBuilder()
+    {
+        return $this->qb;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder(ProductQueryBuilderInterface $pqb)
+    {
+        $this->qb = $pqb;
+
+        return $this;
+    }
 }

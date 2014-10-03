@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Loader;
 
-use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRule;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Loader\LoaderInterface;
 
@@ -20,40 +22,49 @@ class ProductRuleLoader implements LoaderInterface
     /** @var string */
     protected $runnableClass;
 
+    /** @var ProductQueryBuilderInterface */
+    protected $pqb;
+
+    /** @var ProductRepositoryInterface */
+    protected $repo;
+
     /**
      * @param string $runnableClass
      */
-    public function __construct($runnableClass)
+    public function __construct($runnableClass, ProductQueryBuilderInterface $pqb, ProductRepositoryInterface $repo)
     {
         $this->runnableClass = $runnableClass;
+        $this->pqb = $pqb;
+        $this->repo = $repo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $instance)
+    public function load(RuleInterface $rule)
     {
-        $rule = new $this->runnableClass();
+        /** @var ProductRunnableRuleInterface $runnable */
+        $runnable = new $this->runnableClass();
 
-        // IF sku LIKE %10M THEN add sku to name
+        //TODO: remove this
+        $qb = $this->repo->createQueryBuilder('p');
+        $this->pqb->setQueryBuilder($qb);
 
+        $content = json_decode($rule->getContent(), true);
+        foreach ($content['conditions'] as $condition) {
+            echo sprintf(
+                "Selecting products for rule %s (%s %s %s).\n",
+                $rule->getCode(),
+                $condition['field'],
+                $condition['operator'],
+                $condition['value']
+            );
+            $this->pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
+        }
 
+        $runnable->setQueryBuilder($this->pqb);
 
-        /*
-        // load expression from content
-        $jsonContent = $instance->getContent();
-        $content = json_decode($jsonContent, true);
-        $expression = $content['expression'];
-
-        // TODO : load/transform from expression to QB
-        $rule->setExpression($expression);
-
-        // TODO : load actions, they may be in expression too
-        $actions = $content['actions'];
-        */
-
-        // use a ProductRuleBuilder
-        return $rule;
+        return $runnable;
     }
 
     /**

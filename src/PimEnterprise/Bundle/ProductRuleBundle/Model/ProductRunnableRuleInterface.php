@@ -11,10 +11,20 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Model;
 
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
 interface ProductRunnableRuleInterface extends RunnableRuleInterface
 {
-    public function getExpression();
-    public function setExpression($expression);
+    /**
+     * @return ProductQueryBuilderInterface
+     */
+    public function getQueryBuilder();
+
+    /**
+     * @param ProductQueryBuilderInterface $pqb
+     *
+     * @return ProductRunnableRuleInterface
+     */
+    public function setQueryBuilder(ProductQueryBuilderInterface $pqb);
 }

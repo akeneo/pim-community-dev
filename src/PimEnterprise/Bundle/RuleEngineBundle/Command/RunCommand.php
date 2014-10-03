@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class RunCommand extends ContainerAwareCommand
@@ -25,7 +26,9 @@ class RunCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:rule:run')
-            ->addArgument('code', InputArgument::REQUIRED, 'Rule code');
+            ->addArgument('code', InputArgument::REQUIRED, 'Rule code')
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
+        ;
     }
 
     /**
