@@ -50,7 +50,7 @@ class AttributeOption implements ReferableInterface
     /**
      * @var boolean
      */
-    protected $translatable;
+    protected $translatable = true;
 
     /**
      * Not persisted, allowe to define the value locale
@@ -61,7 +61,7 @@ class AttributeOption implements ReferableInterface
     /**
      * @var integer
      */
-    protected $sortOrder;
+    protected $sortOrder = 1;
 
     /**
      * Constructor
