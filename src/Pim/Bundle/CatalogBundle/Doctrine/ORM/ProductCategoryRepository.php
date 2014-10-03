@@ -106,8 +106,8 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         QueryBuilder $categoryQb = null
     ) {
         $qb = $this->em->createQueryBuilder();
-        $qb->select('p.id');
-        $qb->from($this->entityName, 'p');
+        $qb->select('DISTINCT p.id');
+        $qb->from($this->entityName, 'p', 'p.id');
         $qb->join('p.categories', 'node');
 
         if (null === $categoryQb) {
@@ -120,13 +120,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 
         $products = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
-        $productIds = array();
-        foreach ($products as $product) {
-            $productIds[] = $product['id'];
-        }
-        $productIds = array_unique($productIds);
-
-        return $productIds;
+        return array_keys($products);
     }
 
     /**
