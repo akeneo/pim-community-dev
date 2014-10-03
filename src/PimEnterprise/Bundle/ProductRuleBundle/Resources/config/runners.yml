@@ -1,0 +1,6 @@
+parameters:
+    pimee_product_rule.runner.product.class: PimEnterprise\Bundle\ProductRuleBundle\runner\ProductRulerunner
+
+services:
+    pimee_product_rule.runner.product:
+        class: %pimee_product_rule.runner.product.class%

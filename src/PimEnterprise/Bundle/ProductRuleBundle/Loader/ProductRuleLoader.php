@@ -17,13 +17,29 @@ use PimEnterprise\Bundle\RuleEngineBundle\Loader\LoaderInterface;
 
 class ProductRuleLoader implements LoaderInterface
 {
+    /** @var string */
+    protected $runnableClass;
+
+    /**
+     * @param string $runnableClass
+     */
+    public function __construct($runnableClass)
+    {
+        $this->runnableClass = $runnableClass;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function load(RuleInterface $instance)
     {
-        $rule = new ProductRunnableRule();
+        $rule = new $this->runnableClass();
 
+        // IF sku LIKE %10M THEN add sku to name
+
+
+
+        /*
         // load expression from content
         $jsonContent = $instance->getContent();
         $content = json_decode($jsonContent, true);
@@ -34,6 +50,7 @@ class ProductRuleLoader implements LoaderInterface
 
         // TODO : load actions, they may be in expression too
         $actions = $content['actions'];
+        */
 
         // use a ProductRuleBuilder
         return $rule;
@@ -44,6 +61,6 @@ class ProductRuleLoader implements LoaderInterface
      */
     public function supports(RuleInterface $rule)
     {
-        return 'Product' === $rule->getType();
+        return 'product' === $rule->getType();
     }
 }

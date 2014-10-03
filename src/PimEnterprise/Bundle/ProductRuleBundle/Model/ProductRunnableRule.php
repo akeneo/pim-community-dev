@@ -13,8 +13,10 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Model;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
-class ProductRunnableRule implements ProductRunnableRuleInterface, RunnableRuleInterface
+class ProductRunnableRule implements ProductRunnableRuleInterface
 {
+    protected $code;
+
     /** @var string */
     protected $expression;
 
@@ -38,4 +40,26 @@ class ProductRunnableRule implements ProductRunnableRuleInterface, RunnableRuleI
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->getCode();
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return RunnableRuleInterface
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+
 }

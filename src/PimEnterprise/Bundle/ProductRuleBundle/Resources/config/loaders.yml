@@ -1,0 +1,11 @@
+parameters:
+    pimee_product_rule.loader.product.class: PimEnterprise\Bundle\ProductRuleBundle\Loader\ProductRuleLoaderLoader
+    pimee_product_rule.runnable.product.class: PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRule
+
+services:
+    pimee_product_rule.loader.product:
+        class: %pimee_product_rule.loader.product.class%
+        arguments:
+            - %pimee_product_rule.runnable.product.class%
+        tags:
+            - { name: pimee_rule_engine.loader }
