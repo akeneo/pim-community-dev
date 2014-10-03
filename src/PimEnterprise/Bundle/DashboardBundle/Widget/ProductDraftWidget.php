@@ -58,6 +58,14 @@ class ProductDraftWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
+    public function getAlias()
+    {
+        return 'product_drafts';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTemplate()
     {
         return 'PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig';
@@ -85,5 +93,13 @@ class ProductDraftWidget implements WidgetInterface
             'show'   => true,
             'params' => $productDrafts
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        return null;
     }
 }

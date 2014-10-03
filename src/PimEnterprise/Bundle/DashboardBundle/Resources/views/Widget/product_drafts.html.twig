@@ -1,10 +1,10 @@
-{% if widget.show %}
+{% if show %}
     <div class="quick-launchpad-widget span6">
         <div class="clearfix">
             <div class="widget-header">
                 {{ 'pimee_dashboard.widget.product_drafts.title'|trans }}
             </div>
-            {% if widget.params|length %}
+            {% if params|length %}
                 <table id="product-drafts-widget" class="table table-condensed table-light groups unspaced">
                     <thead>
                         <tr>
@@ -15,7 +15,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for productDraft in widget.params %}
+                        {% for productDraft in params %}
                             <tr>
                                 <td>
                                     {% set timeFormat = 'now'|date('Y-m-d') == productDraft.createdAt|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
