@@ -2,6 +2,9 @@
 
 ## Bug fixes
 
+## Improvements
+- avoid hydrating duplicate categories when applying category filter in product grid
+
 # 1.2.7 (2014-10-01)
 
 ## Bug fixes
