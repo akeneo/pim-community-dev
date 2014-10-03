@@ -21,18 +21,15 @@ interface LoaderInterface
 {
     /**
      * @param RuleInterface $instance
-
-
-*
-*@return RunnableRuleInterface
+    *
+    * @return RunnableRuleInterface
      */
     public function load(RuleInterface $instance);
 
     /**
      * @param RuleInterface $instance
-
      *
-*@return bool
+     * @return bool
      */
     public function supports(RuleInterface $instance);
 }

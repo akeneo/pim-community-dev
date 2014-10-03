@@ -36,7 +36,6 @@ class ProductRuleLoader implements LoaderInterface
         $actions = $content['actions'];
 
         // use a ProductRuleBuilder
-
         return $rule;
     }
 

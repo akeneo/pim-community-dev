@@ -4,4 +4,3 @@ parameters:
 services:
     pimee_rule_engine.loader.chained:
         class: %pimee_rule_engine.loader.chained.class%
-
