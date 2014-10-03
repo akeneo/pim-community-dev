@@ -24,8 +24,8 @@ class RunCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:rules:run')
-            ->addArgument('code', InputArgument::REQUIRED, 'Rule instance code');
+            ->setName('pim:rule:run')
+            ->addArgument('code', InputArgument::REQUIRED, 'Rule code');
     }
 
     /**

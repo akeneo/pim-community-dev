@@ -46,14 +46,17 @@ class ChainedLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $instance)
+    public function load(RuleInterface $rule)
     {
         foreach ($this->loaders as $loader) {
-            if ($loader->supports($instance)) {
-                return $loader->load($instance);
+            if ($loader->supports($rule)) {
+                $runnable = $loader->load($rule);
+                $runnable->setCode($rule->getCode());
+
+                return $runnable;
             }
         }
 
-        throw new \LogicException(sprintf('No loader available for the rule "%s".', $instance->getCode()));
+        throw new \LogicException(sprintf('No loader available for the rule "%s".', $rule->getCode()));
     }
 }

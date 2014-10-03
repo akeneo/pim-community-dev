@@ -19,14 +19,14 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 interface RunnableRuleInterface
 {
     /**
-     * @return RuleInterface
+     * @return string
      */
-    public function getRule();
+    public function getCode();
 
     /**
-     * @param RuleInterface $rule
+     * @param string $code
      *
      * @return RunnableRuleInterface
      */
-    public function setRule(RuleInterface $rule);
+    public function setCode($code);
 }

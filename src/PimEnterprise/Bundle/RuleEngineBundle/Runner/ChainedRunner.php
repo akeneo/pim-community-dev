@@ -54,6 +54,6 @@ class ChainedRunner implements RunnerInterface
             }
         }
 
-        throw new \LogicException(sprintf('No runner available for the rule "%s".', $runnable->getRule()->getCode()));
+        throw new \LogicException(sprintf('No runner available for the rule "%s".', $runnable->getCode()));
     }
 }
