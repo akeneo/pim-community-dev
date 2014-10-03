@@ -50,7 +50,7 @@ class Registry
     /**
      * List available widgets
      *
-     * @return WidgetInerface[]
+     * @return WidgetInterface[]
      */
     public function getAll()
     {

@@ -3,7 +3,10 @@
 namespace Pim\Bundle\DashboardBundle\Controller;
 
 use Pim\Bundle\DashboardBundle\Widget\Registry;
+use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Widget controller
@@ -18,11 +21,30 @@ class WidgetController
     protected $widgetRegistry;
 
     /**
-     * @param Registry $widgetRegistry
+     * @param Registry        $widgetRegistry
+     * @param EngineInterface $templating
      */
-    public function __construct(Registry $widgetRegistry)
+    public function __construct(Registry $widgetRegistry, EngineInterface $templating)
     {
         $this->widgetRegistry = $widgetRegistry;
+        $this->templating     = $templating;
+    }
+
+    /**
+     * Renders dashboard widgets
+     *
+     * @return Response
+     */
+    public function listAction()
+    {
+        $output = '';
+        $widgets = $this->widgetRegistry->getAll();
+
+        foreach ($widgets as $widget) {
+            $output .= $this->renderWidget($widget);
+        }
+
+        return new Response($output);
     }
 
     /**
@@ -39,5 +61,17 @@ class WidgetController
         $data = null !== $widget ? $widget->getData() : null;
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * Returns a rendered widget template
+     *
+     * @param WidgetInterface $widget
+     *
+     * @return string
+     */
+    protected function renderWidget(WidgetInterface $widget)
+    {
+        return $this->templating->render($widget->getTemplate(), $widget->getParameters());
     }
 }

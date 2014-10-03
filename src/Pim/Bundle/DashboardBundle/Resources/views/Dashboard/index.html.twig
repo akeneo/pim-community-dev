@@ -8,7 +8,7 @@
     <div class="scrollable-container quick-launchpad dashboard">
         <div class="container">
             <div class="row">
-                {{ render_widgets() }}
+                {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
             </div>
         </div>
 

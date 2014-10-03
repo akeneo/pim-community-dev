@@ -7,3 +7,4 @@ services:
         class: %pim_dashboard.controller.widget.class%
         arguments:
             - '@pim_dashboard.widget.registry'
+            - '@templating'
