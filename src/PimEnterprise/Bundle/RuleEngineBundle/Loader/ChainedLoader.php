@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 class ChainedLoader implements LoaderInterface
 {
     /** @var LoaderInterface[] ordered loaders by priority */
-    protected $loaders;
+    protected $loaders = [];
 
     /**
      * @param LoaderInterface $loader

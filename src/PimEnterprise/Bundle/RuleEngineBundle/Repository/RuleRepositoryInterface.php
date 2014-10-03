@@ -11,14 +11,12 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
-
 /**
- * Rule repository
+ * Rule repository interface
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class RuleRepository extends EntityRepository implements RuleRepositoryInterface
+interface RuleRepositoryInterface
 {
 
 }

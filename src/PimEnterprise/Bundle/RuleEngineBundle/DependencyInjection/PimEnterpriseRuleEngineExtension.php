@@ -32,5 +32,6 @@ class PimEnterpriseRuleEngineExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('loaders.yml');
         $loader->load('runners.yml');
+        $loader->load('repositories.yml');
     }
 }

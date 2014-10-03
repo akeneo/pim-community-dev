@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 class ChainedRunner implements RunnerInterface
 {
     /** @var RunnerInterface[] ordered runner with priority */
-    protected $runners;
+    protected $runners = [];
 
     /**
      * @param RunnerInterface $runner

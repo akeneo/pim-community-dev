@@ -44,15 +44,15 @@ class RunCommand extends ContainerAwareCommand
     {
         // get rule instance
         $code = $input->getArgument('code');
-        $repo = $this->getContainer()->get('pim_rules_engine.repository.rule');
+        $repo = $this->getContainer()->get('pimee_rule_engine.repository.rule');
         $rule = $repo->findOneByCode($code);
 
         // load/prepare the rule
-        $loaderRegistry = $this->getContainer()->get('pim_rules_engine.loader.chained');
+        $loaderRegistry = $this->getContainer()->get('pimee_rule_engine.loader.chained');
         $businessRule = $loaderRegistry->load($rule);
 
         // run the rule
-        $runnerRegistry = $this->getContainer()->get('pim_rules_engine.runner.chained');
+        $runnerRegistry = $this->getContainer()->get('pimee_rule_engine.runner.chained');
         $runnerRegistry->run($businessRule);
     }
 }
