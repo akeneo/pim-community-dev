@@ -5,13 +5,14 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Product repository
@@ -177,6 +178,47 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findAllWithAttribute(AbstractAttribute $attribute)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->leftJoin('p.values', 'value')
+            ->leftJoin('value.attribute', 'attribute')
+            ->where('attribute=:attribute')
+            ->setParameter('attribute', $attribute)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllWithAttributeOption(AttributeOption $option)
+    {
+        $backendType = $option->getAttribute()->getBackendType();
+
+        $qb = $this
+            ->createQueryBuilder('p')
+            ->leftJoin('p.values', 'value')
+            ->leftJoin(sprintf('value.%s', $backendType), 'option');
+
+        if ('options' === $backendType) {
+            $qb->where(
+                $qb->expr()->in('option', ':option')
+            );
+        } else {
+            $qb->where('option=:option');
+        }
+
+        return $qb
+            ->setParameter('option', $option)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFullProduct($id)
     {
         $qb = $this->getFullProductQB();
@@ -269,18 +311,6 @@ class ProductRepository extends EntityRepository implements
         return $this->getEntityManager()
             ->getClassMetadata($this->getValuesClass())
             ->getAssociationTargetClass('attribute');
-    }
-
-    /**
-     * Returns the Attribute
-     *
-     * @param string $code
-     *
-     * @return AbstractAttribute
-     */
-    protected function getAttributeByCode($code)
-    {
-        return $this->attributeRepository->findOneByCode($code);
     }
 
     /**
@@ -416,22 +446,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findAllByAttributes(
         array $attributes = array(),
         array $criteria = null,
@@ -453,11 +467,13 @@ class ProductRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('p');
         $pqb = $this->getProductQueryBuilder($qb);
         foreach ($criteria as $field => $data) {
+            // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
+                $attribute = $data['attribute'];
+                $field = $attribute->getCode();
+                $data = $data['value'];
             }
+            $pqb->addFilter($field, '=', $data);
         }
 
         $result = $qb->getQuery()->execute();
@@ -551,22 +567,12 @@ class ProductRepository extends EntityRepository implements
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeFilter($attribute, '=', $attValue);
-                } else {
-                    $productQb->addFieldFilter($attCode, '=', $attValue);
-                }
+                $productQb->addFilter($attCode, '=', $attValue);
             }
         }
         if (!is_null($orderBy)) {
             foreach ($orderBy as $attCode => $direction) {
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeSorter($attribute, $direction);
-                } else {
-                    $productQb->addFieldSorter($attCode, $direction);
-                }
+                $productQb->addSorter($attCode, $direction);
             }
         }
 

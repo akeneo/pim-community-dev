@@ -20,22 +20,28 @@ pim_base_connector:
       export.title: グループエクスポート
     csv_product_import:
       title: 製品をCSV形式でインポート
+      validation.title: ファイルの検証
       import.title: 製品のインポート
       import_associations.title: 関連付けのインポート
     csv_category_import:
       title: カテゴリをCSV形式でインポート
+      validation.title: ファイルの検証
       import.title: カテゴリのインポート
     csv_attribute_import:
       title: 属性をCSV形式でインポート
+      validation.title: ファイルの検証
       import.title: 属性のインポート
     csv_attribute_option_import:
       title: 属性オプションをCSV形式でインポート
+      validation.title: ファイルの検証
       import.title: 属性オプションのインポート
     csv_association_type_import:
       title: 関連タイプをCSVでインポート
+      validation.title: ファイルの検証
       import.title: 関連付けタイプのインポート
     csv_group_import:
       title: グループをCSVでインポート
+      validation.title: ファイルの検証
       import.title: グループのインポート
   steps:
     dummy_reader.title: ダミーリーダー

@@ -2,11 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Subscriber;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Job alias and connector subscriber.

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 
 /**
  * Product completeness sorter
@@ -35,6 +35,6 @@ class CompletenessSorter implements SorterInterface
     {
         $qb  = $datasource->getQueryBuilder();
         $pqb = $this->repository->getProductQueryBuilder($qb);
-        $pqb->addFieldSorter('completeness', $direction);
+        $pqb->addSorter('completeness', $direction);
     }
 }

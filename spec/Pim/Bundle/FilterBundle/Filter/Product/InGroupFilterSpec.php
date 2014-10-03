@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class InGroupFilterSpec extends ObjectBehavior
 {
@@ -38,7 +38,7 @@ class InGroupFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('groups', 'IN', [12])->shouldBeCalled();
+        $pqb->addFilter('groups', 'IN', [12])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }

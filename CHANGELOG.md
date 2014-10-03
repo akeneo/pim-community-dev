@@ -7,27 +7,48 @@
 - Add comments on a product
 
 ## Improvements
- - remove the fixed mysql socket location
- - switch to stability stable
- - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+ - Remove the fixed mysql socket location
+ - Switch to stability stable
+ - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+ - Remove deprecated attribute property *Usable as a grid column*
+ - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass`
+- Rename `Pim\Bundle\UIBundle\Form\Transformer\IntegerTransformer` to `Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer`
+- Remove useless applySorterByAttribute, applySorterByField from Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
+- Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
+- Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
+- Remove ProductFilterUtility::getAttribute()
 
 # 1.2.x
+
+## Bug fixes
+
+# 1.2.7 (2014-10-01)
+
+## Bug fixes
+- Fix no warning message when leaving a product form after a submit with errors
+- Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
+
+# 1.2.6 (2014-09-26)
 
 ## Bug fixes
 - Fix installer fail on requirements when you change the archive and uploads folder
 - Fix display of multi-byte characters in long form labels that are truncated
 - Incorrect date display between export/import widget and job execution page and job history
 - Fix archiver bug with yml imports
+- Fix missing product versioning data when a category, attribute or attribute option linked to a product is removed
 
 ## BC breaks
-  - Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
+- Added supports method in Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface
+- Two new methods have been added to Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface: `findAllWithAttribute` and `findAllWithAttributeOption`
+- Constructor of Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser has been changed
 
 ## Improvements
-  - Add images in icecat_demo_dev installer fixtures
+- Add images in icecat_demo_dev installer fixtures
+- Add sorter to the grid state
 
 # 1.2.5 (2014-09-19)
 

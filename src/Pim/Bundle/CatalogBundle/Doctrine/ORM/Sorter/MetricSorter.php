@@ -2,8 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Metric sorter
@@ -11,16 +15,50 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO : never used cause disabled on frontend ?
  */
-class MetricSorter extends BaseSorter
+class MetricSorter implements AttributeSorterInterface
 {
+    /** @var QueryBuilder */
+    protected $qb;
+
+    /** @var CatalogContext */
+    protected $context;
+
+    /**
+     * Instanciate a sorter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_metric';
+    }
+
     /**
      * {@inheritdoc}
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value
@@ -32,7 +70,7 @@ class MetricSorter extends BaseSorter
             $condition
         );
 
-        $joinAliasMetric = $aliasPrefix.'M'.$attribute->getCode().$this->aliasCounter;
+        $joinAliasMetric = $aliasPrefix.'M'.$attribute->getCode();
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMetric);
 
         $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
@@ -41,5 +79,20 @@ class MetricSorter extends BaseSorter
         $this->qb->addOrderBy($idField);
 
         return $this;
+    }
+
+    /**
+     * Prepare join to attribute condition with current locale and scope criterias
+     *
+     * @param AbstractAttribute $attribute the attribute
+     * @param string            $joinAlias the value join alias
+     *
+     * @return string
+     */
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    {
+        $joinHelper = new ValueJoin($this->qb, $this->context);
+
+        return $joinHelper->prepareCondition($attribute, $joinAlias);
     }
 }

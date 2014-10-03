@@ -49,7 +49,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Association
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AssociationInterface
             mappedBy: owner
             cascade:
                 - persist
@@ -63,7 +63,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                 - persist
                 - refresh
         completenesses:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Completeness
+            targetEntity: Pim\Bundle\CatalogBundle\Model\CompletenessInterface
             mappedBy: product
             cascade:
                 - remove

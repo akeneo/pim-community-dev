@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * Job execution notifier

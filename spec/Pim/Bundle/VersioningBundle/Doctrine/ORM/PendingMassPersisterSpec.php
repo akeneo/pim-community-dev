@@ -2,19 +2,16 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-use Pim\Bundle\VersioningBundle\Model\Version;
-
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\DBAL\Connection;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PendingMassPersisterSpec extends ObjectBehavior
 {

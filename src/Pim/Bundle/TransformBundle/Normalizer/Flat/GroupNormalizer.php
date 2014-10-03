@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 /**
  * A normalizer to transform a group entity into a flat array

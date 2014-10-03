@@ -2,10 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -16,12 +17,29 @@ class MetricFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($queryBuilder, $context);
+        $this->beConstructedWith($context);
+        $this->setQueryBuilder($queryBuilder);
     }
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
+    }
+
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->supportsOperator('=')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
+    function it_supports_metric_attribute(AbstractAttribute $attribute)
+    {
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $this->supportsAttribute($attribute)->shouldReturn(true);
+
+        $attribute->getAttributeType()->willReturn(Argument::any());
+        $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
     function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)

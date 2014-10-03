@@ -3,22 +3,24 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Product repository
@@ -32,14 +34,10 @@ class ProductRepository extends DocumentRepository implements
     ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface
 {
-    /** @var ProductQueryBuilder */
+    /** @var ProductQueryBuilderInterface */
     protected $productQB;
 
-    /**
-     * ORM EntityManager to access ORM entities
-     *
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
     /** @var AttributeRepository */
@@ -111,17 +109,24 @@ class ProductRepository extends DocumentRepository implements
         $qb = $this->createQueryBuilder('p');
         $pqb = $this->getProductQueryBuilder($qb);
         foreach ($criteria as $field => $data) {
+            // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
+                $attribute = $data['attribute'];
+                $field = $attribute->getCode();
+                $data = $data['value'];
             }
+            $pqb->addFilter($field, '=', $data);
         }
 
         $result = $qb->getQuery()->execute();
 
         if ($result->count() > 1) {
-            throw new \LogicException('Many products have been found that match criteria.');
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
         }
 
         return $result->getNext();
@@ -303,8 +308,8 @@ class ProductRepository extends DocumentRepository implements
         $this->createQueryBuilder('p')
             ->update()
             ->multiple(true)
-            ->field('values.options')->in([$id])
-            ->field('values.$.options')->pull($id)
+            ->field('values.optionIds')->in([$id])
+            ->field('values.$.optionIds')->pull($id)
             ->getQuery()
             ->execute();
     }
@@ -379,6 +384,38 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findAllWithAttribute(AbstractAttribute $attribute)
+    {
+        return $this->createQueryBuilder('p')
+            ->field('values.attribute')->equals((int) $attribute->getId())
+            ->getQuery()
+            ->execute()
+            ->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllWithAttributeOption(AttributeOption $option)
+    {
+        $id = (int) $option->getId();
+        $qb = $this->createQueryBuilder('p');
+
+        if ('options' === $option->getAttribute()->getBackendType()) {
+            $qb->field('values.optionIds')->in([$id]);
+        } else {
+            $qb->field('values.option')->equals($id);
+        }
+
+        return $qb
+            ->getQuery()
+            ->execute()
+            ->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFullProduct($id)
     {
         return $this->find($id);
@@ -422,7 +459,7 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder();
         $productQueryBuilder = $this->getProductQueryBuilder($qb);
-        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
         if (0 === $result->count() ||

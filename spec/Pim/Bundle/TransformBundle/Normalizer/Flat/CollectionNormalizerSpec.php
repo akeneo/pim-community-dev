@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class CollectionNormalizerSpec extends ObjectBehavior
 {

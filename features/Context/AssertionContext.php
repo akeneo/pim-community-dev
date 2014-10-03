@@ -412,7 +412,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = $this->getCurrentPage()->find('css', '#notifications .indicator .badge')->getText();
+        $actualCount = $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
         assertEquals(
             $actualCount,
             $count,
@@ -427,7 +427,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeNotifications(TableNode $table)
     {
-        $element = $this->getCurrentPage()->find('css', '#notifications');
+        $element = $this->getCurrentPage()->find('css', '#header-notification-widget');
         $element->find('css', '.dropdown-toggle')->click();
         $this->getMainContext()->wait();
 

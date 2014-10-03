@@ -11,67 +11,37 @@ use Symfony\Component\HttpFoundation\File\File;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractProductMedia
+abstract class AbstractProductMedia implements ProductMediaInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var int|string */
     protected $id;
 
-    /**
-     * File uploaded in form
-     *
-     * @var \Symfony\Component\HttpFoundation\File\File $file
-     */
+    /** @var \Symfony\Component\HttpFoundation\File\File */
     protected $file;
 
-    /**
-     * Filename
-     *
-     * @var string $filename
-     */
+    /** @var string */
     protected $filename;
 
-    /**
-     * File path
-     *
-     * @var string $filePath
-     */
+    /** @var string */
     protected $filePath;
 
-    /**
-     * Original file name
-     *
-     * @var string $originalFilename
-     */
+    /** @var string */
     protected $originalFilename;
 
-    /**
-     * Mime type
-     *
-     * @var string $mimeType
-     */
+    /** @var string */
     protected $mimeType;
 
-    /**
-     * @var AbstractProductValue
-     */
+    /** @var ProductValueInterface */
     protected $value;
 
-    /**
-     * @var boolean
-     */
+    /** @var bool */
     protected $removed = false;
 
-    /**
-     * @var integer
-     */
+    /** @var int */
     protected $copyFrom;
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -79,11 +49,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -93,9 +59,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Get file
-     *
-     * @return \Symfony\Component\HttpFoundation\File\File
+     * {@inheritdoc}
      */
     public function getFile()
     {
@@ -103,11 +67,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set file
-     *
-     * @param \Symfony\Component\HttpFoundation\File\File $file
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setFile(File $file)
     {
@@ -117,9 +77,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Get filename
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getFilename()
     {
@@ -127,11 +85,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set filename
-     *
-     * @param string $filename
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setFilename($filename)
     {
@@ -141,9 +95,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Get file path
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getFilePath()
     {
@@ -151,11 +103,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set file path
-     *
-     * @param string $filePath
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setFilePath($filePath)
     {
@@ -165,9 +113,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Get original filename
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getOriginalFilename()
     {
@@ -175,11 +121,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set original filename
-     *
-     * @param string $originalFilename
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setOriginalFilename($originalFilename)
     {
@@ -189,9 +131,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Get mime type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getMimeType()
     {
@@ -199,11 +139,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set mime type
-     *
-     * @param string $mimeType
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setMimeType($mimeType)
     {
@@ -213,9 +149,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * @param boolean $removed
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setRemoved($removed)
     {
@@ -225,7 +159,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isRemoved()
     {
@@ -233,11 +167,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set the product value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setValue(ProductValueInterface $value)
     {
@@ -247,9 +177,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Get the product value
-     *
-     * @return ProductValueInterface
+     * {@inheritdoc}
      */
     public function getValue()
     {
@@ -257,9 +185,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Get the media id to copy from
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getCopyFrom()
     {
@@ -267,11 +193,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Set the media id to copy from
-     *
-     * @param integer $copyFrom
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function setCopyFrom($copyFrom)
     {
@@ -281,9 +203,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * To string
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -291,9 +211,7 @@ abstract class AbstractProductMedia
     }
 
     /**
-     * Reset the media file
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function resetFile()
     {

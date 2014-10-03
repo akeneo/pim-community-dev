@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
@@ -24,14 +24,66 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
+    protected $supportedOperators;
+
     /**
-     * @param QueryBuilder   $qb
+     * Instanciate the filter
+     *
      * @param CatalogContext $context
+     * @param array          $extraSupportedFields
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context, array $extraSupportedFields = [])
     {
-        $this->qb      = $qb;
         $this->context = $context;
+        $this->supportedFields = array_merge(
+            ['created', 'updated'],
+            $extraSupportedFields
+        );
+        $this->supportedOperators = ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_date';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**
@@ -58,6 +110,14 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
                 $this->qb->field($field)->lte($this->getTimestamp($value[1], true));
                 break;
 
+            case 'NOT BETWEEN':
+                $this->qb->addAnd(
+                    $this->qb->expr()
+                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value[0])))
+                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value[1], true)))
+                );
+                break;
+
             case '>':
                 $this->qb->field($field)->gt($this->getTimestamp($value, true));
                 break;
@@ -74,13 +134,6 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
             case 'EMPTY':
                 $this->qb->field($field)->exists(false);
                 break;
-
-            default:
-                $this->qb->addAnd(
-                    $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value['from'])))
-                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value['to'], true)))
-                );
         }
 
         return $this;

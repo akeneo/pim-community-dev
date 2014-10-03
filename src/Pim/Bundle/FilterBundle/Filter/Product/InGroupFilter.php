@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Product in group filter (used by group products grid)
@@ -60,7 +60,7 @@ class InGroupFilter extends BooleanFilter
         $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
         $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('groups', $operator, $value);
+        $pqb->addFilter('groups', $operator, $value);
 
         return true;
     }

@@ -3,8 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
+use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Simple option filter for MongoDB implementation
@@ -12,9 +15,62 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  */
-class OptionFilter extends EntityFilter
+class OptionFilter implements AttributeFilterInterface
 {
+    /** @var QueryBuilder */
+    protected $qb;
+
+    /** @var CatalogContext */
+    protected $context;
+
+    /** @var array */
+    protected $supportedOperators;
+
+    /**
+     * Instanciate the filter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+        $this->supportedOperators = ['IN'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_simpleselect';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -24,19 +80,17 @@ class OptionFilter extends EntityFilter
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.id', $field);
 
+        // TODO: empty should not be present in the value, it comes from the front
         if (in_array('empty', $value)) {
             unset($value[array_search('empty', $value)]);
 
-            $expr = new Expr();
-            $expr = $expr->field($field)->exists(false);
+            $expr = $this->qb->expr()->field($field)->exists(false);
             $this->qb->addOr($expr);
         }
 
         if (count($value) > 0) {
             $value = array_map('intval', $value);
-            $expr = new Expr();
-            $expr->field($field)->in($value);
-
+            $expr = $this->qb->expr()->field($field)->in($value);
             $this->qb->addOr($expr);
         }
 
