@@ -60,6 +60,9 @@ class LastOperationsWidget implements WidgetInterface
 
         foreach ($operations as &$operation) {
             $operation['statusLabel'] = $this->translator->trans('pim_import_export.batch_status.' . $operation['status']);
+            if ($operation['date'] instanceof \DateTime) {
+                $operation['date'] = $operation['date']->format('U');
+            }
         }
 
         return $operations;

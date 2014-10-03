@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pimdashboard/js/abstract-widget'],
-    function ($, _, Routing, Navigation, AbstractWidget) {
+    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pimdashboard/js/abstract-widget', 'moment'],
+    function ($, _, Routing, Navigation, AbstractWidget, moment) {
         'use strict';
 
         var LastOperationsWidget = AbstractWidget.extend({
@@ -40,7 +40,6 @@ define(
                             '<% _.each(data, function(operation) { %>',
                                 '<tr>',
                                     '<td>',
-                                        // TODO: if the date is today, format it as 'H:i', otherwise 'Y-m-d H:i'
                                         '<%= operation.date %>',
                                     '</td>',
                                     '<td><%= _.__("pim_dashboard.widget.last_operations.job_type." + operation.type) %></td>',
@@ -92,6 +91,14 @@ define(
                         : '';
                     operation.statusLabel = operation.statusLabel.slice(0, 1).toUpperCase() +
                         operation.statusLabel.slice(1).toLowerCase();
+
+                    if (operation.date) {
+                        var date = moment(new Date(operation.date * 1000));
+                        if (date.isValid()) {
+                            var dateFormat = date.isSame(new Date(), 'day') ? 'HH:mm' : 'YYYY-MM-DD HH:mm';
+                            operation.date = date.format(dateFormat);
+                        }
+                    }
                 }, this);
 
                 return data;

@@ -36,8 +36,9 @@ class LastOperationsWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_last_operations_data($manager, $translator)
     {
+        $date = new \DateTime();
         $operation = [
-            'date'   => new \DateTime(),
+            'date'   => $date,
             'type'   => 'import',
             'label'  => 'My import',
             'status' => 1,
@@ -49,6 +50,7 @@ class LastOperationsWidgetSpec extends ObjectBehavior
         $translator->trans('pim_import_export.batch_status.' . $operation['status'])->willReturn('Completed');
 
         $operation['statusLabel'] = 'Completed';
+        $operation['date'] = $date->format('U');
         $this->getData()->shouldReturn([$operation]);
     }
 }
