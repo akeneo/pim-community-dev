@@ -87,12 +87,13 @@ define(
             },
 
             _beforeLoad: function() {
-                this.loadingMask.$el.css('min-height', _.isEmpty(this.data) ? 100 : 0);
+                this.$el.parent().addClass('loading');
                 this.$refreshBtn.prop('disabled', true).find('i').addClass('icon-spin');
                 this.loadingMask.show();
             },
 
             _afterLoad: function() {
+                this.$el.parent().removeClass('loading');
                 this.loadingMask.hide();
                 this.$refreshBtn.prop('disabled', false).find('i').removeClass('icon-spin');
                 this.loadTimeout = null;

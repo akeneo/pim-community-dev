@@ -199,6 +199,10 @@ hr.small {
 
 .widget-content {
   position: relative;
+  transition: 0.7s ease-out;
+  &.loading {
+    min-height: 100px;
+  }
 }
 
 a[data-toggle-channel] {
