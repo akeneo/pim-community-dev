@@ -28,12 +28,14 @@ class ProductIdFilter implements FieldFilterInterface
      * Instanciate the filter
      *
      * @param CatalogContext $context
+     * @param array          $supportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
+    public function __construct(
+        CatalogContext $context,
+        array $supportedOperators = []
+    ) {
         $this->context = $context;
-        // TODO weird cause different of ORM id, could be =, IN, NOT IN
-        $this->supportedOperators = ['IN', 'NOT IN'];
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

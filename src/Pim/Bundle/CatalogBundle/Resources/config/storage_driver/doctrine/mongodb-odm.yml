@@ -393,16 +393,6 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.product_id:
-        class: %pim_catalog.doctrine.query.filter.base.class%
-        arguments:
-            - @pim_catalog.context.catalog
-            - []
-            - ['id']
-            - ['=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
     pim_catalog.doctrine.query.filter.number:
         class: %pim_catalog.doctrine.query.filter.base.class%
         arguments:
@@ -437,6 +427,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.product_id.class%
         arguments:
             - @pim_catalog.context.catalog
+            - ['=', 'IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
