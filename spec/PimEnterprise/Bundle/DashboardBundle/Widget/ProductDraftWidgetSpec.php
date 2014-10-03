@@ -6,7 +6,9 @@ use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class ProductDraftWidgetSpec extends ObjectBehavior
 {
@@ -40,13 +42,50 @@ class ProductDraftWidgetSpec extends ObjectBehavior
     {
         $accessRepo->isOwner($user)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
+        $this->getData()->shouldReturn([]);
     }
 
-    function it_passes_product_drafts_from_the_repository_to_the_template($accessRepo, $user, $ownershipRepo)
-    {
+    function it_exposes_product_drafts_data(
+        $accessRepo,
+        $user,
+        $ownershipRepo,
+        ProductDraft $first,
+        ProductDraft $second,
+        ProductInterface $firstProduct,
+        ProductInterface $secondProduct
+    ) {
         $accessRepo->isOwner($user)->willReturn(true);
-        $ownershipRepo->findApprovableByUser($user, 10)->willReturn(['product draft one', 'product draft two']);
+        $ownershipRepo->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
-        $this->getParameters()->shouldReturn(['show' => true, 'params' => ['product draft one', 'product draft two']]);
+        $first->getProduct()->willReturn($firstProduct);
+        $second->getProduct()->willReturn($secondProduct);
+
+        $firstProduct->getId()->willReturn(1);
+        $secondProduct->getId()->willReturn(2);
+        $firstProduct->getLabel()->willReturn('First product');
+        $secondProduct->getLabel()->willReturn('Second product');
+        $first->getAuthor()->willReturn('Julia');
+        $second->getAuthor()->willReturn('Julia');
+        $firstCreatedAt = new \DateTime();
+        $secondCreatedAt = new \DateTime();
+        $first->getCreatedAt()->willReturn($firstCreatedAt);
+        $second->getCreatedAt()->willReturn($secondCreatedAt);
+
+        $this->getData()->shouldReturn(
+            [
+                [
+                    'productId'    => 1,
+                    'productLabel' => 'First product',
+                    'author'       => 'Julia',
+                    'createdAt'    => $firstCreatedAt->format('U')
+                ],
+                [
+                    'productId'    => 2,
+                    'productLabel' => 'Second product',
+                    'author'       => 'Julia',
+                    'createdAt'    => $secondCreatedAt->format('U')
+                ]
+            ]
+        );
     }
 }
