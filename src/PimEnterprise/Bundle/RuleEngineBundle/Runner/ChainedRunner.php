@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class ChainedRunner implements RunnerInterface
+class ChainedRunner implements DryRunnerInterface
 {
     /** @var RunnerInterface[] ordered runner with priority */
     protected $runners = [];
@@ -55,5 +55,19 @@ class ChainedRunner implements RunnerInterface
         }
 
         throw new \LogicException(sprintf('No runner available for the rule "%s".', $runnable->getCode()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dryRun(RunnableRuleInterface $runnable)
+    {
+        foreach ($this->runners as $runner) {
+            if ($runner instanceof DryRunnerInterface && $runner->supports($runnable)) {
+                return $runner->dryRun($runnable);
+            }
+        }
+
+        throw new \LogicException(sprintf('No dry runner available for the rule "%s".', $runnable->getCode()));
     }
 }

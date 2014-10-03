@@ -47,6 +47,11 @@ class RunCommand extends ContainerAwareCommand
 
         // run the rule
         $runnerRegistry = $this->getContainer()->get('pimee_rule_engine.runner.chained');
-        $runnerRegistry->run($businessRule);
+
+        if ($input->getOption('dry-run')) {
+            $runnerRegistry->dryRun($businessRule);
+        } else {
+            $runnerRegistry->run($businessRule);
+        }
     }
 }

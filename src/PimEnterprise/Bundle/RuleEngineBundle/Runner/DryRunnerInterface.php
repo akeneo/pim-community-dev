@@ -14,23 +14,16 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
 /**
- * Executes a business rule
+ * Executes or dry run a business rule
  *
- * @author Nicolas Dupont <nicolas@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-interface RunnerInterface
+interface DryRunnerInterface extends RunnerInterface
 {
     /**
      * @param RunnableRuleInterface $rule
      *
-      *@return mixed
+     * @return mixed
      */
-    public function run(RunnableRuleInterface $rule);
-
-    /**
-     * @param RunnableRuleInterface $rule
-     *
-     * @return bool
-     */
-    public function supports(RunnableRuleInterface $rule);
+    public function dryRun(RunnableRuleInterface $rule);
 }

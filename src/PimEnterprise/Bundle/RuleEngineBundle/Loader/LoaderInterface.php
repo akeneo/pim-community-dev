@@ -16,6 +16,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 
 /**
  * Transform an rule instance (an entity) to a business rule
+ *
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface LoaderInterface
 {
