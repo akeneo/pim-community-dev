@@ -417,9 +417,9 @@ services:
         class: %pim_catalog.doctrine.query.filter.date.class%
         arguments:
             - @pim_catalog.context.catalog
-            - ['pim_catalog_identifier']
-            - []
-            - ['LIKE', 'NOT LIKE', '=', 'IN']
+            - ['pim_catalog_date']
+            - ['created', 'updated']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -427,6 +427,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.product_id.class%
         arguments:
             - @pim_catalog.context.catalog
+            - ['id']
             - ['=', 'IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

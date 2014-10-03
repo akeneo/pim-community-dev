@@ -22,19 +22,25 @@ class ProductIdFilter implements FieldFilterInterface
     protected $context;
 
     /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
      *
      * @param CatalogContext $context
+     * @param array          $supportedFields
      * @param array          $supportedOperators
      */
     public function __construct(
         CatalogContext $context,
+        array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->context = $context;
+        $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -51,7 +57,10 @@ class ProductIdFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field === 'id';
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**
@@ -59,7 +68,10 @@ class ProductIdFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, $this->supportedOperators);
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
     }
 
     /**

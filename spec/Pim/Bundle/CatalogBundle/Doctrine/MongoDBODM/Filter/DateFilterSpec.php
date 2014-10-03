@@ -17,7 +17,7 @@ class DateFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith($context, ['pim_catalog_date'], ['created', 'updated'], ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']);
         $this->setQueryBuilder($queryBuilder);
 
         $queryBuilder->field(Argument::any())->willReturn($queryBuilder);
