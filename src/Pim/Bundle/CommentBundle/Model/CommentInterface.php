@@ -23,7 +23,7 @@ interface CommentInterface
     /**
      * @param string $resourceId
      *
-     * return CommentInterface
+     * @return CommentInterface
      */
     public function setResourceId($resourceId);
 
@@ -35,7 +35,7 @@ interface CommentInterface
     /**
      * @param string $resourceName
      *
-     * return CommentInterface
+     * @return CommentInterface
      */
     public function setResourceName($resourceName);
 
@@ -47,7 +47,7 @@ interface CommentInterface
     /**
      * @param UserInterface $author
      *
-     * return CommentInterface
+     * @return CommentInterface
      */
     public function setAuthor(UserInterface $author);
 
@@ -59,7 +59,7 @@ interface CommentInterface
     /**
      * @param string $body
      *
-     * return CommentInterface
+     * @return CommentInterface
      */
     public function setBody($body);
 
@@ -71,7 +71,7 @@ interface CommentInterface
     /**
      * @param \DateTime $createdAt
      *
-     * return CommentInterface
+     * @return CommentInterface
      */
     public function setCreatedAt(\Datetime $createdAt);
 
@@ -83,7 +83,7 @@ interface CommentInterface
     /**
      * @param CommentInterface $parent
      *
-     * return CommentInterface
+     * @return CommentInterface
      */
     public function setParent(CommentInterface $parent);
 
@@ -95,7 +95,7 @@ interface CommentInterface
     /**
      * @param \DateTime $repliedAt
      *
-     * return CommentInterface
+     * @return CommentInterface
      */
     public function setRepliedAt(\DateTime $repliedAt);
 

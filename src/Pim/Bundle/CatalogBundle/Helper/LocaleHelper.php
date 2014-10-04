@@ -110,7 +110,7 @@ class LocaleHelper
      *
      * @param string $translateIn
      *
-     * @return string
+     * @return string[]
      */
     public function getCurrencyLabels($translateIn = null)
     {

@@ -19,6 +19,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
+ * Comment controller
+ *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -32,6 +34,19 @@ class CommentController extends AbstractDoctrineController
     /** @var string */
     protected $commentClassName;
 
+    /**
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ManagerRegistry          $doctrine
+     * @param CommentBuilder           $commentBuilder
+     * @param string                   $commentClassName
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,

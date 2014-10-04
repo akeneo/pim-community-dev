@@ -47,15 +47,55 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('metric_family'));
 
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array(
-                    'setText', 'setDatetime', 'setInteger', 'setId', 'getOption', 'getMedia', 'getDecimal',
-                    'setDecimal', 'setAttribute', 'addOption', 'getBoolean', 'setOptions', 'setPrices',
-                    'getId', 'setVarchar', 'setBoolean', 'getData', 'getMetric', 'getDate', 'getAttribute',
-                    'getEntity', 'setMedia', 'getPrices', 'getOptions', 'getLocale', 'setMetric', 'addPrice',
-                    'getVarchar', 'removePrice', 'hasData', 'setScope', 'removeOption', 'getText', 'setData',
-                    'setOption', 'getPrice', 'setDate', 'addData', 'setLocale', 'isRemovable', 'getScope',
-                    'getDatetime', 'setEntity', 'getInteger', '__toString'
-                ))
+            ->setMethods(
+                [
+                    'setText',
+                    'setDatetime',
+                    'setInteger',
+                    'setId',
+                    'getOption',
+                    'getMedia',
+                    'getDecimal',
+                    'setDecimal',
+                    'setAttribute',
+                    'addOption',
+                    'getBoolean',
+                    'setOptions',
+                    'setPrices',
+                    'getId',
+                    'setVarchar',
+                    'setBoolean',
+                    'getData',
+                    'getMetric',
+                    'getDate',
+                    'getAttribute',
+                    'getEntity',
+                    'setMedia',
+                    'getPrices',
+                    'getOptions',
+                    'getLocale',
+                    'setMetric',
+                    'addPrice',
+                    'getVarchar',
+                    'removePrice',
+                    'hasData',
+                    'setScope',
+                    'removeOption',
+                    'getText',
+                    'setData',
+                    'setOption',
+                    'getPrice',
+                    'setDate',
+                    'addData',
+                    'setLocale',
+                    'isRemovable',
+                    'getScope',
+                    'getDatetime',
+                    'setEntity',
+                    'getInteger',
+                    '__toString'
+                ]
+            )
             ->getMock();
 
         $metric = null;

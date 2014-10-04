@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\Constraints;
 
 /**
  * Abstract attribute type

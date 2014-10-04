@@ -8,6 +8,8 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
+ * Pim comment bundle extension
+ *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

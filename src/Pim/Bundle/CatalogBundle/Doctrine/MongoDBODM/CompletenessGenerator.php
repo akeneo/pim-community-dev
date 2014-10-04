@@ -345,9 +345,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Apply the query part to search for product where the completenesses
      * are missing. Apply only to the channel or product if provided.
      *
-     * @param Builder $productsQb
-     * @param Product $product
-     * @param Channel $channel
+     * @param Builder          $productsQb
+     * @param ProductInterface $product
+     * @param Channel          $channel
      */
     protected function applyFindMissingQuery(
         Builder $productsQb,

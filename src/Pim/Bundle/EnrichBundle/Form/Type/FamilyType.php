@@ -26,29 +26,29 @@ class FamilyType extends AbstractType
     protected $requireSubscriber;
 
     /** @var DisableFamilyFieldsSubscriber */
-    protected $disablePropertiesSubscriber;
+    protected $fieldsSubscriber;
 
     /** @var AddAttributeAsLabelSubscriber */
-    protected $attributeAsLabelSubscriber;
+    protected $labelSubscriber;
 
     /**
      * Constructor
      *
      * @param AddAttributeRequirementsSubscriber $requireSubscriber
      * @param string                             $attributeClass
-     * @param DisableFamilyFieldsSubscriber      $disableSubscriber
-     * @param AddAttributeAsLabelSubscriber      $attributeAsLabelSubscriber
+     * @param DisableFamilyFieldsSubscriber      $fieldsSubscriber
+     * @param AddAttributeAsLabelSubscriber      $labelSubscriber
      */
     public function __construct(
         AddAttributeRequirementsSubscriber $requireSubscriber,
         $attributeClass,
-        DisableFamilyFieldsSubscriber $disableSubscriber,
-        AddAttributeAsLabelSubscriber $attributeAsLabelSubscriber
+        DisableFamilyFieldsSubscriber $fieldsSubscriber,
+        AddAttributeAsLabelSubscriber $labelSubscriber
     ) {
         $this->requireSubscriber = $requireSubscriber;
         $this->attributeClass    = $attributeClass;
-        $this->disablePropertiesSubscriber = $disableSubscriber;
-        $this->attributeAsLabelSubscriber = $attributeAsLabelSubscriber;
+        $this->fieldsSubscriber  = $fieldsSubscriber;
+        $this->labelSubscriber   = $labelSubscriber;
     }
 
     /**
@@ -124,8 +124,8 @@ class FamilyType extends AbstractType
     protected function addEventSubscribers(FormBuilderInterface $builder)
     {
         $builder
-            ->addEventSubscriber($this->disablePropertiesSubscriber)
-            ->addEventSubscriber($this->attributeAsLabelSubscriber)
+            ->addEventSubscriber($this->fieldsSubscriber)
+            ->addEventSubscriber($this->labelSubscriber)
             ->addEventSubscriber($this->requireSubscriber)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }

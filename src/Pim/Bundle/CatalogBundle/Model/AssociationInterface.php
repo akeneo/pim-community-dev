@@ -2,7 +2,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**

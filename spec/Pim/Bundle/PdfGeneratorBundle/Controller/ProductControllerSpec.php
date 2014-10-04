@@ -16,8 +16,12 @@ class ProductControllerSpec extends ObjectBehavior
         $this->beConstructedWith($productManager, $rendererRegistry);
     }
 
-    function it_generates_a_pdf_for_a_given_product(Request $request, AbstractProduct $blender, $rendererRegistry, $productManager)
-    {
+    function it_generates_a_pdf_for_a_given_product(
+        Request $request,
+        AbstractProduct $blender,
+        $rendererRegistry,
+        $productManager
+    ) {
         $productManager->find(12)->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
@@ -25,19 +29,19 @@ class ProductControllerSpec extends ObjectBehavior
 
         $now = new \DateTime('now');
 
-        $rendererRegistry->render($blender, 'pdf', [
-            'locale'        => 'fr_FR',
-            'renderingDate' => $now,
-            'scope'         => 'mobile',
-        ])->shouldBeCalled();
+        $rendererRegistry->render($blender, 'pdf', Argument::type('array'))->shouldBeCalled();
 
         $blender->getIdentifier()->shouldBeCalled();
 
         $this->downloadPdfAction($request, 12);
     }
 
-    function it_throws_an_exception_if_there_is_no_compatible_renderer(Request $request, AbstractProduct $blender, $rendererRegistry, $productManager)
-    {
+    function it_throws_an_exception_if_there_is_no_compatible_renderer(
+        Request $request,
+        AbstractProduct $blender,
+        $rendererRegistry,
+        $productManager
+    ) {
         $productManager->find(12)->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
@@ -45,19 +49,25 @@ class ProductControllerSpec extends ObjectBehavior
 
         $now = new \DateTime('now');
 
-        $rendererRegistry->render($blender, 'pdf', [
-            'locale'        => 'fr_FR',
-            'renderingDate' => $now,
-            'scope'         => 'mobile',
-        ])->willThrow('Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException');
+        $rendererRegistry
+            ->render($blender, 'pdf', Argument::type('array'))
+            ->willThrow('Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException');
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\HttpException')->during('downloadPdfAction', [$request, 12]);
+        $this
+            ->shouldThrow('Symfony\Component\HttpKernel\Exception\HttpException')
+            ->during('downloadPdfAction', [$request, 12]);
     }
 
-    function it_throws_an_exception_if_the_product_doesnt_exist(Request $request, AbstractProduct $blender, $rendererRegistry, $productManager)
-    {
+    function it_throws_an_exception_if_the_product_doesnt_exist(
+        Request $request,
+        AbstractProduct $blender,
+        $rendererRegistry,
+        $productManager
+    ) {
         $productManager->find(12)->willReturn(null);
 
-        $this->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')->during('downloadPdfAction', [$request, 12]);
+        $this
+            ->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
+            ->during('downloadPdfAction', [$request, 12]);
     }
 }

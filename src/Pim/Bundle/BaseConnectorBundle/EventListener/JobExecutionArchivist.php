@@ -33,7 +33,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
     /**
      * Register an archiver
      *
-     * @param ArchiveInterface $archiver
+     * @param ArchiverInterface $archiver
      *
      * @throws \InvalidArgumentException
      */

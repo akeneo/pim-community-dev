@@ -5,7 +5,6 @@ namespace Pim\Bundle\FilterBundle\Filter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Product filter utility
@@ -60,12 +59,12 @@ class ProductFilterUtility extends BaseFilterUtility
     /**
      * Applies filter to query by attribute
      *
-     * @deprecated will be removed in 1.4
-     *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
      * @param mixed                            $value
      * @param string                           $operator
+     *
+     * @deprecated will be removed in 1.4
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {

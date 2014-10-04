@@ -125,7 +125,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Get group type
      *
-     * @return Group
+     * @return GroupType
      */
     public function getType()
     {

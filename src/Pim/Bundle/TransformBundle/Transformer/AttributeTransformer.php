@@ -32,7 +32,7 @@ class AttributeTransformer extends NestedEntityTransformer
     /**
      * Constructor
      *
-     * @param RegistryInterface              $doctrine
+     * @param ManagerRegistry                $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $colInfoTransformer

@@ -146,7 +146,7 @@ class AttributeOption implements ReferableInterface
      *
      * @param string $locale
      *
-     * @return LocalizableInterface
+     * @return AttributeOption
      */
     public function setLocale($locale)
     {
@@ -295,7 +295,7 @@ class AttributeOption implements ReferableInterface
      *
      * @param AttributeOptionValue $value
      *
-     * @return AbstractAttribute
+     * @return AttributeOption
      */
     public function addOptionValue(AttributeOptionValue $value)
     {

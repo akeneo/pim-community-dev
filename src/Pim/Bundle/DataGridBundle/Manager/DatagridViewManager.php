@@ -18,7 +18,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 class DatagridViewManager
 {
     /** @var EntityRepository */
-    protected $datagridViewRepository;
+    protected $repository;
 
     /** @var DatagridManager */
     protected $datagridManager;
@@ -31,7 +31,7 @@ class DatagridViewManager
      */
     public function __construct(EntityRepository $repository, DatagridManager $datagridManager)
     {
-        $this->datagridViewRepository = $repository;
+        $this->repository      = $repository;
         $this->datagridManager = $datagridManager;
     }
 
@@ -44,7 +44,7 @@ class DatagridViewManager
      */
     public function findPublic($alias)
     {
-        return $this->datagridViewRepository->findBy(
+        return $this->repository->findBy(
             [
                 'datagridAlias' => $alias,
                 'type'          => DatagridView::TYPE_PUBLIC

@@ -20,7 +20,7 @@ class MongoObjectsFactory
      *
      * @param string $id
      *
-     * @return MongoID
+     * @return MongoId
      */
     public function createMongoId($id = null)
     {
