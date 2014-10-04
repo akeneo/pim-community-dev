@@ -2,7 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Product datasource, allows to prepare query builder from repository
@@ -13,9 +17,23 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
  */
 class ProductDatasource extends Datasource
 {
+    /** @var ProductQueryBuilderInterface */
+    protected $pqb;
 
-    // TODO : PQB as instance variable !!!!
-    // TODO : be sure to inject it in a dedicated datasource adapter, cf ./vendor/oro/platform/src/Oro/Bundle/FilterBundle/Grid/Extension/OrmFilterExtension.php:
+    /**
+     * @param ObjectManager                $om
+     * @param HydratorInterface            $hydrator
+     * @param ProductQueryFactoryInterface $factory
+     */
+    public function __construct(
+        ObjectManager $om,
+        HydratorInterface $hydrator,
+        ProductQueryFactoryInterface $factory
+    ) {
+        $this->om       = $om;
+        $this->hydrator = $hydrator;
+        $this->factory  = $factory;
+    }
 
     /**
      * {@inheritdoc}
@@ -38,5 +56,28 @@ class ProductDatasource extends Datasource
         $rows = $this->hydrator->hydrate($this->qb, $options);
 
         return $rows;
+    }
+
+    /**
+     * @return ProductQueryBuilderInterface
+     */
+    public function getProductQueryBuilder()
+    {
+        return $this->pqb;
+    }
+
+    /**
+     * @param array $config the query builder creation config
+     *
+     * @return Datasource
+     */
+    protected function initializeQueryBuilder($method, array $config = [])
+    {
+        $factoryConfig = $config;
+        $factoryConfig['repository_method'] = $method;
+        $this->pqb = $this->factory->create($factoryConfig);
+        $this->qb = $this->pqb->getQueryBuilder();
+
+        return $this;
     }
 }

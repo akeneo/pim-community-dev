@@ -2,8 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Aims to wrap the creation configuration of the product query builder
@@ -14,28 +18,40 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class ProductQueryFactory implements ProductQueryFactoryInterface
 {
-    /** @var ProductRepositoryInterface */
-    protected $repository;
+    /** @var ObjectManager */
+    protected $om;
 
-    /** @var ProductQueryBuilderInterface */
-    protected $productQueryBuilder;
+    /** @var string */
+    protected $productClass;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
+    /** QueryFilterRegistryInterface */
+    protected $filterRegistry;
+
+    /** QuerySorterRegistryInterface */
+    protected $sorterRegistry;
 
     /**
-     * @param ProductRepositoryInterface   $repository
-     * @param ProductQueryBuilderInterface $productQueryBuilder
-     * @param CatalogContext               $context
+     * @param ObjectManager                $om
+     * @param string                       $productClass
+     * @param AttributeRepository          $attributeRepository
+     * @param QueryFilterRegistryInterface $filterRegistry
+     * @param QuerySorterRegistryInterface $sorterRegistry
      */
     public function __construct(
-        ProductRepositoryInterface $repository,
-        ProductQueryBuilderInterface $productQueryBuilder,
-        CatalogContext $context
+        ObjectManager $om,
+        $productClass,
+        AttributeRepository $attributeRepository,
+        QueryFilterRegistryInterface $filterRegistry,
+        QuerySorterRegistryInterface $sorterRegistry
     ) {
-        $this->repository = $repository;
-        $this->productQueryBuilder = $productQueryBuilder;
-        $this->context = $context;
+        $this->om = $om;
+        $this->productClass = $productClass;
+        $this->attributeRepository = $attributeRepository;
+        $this->filterRegistry = $filterRegistry;
+        $this->sorterRegistry = $sorterRegistry;
     }
 
     /**
@@ -43,13 +59,39 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
      */
     public function create(array $options = [])
     {
-        // TODO locale and scope check with option resolver ?
-//        $this->context->setLocaleCode($options['locale_code']);
-//        $this->context->setScopeCode($options['scope_code']);
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+        $options = $resolver->resolve($options);
 
-        $qb = $this->repository->createQueryBuilder('p');
-        $this->productQueryBuilder->setQueryBuilder($qb);
+        $pqb = new ProductQueryBuilder(
+            $this->attributeRepository,
+            $this->filterRegistry,
+            $this->sorterRegistry
+        );
 
-        return $this->productQueryBuilder;
+        $repository = $this->om->getRepository($this->productClass);
+        $method = $options['repository_method'];
+        $parameters = $options['repository_parameters'];
+        $qb = $repository->$method($parameters);
+        $pqb->setQueryBuilder($qb);
+
+        return $pqb;
+    }
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    protected function configureOptions(OptionsResolverInterface $resolver)
+    {
+        // TODO locale and scope by default ? check with option resolver ?
+        // $this->context->setLocaleCode($options['locale_code']);
+        // $this->context->setScopeCode($options['scope_code']);
+        $resolver->setOptional(['repository_method', 'repository_parameters']);
+        $resolver->setDefaults(
+            [
+                'repository_method' => 'createQueryBuilder',
+                'repository_parameters' => [],
+            ]
+        );
     }
 }
