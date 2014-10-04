@@ -4,13 +4,11 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Aims to wrap the creation configuration of the product query builder
+ * Aims to wrap the creation and configuration of the product query builder
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -18,6 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductQueryFactory implements ProductQueryFactoryInterface
 {
+    /** @var string */
+    protected $pqbClass;
+
     /** @var ObjectManager */
     protected $om;
 
@@ -34,6 +35,7 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     protected $sorterRegistry;
 
     /**
+     * @param string                       $pqbClass
      * @param ObjectManager                $om
      * @param string                       $productClass
      * @param AttributeRepository          $attributeRepository
@@ -41,12 +43,14 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
      * @param QuerySorterRegistryInterface $sorterRegistry
      */
     public function __construct(
+        $pqbClass,
         ObjectManager $om,
         $productClass,
         AttributeRepository $attributeRepository,
         QueryFilterRegistryInterface $filterRegistry,
         QuerySorterRegistryInterface $sorterRegistry
     ) {
+        $this->pqbClass = $pqbClass;
         $this->om = $om;
         $this->productClass = $productClass;
         $this->attributeRepository = $attributeRepository;
@@ -63,8 +67,7 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         $this->configureOptions($resolver);
         $options = $resolver->resolve($options);
 
-        // TODO : the PQB class as class parameter
-        $pqb = new ProductQueryBuilder(
+        $pqb = new $this->pqbClass(
             $this->attributeRepository,
             $this->filterRegistry,
             $this->sorterRegistry
@@ -73,6 +76,7 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         $repository = $this->om->getRepository($this->productClass);
         $method = $options['repository_method'];
         $parameters = $options['repository_parameters'];
+
         $qb = $repository->$method($parameters);
         $pqb->setQueryBuilder($qb);
 
@@ -84,9 +88,6 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
      */
     protected function configureOptions(OptionsResolverInterface $resolver)
     {
-        // TODO locale and scope by default ? check with option resolver ?
-        // $this->context->setLocaleCode($options['locale_code']);
-        // $this->context->setScopeCode($options['scope_code']);
         $resolver->setOptional(['repository_method', 'repository_parameters', 'currentGroup', 'product']);
         $resolver->setDefaults(
             [

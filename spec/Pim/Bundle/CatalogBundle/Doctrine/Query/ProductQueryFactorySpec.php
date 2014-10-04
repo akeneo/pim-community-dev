@@ -19,7 +19,7 @@ class ProductQueryFactorySpec extends ObjectBehavior
 {
     function let(AttributeRepository $attRepository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, ObjectManager $om)
     {
-        $this->beConstructedWith($om, 'Pim\Bundle\CatalogBundle\Model\Product', $attRepository, $filterRegistry, $sorterRegistry);
+        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder', $om, 'Pim\Bundle\CatalogBundle\Model\Product', $attRepository, $filterRegistry, $sorterRegistry);
     }
 
     function it_is_a_product_query_factory()

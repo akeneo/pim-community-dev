@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 interface FilterProductDatasourceAdapterInterface extends FilterDatasourceAdapterInterface
 {
     /**
-     * Gets a product query builder 
+     * Gets a product query builder
      *
      * @return ProductQueryBuilderInterface
      */

@@ -4,7 +4,6 @@ namespace Pim\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Product filter utility
@@ -17,8 +16,6 @@ class ProductFilterUtility extends BaseFilterUtility
 {
     /**
      * Applies filter to query by attribute
-     *
-     * TODO : add a FilterProductDatasourceAdapterInterface
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field

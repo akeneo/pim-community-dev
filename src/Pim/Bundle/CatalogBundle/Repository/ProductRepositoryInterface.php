@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 
 /**
  * Product repository interface
@@ -127,7 +126,7 @@ interface ProductRepositoryInterface
     /**
      * @param ProductQueryFactoryInterface
      *
-     * @return ProductQueryBuilderInterface
+     * @return ProductRepositoryInterface
      */
     public function setProductQueryFactory($factory);
 

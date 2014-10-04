@@ -73,7 +73,7 @@ class ProductDatasource extends Datasource
      */
     protected function initializeQueryBuilder($method, array $config = [])
     {
-        $factoryConfig = $config;
+        $factoryConfig['repository_parameters'] = $config;
         $factoryConfig['repository_method'] = $method;
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();
