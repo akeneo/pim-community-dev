@@ -9,72 +9,25 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 /**
  * Product filter utility
  *
- * TODO : rename this utility class cause it should be used by Filters and Sorters
- *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductFilterUtility extends BaseFilterUtility
 {
-    /** @var ProductManager */
-    protected $productManager;
-
-    /** @var ProductQueryBuilderInterface */
-    protected $productQueryBuilder;
-
-    /**
-     * @param ProductManager $manager
-     */
-    public function __construct(ProductManager $manager)
-    {
-        $this->productManager = $manager;
-    }
-
-    /**
-     * @return ProductManager
-     */
-    public function getProductManager()
-    {
-        return $this->productManager;
-    }
-
-    /**
-     * @return ProductRepositoryInterface
-     */
-    public function getProductRepository()
-    {
-        return $this->productManager->getProductRepository();
-    }
-
-    /**
-     * @param FilterDatasourceAdapterInterface $ds
-     *
-     * TODO : we would avoid to inject $qb from outside
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    public function getProductQueryBuilderInstance($qb = null)
-    {
-        if (null === $this->productQueryBuilder) {
-            // TODO : inject catalog context ?
-            $this->productQueryBuilder = $this->getProductRepository()->createProductQueryBuilder(['qb' => $qb]);
-        }
-
-        return $this->productQueryBuilder;
-    }
-
     /**
      * Applies filter to query by attribute
      *
+     * TODO : add a FilterProductDatasourceAdapterInterface
+     *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
-     * @param mixed                            $value
      * @param string                           $operator
+     * @param mixed                            $value
      */
-    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $this->getProductQueryBuilderInstance($ds)->addFilter($field, $operator, $value);
+        $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
     }
 
     /**
@@ -89,6 +42,6 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $this->applyFilter($ds, $field, $value, $operator);
+        $this->applyFilter($ds, $field, $operator, $value);
     }
 }

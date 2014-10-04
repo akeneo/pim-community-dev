@@ -107,8 +107,8 @@ class MetricFilter extends OroNumberFilter
         $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $baseValue,
-            $operator
+            $operator,
+            $baseValue
         );
 
         return true;

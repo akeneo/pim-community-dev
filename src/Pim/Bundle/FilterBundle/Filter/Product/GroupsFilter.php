@@ -24,10 +24,8 @@ class GroupsFilter extends ChoiceFilter
             return false;
         }
 
-        $qb = $ds->getQueryBuilder();
         $ids = $data['value'];
-        $pqb = $this->util->getProductQueryBuilderInstance();
-        $pqb->addFilter('groups', 'IN', $ids);
+        $this->util->applyFilter($ds, 'groups', 'IN', $ids);
 
         return true;
     }

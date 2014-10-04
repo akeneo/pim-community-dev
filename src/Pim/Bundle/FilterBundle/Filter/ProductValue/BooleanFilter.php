@@ -28,8 +28,8 @@ class BooleanFilter extends OroBooleanFilter
         $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $data['value'],
-            '='
+            '=',
+            $data['value']
         );
 
         return true;

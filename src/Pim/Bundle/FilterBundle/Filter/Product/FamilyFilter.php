@@ -25,9 +25,7 @@ class FamilyFilter extends ChoiceFilter
         }
 
         $ids = $data['value'];
-
-        $pqb = $this->util->getProductQueryBuilderInstance();
-        $pqb->addFilter('family', 'IN', $ids);
+        $this->util->applyFilter($ds, 'family', 'IN', $ids);
 
         return true;
     }

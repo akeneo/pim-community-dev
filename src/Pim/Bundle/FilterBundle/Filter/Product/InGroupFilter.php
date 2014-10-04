@@ -56,9 +56,7 @@ class InGroupFilter extends BooleanFilter
 
         $value = [$groupId];
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
-
-        $pqb = $this->util->getProductQueryBuilderInstance();
-        $pqb->addFilter('groups', $operator, $value);
+        $this->util->applyFilter($ds, 'groups', $operator, $value);
 
         return true;
     }
