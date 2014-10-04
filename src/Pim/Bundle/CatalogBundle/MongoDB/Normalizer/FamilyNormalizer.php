@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -44,6 +44,6 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Family && 'mongodb_json' === $format;
+        return $data instanceof FamilyInterface && 'mongodb_json' === $format;
     }
 }

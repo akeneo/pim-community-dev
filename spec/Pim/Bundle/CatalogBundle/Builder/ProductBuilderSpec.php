@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use PhpSpec\ObjectBehavior;
@@ -43,7 +43,7 @@ class ProductBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_missing_product_values_from_family_on_new_product(
-        Family $family,
+        FamilyInterface $family,
         ProductInterface $product,
         AttributeInterface $sku,
         AttributeInterface $name,

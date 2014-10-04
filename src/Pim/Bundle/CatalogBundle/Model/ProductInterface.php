@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
@@ -300,16 +300,16 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
     /**
      * Set family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return ProductInterface
      */
-    public function setFamily(Family $family = null);
+    public function setFamily(FamilyInterface $family = null);
 
     /**
      * Get family
      *
-     * @return Family
+     * @return FamilyInterface
      */
     public function getFamily();
 

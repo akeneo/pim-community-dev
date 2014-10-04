@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -31,7 +31,7 @@ class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
 
     function it_adds_attribute_as_label_field_when_data_has_been_persisted(
         FormEvent $event,
-        Family $family,
+        FamilyInterface $family,
         FormInterface $form,
         FormInterface $field,
         $factory,
@@ -63,7 +63,7 @@ class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
         $this->addAttributeAsLabelField($event);
     }
 
-    function it_ignores_family_that_was_not_persisted(FormEvent $event, Family $family)
+    function it_ignores_family_that_was_not_persisted(FormEvent $event, FamilyInterface $family)
     {
         $event->getData()->willReturn($family);
         $family->getId()->willReturn(null);

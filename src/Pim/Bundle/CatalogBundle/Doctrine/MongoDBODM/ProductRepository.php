@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
@@ -154,11 +154,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return string[]
      */
-    public function findAllIdsForFamily(Family $family)
+    public function findAllIdsForFamily(FamilyInterface $family)
     {
         $qb = $this->createQueryBuilder('p')
             ->hydrate(false)

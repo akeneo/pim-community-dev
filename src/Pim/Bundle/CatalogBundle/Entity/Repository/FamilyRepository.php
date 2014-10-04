@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
@@ -110,12 +110,12 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     /**
      * Returns a querybuilder to get full requirements
      *
-     * @param Family $family
-     * @param string $localeCode
+     * @param FamilyInterface $family
+     * @param string          $localeCode
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getFullRequirementsQB(Family $family, $localeCode)
+    public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
         return $this->getEntityManager()
             ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
@@ -132,12 +132,12 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     * Returns all families code with their required attributes code
     * Requirements can be restricted to a channel.
     *
-    * @param Family  $family
-    * @param Channel $channel
+    * @param FamilyInterface $family
+    * @param Channel         $channel
     *
     * @return array
     */
-    public function getFullFamilies(Family $family = null, Channel $channel = null)
+    public function getFullFamilies(FamilyInterface $family = null, Channel $channel = null)
     {
         $qb = $this->createQueryBuilder('f')
             ->select('f, c, l, r, a, cu')
