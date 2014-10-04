@@ -17,22 +17,15 @@ use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 class InGroupSorter implements SorterInterface
 {
     /**
-     * @var ProductRepositoryInterface
-     */
-    protected $repository;
-
-    /**
      * @var RequestParameters
      */
     protected $requestParams;
 
     /**
-     * @param ProductRepositoryInterface $repository
-     * @param RequestParameters          $requestParams
+     * @param RequestParameters $requestParams
      */
-    public function __construct(ProductRepositoryInterface $repository, RequestParameters $requestParams)
+    public function __construct(RequestParameters $requestParams)
     {
-        $this->repository    = $repository;
         $this->requestParams = $requestParams;
     }
 
@@ -41,15 +34,12 @@ class InGroupSorter implements SorterInterface
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $qb = $datasource->getQueryBuilder();
-
         $groupId = $this->requestParams->get('currentGroup', null);
         if (!$groupId) {
             throw new \LogicException('The current product group must be configured');
         }
 
         $field = 'in_group_'.$groupId;
-//        $pqb = $this->repository->getProductQueryBuilder($qb);
-//        $pqb->addSorter($field, $direction);
+        $datasource->getProductQueryBuilder()->addSorter($field, $direction);
     }
 }

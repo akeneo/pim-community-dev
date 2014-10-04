@@ -16,25 +16,10 @@ use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 class FieldSorter implements SorterInterface
 {
     /**
-     * @var ProductRepositoryInterface
-     */
-    protected $repository;
-
-    /**
-     * @param ProductRepositoryInterface $prodRepository
-     */
-    public function __construct(ProductRepositoryInterface $prodRepository)
-    {
-        $this->repository = $prodRepository;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $qb  = $datasource->getQueryBuilder();
-//        $pqb = $this->repository->getProductQueryBuilder($qb);
-//        $pqb->addSorter($field, $direction);
+        $qb  = $datasource->getProductQueryBuilder()->addSorter($field, $direction);
     }
 }
