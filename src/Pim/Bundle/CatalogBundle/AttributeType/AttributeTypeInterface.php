@@ -71,7 +71,7 @@ interface AttributeTypeInterface
      * Build form types for custom properties of an attribute
      *
      * @param FormFactoryInterface $factory   the form factory
-     * @param AttributeInterface    $attribute the attribute
+     * @param AttributeInterface   $attribute the attribute
      *
      * @return FormInterface the form
      */

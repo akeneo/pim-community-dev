@@ -19,8 +19,8 @@ class AttributeRequirementFactory
      * Create and configure an attribute requirement instance
      *
      * @param AttributeInterface $attribute
-     * @param Channel           $channel
-     * @param boolean           $required
+     * @param Channel            $channel
+     * @param boolean            $required
      *
      * @return AttributeRequirement
      */

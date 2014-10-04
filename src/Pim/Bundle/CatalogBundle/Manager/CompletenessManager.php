@@ -234,8 +234,8 @@ class CompletenessManager
 
     /**
      * @param AttributeInterface $attribute
-     * @param string            $locale
-     * @param string            $scope
+     * @param string             $locale
+     * @param string             $scope
      *
      * @return string
      */

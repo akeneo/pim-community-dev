@@ -74,9 +74,9 @@ class AttributeTransformer extends NestedEntityTransformer
     /**
      * Sets the options of the attribute
      *
-     * @param string            $class
+     * @param string             $class
      * @param AttributeInterface $attribute
-     * @param array             $optionsData
+     * @param array              $optionsData
      */
     protected function setOptions($class, AttributeInterface $attribute, array $optionsData)
     {

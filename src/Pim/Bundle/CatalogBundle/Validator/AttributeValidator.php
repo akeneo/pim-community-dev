@@ -36,7 +36,7 @@ class AttributeValidator
      * Validation rule for attribute option values
      *
      * @param AttributeInterface $attribute
-     * @param ExecutionContext  $context
+     * @param ExecutionContext   $context
      */
     public static function areOptionsValid(AttributeInterface $attribute, ExecutionContext $context)
     {

@@ -322,8 +322,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Get the name of a normalized data field
      *
      * @param AttributeInterface $attribute
-     * @param Channel           $channel
-     * @param Locale            $locale
+     * @param Channel            $channel
+     * @param Locale             $locale
      *
      * @return string
      */

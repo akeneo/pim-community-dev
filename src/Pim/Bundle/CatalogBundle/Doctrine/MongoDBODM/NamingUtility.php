@@ -127,7 +127,7 @@ class NamingUtility
      * Get the attribute fields codes for normalizedData
      *
      * @param AttributeInterface $attribute
-     * @param string            $prefix
+     * @param string             $prefix
      *
      * @return string[]
      */

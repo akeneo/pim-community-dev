@@ -130,7 +130,7 @@ class ProductBuilder
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface  $product
+     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      *
      * @return boolean
@@ -259,10 +259,10 @@ class ProductBuilder
     /**
      * Add a missing value to the product
      *
-     * @param ProductInterface  $product
+     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param string            $locale
-     * @param string            $scope
+     * @param string             $locale
+     * @param string             $scope
      *
      * @return ProductValueInterface
      */
@@ -338,7 +338,7 @@ class ProductBuilder
      * Filter expected values based on the locales available for the provided attribute
      *
      * @param AttributeInterface $attribute
-     * @param array             $values
+     * @param array              $values
      *
      * @return array
      */

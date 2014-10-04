@@ -41,7 +41,7 @@ class AttributeGroupManager
     /**
      * Remove an attribute from a group and link it to the default group
      *
-     * @param AttributeGroup    $group
+     * @param AttributeGroup     $group
      * @param AttributeInterface $attribute
      *
      * @throws \LogicException

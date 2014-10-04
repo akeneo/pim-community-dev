@@ -99,9 +99,9 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     /**
      * Create attribute requirement entity
      *
-     * @param Channel           $channel
+     * @param Channel            $channel
      * @param AttributeInterface $attribute
-     * @param Family            $family
+     * @param Family             $family
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
      */

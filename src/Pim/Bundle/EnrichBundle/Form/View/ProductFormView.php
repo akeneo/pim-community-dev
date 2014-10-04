@@ -127,7 +127,7 @@ class ProductFormView implements ProductFormViewInterface
     /**
      * Prepare attribute view
      *
-     * @param AttributeInterface     $attribute
+     * @param AttributeInterface    $attribute
      * @param ProductValueInterface $value
      * @param FormView              $view
      *
@@ -165,7 +165,7 @@ class ProductFormView implements ProductFormViewInterface
 
     /**
      * @param AttributeInterface $attribute
-     * @param string            $locale
+     * @param string             $locale
      *
      * @return ArrayCollection
      */

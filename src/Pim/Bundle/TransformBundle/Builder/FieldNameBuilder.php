@@ -83,7 +83,7 @@ class FieldNameBuilder
      * This method is used from extractAttributeFieldNameInfos and can be redefine to add new rules
      *
      * @param AttributeInterface $attribute
-     * @param array             $explodedFieldName
+     * @param array              $explodedFieldName
      *
      * @return array
      */

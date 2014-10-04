@@ -145,7 +145,7 @@ class AttributeHandler
     /**
      * Call when form is valid
      * @param AttributeInterface $entity
-     * @param Collection        $oldOptions
+     * @param Collection         $oldOptions
      */
     protected function onSuccess(AttributeInterface $entity, Collection $oldOptions)
     {

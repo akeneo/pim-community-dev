@@ -384,8 +384,8 @@ class EditCommonAttributes extends ProductMassEditOperation
      * Create a value
      *
      * @param AttributeInterface $attribute
-     * @param string            $localeCode
-     * @param string            $channelCode
+     * @param string             $localeCode
+     * @param string             $channelCode
      *
      * @return ProductValueInterface
      */

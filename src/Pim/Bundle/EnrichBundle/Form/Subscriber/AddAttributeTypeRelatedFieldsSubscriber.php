@@ -92,7 +92,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /**
      * Customize the attribute form
      *
-     * @param Form              $form
+     * @param Form               $form
      * @param AttributeInterface $attribute
      */
     protected function customizeForm(Form $form, AttributeInterface $attribute)

@@ -197,7 +197,7 @@ class ProductManager
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface  $product
+     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      *
      * @return boolean

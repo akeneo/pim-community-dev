@@ -164,7 +164,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Add a filter condition on an attribute
      *
      * @param AttributeFilterInterface $filter    the filter
-     * @param AttributeInterface        $attribute the attribute
+     * @param AttributeInterface       $attribute the attribute
      * @param string                   $operator  the operator
      * @param mixed                    $value     the value to filter
      *
@@ -203,7 +203,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Sort by attribute value
      *
      * @param AttributeSorterInterface $sorter    the sorter
-     * @param AttributeInterface        $attribute the attribute to sort on
+     * @param AttributeInterface       $attribute the attribute to sort on
      * @param string                   $direction the direction to use
      *
      * @return ProductQueryBuilderInterface
