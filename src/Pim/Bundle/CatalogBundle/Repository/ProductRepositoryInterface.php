@@ -125,11 +125,6 @@ interface ProductRepositoryInterface
     public function valueExists(ProductValueInterface $value);
 
     /**
-     * @return ProductQueryBuilderInterface
-     */
-    public function createProductQueryBuilder();
-
-    /**
      * @param ProductQueryFactoryInterface
      *
      * @return ProductQueryBuilderInterface

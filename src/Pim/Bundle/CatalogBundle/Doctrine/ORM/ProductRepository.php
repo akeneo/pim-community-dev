@@ -458,7 +458,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneBy(array $criteria)
     {
-        $pqb = $this->createProductQueryBuilder();
+        $pqb = $this->productQueryFactory->create();
         $qb = $pqb->getQueryBuilder();
         foreach ($criteria as $field => $data) {
             // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
@@ -507,19 +507,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return ProductQueryBuilder
-     */
-    public function createProductQueryBuilder()
-    {
-        // TODO locale and scope
-        return $this->productQueryFactory->create();
-    }
-
-    /**
      * Add join to values tables
      *
      * @param QueryBuilder $qb
@@ -550,7 +537,7 @@ class ProductRepository extends EntityRepository implements
         $limit = null,
         $offset = null
     ) {
-        $productQb = $this->createProductQueryBuilder();
+        $productQb = $this->productQueryFactory->create();
         $qb = $productQb->getQueryBuilder();
 
         if (!is_null($criteria)) {

@@ -106,7 +106,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneBy(array $criteria)
     {
-        $pqb = $this->createProductQueryBuilder();
+        $pqb = $this->productQueryFactory->create();
         $qb = $pqb->getQueryBuilder();
 
         foreach ($criteria as $field => $data) {
@@ -458,7 +458,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $productQueryBuilder = $this->createProductQueryBuilder();
+        $productQueryBuilder = $this->productQueryFactory->create();
         $qb = $productQueryBuilder->getQueryBuilder();
 
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
@@ -482,19 +482,6 @@ class ProductRepository extends DocumentRepository implements
 
         return $this;
 
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return ProductQueryBuilder
-     */
-    public function createProductQueryBuilder()
-    {
-        // TODO locale and scope
-        return $this->productQueryFactory->create();
     }
 
     /**
