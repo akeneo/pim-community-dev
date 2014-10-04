@@ -21,6 +21,7 @@
 - Remove useless applySorterByAttribute, applySorterByField from Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
 - Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
 - Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
+- Remove ProductManager from ProductFilterUtility::__construct argument
 - Remove ProductFilterUtility::getAttribute()
 - Two new methods have been added to `Pim\Bundle\DashboardBundle\Widget\WidgetInterface`: `getAlias` and `getData`
 - Constructor of `Pim\Bundle\DashboardBundle\Controller\WidgetController` has been changed (most dependencies have been removed)
@@ -28,6 +29,8 @@
 - Constructors of `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` and `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` have been changed
 - `Pim\Bundle\DashboardBundle\Widget\Registry:add()` now accepts the widget (`WidgetInterface`) as the first argument and position as the second
 - Remove CatalogContext argument from ProductQueryBuilder::__construct
+- Remove ProductRepository from Datagrid Sorters __construct
+- Remove deprecated ProductRepositoryInterface::getProductQueryBuilder
 
 # 1.2.x
 

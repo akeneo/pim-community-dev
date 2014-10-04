@@ -22,14 +22,25 @@ class DatasourceAdapterResolver
     /** @var string */
     protected $mongodbAdapterClass;
 
+    /** @var string */
+    protected $productOrmAdapterClass;
+
+    /** @var string */
+    protected $productMongodbAdapterClass;
+
     /**
      * @param DatasourceSupportResolver $supportResolver
      * @param string                    $ormAdapterClass
+     * @param string                    $productOrmAdapterClass
      */
-    public function __construct(DatasourceSupportResolver $supportResolver, $ormAdapterClass)
-    {
+    public function __construct(
+        DatasourceSupportResolver $supportResolver,
+        $ormAdapterClass,
+        $productOrmAdapterClass
+    ) {
         $this->supportResolver = $supportResolver;
         $this->ormAdapterClass = $ormAdapterClass;
+        $this->productOrmAdapterClass = $productOrmAdapterClass;
     }
 
     /**
@@ -44,17 +55,23 @@ class DatasourceAdapterResolver
         if (DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM ===
             $this->supportResolver->getSupport($datasourceType)
         ) {
-            return $this->ormAdapterClass;
+            if ($datasourceType === 'pim_datasource_product') {
+                return $this->productOrmAdapterClass;
+            } else {
+                return $this->ormAdapterClass;
+            }
         } elseif (null === $this->mongodbAdapterClass) {
             throw new InvalidConfigurationException('The MongoDB adapter class should be registered.');
         }
 
         if (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
             $this->supportResolver->getSupport($datasourceType)) {
-            return $this->mongodbAdapterClass;
+            if ($datasourceType === 'pim_datasource_product') {
+                return $this->productMongodbAdapterClass;
+            } else {
+                return $this->mongodbAdapterClass;
+            }
         }
-
-        // TODO : inject PQB ?
 
         return $this->ormAdapterClass;
     }
@@ -65,5 +82,13 @@ class DatasourceAdapterResolver
     public function setMongodbAdapterClass($mongodbAdapterClass)
     {
         $this->mongodbAdapterClass = $mongodbAdapterClass;
+    }
+
+    /**
+     * @param string $productMongodbAdapterClass
+     */
+    public function setProductMongodbAdapterClass($productMongodbAdapterClass)
+    {
+        $this->productMongodbAdapterClass = $productMongodbAdapterClass;
     }
 }

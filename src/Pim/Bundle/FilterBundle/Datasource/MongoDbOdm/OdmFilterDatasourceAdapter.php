@@ -3,8 +3,9 @@
 namespace Pim\Bundle\FilterBundle\Datasource\MongoDbOdm;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 /**
  * MongoDB ODM datasource adapter
@@ -15,24 +16,17 @@ use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
  */
 class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
-
-    /**
-     * @var OrmExpressionBuilder
-     */
-    protected $expressionBuilder;
 
     /**
      * Constructor
      *
-     * @param QueryBuilder $qb
+     * @param DatasourceInterface $datasource
      */
-    public function __construct(QueryBuilder $qb)
+    public function __construct(DatasourceInterface $datasource)
     {
-        $this->qb                = $qb;
+        $this->qb  = $datasource->getQueryBuilder();
         $this->expressionBuilder = null;
     }
 
