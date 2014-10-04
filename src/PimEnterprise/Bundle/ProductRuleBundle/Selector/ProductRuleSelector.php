@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductRuleBundle\Loader;
+namespace PimEnterprise\Bundle\ProductRuleBundle\Selector;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Loader\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Selector\SelectorInterface;
 
-class ProductRuleLoader implements LoaderInterface
+class ProductRuleSelector implements SelectorInterface
 {
     /** @var string */
-    protected $runnableClass;
+    protected $subjectSetClass;
 
     /** @var ProductQueryBuilderInterface */
     protected $pqb;
@@ -29,11 +29,11 @@ class ProductRuleLoader implements LoaderInterface
     protected $repo;
 
     /**
-     * @param string $runnableClass
+     * @param string $subjectSetClass
      */
-    public function __construct($runnableClass, ProductQueryBuilderInterface $pqb, ProductRepositoryInterface $repo)
+    public function __construct($subjectSetClass, ProductQueryBuilderInterface $pqb, ProductRepositoryInterface $repo)
     {
-        $this->runnableClass = $runnableClass;
+        $this->subjectSetClass = $subjectSetClass;
         $this->pqb = $pqb;
         $this->repo = $repo;
     }
@@ -41,10 +41,10 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $rule)
+    public function select(RuleInterface $rule)
     {
-        /** @var ProductRunnableRuleInterface $runnable */
-        $runnable = new $this->runnableClass();
+        /** @var RuleSubjectSetInterface $subjectSet */
+        $subjectSet = new $this->subjectSetClass();
 
         //TODO: remove this
         $qb = $this->repo->createQueryBuilder('p');
@@ -62,9 +62,13 @@ class ProductRuleLoader implements LoaderInterface
             $this->pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
         }
 
-        $runnable->setQueryBuilder($this->pqb);
+        $products = $this->pqb->getQueryBuilder()->getQuery()->execute();
 
-        return $runnable;
+        $subjectSet->setCode($rule->getCode());
+        $subjectSet->setType('product');
+        $subjectSet->setSubjects($products);
+
+        return $subjectSet;
     }
 
     /**

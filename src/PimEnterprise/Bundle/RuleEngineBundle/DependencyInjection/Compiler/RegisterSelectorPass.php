@@ -18,28 +18,28 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class RegisterLoaderPass extends AbstractOrderedPass
+class RegisterSelectorPass extends AbstractOrderedPass
 {
     /** @staticvar */
-    const CHAINED_LOADER_DEF = 'pimee_rule_engine.loader.chained';
+    const CHAINED_SELECTOR_DEF = 'pimee_rule_engine.selector.chained';
 
     /** @staticvar */
-    const LOADER_TAG = 'pimee_rule_engine.loader';
+    const SELECTOR_TAG = 'pimee_rule_engine.selector';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::CHAINED_LOADER_DEF)) {
+        if (!$container->hasDefinition(self::CHAINED_SELECTOR_DEF)) {
             return;
         }
 
-        $chainedLoader = $container->getDefinition(self::CHAINED_LOADER_DEF);
-        $loaders = $this->findAndSortTaggedServices($container, self::LOADER_TAG);
+        $chainedLoader = $container->getDefinition(self::CHAINED_SELECTOR_DEF);
+        $loaders = $this->findAndSortTaggedServices($container, self::SELECTOR_TAG);
 
         foreach ($loaders as $loader) {
-            $chainedLoader->addMethodCall('addLoader', [$loader]);
+            $chainedLoader->addMethodCall('addSelector', [$loader]);
         }
     }
 }

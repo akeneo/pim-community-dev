@@ -12,11 +12,10 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Runnable rule interface
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-interface RunnableRuleInterface
+interface RuleSubjectSetInterface
 {
     /**
      * @return string
@@ -26,7 +25,31 @@ interface RunnableRuleInterface
     /**
      * @param string $code
      *
-     * @return RunnableRuleInterface
+     * @return RuleSubjectSetInterface
      */
     public function setCode($code);
+
+    /**
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * @param $type
+     *
+     * @return RuleSubjectSetInterface
+     */
+    public function setType($type);
+
+    /**
+     * @return array
+     */
+    public function getSubjects();
+
+    /**
+     * @param array $subjects
+     *
+     * @return RuleSubjectSetInterface
+     */
+    public function setSubjects(array $subjects);
 }

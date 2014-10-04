@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Loader;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Selector;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
@@ -18,19 +18,19 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class ChainedLoader implements LoaderInterface
+class ChainedSelector implements SelectorInterface
 {
-    /** @var LoaderInterface[] ordered loaders by priority */
-    protected $loaders = [];
+    /** @var SelectorInterface[] ordered loaders by priority */
+    protected $selectors = [];
 
     /**
-     * @param LoaderInterface $loader
+     * @param SelectorInterface $loader
      *
-     * @return ChainedLoader
+     * @return ChainedSelector
      */
-    public function addLoader(LoaderInterface $loader)
+    public function addSelector(SelectorInterface $loader)
     {
-        $this->loaders[] = $loader;
+        $this->selectors[] = $loader;
 
         return $this;
     }
@@ -46,14 +46,14 @@ class ChainedLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $rule)
+    public function select(RuleInterface $rule)
     {
-        foreach ($this->loaders as $loader) {
+        foreach ($this->selectors as $loader) {
             if ($loader->supports($rule)) {
-                $runnable = $loader->load($rule);
-                $runnable->setCode($rule->getCode());
+                $ruleSubjectSet = $loader->select($rule);
+                $ruleSubjectSet->setCode($rule->getCode());
 
-                return $runnable;
+                return $ruleSubjectSet;
             }
         }
 

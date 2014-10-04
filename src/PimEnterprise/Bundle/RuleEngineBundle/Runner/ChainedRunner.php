@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
  * Chained rule runner
@@ -38,7 +38,7 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RunnableRuleInterface $rule)
+    public function supports(RuleSubjectSetInterface $rule)
     {
         return true;
     }
@@ -46,11 +46,11 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RunnableRuleInterface $runnable)
+    public function run(RuleSubjectSetInterface $subjectSet)
     {
         foreach ($this->runners as $runner) {
-            if ($runner->supports($runnable)) {
-                return $runner->run($runnable);
+            if ($runner->supports($subjectSet)) {
+                return $runner->run($subjectSet);
             }
         }
 
@@ -60,14 +60,14 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function dryRun(RunnableRuleInterface $runnable)
+    public function dryRun(RuleSubjectSetInterface $subjectSet)
     {
         foreach ($this->runners as $runner) {
-            if ($runner instanceof DryRunnerInterface && $runner->supports($runnable)) {
-                return $runner->dryRun($runnable);
+            if ($runner instanceof DryRunnerInterface && $runner->supports($subjectSet)) {
+                return $runner->dryRun($subjectSet);
             }
         }
 
-        throw new \LogicException(sprintf('No dry runner available for the rule "%s".', $runnable->getCode()));
+        throw new \LogicException(sprintf('No dry runner available for the rule "%s".', $subjectSet->getCode()));
     }
 }

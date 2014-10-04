@@ -12,56 +12,44 @@
 namespace PimEnterprise\Bundle\ProductRuleBundle\Runner;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRunnableRuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
+use PimEnterprise\Bundle\ProductRuleBundle\Model\ProductRuleSubjectSetInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 
 class ProductRuleRunner implements DryRunnerInterface
 {
-    public function run(RunnableRuleInterface $rule, $dryRun = false)
+    public function run(RuleSubjectSetInterface $subjectSet)
     {
-        echo sprintf("Running rule %s.\n", $rule->getCode());
-        $products = $this->getProducts($rule);
+        echo sprintf("Running rule %s.\n", $subjectSet->getCode());
 
-        foreach ($products as $product) {
-            echo sprintf("Applying rule %s on product %s.\n", $rule->getCode(), $product->getIdentifier());
+        foreach ($subjectSet->getSubjects() as $product) {
+            echo sprintf("Applying rule %s on product %s.\n", $subjectSet->getCode(), $product->getIdentifier());
             $name = $product->getValue('name')->getData();
             $product->getValue('name')->setData($name . ' // ' . $product->getIdentifier());
         }
     }
 
-    public function dryRun(RunnableRuleInterface $rule)
+    public function dryRun(RuleSubjectSetInterface $subjectSet)
     {
-        echo sprintf("Dry running rule %s.\n", $rule->getCode());
-        $products = $this->getProducts($rule);
+        echo sprintf("Dry running rule %s.\n", $subjectSet->getCode());
 
         $identifiers = array_map(
             function ($product) {
                 return $product->getIdentifier();
             },
-            $products
+            $subjectSet->getSubjects()
         );
 
         echo sprintf(
             "%d products impacted by the rule %s: %s.",
             count($identifiers),
-            $rule->getCode(),
+            $subjectSet->getCode(),
             implode(', ', $identifiers)
         );
     }
 
-    public function supports(RunnableRuleInterface $rule)
+    public function supports(RuleSubjectSetInterface $subjectSet)
     {
-        return $rule instanceof ProductRunnableRuleInterface;
-    }
-
-    /**
-     * @param RunnableRuleInterface $rule
-     *
-     * @return ProductInterface[]
-     */
-    private function getProducts(RunnableRuleInterface $rule)
-    {
-        return $rule->getQueryBuilder()->getQueryBuilder()->getQuery()->execute();
+        return 'product' === $subjectSet->getType();
     }
 }

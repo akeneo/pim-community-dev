@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
  * Executes a business rule
@@ -21,16 +21,16 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
 interface RunnerInterface
 {
     /**
-     * @param RunnableRuleInterface $rule
+     * @param RuleSubjectSetInterface $rule
      *
-      *@return mixed
+     * @return mixed
      */
-    public function run(RunnableRuleInterface $rule);
+    public function run(RuleSubjectSetInterface $rule);
 
     /**
-     * @param RunnableRuleInterface $rule
+     * @param RuleSubjectSetInterface $rule
      *
      * @return bool
      */
-    public function supports(RunnableRuleInterface $rule);
+    public function supports(RuleSubjectSetInterface $rule);
 }

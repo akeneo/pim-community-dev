@@ -9,24 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Loader;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Selector;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RunnableRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
- * Transform an rule instance (an entity) to a business rule
+ *
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-interface LoaderInterface
+interface SelectorInterface
 {
     /**
      * @param RuleInterface $instance
-    *
-    * @return RunnableRuleInterface
+
+     *
+*@return RuleSubjectSetInterface
      */
-    public function load(RuleInterface $instance);
+    public function select(RuleInterface $instance);
 
     /**
      * @param RuleInterface $instance
