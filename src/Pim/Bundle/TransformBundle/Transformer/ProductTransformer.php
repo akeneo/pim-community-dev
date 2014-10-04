@@ -47,7 +47,7 @@ class ProductTransformer extends EntityTransformer
     protected $associationReader;
 
     /**
-     * @var AbstractAttribute
+     * @var AttributeInterface
      */
     protected $identifierAttribute;
 

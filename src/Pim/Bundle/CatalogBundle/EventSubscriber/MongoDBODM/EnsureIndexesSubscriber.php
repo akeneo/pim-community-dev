@@ -87,7 +87,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
      */
     protected function ensureIndexesFromEntity($entity)
     {
-        if ($entity instanceof AbstractAttribute) {
+        if ($entity instanceof AttributeInterface) {
             $this->ensureIndexesFromAttribute($entity);
         }
 
@@ -133,7 +133,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
      */
     protected function purgeIndexesFromEntity($entity)
     {
-        if ($entity instanceof AbstractAttribute) {
+        if ($entity instanceof AttributeInterface) {
             $this->indexPurger->purgeIndexesFromAttribute($entity);
         }
 

@@ -100,7 +100,7 @@ class AttributeOption implements ReferableInterface
     /**
      * Get attribute
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     public function getAttribute()
     {

@@ -46,7 +46,7 @@ class AttributeGroupManager
      *
      * @throws \LogicException
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     public function removeAttribute(AttributeGroup $group, AttributeInterface $attribute)
     {

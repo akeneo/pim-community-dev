@@ -42,7 +42,7 @@ class ValidMetricValidator extends ConstraintValidator
      * Validate metric type and default metric unit
      *
      * @param AttributeInterface $entity
-     * @param Constraint        $constraint
+     * @param Constraint         $constraint
      */
     public function validate($entity, Constraint $constraint)
     {

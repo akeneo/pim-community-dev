@@ -82,7 +82,7 @@ class AttributeRequirement
     /**
      * Get attribute
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     public function getAttribute()
     {

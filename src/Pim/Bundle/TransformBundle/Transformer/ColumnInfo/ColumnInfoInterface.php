@@ -67,7 +67,7 @@ interface ColumnInfoInterface
     /**
      * Returns the associated attribute
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     public function getAttribute();
 }

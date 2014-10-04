@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * Form subscriber for AbstractAttribute
+ * Form subscriber for AttributeInterface
  * Allow to change field behavior like disable when editing
  *
  * @author    Romain Monceau <romain@akeneo.com>

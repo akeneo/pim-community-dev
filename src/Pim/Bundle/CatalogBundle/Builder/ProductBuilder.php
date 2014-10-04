@@ -113,7 +113,7 @@ class ProductBuilder
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface  $product
+     * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      *
      * @return null
@@ -215,7 +215,7 @@ class ProductBuilder
      *
      * @param ProductInterface $product
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     protected function getExpectedAttributes(ProductInterface $product)
     {
@@ -310,7 +310,7 @@ class ProductBuilder
      * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param AbstractAttribute[] $attributes
+     * @param AttributeInterface[] $attributes
      *
      * @return array:array
      */

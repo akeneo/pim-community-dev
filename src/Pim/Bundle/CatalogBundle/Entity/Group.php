@@ -346,7 +346,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Setter for attributes property
      *
-     * @param AbstractAttribute[] $attributes
+     * @param AttributeInterface[] $attributes
      *
      * @return Group
      */

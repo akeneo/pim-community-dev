@@ -305,7 +305,7 @@ class ProductManager
     /**
      * Return the identifier attribute
      *
-     * @return AbstractAttribute|null
+     * @return AttributeInterface|null
      */
     public function getIdentifierAttribute()
     {

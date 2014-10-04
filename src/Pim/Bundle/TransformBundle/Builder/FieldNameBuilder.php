@@ -58,7 +58,7 @@ class FieldNameBuilder
      *
      * Returned array like:
      * [
-     *     "attribute"   => AbstractAttribute,
+     *     "attribute"   => AttributeInterface,
      *     "locale_code" => <locale_code>|null,
      *     "scope_code"  => <scope_code>|null,
      *     "price_currency" => <currency_code> // this key is optional

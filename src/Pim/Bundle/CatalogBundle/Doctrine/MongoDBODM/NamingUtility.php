@@ -193,7 +193,7 @@ class NamingUtility
      * Get filterable prices backend type attribute
      * @param bool $onlyInGrid
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     public function getPricesAttributes($onlyInGrid = true)
     {
@@ -215,7 +215,7 @@ class NamingUtility
      * Get filterable scopable attributes
      * @param bool $onlyInGrid
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     public function getScopableAttributes($onlyInGrid = true)
     {
@@ -237,7 +237,7 @@ class NamingUtility
      * Get filterable localizable attributes
      * @param bool $onlyInGrid
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     public function getLocalizableAttributes($onlyInGrid = true)
     {

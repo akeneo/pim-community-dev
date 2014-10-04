@@ -51,7 +51,7 @@ class ColumnInfo implements ColumnInfoInterface
     protected $rawSuffixes;
 
     /**
-     * @var AbstractAttribute
+     * @var AttributeInterface
      */
     protected $attribute;
 
