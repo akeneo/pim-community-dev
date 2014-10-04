@@ -21,7 +21,6 @@ services:
     pim_catalog.doctrine.query.product_query_builder:
         class: %pim_catalog.doctrine.query.product_query_builder.class%
         arguments:
-            - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.doctrine.query.filter_registry'
             - '@pim_catalog.doctrine.query.sorter_registry'

@@ -27,6 +27,7 @@
 - Method `Pim\Bundle\DashboardBundle\Controller\WidgetController::showAction()` has been removed in favor of `listAction` to render all widgets and `dataAction` to provide widget data
 - Constructors of `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` and `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` have been changed
 - `Pim\Bundle\DashboardBundle\Widget\Registry:add()` now accepts the widget (`WidgetInterface`) as the first argument and position as the second
+- Remove CatalogContext argument from ProductQueryBuilder::__construct
 
 # 1.2.x
 
