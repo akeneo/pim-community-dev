@@ -336,7 +336,7 @@ class JobProfileController extends AbstractDoctrineController
             // when executed from HTTP request that stop fast (race condition that makes
             // the process cloning fail when the parent process, i.e. HTTP request, stops
             // at the same time)
-            exec($cmd . ' &', $output);
+            exec($cmd . ' &');
 
             $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 
