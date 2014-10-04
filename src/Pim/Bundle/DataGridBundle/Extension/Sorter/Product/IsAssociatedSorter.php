@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 
 /**
@@ -16,25 +15,10 @@ use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 class IsAssociatedSorter implements SorterInterface
 {
     /**
-     * @var ProductRepositoryInterface
-     */
-    protected $repository;
-
-    /**
-     * @param ProductRepositoryInterface $repository
-     */
-    public function __construct(ProductRepositoryInterface $repository)
-    {
-        $this->repository    = $repository;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $qb = $datasource->getQueryBuilder();
-        $pqb = $this->repository->getProductQueryBuilder($qb);
-        $pqb->addSorter('is_associated', $direction);
+        $datasource->getProductQueryBuilder()->addSorter('is_associated', $direction);
     }
 }

@@ -32,8 +32,8 @@ class NumberFilter extends OroNumberFilter
         $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $data['value'],
-            $operator
+            $operator,
+            $data['value']
         );
 
         return true;

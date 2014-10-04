@@ -64,7 +64,7 @@ class BooleanFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilter($datasource, 'bar', BooleanFilterType::TYPE_YES, '=')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'bar', '=', BooleanFilterType::TYPE_YES)->shouldBeCalled();
 
         $this->apply($datasource, array('value' => BooleanFilterType::TYPE_YES))->shouldReturn(true);
     }

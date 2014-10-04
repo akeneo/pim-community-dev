@@ -5,16 +5,10 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 class FamilySorterSpec extends ObjectBehavior
 {
-    function let(ProductRepositoryInterface $repository)
-    {
-        $this->beConstructedWith($repository);
-    }
-
     function it_is_a_sorter()
     {
         $this->shouldImplement('Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface');
@@ -22,12 +16,9 @@ class FamilySorterSpec extends ObjectBehavior
 
     function it_applies_a_sort_on_product_family(
         ProductDatasource $datasource,
-        $repository,
-        ProductQueryBuilderInterface $pqb,
-        QueryBuilder $qb
+        ProductQueryBuilderInterface $pqb
     ) {
-        $datasource->getQueryBuilder()->willReturn($qb);
-        $repository->getProductQueryBuilder($qb)->willReturn($pqb);
+        $datasource->getProductQueryBuilder()->willReturn($pqb);
         $pqb->addSorter('family', 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, 'family', 'ASC');

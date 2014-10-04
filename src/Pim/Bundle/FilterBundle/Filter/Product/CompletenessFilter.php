@@ -25,8 +25,6 @@ class CompletenessFilter extends BooleanFilter
             return false;
         }
 
-        $qb = $ds->getQueryBuilder();
-
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
                 $operator = '=';
@@ -37,9 +35,7 @@ class CompletenessFilter extends BooleanFilter
                 break;
         }
 
-        $repository = $this->util->getProductRepository();
-        $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFilter('completeness', $operator, '100');
+        $this->util->applyFilter($ds, 'completeness', $operator, '100');
 
         return true;
     }

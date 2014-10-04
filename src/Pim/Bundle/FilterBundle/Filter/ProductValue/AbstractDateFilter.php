@@ -76,8 +76,8 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 $this->util->applyFilter(
                     $ds,
                     $this->get(ProductFilterUtility::DATA_NAME_KEY),
-                    null,
-                    'EMPTY'
+                    'EMPTY',
+                    null
                 );
                 break;
             default:
@@ -96,8 +96,8 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
             $this->util->applyFilter(
                 $ds,
                 $fieldName,
-                array($dateStartValue, $dateEndValue),
-                'BETWEEN'
+                'BETWEEN',
+                array($dateStartValue, $dateEndValue)
             );
         }
     }
@@ -107,7 +107,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
      */
     protected function applyFilterByAttributeLessMore($ds, $dateValue, $fieldName, $isLess)
     {
-        $this->util->applyFilter($ds, $fieldName, $dateValue, $isLess ? '<' : '>');
+        $this->util->applyFilter($ds, $fieldName, $isLess ? '<' : '>', $dateValue);
     }
 
     /**
@@ -119,8 +119,8 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
             $this->util->applyFilter(
                 $ds,
                 $fieldName,
-                array($dateStartValue, $dateEndValue),
-                'NOT BETWEEN'
+                'NOT BETWEEN',
+                array($dateStartValue, $dateEndValue)
             );
         }
     }

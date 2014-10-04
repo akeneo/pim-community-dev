@@ -4,7 +4,6 @@ namespace Pim\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Product filter utility
@@ -15,45 +14,17 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  */
 class ProductFilterUtility extends BaseFilterUtility
 {
-    /** @var ProductManager */
-    protected $productManager;
-
-    /**
-     * @param ProductManager $manager
-     */
-    public function __construct(ProductManager $manager)
-    {
-        $this->productManager = $manager;
-    }
-
-    /**
-     * @return ProductManager
-     */
-    public function getProductManager()
-    {
-        return $this->productManager;
-    }
-
-    /**
-     * @return ProductRepositoryInterface
-     */
-    public function getProductRepository()
-    {
-        return $this->productManager->getProductRepository();
-    }
-
     /**
      * Applies filter to query by attribute
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
-     * @param mixed                            $value
      * @param string                           $operator
+     * @param mixed                            $value
      */
-    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
-        $productQueryBuilder->addFilter($field, $operator, $value);
+        $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
     }
 
     /**
@@ -68,6 +39,6 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $this->applyFilter($ds, $field, $value, $operator);
+        $this->applyFilter($ds, $field, $operator, $value);
     }
 }

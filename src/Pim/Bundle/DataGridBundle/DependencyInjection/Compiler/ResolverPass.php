@@ -28,6 +28,9 @@ class ResolverPass implements CompilerPassInterface
     /** @staticvar string */
     const MONGO_DATASOURCE_ADAPTER_CLASS = 'pim_filter.datasource.mongodb_adapter.class';
 
+    /** @staticvar string */
+    const MONGO_PRODUCT_DATASOURCE_ADAPTER_CLASS = 'pim_filter.datasource.product_mongodb_adapter.class';
+
     /**
      * {@inheritdoc}
      */
@@ -41,6 +44,11 @@ class ResolverPass implements CompilerPassInterface
                 'setMongodbAdapterClass',
                 [ $container->getParameter(self::MONGO_DATASOURCE_ADAPTER_CLASS) ]
             );
+            $datasourceResolver->addMethodCall(
+                'setProductMongodbAdapterClass',
+                [ $container->getParameter(self::MONGO_PRODUCT_DATASOURCE_ADAPTER_CLASS) ]
+            );
+
             $pagerResolver->addMethodCall('setMongodbPager', [ new Reference(self::MONGO_PAGER_ID) ]);
         }
     }

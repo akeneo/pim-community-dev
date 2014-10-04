@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
@@ -16,11 +15,9 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {
-    function let(CatalogContext $context, CustomAttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry)
+    function let(CustomAttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context, $repository, $filterRegistry, $sorterRegistry);
+        $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry);
         $this->setQueryBuilder('qb');
     }
 

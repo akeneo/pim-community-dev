@@ -14,7 +14,7 @@ class DatasourceAdapterResolverSpec extends ObjectBehavior
             ->getSupport(Argument::any())
             ->willReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB);
 
-        $this->beConstructedWith($supportResolver, 'orm_adapter_class');
+        $this->beConstructedWith($supportResolver, 'orm_adapter_class', 'product_orm_adapter_class');
     }
 
     function it_is_initializable()
@@ -36,6 +36,7 @@ class DatasourceAdapterResolverSpec extends ObjectBehavior
     function it_returns_an_odm_adapter_class_for_a_smart_or_a_product_datasource()
     {
         $this->setMongodbAdapterClass('odm_adapter_class');
-        $this->getAdapterClass('pim_datasource_product')->shouldReturn('odm_adapter_class');
+        $this->setProductMongodbAdapterClass('product_odm_adapter_class');
+        $this->getAdapterClass('pim_datasource_product')->shouldReturn('product_odm_adapter_class');
     }
 }
