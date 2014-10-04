@@ -72,11 +72,8 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
 
         $repository = $this->om->getRepository($this->productClass);
         $method = $options['repository_method'];
-        if ($options['repository_parameters'] !== null) {
-            $qb = $repository->$method($options['repository_parameters']);
-        } else {
-            $qb = $repository->$method();
-        }
+        $parameters = $options['repository_parameters'];
+        $qb = $repository->$method($parameters);
         $pqb->setQueryBuilder($qb);
 
         return $pqb;
@@ -94,7 +91,7 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         $resolver->setDefaults(
             [
                 'repository_method' => 'createQueryBuilder',
-                'repository_parameters' => null,
+                'repository_parameters' => 'o',
             ]
         );
     }
