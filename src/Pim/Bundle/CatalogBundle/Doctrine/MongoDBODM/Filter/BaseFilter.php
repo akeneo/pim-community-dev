@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Base filter
@@ -75,7 +75,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
@@ -105,7 +105,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value)
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $this->addFieldFilter($field, $operator, $value);

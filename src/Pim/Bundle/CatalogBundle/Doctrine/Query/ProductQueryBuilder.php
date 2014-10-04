@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
@@ -164,7 +164,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Add a filter condition on an attribute
      *
      * @param AttributeFilterInterface $filter    the filter
-     * @param AbstractAttribute        $attribute the attribute
+     * @param AttributeInterface        $attribute the attribute
      * @param string                   $operator  the operator
      * @param mixed                    $value     the value to filter
      *
@@ -172,7 +172,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     protected function addAttributeFilter(
         AttributeFilterInterface $filter,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         $operator,
         $value
     ) {
@@ -203,12 +203,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Sort by attribute value
      *
      * @param AttributeSorterInterface $sorter    the sorter
-     * @param AbstractAttribute        $attribute the attribute to sort on
+     * @param AttributeInterface        $attribute the attribute to sort on
      * @param string                   $direction the direction to use
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addAttributeSorter(AttributeSorterInterface $sorter, AbstractAttribute $attribute, $direction)
+    protected function addAttributeSorter(AttributeSorterInterface $sorter, AttributeInterface $attribute, $direction)
     {
         $sorter->setQueryBuilder($this->getQueryBuilder());
         $sorter->addAttributeSorter($attribute, $direction);

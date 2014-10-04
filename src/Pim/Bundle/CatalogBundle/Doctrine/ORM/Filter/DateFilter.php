@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -69,7 +69,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
@@ -96,7 +96,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value)
     {
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
@@ -241,14 +241,14 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string            $joinAlias the value join alias
      *
      * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias)
     {
         $joinHelper = new ValueJoin($this->qb, $this->context);
 

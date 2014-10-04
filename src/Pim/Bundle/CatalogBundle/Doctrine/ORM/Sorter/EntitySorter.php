@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -44,7 +44,7 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
@@ -58,7 +58,7 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
@@ -94,12 +94,12 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string            $joinAlias the value join alias
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias)
     {
         $joinHelper = new ValueJoin($this->qb, $this->context);
 

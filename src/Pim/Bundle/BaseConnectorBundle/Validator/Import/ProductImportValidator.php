@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
@@ -142,11 +142,11 @@ class ProductImportValidator extends ImportValidator
     /**
      * Returns an array of constraints for a given attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return string
      */
-    protected function getAttributeConstraints(AbstractAttribute $attribute)
+    protected function getAttributeConstraints(AttributeInterface $attribute)
     {
         $code = $attribute->getCode();
         if (!isset($this->constraints[$code])) {

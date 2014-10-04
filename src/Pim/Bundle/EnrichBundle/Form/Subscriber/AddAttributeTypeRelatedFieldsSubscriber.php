@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
@@ -93,9 +93,9 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      * Customize the attribute form
      *
      * @param Form              $form
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    protected function customizeForm(Form $form, AbstractAttribute $attribute)
+    protected function customizeForm(Form $form, AttributeInterface $attribute)
     {
         $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
         $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);

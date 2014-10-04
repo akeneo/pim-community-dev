@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -365,9 +365,9 @@ class EditCommonAttributes extends ProductMassEditOperation
      * Add all the values required by the given attribute
      * Locale is not present because we current locale is bound at the same time as values during form submission
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    protected function addValues(AbstractAttribute $attribute)
+    protected function addValues(AttributeInterface $attribute)
     {
         $locale = $this->getLocale();
         if ($attribute->isScopable()) {
@@ -383,13 +383,13 @@ class EditCommonAttributes extends ProductMassEditOperation
     /**
      * Create a value
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      * @param string            $localeCode
      * @param string            $channelCode
      *
      * @return ProductValueInterface
      */
-    protected function createValue(AbstractAttribute $attribute, $localeCode = null, $channelCode = null)
+    protected function createValue(AttributeInterface $attribute, $localeCode = null, $channelCode = null)
     {
         $value = $this->productManager->createProductValue();
         $value->setAttribute($attribute);

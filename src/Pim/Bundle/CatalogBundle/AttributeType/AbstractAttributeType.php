@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -94,7 +94,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute)
+    public function buildAttributeFormTypes(FormFactoryInterface $factory, AttributeInterface $attribute)
     {
         $properties = $this->defineCustomAttributeProperties($attribute);
 
@@ -208,11 +208,11 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      * Each property must be an array with a 'name' key that matches the name of the property
      * Optional 'fieldType', 'data' and 'options' keys can be provided for field customization
      *
-     * @param AbstractAttribute $attribute Attribute entity
+     * @param AttributeInterface $attribute Attribute entity
      *
      * @return array:array:multitype $properties an array of custom properties
      */
-    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return [
             'localizable' => [

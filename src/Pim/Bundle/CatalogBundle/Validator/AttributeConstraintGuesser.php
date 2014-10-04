@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraints;
 
 /**
@@ -18,7 +18,7 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AbstractAttribute $attribute)
+    public function supportAttribute(AttributeInterface $attribute)
     {
         return true;
     }
@@ -26,7 +26,7 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AbstractAttribute $attribute)
+    public function guessConstraints(AttributeInterface $attribute)
     {
         $constraints = array();
 

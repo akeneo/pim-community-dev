@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
@@ -31,7 +31,7 @@ class AttributeOption implements ReferableInterface
     /**
      * Overrided to change target entity name
      *
-     * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute $attribute
+     * @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface $attribute
      */
     protected $attribute;
 
@@ -110,11 +110,11 @@ class AttributeOption implements ReferableInterface
     /**
      * Set attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeOption
      */
-    public function setAttribute(AbstractAttribute $attribute = null)
+    public function setAttribute(AttributeInterface $attribute = null)
     {
         $this->attribute = $attribute;
 

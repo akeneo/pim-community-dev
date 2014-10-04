@@ -273,7 +273,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param object            $entity
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      * @param string            $locale
      * @param string            $scope
      *

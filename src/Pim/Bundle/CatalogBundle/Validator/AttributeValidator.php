@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
- * Validator for options and default value of AbstractAttribute entity
+ * Validator for options and default value of AttributeInterface entity
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -35,10 +35,10 @@ class AttributeValidator
     /**
      * Validation rule for attribute option values
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      * @param ExecutionContext  $context
      */
-    public static function areOptionsValid(AbstractAttribute $attribute, ExecutionContext $context)
+    public static function areOptionsValid(AttributeInterface $attribute, ExecutionContext $context)
     {
         $existingValues = array();
         foreach ($attribute->getOptions() as $option) {

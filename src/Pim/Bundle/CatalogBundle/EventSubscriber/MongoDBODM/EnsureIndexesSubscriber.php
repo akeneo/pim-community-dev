@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
@@ -115,9 +115,9 @@ class EnsureIndexesSubscriber implements EventSubscriber
     /**
      * Ensure indexes from attribute if needed
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    public function ensureIndexesFromAttribute(AbstractAttribute $attribute)
+    public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         if ($attribute->isUseableAsGridFilter()
             || AbstractProduct::IDENTIFIER_TYPE === $attribute->getAttributeType()

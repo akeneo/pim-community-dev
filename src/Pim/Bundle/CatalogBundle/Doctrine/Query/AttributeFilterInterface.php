@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Filter interface
@@ -16,20 +16,20 @@ interface AttributeFilterInterface extends FilterInterface
     /**
      * Add an attribute to filter
      *
-     * @param AbstractAttribute $attribute the attribute
+     * @param AttributeInterface $attribute the attribute
      * @param string|array      $operator  the used operator
      * @param string|array      $value     the value(s) to filter
      *
      * @return AttributeFilterInterface
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value);
 
     /**
      * This filter supports the attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function supportsAttribute(AbstractAttribute $attribute);
+    public function supportsAttribute(AttributeInterface $attribute);
 }

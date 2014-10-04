@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Aims to register and retrieve sorters useable on product query builder
@@ -49,7 +49,7 @@ class QuerySorterRegistry implements QuerySorterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeSorter(AbstractAttribute $attribute)
+    public function getAttributeSorter(AttributeInterface $attribute)
     {
         foreach ($this->attributeSorters as $sorter) {
             if ($sorter->supportsAttribute($attribute)) {

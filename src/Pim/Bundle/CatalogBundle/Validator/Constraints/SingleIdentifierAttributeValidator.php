@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -34,7 +34,7 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
     /**
      * Don't allow creating an identifier attribute if one already exists
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      * @param Constraint        $constraint
      */
     public function validate($attribute, Constraint $constraint)
