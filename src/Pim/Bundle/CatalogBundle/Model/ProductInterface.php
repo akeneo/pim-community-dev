@@ -16,13 +16,8 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductInterface extends
-    LocalizableInterface,
-    ScopableInterface,
-    TimestampableInterface,
-    VersionableInterface,
-    CommentSubjectInterface,
-    ReferableInterface
+interface ProductInterface extends LocalizableInterface, ScopableInterface, TimestampableInterface,
+ VersionableInterface, CommentSubjectInterface, ReferableInterface
 {
     /**
      * Get the ID of the product
