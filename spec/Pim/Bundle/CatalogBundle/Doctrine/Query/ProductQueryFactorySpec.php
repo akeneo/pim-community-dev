@@ -17,7 +17,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class ProductQueryFactorySpec extends ObjectBehavior
 {
-    function let(CustomAttributeRepository $attRepository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, ObjectManager $om)
+    function let(AttributeRepository $attRepository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, ObjectManager $om)
     {
         $this->beConstructedWith($om, 'Pim\Bundle\CatalogBundle\Model\Product', $attRepository, $filterRegistry, $sorterRegistry);
     }
@@ -41,14 +41,5 @@ class ProductQueryFactorySpec extends ObjectBehavior
         $repository->createDatagridQueryBuilder(['param1'])->shouldBeCalled();
 
         $this->create(['repository_method' => 'createDatagridQueryBuilder', 'repository_parameters' => ['param1']]);
-    }
-
-}
-
-class CustomAttributeRepository extends AttributeRepository
-{
-    public function findOneByCode()
-    {
-        return null;
     }
 }

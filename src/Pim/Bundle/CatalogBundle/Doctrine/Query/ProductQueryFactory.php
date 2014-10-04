@@ -87,7 +87,7 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         // TODO locale and scope by default ? check with option resolver ?
         // $this->context->setLocaleCode($options['locale_code']);
         // $this->context->setScopeCode($options['scope_code']);
-        $resolver->setOptional(['repository_method', 'repository_parameters']);
+        $resolver->setOptional(['repository_method', 'repository_parameters', 'currentGroup', 'product']);
         $resolver->setDefaults(
             [
                 'repository_method' => 'createQueryBuilder',

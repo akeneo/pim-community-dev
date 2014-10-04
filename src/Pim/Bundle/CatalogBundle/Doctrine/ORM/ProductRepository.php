@@ -63,9 +63,10 @@ class ProductRepository extends EntityRepository implements
     public function buildByScope($scope)
     {
         $qb = $this->findAllByAttributesQB();
+        $rootAlias = current($qb->getRootAliases());
         $qb
             ->andWhere(
-                $qb->expr()->eq('Entity.enabled', ':enabled')
+                $qb->expr()->eq($rootAlias.'.enabled', ':enabled')
             )
             ->andWhere(
                 $qb->expr()->orX(
@@ -134,8 +135,9 @@ class ProductRepository extends EntityRepository implements
     public function findByIds(array $ids)
     {
         $qb = $this->findAllByAttributesQB();
+        $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
-            $qb->expr()->in('Entity.id', $ids)
+            $qb->expr()->in($rootAlias.'.id', $ids)
         );
 
         return $qb->getQuery()->execute();
@@ -539,6 +541,7 @@ class ProductRepository extends EntityRepository implements
     ) {
         $productQb = $this->productQueryFactory->create();
         $qb = $productQb->getQueryBuilder();
+        $this->addJoinToValueTables($qb);
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
