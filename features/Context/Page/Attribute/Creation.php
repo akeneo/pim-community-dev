@@ -54,7 +54,7 @@ class Creation extends Form
      */
     public function addOption($name)
     {
-        if (!$this->getElement('attribute_option_table')->find('css', '#attribute_option_code')) {
+        if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
             $this->getElement('add_option_button')->click();
             $this->getSession()->wait(1000);
         }
@@ -62,7 +62,7 @@ class Creation extends Form
         $rows = $this->getOptionsElement();
         $row = end($rows);
 
-        $row->find('css', '#attribute_option_code')->setValue($name);
+        $row->find('css', '.attribute_option_code')->setValue($name);
         $row->find('css', '.btn.update-row')->click();
     }
 
@@ -75,7 +75,7 @@ class Creation extends Form
         $row = $this->getOptionElement($name);
 
         $row->find('css', '.edit-row')->click();
-        $row->find('css', '#attribute_option_code')->setValue($newValue);
+        $row->find('css', '.attribute_option_code')->setValue($newValue);
         $row->find('css', '.btn.update-row')->click();
     }
 
@@ -88,7 +88,7 @@ class Creation extends Form
         $row = $this->getOptionElement($name);
 
         $row->find('css', '.edit-row')->click();
-        $row->find('css', '#attribute_option_code')->setValue($newValue);
+        $row->find('css', '.attribute_option_code')->setValue($newValue);
         $row->find('css', '.btn.show-row')->click();
     }
 
@@ -102,12 +102,12 @@ class Creation extends Form
     }
 
     /**
-     * Count the number of removable attribute options
+     * Count the number of attribute options
      * @return integer
      */
-    public function countRemovableOptions()
+    public function countOrderableOptions()
     {
-        return $this->countOptions();
+        return count($this->findAll('css', '#attribute-option-grid table:not(.ui-sortable-disabled) .handle'));
     }
 
     /**
@@ -151,8 +151,8 @@ class Creation extends Form
     {
         foreach ($this->getOptionsElement() as $optionRow) {
             if ((
-                    $optionRow->find('css', '#attribute_option_code') &&
-                    $optionRow->find('css', '#attribute_option_code')->getValue() === $optionName
+                    $optionRow->find('css', '.attribute_option_code') &&
+                    $optionRow->find('css', '.attribute_option_code')->getValue() === $optionName
                 ) ||
                 (
                     $optionRow->find('css', '.option-code') &&

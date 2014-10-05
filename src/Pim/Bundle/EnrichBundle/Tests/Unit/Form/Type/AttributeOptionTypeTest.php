@@ -49,8 +49,6 @@ class AttributeOptionTypeTest extends AbstractFormTypeTest
     public function testFormCreate()
     {
         $this->assertField('id', 'hidden');
-        $this->assertField('sort_order', 'integer');
-        $this->assertField('translatable', 'text');
 
         $this->assertEquals(
             'Pim\Bundle\CatalogBundle\Entity\AttributeOption',

@@ -48,11 +48,6 @@ class AttributeOption implements ReferableInterface
     protected $default = false;
 
     /**
-     * @var boolean
-     */
-    protected $translatable = true;
-
-    /**
      * Not persisted, allowe to define the value locale
      * @var string $locale
      */
@@ -69,8 +64,6 @@ class AttributeOption implements ReferableInterface
     public function __construct()
     {
         $this->optionValues = new ArrayCollection();
-        $this->translatable = true;
-        $this->sortOrder    = 1;
     }
 
     /**
@@ -153,30 +146,6 @@ class AttributeOption implements ReferableInterface
         $this->locale = $locale;
 
         return $this;
-    }
-
-    /**
-     * Set translatable
-     *
-     * @param boolean $translatable
-     *
-     * @return AttributeOption
-     */
-    public function setTranslatable($translatable)
-    {
-        $this->translatable = $translatable;
-
-        return $this;
-    }
-
-    /**
-     * Is translatable
-     *
-     * @return boolean $translatable
-     */
-    public function isTranslatable()
-    {
-        return $this->translatable;
     }
 
     /**
@@ -326,6 +295,6 @@ class AttributeOption implements ReferableInterface
      */
     public function getOptionValue()
     {
-        return $this->getOptionValues()->get($this->getLocale());
+        return $this->getOptionValues()->get($this->getLocale()) ?: $this->getOptionValues()->first();
     }
 }

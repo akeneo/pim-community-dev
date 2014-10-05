@@ -362,16 +362,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^the option should not be removable$/
-     */
-    public function theOptionShouldNotBeRemovable()
-    {
-        if (0 !== $this->getCurrentPage()->countRemovableOptions()) {
-            throw $this->createExpectationException('The option should not be removable.');
-        }
-    }
-
-    /**
      * @param string $optionName
      *
      * @Then /^I remove the "([^"]*)" option$/
@@ -702,6 +692,26 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see reorder handles$/
+     */
+    public function iShouldSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() <= 0) {
+            throw $this->createExpectationException('No reorder handle found');
+        }
+    }
+
+    /**
+     * @Then /^I should not see reorder handles$/
+     */
+    public function iShouldNotSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() > 0) {
+            throw $this->createExpectationException('Reorder handle was not expected');
+        }
+    }
+
+    /**
      * @param string $attributes
      *
      * @Then /^eligible attributes as label should be (.*)$/
@@ -950,7 +960,7 @@ class WebUser extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $this->getCurrentPage()->addOption($data['Code']);
-            $this->wait(2000);
+            $this->wait(3000);
         }
     }
 
@@ -963,7 +973,7 @@ class WebUser extends RawMinkContext
     public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
         $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
-        $this->wait(2000);
+        $this->wait(3000);
     }
 
     /**
@@ -975,7 +985,7 @@ class WebUser extends RawMinkContext
     public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
         $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
-        $this->wait(2000);
+        $this->wait(3000);
     }
 
     /**

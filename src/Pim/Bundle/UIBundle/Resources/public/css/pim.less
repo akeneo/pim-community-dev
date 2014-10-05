@@ -462,6 +462,7 @@ span.link-label {
   border-collapse: collapse;
   border-radius: 2px;
   table-layout: fixed;
+  min-height: 100px;
 
   input[type="text"] {
     padding: 2px 3px;
@@ -516,6 +517,10 @@ span.link-label {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+
+    .tooltip {
+      white-space: normal;
+    }
   }
 
   .btn-small {

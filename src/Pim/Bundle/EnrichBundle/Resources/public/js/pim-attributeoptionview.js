@@ -1,13 +1,11 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/mediator', 'oro/loading-mask', 'jquery-ui-full'],
-    function ($, _, Backbone, Routing, mediator, LoadingMask) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'jquery-ui-full'],
+    function ($, _, Backbone, __, Routing, mediator, LoadingMask) {
         'use strict';
 
         var AttributeOptionItem = Backbone.Model.extend({
             defaults: {
                 code: '',
-                translatable: true,
-                sort_order: 0,
                 optionValues: {}
             }
         });
@@ -15,7 +13,7 @@ define(
         var AttributeOptionValueCollection = Backbone.Model.extend();
 
 
-        var AttributeOptionCollection = Backbone.Collection.extend({
+        var ItemCollection = Backbone.Collection.extend({
             model: AttributeOptionItem,
             initialize: function(options) {
                 this.url = options.url;
@@ -28,7 +26,7 @@ define(
             showTemplate: _.template(
                 '<td>' +
                     '<span class="handle"><i class="icon-reorder"></i></span>' +
-                    '<%= item.code %>' +
+                    '<span class="option-code"><%= item.code %></span>' +
                 '</td>' +
                 '<% _.each(locales, function(locale) { %>' +
                 '<td >' +
@@ -44,7 +42,7 @@ define(
             ),
             editTemplate: _.template(
                 '<td class="field-cell">' +
-                    '<input type="text" id="code" value="<%= item.code %>" class="exclude" />' +
+                    '<input type="text" class="attribute_option_code" value="<%= item.code %>" class="exclude" />' +
                     '<i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>' +
                 '</td>' +
                 '<% _.each(locales, function(locale) { %>' +
@@ -74,8 +72,9 @@ define(
             loading: false,
             locales: [],
             initialize: function(options) {
-                this.locales  = options.locales;
-                this.parent   = options.parent;
+                this.locales       = options.locales;
+                this.parent        = options.parent;
+                this.model.urlRoot = this.parent.updateUrl;
 
                 this.render();
             },
@@ -119,7 +118,7 @@ define(
             },
             stopEditItem: function() {
                 if (!this.model.id) {
-                    if (confirm('Warning, you will lose usaved data. Are you sure you want to cancel modification on this new option ?')) {
+                    if (confirm(__('confirm.attribute_option.cancel_edition_on_new_option'))) {
                         this.showReadableItem(this);
 
                         this.deleteItem(this);
@@ -136,12 +135,15 @@ define(
             updateItem: function() {
                 this.inLoading(true);
 
-                this.loadModelFromView();
-                this.model.save(
+                var editedModel = this.loadModelFromView();
+
+                editedModel.save(
                     {},
                     {
+                        url: this.model.url(),
                         success: _.bind(function(data) {
                             this.inLoading(false);
+                            this.model.set(editedModel.attributes);
                             this.stopEditItem();
                         }, this),
                         error: _.bind(function(data, xhr) {
@@ -155,14 +157,13 @@ define(
                                 response.children.code.errors.length > 0
                             ) {
                                 var message = response.children.code.errors.join('<br/>');
-                                console.log(message);
                                 this.$el.find('.validation-tooltip')
                                     .addClass('visible')
                                     .tooltip('destroy')
                                     .tooltip({title: message})
                                     .tooltip('show');
                             } else {
-                                alert('The attribute option is not valid');
+                                alert(__('alert.attribute_option.error_occured_during_submission'));
                             }
                         }, this)
                     }
@@ -178,18 +179,27 @@ define(
             loadModelFromView: function()
             {
                 var attributeOptions = {};
+                var editedModel = this.model.clone();
+
+                editedModel.urlRoot = this.model.urlRoot;
+
                 _.each(this.$el.find('.attribute-option-value'), function(input) {
                     var locale = input.dataset.locale;
 
                     attributeOptions[locale] = {
                         locale: locale,
                         value:  input.value,
-                        id:     this.model.get('optionValues')[locale] ? this.model.get('optionValues')[locale].id : null
+                        id:     this.model.get('optionValues')[locale] ?
+                            this.model.get('optionValues')[locale].id :
+                            null
                     };
                 }, this);
 
-                this.model.set('code', this.$el.find('#code').val())
-                this.model.set('optionValues', attributeOptions);
+                editedModel.set('code', this.$el.find('.attribute_option_code').val())
+                editedModel.set('optionValues', attributeOptions);
+
+
+                return editedModel;
             },
             inLoading: function(loading) {
                 this.parent.inLoading(loading);
@@ -202,7 +212,7 @@ define(
             }
         });
 
-        var AttributeOptionsView = Backbone.View.extend({
+        var ItemCollectionView = Backbone.View.extend({
             tagName: 'table',
             className: 'table table-bordered table-stripped attribute-option-view',
             template: _.template(
@@ -214,7 +224,7 @@ define(
                 '</colgroup>' +
                 '<thead>' +
                     '<tr>' +
-                        '<th>Code</th>' +
+                        '<th><%= code_label %></th>' +
                         '<% _.each(locales, function(locale) { %>' +
                         '<th>' +
                             '<%= locale %>' +
@@ -223,65 +233,75 @@ define(
                         '<th>Action</th>' +
                     '</tr>' +
                 '</thead>' +
-                '<tbody>' +
-                '</tbody>' +
+                '<tbody></tbody>' +
                 '<tfoot>' +
-                    '<tr><td colspan="<%= 2 + locales.length %>"><span class="btn option-add pull-right">Add an option</span></td></tr>' +
+                    '<tr>' +
+                        '<td colspan="<%= 2 + locales.length %>">' +
+                            '<span class="btn option-add pull-right"><%= add_option_label %></span>' +
+                        '</td>' +
+                    '</tr>' +
                 '</tfoot>'
             ),
             events: {
-                'click .option-add': 'addAttributeOption'
+                'click .option-add': 'addItem'
             },
             $target: null,
             locales: [],
-            loading: false,
             sortable: true,
             sortingUrl: '',
             updateUrl: '',
             currentlyEditedItemView: null,
-            attributeOptionItemViews: [],
+            itemViews: [],
+            rendered: false,
             initialize: function(options) {
                 this.$target    = options.$target;
-                this.collection = new AttributeOptionCollection({url: options.updateUrl});
+                this.collection = new ItemCollection({url: options.updateUrl});
                 this.locales    = options.locales;
                 this.updateUrl  = options.updateUrl;
                 this.sortingUrl = options.sortingUrl;
                 this.sortable   = options.sortable;
 
-                mediator.on('attribute:auto_option_sorting:changed', _.bind(function(autoSorting) {
-                    this.updateSortableStatus(!autoSorting);
-                }, this));
-
+                this.render();
                 this.load();
             },
             render: function() {
                 this.$el.empty();
+
+                this.currentlyEditedItemView = null;
+                this.updateEditionStatus();
+
                 this.$el.html(this.template({
-                    locales: this.locales
+                    locales: this.locales,
+                    add_option_label: __('label.attribute_option.add_option'),
+                    code_label: __('Code')
                 }));
 
                 _.each(this.collection.models, function(attributeOptionItem) {
-                    this.addAttributeOption({
-                        'attributeOptionItem': attributeOptionItem
-                    });
+                    this.addItem({item: attributeOptionItem});
                 }, this);
 
                 if (0 === this.collection.length) {
-                    this.addAttributeOption();
+                    this.addItem();
                 }
 
-                this.$target.html(this.$el);
+                if (!this.rendered) {
+                    this.$target.html(this.$el);
+
+                    this.rendered = true;
+                }
 
                 this.$el.sortable({
                     items: "tbody tr",
                     axis: 'y',
                     connectWith: this.$el,
                     containment: this.$el,
+                    distance: 5,
                     cursor: 'move',
                     helper: function(e, ui) {
                         ui.children().each(function() {
                             $(this).width($(this).width());
                         });
+
                         return ui;
                     },
                     stop: _.bind(function(e, ui) {
@@ -294,59 +314,58 @@ define(
                 return this;
             },
             load: function() {
-                this.attributeOptionItemViews = [];
+                this.itemViews = [];
+                this.inLoading(true);
                 this.collection
-                    .fetch({success: _.bind(this.render, this)});
+                    .fetch({
+                        success: _.bind(function() {
+                            this.inLoading(false);
+                            this.render();
+                        }, this)
+                    });
             },
-            createAttributeOptionItem: function() {
-                var attributeOptionItem = new AttributeOptionItem();
-
-                return attributeOptionItem;
-            },
-            addAttributeOption: function(options) {
+            addItem: function(options) {
                 var options = options || {};
-                var create = !options.attributeOptionItem;
 
-                if (create) {
-                    var attributeOptionItem = this.createAttributeOptionItem();
+                //If no item model provided we create one
+                if (!options.item) {
+                    var itemToAdd = new AttributeOptionItem();
                 } else {
-                    var attributeOptionItem = options.attributeOptionItem;
+                    var itemToAdd = options.item;
                 }
 
-                var attributeOptionItemView = this.createAttributeOptionItemView(
-                    attributeOptionItem,
-                    create
-                );
+                var newItemView = this.createItemView(itemToAdd);
 
-                if (attributeOptionItemView) {
-                    this.$el.children('tbody').append(attributeOptionItemView.$el);
+                if (newItemView) {
+                    this.$el.children('tbody').append(newItemView.$el);
                 }
             },
-            createAttributeOptionItemView: function(attributeOptionItem, editable) {
-                var attributeOptionItemView = new EditableItemView({
-                    model:    attributeOptionItem,
+            createItemView: function(item) {
+                var itemView = new EditableItemView({
+                    model:    item,
                     url:      this.updateUrl,
                     locales:  this.locales,
                     parent:   this
                 });
 
-                if (editable) {
-                    if (!this.requestRowEdition(attributeOptionItemView)) {
+                //If the item is new the view is changed to edit mode
+                if (!item.id) {
+                    if (!this.requestRowEdition(itemView)) {
                         return;
                     } else {
-                        attributeOptionItemView.showEditableItem();
+                        itemView.showEditableItem();
                     }
                 }
 
-                this.collection.add(attributeOptionItem);
-                this.attributeOptionItemViews.push(attributeOptionItemView);
+                this.collection.add(item);
+                this.itemViews.push(itemView);
 
-                return attributeOptionItemView;
+                return itemView;
             },
             requestRowEdition: function (attributeOptionRow) {
                 if (this.currentlyEditedItemView) {
                     if (this.currentlyEditedItemView.dirty) {
-                        alert('please register your modifications on other rows before editing an other');
+                        alert(__('alert.attribute_option.save_before_edit_other'));
 
                         return false;
                     } else {
@@ -377,7 +396,7 @@ define(
                         this.collection.remove(item);
 
                         if (0 === this.collection.length) {
-                            this.addAttributeOption();
+                            this.addItem();
                             item.$el.hide(0);
                         } else if (!item.model.id) {
                             item.$el.hide(0);
@@ -406,6 +425,7 @@ define(
             updateSorting: function() {
                 this.inLoading(true);
                 var sorting = [];
+
                 var rows = this.$el.find('tbody tr');
                 for (var i = rows.length - 1; i >= 0; i--) {
                     sorting[i] = rows[i].dataset.itemId;
@@ -420,9 +440,7 @@ define(
                 }, this));
             },
             inLoading: function(loading) {
-                this.loading = loading;
-
-                if (this.loading) {
+                if (loading) {
                     var loadingMask = new LoadingMask();
                     loadingMask.render().$el.appendTo(this.$el);
                     loadingMask.show();
@@ -433,7 +451,7 @@ define(
         });
 
         return function($element) {
-            var attributeOptionsView = new AttributeOptionsView(
+            var itemCollectionView = new ItemCollectionView(
             {
                 $target: $element,
                 updateUrl: Routing.generate(
@@ -447,6 +465,10 @@ define(
                 locales: $element.data('locales'),
                 sortable: $element.data('sortable')
             });
+
+            mediator.on('attribute:auto_option_sorting:changed', _.bind(function(autoSorting) {
+                itemCollectionView.updateSortableStatus(!autoSorting);
+            }, this));
         };
     }
 );

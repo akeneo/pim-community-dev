@@ -56,12 +56,9 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
         $normalizedOptionValues = $this->serializer->normalize($optionsValues, $format, $context);
 
         return [
-            'id'            => $object->getId(),
-            'code'          => $object->getCode(),
-            'default'       => $object->isDefault(),
-            'translatable'  => $object->isTranslatable(),
-            'sort_order'    => $object->getSortOrder(),
-            'optionValues'  => $normalizedOptionValues
+            'id'           => $object->getId(),
+            'code'         => $object->getCode(),
+            'optionValues' => $normalizedOptionValues
         ];
     }
 

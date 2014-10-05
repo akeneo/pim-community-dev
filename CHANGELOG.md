@@ -13,6 +13,7 @@
  - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
  - Remove deprecated attribute property *Usable as a grid column*
  - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
+ - Refactor of the attribute option screen to manage more than 100 options
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`

@@ -41,6 +41,7 @@ Feature: Add attribute options
     And I wait for options to load
     And I edit the "green" option and turn it to "yellow"
     Then I should see "yellow"
+    Then I should not see "green"
 
   Scenario: Successfully cancel while editing some attribute options
     Given I create the following attribute options:
@@ -51,6 +52,7 @@ Feature: Add attribute options
     And I wait for options to load
     And I edit the code "green" to turn it to "yellow" and cancel
     Then I should see "green"
+    Then I should not see "yellow"
 
   @jira https://akeneo.atlassian.net/browse/PIM-2166
   Scenario: Successfully delete some attribute options
@@ -62,3 +64,14 @@ Feature: Add attribute options
     When I remove the "small_size" option
     And I wait for options to load
     Then I should not see "small_size"
+
+  Scenario: Auto sorting disable reorder
+    Given I create the following attribute options:
+      | Code          |
+      | small_size    |
+      | medium_size   |
+      | large_size    |
+    Then I should not see reorder handles
+    Given I uncheck the "Automatic option sorting" switch
+    And I wait for options to load
+    Then I should see reorder handles
