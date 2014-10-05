@@ -22,3 +22,11 @@ Based on a pim standard installation, execute the following command in your proj
 ## CatalogBundle
 
 The ProductQueryBuilder has been re-worked to provide a more solid, extensible and fluent API (cf technical doc).
+
+It's now instanciated from the ProductQueryFactory and it's not anymore a service.
+
+## DataGridBundle
+
+The ProductDatasource has been re-worked to create its own instance of product query builder (PQB).
+
+Product filters and Sorters have been updated to rely on the PQB and avoid to directly manipulate Doctrine QB.

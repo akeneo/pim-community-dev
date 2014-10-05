@@ -7,6 +7,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 /**
  * Determine which datasource adapter class to use.
  *
+ * TODO : This resolver and related adapters should be removed after a filter system re-working
+ *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -27,6 +29,9 @@ class DatasourceAdapterResolver
 
     /** @var string */
     protected $productMongodbAdapterClass;
+
+    /** @var array */
+    protected $productDatasources = [];
 
     /**
      * @param DatasourceSupportResolver $supportResolver
@@ -55,7 +60,7 @@ class DatasourceAdapterResolver
         if (DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM ===
             $this->supportResolver->getSupport($datasourceType)
         ) {
-            if ($datasourceType === 'pim_datasource_product') {
+            if (in_array($datasourceType, $this->productDatasources)) {
                 return $this->productOrmAdapterClass;
             } else {
                 return $this->ormAdapterClass;
@@ -66,7 +71,7 @@ class DatasourceAdapterResolver
 
         if (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
             $this->supportResolver->getSupport($datasourceType)) {
-            if ($datasourceType === 'pim_datasource_product') {
+            if (in_array($datasourceType, $this->productDatasources)) {
                 return $this->productMongodbAdapterClass;
             } else {
                 return $this->mongodbAdapterClass;
@@ -90,5 +95,15 @@ class DatasourceAdapterResolver
     public function setProductMongodbAdapterClass($productMongodbAdapterClass)
     {
         $this->productMongodbAdapterClass = $productMongodbAdapterClass;
+    }
+
+    /**
+     * Define a product datasource which should use the product adapter
+     *
+     * @param mixed $datasource
+     */
+    public function addProductDatasource($datasource)
+    {
+        $this->productDatasources[] = $datasource;
     }
 }
