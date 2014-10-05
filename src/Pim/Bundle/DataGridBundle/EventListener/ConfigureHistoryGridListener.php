@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
-use Oro\Bundle\DataAuditBundle\EventListener\AuditHistoryGridListener;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
@@ -17,6 +16,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ConfigureHistoryGridListener
 {
+    /** @staticvar string */
+    const GRID_PARAM_CLASS = 'object_class';
+
+    /** @staticvar string */
+    const GRID_PARAM_OBJECT_ID = 'object_id';
+
     /**
      * @var Request
      */
@@ -46,9 +51,9 @@ class ConfigureHistoryGridListener
             'objectClass' => str_replace(
                 '_',
                 '\\',
-                $this->requestParams->get(AuditHistoryGridListener::GRID_PARAM_CLASS, '')
+                $this->requestParams->get(self::GRID_PARAM_CLASS, '')
             ),
-            'objectId' => $this->requestParams->get(AuditHistoryGridListener::GRID_PARAM_OBJECT_ID, 0),
+            'objectId' => $this->requestParams->get(self::GRID_PARAM_OBJECT_ID, 0),
         );
 
         $config->offsetSetByPath(
