@@ -13,7 +13,7 @@ services:
         factory_method: getRepository
         arguments: [%pimee_workflow.entity.published_product.class%]
         calls:
-            - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
+            - [setProductQueryFactory, ['@pim_catalog.doctrine.query.product_query_factory']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
         tags:
             - { name: 'pim_repository' }
