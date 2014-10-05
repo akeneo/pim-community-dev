@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
  * The attribute requirement for a channel and a family
@@ -32,7 +33,7 @@ class AttributeRequirement
     protected $attribute;
 
     /**
-     * @var Channel $channel
+     * @var ChannelInterface $channel
      */
     protected $channel;
 
@@ -102,11 +103,11 @@ class AttributeRequirement
     /**
      * Setter channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return AttributeRequirement
      */
-    public function setChannel(Channel $channel)
+    public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
 

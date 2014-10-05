@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -69,7 +69,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMissingForChannel(Channel $channel)
+    public function generateMissingForChannel(ChannelInterface $channel)
     {
         $this->generate(array('channelId' => $channel->getId()));
     }
@@ -636,7 +636,7 @@ MAIN_SQL;
     /**
      * {@inheritdoc}
      */
-    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    public function scheduleForChannelAndLocale(ChannelInterface $channel, LocaleInterface $locale)
     {
         $sql = <<<SQL
             DELETE c FROM pim_catalog_completeness c

@@ -3,10 +3,10 @@
 namespace Pim\Bundle\UserBundle\Context;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -78,7 +78,7 @@ class UserContext
      * Returns the current locale from the request or the user's catalog locale
      * or the first activated locale
      *
-     * @return Locale
+     * @return LocaleInterface
      *
      * @throws \LogicException When there are no activated locales
      */
@@ -116,7 +116,7 @@ class UserContext
     /**
      * Returns active locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getUserLocales()
     {
@@ -145,7 +145,7 @@ class UserContext
     /**
      * Get user channel
      *
-     * @return Channel
+     * @return ChannelInterface
      */
     public function getUserChannel()
     {
@@ -196,7 +196,7 @@ class UserContext
     /**
      * Returns the request locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getRequestLocale()
     {
@@ -216,7 +216,7 @@ class UserContext
     /**
      * Returns the user locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getUserLocale()
     {
@@ -228,7 +228,7 @@ class UserContext
     /**
      * Returns the default application locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getDefaultLocale()
     {
@@ -238,11 +238,11 @@ class UserContext
     /**
      * Checks if a locale is activated
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return boolean
      */
-    protected function isLocaleAvailable(Locale $locale)
+    protected function isLocaleAvailable(LocaleInterface $locale)
     {
         return $locale->isActivated();
     }

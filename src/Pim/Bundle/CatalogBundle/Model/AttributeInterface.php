@@ -7,7 +7,7 @@ use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
@@ -258,11 +258,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Add available locale
      *
-     * @param Locale $availableLocale
+     * @param LocaleInterface $availableLocale
      *
      * @return AttributeInterface
      */
-    public function addAvailableLocale(Locale $availableLocale);
+    public function addAvailableLocale(LocaleInterface $availableLocale);
 
     /**
      * Get code
@@ -548,11 +548,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Remove available locale
      *
-     * @param Locale $availableLocale
+     * @param LocaleInterface $availableLocale
      *
      * @return AttributeInterface
      */
-    public function removeAvailableLocale(Locale $availableLocale);
+    public function removeAvailableLocale(LocaleInterface $availableLocale);
 
     /**
      * Set scopable

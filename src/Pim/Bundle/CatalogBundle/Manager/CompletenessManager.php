@@ -5,12 +5,12 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -93,9 +93,9 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function generateMissingForChannel(Channel $channel)
+    public function generateMissingForChannel(ChannelInterface $channel)
     {
         $this->generator->generateMissingForChannel($channel);
     }
@@ -137,9 +137,9 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all products
      * of a channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function scheduleForChannel(Channel $channel)
+    public function scheduleForChannel(ChannelInterface $channel)
     {
         if ($channel->getId()) {
             $deletedLocaleIds = $this->channelRepository->getDeletedLocaleIdsForChannel($channel);
@@ -153,10 +153,10 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param ProductInterface                           $product
-     * @param \Pim\Bundle\CatalogBundle\Entity\Channel[] $channels
-     * @param \Pim\Bundle\CatalogBundle\Entity\Locale[]  $locales
-     * @param string                                     $localeCode
+     * @param ProductInterface                                    $product
+     * @param \Pim\Bundle\CatalogBundle\Entity\ChannelInterface[] $channels
+     * @param \Pim\Bundle\CatalogBundle\Entity\LocaleInterface[]  $locales
+     * @param string                                              $localeCode
      *
      * @return array
      */

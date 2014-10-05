@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
@@ -143,7 +144,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function buildByChannelAndCompleteness(Channel $channel)
+    public function buildByChannelAndCompleteness(ChannelInterface $channel)
     {
         $qb = $this->createQueryBuilder('p');
         foreach ($channel->getLocales() as $locale) {

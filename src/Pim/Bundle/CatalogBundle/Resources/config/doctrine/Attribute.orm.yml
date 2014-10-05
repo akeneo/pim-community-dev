@@ -158,7 +158,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     onDelete: 'SET NULL'
     manyToMany:
         availableLocales:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
             joinTable:
                 name: pim_catalog_attribute_locale
                 joinColumns:

@@ -6,11 +6,11 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Makes sure that the right indexes are set on MongoDB.
@@ -91,11 +91,11 @@ class EnsureIndexesSubscriber implements EventSubscriber
             $this->ensureIndexesFromAttribute($entity);
         }
 
-        if ($entity instanceof Channel) {
+        if ($entity instanceof ChannelInterface) {
             $this->indexCreator->ensureIndexesFromChannel($entity);
         }
 
-        if ($entity instanceof Locale) {
+        if ($entity instanceof LocaleInterface) {
             if (true === $entity->isActivated()) {
                 $this->indexCreator->ensureIndexesFromLocale($entity);
             } else {
@@ -103,7 +103,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
             }
         }
 
-        if ($entity instanceof Currency) {
+        if ($entity instanceof CurrencyInterface) {
             if (true === $entity->isActivated()) {
                 $this->indexCreator->ensureIndexesFromCurrency($entity);
             } else {
@@ -137,7 +137,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
             $this->indexPurger->purgeIndexesFromAttribute($entity);
         }
 
-        if ($entity instanceof Channel) {
+        if ($entity instanceof ChannelInterface) {
             $this->indexPurger->purgeIndexesFromChannel($entity);
         }
     }
