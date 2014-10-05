@@ -14,4 +14,4 @@ Pim\Bundle\CatalogBundle\Model\Completeness:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
         locale:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
