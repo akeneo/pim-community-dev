@@ -4,7 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ExclusionPolicy("all")
  */
-class Locale implements ReferableInterface
+class Locale implements LocaleInterface
 {
     /**
      * @var integer $id
@@ -147,7 +148,7 @@ class Locale implements ReferableInterface
      *
      * @return Locale
      */
-    public function addChannel(Channel $channel)
+    public function addChannel(ChannelInterface $channel)
     {
         $this->channels[] = $channel;
         if ($this->channels->count() > 0) {
@@ -164,7 +165,7 @@ class Locale implements ReferableInterface
      *
      * @return Locale
      */
-    public function removeChannel(Channel $channel)
+    public function removeChannel(ChannelInterface $channel)
     {
         $this->channels->removeElement($channel);
         if ($this->channels->count() === 0) {
