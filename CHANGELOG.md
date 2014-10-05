@@ -31,6 +31,8 @@
 - Remove CatalogContext argument from ProductQueryBuilder::__construct
 - Remove ProductRepository from Datagrid Sorters __construct
 - Remove deprecated ProductRepositoryInterface::getProductQueryBuilder
+- Replace setProductQueryBuilder by setProductQueryFactory in ProductRepositoryInterface
+- Add a ProductQueryFactoryInterface argument in ProductDatasource __construct
 
 # 1.2.x
 
