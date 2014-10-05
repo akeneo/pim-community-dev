@@ -949,8 +949,33 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Code'], $data['Selected by default']);
+            $this->getCurrentPage()->addOption($data['Code']);
+            $this->wait(2000);
         }
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
+     */
+    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
+        $this->wait(2000);
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+     */
+    public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
+        $this->wait(2000);
     }
 
     /**
@@ -1251,6 +1276,15 @@ class WebUser extends RawMinkContext
      * @Given /^I wait for (the )?widgets to load$/
      */
     public function iWaitForTheWidgetsToLoad()
+    {
+        $this->wait(2000, false);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I wait for (the )?options to load$/
+     */
+    public function iWaitForTheOptionsToLoad()
     {
         $this->wait(2000, false);
         $this->wait();

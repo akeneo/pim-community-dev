@@ -19,6 +19,12 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @var array $supportedFormat */
+    protected $supportedFormat = ['array'];
+
+    /** @var array $activeLocales */
+    protected $activeLocales;
+
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
@@ -64,7 +70,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOption && $format === 'array';
+        return $data instanceof AttributeOption && in_array($format, $this->supportedFormat);
     }
 
     /**
@@ -84,7 +90,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
      */
     protected function ensureEmptyOptionValues(Collection $optionValues)
     {
-        $activeLocales = $this->localeManager->getActiveLocales();
+        $activeLocales = $this->getActiveLocales();
         $usedLocales   = [];
 
         foreach ($optionValues as $optionValue) {
@@ -102,5 +108,19 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
         }
 
         return $optionValues;
+    }
+
+    /**
+     * Get cached active locales
+     *
+     * @return array
+     */
+    protected function getActiveLocales()
+    {
+        if (!$this->activeLocales) {
+            $this->activeLocales = $this->localeManager->getActiveLocales();
+        }
+
+        return $this->activeLocales;
     }
 }

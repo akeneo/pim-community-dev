@@ -27,7 +27,7 @@ class AttributeOptionValueCollectionNormalizer implements NormalizerInterface, S
     {
         $normalizedItems = [];
 
-        foreach ($object as $item) {
+        foreach ($object as $key => $item) {
             $normalizedItems[$item->getLocale()] = $this->serializer->normalize($item, $format, $context);
         }
 

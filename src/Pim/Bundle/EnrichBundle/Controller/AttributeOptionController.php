@@ -177,7 +177,7 @@ class AttributeOptionController
      *
      * @return FormInterface
      */
-    protected function manageFormSubmission(AttributeOption $attributeOption, $data = [])
+    protected function manageFormSubmission(AttributeOption $attributeOption, array $data = [])
     {
         $form = $this->formFactory->createNamed('option', 'pim_enrich_attribute_option', $attributeOption);
 

@@ -3,12 +3,6 @@ define(
     function ($, _, Backbone, Routing, mediator, LoadingMask) {
         'use strict';
 
-        var getAttributeOptions = function (attributeId) {
-            var url = Routing.generate('pim_enrich_attributeoption_index', {attribute_id: attributeId});
-
-            return $.get(url);
-        }
-
         var AttributeOptionItem = Backbone.Model.extend({
             defaults: {
                 code: '',
