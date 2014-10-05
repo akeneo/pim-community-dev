@@ -46,3 +46,5 @@ services:
             - '@pim_datagrid.datasource.support_resolver'
             - %pim_filter.datasource.orm_adapter.class%
             - %pim_filter.datasource.product_orm_adapter.class%
+        calls:
+            - [addProductDatasource, ['pim_datasource_product']]
