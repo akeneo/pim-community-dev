@@ -166,7 +166,7 @@ class NamingUtility
     /**
      * Get active currencies
      *
-     * @return Currency[]
+     * @return CurrencyInterface[]
      */
     public function getCurrencies()
     {
@@ -179,7 +179,7 @@ class NamingUtility
     /**
      * Get active locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getLocales()
     {

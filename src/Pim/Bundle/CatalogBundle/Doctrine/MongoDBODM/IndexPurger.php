@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Makes sure that the indexes links to entity are removed.
@@ -40,9 +40,9 @@ class IndexPurger
     /**
      * Remove indexes associated with the provided locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      */
-    public function purgeIndexesFromLocale(Locale $locale)
+    public function purgeIndexesFromLocale(LocaleInterface $locale)
     {
         $localePattern = sprintf(
             '/^%s\..+-%s/',
@@ -58,9 +58,9 @@ class IndexPurger
     /**
      * Remove indexes associated with the provided channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function purgeIndexesFromChannel(Channel $channel)
+    public function purgeIndexesFromChannel(ChannelInterface $channel)
     {
         $channelPattern = sprintf(
             '/^%s\..+-%s/',
@@ -76,9 +76,9 @@ class IndexPurger
     /**
      * Remove indexes associated with the provided currency
      *
-     * @param Currency $currency
+     * @param CurrencyInterface $currency
      */
-    public function purgeIndexesFromCurrency(Currency $currency)
+    public function purgeIndexesFromCurrency(CurrencyInterface $currency)
     {
         $currencyPattern = sprintf(
             '/%s\..+\.%s\.data/',

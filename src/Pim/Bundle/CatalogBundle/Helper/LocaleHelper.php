@@ -39,7 +39,7 @@ class LocaleHelper
     /**
      * Returns the current locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return \Pim\Bundle\CatalogBundle\Model\LocaleInterface
      *
      * @deprecated Locale object providing is not necessary. Use getCurrentLocaleCode instead. (will be removed in 1.3)
      */

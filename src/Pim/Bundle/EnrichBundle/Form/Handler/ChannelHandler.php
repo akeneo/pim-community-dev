@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -58,11 +58,11 @@ class ChannelHandler
 
     /**
      * Process method for handler
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return boolean
      */
-    public function process(Channel $channel)
+    public function process(ChannelInterface $channel)
     {
         $this->form->setData($channel);
 
@@ -81,9 +81,9 @@ class ChannelHandler
 
     /**
      * Call when form is valid
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    protected function onSuccess(Channel $channel)
+    protected function onSuccess(ChannelInterface $channel)
     {
         $this->manager->persist($channel);
         $this->completenessManager->scheduleForChannel($channel);

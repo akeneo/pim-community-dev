@@ -1,9 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-
 /**
  * Product completeness interface
  *
@@ -23,11 +20,11 @@ interface CompletenessInterface
     /**
      * Setter locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return CompletenessInterface
      */
-    public function setLocale(Locale $locale);
+    public function setLocale(LocaleInterface $locale);
 
     /**
      * Getter ratio
@@ -48,11 +45,11 @@ interface CompletenessInterface
     /**
      * Setter channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return CompletenessInterface
      */
-    public function setChannel(Channel $channel);
+    public function setChannel(ChannelInterface $channel);
 
     /**
      * Setter product
@@ -66,14 +63,14 @@ interface CompletenessInterface
     /**
      * Getter locale
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getLocale();
 
     /**
      * Getter channel
      *
-     * @return Channel
+     * @return ChannelInterface
      */
     public function getChannel();
 

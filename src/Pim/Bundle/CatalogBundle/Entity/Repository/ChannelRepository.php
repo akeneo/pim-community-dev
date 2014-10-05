@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
  * Channel repository
@@ -75,11 +75,11 @@ class ChannelRepository extends ReferableEntityRepository
     /**
      * Get the deleted locales of a channel (the channel is updated but not flushed yet).
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array the list of deleted locales
      */
-    public function getDeletedLocaleIdsForChannel(Channel $channel)
+    public function getDeletedLocaleIdsForChannel(ChannelInterface $channel)
     {
         $currentLocaleIds = array_map(
             function ($locale) {

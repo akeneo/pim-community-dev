@@ -615,7 +615,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @throws \Exception
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return \Pim\Bundle\CatalogBundle\Model\LocaleInterface
      */
     protected function getDataLocale()
     {

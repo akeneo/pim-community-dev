@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
@@ -62,18 +60,18 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface
     public function getCurrencies();
 
     /**
-     * @param Currency $currency
+     * @param CurrencyInterface $currency
      *
      * @return ChannelInterface
      */
-    public function addCurrency(Currency $currency);
+    public function addCurrency(CurrencyInterface $currency);
 
     /**
-     * @param Currency $currency
+     * @param CurrencyInterface $currency
      *
      * @return ChannelInterface
      */
-    public function removeCurrency(Currency $currency);
+    public function removeCurrency(CurrencyInterface $currency);
 
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -81,25 +79,25 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface
     public function getLocales();
 
     /**
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return ChannelInterface
      */
-    public function addLocale(Locale $locale);
+    public function addLocale(LocaleInterface $locale);
 
     /**
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return ChannelInterface
      */
-    public function removeLocale(Locale $locale);
+    public function removeLocale(LocaleInterface $locale);
 
     /**
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return bool
      */
-    public function hasLocale(Locale $locale);
+    public function hasLocale(LocaleInterface $locale);
 
     /**
      * @param array $conversionUnits

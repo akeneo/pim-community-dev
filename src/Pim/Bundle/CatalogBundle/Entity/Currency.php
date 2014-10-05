@@ -65,7 +65,7 @@ class Currency implements CurrencyInterface
      *
      * @param integer $id
      *
-     * @return Currency
+     * @return CurrencyInterface
      */
     public function setId($id)
     {

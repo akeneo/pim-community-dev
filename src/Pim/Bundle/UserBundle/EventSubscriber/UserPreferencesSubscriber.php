@@ -7,9 +7,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Aims to add/remove locales, channels and trees to user preference choices
@@ -110,7 +110,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function preRemove($entity)
     {
-        if ($entity instanceof Channel) {
+        if ($entity instanceof ChannelInterface) {
             $this->onChannelRemoved($entity);
         }
 
@@ -126,7 +126,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function preUpdate($entity)
     {
-        if ($entity instanceof Locale && !$entity->isActivated()) {
+        if ($entity instanceof LocaleInterface && !$entity->isActivated()) {
             $changeset = $this->uow->getEntityChangeSet($entity);
             if (isset($changeset['activated'])) {
                 $this->deactivatedLocales[] = $entity->getCode();
@@ -163,11 +163,11 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * Update catalog scope of users using a channel that will be removed
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return null
      */
-    protected function onChannelRemoved(Channel $channel)
+    protected function onChannelRemoved(ChannelInterface $channel)
     {
         $users  = $this->findUsersBy(array('catalogScope' => $channel));
         $scopes = $this->container->get('pim_catalog.manager.channel')->getChannels();

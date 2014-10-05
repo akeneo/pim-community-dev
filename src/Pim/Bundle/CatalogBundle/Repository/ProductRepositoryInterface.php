@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -43,7 +44,7 @@ interface ProductRepositoryInterface
      *
      * @param integer $id
      *
-     * @return Product|null
+     * @return ProductInterface|null
      * @throws NonUniqueResultException
      */
     public function findOneByWithValues($id);
@@ -56,11 +57,11 @@ interface ProductRepositoryInterface
     public function buildByScope($scope);
 
     /**
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return QueryBuilder
      */
-    public function buildByChannelAndCompleteness(Channel $channel);
+    public function buildByChannelAndCompleteness(ChannelInterface $channel);
 
     /**
      * Find products by existing family

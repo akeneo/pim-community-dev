@@ -60,9 +60,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -84,9 +82,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -94,11 +90,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -108,9 +100,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Is activated
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isActivated()
     {
@@ -118,9 +108,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Get channels
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getChannels()
     {
@@ -128,11 +116,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Set channels
-     *
-     * @param ArrayCollection $channels
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function setChannels($channels)
     {
@@ -142,11 +126,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Add channel
-     *
-     * @param Channel $channel
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function addChannel(ChannelInterface $channel)
     {
@@ -159,11 +139,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Remove channel
-     *
-     * @param Channel $channel
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function removeChannel(ChannelInterface $channel)
     {
