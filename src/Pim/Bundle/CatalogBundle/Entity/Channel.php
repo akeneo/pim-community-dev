@@ -5,8 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
  * Channel entity
@@ -17,7 +16,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Channel implements ReferableInterface, VersionableInterface
+class Channel implements ChannelInterface
 {
     /** @var integer $id */
     protected $id;
@@ -53,9 +52,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -77,9 +74,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -87,11 +82,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -101,9 +92,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -111,11 +100,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -125,9 +110,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get category
-     *
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function getCategory()
     {
@@ -135,11 +118,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Set category
-     *
-     * @param CategoryInterface $category
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function setCategory(CategoryInterface $category)
     {
@@ -149,9 +128,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get currencies
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getCurrencies()
     {
@@ -159,11 +136,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Add currency
-     *
-     * @param Currency $currency
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function addCurrency(Currency $currency)
     {
@@ -173,11 +146,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Remove currency
-     *
-     * @param Currency $currency
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function removeCurrency(Currency $currency)
     {
@@ -187,9 +156,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get locales
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getLocales()
     {
@@ -211,11 +178,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Add locale
-     *
-     * @param Locale $locale
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function addLocale(Locale $locale)
     {
@@ -228,11 +191,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Remove locale
-     *
-     * @param Locale $locale
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function removeLocale(Locale $locale)
     {
@@ -243,11 +202,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Predicate to know if a channel has a locale
-     *
-     * @param Locale $locale
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasLocale(Locale $locale)
     {
@@ -255,11 +210,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Set conversion units
-     *
-     * @param array $conversionUnits
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function setConversionUnits(array $conversionUnits)
     {
@@ -269,9 +220,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get conversion units
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getConversionUnits()
     {
@@ -279,9 +228,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Get color
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getColor()
     {
@@ -289,11 +236,7 @@ class Channel implements ReferableInterface, VersionableInterface
     }
 
     /**
-     * Set color
-     *
-     * @param string $color
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function setColor($color)
     {
