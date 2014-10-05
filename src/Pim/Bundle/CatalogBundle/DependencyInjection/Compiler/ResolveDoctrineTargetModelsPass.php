@@ -21,6 +21,7 @@ class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModel
             'Pim\Bundle\CatalogBundle\Model\AssociationInterface'  => 'pim_catalog.entity.association.class',
             'Pim\Bundle\CatalogBundle\Model\AbstractAttribute'     => 'pim_catalog.entity.attribute.class',
             'Pim\Bundle\CatalogBundle\Model\ChannelInterface'      => 'pim_catalog.entity.channel.class',
+            'Pim\Bundle\CatalogBundle\Model\CurrencyInterface'     => 'pim_catalog.entity.currency.class',
             'Pim\Bundle\CatalogBundle\Model\CompletenessInterface' => 'pim_catalog.entity.completeness.class',
             'Pim\Bundle\CatalogBundle\Model\MetricInterface'       => 'pim_catalog.entity.metric.class',
             'Pim\Bundle\CatalogBundle\Model\ProductInterface'      => 'pim_catalog.entity.product.class',
