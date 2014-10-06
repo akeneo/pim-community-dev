@@ -97,6 +97,7 @@ class ProductExportController extends ExportController
             echo $this->serializer->serialize($results, $this->getFormat(), $context);
             $offset += $batchSize;
             flush();
+            $this->productRepository->getObjectManager()->clear();
         }
     }
 }
