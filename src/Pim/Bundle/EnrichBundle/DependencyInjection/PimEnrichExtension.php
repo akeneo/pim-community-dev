@@ -24,24 +24,25 @@ class PimEnrichExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('controllers.yml');
-        $loader->load('handlers.yml');
-        $loader->load('forms.yml');
-        $loader->load('form_types.yml');
-        $loader->load('datagrid_listeners.yml');
-        $loader->load('colors.yml');
         $loader->load('attribute_icons.yml');
-        $loader->load('mass_actions.yml');
-        $loader->load('factories.yml');
-        $loader->load('twig.yml');
-        $loader->load('providers.yml');
-        $loader->load('event_listeners.yml');
-        $loader->load('form_subscribers.yml');
-        $loader->load('resolvers.yml');
-        $loader->load('managers.yml');
+        $loader->load('colors.yml');
+        $loader->load('controllers.yml');
+        $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
-        $loader->load('repositories.yml');
+        $loader->load('event_listeners.yml');
+        $loader->load('factories.yml');
+        $loader->load('form_subscribers.yml');
+        $loader->load('form_types.yml');
+        $loader->load('forms.yml');
+        $loader->load('handlers.yml');
+        $loader->load('managers.yml');
+        $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
+        $loader->load('providers.yml');
+        $loader->load('repositories.yml');
+        $loader->load('resolvers.yml');
+        $loader->load('serializers.yml');
+        $loader->load('twig.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
