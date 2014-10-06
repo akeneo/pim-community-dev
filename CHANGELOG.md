@@ -35,6 +35,9 @@
 - Add a ProductQueryFactoryInterface argument in ProductDatasource::__construct
 - Add a $productOrmAdapterClass argument in DatasourceAdapterResolver::__construct
 
+## Bug fixes
+- Cannot display correctly all variant groups on grid
+
 # 1.2.x
 
 ## Bug fixes
