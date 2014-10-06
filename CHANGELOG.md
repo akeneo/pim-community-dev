@@ -1,6 +1,7 @@
 # 1.2.x
 
 ## Bug fixes
+- Fix memory leak in CSV quick export
 
 ## Improvements
 - avoid hydrating duplicate categories when applying category filter in product grid

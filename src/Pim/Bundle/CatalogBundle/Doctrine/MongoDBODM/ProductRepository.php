@@ -767,4 +767,12 @@ class ProductRepository extends DocumentRepository implements
             );
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectManager()
+    {
+        return $this->getDocumentManager();
+    }
 }
