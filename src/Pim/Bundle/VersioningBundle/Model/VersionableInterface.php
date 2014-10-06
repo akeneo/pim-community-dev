@@ -15,7 +15,7 @@ interface VersionableInterface
     /**
      * Get id
      *
-     * @return integer|string
+     * @return int|string
      */
     public function getId();
 }

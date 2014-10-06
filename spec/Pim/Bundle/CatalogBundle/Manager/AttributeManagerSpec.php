@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AttributeManagerSpec extends ObjectBehavior
 {
@@ -33,15 +33,17 @@ class AttributeManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_instanciates_an_attribute() {
+    function it_instantiates_an_attribute()
+    {
         $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
     }
 
-    function it_instanciates_an_attribute_option() {
+    function it_instantiates_an_attribute_option()
+    {
         $this->createAttributeOption()->shouldReturnAnInstanceOf(self::OPTION_CLASS);
     }
 
-    function it_instanciates_an_attribute_option_value()
+    function it_instantiates_an_attribute_option_value()
     {
         $this->createAttributeOptionValue()->shouldReturnAnInstanceOf(self::OPT_VALUE_CLASS);
     }

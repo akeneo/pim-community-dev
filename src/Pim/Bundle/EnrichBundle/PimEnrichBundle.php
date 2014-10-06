@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Enrich bundle

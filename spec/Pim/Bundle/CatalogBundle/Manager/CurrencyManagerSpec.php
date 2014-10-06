@@ -3,8 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 

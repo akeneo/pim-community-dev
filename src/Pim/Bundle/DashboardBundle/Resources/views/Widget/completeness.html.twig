@@ -3,64 +3,15 @@
 {% set widgetTitle = 'pim_dashboard.widget.completeness.title'|trans %}
 
 {% set widgetContent %}
-    <table id="completeness-widget">
-    {% for channel, channelResult in widget.params %}
-        <tr class="channel{{ loop.first ? ' first' : '' }}">
-            <td><a href="#" data-toggle-channel="{{ channel }}"><i class="icon-caret-down"/></a></td>
-            <td><a href="#" data-toggle-channel="{{ channel }}"><b>{{ channel }}</b></a></td>
-            <td>
-                {% set divider = channelResult.total*(channelResult.locales|length) %}
-                {% if divider == 0 %}
-                    <b>0%</b>
-                {% else %}
-                    <b>{{ (channelResult.complete/divider*100)|number_format(0) }}%</b>
-                {% endif %}
-            </td>
-            <td>&nbsp;</td>
-        </tr>
-
-        {% for locale, localeResult in channelResult.locales %}
-            {% set divider = channelResult.total %}
-            {% if divider == 0 %}
-                {% set ratio = 0 %}
-            {% else %}
-                {% set ratio = (localeResult/divider*100)|number_format(0) %}
-            {% endif %}
-            {% if ratio == 100 %}
-                {% set progressClass = 'bar-success' %}
-            {% else %}
-                {% set progressClass = 'bar-warning' %}
-            {% endif %}
-            <tr data-channel="{{ channel }}">
-                <td>&nbsp;</td>
-                <td>{{ locale_label(locale) }}</td>
-                <td>{{ ratio ~ '%' }}</td>
-                <td class="progress-cell">
-                    <div class="progress">
-                        <div class="bar {{ progressClass }}" style="width: {{ ratio ~ '%' }};"></div>
-                    </div>
-                    <small>{{ localeResult ~ '/' ~ channelResult.total }}</small>
-                </td>
-            </tr>
-        {% endfor %}
-    {% endfor %}
-    </table>
+    <table id="completeness-widget"></table>
 
     <script type="text/javascript">
         require(
-            ['jquery'],
-            function ($) {
+            ['jquery', 'pim/dashboard/completeness-widget'],
+            function ($, CompletenessWidget) {
                 'use strict';
-                $(function () {
-                    $('a[data-toggle-channel]').click(
-                        function (event) {
-                            event.preventDefault();
-                            $('tr[data-channel="' + $(this).data('toggle-channel') + '"]').toggle();
-                            $('a[data-toggle-channel="' + $(this).data('toggle-channel') + '"] i')
-                                .toggleClass('icon-caret-right')
-                                .toggleClass('icon-caret-down');
-                        }
-                    );
+                $(function() {
+                    CompletenessWidget.init({el: '#completeness-widget', alias: 'completeness'});
                 });
             }
         );

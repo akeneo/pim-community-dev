@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Association;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 
 /**
  * @require \MongoId
@@ -70,9 +70,9 @@ class AssociationNormalizerSpec extends ObjectBehavior
         AssociationType $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
-        Product $product1,
+        ProductInterface $product1,
         \MongoDBRef $product1Ref,
-        Product $product2,
+        ProductInterface $product2,
         \MongoDBRef $product2Ref
     ) {
         $assocType->getId()->willReturn(8);
@@ -136,9 +136,9 @@ class AssociationNormalizerSpec extends ObjectBehavior
         AssociationType $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
-        Product $product1,
+        ProductInterface $product1,
         \MongoDBRef $product1Ref,
-        Product $product2,
+        ProductInterface $product2,
         \MongoDBRef $product2Ref,
         Group $group1,
         Group $group2

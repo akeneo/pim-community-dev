@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Add current user to version manager

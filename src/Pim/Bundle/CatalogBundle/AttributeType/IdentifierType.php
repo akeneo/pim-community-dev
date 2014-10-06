@@ -64,15 +64,6 @@ class IdentifierType extends AbstractAttributeType
                     'read_only' => true
                 ]
             ],
-            'useableAsGridColumn' => [
-                'name'      => 'useableAsGridColumn',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
             'useableAsGridFilter' => [
                 'name'      => 'useableAsGridFilter',
                 'fieldType' => 'switch',

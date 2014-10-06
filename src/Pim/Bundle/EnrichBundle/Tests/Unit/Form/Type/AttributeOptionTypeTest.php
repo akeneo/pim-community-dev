@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Form\PreloadedExtension;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType;
+use Symfony\Component\Form\PreloadedExtension;
 
 /**
  * Test related class

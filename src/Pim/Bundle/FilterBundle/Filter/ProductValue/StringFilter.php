@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
@@ -28,11 +28,11 @@ class StringFilter extends OroStringFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $this->util->applyFilterByAttribute(
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $data['value'],
-            $operator
+            $operator,
+            $data['value']
         );
 
         return true;

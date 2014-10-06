@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
+use Prophecy\Argument;
 
 class ChannelExtensionSpec extends ObjectBehavior
 {

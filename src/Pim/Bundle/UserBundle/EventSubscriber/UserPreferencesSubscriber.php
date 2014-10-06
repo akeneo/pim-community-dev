@@ -3,13 +3,13 @@
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Aims to add/remove locales, channels and trees to user preference choices
@@ -50,7 +50,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param ContainerInterface $container
      *
-     * @return ScopableSubscriber
+     * @return UserPreferencesSubscriber
      */
     public function setContainer($container)
     {

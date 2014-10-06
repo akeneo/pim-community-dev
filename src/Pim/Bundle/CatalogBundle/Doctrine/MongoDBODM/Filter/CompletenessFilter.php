@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
  * Completeness filter
@@ -22,14 +22,50 @@ class CompletenessFilter implements FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedOperators;
+
     /**
-     * @param QueryBuilder   $qb
+     * Instanciate the filter
+     *
      * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+        $this->supportedOperators = ['=', '<'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return $field === 'completeness';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

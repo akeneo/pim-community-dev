@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\ORM;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 class MetricBaseValuesSubscriberSpec extends ObjectBehavior

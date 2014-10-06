@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\VersioningBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VersionBuilderSpec extends ObjectBehavior
 {

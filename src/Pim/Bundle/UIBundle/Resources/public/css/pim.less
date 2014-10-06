@@ -22,6 +22,10 @@ a:focus {
   color: darken(@color-purple_dark, 5%);
 }
 
+.badge-square {
+  border-radius: 2px;
+}
+
 /* Grids */
 .table-hover tbody tr:hover > td {
   background-color: @color-purple_hover;
@@ -172,12 +176,33 @@ a.back-link i {
   }
 }
 
+#sequentialEdit {
+    font-weight: bold;
+    .progress .bar {
+        #gradient .horizontal(@color-purple_light, @color-purple_dark);
+    }
+}
+hr.small {
+    margin: 4px 0;
+}
+
 /** widgets **********************************************************************************************************/
 .widget-header {
-  padding: 2px 10px;
+  padding: 2px 2px 3px 10px;
   font-weight: bold;
   background: linear-gradient(@backgroundColor-white, @color-light_grey);
   border-bottom: 1px solid #ccc;
+  .btn-mini {
+    border-radius: 10px;
+  }
+}
+
+.widget-content {
+  position: relative;
+  transition: 0.7s ease-out;
+  &.loading {
+    min-height: 100px;
+  }
 }
 
 a[data-toggle-channel] {
@@ -210,7 +235,7 @@ a[data-toggle-channel] {
     }
   }
   tr.channel {
-    &.first {
+    &:first-of-type {
       border-top: none;
     }
     border-top: 1px solid #c2c2c2;
@@ -316,5 +341,116 @@ span.link-label {
   }
   ins {
     text-decoration: none;
+  }
+}
+
+#sequentialEdit {
+  margin:6px;
+
+  .progress {
+    margin-bottom: 0px;
+  }
+
+  [class*="span"] {
+    min-height: 5px;
+  }
+}
+
+/** Notifications *****************************************************************************************************/
+#header-notification-widget {
+
+  i.icon-bell {
+    font-size: 18px !important;
+    line-height: 20px;
+    height: 20px;
+    text-align: center;
+  }
+  .indicator {
+    position: absolute;
+    text-align: center;
+    right: 3px;
+    top: 2px;
+
+    .badge-square {
+      font-size: 11px;
+      font-weight: initial;
+      padding: 0px 3px;
+      background: linear-gradient(#f93a43, darken(#f93a43, 20%));
+      box-shadow: 0px 0.7px 0px RGBa(0, 0, 0, 0.3), 0px 0px 3px rGBa(0, 0, 0, 0.35);
+      text-shadow: 0px 1px 0px darken(#f93a43, 20%);
+    }
+  }
+
+  .mark-as-read {
+    border: none;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+#oroplatform-header .nav #header-notification-widget {
+  .dropdown-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
+  ul.dropdown-menu {
+    width: auto;
+    margin: -3px -1px 0 0 !important;
+    padding-top: 1px;
+    padding-bottom: 0;
+    ol.scroll-menu {
+      list-style: none;
+      margin: 0;
+      width: auto;
+      height: auto;
+      max-height: 211px;
+      overflow-x: hidden;
+      white-space: nowrap;
+      li {
+        border-top: 1px solid @backgroundColor-white;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        &>a {
+          padding: 10px 55px 10px 10px;
+          display: block;
+          &:hover {
+            background-color: lighten(@color-purple_hover, 2%);
+            background-color: darken(@backgroundColor-white, 3%);
+          }
+          &.new {
+            background: @color-light_grey;
+            &:hover {
+              background-color: darken(@color-purple_hover, 2%);
+            }
+          }
+          i {
+            padding-right: 5px;
+          }
+          i.icon-ok { color: #33be00; }
+          i.icon-warning-sign { color: orange; }
+          i.icon-remove { color: red; }
+          i.action {
+            position: absolute;
+            right: 3px;
+            width: 28px;
+            text-align: center;
+            background-color: @backgroundColor-white;
+            border: 1px solid @textColor + #888;
+            .border-radius(3px);
+            font-size: 14px;
+            padding: 2px 6px;
+            &:hover {
+              background-color: @color-light_grey;
+            }
+          }
+        }
+      }
+    }
+    p {
+      span {
+        padding: 0 10px;
+      }
+    }
   }
 }

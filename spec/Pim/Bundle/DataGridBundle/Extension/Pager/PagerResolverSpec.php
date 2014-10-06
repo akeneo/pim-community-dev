@@ -16,14 +16,16 @@ class PagerResolverSpec extends ObjectBehavior
 
     function let(DatasourceSupportResolver $supportResolver, PagerInterface $orm)
     {
-        $supportResolver->getSupport(Argument::any())->willReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB);
+        $supportResolver
+            ->getSupport(Argument::any())
+            ->willReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB);
         $this->beConstructedWith($supportResolver, $orm);
     }
 
     function it_returns_an_orm_pager_when_orm_support_is_enabled($supportResolver, $orm)
     {
-        $supportResolver->getSupport(Argument::any())->willReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM);
-        $this->getPager(Argument::any())->shouldReturn($orm);
+        $supportResolver->getSupport('orm')->willReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM);
+        $this->getPager('orm')->shouldReturn($orm);
     }
 
     function it_throws_an_exception_when_mongo_support_is_enabled_and_mongo_pager_is_not_registered()

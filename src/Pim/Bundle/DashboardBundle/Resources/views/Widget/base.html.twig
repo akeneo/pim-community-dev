@@ -8,7 +8,9 @@
                     </div>
                 {% endif %}
                 {% if widgetContent is defined %}
-                    {{ widgetContent }}
+                    <div class="widget-content">
+                        {{ widgetContent }}
+                    </div>
                 {% endif %}
             {% endblock %}
         </div>

@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
@@ -40,12 +40,12 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     protected $sortOrder;
 
     /**
-     * @var datetime $created
+     * @var \DateTime $created
      */
     protected $created;
 
     /**
-     * @var datetime $updated
+     * @var \DateTime $updated
      */
     protected $updated;
 
@@ -172,7 +172,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     /**
      * Set created datetime
      *
-     * @param datetime $created
+     * @param \DateTime $created
      *
      * @return AttributeGroup
      */
@@ -186,7 +186,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     /**
      * Get updated datetime
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -196,7 +196,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     /**
      * Set updated datetime
      *
-     * @param datetime $updated
+     * @param \DateTime $updated
      *
      * @return AttributeGroup
      */
