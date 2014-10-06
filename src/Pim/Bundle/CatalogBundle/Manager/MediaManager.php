@@ -210,7 +210,7 @@ class MediaManager
      * Read a file
      * @param AbstractProductMedia $media
      *
-     * @return content
+     * @return string|null
      */
     protected function getFilePath(AbstractProductMedia $media)
     {

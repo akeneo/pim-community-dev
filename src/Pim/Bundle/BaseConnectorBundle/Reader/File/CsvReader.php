@@ -103,7 +103,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Set uploaded file
-     * @param string $uploadedFile
+     * @param File $uploadedFile
      *
      * @return CsvReader
      */

@@ -116,7 +116,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return InstallCommand
+     * @return DatabaseCommand
      */
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
@@ -184,7 +184,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return InstallCommand
+     * @return DatabaseCommand
      */
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {

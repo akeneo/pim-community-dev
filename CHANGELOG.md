@@ -5,6 +5,7 @@
 - Add a widget in the navigation bar to display notifications when import/export jobs finish
 - Add the sequential edit for a selected list of products
 - Add comments on a product
+- Load dashboard widgets asynchronously and allow to refresh the data
 
 ## Improvements
  - Remove the fixed mysql socket location
@@ -20,11 +21,26 @@
 - Remove useless applySorterByAttribute, applySorterByField from Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
 - Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
 - Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
+- Remove ProductManager from ProductFilterUtility::__construct argument
 - Remove ProductFilterUtility::getAttribute()
+- Two new methods have been added to `Pim\Bundle\DashboardBundle\Widget\WidgetInterface`: `getAlias` and `getData`
+- Constructor of `Pim\Bundle\DashboardBundle\Controller\WidgetController` has been changed (most dependencies have been removed)
+- Method `Pim\Bundle\DashboardBundle\Controller\WidgetController::showAction()` has been removed in favor of `listAction` to render all widgets and `dataAction` to provide widget data
+- Constructors of `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` and `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` have been changed
+- `Pim\Bundle\DashboardBundle\Widget\Registry:add()` now accepts the widget (`WidgetInterface`) as the first argument and position as the second
+- Remove CatalogContext argument from ProductQueryBuilder::__construct
+- Remove ProductRepository from Datagrid Sorters __construct
+- Remove deprecated ProductRepositoryInterface::getProductQueryBuilder
+- Replace setProductQueryBuilder by setProductQueryFactory in ProductRepositoryInterface
+- Add a ProductQueryFactoryInterface argument in ProductDatasource::__construct
+- Add a $productOrmAdapterClass argument in DatasourceAdapterResolver::__construct
 
 # 1.2.x
 
 ## Bug fixes
+
+## Improvements
+- avoid hydrating duplicate categories when applying category filter in product grid
 
 # 1.2.7 (2014-10-01)
 

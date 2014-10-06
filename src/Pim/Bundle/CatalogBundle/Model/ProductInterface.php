@@ -17,7 +17,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface ProductInterface extends LocalizableInterface, ScopableInterface, TimestampableInterface,
-    VersionableInterface, CommentSubjectInterface, ReferableInterface
+ VersionableInterface, CommentSubjectInterface, ReferableInterface
 {
     /**
      * Get the ID of the product

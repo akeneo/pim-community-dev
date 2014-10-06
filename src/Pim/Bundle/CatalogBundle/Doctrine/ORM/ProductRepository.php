@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 
 /**
  * Product repository
@@ -25,28 +27,20 @@ class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
-    /**
-     * @var ProductQueryBuilder
-     */
-    protected $productQB;
+    /** @var ProductQueryFactoryInterface */
+    protected $productQueryFactory;
 
-    /**
-     * @var AttributeRepository
-     */
+    /** @var AttributeRepository */
     protected $attributeRepository;
 
     /**
-     * Set product query builder
+     * @param ProductQueryFactoryInterface
      *
-     * @param ProductQueryBuilder $productQB
-     *
-     * @return ProductRepositoryInterface
+     * @return ProductQueryBuilderInterface
      */
-    public function setProductQueryBuilder($productQB)
+    public function setProductQueryFactory($factory)
     {
-        $this->productQB = $productQB;
-
-        return $this;
+        $this->productQueryFactory = $factory;
     }
 
     /**
@@ -69,9 +63,10 @@ class ProductRepository extends EntityRepository implements
     public function buildByScope($scope)
     {
         $qb = $this->findAllByAttributesQB();
+        $rootAlias = current($qb->getRootAliases());
         $qb
             ->andWhere(
-                $qb->expr()->eq('Entity.enabled', ':enabled')
+                $qb->expr()->eq($rootAlias.'.enabled', ':enabled')
             )
             ->andWhere(
                 $qb->expr()->orX(
@@ -140,8 +135,9 @@ class ProductRepository extends EntityRepository implements
     public function findByIds(array $ids)
     {
         $qb = $this->findAllByAttributesQB();
+        $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
-            $qb->expr()->in('Entity.id', $ids)
+            $qb->expr()->in($rootAlias.'.id', $ids)
         );
 
         return $qb->getQuery()->execute();
@@ -464,8 +460,8 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneBy(array $criteria)
     {
-        $qb = $this->createQueryBuilder('p');
-        $pqb = $this->getProductQueryBuilder($qb);
+        $pqb = $this->productQueryFactory->create();
+        $qb = $pqb->getQueryBuilder();
         foreach ($criteria as $field => $data) {
             // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
@@ -513,24 +509,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return ProductQueryBuilder
-     */
-    public function getProductQueryBuilder($qb)
-    {
-        if (!$this->productQB) {
-            throw new \LogicException('Product query builder must be configured');
-        }
-
-        $this->productQB->setQueryBuilder($qb);
-
-        return $this->productQB;
-    }
-
-    /**
      * Add join to values tables
      *
      * @param QueryBuilder $qb
@@ -561,9 +539,9 @@ class ProductRepository extends EntityRepository implements
         $limit = null,
         $offset = null
     ) {
-        $qb = $this->createQueryBuilder('Entity');
+        $productQb = $this->productQueryFactory->create();
+        $qb = $productQb->getQueryBuilder();
         $this->addJoinToValueTables($qb);
-        $productQb = $this->getProductQueryBuilder($qb);
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {

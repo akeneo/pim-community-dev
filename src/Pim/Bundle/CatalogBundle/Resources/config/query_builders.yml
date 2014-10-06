@@ -1,4 +1,5 @@
 parameters:
+    pim_catalog.doctrine.query.product_query_factory.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory
     pim_catalog.doctrine.query.product_query_builder.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder
     pim_catalog.doctrine.query.filter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistry
     pim_catalog.doctrine.query.sorter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistry
@@ -6,14 +7,20 @@ parameters:
     pim_catalog.doctrine.query.attribute_filter_dumper.class: Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterDumper
 
 services:
-    # deprecated : will be drop in 1.4
-    pim_catalog.doctrine.product_query_builder:
-        alias: pim_catalog.doctrine.query.product_query_builder
+    pim_catalog.doctrine.query.product_query_factory:
+        class: %pim_catalog.doctrine.query.product_query_factory.class%
+        arguments:
+            - '%pim_catalog.doctrine.query.product_query_builder.class%'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.doctrine.query.filter_registry'
+            - '@pim_catalog.doctrine.query.sorter_registry'
 
-    pim_catalog.doctrine.query.product_query_builder:
+    # deprecated : will be removed in 1.4
+    pim_catalog.doctrine.product_query_builder:
         class: %pim_catalog.doctrine.query.product_query_builder.class%
         arguments:
-            - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.doctrine.query.filter_registry'
             - '@pim_catalog.doctrine.query.sorter_registry'

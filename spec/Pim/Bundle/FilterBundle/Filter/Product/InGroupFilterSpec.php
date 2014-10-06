@@ -4,8 +4,6 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -29,16 +27,10 @@ class InGroupFilterSpec extends ObjectBehavior
     function it_applies_a_filter_on_product_when_its_in_an_expected_group(
         FilterDatasourceAdapterInterface $datasource,
         $utility,
-        ProductRepositoryInterface $repository,
-        ProductQueryBuilderInterface $pqb,
-        QueryBuilder $qb,
         RequestParametersExtractorInterface $extractor
     ) {
         $extractor->getDatagridParameter('currentGroup')->willReturn(12);
-        $datasource->getQueryBuilder()->willReturn($qb);
-        $utility->getProductRepository()->willReturn($repository);
-        $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFilter('groups', 'IN', [12])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'groups', 'IN', [12])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }

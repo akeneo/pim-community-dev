@@ -54,8 +54,7 @@ class CommentType extends AbstractType
                 ['label' => false, 'attr' => ['placeholder' => $placeholder, 'class' => 'exclude']]
             )
             ->add('resourceName', 'hidden')
-            ->add('resourceId', 'hidden')
-        ;
+            ->add('resourceId', 'hidden');
 
         if (true === $options['is_reply']) {
             $builder->add('parent', 'pim_object_identifier', ['multiple' => false, 'repository' => $this->repository]);

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\MongoDB\Collection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;

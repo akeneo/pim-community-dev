@@ -30,7 +30,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     protected $code;
 
     /**
-     * @var string $entity
+     * @var boolean $variant
      */
     protected $variant;
 
@@ -229,7 +229,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
      *
      * @param string $label
      *
-     * @return Group
+     * @return GroupType
      */
     public function setLabel($label)
     {

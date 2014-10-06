@@ -105,7 +105,7 @@ class ChannelNormalizer implements NormalizerInterface
      *
      * @param Channel $channel
      *
-     * @return array
+     * @return string
      */
     protected function normalizeConversionUnits(Channel $channel)
     {

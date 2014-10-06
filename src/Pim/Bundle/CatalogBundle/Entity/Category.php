@@ -69,7 +69,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     protected $products;
 
     /**
-     * @var datetime
+     * @var \DateTime
      */
     protected $created;
 
@@ -354,7 +354,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     /**
      * Get created date
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreated()
     {

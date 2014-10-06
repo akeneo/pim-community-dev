@@ -208,7 +208,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param integer $parent
      *
      * @AclAncestor("pim_enrich_category_create")
-     * @return array
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request, $parent = null)
     {
@@ -251,7 +251,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param integer $id
      *
      * @AclAncestor("pim_enrich_category_edit")
-     * @return array
+     * @return Response
      */
     public function editAction(Request $request, $id)
     {
@@ -283,7 +283,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param integer $id
      *
      * @AclAncestor("pim_enrich_category_remove")
-     * @return RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function removeAction($id)
     {

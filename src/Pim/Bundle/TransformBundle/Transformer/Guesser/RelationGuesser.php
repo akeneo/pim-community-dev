@@ -33,7 +33,7 @@ class RelationGuesser implements GuesserInterface
      * Constructor
      *
      * @param PropertyTransformerInterface $transformer
-     * @param RegistryInterface            $doctrine
+     * @param ManagerRegistry              $doctrine
      */
     public function __construct(PropertyTransformerInterface $transformer, ManagerRegistry $doctrine)
     {

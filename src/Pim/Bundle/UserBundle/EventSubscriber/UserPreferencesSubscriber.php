@@ -50,7 +50,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param ContainerInterface $container
      *
-     * @return ScopableSubscriber
+     * @return UserPreferencesSubscriber
      */
     public function setContainer($container)
     {

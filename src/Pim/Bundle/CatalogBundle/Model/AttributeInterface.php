@@ -565,7 +565,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get sortOrder
-     * @return number
+     * @return integer
      */
     public function getSortOrder();
 

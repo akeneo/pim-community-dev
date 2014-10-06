@@ -32,7 +32,7 @@ interface QueryFilterRegistryInterface
     /**
      * Get the attribute filter
      *
-     * @param string AbstractAttribute $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return FilterInterface|null
      */

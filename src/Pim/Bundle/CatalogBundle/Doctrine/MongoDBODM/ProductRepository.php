@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -34,8 +33,8 @@ class ProductRepository extends DocumentRepository implements
     ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface
 {
-    /** @var ProductQueryBuilderInterface */
-    protected $productQB;
+    /** @var ProductQueryFactoryInterface */
+    protected $productQueryFactory;
 
     /** @var EntityManager */
     protected $entityManager;
@@ -106,8 +105,9 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneBy(array $criteria)
     {
-        $qb = $this->createQueryBuilder('p');
-        $pqb = $this->getProductQueryBuilder($qb);
+        $pqb = $this->productQueryFactory->create();
+        $qb = $pqb->getQueryBuilder();
+
         foreach ($criteria as $field => $data) {
             // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
             if (is_array($data)) {
@@ -457,8 +457,9 @@ class ProductRepository extends DocumentRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $qb = $this->createQueryBuilder();
-        $productQueryBuilder = $this->getProductQueryBuilder($qb);
+        $productQueryBuilder = $this->productQueryFactory->create();
+        $qb = $productQueryBuilder->getQueryBuilder();
+
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
@@ -474,26 +475,12 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function setProductQueryBuilder($productQB)
+    public function setProductQueryFactory($factory)
     {
-        $this->productQB = $productQB;
+        $this->productQueryFactory = $factory;
 
         return $this;
 
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductQueryBuilder($qb)
-    {
-        if (!$this->productQB) {
-            throw new \LogicException('Product query builder must be configured');
-        }
-
-        $this->productQB->setQueryBuilder($qb);
-
-        return $this->productQB;
     }
 
     /**

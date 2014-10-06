@@ -226,7 +226,7 @@ abstract class AbstractController
     /**
      * Get a user from the Security Context
      *
-     * @return mixed
+     * @return \Symfony\Component\Security\Core\User\UserInterface|null
      *
      * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
      */

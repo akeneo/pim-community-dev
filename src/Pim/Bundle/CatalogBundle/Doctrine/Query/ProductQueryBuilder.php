@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
@@ -22,9 +21,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var mixed */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** QueryFilterRegistryInterface */
     protected $filterRegistry;
 
@@ -34,18 +30,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Constructor
      *
-     * @param CatalogContext               $catalogContext
      * @param AttributeRepository          $attributeRepository
      * @param QueryFilterRegistryInterface $filterRegistry
      * @param QuerySorterRegistryInterface $sorterRegistry
      */
     public function __construct(
-        CatalogContext $catalogContext,
         AttributeRepository $attributeRepository,
         QueryFilterRegistryInterface $filterRegistry,
         QuerySorterRegistryInterface $sorterRegistry
     ) {
-        $this->context = $catalogContext;
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;

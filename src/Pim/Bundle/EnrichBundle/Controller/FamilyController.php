@@ -186,7 +186,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $family
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return Response
      */
     public function historyAction(Family $family)
     {

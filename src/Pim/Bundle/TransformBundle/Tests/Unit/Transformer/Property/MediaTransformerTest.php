@@ -79,16 +79,56 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected function getValue($hasFile, $mediaExists)
     {
-        $productValue =  $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array(
-                    'setText', 'setDatetime', 'setInteger', 'setId', 'getOption', 'getMedia', 'getDecimal',
-                    'setDecimal', 'setAttribute', 'addOption', 'getBoolean', 'setOptions', 'setPrices',
-                    'getId', 'setVarchar', 'setBoolean', 'getData', 'getMetric', 'getDate', 'getAttribute',
-                    'getEntity', 'setMedia', 'getPrices', 'getOptions', 'getLocale', 'setMetric', 'addPrice',
-                    'getVarchar', 'removePrice', 'hasData', 'setScope', 'removeOption', 'getText', 'setData',
-                    'setOption', 'getPrice', 'setDate', 'addData', 'setLocale', 'isRemovable', 'getScope',
-                    'getDatetime', 'setEntity', 'getInteger', '__toString'
-                ))
+        $productValue = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+            ->setMethods(
+                [
+                    'setText',
+                    'setDatetime',
+                    'setInteger',
+                    'setId',
+                    'getOption',
+                    'getMedia',
+                    'getDecimal',
+                    'setDecimal',
+                    'setAttribute',
+                    'addOption',
+                    'getBoolean',
+                    'setOptions',
+                    'setPrices',
+                    'getId',
+                    'setVarchar',
+                    'setBoolean',
+                    'getData',
+                    'getMetric',
+                    'getDate',
+                    'getAttribute',
+                    'getEntity',
+                    'setMedia',
+                    'getPrices',
+                    'getOptions',
+                    'getLocale',
+                    'setMetric',
+                    'addPrice',
+                    'getVarchar',
+                    'removePrice',
+                    'hasData',
+                    'setScope',
+                    'removeOption',
+                    'getText',
+                    'setData',
+                    'setOption',
+                    'getPrice',
+                    'setDate',
+                    'addData',
+                    'setLocale',
+                    'isRemovable',
+                    'getScope',
+                    'getDatetime',
+                    'setEntity',
+                    'getInteger',
+                    '__toString'
+                ]
+            )
             ->getMock();
         if ($hasFile) {
             $productValue

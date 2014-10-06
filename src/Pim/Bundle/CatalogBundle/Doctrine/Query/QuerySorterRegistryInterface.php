@@ -32,7 +32,7 @@ interface QuerySorterRegistryInterface
     /**
      * Get the attribute sorter
      *
-     * @param string AbstractAttribute $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return SorterInterface|null
      */

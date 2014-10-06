@@ -4,8 +4,6 @@ namespace Pim\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Product filter utility
@@ -16,31 +14,17 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class ProductFilterUtility extends BaseFilterUtility
 {
-    /** @var ProductManager */
-    protected $productManager;
-
     /**
-     * @param ProductManager $manager
+     * Applies filter to query by attribute
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $field
+     * @param string                           $operator
+     * @param mixed                            $value
      */
-    public function __construct(ProductManager $manager)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $this->productManager = $manager;
-    }
-
-    /**
-     * @return ProductManager
-     */
-    public function getProductManager()
-    {
-        return $this->productManager;
-    }
-
-    /**
-     * @return ProductRepositoryInterface
-     */
-    public function getProductRepository()
-    {
-        return $this->productManager->getProductRepository();
+        $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
     }
 
     /**
@@ -50,25 +34,11 @@ class ProductFilterUtility extends BaseFilterUtility
      * @param string                           $field
      * @param mixed                            $value
      * @param string                           $operator
-     */
-    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
-    {
-        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
-        $productQueryBuilder->addFilter($field, $operator, $value);
-    }
-
-    /**
-     * Applies filter to query by attribute
      *
      * @deprecated will be removed in 1.4
-     *
-     * @param FilterDatasourceAdapterInterface $ds
-     * @param string                           $field
-     * @param mixed                            $value
-     * @param string                           $operator
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $this->applyFilter($ds, $field, $value, $operator);
+        $this->applyFilter($ds, $field, $operator, $value);
     }
 }
