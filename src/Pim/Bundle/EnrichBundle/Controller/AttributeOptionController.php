@@ -2,18 +2,22 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestVIew;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -40,6 +44,9 @@ class AttributeOptionController
     /** @var AttributeManager */
     protected $attributeManager;
 
+    /** @var AttributeOptionManager */
+    protected $attributeOptionManager;
+
     /**
      * Constructor
      *
@@ -48,33 +55,37 @@ class AttributeOptionController
      * @param FormFactoryInterface $formFactory
      * @param ViewHandlerInterface $viewHandler
      * @param AttributeManager $attributeManager
+     * @param AttributeOptionManager $attributeOptionManager
      */
     public function __construct(
         NormalizerInterface $normalizer,
         EntityManager $entityManager,
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewHandler,
-        AttributeManager $attributeManager
+        AttributeManager $attributeManager,
+        AttributeOptionManager $attributeOptionManager
     ) {
-        $this->normalizer       = $normalizer;
-        $this->entityManager    = $entityManager;
-        $this->formFactory      = $formFactory;
-        $this->viewHandler      = $viewHandler;
-        $this->attributeManager = $attributeManager;
+        $this->normalizer             = $normalizer;
+        $this->entityManager          = $entityManager;
+        $this->formFactory            = $formFactory;
+        $this->viewHandler            = $viewHandler;
+        $this->attributeManager       = $attributeManager;
+        $this->attributeOptionManager = $attributeOptionManager;
     }
 
     /**
      * Get all options of an attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param int $attributeId
      *
      * @return JsonResponse
      *
-     * @ParamConverter("attribute", class="PimCatalogBundle:Attribute", options={"id" = "attribute_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function indexAction(AbstractAttribute $attribute)
+    public function indexAction($attributeId)
     {
+        $attribute = $this->findAttributeOr404($attributeId);
+
         $options = $this->normalizer->normalize($attribute->getOptions(), 'array', ['onlyActivatedLocales' => true]);
 
         return new JsonResponse($options);
@@ -83,17 +94,18 @@ class AttributeOptionController
     /**
      * Create an option of an attribute
      *
-     * @param Request           $request
-     * @param AbstractAttribute $attribute
+     * @param Request $request
+     * @param int     $attributeId
      *
      * @return JsonResponse
      *
-     * @ParamConverter("attribute", class="PimCatalogBundle:Attribute", options={"id" = "attribute_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function createAction(Request $request, AbstractAttribute $attribute)
+    public function createAction(Request $request, $attributeId)
     {
-        $attributeOption = $this->attributeManager->createAttributeOption();
+        $attribute = $this->findAttributeOr404($attributeId);
+
+        $attributeOption = $this->attributeOptionManager->createAttributeOption();
         $attributeOption->setAttribute($attribute);
 
         //Should be replaced by a paramConverter
@@ -105,18 +117,17 @@ class AttributeOptionController
     /**
      * Update an option of an attribute
      *
-     * @param Request           $request
-     * @param AbstractAttribute $attribute
-     * @param AttributeOption   $attributeOption
+     * @param Request $request
+     * @param int     $attributeOptionId
      *
      * @return JsonResponse
      *
-     * @ParamConverter("attribute", class="PimCatalogBundle:Attribute", options={"id" = "attribute_id"})
-     * @ParamConverter("attributeOption", class="PimCatalogBundle:AttributeOption", options={"id" = "option_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function updateAction(Request $request, AbstractAttribute $attribute, AttributeOption $attributeOption)
+    public function updateAction(Request $request, $attributeOptionId)
     {
+        $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
+
         //Should be replaced by a paramConverter
         $data = json_decode($request->getContent(), true);
 
@@ -126,19 +137,17 @@ class AttributeOptionController
     /**
      * Delete an option of an attribute
      *
-     * @param AbstractAttribute $attribute
-     * @param AttributeOption   $attributeOption
+     * @param int $attributeOptionId
      *
      * @return JsonResponse
      *
-     * @ParamConverter("attribute", class="PimCatalogBundle:Attribute", options={"id" = "attribute_id"})
-     * @ParamConverter("attributeOption", class="PimCatalogBundle:AttributeOption", options={"id" = "option_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function deleteAction(AbstractAttribute $attribute, AttributeOption $attributeOption)
+    public function deleteAction($attributeOptionId)
     {
-        $this->entityManager->remove($attributeOption);
-        $this->entityManager->flush($attributeOption);
+        $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
+
+        $this->attributeOptionManager->remove($attributeOption);
 
         return new JsonResponse();
     }
@@ -146,26 +155,22 @@ class AttributeOptionController
     /**
      * Update sorting of the options
      *
-     * @param Request           $request
-     * @param AbstractAttribute $attribute
+     * @param Request $request
+     * @param int     $attributeId
      *
      * @return JsonResponse
      *
-     * @ParamConverter("attribute", class="PimCatalogBundle:Attribute", options={"id" = "attribute_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function updateSortingAction(Request $request, AbstractAttribute $attribute)
+    public function updateSortingAction(Request $request, $attributeId)
     {
+        $attribute = $this->findAttributeOr404($attributeId);
         //Should be replaced by a paramConverter
-        $sorting = array_flip(json_decode($request->getContent(), true));
+        $data = json_decode($request->getContent(), true);
 
-        foreach ($attribute->getOptions() as $option) {
-            $option->setSortOrder($sorting[$option->getId()]);
+        $sorting = array_flip($data);
 
-            $this->entityManager->persist($option);
-        }
-
-        $this->entityManager->flush();
+        $this->attributeManager->updateSorting($attribute, $sorting);
 
         return new JsonResponse();
     }
@@ -184,8 +189,7 @@ class AttributeOptionController
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            $this->entityManager->persist($attributeOption);
-            $this->entityManager->flush();
+            $this->attributeOptionManager->update($attributeOption);
 
             $option = $this->normalizer->normalize($attributeOption, 'array', ['onlyActivatedLocales' => true]);
 
@@ -193,5 +197,43 @@ class AttributeOptionController
         }
 
         return $this->viewHandler->handle(RestView::create($form));
+    }
+
+    /**
+     * Find an attribute or throw a 404
+     *
+     * @param integer $id The id of the attribute
+     *
+     * @throws NotFoundHttpException
+     * @return AttributeInterface
+     */
+    protected function findAttributeOr404($id)
+    {
+        try {
+            $result = $this->attributeManager->getAttribute($id);
+        } catch (EntityNotFoundException $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Find an attribute option or throw a 404
+     *
+     * @param integer $id The id of the attribute option
+     *
+     * @throws NotFoundHttpException
+     * @return AttributeOption
+     */
+    protected function findAttributeOptionOr404($id)
+    {
+        try {
+            $result = $this->attributeOptionManager->getAttributeOption($id);
+        } catch (EntityNotFoundException $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+
+        return $result;
     }
 }

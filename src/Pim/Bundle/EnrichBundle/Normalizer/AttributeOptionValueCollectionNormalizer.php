@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
  */
 class AttributeOptionValueCollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @var SerializerInterface $serializer */
     protected $serializer;
 
     /**

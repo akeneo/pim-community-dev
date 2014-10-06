@@ -96,6 +96,7 @@ services:
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
             - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.version'
             - %akeneo_measure.measures_config%
@@ -110,6 +111,7 @@ services:
             - '@form.factory'
             - '@fos_rest.view_handler'
             - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.manager.attribute_option'
 
     pim_enrich.controller.product:
         scope: request

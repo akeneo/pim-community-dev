@@ -14,8 +14,6 @@ class AttributeManagerSpec extends ObjectBehavior
 {
     const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
     const PRODUCT_CLASS   = 'Pim\Bundle\CatalogBundle\Model\Product';
-    const OPTION_CLASS    = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
-    const OPT_VALUE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue';
 
     function let(
         ObjectManager $objectManager,
@@ -24,8 +22,6 @@ class AttributeManagerSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             self::ATTRIBUTE_CLASS,
-            self::OPTION_CLASS,
-            self::OPT_VALUE_CLASS,
             self::PRODUCT_CLASS,
             $objectManager,
             $factory,
@@ -38,24 +34,9 @@ class AttributeManagerSpec extends ObjectBehavior
         $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
     }
 
-    function it_instantiates_an_attribute_option()
-    {
-        $this->createAttributeOption()->shouldReturnAnInstanceOf(self::OPTION_CLASS);
-    }
-
-    function it_instantiates_an_attribute_option_value()
-    {
-        $this->createAttributeOptionValue()->shouldReturnAnInstanceOf(self::OPT_VALUE_CLASS);
-    }
-
     function it_provides_the_attribute_class_used()
     {
         $this->getAttributeClass()->shouldReturn(self::ATTRIBUTE_CLASS);
-    }
-
-    function it_provides_the_attribute_option_class_used()
-    {
-        $this->getAttributeOptionClass()->shouldReturn(self::OPTION_CLASS);
     }
 
     function it_provides_the_list_of_attribute_types($factory)

@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -31,17 +31,17 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     /** @var LocaleManager $localeManager */
     protected $localeManager;
 
-    /** @var AttributeManager $attributeManager */
-    protected $attributeManager;
+    /** @var AttributeOptionManager $attributeOptionManager */
+    protected $attributeOptionManager;
 
     /**
-     * @param LocaleManager    $localeManager
-     * @param AttributeManager $attributeManager
+     * @param LocaleManager          $localeManager
+     * @param AttributeOptionManager $attributeOptionManager
      */
-    public function __construct(LocaleManager $localeManager, AttributeManager $attributeManager)
+    public function __construct(LocaleManager $localeManager, AttributeOptionManager $attributeOptionManager)
     {
-        $this->localeManager    = $localeManager;
-        $this->attributeManager = $attributeManager;
+        $this->localeManager          = $localeManager;
+        $this->attributeOptionManager = $attributeOptionManager;
     }
 
     /**
@@ -96,7 +96,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
 
         foreach ($activeLocales as $activatedLocale) {
             if (!in_array($activatedLocale->getCode(), $usedLocales)) {
-                $attributeOptionValue = $this->attributeManager->createAttributeOptionValue();
+                $attributeOptionValue = $this->attributeOptionManager->createAttributeOptionValue();
                 $attributeOptionValue->setLocale($activatedLocale->getCode());
                 $attributeOptionValue->setValue('');
 

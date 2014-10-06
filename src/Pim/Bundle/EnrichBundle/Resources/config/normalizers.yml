@@ -13,7 +13,7 @@ services:
         class: %pim_enrich.normalizer.attribute_option.class%
         arguments:
             - @pim_catalog.manager.locale
-            - @pim_catalog.manager.attribute
+            - @pim_catalog.manager.attribute_option
         tags:
             - { name: pim_serializer.normalizer }
 
