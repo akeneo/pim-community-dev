@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
- * Chained rule runner
+ * Chained rule runner. Find the runner able to handle a rule, and run it.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
@@ -38,7 +38,7 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleSubjectSetInterface $rule)
+    public function supports(RuleInterface $rule)
     {
         return true;
     }
@@ -46,28 +46,28 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RuleSubjectSetInterface $subjectSet)
+    public function run(RuleInterface $rule)
     {
         foreach ($this->runners as $runner) {
-            if ($runner->supports($subjectSet)) {
-                return $runner->run($subjectSet);
+            if ($runner->supports($rule)) {
+                return $runner->run($rule);
             }
         }
 
-        throw new \LogicException(sprintf('No runner available for the rule "%s".', $runnable->getCode()));
+        throw new \LogicException(sprintf('No runner available for the rule "%s".', $rule->getCode()));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function dryRun(RuleSubjectSetInterface $subjectSet)
+    public function dryRun(RuleInterface $rule)
     {
         foreach ($this->runners as $runner) {
-            if ($runner instanceof DryRunnerInterface && $runner->supports($subjectSet)) {
-                return $runner->dryRun($subjectSet);
+            if ($runner instanceof DryRunnerInterface && $runner->supports($rule)) {
+                return $runner->dryRun($rule);
             }
         }
 
-        throw new \LogicException(sprintf('No dry runner available for the rule "%s".', $subjectSet->getCode()));
+        throw new \LogicException(sprintf('No dry runner available for the rule "%s".', $rule->getCode()));
     }
 }

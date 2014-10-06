@@ -11,26 +11,26 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
- * Executes a business rule
+ * Runs a rule.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface RunnerInterface
 {
     /**
-     * @param RuleSubjectSetInterface $rule
+     * @param RuleInterface $rule
      *
      * @return mixed
      */
-    public function run(RuleSubjectSetInterface $rule);
+    public function run(RuleInterface $rule);
 
     /**
-     * @param RuleSubjectSetInterface $rule
+     * @param RuleInterface $rule
      *
      * @return bool
      */
-    public function supports(RuleSubjectSetInterface $rule);
+    public function supports(RuleInterface $rule);
 }

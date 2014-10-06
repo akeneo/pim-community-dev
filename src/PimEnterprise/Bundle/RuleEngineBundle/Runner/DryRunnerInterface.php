@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
- * Executes or dry run a business rule
+ * Runs or dry run a business rule.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface DryRunnerInterface extends RunnerInterface
 {
     /**
-     * @param RuleSubjectSetInterface $subjectSet
+     * @param RuleInterface $rule
      *
      * @return mixed
      */
-    public function dryRun(RuleSubjectSetInterface $subjectSet);
+    public function dryRun(RuleInterface $rule);
 }
