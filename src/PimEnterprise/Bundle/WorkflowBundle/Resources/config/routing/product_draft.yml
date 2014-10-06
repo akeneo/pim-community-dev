@@ -1,3 +1,7 @@
+pimee_workflow_product_draft_index:
+    path: /
+    defaults: { _controller: pimee_workflow.controller.product_draft:indexAction }
+
 pimee_workflow_product_draft_approve:
     path: /{id}/approve
     defaults: { _controller: pimee_workflow.controller.product_draft:approveAction }
