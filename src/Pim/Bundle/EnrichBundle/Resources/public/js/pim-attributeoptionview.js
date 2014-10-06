@@ -456,11 +456,11 @@ define(
                 $target: $element,
                 updateUrl: Routing.generate(
                     'pim_enrich_attributeoption_index',
-                    {attributeId: $element.data('attribute-id')}
+                    {attribute_id: $element.data('attribute-id')}
                 ),
                 sortingUrl: Routing.generate(
                     'pim_enrich_attributeoption_update_sorting',
-                    {attributeId: $element.data('attribute-id')}
+                    {attribute_id: $element.data('attribute-id')}
                 ),
                 locales: $element.data('locales'),
                 sortable: $element.data('sortable')
