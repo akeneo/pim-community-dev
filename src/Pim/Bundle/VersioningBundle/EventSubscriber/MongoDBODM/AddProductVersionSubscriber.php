@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Aims to audit data updates on products stored in MongoDB
@@ -113,7 +113,7 @@ class AddProductVersionSubscriber implements EventSubscriber
     /**
      * @param object $versionable
      *
-     * @return Version
+     * @return Version[]
      */
     protected function createVersion($versionable)
     {

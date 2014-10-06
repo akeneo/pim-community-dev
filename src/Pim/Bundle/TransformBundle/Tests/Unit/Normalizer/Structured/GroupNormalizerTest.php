@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured\GroupNormalizer;
-use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\GroupNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 /**
  * Test related class

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractCompleteness;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Completeness normalizer

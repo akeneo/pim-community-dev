@@ -2,13 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-
-use Symfony\Component\Validator\ExecutionContext;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ExecutionContext;
 
 class AttributeValidatorSpec extends ObjectBehavior
 {

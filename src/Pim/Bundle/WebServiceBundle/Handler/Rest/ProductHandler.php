@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\WebServiceBundle\Handler\Rest;
 
-use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Product handler

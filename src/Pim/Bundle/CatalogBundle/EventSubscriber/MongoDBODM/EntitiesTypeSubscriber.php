@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
+use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 
 /**
  * Convert identifiers collection into lazy entity collection

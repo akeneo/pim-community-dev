@@ -3,21 +3,22 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
-use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 class ProductValueFormFactorySpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $formFactory, AttributeTypeFactory $attributeTypeFactory, EventDispatcherInterface $dispatcher)
-    {
+    function let(
+        FormFactoryInterface $formFactory,
+        AttributeTypeFactory $attributeTypeFactory,
+        EventDispatcherInterface $dispatcher
+    ) {
         $this->beConstructedWith($formFactory, $attributeTypeFactory, $dispatcher);
     }
 
