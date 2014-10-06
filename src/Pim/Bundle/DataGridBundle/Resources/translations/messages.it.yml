@@ -19,7 +19,6 @@ datagrid_view:
   create: Creare vista
   placeholder: Nome della nuova visualizzazione
   remove: Eliminare questa visualizzazione
-  save_changes: Carica
   choose_label: "Scegliere un'etichetta per la visualizzazione"
   columns:
     min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
