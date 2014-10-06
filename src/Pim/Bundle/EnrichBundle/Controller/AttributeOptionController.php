@@ -80,12 +80,11 @@ class AttributeOptionController
      *
      * @return JsonResponse
      *
+     * @ParamConverter("attribute", class="pim_catalog.entity.attribute.class", options={"id" = "attribute_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function indexAction($attributeId)
+    public function indexAction(AttributeInterface $attribute)
     {
-        $attribute = $this->findAttributeOr404($attributeId);
-
         $options = $this->normalizer->normalize($attribute->getOptions(), 'array', ['onlyActivatedLocales' => true]);
 
         return new JsonResponse($options);
@@ -99,12 +98,11 @@ class AttributeOptionController
      *
      * @return JsonResponse
      *
+     * @ParamConverter("attribute", class="pim_catalog.entity.attribute.class", options={"id" = "attribute_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function createAction(Request $request, $attributeId)
+    public function createAction(Request $request, AttributeInterface $attribute)
     {
-        $attribute = $this->findAttributeOr404($attributeId);
-
         $attributeOption = $this->attributeOptionManager->createAttributeOption();
         $attributeOption->setAttribute($attribute);
 
@@ -122,12 +120,16 @@ class AttributeOptionController
      *
      * @return JsonResponse
      *
+     * @ParamConverter("attribute", class="pim_catalog.entity.attribute.class", options={"id" = "attribute_id"})
+     * @ParamConverter(
+     *     "attribute",
+     *     class="pim_catalog.entity.attribute_option.class",
+     *     options={"id" = "attribute_option_id"}
+     * )
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function updateAction(Request $request, $attributeOptionId)
+    public function updateAction(Request $request, AttributeInterface $attribute, AttributeOption $attributeOption)
     {
-        $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
-
         //Should be replaced by a paramConverter
         $data = json_decode($request->getContent(), true);
 
@@ -141,12 +143,16 @@ class AttributeOptionController
      *
      * @return JsonResponse
      *
+     * @ParamConverter("attribute", class="pim_catalog.entity.attribute.class", options={"id" = "attribute_id"})
+     * @ParamConverter(
+     *     "attribute",
+     *     class="pim_catalog.entity.attribute_option.class",
+     *     options={"id" = "attribute_option_id"}
+     * )
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function deleteAction($attributeOptionId)
+    public function deleteAction(AttributeInterface $attribute, AttributeOption $attributeOption)
     {
-        $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
-
         $this->attributeOptionManager->remove($attributeOption);
 
         return new JsonResponse();
@@ -160,11 +166,11 @@ class AttributeOptionController
      *
      * @return JsonResponse
      *
+     * @ParamConverter("attribute", class="pim_catalog.entity.attribute.class", options={"id" = "attribute_id"})
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function updateSortingAction(Request $request, $attributeId)
+    public function updateSortingAction(Request $request, $attribute)
     {
-        $attribute = $this->findAttributeOr404($attributeId);
         //Should be replaced by a paramConverter
         $data = json_decode($request->getContent(), true);
 
@@ -197,43 +203,5 @@ class AttributeOptionController
         }
 
         return $this->viewHandler->handle(RestView::create($form));
-    }
-
-    /**
-     * Find an attribute or throw a 404
-     *
-     * @param integer $id The id of the attribute
-     *
-     * @throws NotFoundHttpException
-     * @return AttributeInterface
-     */
-    protected function findAttributeOr404($id)
-    {
-        try {
-            $result = $this->attributeManager->getAttribute($id);
-        } catch (EntityNotFoundException $e) {
-            throw new NotFoundHttpException($e->getMessage());
-        }
-
-        return $result;
-    }
-
-    /**
-     * Find an attribute option or throw a 404
-     *
-     * @param integer $id The id of the attribute option
-     *
-     * @throws NotFoundHttpException
-     * @return AttributeOption
-     */
-    protected function findAttributeOptionOr404($id)
-    {
-        try {
-            $result = $this->attributeOptionManager->getAttributeOption($id);
-        } catch (EntityNotFoundException $e) {
-            throw new NotFoundHttpException($e->getMessage());
-        }
-
-        return $result;
     }
 }

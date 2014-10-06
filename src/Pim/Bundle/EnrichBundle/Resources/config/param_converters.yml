@@ -1,0 +1,11 @@
+parameters:
+    pim_enrich.param_converter.configurable.class: Pim\Bundle\EnrichBundle\ParamConverter\ConfigurableParamConverter
+
+services:
+    pim_enrich.param_converter.configurable:
+        class: %pim_enrich.param_converter.configurable.class%
+        arguments:
+            - @service_container
+            - @sensio_framework_extra.converter.doctrine.orm
+        tags:
+            - { name: request.param_converter, priority: 200, converter: pim_enrich.param_converter.configurable }
