@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Repository;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -147,4 +148,9 @@ interface ProductRepositoryInterface
      * @return array
      */
     public function getFullProducts(array $productIds, array $attributeIds = array());
+
+    /**
+     * @return ObjectManager
+     */
+    public function getObjectManager();
 }
