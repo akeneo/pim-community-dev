@@ -25,9 +25,10 @@ Feature: Display available field options
   Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
     And I visit the "Values" tab
+    And I wait for options to load
     Then I should see the <fields> fields
 
     Examples:
-      | type          | fields                         |
-      | Multi select  | Code, Automatic option sorting |
-      | Simple select | Code, Automatic option sorting |
+      | type          | fields                   |
+      | Multi select  | Automatic option sorting |
+      | Simple select | Automatic option sorting |
