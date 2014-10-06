@@ -31,7 +31,7 @@
 - Remove CatalogContext argument from ProductQueryBuilder::__construct
 - Remove ProductRepository from Datagrid Sorters __construct
 - Remove deprecated ProductRepositoryInterface::getProductQueryBuilder
-- Replace setProductQueryBuilder by setProductQueryFactory in ProductRepositoryInterface
+- Replace setProductQueryBuilder by setProductQueryFactory and add a getObjectManager in ProductRepositoryInterface
 - Add a ProductQueryFactoryInterface argument in ProductDatasource::__construct
 - Add a $productOrmAdapterClass argument in DatasourceAdapterResolver::__construct
 
