@@ -130,6 +130,8 @@ class GroupRepository extends ReferableEntityRepository
             ->leftJoin('g.attributes', 'attribute')
             ->innerJoin('g.type', 'type', 'WITH', $typeExpr);
 
+        $qb->groupBy('g');
+
         return $qb;
     }
 
