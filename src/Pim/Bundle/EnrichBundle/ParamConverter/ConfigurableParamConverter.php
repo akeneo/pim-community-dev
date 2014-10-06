@@ -57,7 +57,13 @@ class ConfigurableParamConverter implements ParamConverterInterface
         return $this->paramConverter->supports($properConfiguration);
     }
 
-    protected function getProperConfiguration(ParamConverter $configuration)
+    /**
+     * Get a proper class name for the encapsulated paramConverter
+     * @param ConfigurationInterface $configuration
+     *
+     * @return ConfigurationInterface
+     */
+    protected function getProperConfiguration(ConfigurationInterface $configuration)
     {
         $properConfiguration = clone $configuration;
 
@@ -65,5 +71,4 @@ class ConfigurableParamConverter implements ParamConverterInterface
 
         return $properConfiguration;
     }
-
 }

@@ -122,7 +122,7 @@ class AttributeOptionController
      *
      * @ParamConverter("attribute", class="pim_catalog.entity.attribute.class", options={"id" = "attribute_id"})
      * @ParamConverter(
-     *     "attribute",
+     *     "attributeOption",
      *     class="pim_catalog.entity.attribute_option.class",
      *     options={"id" = "attribute_option_id"}
      * )
@@ -145,7 +145,7 @@ class AttributeOptionController
      *
      * @ParamConverter("attribute", class="pim_catalog.entity.attribute.class", options={"id" = "attribute_id"})
      * @ParamConverter(
-     *     "attribute",
+     *     "attributeOption",
      *     class="pim_catalog.entity.attribute_option.class",
      *     options={"id" = "attribute_option_id"}
      * )

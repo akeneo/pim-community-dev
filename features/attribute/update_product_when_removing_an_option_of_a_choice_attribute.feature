@@ -45,8 +45,11 @@ Feature: Update product when removing an option of a choice attribute
     And I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I remove the "hot" option
+    And I wait for options to load
     And I remove the "cold" option
+    And I wait for options to load
     And I remove the "snowy" option
+    And I wait for options to load
     And I save the attribute
     When I edit the "foo" product
     Then the product Weather conditions should be "Dry"

@@ -25,7 +25,7 @@ Feature: Display available field options
   Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
     And I visit the "Values" tab
-    And I wait for options to load
+    And I save the attribute
     Then I should see the <fields> fields
 
     Examples:
