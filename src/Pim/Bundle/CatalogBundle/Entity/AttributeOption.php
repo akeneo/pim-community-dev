@@ -48,11 +48,6 @@ class AttributeOption implements ReferableInterface
     protected $default = false;
 
     /**
-     * @var boolean
-     */
-    protected $translatable;
-
-    /**
      * Not persisted, allowe to define the value locale
      * @var string $locale
      */
@@ -61,7 +56,7 @@ class AttributeOption implements ReferableInterface
     /**
      * @var integer
      */
-    protected $sortOrder;
+    protected $sortOrder = 1;
 
     /**
      * Constructor
@@ -69,8 +64,6 @@ class AttributeOption implements ReferableInterface
     public function __construct()
     {
         $this->optionValues = new ArrayCollection();
-        $this->translatable = true;
-        $this->sortOrder    = 1;
     }
 
     /**
@@ -153,30 +146,6 @@ class AttributeOption implements ReferableInterface
         $this->locale = $locale;
 
         return $this;
-    }
-
-    /**
-     * Set translatable
-     *
-     * @param boolean $translatable
-     *
-     * @return AttributeOption
-     */
-    public function setTranslatable($translatable)
-    {
-        $this->translatable = $translatable;
-
-        return $this;
-    }
-
-    /**
-     * Is translatable
-     *
-     * @return boolean $translatable
-     */
-    public function isTranslatable()
-    {
-        return $this->translatable;
     }
 
     /**
@@ -326,20 +295,6 @@ class AttributeOption implements ReferableInterface
      */
     public function getOptionValue()
     {
-        $translatable = $this->translatable;
-        $locale = $this->getLocale();
-        $values = $this->getOptionValues()->filter(
-            function ($value) use ($translatable, $locale) {
-                // return relevant translated value
-                if ($translatable && $value->getLocale() == $locale) {
-                    return true;
-                } elseif (!$translatable) {
-                    return true;
-                }
-            }
-        );
-        $value = $values->first();
-
-        return $value;
+        return $this->getOptionValues()->get($this->getLocale()) ?: $this->getOptionValues()->first();
     }
 }

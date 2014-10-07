@@ -13,6 +13,7 @@
  - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
  - Remove deprecated attribute property *Usable as a grid column*
  - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
+ - Refactor of the attribute option screen to manage more than 100 options
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -34,6 +35,10 @@
 - Replace setProductQueryBuilder by setProductQueryFactory and add a getObjectManager in ProductRepositoryInterface
 - Add a ProductQueryFactoryInterface argument in ProductDatasource::__construct
 - Add a $productOrmAdapterClass argument in DatasourceAdapterResolver::__construct
+- Remove is_default, translatable from attributeOption mapping
+- Remove $optionClass and $optionValueClass arguments from the AttributeManager::__construct
+- Remove createAttributeOption, createAttributeOptionValue, getAttributeOptionClass from the attributeManager (now in the attributeOptionManager)
+- Add a $attributeOptionManager argument in AttributeController::__construct
 
 # 1.2.x
 

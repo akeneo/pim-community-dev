@@ -7,6 +7,7 @@ parameters:
     pim_enrich.controller.locale.class: Pim\Bundle\EnrichBundle\Controller\LocaleController
     pim_enrich.controller.mass_edit_action.class: Pim\Bundle\EnrichBundle\Controller\MassEditActionController
     pim_enrich.controller.attribute.class: Pim\Bundle\EnrichBundle\Controller\AttributeController
+    pim_enrich.controller.attribute_option.class: Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
     pim_enrich.controller.product.class: Pim\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.association.class: Pim\Bundle\EnrichBundle\Controller\AssociationController
     pim_enrich.controller.group.class: Pim\Bundle\EnrichBundle\Controller\GroupController
@@ -95,10 +96,22 @@ services:
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
             - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.version'
             - %akeneo_measure.measures_config%
             - %pim_catalog.entity.attribute.class%
+
+    pim_enrich.controller.attribute_option:
+        scope: request
+        class: %pim_enrich.controller.attribute_option.class%
+        arguments:
+            - '@pim_internal_api_serializer'
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@fos_rest.view_handler'
+            - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.manager.attribute_option'
 
     pim_enrich.controller.product:
         scope: request

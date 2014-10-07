@@ -362,16 +362,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^the option should not be removable$/
-     */
-    public function theOptionShouldNotBeRemovable()
-    {
-        if (0 !== $this->getCurrentPage()->countRemovableOptions()) {
-            throw $this->createExpectationException('The option should not be removable.');
-        }
-    }
-
-    /**
      * @param string $optionName
      *
      * @Then /^I remove the "([^"]*)" option$/
@@ -702,6 +692,26 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see reorder handles$/
+     */
+    public function iShouldSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() <= 0) {
+            throw $this->createExpectationException('No reorder handle found');
+        }
+    }
+
+    /**
+     * @Then /^I should not see reorder handles$/
+     */
+    public function iShouldNotSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() > 0) {
+            throw $this->createExpectationException('Reorder handle was not expected');
+        }
+    }
+
+    /**
      * @param string $attributes
      *
      * @Then /^eligible attributes as label should be (.*)$/
@@ -949,8 +959,33 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Code'], $data['Selected by default']);
+            $this->getCurrentPage()->addOption($data['Code']);
+            $this->wait(3000);
         }
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
+     */
+    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
+        $this->wait(3000);
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+     */
+    public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
+        $this->wait(3000);
     }
 
     /**
@@ -1251,6 +1286,15 @@ class WebUser extends RawMinkContext
      * @Given /^I wait for (the )?widgets to load$/
      */
     public function iWaitForTheWidgetsToLoad()
+    {
+        $this->wait(2000, false);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I wait for (the )?options to load$/
+     */
+    public function iWaitForTheOptionsToLoad()
     {
         $this->wait(2000, false);
         $this->wait();

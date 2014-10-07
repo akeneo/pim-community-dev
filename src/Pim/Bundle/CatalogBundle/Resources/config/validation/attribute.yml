@@ -29,12 +29,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_number
                 - pim_catalog_date
                 - pim_catalog_metric
-        - Callback:
-            methods:
-                - [Pim\Bundle\CatalogBundle\Validator\AttributeValidator, areOptionsValid]
-            groups:
-                - pim_catalog_multiselect
-                - pim_catalog_simpleselect
     properties:
         code:
             - NotBlank: ~

@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
@@ -48,6 +49,11 @@ class AttributeController extends AbstractDoctrineController
     protected $attributeManager;
 
     /**
+     * @var AttributeOptionManager
+     */
+    protected $attributeOptionManager;
+
+    /**
      * @var LocaleManager
      */
     protected $localeManager;
@@ -85,6 +91,7 @@ class AttributeController extends AbstractDoctrineController
      * @param AttributeHandler         $attributeHandler
      * @param Form                     $attributeForm
      * @param AttributeManager         $attributeManager
+     * @param AttributeOptionManager   $attributeOptionManager
      * @param LocaleManager            $localeManager
      * @param VersionManager           $versionManager
      * @param array                    $measuresConfig
@@ -102,6 +109,7 @@ class AttributeController extends AbstractDoctrineController
         AttributeHandler $attributeHandler,
         Form $attributeForm,
         AttributeManager $attributeManager,
+        AttributeOptionManager $attributeOptionManager,
         LocaleManager $localeManager,
         VersionManager $versionManager,
         $measuresConfig
@@ -118,12 +126,13 @@ class AttributeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->attributeHandler = $attributeHandler;
-        $this->attributeForm    = $attributeForm;
-        $this->attributeManager = $attributeManager;
-        $this->localeManager    = $localeManager;
-        $this->versionManager   = $versionManager;
-        $this->measuresConfig   = $measuresConfig;
+        $this->attributeHandler       = $attributeHandler;
+        $this->attributeForm          = $attributeForm;
+        $this->attributeManager       = $attributeManager;
+        $this->attributeOptionManager = $attributeOptionManager;
+        $this->localeManager          = $localeManager;
+        $this->versionManager         = $versionManager;
+        $this->measuresConfig         = $measuresConfig;
     }
 
     /**
@@ -165,7 +174,7 @@ class AttributeController extends AbstractDoctrineController
 
         return [
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveLocales(),
+            'locales'         => $this->localeManager->getActiveCodes(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'attributeType'   => $attributeType
@@ -193,7 +202,7 @@ class AttributeController extends AbstractDoctrineController
 
         return array(
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveLocales(),
+            'locales'         => $this->localeManager->getActiveCodes(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'created'         => $this->versionManager->getOldestLogEntry($attribute),
@@ -251,9 +260,9 @@ class AttributeController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_attribute_edit', array('id'=> $attribute->getId()));
         }
 
-        $option = $this->attributeManager->createAttributeOption();
+        $option = $this->attributeOptionManager->createAttributeOption();
 
-        $optionValue = $this->attributeManager->createAttributeOptionValue();
+        $optionValue = $this->attributeOptionManager->createAttributeOptionValue();
         $optionValue->setLocale($dataLocale);
         $optionValue->setValue('');
         $option->addOptionValue($optionValue);
