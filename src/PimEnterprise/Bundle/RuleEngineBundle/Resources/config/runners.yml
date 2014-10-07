@@ -4,3 +4,10 @@ parameters:
 services:
     pimee_rule_engine.runner.chained:
         class: %pimee_rule_engine.runner.chained.class%
+
+    pimee_rule_engine.runner.batch:
+        abstract: true
+        calls:
+            - [ setRootDir, [%kernel.root_dir%]]
+            - [ setEnvironment, [%kernel.environment%]]
+            - [ setJobCode, ['rule']]
