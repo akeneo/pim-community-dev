@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - Fix memory leak in CSV quick export
+- Fix memory leak when product with medias are exported in CSV
 - Cannot display correctly all variant groups on grid
 
 ## Improvements

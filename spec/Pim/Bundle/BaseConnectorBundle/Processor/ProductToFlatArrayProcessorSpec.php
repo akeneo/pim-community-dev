@@ -20,7 +20,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->beConstructedWith($serializer, $channelManager);
     }
 
-    function it_returns_flat_data(
+    function it_returns_flat_data_with_media(
         Channel $channel,
         ChannelManager $channelManager,
         Product $item,
@@ -39,12 +39,35 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $item->getMedia()->willReturn([$media1, $media2]);
 
         $serializer
+            ->normalize([$media1, $media2], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
+            ->willReturn(['normalized_media1', 'normalized_media2']);
+
+        $serializer
             ->normalize($item, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
-        $this->process($item)->shouldReturn(['media' => [$media1, $media2], 'product' => ['normalized_product']]);
+        $this->process($item)->shouldReturn(['media' => ['normalized_media1', 'normalized_media2'], 'product' => ['normalized_product']]);
     }
+
+    function it_returns_flat_data_without_media(
+        Channel $channel,
+        ChannelManager $channelManager,
+        Product $item,
+        Serializer $serializer
+    ) {
+        $item->getMedia()->willReturn([]);
+
+        $serializer
+            ->normalize($item, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->willReturn(['normalized_product']);
+
+        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+
+        $this->setChannel('foobar');
+        $this->process($item)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
+    }
+
 }

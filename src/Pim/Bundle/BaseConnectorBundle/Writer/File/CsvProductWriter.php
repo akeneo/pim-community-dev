@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+
 /**
  * Write product data into a csv file on the filesystem
  *
@@ -11,6 +14,19 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
  */
 class CsvProductWriter extends CsvWriter
 {
+    /**
+     * @param MediaManager $mediaManager
+     */
+    protected $mediaManager;
+
+    /**
+     * @param MediaManager $mediaManager
+     */
+    public function __construct(MediaManager $mediaManager)
+    {
+        $this->mediaManager = $mediaManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,8 +41,8 @@ class CsvProductWriter extends CsvWriter
         foreach ($items as $item) {
             $products[] = $item['product'];
             foreach ($item['media'] as $media) {
-                if ($media) {
-                    $this->copyMedia($media);
+                if ($media && isset($media['filePath']) && $media['filePath']) {
+                    $this->copyMediaFromArray($media);
                 }
             }
         }
@@ -39,7 +55,7 @@ class CsvProductWriter extends CsvWriter
      *
      * @return void
      */
-    protected function copyMedia(array $media)
+    protected function copyMediaFromArray(array $media)
     {
         $target = sprintf('%s/%s', dirname($this->getPath()), $media['exportPath']);
 
@@ -52,6 +68,32 @@ class CsvProductWriter extends CsvWriter
             $this->stepExecution->addWarning(
                 $this->getName(),
                 sprintf('Copy of "%s" failed.', $media['filePath']),
+                [],
+                $media
+            );
+        }
+    }
+
+    /**
+     * @deprecated argument type will be changed in 1.3
+     *
+     * @param AbstractProductMedia $media
+     *
+     * @return void
+     */
+    protected function copyMedia(AbstractProductMedia $media)
+    {
+        if (null === $media->getFilePath() || '' === $media->getFileName()) {
+            return;
+        }
+        $result = $this->mediaManager->copy($media, dirname($this->getPath()));
+        $exportPath = $this->mediaManager->getExportPath($media);
+        if (true === $result) {
+            $this->writtenFiles[sprintf('%s/%s', dirname($this->getPath()), $exportPath)] = $exportPath;
+        } else {
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                sprintf('Copy of "%s" failed.', $media->getFilename()),
                 [],
                 $media
             );
