@@ -86,8 +86,11 @@ services:
             - %pim_catalog.entity.association_type.class%
 
     pim_base_connector.processor.group:
-        parent: pim_base_connector.processor.transformer
+        class: %pim_base_connector.processor.transformer.class%
         arguments:
+            - '@pim_base_connector.validator.group_import'
+            - '@translator'
+            - '@pim_transform.transformer.registry'
             - %pim_catalog.entity.group.class%
 
     pim_base_connector.processor.attribute_group:

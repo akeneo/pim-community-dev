@@ -2,6 +2,7 @@ parameters:
     pim_base_connector.validator.constraints.channel_validator.class: Pim\Bundle\BaseConnectorBundle\Validator\Constraints\ChannelValidator
     pim_base_connector.validator.import.class:                        Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidator
     pim_base_connector.validator.product_import.class:                Pim\Bundle\BaseConnectorBundle\Validator\Import\ProductImportValidator
+    pim_base_connector.validator.group_import.class:                  Pim\Bundle\BaseConnectorBundle\Validator\Import\GroupImportValidator
     pim_base_connector.validator.skip_import.class:                   Pim\Bundle\BaseConnectorBundle\Validator\Import\SkipImportValidator
     pim_base_connector.validator.step.charset_validator.class:        Pim\Bundle\BaseConnectorBundle\Validator\Step\CharsetValidator
 
@@ -23,6 +24,12 @@ services:
         parent: pim_base_connector.validator.import
         arguments:
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+
+    pim_base_connector.validator.group_import:
+        class: %pim_base_connector.validator.group_import.class%
+        parent: pim_base_connector.validator.import
+        arguments:
+            - '@pim_catalog.repository.group'
 
     pim_base_connector.validator.skip_import:
         class: %pim_base_connector.validator.skip_import.class%
