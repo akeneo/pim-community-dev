@@ -1,33 +1,33 @@
 pim_enrich_attributeoption_index:
-    path: /{attribute_id}
+    path: /{attributeId}
     defaults: { _controller: pim_enrich.controller.attribute_option:indexAction, _format: json }
     requirements:
-        attribute_id: \d+
+        attributeId: \d+
         _method:  GET
 pim_enrich_attributeoption_create:
-    path: /{attribute_id}
+    path: /{attributeId}
     defaults: { _controller: pim_enrich.controller.attribute_option:createAction, _format: json }
     requirements:
-        attribute_id: \d+
-        attribute_option_id: \d+
+        attributeId: \d+
+        attributeOptionId: \d+
         _method:  POST
 pim_enrich_attributeoption_update:
-    path: /{attribute_id}/{attribute_option_id}
+    path: /{attributeId}/{attributeOptionId}
     defaults: { _controller: pim_enrich.controller.attribute_option:updateAction, _format: json }
     requirements:
-        attribute_id: \d+
-        attribute_option_id: \d+
+        attributeId: \d+
+        attributeOptionId: \d+
         _method:  PUT
 pim_enrich_attributeoption_delete:
-    path: /{attribute_id}/{attribute_option_id}
+    path: /{attributeId}/{attributeOptionId}
     defaults: { _controller: pim_enrich.controller.attribute_option:deleteAction, _format: json }
     requirements:
-        attribute_id: \d+
-        attribute_option_id: \d+
+        attributeId: \d+
+        attributeOptionId: \d+
         _method:  DELETE
 pim_enrich_attributeoption_update_sorting:
-    path: /{attribute_id}/update-sorting
+    path: /{attributeId}/update-sorting
     defaults: { _controller: pim_enrich.controller.attribute_option:updateSortingAction, _format: json }
     requirements:
-        attribute_id: \d+
+        attributeId: \d+
         _method:  PUT
