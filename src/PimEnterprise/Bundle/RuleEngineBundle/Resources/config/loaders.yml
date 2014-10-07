@@ -1,0 +1,6 @@
+parameters:
+    pimee_rule_engine.loader.chained.class: PimEnterprise\Bundle\RuleEngineBundle\Engine\ChainedLoader
+
+services:
+    pimee_rule_engine.loader.chained:
+        class: %pimee_rule_engine.loader.chained.class%
