@@ -58,14 +58,17 @@ error:
         export profile:   Cannot delete this export profile
         user:             Cannot delete this user
         role:             Cannot delete this role
+    saving:
+        attribute_option: Cannot save attribute option
 alert:
     attribute_option:
         error_occured_during_submission: An error occured during the form submission on the server
-        save_before_edit_other:          Please register your modifications on other rows before editing an other
+        save_before_edit_other:          Please register your modifications on other rows before editing this one
 
 confirm:
     attribute_option:
-        cancel_edition_on_new_option: Warning, you will lose usaved data. Are you sure you want to cancel modification on this new option ?
+        cancel_edition_on_new_option_text: Warning, you will lose usaved data. Are you sure you want to cancel modification on this new option ?
+        cancel_edition_on_new_option_title: Cancel modification
 
 label:
     attribute_option:

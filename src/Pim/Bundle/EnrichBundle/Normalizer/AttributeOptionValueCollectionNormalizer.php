@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 /**
- * Attribute normalizer
+ * Attribute normalizer for private api
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

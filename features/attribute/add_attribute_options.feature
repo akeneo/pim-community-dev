@@ -51,8 +51,9 @@ Feature: Add attribute options
       | green |
     And I wait for options to load
     And I edit the code "green" to turn it to "yellow" and cancel
-    Then I should see "green"
-    Then I should not see "yellow"
+    Then I should see a confirm dialog with the following content:
+      | title   | Cancel modification                                                                                   |
+      | content | Warning, you will lose usaved data. Are you sure you want to cancel modification on this new option ? |
 
   @jira https://akeneo.atlassian.net/browse/PIM-2166
   Scenario: Successfully delete some attribute options

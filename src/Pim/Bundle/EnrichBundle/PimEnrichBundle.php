@@ -23,6 +23,6 @@ class PimEnrichBundle extends Bundle
         $container
             ->addCompilerPass(new Compiler\RegisterMassEditOperatorsPass())
             ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass())
-            ->addCompilerPass(new Compiler\SerializerPass('pim_private_api_serializer'));
+            ->addCompilerPass(new Compiler\SerializerPass('pim_internal_api_serializer'));
     }
 }

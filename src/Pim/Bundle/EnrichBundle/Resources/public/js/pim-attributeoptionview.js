@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'jquery-ui-full'],
-    function ($, _, Backbone, __, Routing, mediator, LoadingMask) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pim/dialog', 'jquery-ui-full'],
+    function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
         'use strict';
 
         var AttributeOptionItem = Backbone.Model.extend({
@@ -42,15 +42,15 @@ define(
             ),
             editTemplate: _.template(
                 '<td class="field-cell">' +
-                    '<input type="text" class="attribute_option_code" value="<%= item.code %>" class="exclude" />' +
+                    '<input type="text" class="attribute_option_code exclude" value="<%= item.code %>"/>' +
                     '<i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>' +
                 '</td>' +
                 '<% _.each(locales, function(locale) { %>' +
                 '<td class="field-cell">' +
                     '<% if (item.optionValues[locale]) { %>' +
-                        '<input type="text" class="attribute-option-value" data-locale="<%= locale %>" value="<%= item.optionValues[locale].value %>" class="exclude" />' +
+                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" value="<%= item.optionValues[locale].value %>"/>' +
                     '<% } else { %>' +
-                        '<input type="text" class="attribute-option-value" data-locale="<%= locale %>" value="" class="exclude"/>' +
+                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" value=""/>' +
                     '<% } %>' +
                 '</td>' +
                 '<% }); %>' +
@@ -64,7 +64,7 @@ define(
                 'click .edit-row':   'startEditItem',
                 'click .delete-row': 'deleteItem',
                 'click .update-row': 'updateItem',
-                'change input':      'soil',
+                'keydown input':     'soil',
                 'keydown':           'cancelSubmit'
             },
             editable: false,
@@ -108,6 +108,7 @@ define(
             showEditableItem: function() {
                 this.editable = true;
                 this.render();
+                this.model.set(this.loadModelFromView().attributes);
             },
             startEditItem: function() {
                 var rowIsEditable = this.parent.requestRowEdition(this);
@@ -117,13 +118,21 @@ define(
                 }
             },
             stopEditItem: function() {
-                if (!this.model.id) {
-                    if (confirm(__('confirm.attribute_option.cancel_edition_on_new_option'))) {
-                        this.showReadableItem(this);
-
-                        this.deleteItem(this);
+                if (!this.model.id || this.dirty) {
+                    if (this.dirty) {
+                        Dialog.confirm(
+                            __('confirm.attribute_option.cancel_edition_on_new_option_text'),
+                            __('confirm.attribute_option.cancel_edition_on_new_option_title'),
+                            _.bind(function() {
+                                this.showReadableItem(this);
+                                this.deleteItem(this);
+                            }, this));
                     } else {
-                        return;
+                        if (!this.model.id) {
+                            this.deleteItem();
+                        } else {
+                            this.showReadableItem();
+                        }
                     }
                 } else {
                     this.showReadableItem();
@@ -144,6 +153,7 @@ define(
                         success: _.bind(function(data) {
                             this.inLoading(false);
                             this.model.set(editedModel.attributes);
+                            this.clean();
                             this.stopEditItem();
                         }, this),
                         error: _.bind(function(data, xhr) {
@@ -163,7 +173,10 @@ define(
                                     .tooltip({title: message})
                                     .tooltip('show');
                             } else {
-                                alert(__('alert.attribute_option.error_occured_during_submission'));
+                                Dialog.alert(
+                                    __('alert.attribute_option.error_occured_during_submission'),
+                                    __('error.saving.attribute_option')
+                                );
                             }
                         }, this)
                     }
@@ -198,14 +211,17 @@ define(
                 editedModel.set('code', this.$el.find('.attribute_option_code').val())
                 editedModel.set('optionValues', attributeOptions);
 
-
                 return editedModel;
             },
             inLoading: function(loading) {
                 this.parent.inLoading(loading);
             },
             soil: function() {
-                this.dirty = true;
+                if (JSON.stringify(this.model.attributes) !== JSON.stringify(this.loadModelFromView().attributes)) {
+                    this.dirty = true;
+                } else {
+                    this.dirty = false;
+                }
             },
             clean: function() {
                 this.dirty = false;
@@ -365,7 +381,7 @@ define(
             requestRowEdition: function (attributeOptionRow) {
                 if (this.currentlyEditedItemView) {
                     if (this.currentlyEditedItemView.dirty) {
-                        alert(__('alert.attribute_option.save_before_edit_other'));
+                        Dialog.alert(__('alert.attribute_option.save_before_edit_other'));
 
                         return false;
                     } else {
@@ -394,6 +410,8 @@ define(
                         this.inLoading(false);
 
                         this.collection.remove(item);
+                        this.currentlyEditedItemView = null;
+                        this.updateEditionStatus();
 
                         if (0 === this.collection.length) {
                             this.addItem();

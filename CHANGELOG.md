@@ -35,6 +35,10 @@
 - Replace setProductQueryBuilder by setProductQueryFactory in ProductRepositoryInterface
 - Add a ProductQueryFactoryInterface argument in ProductDatasource::__construct
 - Add a $productOrmAdapterClass argument in DatasourceAdapterResolver::__construct
+- Remove is_default, translatable from attributeOption mapping
+- Remove $optionClass and $optionValueClass arguments from the AttributeManager::__construct
+- Remove createAttributeOption, createAttributeOptionValue, getAttributeOptionClass from the attributeManager (now in the attributeOptionManager)
+- Add a $attributeOptionManager argument in AttributeController::__construct
 
 # 1.2.x
 

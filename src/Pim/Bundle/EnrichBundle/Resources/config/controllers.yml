@@ -106,7 +106,7 @@ services:
         scope: request
         class: %pim_enrich.controller.attribute_option.class%
         arguments:
-            - '@pim_private_api_serializer'
+            - '@pim_internal_api_serializer'
             - '@doctrine.orm.entity_manager'
             - '@form.factory'
             - '@fos_rest.view_handler'
