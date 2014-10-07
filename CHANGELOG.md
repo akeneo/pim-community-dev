@@ -10,6 +10,8 @@
 
 ## Bug fixes
 
+- Remove the `is_default` from fixtures for attribute options
+
 ## BC breaks
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
 
