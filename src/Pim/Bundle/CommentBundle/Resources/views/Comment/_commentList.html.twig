@@ -3,7 +3,7 @@
         ['jquery', 'oro/messenger', 'pim/dialog'],
         function ($, messenger, Dialog) {
             'use strict';
-            $('#comments').on('click', '.comment-delete-dialog', function () {
+            $('.tab-comment').on('click', '.comment-delete-dialog', function () {
                 var $el      = $(this),
                     $comment = $($el.data('comment')),
                     message  = $el.data('message'),
@@ -34,15 +34,15 @@
                 return false;
             });
 
-            $("#comments .comment-create").on("click", function() {
-                $("#comments .active").removeClass("active");
+            $(".tab-comment .comment-create").on("click", function() {
+                $(".tab-comment .active").removeClass("active");
                 $(this).addClass("active");
             });
 
-            $("#comments .cancel").on("click", function(e) {
+            $(".tab-comment .cancel").on("click", function(e) {
                 e.stopPropagation();
-                $("#comments .active").removeClass("active");
-                $("#comments textarea").val('');
+                $(".tab-comment .active").removeClass("active");
+                $(".tab-comment textarea").val('');
             });
         }
     );

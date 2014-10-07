@@ -1,0 +1,33 @@
+parameters:
+    pim_enrich.view.tab.attribute_parameter.template: 'PimEnrichBundle:Attribute:Tab/parameter.html.twig'
+    pim_enrich.view.tab.attribute_value.template:     'PimEnrichBundle:Attribute:Tab/value.html.twig'
+    pim_enrich.view.tab.attribute_history.template:   'PimEnrichBundle:Attribute:Tab/history.html.twig'
+
+services:
+    pim_enrich.view.tab.attribute_parameter:
+        parent: pim_enrich.view.tab.base
+        arguments:
+            - %pim_enrich.view.tab.attribute_parameter.template%
+            - 'tab.pim_enrich_attribute_edit.parameter'
+        tags:
+            - { name: pim_enrich_views.tab, position: 90, identifier: pim_enrich_attribute_edit}
+
+    pim_enrich.view.tab.attribute_value:
+        parent: pim_enrich.view.tab.base
+        arguments:
+            - %pim_enrich.view.tab.attribute_value.template%
+            - 'tab.pim_enrich_attribute_edit.value'
+        tags:
+            - { name: pim_enrich_views.tab, position: 100, identifier: pim_enrich_attribute_edit}
+
+    pim_enrich.view.tab.attribute_history_base:
+        parent: pim_enrich.view.tab.base
+        arguments:
+            - %pim_enrich.view.tab.attribute_history.template%
+            - 'tab.pim_enrich_attribute_edit.history'
+    pim_enrich.view.tab.attribute_history:
+        parent: pim_enrich.view.tab.on_form_edit
+        arguments:
+            - @pim_enrich.view.tab.attribute_history_base
+        tags:
+            - { name: pim_enrich_views.tab, position: 110, identifier: pim_enrich_attribute_edit}

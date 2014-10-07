@@ -1,0 +1,25 @@
+parameters:
+    pim_enrich.view.tab.base.class:         Pim\Bundle\EnrichBundle\View\Tab\BaseTab
+    pim_enrich.view.tab.on_form_edit.class: Pim\Bundle\EnrichBundle\View\Tab\OnFormEditTab
+    pim_enrich.view.tab.granted.class:      Pim\Bundle\EnrichBundle\View\Tab\GrantedTab
+    pim_enrich.view.registry.class:         Pim\Bundle\EnrichBundle\View\ViewRegistry
+
+services:
+    pim_enrich.view.registry:
+        class: %pim_enrich.view.registry.class%
+
+    pim_enrich.view.tab.base:
+        class: %pim_enrich.view.tab.base.class%
+        abstract: true
+        arguments:
+            - @templating
+
+    pim_enrich.view.tab.on_form_edit:
+        class: %pim_enrich.view.tab.on_form_edit.class%
+        abstract: true
+
+    pim_enrich.view.tab.granted:
+        class: %pim_enrich.view.tab.granted.class%
+        abstract: true
+        arguments:
+            - '@oro_security.security_facade'

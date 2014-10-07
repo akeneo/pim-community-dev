@@ -33,26 +33,12 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {% set tabs = ['Properties'] %}
-        {% if resource_granted('pim_enrich_association_type_history') %}
-            {% set tabs = tabs|merge(['History']) %}
-        {% endif %}
-
-        {{ elements.form_navbar(tabs) }}
+        {{ elements.form_navbar(tab_titles('pim_enrich_associationtype_edit')) }}
 
         <div class="row-fluid tab-content">
-
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="properties">
-                {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.locale_values': form_row(form.label) }) }}
-            </div>
-
-            {% if resource_granted('pim_enrich_association_type_history') %}
-                <div class="tab-pane" id="history">
-                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-                </div>
-            {% endif %}
+            {{ tab_contents('pim_enrich_associationtype_edit') }}
         </div>
     {{ form_end(form) }}
 {% endblock %}

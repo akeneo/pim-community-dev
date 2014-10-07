@@ -1,0 +1,4 @@
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+<div class="tab-pane tab-history {{ first_tab ? 'active' : ''}}" id="{{ tab_id }}">
+    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+</div>
