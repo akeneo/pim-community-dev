@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3221: Fix the possibility to update attributes on variant groups during import
+
 # 1.2.9 (2014-10-17)
 
 ## Bug fixes
