@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -48,7 +48,7 @@ class PriceFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return $attribute->getAttributeType() === 'pim_catalog_price_collection';
     }
@@ -72,7 +72,7 @@ class PriceFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value)
     {
         list($data, $currency) = explode(' ', $value);
         $data = (float) $data;

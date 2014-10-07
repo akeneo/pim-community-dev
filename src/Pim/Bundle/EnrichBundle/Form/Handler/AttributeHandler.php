@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -59,11 +59,11 @@ class AttributeHandler
 
     /**
      * Process method for handler
-     * @param AbstractAttribute $entity
+     * @param AttributeInterface $entity
      *
      * @return boolean
      */
-    public function process(AbstractAttribute $entity)
+    public function process(AttributeInterface $entity)
     {
         $this->addMissingOptionValues($entity);
         $this->form->setData($entity);
@@ -85,9 +85,9 @@ class AttributeHandler
     /**
      * Add missing attribute option values
      *
-     * @param AbstractAttribute $entity
+     * @param AttributeInterface $entity
      */
-    protected function addMissingOptionValues(AbstractAttribute $entity)
+    protected function addMissingOptionValues(AttributeInterface $entity)
     {
         $this->ensureOneOption($entity);
 
@@ -113,9 +113,9 @@ class AttributeHandler
     /**
      * Ensure at least one option for the attribute
      *
-     * @param AbstractAttribute $entity
+     * @param AttributeInterface $entity
      */
-    protected function ensureOneOption(AbstractAttribute $entity)
+    protected function ensureOneOption(AttributeInterface $entity)
     {
         $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
         if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
@@ -144,10 +144,10 @@ class AttributeHandler
 
     /**
      * Call when form is valid
-     * @param AbstractAttribute $entity
-     * @param Collection        $oldOptions
+     * @param AttributeInterface $entity
+     * @param Collection         $oldOptions
      */
-    protected function onSuccess(AbstractAttribute $entity, Collection $oldOptions)
+    protected function onSuccess(AttributeInterface $entity, Collection $oldOptions)
     {
         foreach ($entity->getOptions() as $option) {
             // Setting translatable to true for now - option not implemented in UI

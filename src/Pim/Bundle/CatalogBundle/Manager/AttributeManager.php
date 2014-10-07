@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -73,7 +73,7 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     public function createAttribute($type = null)
     {
@@ -154,9 +154,9 @@ class AttributeManager
     /**
      * Remove an attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    public function remove(AbstractAttribute $attribute)
+    public function remove(AttributeInterface $attribute)
     {
         $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($attribute));
 

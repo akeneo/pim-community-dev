@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 
@@ -90,11 +90,11 @@ interface ProductRepositoryInterface
     /**
      * Returns all products that have the given attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return ProductInterface[]
      */
-    public function findAllWithAttribute(AbstractAttribute $attribute);
+    public function findAllWithAttribute(AttributeInterface $attribute);
 
     /**
      * Returns all products that have the given attribute option

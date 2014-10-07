@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -210,11 +210,11 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     /**
      * Add attributes
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeGroup
      */
-    public function addAttribute(AbstractAttribute $attribute)
+    public function addAttribute(AttributeInterface $attribute)
     {
         $this->attributes[] = $attribute;
         $attribute->setGroup($this);
@@ -225,11 +225,11 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     /**
      * Remove attributes
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeGroup
      */
-    public function removeAttribute(AbstractAttribute $attribute)
+    public function removeAttribute(AttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
         $attribute->setGroup(null);
@@ -250,11 +250,11 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     /**
      * Check if the group has an attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(AbstractAttribute $attribute)
+    public function hasAttribute(AttributeInterface $attribute)
     {
         return $this->attributes->contains($attribute);
     }

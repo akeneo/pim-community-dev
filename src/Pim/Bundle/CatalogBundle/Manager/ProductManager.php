@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Event\ProductValueEvent;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -197,12 +197,12 @@ class ProductManager
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
     {
         $this->builder->removeAttributeFromProduct($product, $attribute);
     }
@@ -305,7 +305,7 @@ class ProductManager
     /**
      * Return the identifier attribute
      *
-     * @return AbstractAttribute|null
+     * @return AttributeInterface|null
      */
     public function getIdentifierAttribute()
     {

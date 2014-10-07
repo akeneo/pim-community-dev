@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Aims to register sorters useable on product query builder
@@ -32,9 +32,9 @@ interface QuerySorterRegistryInterface
     /**
      * Get the attribute sorter
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return SorterInterface|null
      */
-    public function getAttributeSorter(AbstractAttribute $attribute);
+    public function getAttributeSorter(AttributeInterface $attribute);
 }

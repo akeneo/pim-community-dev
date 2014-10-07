@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Builder;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Create field names for associations and product values
@@ -58,7 +58,7 @@ class FieldNameBuilder
      *
      * Returned array like:
      * [
-     *     "attribute"   => AbstractAttribute,
+     *     "attribute"   => AttributeInterface,
      *     "locale_code" => <locale_code>|null,
      *     "scope_code"  => <scope_code>|null,
      *     "price_currency" => <currency_code> // this key is optional
@@ -82,12 +82,12 @@ class FieldNameBuilder
      * Extract informations from an attribute and exploded field name
      * This method is used from extractAttributeFieldNameInfos and can be redefine to add new rules
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $explodedFieldName
+     * @param AttributeInterface $attribute
+     * @param array              $explodedFieldName
      *
      * @return array
      */
-    protected function extractAttributeInfos(AbstractAttribute $attribute, array $explodedFieldName)
+    protected function extractAttributeInfos(AttributeInterface $attribute, array $explodedFieldName)
     {
         if ($attribute->isLocalizable() && $attribute->isScopable()) {
             $localeCode = $explodedFieldName[1];

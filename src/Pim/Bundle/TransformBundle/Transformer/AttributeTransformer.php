@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
@@ -74,11 +74,11 @@ class AttributeTransformer extends NestedEntityTransformer
     /**
      * Sets the options of the attribute
      *
-     * @param string            $class
-     * @param AbstractAttribute $attribute
-     * @param array             $optionsData
+     * @param string             $class
+     * @param AttributeInterface $attribute
+     * @param array              $optionsData
      */
-    protected function setOptions($class, AbstractAttribute $attribute, array $optionsData)
+    protected function setOptions($class, AttributeInterface $attribute, array $optionsData)
     {
         $this->doctrineCache->setReference($attribute);
         $optionClass = $this->attributeManager->getAttributeOptionClass();

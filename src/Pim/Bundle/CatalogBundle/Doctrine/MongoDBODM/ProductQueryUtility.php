@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -27,12 +27,12 @@ class ProductQueryUtility
     /**
      * Normalize the field name from attribute and catalog context
      *
-     * @param AbstractAttribute $attribute
-     * @param CatalogContext    $context
+     * @param AttributeInterface $attribute
+     * @param CatalogContext     $context
      *
      * @return string
      */
-    public static function getNormalizedValueFieldFromAttribute(AbstractAttribute $attribute, CatalogContext $context)
+    public static function getNormalizedValueFieldFromAttribute(AttributeInterface $attribute, CatalogContext $context)
     {
         return self::getNormalizedValueField(
             $attribute->getCode(),
