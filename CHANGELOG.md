@@ -39,6 +39,7 @@
 
 ## Bug fixes
 - Fix memory leak in CSV quick export
+- Cannot display correctly all variant groups on grid
 
 ## Improvements
 - avoid hydrating duplicate categories when applying category filter in product grid
