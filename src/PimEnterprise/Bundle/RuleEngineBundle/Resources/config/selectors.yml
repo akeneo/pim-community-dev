@@ -1,6 +1,0 @@
-parameters:
-    pimee_rule_engine.selector.chained.class: PimEnterprise\Bundle\RuleEngineBundle\Selector\ChainedSelector
-
-services:
-    pimee_rule_engine.selector.chained:
-        class: %pimee_rule_engine.selector.chained.class%

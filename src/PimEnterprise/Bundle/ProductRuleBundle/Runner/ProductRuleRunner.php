@@ -14,8 +14,16 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Runner;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractBatchRunner;
 
+/**
+ * Product rule runner
+ *
+ * @author Julien Janbvier <julien.janvier@akeneo.com>
+ */
 class ProductRuleRunner extends AbstractBatchRunner
 {
+    /**
+     * {@inheritdoc}
+     */
     public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();

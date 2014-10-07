@@ -10,4 +10,4 @@ services:
         calls:
             - [ setRootDir, [%kernel.root_dir%]]
             - [ setEnvironment, [%kernel.environment%]]
-            - [ setJobCode, ['rule']]
+            - [ setJobCode, ['rule_engine']]

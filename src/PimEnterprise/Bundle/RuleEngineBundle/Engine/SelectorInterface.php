@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Selector;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Engine;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
@@ -23,9 +23,8 @@ interface SelectorInterface
 {
     /**
      * @param RuleInterface $instance
-
      *
-*@return RuleSubjectSetInterface
+     * @return RuleSubjectSetInterface
      */
     public function select(RuleInterface $instance);
 

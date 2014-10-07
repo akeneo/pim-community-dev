@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductRuleBundle\Selector;
+namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Batch\BatchSelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Selector\SelectorInterface;
 
-class ProductRuleSelector implements SelectorInterface
+class ProductRuleSelector implements BatchSelectorInterface
 {
     /** @var string */
     protected $subjectSetClass;
@@ -27,6 +28,9 @@ class ProductRuleSelector implements SelectorInterface
 
     /** @var ProductRepositoryInterface */
     protected $repo;
+
+    /** @var StepExecution */
+    protected $stepExecution;
 
     /**
      * @param string $subjectSetClass
@@ -77,5 +81,13 @@ class ProductRuleSelector implements SelectorInterface
     public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

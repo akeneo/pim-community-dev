@@ -11,12 +11,14 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Repository;
 
+use Doctrine\Common\Persistence\ObjectRepository;
+
 /**
  * Rule repository interface
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-interface RuleRepositoryInterface
+interface RuleRepositoryInterface extends ObjectRepository
 {
 
 }

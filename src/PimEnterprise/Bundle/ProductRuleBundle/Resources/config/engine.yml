@@ -1,0 +1,20 @@
+parameters:
+    pimee_product_rule.applier.product.class: PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleApplier
+    pimee_product_rule.loader.product.class: PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleLoader
+    pimee_product_rule.selector.product.class: PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleSelector
+
+services:
+    pimee_product_rule.applier.product:
+        class: %pimee_product_rule.applier.product.class%
+
+    pimee_product_rule.loader.product:
+        class: %pimee_product_rule.loader.product.class%
+        arguments:
+            - @pimee_rule_engine.repository.rule
+
+    pimee_product_rule.selector.product:
+        class: %pimee_product_rule.selector.product.class%
+        arguments:
+            - %pimee_rule_engine.entity.rule_subject_set.class%
+            - @pim_catalog.doctrine.product_query_builder
+            - @pim_catalog.repository.product
