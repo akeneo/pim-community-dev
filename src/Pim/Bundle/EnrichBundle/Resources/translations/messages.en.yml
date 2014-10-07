@@ -669,6 +669,42 @@ pane.accordion:
     options: Options
     group_values: Group values
 
+tab:
+    pim_enrich_product_edit:
+        attribute:    Attributes
+        category:     Categories
+        association:  Associations
+        completeness: Completeness
+        comment:      Comments
+        history:      History
+    pim_enrich_attribute_edit:
+        parameter: Parameters
+        value:     Values
+        history:   History
+    pim_enrich_attributegroup_edit:
+        property:  Properties
+        attribute: Attributes
+        history:   History
+    pim_enrich_family_edit:
+        property:  Properties
+        attribute: Attributes
+        history:   History
+    pim_enrich_associationtype_edit:
+        property:  Properties
+        history:   History
+    pim_enrich_grouptype_edit:
+        property:  Properties
+    pim_enrich_channel_edit:
+        property:  Properties
+        history:   History
+    pim_enrich_category_edit:
+        property:  Properties
+        history:   History
+    pim_enrich_group_edit:
+        product:   Products
+        property:  Properties
+        history:   History
+
 # Popin titles
 popin.create:
     association_type.title: Create a new association type

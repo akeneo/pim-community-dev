@@ -4,7 +4,7 @@
 %}
 {% set sortGranted = resource_granted('pim_enrich_attribute_sort') %}
 
-<div class="tab-pane" id="attributes">
+<div class="tab-pane tab-attribute {{ first_tab ? 'active' : ''}}" id="{{ tab_id }}">
     <div id="attribute-buttons"></div>
     <div class="clearfix"></div>
     <table class="table groups">

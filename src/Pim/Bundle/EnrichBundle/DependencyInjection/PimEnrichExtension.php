@@ -43,6 +43,17 @@ class PimEnrichExtension extends Extension
         $loader->load('resolvers.yml');
         $loader->load('serializers.yml');
         $loader->load('twig.yml');
+        $loader->load('views.yml');
+
+        $loader->load('view/association_type.yml');
+        $loader->load('view/attribute.yml');
+        $loader->load('view/attribute_group.yml');
+        $loader->load('view/channel.yml');
+        $loader->load('view/family.yml');
+        $loader->load('view/group_type.yml');
+        $loader->load('view/product.yml');
+        $loader->load('view/category.yml');
+        $loader->load('view/group.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
