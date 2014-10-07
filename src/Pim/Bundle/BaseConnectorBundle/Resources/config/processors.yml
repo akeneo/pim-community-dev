@@ -36,6 +36,7 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.media'
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%

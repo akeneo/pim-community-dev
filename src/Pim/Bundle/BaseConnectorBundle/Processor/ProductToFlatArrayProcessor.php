@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Process a product to an array
@@ -37,6 +38,11 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     protected $channelManager;
 
     /**
+     * @var MediaManager
+     */
+    protected $mediaManager;
+
+    /**
      * @var array Normalizer context
      */
     protected $normalizerContext;
@@ -44,13 +50,16 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /**
      * @param Serializer     $serializer
      * @param ChannelManager $channelManager
+     * @param MediaManager   $mediaManager
      */
     public function __construct(
         Serializer $serializer,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        MediaManager $mediaManager
     ) {
         $this->serializer     = $serializer;
         $this->channelManager = $channelManager;
+        $this->mediaManager   = $mediaManager;
     }
 
     /**
@@ -58,10 +67,32 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($item)
     {
-        $data['media']   = $item->getMedia();
+        $data['media']   = $this->normalizeMedias($item->getMedia());
         $data['product'] = $this->serializer->normalize($item, 'flat', $this->getNormalizerContext());
 
         return $data;
+    }
+
+    /**
+     * Returns a normalized version of the medias
+     *
+     * @param array $medias
+     *
+     * @return array
+     */
+    protected function normalizeMedias(array $medias)
+    {
+        $norm = [];
+        foreach ($medias as $media) {
+            if ($media && $media->getFilePath()) {
+                $norm[] = [
+                    'filePath'   => $media->getFilePath(),
+                    'exportPath' => $this->mediaManager->getExportPath($media)
+                ];
+            }
+        }
+
+        return $norm;
     }
 
     /**
