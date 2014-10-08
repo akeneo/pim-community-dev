@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Process a product to an array
@@ -58,7 +58,15 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($item)
     {
-        $data['media']   = $item->getMedia();
+        $data['media'] = [];
+        if (count($item->getMedia()) > 0) {
+            $data['media'] = $this->serializer->normalize(
+                $item->getMedia(),
+                'flat',
+                ['field_name' => 'media', 'prepare_copy' => true]
+            );
+        }
+
         $data['product'] = $this->serializer->normalize($item, 'flat', $this->getNormalizerContext());
 
         return $data;

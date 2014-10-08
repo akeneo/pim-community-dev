@@ -31,6 +31,25 @@ class MediaNormalizer extends AbstractProductValueDataNormalizer
     }
 
     /**
+     * Override to be able to return both file path and export path in case of copy
+     *
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        if (isset($context['prepare_copy'])) {
+            return [
+                'filePath' => $object->getFilePath(),
+                'exportPath' => $this->manager->getExportPath($object)
+            ];
+        }
+
+        return [
+            $this->getFieldName($object, $context) => $this->doNormalize($object, $format, $context),
+        ];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
