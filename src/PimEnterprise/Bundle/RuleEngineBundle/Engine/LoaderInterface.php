@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleDecoratorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
- * Transform an rule instance (an entity) to a business rule
+ * Loads a rule to make to be able to apply it.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */

@@ -18,6 +18,11 @@ use PimEnterprise\Bundle\RuleEngineBundle\Batch\BatchSelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
+/**
+ * Selects subjects impacted by a rule via a batch.
+ *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
+ */
 class ProductRuleSelector implements BatchSelectorInterface
 {
     /** @var string */

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
- * Runs or dry run a business rule.
+ * Runs or dry run a rule.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

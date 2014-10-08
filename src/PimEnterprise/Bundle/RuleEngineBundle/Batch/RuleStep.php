@@ -15,6 +15,11 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 
+/**
+ * Batch rule step that allows to run a rule.
+ *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
+ */
 class RuleStep extends AbstractStep
 {
     /** @var BatchLoaderInterface */

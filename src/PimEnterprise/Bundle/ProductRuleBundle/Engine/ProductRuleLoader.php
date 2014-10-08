@@ -18,6 +18,11 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleDecorator;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 
+/**
+ * Loads product rules via a batch.
+ *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
+ */
 class ProductRuleLoader extends AbstractConfigurableStepElement implements BatchLoaderInterface
 {
     /** @var StepExecution */
@@ -55,7 +60,6 @@ class ProductRuleLoader extends AbstractConfigurableStepElement implements Batch
     {
         return $this->repository->findOneBy(['code' => $this->ruleCode]);
     }
-
 
     /**
      * {@inheritdoc}

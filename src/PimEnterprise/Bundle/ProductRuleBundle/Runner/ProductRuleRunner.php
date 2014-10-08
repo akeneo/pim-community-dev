@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractBatchRunner;
 /**
  * Product rule runner
  *
- * @author Julien Janbvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductRuleRunner extends AbstractBatchRunner
 {

@@ -1,12 +1,22 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * RuleInterface decorator to represent a rule that has been loaded from the database
+ * Decores a rule to be apply to select its subjetcs and to be able to apply it.
+ * It represents a rule that has been loaded from the database
  * by a \PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface
  *
- *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface LoadedRuleDecoratorInterface extends RuleInterface
 {

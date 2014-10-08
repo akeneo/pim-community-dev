@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterSelectorPass;
 use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterRunnerPass;
 use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -44,7 +43,6 @@ class PimEnterpriseRuleEngineBundle extends Bundle
                 )
             )
             ->addCompilerPass(new RegisterRunnerPass())
-            ->addCompilerPass(new RegisterSelectorPass())
         ;
     }
 }

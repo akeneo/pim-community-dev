@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
- *
+ * Selects subjects impacted by a rule.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */

@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Engine;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
+ * Applies a rule.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

@@ -1,11 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 
+/**
+ * Abstract runner dedicated to run a rule via a batch.
+ *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
+ */
 abstract class AbstractBatchRunner implements RunnerInterface
 {
     /** @var string */

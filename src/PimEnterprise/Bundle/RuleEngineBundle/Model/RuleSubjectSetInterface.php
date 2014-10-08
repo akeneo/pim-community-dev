@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
+ * Subjects set that will be impacted by a rule.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

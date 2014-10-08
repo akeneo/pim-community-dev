@@ -16,6 +16,11 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Batch\BatchApplierInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
+/**
+ * Applies product rules via a batch.
+ *
+ * @author Julien Janvier <julien.janvier@akeneo.com>
+ */
 class ProductRuleApplier implements BatchApplierInterface
 {
     /** @var StepExecution */
@@ -37,7 +42,6 @@ class ProductRuleApplier implements BatchApplierInterface
             $product->getValue('name')->setData($name . ' // ' . $product->getIdentifier());
         }
     }
-
 
     /**
      * {@inheritdoc}

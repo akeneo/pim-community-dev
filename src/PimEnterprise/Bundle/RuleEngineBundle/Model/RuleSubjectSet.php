@@ -12,20 +12,32 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
+ * Subjects set that will be impacted by a rule.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RuleSubjectSet implements RuleSubjectSetInterface
 {
+    /** @var string */
     protected $code;
+
+    /** @var string */
     protected $type;
+
+    /** @var string */
     protected $subjects = [];
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCode()
     {
         return $this->code;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setCode($code)
     {
         $this->code = $code;
@@ -33,11 +45,17 @@ class RuleSubjectSet implements RuleSubjectSetInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getType()
     {
         return $this->type;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setType($type)
     {
         $this->type = $type;
@@ -45,11 +63,17 @@ class RuleSubjectSet implements RuleSubjectSetInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubjects()
     {
         return $this->subjects;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setSubjects(array $subjects)
     {
         $this->subjects = $subjects;
