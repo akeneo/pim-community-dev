@@ -19,7 +19,7 @@ usage() {
 if [ $# -lt 5 ] ; then
     usage
 else
-    CONCURRENCY=1
+    CONCURRENCY=$1
     XDEBUG=$2
     DB_PREFIX=$3
     PROFILE_PREFIX=$4
@@ -69,7 +69,7 @@ for PROC in `seq 1 $CONCURRENCY`; do
 done
 cd -
 
-FEATURES="features/attribute/add_attribute_options.feature features/attribute/update_product_when_removing_an_option_of_a_choice_attribute.feature features/product/display_history.feature"
+FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
 
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
