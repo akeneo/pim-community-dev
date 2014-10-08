@@ -51,7 +51,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_without_media(
         Channel $channel,
         ChannelManager $channelManager,
-        Product $item,
+        AbstractProduct $item,
         Serializer $serializer
     ) {
         $item->getMedia()->willReturn([]);
