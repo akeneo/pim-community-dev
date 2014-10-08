@@ -73,6 +73,7 @@ services:
         class: %pim_catalog.manager.attribute_option.class%
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
             - %pim_catalog.entity.attribute_option.class%
             - %pim_catalog.entity.attribute_option_value.class%
 

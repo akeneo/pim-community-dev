@@ -421,6 +421,18 @@ define(
                         } else {
                             item.$el.hide(500);
                         }
+                    }, this),
+                    error: _.bind(function(data, response) {
+                        this.inLoading(false);
+                        var message;
+
+                        if (response.responseJSON) {
+                            message = response.responseJSON;
+                        } else {
+                            message = response.responseText;
+                        }
+
+                        Dialog.alert(message, __('error.removing.attribute_option'));
                     }, this)
                 });
             },
