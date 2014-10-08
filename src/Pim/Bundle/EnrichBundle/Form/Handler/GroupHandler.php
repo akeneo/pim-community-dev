@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Form handler for group

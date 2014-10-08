@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product attribute, business code is in AbstractAttribute, this class can be overriden in projects

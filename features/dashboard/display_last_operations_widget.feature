@@ -1,3 +1,4 @@
+@javascript
 Feature: Display last operations widget
   In order to have a quick overview of last import and export operations
   As a regular user
@@ -10,10 +11,12 @@ Feature: Display last operations widget
     And I am logged in as "Mary"
     When I am on the dashboard page
     Then I should see "Last operations"
-    And I should see "No operations found"
+    When I wait for widgets to load
+    Then I should see "No operations found"
     When I am on the "footwear_category_export" export job page
     And I launch the export job
     And I wait for the "footwear_category_export" job to finish
     When I am on the dashboard page
     Then I should see "Last operations"
-    And I should see "Export Footwear category export Completed"
+    When I wait for widgets to load
+    Then I should see "Export Footwear category export Completed"
