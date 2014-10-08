@@ -5,7 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Attribute manager
@@ -28,16 +31,19 @@ class AttributeOptionManager
     /**
      * Constructor
      *
-     * @param ObjectManager $objectManager             Object manager
-     * @param string        $attributeOptionClass      Option class
-     * @param string        $attributeOptionValueClass Option value class
+     * @param ObjectManager   $objectManager
+     * @param EventDispatcher $eventDispatcher
+     * @param string          $attributeOptionClass
+     * @param string          $attributeOptionValueClass
      */
     public function __construct(
         ObjectManager $objectManager,
+        EventDispatcher $eventDispatcher,
         $attributeOptionClass,
         $attributeOptionValueClass
     ) {
         $this->objectManager             = $objectManager;
+        $this->eventDispatcher           = $eventDispatcher;
         $this->attributeOptionClass      = $attributeOptionClass;
         $this->attributeOptionValueClass = $attributeOptionValueClass;
     }
@@ -104,6 +110,8 @@ class AttributeOptionManager
      */
     public function remove(AttributeOption $attributeOption)
     {
+        $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($attributeOption));
+
         $this->objectManager->remove($attributeOption);
         $this->objectManager->flush($attributeOption);
     }

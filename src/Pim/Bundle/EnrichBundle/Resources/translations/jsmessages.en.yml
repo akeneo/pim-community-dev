@@ -58,6 +58,7 @@ error:
         export profile:   Cannot delete this export profile
         user:             Cannot delete this user
         role:             Cannot delete this role
+        attribute_option: Error during deletion of the attribute option
     saving:
         attribute_option: Cannot save attribute option
 alert:

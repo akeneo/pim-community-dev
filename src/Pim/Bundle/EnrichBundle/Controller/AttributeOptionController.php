@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -147,7 +148,11 @@ class AttributeOptionController
     {
         $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
 
-        $this->attributeOptionManager->remove($attributeOption);
+        try {
+            $this->attributeOptionManager->remove($attributeOption);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], $e->getCode());
+        }
 
         return new JsonResponse();
     }
