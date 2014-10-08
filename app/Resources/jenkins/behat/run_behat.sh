@@ -19,7 +19,7 @@ usage() {
 if [ $# -lt 5 ] ; then
     usage
 else
-    CONCURRENCY=$1
+    CONCURRENCY=1
     XDEBUG=$2
     DB_PREFIX=$3
     PROFILE_PREFIX=$4
