@@ -69,7 +69,7 @@ for PROC in `seq 1 $CONCURRENCY`; do
 done
 cd -
 
-FEATURES=`find $FEATURES_DIR/ -name *.feature`
+FEATURES="features/attribute/add_attribute_options.feature features/attribute/update_product_when_removing_an_option_of_a_choice_attribute.feature features/product/display_history.feature"
 for FEATURE in $FEATURES; do
 
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
