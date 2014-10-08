@@ -63,6 +63,16 @@ class MediaNormalizerSpec extends ObjectBehavior
             ->shouldReturn(['front' => 'foo.jpg']);
     }
 
+    function it_normalizes_media_by_using_file_and_export_path_to_prepare_the_copy(AbstractProductMedia $media, $manager)
+    {
+        $media->getFilePath()->willReturn('/tmp/file/foo.jpg');
+        $manager->getExportPath($media)->willReturn('files/sku/attribute/foo.jpg');
+
+        $this
+            ->normalize($media, null, ['field_name' => 'media', 'prepare_copy' => true])
+            ->shouldReturn(['filePath' => '/tmp/file/foo.jpg', 'exportPath' => 'files/sku/attribute/foo.jpg' ]);
+    }
+
     function it_throws_exception_when_the_context_field_name_key_is_not_provided(AbstractProductMedia $media)
     {
         $this

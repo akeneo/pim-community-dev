@@ -58,10 +58,18 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($item)
     {
-        return [
-            'media'   => $item->getMedia(),
-            'product' => $this->serializer->normalize($item, 'flat', $this->getNormalizerContext())
-        ];
+        $data['media'] = [];
+        if (count($item->getMedia()) > 0) {
+            $data['media'] = $this->serializer->normalize(
+                $item->getMedia(),
+                'flat',
+                ['field_name' => 'media', 'prepare_copy' => true]
+            );
+        }
+
+        $data['product'] = $this->serializer->normalize($item, 'flat', $this->getNormalizerContext());
+
+        return $data;
     }
 
     /**
