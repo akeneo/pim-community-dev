@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validator for the user preferences constraint

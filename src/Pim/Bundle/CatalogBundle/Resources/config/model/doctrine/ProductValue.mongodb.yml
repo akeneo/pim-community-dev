@@ -42,12 +42,12 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         metric:
             embedded: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\Metric
+            targetDocument: Pim\Bundle\CatalogBundle\Model\MetricInterface
         prices:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPrice
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
         media:
             embedded: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductMedia
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface

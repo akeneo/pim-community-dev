@@ -20,11 +20,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         sortOrder:
             type: integer
             column: sort_order
-        useableAsGridColumn:
-            type: boolean
-            options:
-                default: false
-            column: useable_as_grid_column
         useableAsGridFilter:
             type: boolean
             options:

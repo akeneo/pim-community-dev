@@ -12,13 +12,11 @@ parameters:
     pim_catalog.entity.attribute_translation.class:  Pim\Bundle\CatalogBundle\Entity\AttributeTranslation
     pim_catalog.entity.attribute_group.class:        Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     pim_catalog.entity.attribute_group_translation.class: Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
-    pim_catalog.entity.association_type.class:       Pim\Bundle\CatalogBundle\Entity\AssociationType
     pim_catalog.entity.attribute_option.class:       Pim\Bundle\CatalogBundle\Entity\AttributeOption
     pim_catalog.entity.attribute_option_value.class: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
     pim_catalog.entity.attribute_requirement.class:  Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
     pim_catalog.entity.family.class:                 Pim\Bundle\CatalogBundle\Entity\Family
     pim_catalog.entity.family_translation.class:     Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
-    pim_catalog.entity.attribute_requirement.class:  Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
     pim_catalog.entity.channel.class:                Pim\Bundle\CatalogBundle\Entity\Channel
     pim_catalog.entity.currency.class:               Pim\Bundle\CatalogBundle\Entity\Currency
     pim_catalog.entity.locale.class:                 Pim\Bundle\CatalogBundle\Entity\Locale

@@ -2,15 +2,14 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
+use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-
-use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
-use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
 /**
  * Database preparing command
@@ -117,7 +116,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return InstallCommand
+     * @return DatabaseCommand
      */
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
@@ -185,7 +184,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return InstallCommand
+     * @return DatabaseCommand
      */
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {

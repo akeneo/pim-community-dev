@@ -3,14 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\GroupSequenceProviderInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Abstract product attribute
@@ -19,13 +16,9 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractAttribute implements TimestampableInterface, TranslatableInterface,
- GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
+abstract class AbstractAttribute implements AttributeInterface
 {
-    /**
-     * Attribute id
-     * @var integer $id
-     */
+    /** @var int|string */
     protected $id;
 
     /**
@@ -58,25 +51,21 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
      */
     protected $backendType;
 
-    /**
-     * @var datetime $created
-     */
+    /** @var \Datetime */
     protected $created;
 
-    /**
-     * @var datetime $created
-     */
+    /** @var \Datetime */
     protected $updated;
 
     /**
      * Is attribute is required
-     * @var boolean $required
+     * @var bool $required
      */
     protected $required;
 
     /**
      * Is attribute value is required
-     * @var boolean $unique
+     * @var bool $unique
      */
     protected $unique;
 
@@ -86,90 +75,79 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
      */
     protected $defaultValue;
 
-    /**
-    * @var boolean $localizable
-    */
+    /** @var bool */
     protected $localizable;
 
-    /**
-     * @var boolean $scopable
-     */
+    /** @var bool */
     protected $scopable;
 
-    /**
-     * @var array $properties
-     */
+    /** @var array */
     protected $properties;
 
-    /**
-     * @var ArrayCollection $options
-     */
+    /** @var ArrayCollection */
     protected $options;
 
-    /** @var integer $sortOrder */
+    /** @var int */
     protected $sortOrder = 0;
 
     /** @var AttributeGroup $group */
     protected $group;
 
-    /** @var boolean $useableAsGridColumn */
-    protected $useableAsGridColumn;
-
-    /** @var boolean $useableAsGridFilter */
+    /** @var bool */
     protected $useableAsGridFilter;
 
-    /** @var ArrayCollection $availableLocales */
+    /** @var ArrayCollection */
     protected $availableLocales;
 
-    /** @var ArrayCollection $families */
+    /** @var ArrayCollection */
     protected $families;
 
-    /** @var integer $maxCharacters */
+    /** @var int */
     protected $maxCharacters;
 
-    /** @var string $validationRule */
+    /** @var string */
     protected $validationRule;
 
-    /** @var string $validationRegexp */
+    /** @var string */
     protected $validationRegexp;
 
-    /** @var boolean $wysiwygEnabled */
+    /** @var bool */
     protected $wysiwygEnabled;
 
-    /** @var decimal $numberMin */
+    /** @var double */
     protected $numberMin;
 
-    /** @var decimal $numberMax */
+    /** @var double */
     protected $numberMax;
 
-    /** @var boolean $decimalsAllowed */
+    /** @var bool */
     protected $decimalsAllowed;
 
-    /** @var boolean $negativeAllowed */
+    /** @var bool */
     protected $negativeAllowed;
 
-    /** @var datetime $dateMin */
+    /** @var \Datetime */
     protected $dateMin;
 
-    /** @var datetime $dateMax */
+    /** @var \Datetime */
     protected $dateMax;
 
-    /** @var string $metricFamily */
+    /** @var string */
     protected $metricFamily;
 
-    /** @var string $defaultMetricUnit */
+    /** @var string */
     protected $defaultMetricUnit;
 
     /**
-     * @var decimal $maxFileSize
+     * @var double $maxFileSize
      * expressed in MB so decimal is needed for values < 1 MB
      */
     protected $maxFileSize;
 
-    /** @var array $allowedExtensions */
+    /** @var array */
     protected $allowedExtensions;
 
-    /** @var integer $minimumInputLength */
+    /** @var int */
     protected $minimumInputLength = 0;
 
     /**
@@ -180,7 +158,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
      */
     protected $locale;
 
-    /** @var ArrayCollection $translations */
+    /** @var ArrayCollection */
     protected $translations;
 
     /**
@@ -194,7 +172,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         $this->defaultValue        = null;
         $this->localizable         = false;
         $this->scopable            = false;
-        $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
         $this->families            = new ArrayCollection();
@@ -204,9 +181,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -214,11 +189,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -228,11 +199,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -242,9 +209,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -252,11 +217,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set entity type
-     *
-     * @param string $entityType
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setEntityType($entityType)
     {
@@ -266,9 +227,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get entity type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getEntityType()
     {
@@ -276,9 +235,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get created datetime
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getCreated()
     {
@@ -286,11 +243,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set created datetime
-     *
-     * @param datetime $created
-     *
-     * @return TimestampableInterface
+     * {@inheritdoc}
      */
     public function setCreated($created)
     {
@@ -300,9 +253,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get updated datetime
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getUpdated()
     {
@@ -310,11 +261,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set updated datetime
-     *
-     * @param datetime $updated
-     *
-     * @return TimestampableInterface
+     * {@inheritdoc}
      */
     public function setUpdated($updated)
     {
@@ -324,11 +271,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set backend type
-     *
-     * @param string $type
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setBackendType($type)
     {
@@ -338,9 +281,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get backend type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBackendType()
     {
@@ -348,9 +289,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get frontend type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getAttributeType()
     {
@@ -358,11 +297,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set required
-     *
-     * @param boolean $required
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setRequired($required)
     {
@@ -372,9 +307,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Is required
-     *
-     * @return boolean $required
+     * {@inheritdoc}
      */
     public function isRequired()
     {
@@ -382,11 +315,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set unique
-     *
-     * @param boolean $unique
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setUnique($unique)
     {
@@ -396,9 +325,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Is unique
-     *
-     * @return boolean $unique
+     * {@inheritdoc}
      */
     public function isUnique()
     {
@@ -406,11 +333,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set localizable
-     *
-     * @param boolean $localizable
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setLocalizable($localizable)
     {
@@ -420,9 +343,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Is localizable
-     *
-     * @return boolean $localizable
+     * {@inheritdoc}
      */
     public function isLocalizable()
     {
@@ -430,11 +351,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set scopable
-     *
-     * @param boolean $scopable
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setScopable($scopable)
     {
@@ -444,9 +361,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Is scopable
-     *
-     * @return boolean $scopable
+     * {@inheritdoc}
      */
     public function isScopable()
     {
@@ -454,11 +369,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Add option
-     *
-     * @param AttributeOption $option
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function addOption(AttributeOption $option)
     {
@@ -469,11 +380,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Remove option
-     *
-     * @param AttributeOption $option
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function removeOption(AttributeOption $option)
     {
@@ -483,9 +390,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get options
-     *
-     * @return \ArrayAccess
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -493,9 +398,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get properties
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getProperties()
     {
@@ -503,11 +406,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set properties
-     *
-     * @param array $properties
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setProperties(array $properties)
     {
@@ -517,11 +416,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get a property
-     *
-     * @param string $property
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getProperty($property)
     {
@@ -529,12 +424,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set a property
-     *
-     * @param string $property
-     * @param mixed  $value
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setProperty($property, $value)
     {
@@ -544,8 +434,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Return the identifier-based validation group for validation of properties
-     * @return string[]
+     * {@inheritdoc}
      */
     public function getGroupSequence()
     {
@@ -568,9 +457,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get default value
-     *
-     * @return mixed $defaultValue
+     * {@inheritdoc}
      */
     public function getDefaultValue()
     {
@@ -603,11 +490,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set default value
-     *
-     * @param mixed $defaultValue
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setDefaultValue($defaultValue)
     {
@@ -632,9 +515,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get default AttributeOptions
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getDefaultOptions()
     {
@@ -656,9 +537,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get group
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
     public function getGroup()
     {
@@ -666,11 +545,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set group
-     *
-     * @param AttributeGroup $group
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setGroup(AttributeGroup $group = null)
     {
@@ -680,33 +555,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Predicate for useableAsGridColumn property
-     *
-     * @return boolean $useableAsGridColumn
-     */
-    public function isUseableAsGridColumn()
-    {
-        return $this->useableAsGridColumn;
-    }
-
-    /**
-     * Set useableAsGridColumn
-     *
-     * @param boolean $useableAsGridColumn
-     *
-     * @return AbstractAttribute
-     */
-    public function setUseableAsGridColumn($useableAsGridColumn)
-    {
-        $this->useableAsGridColumn = $useableAsGridColumn;
-
-        return $this;
-    }
-
-    /**
-     * Predicate for useableAsGridFilter property
-     *
-     * @return boolean $useableAsGridFilter
+     * {@inheritdoc}
      */
     public function isUseableAsGridFilter()
     {
@@ -714,11 +563,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set useableAsGridFilter
-     *
-     * @param boolean $useableAsGridFilter
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setUseableAsGridFilter($useableAsGridFilter)
     {
@@ -728,11 +573,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Add available locale
-     *
-     * @param Locale $availableLocale
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function addAvailableLocale(Locale $availableLocale)
     {
@@ -742,11 +583,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Remove available locale
-     *
-     * @param Locale $availableLocale
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function removeAvailableLocale(Locale $availableLocale)
     {
@@ -756,9 +593,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get available locales
-     *
-     * @return ArrayCollection|null
+     * {@inheritdoc}
      */
     public function getAvailableLocales()
     {
@@ -766,11 +601,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set available locales
-     *
-     * @param ArrayCollection $availableLocales
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setAvailableLocales(ArrayCollection $availableLocales)
     {
@@ -780,11 +611,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Add family
-     *
-     * @param Family $family
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function addFamily(Family $family)
     {
@@ -794,11 +621,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Remove family
-     *
-     * @param Family $family
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function removeFamily(Family $family)
     {
@@ -808,9 +631,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get families
-     *
-     * @return ArrayCollection|null
+     * {@inheritdoc}
      */
     public function getFamilies()
     {
@@ -818,11 +639,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set families
-     *
-     * @param ArrayCollection $families
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setFamilies(ArrayCollection $families)
     {
@@ -832,9 +649,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get Max characters
-     *
-     * @return integer $maxCharacters
+     * {@inheritdoc}
      */
     public function getMaxCharacters()
     {
@@ -842,11 +657,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set Max characters
-     *
-     * @param integer $maxCharacters
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setMaxCharacters($maxCharacters)
     {
@@ -856,9 +667,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get Validation rule
-     *
-     * @return string $validationRule
+     * {@inheritdoc}
      */
     public function getValidationRule()
     {
@@ -866,11 +675,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set Validation rule
-     *
-     * @param string $validationRule
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setValidationRule($validationRule)
     {
@@ -880,9 +685,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get Validation regexp
-     *
-     * @return string $validationRegexp
+     * {@inheritdoc}
      */
     public function getValidationRegexp()
     {
@@ -890,11 +693,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set Validation regexp
-     *
-     * @param string $validationRegexp
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setValidationRegexp($validationRegexp)
     {
@@ -904,9 +703,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Predicate for wysiwygEnabled property
-     *
-     * @return boolean $wysiwygEnabled
+     * {@inheritdoc}
      */
     public function isWysiwygEnabled()
     {
@@ -914,11 +711,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set wysiwygEnabled
-     *
-     * @param boolean $wysiwygEnabled
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setWysiwygEnabled($wysiwygEnabled)
     {
@@ -928,9 +721,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get numberMin
-     *
-     * @return mixed $numberMin
+     * {@inheritdoc}
      */
     public function getNumberMin()
     {
@@ -938,11 +729,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set numberMin
-     *
-     * @param mixed $numberMin
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setNumberMin($numberMin)
     {
@@ -952,9 +739,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get numberMax
-     *
-     * @return mixed $numberMax
+     * {@inheritdoc}
      */
     public function getNumberMax()
     {
@@ -962,11 +747,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set numberMax
-     *
-     * @param mixed $numberMax
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setNumberMax($numberMax)
     {
@@ -976,9 +757,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Predicate for decimalsAllowed property
-     *
-     * @return boolean $decimalsAllowed
+     * {@inheritdoc}
      */
     public function isDecimalsAllowed()
     {
@@ -986,11 +765,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set decimalsAllowed
-     *
-     * @param boolean $decimalsAllowed
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setDecimalsAllowed($decimalsAllowed)
     {
@@ -1000,9 +775,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Predicate for negativeAllowed property
-     *
-     * @return boolean $negativeAllowed
+     * {@inheritdoc}
      */
     public function isNegativeAllowed()
     {
@@ -1010,11 +783,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set negativeAllowed
-     *
-     * @param boolean $negativeAllowed
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setNegativeAllowed($negativeAllowed)
     {
@@ -1024,9 +793,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get dateMin
-     *
-     * @return datetime $dateMin
+     * {@inheritdoc}
      */
     public function getDateMin()
     {
@@ -1034,11 +801,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set dateMin
-     *
-     * @param datetime $dateMin
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setDateMin($dateMin)
     {
@@ -1048,9 +811,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get dateMax
-     *
-     * @return datetime $dateMax
+     * {@inheritdoc}
      */
     public function getDateMax()
     {
@@ -1058,11 +819,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set dateMax
-     *
-     * @param datetime $dateMax
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setDateMax($dateMax)
     {
@@ -1072,9 +829,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get metricFamily
-     *
-     * @return string $metricFamily
+     * {@inheritdoc}
      */
     public function getMetricFamily()
     {
@@ -1082,11 +837,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set metricFamily
-     *
-     * @param string $metricFamily
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setMetricFamily($metricFamily)
     {
@@ -1096,9 +847,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get defaultMetricUnit
-     *
-     * @return string $defaultMetricUnit
+     * {@inheritdoc}
      */
     public function getDefaultMetricUnit()
     {
@@ -1106,11 +855,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set defaultMetricUnit
-     *
-     * @param string $defaultMetricUnit
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setDefaultMetricUnit($defaultMetricUnit)
     {
@@ -1120,9 +865,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get maxFileSize
-     *
-     * @return decimal $maxFileSize
+     * {@inheritdoc}
      */
     public function getMaxFileSize()
     {
@@ -1130,11 +873,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set maxFileSize
-     *
-     * @param decimal $maxFileSize
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setMaxFileSize($maxFileSize)
     {
@@ -1144,9 +883,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get allowedExtensions
-     *
-     * @return array $allowedExtensions
+     * {@inheritdoc}
      */
     public function getAllowedExtensions()
     {
@@ -1154,11 +891,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set allowedExtensions
-     *
-     * @param string $allowedExtensions
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setAllowedExtensions($allowedExtensions)
     {
@@ -1170,9 +903,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Returns the minimum input length for singlechoice and multichoice types
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getMinimumInputLength()
     {
@@ -1180,11 +911,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Sets the minimum input length for singlechoice and multichoice types
-     *
-     * @param integer $minimumInputLength
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setMinimumInputLength($minimumInputLength)
     {
@@ -1193,10 +920,8 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         return $this;
     }
 
-        /**
-     * Get sortOrder
-     *
-     * @return number
+    /**
+     * {@inheritdoc}
      */
     public function getSortOrder()
     {
@@ -1204,11 +929,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set sortOrder
-     *
-     * @param number $sortOrder
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function setSortOrder($sortOrder)
     {
@@ -1218,13 +939,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set all parameters with associative array
-     *
-     * @param array $parameters
-     *
-     * @return AbstractAttribute
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function setParameters($parameters)
     {
@@ -1312,9 +1027,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -1324,11 +1037,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {

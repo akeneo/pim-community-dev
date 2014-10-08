@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Pim\Bundle\FilterBundle\Form\Type\CategoryType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Category filter type

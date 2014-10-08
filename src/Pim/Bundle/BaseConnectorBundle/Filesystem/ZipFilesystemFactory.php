@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Filesystem;
 
-use Gaufrette\Filesystem;
 use Gaufrette\Adapter;
+use Gaufrette\Filesystem;
 
 /**
  * Factory of Gaufrette Filesystem configured with the Zip adapter

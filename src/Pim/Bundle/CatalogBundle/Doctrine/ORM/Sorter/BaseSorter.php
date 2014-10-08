@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
@@ -25,22 +25,70 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /** @var CatalogContext */
     protected $context;
 
-    /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
+    /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
+    protected $supportedFields;
 
     /**
      * Instanciate a sorter
      *
-     * @param QueryBuilder   $qb
      * @param CatalogContext $context
+     * @param array          $extraSupportedAttributes
+     * @param array          $extraSupportedFields
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
+    public function __construct(
+        CatalogContext $context,
+        array $extraSupportedAttributes = [],
+        array $extraSupportedFields = []
+    ) {
         $this->context = $context;
+        $this->supportedAttributes = array_merge(
+            [
+                'pim_catalog_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_number',
+                'pim_catalog_boolean',
+                'pim_catalog_date'
+            ],
+            $extraSupportedAttributes
+        );
+        $this->supportedFields = array_merge(
+            ['enabled', 'created', 'updated'],
+            $extraSupportedFields
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
     }
 
     /**
@@ -49,7 +97,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value and sort on
@@ -67,7 +115,11 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
         );
         $this->qb->addOrderBy($joinAlias.'.'.$backendType, $direction);
 
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
+
         // Reapply previous join after the orderBy related join
+        // TODO : move this part in re-usable class
         $this->applyJoins($joinsSet);
 
         return $this;
@@ -80,6 +132,9 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
         $this->qb->addOrderBy($field, $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

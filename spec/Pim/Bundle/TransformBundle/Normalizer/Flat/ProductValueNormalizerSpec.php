@@ -2,25 +2,17 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
-
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, Attribute $simpleAttribute) {
+    function let(SerializerInterface $serializer, AbstractAttribute $simpleAttribute)
+    {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
 
@@ -89,7 +81,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '1']);
     }
 
-    function it_normalizes_a_value_with_a_collection_data(AbstractProductValue $value, $simpleAttribute, SerializerInterface $serializer)
+    function it_normalizes_a_value_with_a_collection_data(AbstractProductValue $value, $simpleAttribute, $serializer)
     {
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
@@ -97,11 +89,15 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($collection);
         $value->getAttribute()->willReturn($simpleAttribute);
 
-        $serializer->normalize($collection, 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
+        $serializer
+            ->normalize($collection, 'flat', ['field_name' => 'simple'])
+            ->shouldBeCalled()
+            ->willReturn(['simple' => 'red, blue']);
+
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 
-    function it_normalizes_a_value_with_an_array_data(AbstractProductValue $value, $simpleAttribute, SerializerInterface $serializer)
+    function it_normalizes_a_value_with_an_array_data(AbstractProductValue $value, $simpleAttribute, $serializer)
     {
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
@@ -109,7 +105,11 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($array);
         $value->getAttribute()->willReturn($simpleAttribute);
 
-        $serializer->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
+        $serializer
+            ->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])
+            ->shouldBeCalled()
+            ->willReturn(['simple' => 'red, blue']);
+
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 }

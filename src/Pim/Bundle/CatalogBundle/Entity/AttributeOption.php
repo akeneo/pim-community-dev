@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Attribute options
@@ -48,11 +48,6 @@ class AttributeOption implements ReferableInterface
     protected $default = false;
 
     /**
-     * @var boolean
-     */
-    protected $translatable;
-
-    /**
      * Not persisted, allowe to define the value locale
      * @var string $locale
      */
@@ -61,7 +56,7 @@ class AttributeOption implements ReferableInterface
     /**
      * @var integer
      */
-    protected $sortOrder;
+    protected $sortOrder = 1;
 
     /**
      * Constructor
@@ -69,8 +64,6 @@ class AttributeOption implements ReferableInterface
     public function __construct()
     {
         $this->optionValues = new ArrayCollection();
-        $this->translatable = true;
-        $this->sortOrder    = 1;
     }
 
     /**
@@ -146,37 +139,13 @@ class AttributeOption implements ReferableInterface
      *
      * @param string $locale
      *
-     * @return LocalizableInterface
+     * @return AttributeOption
      */
     public function setLocale($locale)
     {
         $this->locale = $locale;
 
         return $this;
-    }
-
-    /**
-     * Set translatable
-     *
-     * @param boolean $translatable
-     *
-     * @return AttributeOption
-     */
-    public function setTranslatable($translatable)
-    {
-        $this->translatable = $translatable;
-
-        return $this;
-    }
-
-    /**
-     * Is translatable
-     *
-     * @return boolean $translatable
-     */
-    public function isTranslatable()
-    {
-        return $this->translatable;
     }
 
     /**
@@ -295,7 +264,7 @@ class AttributeOption implements ReferableInterface
      *
      * @param AttributeOptionValue $value
      *
-     * @return AbstractAttribute
+     * @return AttributeOption
      */
     public function addOptionValue(AttributeOptionValue $value)
     {
@@ -326,20 +295,6 @@ class AttributeOption implements ReferableInterface
      */
     public function getOptionValue()
     {
-        $translatable = $this->translatable;
-        $locale = $this->getLocale();
-        $values = $this->getOptionValues()->filter(
-            function ($value) use ($translatable, $locale) {
-                // return relevant translated value
-                if ($translatable && $value->getLocale() == $locale) {
-                    return true;
-                } elseif (!$translatable) {
-                    return true;
-                }
-            }
-        );
-        $value = $values->first();
-
-        return $value;
+        return $this->getOptionValues()->get($this->getLocale()) ?: $this->getOptionValues()->first();
     }
 }

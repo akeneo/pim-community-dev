@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 interface CategoryInterface
 {
     /**
-     * @return integer
+     * @return int|string
      */
     public function getId();
 

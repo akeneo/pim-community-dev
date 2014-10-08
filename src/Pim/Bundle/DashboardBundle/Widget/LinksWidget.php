@@ -22,6 +22,14 @@ class LinksWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
+    public function getAlias()
+    {
+        return 'links';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParameters()
     {
         return array(
@@ -48,5 +56,13 @@ class LinksWidget implements WidgetInterface
                 ),
             ),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        return null;
     }
 }

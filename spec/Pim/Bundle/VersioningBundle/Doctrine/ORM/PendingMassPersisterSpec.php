@@ -2,19 +2,16 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-use Pim\Bundle\VersioningBundle\Model\Version;
-
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\DBAL\Connection;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PendingMassPersisterSpec extends ObjectBehavior
 {
@@ -105,13 +102,12 @@ class PendingMassPersisterSpec extends ObjectBehavior
 
         $entityManager->getClassMetadata('VersionClass')->willReturn($versionMetadata);
 
-
         $versionBuilder->createPendingVersion($product1, 'julia', $normalizedProduct1, 'CSV Import')
             ->willReturn($pendingVersion1);
 
         $versionBuilder->createPendingVersion($product2, 'julia', $normalizedProduct2, 'CSV Import')
             ->willReturn($pendingVersion2);
-        
+
         $connection->executeQuery(
             'INSERT INTO version_table'.
             ' (author,changeset,snapshot,resource_name,resource_id,context,logged_at,pending)'.
@@ -135,7 +131,7 @@ class PendingMassPersisterSpec extends ObjectBehavior
                 true
             ]
         )->shouldBeCalled();
-        
+
         $this->persistPendingVersions($products);
     }
 }
