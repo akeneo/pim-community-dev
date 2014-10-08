@@ -39,11 +39,14 @@
 - Remove $optionClass and $optionValueClass arguments from the AttributeManager::__construct
 - Remove createAttributeOption, createAttributeOptionValue, getAttributeOptionClass from the attributeManager (now in the attributeOptionManager)
 - Add a $attributeOptionManager argument in AttributeController::__construct
+- Remove MediaManager argument from CsvProductWriter::__construct
+- Update CsvProductWriter::copyMedia argument to replace AbstractProductMedia by an array
 
 # 1.2.x
 
 ## Bug fixes
 - Fix memory leak in CSV quick export
+- Fix memory leak when product with medias are exported in CSV
 - Cannot display correctly all variant groups on grid
 
 ## Improvements
