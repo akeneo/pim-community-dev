@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -95,6 +97,10 @@ class ProductDraftController extends AbstractController
      */
     public function indexAction()
     {
+        if (!$this->securityContext->isGranted(ProductOwnerVoter::OWN)) {
+            throw new AccessDeniedException();
+        }
+
         return [];
     }
 
