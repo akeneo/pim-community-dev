@@ -30,8 +30,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
 
         return array(
             'attribute'  => $entity->getAttribute()->getCode(),
-            'code'       => $entity->getCode(),
-            'default'    => ($entity->isDefault()) ? '1' : '0',
+            'code'       => $entity->getCode()
         ) + $this->normalizeLabel($entity, $context);
     }
 

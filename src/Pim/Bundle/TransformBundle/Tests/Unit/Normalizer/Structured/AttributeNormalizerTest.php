@@ -80,7 +80,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'sort_order'             => '5',
                     'required'               => '0',
                     'unique'                 => '0',
-                    'default_options'        => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
                     'default_value'          => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
@@ -104,7 +103,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'required'               => '1',
                     'unique'                 => '0',
                     'default_value'          => 'No description',
-                    'default_options'        => array(),
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
                     'metric_family'          => '',
@@ -175,7 +173,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
         $this->addAvailableLocales($attribute, $data);
         $this->addOptions($attribute, $data);
-        $this->addDefaultOptions($attribute, $data);
 
         foreach ($this->getOptionalProperties() as $property) {
             if (isset($data[$property]) && $data[$property] !== '') {
@@ -243,25 +240,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                 $attributeOption->addOptionValue($optionValue);
             }
             $attribute->addOption($attributeOption);
-        }
-    }
-
-    /**
-     * Add attribute default options
-     *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
-     */
-    protected function addDefaultOptions(AbstractAttribute $attribute, $data)
-    {
-        $defaultOptions = array_keys($data['default_options']);
-        foreach ($defaultOptions as $code) {
-            $options = $attribute->getOptions();
-            foreach ($options as $option) {
-                if ($code == $option->getCode()) {
-                    $option->setDefault(true);
-                }
-            }
         }
     }
 }

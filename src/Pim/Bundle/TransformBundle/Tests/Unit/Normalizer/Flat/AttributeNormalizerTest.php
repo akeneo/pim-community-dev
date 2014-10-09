@@ -59,7 +59,6 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'sort_order'             => 5,
                     'required'               => 0,
                     'unique'                 => 0,
-                    'default_options'        => 'en:Red,fr:Rouge',
                     'localizable'            => '1',
                     'available_locales'      => 'All',
                     'metric_family'          => '',
@@ -80,7 +79,6 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'required'               => 1,
                     'unique'                 => 0,
                     'default_value'          => 'No description',
-                    'default_options'        => '',
                     'localizable'            => '1',
                     'available_locales'      => 'en,fr',
                     'metric_family'          => '',
@@ -154,35 +152,6 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                 }
             }
             $attribute->addOption($attributeOption);
-        }
-    }
-
-    /**
-     * Add attribute default options
-     *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
-     */
-    protected function addDefaultOptions(AbstractAttribute $attribute, $data)
-    {
-        $defaultOptions = array_filter(explode('|', $data['default_options']));
-        foreach ($defaultOptions as $defaultOption) {
-            $translations = explode(',', $defaultOption);
-            foreach ($translations as $translation) {
-                $translation = explode(':', $translation);
-                $locale      = reset($translation);
-                $value       = end($translation);
-                $options     = $attribute->getOptions();
-                foreach ($options as $option) {
-                    $optionValues = $option->getOptionValues();
-                    foreach ($optionValues as $optionValue) {
-                        if ($optionValue->getLocale() == $locale && $optionValue->getValue() == $value) {
-                            $option->setDefault(true);
-                            break;
-                        }
-                    }
-                }
-            }
         }
     }
 }

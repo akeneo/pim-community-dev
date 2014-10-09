@@ -41,13 +41,6 @@ class AttributeOption implements ReferableInterface
     protected $optionValues;
 
     /**
-     * Specifies whether this AttributeOption is the default option for the attribute
-     *
-     * @var boolean $default
-     */
-    protected $default = false;
-
-    /**
      * Not persisted, allowe to define the value locale
      * @var string $locale
      */
@@ -196,29 +189,6 @@ class AttributeOption implements ReferableInterface
     public function getCode()
     {
         return $this->code;
-    }
-
-    /**
-     * Set default
-     * @param boolean $default
-     *
-     * @return AttributeOption
-     */
-    public function setDefault($default)
-    {
-        $this->default = (bool) $default;
-
-        return $this;
-    }
-
-    /**
-     * Get default
-     *
-     * @return boolean
-     */
-    public function isDefault()
-    {
-        return $this->default;
     }
 
     /**
