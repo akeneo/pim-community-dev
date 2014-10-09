@@ -4,23 +4,25 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class ProductDraftWidgetSpec extends ObjectBehavior
 {
     function let(
         ProductDraftOwnershipRepositoryInterface $ownershipRepo,
-        CategoryAccessRepository $accessRepo,
-        UserContext $context,
+        SecurityContextInterface $securityContext,
+        TokenInterface $token,
         User $user
     ) {
-        $context->getUser()->willReturn($user);
+        $securityContext->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($accessRepo, $ownershipRepo, $context);
+        $this->beConstructedWith($securityContext, $ownershipRepo);
     }
 
     function it_is_a_widget()
@@ -33,20 +35,21 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig');
     }
 
-    function it_exposes_the_product_draft_widget_template_parameters()
+    function it_exposes_the_product_draft_widget_template_parameters($securityContext)
     {
+        $securityContext->isGranted(ProductOwnerVoter::OWN)->willReturn(true);
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($accessRepo, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($securityContext, $user)
     {
-        $accessRepo->isOwner($user)->willReturn(false);
+        $securityContext->isGranted(ProductOwnerVoter::OWN)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
         $this->getData()->shouldReturn([]);
     }
 
     function it_exposes_product_drafts_data(
-        $accessRepo,
+        $securityContext,
         $user,
         $ownershipRepo,
         ProductDraft $first,
@@ -54,7 +57,7 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {
-        $accessRepo->isOwner($user)->willReturn(true);
+        $securityContext->isGranted(ProductOwnerVoter::OWN)->willReturn(true);
         $ownershipRepo->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
         $first->getProduct()->willReturn($firstProduct);

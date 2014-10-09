@@ -16,7 +16,7 @@ oro_menu_config:
         pimee_workflow_product_draft:
             label: pimee_menu.item.product_draft
             route: pimee_workflow_product_draft_index
-            # aclResourceId: pimee_workflow_product_draft_index
+            aclResourceId: pimee_security_own_products
             extras:
                 routes: ['/^pimee_workflow_product_draft_\w+$/']
                 position: 10

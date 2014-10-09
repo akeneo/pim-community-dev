@@ -11,11 +11,10 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Widget to display product product drafts
@@ -25,9 +24,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductDraftWidget implements WidgetInterface
 {
     /**
-     * @var CategoryAccessRepository
+     * @var SecurityContextInterface
      */
-    protected $accessRepository;
+    protected $securityContext;
 
     /**
      * @var ProductDraftOwnershipRepositoryInterface
@@ -35,25 +34,17 @@ class ProductDraftWidget implements WidgetInterface
     protected $ownershipRepository;
 
     /**
-     * @var UserContext
-     */
-    protected $userContext;
-
-    /**
      * Constructor
      *
-     * @param CategoryAccessRepository                 $accessRepository
+     * @param SecurityContextInterface                 $securityContext
      * @param ProductDraftOwnershipRepositoryInterface $ownershipRepository
-     * @param UserContext                              $userContext
      */
     public function __construct(
-        CategoryAccessRepository $accessRepository,
-        ProductDraftOwnershipRepositoryInterface $ownershipRepository,
-        UserContext $userContext
+        SecurityContextInterface $securityContext,
+        ProductDraftOwnershipRepositoryInterface $ownershipRepository
     ) {
-        $this->accessRepository    = $accessRepository;
+        $this->securityContext     = $securityContext;
         $this->ownershipRepository = $ownershipRepository;
-        $this->userContext         = $userContext;
     }
 
     /**
@@ -77,7 +68,7 @@ class ProductDraftWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        return ['show' => $this->isDisplayable($this->userContext->getUser())];
+        return ['show' => $this->isDisplayable()];
     }
 
     /**
@@ -85,12 +76,11 @@ class ProductDraftWidget implements WidgetInterface
      */
     public function getData()
     {
-        $user = $this->userContext->getUser();
-
-        if (!$this->isDisplayable($user)) {
+        if (!$this->isDisplayable()) {
             return [];
         }
 
+        $user = $this->securityContext->getToken()->getUser();
         $result = [];
         $productDrafts = $this->ownershipRepository->findApprovableByUser($user, 10);
 
@@ -107,18 +97,12 @@ class ProductDraftWidget implements WidgetInterface
     }
 
     /**
-     * Check if the widget should be displayed to the given user
-     *
-     * @param UserInterface $user
+     * Indicates if the widget should be displayed to the current user
      *
      * @return boolean
      */
-    protected function isDisplayable(UserInterface $user = null)
+    protected function isDisplayable()
     {
-        if (null === $user) {
-            return false;
-        }
-
-        return $this->accessRepository->isOwner($user);
+        return $this->securityContext->isGranted(ProductOwnerVoter::OWN);
     }
 }

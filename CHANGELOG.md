@@ -14,6 +14,7 @@
 
 ## BC breaks
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
+- Changed the constructor of `PimEnterprise\Bundle\DashboardBundle\Widget\ProductDraftWidget` - replaced the first argument with `Symfony\Component\Security\Core\SecurityContextInterface` and removed the third argument
 
 # 1.0.x
 

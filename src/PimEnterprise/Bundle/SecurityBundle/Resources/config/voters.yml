@@ -6,6 +6,7 @@ parameters:
     pimee_security.voter.product_draft_ownership.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftOwnershipVoter
     pimee_security.voter.locale.class: PimEnterprise\Bundle\SecurityBundle\Voter\LocaleVoter
     pimee_security.voter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Voter\DatagridViewVoter
+    pimee_security.voter.product_owner.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter
 
 services:
     pimee_security.voter.attribute_group:
@@ -52,5 +53,12 @@ services:
         class: %pimee_security.voter.datagrid_view.class%
         arguments:
             - '@pimee_security.manager.datagtrid_view_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.product_owner:
+        class: %pimee_security.voter.product_owner.class%
+        arguments:
+            - '@pimee_security.repository.category_access'
         tags:
             - { name: security.voter }

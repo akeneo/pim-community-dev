@@ -5,7 +5,7 @@ services:
     pimee_dashboard.widget.product_draft:
         class: %pimee_dashboard.widget.product_draft.class%
         arguments:
-            - '@pimee_security.repository.category_access'
+            - '@security.context'
             - '@pimee_workflow.repository.product_draft_ownership'
             - '@pim_user.context.user'
         tags:
