@@ -4,6 +4,8 @@ pimee_workflow:
         created: Proposed at
         changes: Changes
         locale:  Locale context
+        product:
+            label: Product label
         status:
             label: Status
             working_copy: Working copy
@@ -52,3 +54,5 @@ confirmation:
     product:
         publish: Are you sure you want to publish this product ?
         unpublish: Are you sure you want to unpublish this product ?
+
+product_draft.overview: Proposals

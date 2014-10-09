@@ -1,4 +1,64 @@
 datagrid:
+    draft-grid:
+        options:
+            entityHint: product_draft
+        source:
+            type: pimee_datasource_product_draft
+            entity: %pimee_workflow.model.product_draft.class%
+            repository_method: createProposalDatagridQueryBuilder
+        columns:
+            product:
+                label: pimee_workflow.product_draft.product.label
+                type: field
+                frontend_type: string
+            author:
+                label: pimee_workflow.product_draft.author
+                type: field
+                frontend_type: string
+            changes:
+                label: pimee_workflow.product_draft.changes
+                type: twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/changes.html.twig
+                frontend_type: expand
+            createdAt:
+                label: pimee_workflow.product_draft.created
+                type: field
+                frontend_type: datetime
+        properties:
+            id: ~
+            approve_link:
+                type: url
+                route: pimee_workflow_product_draft_approve
+                params:
+                    - id
+                    - dataLocale
+            refuse_link:
+                type: url
+                route: pimee_workflow_product_draft_refuse
+                params:
+                    - id
+                    - dataLocale
+        actions:
+            approve:
+                type: ajax
+                label: pimee_workflow.product_draft.action.approve
+                icon: ok
+                link: approve_link
+            refuse:
+                type: ajax
+                label: pimee_workflow.product_draft.action.refuse
+                icon: remove
+                link: refuse_link
+        filters: ~
+        sorters:
+            columns:
+                author:
+                    data_name: author
+                createdAt:
+                    data_name: createdAt
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
     product-draft-grid:
         options:
             entityHint: product_draft

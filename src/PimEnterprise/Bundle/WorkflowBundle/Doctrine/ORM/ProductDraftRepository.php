@@ -87,6 +87,26 @@ class ProductDraftRepository extends EntityRepository implements
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
+    public function createProposalDatagridQueryBuilder(array $parameters = [])
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb
+            ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author')
+            ->from($this->_entityName, 'p', 'p.id')
+            ->join('p.product', 'product')
+            ->where(
+                $qb->expr()->eq('p.status', ProductDraft::READY)
+            );
+
+        return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function createDatagridQueryBuilder(array $parameters = [])
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
