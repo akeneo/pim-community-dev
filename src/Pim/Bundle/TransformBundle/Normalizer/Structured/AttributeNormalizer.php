@@ -104,7 +104,6 @@ class AttributeNormalizer implements NormalizerInterface
             'localizable'         => $attribute->isLocalizable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),
-            'default_options'     => $this->normalizeDefaultOptions($attribute),
             'sort_order'          => (int) $attribute->getSortOrder(),
             'required'            => (int) $attribute->isRequired(),
             'default_value'       => $this->normalizeDefaultValue($attribute),
@@ -180,26 +179,5 @@ class AttributeNormalizer implements NormalizerInterface
         } else {
             return (string) $defaultValue;
         }
-    }
-
-    /**
-     * Normalize default options
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return array
-     */
-    protected function normalizeDefaultOptions(AbstractAttribute $attribute)
-    {
-        $data = array();
-        $options = $attribute->getDefaultOptions();
-        foreach ($options as $option) {
-            $data[$option->getCode()] = array();
-            foreach ($option->getOptionValues() as $value) {
-                $data[$option->getCode()][$value->getLocale()] = $value->getValue();
-            }
-        }
-
-        return $data;
     }
 }

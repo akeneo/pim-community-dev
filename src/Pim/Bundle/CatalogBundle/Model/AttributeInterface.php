@@ -217,12 +217,6 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     public function getAllowedExtensions();
 
     /**
-     * Get default AttributeOptions
-     * @return ArrayCollection
-     */
-    public function getDefaultOptions();
-
-    /**
      * Set allowedExtensions
      *
      * @param string $allowedExtensions

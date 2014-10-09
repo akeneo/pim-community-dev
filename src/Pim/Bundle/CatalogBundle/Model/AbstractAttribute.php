@@ -465,13 +465,10 @@ abstract class AbstractAttribute implements AttributeInterface
 
         switch ($this->getBackendType()) {
             case 'option':
-                $default = $this->getDefaultOptions()->first();
-                if (false === $default) {
-                    $default = null;
-                }
+                $default = null;
                 break;
             case 'options':
-                $default = $this->getDefaultOptions();
+                $default = null;
                 break;
             case 'date':
                 if (null !== $this->defaultValue) {
@@ -512,18 +509,6 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOptions()
-    {
-        return $this->options->filter(
-            function ($option) {
-                return $option->isDefault();
-            }
-        );
     }
 
     /**

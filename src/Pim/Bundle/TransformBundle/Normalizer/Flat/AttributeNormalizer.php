@@ -70,30 +70,4 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
 
         return $options;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function normalizeDefaultOptions(AbstractAttribute $attribute)
-    {
-        $defaultOptions = $attribute->getDefaultOptions();
-
-        if ($defaultOptions->isEmpty()) {
-            $defaultOptions = '';
-        } else {
-            $data = array();
-            foreach ($defaultOptions as $option) {
-                $item = array();
-                foreach ($option->getOptionValues() as $value) {
-                    $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
-                    $label = str_replace('{value}', $value->getValue(), $label);
-                    $item[] = $label;
-                }
-                $data[] = implode(self::ITEM_SEPARATOR, $item);
-            }
-            $defaultOptions = implode(self::GROUP_SEPARATOR, $data);
-        }
-
-        return $defaultOptions;
-    }
 }
