@@ -1,7 +1,7 @@
 datagrid:
     draft-grid:
         options:
-            entityHint: product_draft
+            entityHint: proposal
         source:
             type: pimee_datasource_product_draft
             entity: %pimee_workflow.model.product_draft.class%
@@ -49,7 +49,17 @@ datagrid:
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
-        filters: ~
+        filters:
+            columns:
+                autor:
+                    type:        choice
+                    ftype:       choice
+                    data_name:   p.author
+                    label:       pimee_workflow.product_draft.author
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: '@pimee_datagrid.datagrid.proposal.grid_helper->getAuthorChoices'
         sorters:
             columns:
                 author:
