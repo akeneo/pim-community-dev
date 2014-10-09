@@ -22,6 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -105,14 +106,15 @@ class ProductDraftController extends AbstractController
     }
 
     /**
+     * @param Request        $request
      * @param integer|string $id
      *
-     * @return RedirectResponse
+     * @return JsonResponse|RedirectResponse
      * @throws \LogicException
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      */
-    public function approveAction($id)
+    public function approveAction(Request $request, $id)
     {
         if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
@@ -128,10 +130,26 @@ class ProductDraftController extends AbstractController
 
         try {
             $this->manager->approve($productDraft);
-            $this->addFlash('success', 'flash.product_draft.approve.success');
+            $status = 'success';
+            $messageParams = [];
         } catch (ValidatorException $e) {
-            $this->addFlash('error', 'flash.product_draft.approve.error', ['%error%' => $e->getMessage()]);
+            $status = 'error';
+            $messageParams = ['%error%' => $e->getMessage()];
         }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'successful' => $status === 'success',
+                    'message' => $this->getTranslator()->trans(
+                        sprintf('flash.product_draft.approve.%s', $status),
+                        $messageParams
+                    )
+                ]
+            );
+        }
+
+        $this->addFlash($status, sprintf('flash.product_draft.approve.%s', $status), $messageParams);
 
         return $this->redirect(
             $this->generateUrl(
@@ -145,13 +163,14 @@ class ProductDraftController extends AbstractController
     }
 
     /**
+     * @param Request        $request
      * @param integer|string $id
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      */
-    public function refuseAction($id)
+    public function refuseAction(Request $request, $id)
     {
         if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
@@ -162,6 +181,15 @@ class ProductDraftController extends AbstractController
         }
 
         $this->manager->refuse($productDraft);
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'successful' => true,
+                    'message' => $this->getTranslator()->trans('flash.product_draft.refuse.success')
+                ]
+            );
+        }
 
         return $this->redirect(
             $this->generateUrl(
