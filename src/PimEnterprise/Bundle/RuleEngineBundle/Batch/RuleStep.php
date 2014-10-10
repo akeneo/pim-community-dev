@@ -32,7 +32,7 @@ class RuleStep extends AbstractStep
     protected $applier;
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
@@ -51,7 +51,7 @@ class RuleStep extends AbstractStep
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function setConfiguration(array $config)
     {
@@ -63,7 +63,7 @@ class RuleStep extends AbstractStep
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     protected function doExecute(StepExecution $stepExecution)
     {
@@ -146,7 +146,7 @@ class RuleStep extends AbstractStep
     }
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     public function getConfigurableStepElements()
     {
