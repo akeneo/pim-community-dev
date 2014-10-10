@@ -17,7 +17,7 @@ use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository as Bas
 /**
  * Override job instance repository
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobInstanceRepository extends BaseJobInstanceRepository
 {

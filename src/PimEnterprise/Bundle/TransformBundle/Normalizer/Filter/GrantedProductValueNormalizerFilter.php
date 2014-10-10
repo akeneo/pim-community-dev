@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\TransformBundle\Normalizer\Filter;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Filter the granted product value objects.
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class GrantedProductValueNormalizerFilter implements NormalizerFilterInterface
 {

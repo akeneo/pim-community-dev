@@ -3,9 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model;
 
 class OptionComparatorSpec extends ObjectBehavior
 {
@@ -21,7 +20,8 @@ class OptionComparatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_supports_simpleselect_type($value, $attribute) {
+    function it_supports_simpleselect_type($value, $attribute)
+    {
         $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
 
         $this->supportsComparison($value)->shouldBe(true);
@@ -30,7 +30,7 @@ class OptionComparatorSpec extends ObjectBehavior
     function it_detects_changes_when_changing_option_data(
         $value,
         AttributeOption $red
-    ){
+    ) {
         $submittedData = [
             'option' => '42',
         ];
@@ -45,7 +45,7 @@ class OptionComparatorSpec extends ObjectBehavior
 
     function it_detects_changes_when_setting_for_the_first_time_a_value_option(
         $value
-    ){
+    ) {
         $submittedData = [
             'option' => '42',
         ];
@@ -73,7 +73,7 @@ class OptionComparatorSpec extends ObjectBehavior
 
     function it_detects_no_changes_when_setting_no_option_on_a_value_that_already_does_not_have_one(
         Model\AbstractProductValue $value
-    ){
+    ) {
         $submittedData = [
             'option' => '',
         ];

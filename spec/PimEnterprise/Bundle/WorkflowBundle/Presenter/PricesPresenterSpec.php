@@ -2,9 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
@@ -59,7 +58,9 @@ class PricesPresenterSpec extends ObjectBehavior
             ]
         ];
 
-        $renderer->renderDiff(['15 EUR', '22 USD'], ['12 EUR', '25 GBP', '20 USD'])->willReturn('diff between two price collections');
+        $renderer
+            ->renderDiff(['15 EUR', '22 USD'], ['12 EUR', '25 GBP', '20 USD'])
+            ->willReturn('diff between two price collections');
 
         $this->setRenderer($renderer);
         $this->present($value, $change)->shouldReturn('diff between two price collections');

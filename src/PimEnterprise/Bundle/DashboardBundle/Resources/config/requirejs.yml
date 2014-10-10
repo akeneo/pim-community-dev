@@ -1,0 +1,3 @@
+config:
+    paths:
+        pimee/dashboard/product-drafts-widget: pimenterprisedashboard/js/product-drafts-widget

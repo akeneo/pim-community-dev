@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface;
 /**
  * Locale Access entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocaleAccess implements LocaleAccessInterface
 {

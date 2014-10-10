@@ -2,11 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Gaufrette\Filesystem;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 class MediaManagerSpec extends ObjectBehavior
 {

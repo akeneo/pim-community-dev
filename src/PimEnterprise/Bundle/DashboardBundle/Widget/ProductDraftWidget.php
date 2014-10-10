@@ -11,15 +11,16 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Widget to display product product drafts
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ProductDraftWidget implements WidgetInterface
 {
@@ -58,6 +59,14 @@ class ProductDraftWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
+    public function getAlias()
+    {
+        return 'product_drafts';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTemplate()
     {
         return 'PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig';
@@ -68,22 +77,48 @@ class ProductDraftWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $user    = $this->userContext->getUser();
-        $isOwner = false;
+        return ['show' => $this->isDisplayable($this->userContext->getUser())];
+    }
 
-        if (null !== $user) {
-            $isOwner = $this->accessRepository->isOwner($user);
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        $user = $this->userContext->getUser();
+
+        if (!$this->isDisplayable($user)) {
+            return [];
         }
 
-        if (!$isOwner) {
-            return ['show' => false];
-        }
-
+        $result = [];
         $productDrafts = $this->ownershipRepository->findApprovableByUser($user, 10);
 
-        return [
-            'show'   => true,
-            'params' => $productDrafts
-        ];
+        foreach ($productDrafts as $draft) {
+            $result[] = [
+                'productId'    => $draft->getProduct()->getId(),
+                'productLabel' => $draft->getProduct()->getLabel(),
+                'author'       => $draft->getAuthor(),
+                'createdAt'    => $draft->getCreatedAt()->format('U')
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check if the widget should be displayed to the given user
+     *
+     * @param UserInterface $user
+     *
+     * @return boolean
+     */
+    protected function isDisplayable(UserInterface $user = null)
+    {
+        if (null === $user) {
+            return false;
+        }
+
+        return $this->accessRepository->isOwner($user);
     }
 }

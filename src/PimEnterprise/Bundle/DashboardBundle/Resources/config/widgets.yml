@@ -9,4 +9,4 @@ services:
             - '@pimee_workflow.repository.product_draft_ownership'
             - '@pim_user.context.user'
         tags:
-            - { name: pim_dashboard.widget, alias: product_drafts }
+            - { name: pim_dashboard.widget, position: 100 }

@@ -2,24 +2,25 @@
 
 namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\User;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class ProductDraftWidgetSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftOwnershipRepositoryInterface $ownershipRepository,
-        CategoryAccessRepository $accessRepository,
+        ProductDraftOwnershipRepositoryInterface $ownershipRepo,
+        CategoryAccessRepository $accessRepo,
         UserContext $context,
         User $user
     ) {
         $context->getUser()->willReturn($user);
 
-        $this->beConstructedWith($accessRepository, $ownershipRepository, $context);
+        $this->beConstructedWith($accessRepo, $ownershipRepo, $context);
     }
 
     function it_is_a_widget()
@@ -37,17 +38,54 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($accessRepository, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($accessRepo, $user)
     {
-        $accessRepository->isOwner($user)->willReturn(false);
+        $accessRepo->isOwner($user)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
+        $this->getData()->shouldReturn([]);
     }
 
-    function it_passes_product_drafts_from_the_repository_to_the_template($accessRepository, $user, $ownershipRepository)
-    {
-        $accessRepository->isOwner($user)->willReturn(true);
-        $ownershipRepository->findApprovableByUser($user, 10)->willReturn(['product draft one', 'product draft two']);
+    function it_exposes_product_drafts_data(
+        $accessRepo,
+        $user,
+        $ownershipRepo,
+        ProductDraft $first,
+        ProductDraft $second,
+        ProductInterface $firstProduct,
+        ProductInterface $secondProduct
+    ) {
+        $accessRepo->isOwner($user)->willReturn(true);
+        $ownershipRepo->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
-        $this->getParameters()->shouldReturn(['show' => true, 'params' => ['product draft one', 'product draft two']]);
+        $first->getProduct()->willReturn($firstProduct);
+        $second->getProduct()->willReturn($secondProduct);
+
+        $firstProduct->getId()->willReturn(1);
+        $secondProduct->getId()->willReturn(2);
+        $firstProduct->getLabel()->willReturn('First product');
+        $secondProduct->getLabel()->willReturn('Second product');
+        $first->getAuthor()->willReturn('Julia');
+        $second->getAuthor()->willReturn('Julia');
+        $firstCreatedAt = new \DateTime();
+        $secondCreatedAt = new \DateTime();
+        $first->getCreatedAt()->willReturn($firstCreatedAt);
+        $second->getCreatedAt()->willReturn($secondCreatedAt);
+
+        $this->getData()->shouldReturn(
+            [
+                [
+                    'productId'    => 1,
+                    'productLabel' => 'First product',
+                    'author'       => 'Julia',
+                    'createdAt'    => $firstCreatedAt->format('U')
+                ],
+                [
+                    'productId'    => 2,
+                    'productLabel' => 'Second product',
+                    'author'       => 'Julia',
+                    'createdAt'    => $secondCreatedAt->format('U')
+                ]
+            ]
+        );
     }
 }

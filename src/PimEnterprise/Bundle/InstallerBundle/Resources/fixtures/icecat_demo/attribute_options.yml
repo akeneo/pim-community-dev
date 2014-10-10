@@ -151,7 +151,6 @@ options:
         code: white
         attribute: main_color
         labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
-        default: 1
     black_main:
         code: black
         attribute: main_color
