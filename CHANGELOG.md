@@ -1,6 +1,10 @@
 # 1.2.x
 
 ## Bug fixes
+
+# 1.2.8 (2014-10-10)
+
+## Bug fixes
 - Fix memory leak in CSV quick export
 - Fix memory leak when product with medias are exported in CSV
 - Cannot display correctly all variant groups on grid

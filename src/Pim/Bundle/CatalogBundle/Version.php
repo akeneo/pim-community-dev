@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.2.x';
+    const VERSION = '1.2.8';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Acrobatty Bunny';
