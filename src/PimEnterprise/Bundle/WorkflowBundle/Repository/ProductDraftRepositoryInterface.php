@@ -29,6 +29,15 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
     public function createDatagridQueryBuilder();
 
     /**
+     * Create the datagrid query builder for the proposal grid
+     *
+     * @param array $parameters
+     *
+     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     */
+    public function createProposalDatagridQueryBuilder(array $parameters = []);
+
+    /**
      * Apply the context of the datagrid to the query
      *
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb

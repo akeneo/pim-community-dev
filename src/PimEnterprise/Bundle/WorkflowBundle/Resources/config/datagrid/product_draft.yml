@@ -6,6 +6,8 @@ datagrid:
             type: pimee_datasource_product_draft
             entity: %pimee_workflow.model.product_draft.class%
             repository_method: createProposalDatagridQueryBuilder
+            repository_parameters:
+                - currentUser
         columns:
             product:
                 label: pimee_workflow.product_draft.product.label

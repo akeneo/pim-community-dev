@@ -12,8 +12,12 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * ProductDraft ODM repository
@@ -22,6 +26,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
  */
 class ProductDraftRepository extends DocumentRepository implements ProductDraftRepositoryInterface
 {
+    /** @var CategoryAccessRepository */
+    protected $categoryAccessRepository;
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +39,35 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
             ->field('author')->equals($username)
             ->field('product')->references($product)
             ->getQuery()->getSingleResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createProposalDatagridQueryBuilder(array $parameters = [])
+    {
+        if (null === $this->categoryAccessRepository) {
+            throw new \LogicException('Category access repository should be set.');
+        }
+
+        $qb = $this->createQueryBuilder('ProductDraft');
+
+        if (isset($parameters['currentUser'])) {
+
+            $user = $parameters['currentUser'];
+            if (!is_object($user) || !$user instanceof UserInterface) {
+                throw new \InvalidArgumentException(
+                    'Current user should be a \Symfony\Component\Security\Core\User\UserInterface.'
+                );
+            }
+
+            $qb
+                ->field('status')->equals(ProductDraft::READY)
+                ->field('categoryIds')->in($this->getGrantedCategoryIds($user))
+                ->sort('createdAt', 'desc');
+        }
+
+        return $qb;
     }
 
     /**
@@ -76,7 +112,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     /**
      * {@inheritdoc}
      *
-     * @param \Doctrine\ODM\MongoDB\Query\Builder
+     * @param \Doctrine\ODM\MongoDB\Query\Builder $qb
      */
     public function applyFilter($qb, $field, $operator, $value)
     {
@@ -90,10 +126,50 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     /**
      * {@inheritdoc}
      *
-     * @param \Doctrine\ODM\MongoDB\Query\Builder
+     * @param \Doctrine\ODM\MongoDB\Query\Builder $qb
      */
     public function applySorter($qb, $field, $direction)
     {
         $qb->sort($field, $direction);
+    }
+
+    /**
+     * @param CategoryAccessRepository $repository
+     *
+     * @return ProductDraftRepositoryInterface
+     */
+    public function setCategoryAccessRepository(CategoryAccessRepository $repository)
+    {
+        $this->categoryAccessRepository = $repository;
+
+        return $this;
+    }
+
+    /**
+     * Get ids of categories the given user has ownership rights to
+     *
+     * @param UserInterface $user
+     *
+     * @return integer[]
+     */
+    protected function getGrantedCategoryIds(UserInterface $user)
+    {
+        $qb = $this->categoryAccessRepository->createQueryBuilder('o');
+
+        $qb
+            ->join('o.category', 'category')
+            ->select('category.id')
+            ->where($qb->expr()->in('o.userGroup', ':userGroups'))
+            ->andWhere('o.ownProducts = 1')
+            ->setParameter('userGroups', $user->getGroups()->toArray());
+
+        $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
+
+        $grantedCategoryIds = [];
+        foreach ($result as $row) {
+            $grantedCategoryIds[] = $row['id'];
+        }
+
+        return $grantedCategoryIds;
     }
 }
