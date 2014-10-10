@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeOptionNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeOptionNormalizer;
 
 /**
  * Attribute option normalizer test
@@ -63,7 +63,6 @@ class AttributeOptionNormalizerTest extends NormalizerTestCase
                 array(
                     'attribute'  => 'color',
                     'code'       => 'red',
-                    'default' => 0,
                     'label' => array('en_US' => 'Red', 'fr_FR' => 'Rouge')
                 )
             ),

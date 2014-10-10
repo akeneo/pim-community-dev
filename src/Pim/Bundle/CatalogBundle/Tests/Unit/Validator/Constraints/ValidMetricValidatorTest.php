@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator;
 

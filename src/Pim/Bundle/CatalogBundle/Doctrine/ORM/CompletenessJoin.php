@@ -34,7 +34,7 @@ class CompletenessJoin
      *
      * @param string $completenessAlias the join alias
      *
-     * @return ComplenessJoin
+     * @return CompletenessJoin
      */
     public function addJoins($completenessAlias)
     {

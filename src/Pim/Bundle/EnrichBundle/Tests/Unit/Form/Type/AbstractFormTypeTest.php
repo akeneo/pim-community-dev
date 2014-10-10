@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
+use Pim\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
-use Pim\Bundle\UIBundle\Form\Type\SwitchType;
-use Pim\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension;
 
 /**
  * Abstract form type test

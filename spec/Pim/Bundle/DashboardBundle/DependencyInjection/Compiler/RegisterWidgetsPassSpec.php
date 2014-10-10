@@ -3,11 +3,10 @@
 namespace spec\Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 
 class RegisterWidgetsPassSpec extends ObjectBehavior
 {
@@ -31,17 +30,17 @@ class RegisterWidgetsPassSpec extends ObjectBehavior
         $container->hasDefinition('pim_dashboard.widget.registry')->willReturn(true);
         $container->getDefinition('pim_dashboard.widget.registry')->willReturn($definition);
         $container->findTaggedServiceIds('pim_dashboard.widget')->willReturn(
-            array(
-                'pim_dashboard.widget.foo' => array(0 => array('alias' => 'foo')),
-                'pim_dashboard.widget.bar' => array(),
-            )
+            [
+                'pim_dashboard.widget.foo' => [0 => ['position' => 10]],
+                'pim_dashboard.widget.bar' => [],
+            ]
         );
 
         $factory->createReference('pim_dashboard.widget.foo')->willReturn($fooReference);
         $factory->createReference('pim_dashboard.widget.bar')->willReturn($barReference);
 
-        $definition->addMethodCall('add', array('foo', $fooReference))->shouldBeCalled();
-        $definition->addMethodCall('add', array('pim_dashboard.widget.bar', $barReference))->shouldBeCalled();
+        $definition->addMethodCall('add', [$fooReference, 10])->shouldBeCalled();
+        $definition->addMethodCall('add', [$barReference, 0])->shouldBeCalled();
 
         $this->process($container);
     }

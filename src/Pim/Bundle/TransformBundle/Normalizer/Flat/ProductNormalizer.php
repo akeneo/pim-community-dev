@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
  * A normalizer to transform a product entity into a flat array

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
@@ -21,14 +21,65 @@ class ProductIdFilter implements FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
+    protected $supportedOperators;
+
     /**
-     * @param QueryBuilder   $qb      the query builder
-     * @param CatalogContext $context the catalog context
+     * Instanciate the filter
+     *
+     * @param CatalogContext $context
+     * @param array          $supportedFields
+     * @param array          $supportedOperators
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
+    public function __construct(
+        CatalogContext $context,
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
         $this->context = $context;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

@@ -3,12 +3,11 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 
 class AttributeTypeSpec extends ObjectBehavior
 {
@@ -116,7 +115,6 @@ class AttributeTypeSpec extends ObjectBehavior
     function it_adds_grid_parameter_fields_to_the_form($builder)
     {
         $this->buildForm($builder, []);
-        $builder->add('useableAsGridColumn', 'switch')->shouldHaveBeenCalled();
         $builder->add('useableAsGridFilter', 'switch')->shouldHaveBeenCalled();
     }
 

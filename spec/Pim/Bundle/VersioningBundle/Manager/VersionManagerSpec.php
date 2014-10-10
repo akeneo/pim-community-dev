@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Prophecy\Argument;
 
 class VersionManagerSpec extends ObjectBehavior
 {

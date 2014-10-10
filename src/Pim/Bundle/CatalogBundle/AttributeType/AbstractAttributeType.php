@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Abstract attribute type

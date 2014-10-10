@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Attribute option normalizer
@@ -30,8 +30,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
 
         return array(
             'attribute'  => $entity->getAttribute()->getCode(),
-            'code'       => $entity->getCode(),
-            'default'    => ($entity->isDefault()) ? '1' : '0',
+            'code'       => $entity->getCode()
         ) + $this->normalizeLabel($entity, $context);
     }
 
