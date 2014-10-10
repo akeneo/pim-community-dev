@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * ProductDraft repository interface
@@ -36,6 +37,16 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
      */
     public function createProposalDatagridQueryBuilder(array $parameters = []);
+
+    /**
+     * Return product drafts that can be approved by the given user
+     *
+     * @param UserInterface $user
+     * @param integer       $limit
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]
+     */
+    public function findApprovableByUser(UserInterface $user, $limit = null);
 
     /**
      * Apply the context of the datagrid to the query

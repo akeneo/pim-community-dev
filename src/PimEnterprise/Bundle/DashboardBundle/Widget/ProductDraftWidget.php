@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -29,22 +29,22 @@ class ProductDraftWidget implements WidgetInterface
     protected $securityContext;
 
     /**
-     * @var ProductDraftOwnershipRepositoryInterface
+     * @var ProductDraftRepositoryInterface
      */
-    protected $ownershipRepository;
+    protected $repository;
 
     /**
      * Constructor
      *
-     * @param SecurityContextInterface                 $securityContext
-     * @param ProductDraftOwnershipRepositoryInterface $ownershipRepository
+     * @param SecurityContextInterface        $securityContext
+     * @param ProductDraftRepositoryInterface $ownershipRepository
      */
     public function __construct(
         SecurityContextInterface $securityContext,
-        ProductDraftOwnershipRepositoryInterface $ownershipRepository
+        ProductDraftRepositoryInterface $ownershipRepository
     ) {
-        $this->securityContext     = $securityContext;
-        $this->ownershipRepository = $ownershipRepository;
+        $this->securityContext = $securityContext;
+        $this->repository      = $ownershipRepository;
     }
 
     /**
@@ -82,7 +82,7 @@ class ProductDraftWidget implements WidgetInterface
 
         $user = $this->securityContext->getToken()->getUser();
         $result = [];
-        $productDrafts = $this->ownershipRepository->findApprovableByUser($user, 10);
+        $productDrafts = $this->repository->findApprovableByUser($user, 10);
 
         foreach ($productDrafts as $draft) {
             $result[] = [

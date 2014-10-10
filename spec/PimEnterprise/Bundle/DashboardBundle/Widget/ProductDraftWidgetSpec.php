@@ -6,15 +6,15 @@ use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class ProductDraftWidgetSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftOwnershipRepositoryInterface $ownershipRepo,
+        ProductDraftRepositoryInterface $repository,
         SecurityContextInterface $securityContext,
         TokenInterface $token,
         User $user
@@ -22,7 +22,7 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($securityContext, $ownershipRepo);
+        $this->beConstructedWith($securityContext, $repository);
     }
 
     function it_is_a_widget()
@@ -51,14 +51,14 @@ class ProductDraftWidgetSpec extends ObjectBehavior
     function it_exposes_product_drafts_data(
         $securityContext,
         $user,
-        $ownershipRepo,
+        $repository,
         ProductDraft $first,
         ProductDraft $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {
         $securityContext->isGranted(ProductOwnerVoter::OWN)->willReturn(true);
-        $ownershipRepo->findApprovableByUser($user, 10)->willReturn([$first, $second]);
+        $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
         $first->getProduct()->willReturn($firstProduct);
         $second->getProduct()->willReturn($secondProduct);

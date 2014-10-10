@@ -33,9 +33,6 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pimee_workflow.repository.product_draft_ownership:
-        alias: pimee_workflow.repository.product_draft
-
     pimee_workflow.repository.product_draft:
         class: %pimee_workflow.repository.product_draft.class%
         factory_service: pimee_workflow.object_manager.product_draft

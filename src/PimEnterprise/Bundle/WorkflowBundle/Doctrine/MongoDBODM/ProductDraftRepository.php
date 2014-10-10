@@ -50,10 +50,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
             throw new \LogicException('Category access repository should be set.');
         }
 
-        $qb = $this->createQueryBuilder('ProductDraft');
-
         if (isset($parameters['currentUser'])) {
-
             $user = $parameters['currentUser'];
             if (!is_object($user) || !$user instanceof UserInterface) {
                 throw new \InvalidArgumentException(
@@ -61,13 +58,27 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
                 );
             }
 
-            $qb
-                ->field('status')->equals(ProductDraft::READY)
-                ->field('categoryIds')->in($this->getGrantedCategoryIds($user))
-                ->sort('createdAt', 'desc');
+            $qb = $this->createApprovableQueryBuilder($user);
+        } else {
+            $qb = $this->createQueryBuilder('ProductDraft');
+
         }
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findApprovableByUser(UserInterface $user, $limit = null)
+    {
+        $qb = $this->createApprovableQueryBuilder($user);
+
+        if (null !== $limit) {
+            $qb->limit($limit);
+        }
+
+        return $qb->getQuery()->execute();
     }
 
     /**
@@ -143,6 +154,26 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
         $this->categoryAccessRepository = $repository;
 
         return $this;
+    }
+
+    /**
+     * Creates a QB with proposals that are approvable by the user
+     *
+     * @param UserInterface $user
+     *
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
+     */
+    protected function createApprovableQueryBuilder(UserInterface $user)
+    {
+        $qb = $this->createQueryBuilder('ProductDraft');
+
+        $qb
+            ->field('status')->equals(ProductDraft::READY)
+            ->field('categoryIds')->in($this->getGrantedCategoryIds($user))
+            ->sort('createdAt', 'desc')
+        ;
+
+        return $qb;
     }
 
     /**

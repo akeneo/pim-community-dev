@@ -6,7 +6,7 @@ services:
         class: %pimee_dashboard.widget.product_draft.class%
         arguments:
             - '@security.context'
-            - '@pimee_workflow.repository.product_draft_ownership'
+            - '@pimee_workflow.repository.product_draft'
             - '@pim_user.context.user'
         tags:
             - { name: pim_dashboard.widget, position: 100 }
