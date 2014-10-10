@@ -68,9 +68,8 @@ class ContextConfigurator implements ConfiguratorInterface
             $params = [];
             foreach ($repositoryParams as $paramName) {
                 if ('currentUser' === $paramName) {
-                    $params[$paramName] = $this->userContext->getUser();;
-                }
-                else {
+                    $params[$paramName] = $this->userContext->getUser();
+                } else {
                     $params[$paramName] = $this->requestParams->get($paramName, $this->request->get($paramName, null));
                 }
 

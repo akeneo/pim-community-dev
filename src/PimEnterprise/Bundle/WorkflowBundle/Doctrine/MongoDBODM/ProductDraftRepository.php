@@ -170,8 +170,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
         $qb
             ->field('status')->equals(ProductDraft::READY)
             ->field('categoryIds')->in($this->getGrantedCategoryIds($user))
-            ->sort('createdAt', 'desc')
-        ;
+            ->sort('createdAt', 'desc');
 
         return $qb;
     }

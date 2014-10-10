@@ -11,9 +11,7 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
  * Helper for proposal datagrid
