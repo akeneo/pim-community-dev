@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -816,6 +817,24 @@ class FixturesContext extends RawMinkContext
         $attribute = $this->getAttribute(strtolower($attribute));
         foreach ($this->listToArray($options) as $option) {
             $attribute->addOption($this->createOption($option));
+        }
+
+        $this->flush();
+    }
+
+    /**
+     * @Given /^the following attribute options translations:$/
+     */
+    public function theFollowingAttributeOptionsTranslations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $optionValue = new AttributeOptionValue();
+            $optionValue
+                ->setLocale($this->getLocaleCode($data['locale']))
+                ->setValue($data['value']);
+            $this
+                ->getAttributeOption($data['attribute_option'])
+                ->addOptionValue($optionValue);
         }
 
         $this->flush();

@@ -47,6 +47,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('navigation', new NavigationContext());
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
+        $this->useContext('magento', new MagentoContext());
     }
 
     /**

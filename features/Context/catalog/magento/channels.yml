@@ -1,0 +1,11 @@
+channels:
+    magento:
+        code:  magento
+        label: Magento
+        locales:
+            - en_US
+            - fr_FR
+        currencies:
+            - EUR
+            - USD
+        tree: default

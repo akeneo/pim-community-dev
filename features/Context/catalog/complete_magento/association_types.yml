@@ -1,0 +1,29 @@
+association_types:
+    variant:
+        labels:
+            en_US: Variant
+            fr_FR: Variante
+    similar:
+        labels:
+            en_US: Similar
+            fr_FR: Similaire
+    related:
+        labels:
+            en_US: Related
+            fr_FR: Connexe
+    cross_sell:
+        labels:
+            en_US: Cross sell
+            fr_FR: Vente croisée
+    upsell:
+        labels:
+            en_US: Upsell
+            fr_FR: Vente incitative
+    substitute:
+        labels:
+            en_US: Substitute
+            fr_FR: Substitut
+    pack:
+        labels:
+            en_US: Pack
+            fr_FR: Paquet

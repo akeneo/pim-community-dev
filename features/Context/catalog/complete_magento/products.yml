@@ -1,0 +1,63 @@
+products:
+    sku-000:
+        sku: sku-000
+        family: Default
+        groups: ""
+        categories: "notebooks"
+        name-en_US: "Product example"
+        name-fr_FR: "Exemple de produit"
+        short_description-en_US-magento: "Short description"
+        short_description-fr_FR-magento: "Courte description"
+        description-en_US-magento: "Description"
+        description-fr_FR-magento: "Description"
+        price: "10.00 EUR,50.00 USD"
+        weight: 200 GRAM
+        tax_class_id: 4
+    sku-001:
+        sku: sku-001
+        family: Shirt
+        groups: oro_shirt
+        categories: "shirts"
+        name-en_US: "Shirt product example"
+        name-fr_FR: "Exemple de produit chemise"
+        short_description-en_US-magento: "Short shirt description"
+        short_description-fr_FR-magento: "Courte description d'une chemise"
+        description-en_US-magento: "Shirt description"
+        description-fr_FR-magento: "Description d'une chemise"
+        price: "5.00 EUR,27.00 USD"
+        weight: 360 GRAM
+        size: L
+        color: Blue
+        tax_class_id: 4
+    sku-002:
+        sku: sku-002
+        family: Shirt
+        groups: oro_shirt
+        categories: "shirts"
+        name-en_US: "Second shirt product example"
+        name-fr_FR: "Second exemple de produit chemise"
+        short_description-en_US-magento: "Second short shirt description"
+        short_description-fr_FR-magento: "Seconde courte description d'une chemise"
+        description-en_US-magento: "Second shirt description"
+        description-fr_FR-magento: "Seconde description d'une chemise"
+        price: "25.00 EUR,48.00 USD"
+        weight: 360 GRAM
+        size: S
+        color: Red
+        tax_class_id: 4
+    sku-003:
+        sku: sku-003
+        family: Shirt
+        groups: oro_shirt
+        categories: "shirts"
+        name-en_US: "Third shirt product example"
+        name-fr_FR: "Troisième exemple de produit chemise"
+        short_description-en_US-magento: "Third short shirt description"
+        short_description-fr_FR-magento: "Troisième courte description d'une chemise"
+        description-en_US-magento: "Third shirt description"
+        description-fr_FR-magento: "Troisième description d'une chemise"
+        price: "20.00 EUR,48.00 USD"
+        weight: 360 GRAM
+        size: XS
+        color: Black
+        tax_class_id: 4
