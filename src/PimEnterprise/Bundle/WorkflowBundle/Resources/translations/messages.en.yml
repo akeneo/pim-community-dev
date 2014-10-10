@@ -30,9 +30,9 @@ btn.publish: Publish
 btn.unpublish: Unpublish
 flash.product.published: The product has been successfully published.
 flash.product.unpublished: The product has been successfully unpublished.
-flash.product_draft.approve.success: The product draft has been applied successfully.
-flash.product_draft.approve.error: The product draft can't be applied due to the following error. %error%
-flash.product_draft.refuse.success: The product draft has been refused.
+flash.product_draft.approve.success: The proposal has been applied successfully.
+flash.product_draft.approve.error: The proposal can't be applied due to the following error. %error%
+flash.product_draft.refuse.success: The proposal has been refused.
 pimee_menu:
     tab:
         activity: Activity
