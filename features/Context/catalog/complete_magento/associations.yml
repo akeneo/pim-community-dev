@@ -1,0 +1,17 @@
+associations:
+    - owner: sku-000
+      association_type: cross_sell
+      products:
+        - sku-001
+        - sku-002
+
+    - owner: sku-001
+      association_type: upsell
+      products:
+        - sku-000
+        - sku-003
+
+    - owner: sku-003
+      association_type: related
+      products:
+        - sku-002

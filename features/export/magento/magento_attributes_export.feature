@@ -71,13 +71,13 @@ Feature: Magento attribute export
     When I am on the "magento_attribute_export" export job edit page
     And I fill in the "storeview" mapping:
       | fr_FR | fr_fr |
-    And I press the "Save" button and I wait "15"s
+    And I press the "Save" button and I wait "30"s
     Then I launch the export job
     And I wait for the "magento_attribute_export" job to finish
     When I am on the "magento_option_export" export job edit page
     And I fill in the "storeview" mapping:
       | fr_FR | fr_fr |
-    And I press the "Save" button and I wait "15"s
+    And I press the "Save" button and I wait "30"s
     Then I launch the export job
     And I wait for the "magento_option_export" job to finish
     Then I check if "attributes" were sent in Magento:

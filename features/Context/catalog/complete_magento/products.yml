@@ -10,10 +10,9 @@ products:
         short_description-fr_FR-magento: "Courte description"
         description-en_US-magento: "Description"
         description-fr_FR-magento: "Description"
-        price-en_US: "10.00 EUR,50.00 USD"
+        price: "10.00 EUR,50.00 USD"
         weight: 200 GRAM
-        tax_class_id-en_US: 4
-        tax_class_id-fr_FR: 4
+        tax_class_id: 4
     sku-001:
         sku: sku-001
         family: Shirt
@@ -25,13 +24,11 @@ products:
         short_description-fr_FR-magento: "Courte description d'une chemise"
         description-en_US-magento: "Shirt description"
         description-fr_FR-magento: "Description d'une chemise"
-        price-en_US: "5.00 EUR,27.00 USD"
+        price: "5.00 EUR,27.00 USD"
         weight: 360 GRAM
-        size-en_US: XS
-        size-fr_FR: XS
+        size: L
         color: Blue
-        tax_class_id-en_US: 4
-        tax_class_id-fr_FR: 4
+        tax_class_id: 4
     sku-002:
         sku: sku-002
         family: Shirt
@@ -43,13 +40,11 @@ products:
         short_description-fr_FR-magento: "Seconde courte description d'une chemise"
         description-en_US-magento: "Second shirt description"
         description-fr_FR-magento: "Seconde description d'une chemise"
-        price-en_US: "25.00 EUR,48.00 USD"
+        price: "25.00 EUR,48.00 USD"
         weight: 360 GRAM
-        size-en_US: S
-        size-fr_FR: S
+        size: S
         color: Red
-        tax_class_id-en_US: 4
-        tax_class_id-fr_FR: 4
+        tax_class_id: 4
     sku-003:
         sku: sku-003
         family: Shirt
@@ -61,10 +56,8 @@ products:
         short_description-fr_FR-magento: "Troisième courte description d'une chemise"
         description-en_US-magento: "Third shirt description"
         description-fr_FR-magento: "Troisième description d'une chemise"
-        price-en_US: "20.00 EUR,48.00 USD"
+        price: "20.00 EUR,48.00 USD"
         weight: 360 GRAM
-        size-en_US: XS
-        size-fr_FR: XS
-        color: Red
-        tax_class_id-en_US: 4
-        tax_class_id-fr_FR: 4
+        size: XS
+        color: Black
+        tax_class_id: 4

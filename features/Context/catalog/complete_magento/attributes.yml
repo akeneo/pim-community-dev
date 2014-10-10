@@ -7,7 +7,6 @@ attributes:
         group: general
         required:            true
         unique:              true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
     name:
@@ -17,7 +16,6 @@ attributes:
         type:  pim_catalog_text
         group: general
         localizable:        true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
     price:
@@ -26,13 +24,12 @@ attributes:
             fr_FR: Prix
         type:  pim_catalog_price_collection
         group: marketing
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           500
         sortOrder:           1
         decimalsAllowed:     true
-        localizable:        true
+        localizable:        false
     short_description:
         labels:
             en_US: Short Description
@@ -41,7 +38,6 @@ attributes:
         group: general
         localizable:        true
         scopable:            true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         maxCharacters:       100
         sortOrder:           3
@@ -53,7 +49,6 @@ attributes:
         group: general
         localizable:        true
         scopable:            true
-        useableAsGridColumn: false
         useableAsGridFilter: true
         wysiwygEnabled:      true
         sortOrder:           4
@@ -63,7 +58,6 @@ attributes:
             fr_FR: Date de sortie
         type:  pim_catalog_date
         group: general
-        useableAsGridColumn: true
         useableAsGridFilter: true
         dateMin:             '2012-01-01'
         dateMax:             '2014-01-01'
@@ -74,7 +68,6 @@ attributes:
             fr_FR: Visibilité
         type:  pim_catalog_simpleselect
         group: seo
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         defaultValue:        4
@@ -85,7 +78,6 @@ attributes:
             fr_FR: Couleur
         type:  pim_catalog_simpleselect
         group: colors
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         localizable:        false
@@ -95,7 +87,6 @@ attributes:
             fr_FR: Poids
         type:  pim_catalog_metric
         group: general
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           10
         metricFamily:        Weight
@@ -108,7 +99,6 @@ attributes:
             fr_FR: Taille
         type:  pim_catalog_simpleselect
         group: sizes
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         defaultValue:        M
@@ -119,7 +109,6 @@ attributes:
             fr_FR: Couleur unique
         type:  pim_catalog_simpleselect
         group: colors
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
     tax_class_id:
@@ -128,8 +117,7 @@ attributes:
             fr_FR: Identifiant de la taxe à appliquer
         type:  pim_catalog_number
         group: general
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           100
         decimalsAllowed:     false
-        localizable:        true
+        localizable:        false

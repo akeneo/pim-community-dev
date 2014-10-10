@@ -31,12 +31,12 @@ jobs:
             enabled:                  true
             storeviewMapping:         ''
             visibility:               4
-            currency:                 EUR
+            currency:                 USD
             categoryMapping:          ''
-            pimGrouped:               'PACK'
-            pimUpSell:                'UPSELL'
-            pimCrossSell:             'X_SELL'
-            pimRelated:               'RELATED'
+            pimGrouped:               'pack'
+            pimUpSell:                'upsell'
+            pimCrossSell:             'cross_sell'
+            pimRelated:               'related'
             notCompleteAnymoreAction: 'disable'
             notInPimAnymoreAction:    'disable'
     magento_category_export:

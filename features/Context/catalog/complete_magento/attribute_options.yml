@@ -23,6 +23,10 @@ options:
         code: Blue
         attribute: color
         labels: { fr_FR: 'Bleu', en_US: 'Blue' }
+    Black:
+        code: Black
+        attribute: color
+        labels: { fr_FR: 'Noir', en_US: 'Black' }
     XS:
         code: XS
         attribute: size

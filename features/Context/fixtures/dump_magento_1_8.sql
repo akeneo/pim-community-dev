@@ -136,7 +136,7 @@ CREATE TABLE `admin_user` (
 
 LOCK TABLES `admin_user` WRITE;
 /*!40000 ALTER TABLE `admin_user` DISABLE KEYS */;
-INSERT INTO `admin_user` VALUES (1,'root','root','willy.mesnage@akeneo.com','root','f09e09f7d1cfb76773c470430c51f85b:NdRRXDFSQD2HbJsx9lFHl9jhPoVkTunF','2014-07-03 13:27:22','2014-07-03 13:27:22','2014-07-03 13:29:02',2,0,1,'a:1:{s:11:\"configState\";a:1:{s:10:\"api_config\";s:1:\"1\";}}',NULL,NULL);
+INSERT INTO `admin_user` VALUES (1,'root','root','willy.mesnage@akeneo.com','root','f09e09f7d1cfb76773c470430c51f85b:NdRRXDFSQD2HbJsx9lFHl9jhPoVkTunF','2014-07-03 13:27:22','2014-07-03 13:27:22','2014-10-10 07:30:38',3,0,1,'a:1:{s:11:\"configState\";a:2:{s:10:\"api_config\";s:1:\"1\";s:16:\"currency_options\";s:1:\"1\";}}',NULL,NULL);
 /*!40000 ALTER TABLE `admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3750,7 +3750,7 @@ CREATE TABLE `core_config_data` (
   `value` text COMMENT 'Config Value',
   PRIMARY KEY (`config_id`),
   UNIQUE KEY `UNQ_CORE_CONFIG_DATA_SCOPE_SCOPE_ID_PATH` (`scope`,`scope_id`,`path`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='Config Data';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='Config Data';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3759,7 +3759,7 @@ CREATE TABLE `core_config_data` (
 
 LOCK TABLES `core_config_data` WRITE;
 /*!40000 ALTER TABLE `core_config_data` DISABLE KEYS */;
-INSERT INTO `core_config_data` VALUES (1,'default',0,'general/region/display_all','1'),(2,'default',0,'general/region/state_required','AT,CA,CH,DE,EE,ES,FI,FR,LT,LV,RO,US'),(3,'default',0,'catalog/category/root_id','2'),(4,'default',0,'web/seo/use_rewrites','1'),(5,'default',0,'admin/dashboard/enable_charts','1'),(6,'default',0,'web/unsecure/base_url','http://magento.local/'),(7,'default',0,'web/secure/base_url','http://magento.local/'),(8,'default',0,'general/locale/code','en_US'),(9,'default',0,'general/locale/timezone','Europe/Paris'),(10,'default',0,'currency/options/base','USD'),(11,'default',0,'currency/options/default','USD'),(12,'default',0,'currency/options/allow','USD'),(13,'default',0,'api/config/charset','UTF-8'),(14,'default',0,'api/config/session_timeout','3600'),(15,'default',0,'api/config/compliance_wsi','1'),(16,'default',0,'api/config/wsdl_cache_enabled','0');
+INSERT INTO `core_config_data` VALUES (1,'default',0,'general/region/display_all','1'),(2,'default',0,'general/region/state_required','AT,CA,CH,DE,EE,ES,FI,FR,LT,LV,RO,US'),(3,'default',0,'catalog/category/root_id','2'),(4,'default',0,'web/seo/use_rewrites','1'),(5,'default',0,'admin/dashboard/enable_charts','1'),(6,'default',0,'web/unsecure/base_url','http://magento.local/'),(7,'default',0,'web/secure/base_url','http://magento.local/'),(8,'default',0,'general/locale/code','en_US'),(9,'default',0,'general/locale/timezone','Europe/Paris'),(10,'default',0,'currency/options/base','USD'),(11,'default',0,'currency/options/default','USD'),(12,'default',0,'currency/options/allow','USD'),(13,'default',0,'api/config/charset','UTF-8'),(14,'default',0,'api/config/session_timeout','3600'),(15,'default',0,'api/config/compliance_wsi','1'),(16,'default',0,'api/config/wsdl_cache_enabled','0'),(17,'stores',2,'currency/options/default','EUR'),(18,'stores',2,'currency/options/allow','EUR'),(19,'default',0,'admin/emails/forgot_email_template','admin_emails_forgot_email_template'),(20,'default',0,'admin/emails/forgot_email_identity','general'),(21,'default',0,'admin/emails/password_reset_link_expiration_period','1'),(22,'default',0,'admin/startup/page','dashboard'),(23,'default',0,'admin/url/use_custom','0'),(24,'default',0,'admin/url/use_custom_path','0'),(25,'default',0,'admin/security/use_form_key','0'),(26,'default',0,'admin/security/use_case_sensitive_login','0'),(27,'default',0,'admin/security/session_cookie_lifetime',NULL),(28,'default',0,'admin/captcha/enable','0');
 /*!40000 ALTER TABLE `core_config_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -11051,4 +11051,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-10 10:49:52
+-- Dump completed on 2014-10-10 11:30:58

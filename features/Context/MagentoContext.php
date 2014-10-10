@@ -13,7 +13,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\MagentoAdminExtractor\Extractor\ProductAttributeExtractor;
 use Akeneo\Component\MagentoAdminExtractor\Extractor\AttributeExtractor;
 use Akeneo\Component\MagentoAdminExtractor\Extractor\CategoriesExtractor;
-use Akeneo\Component\MagentoAdminExtractor\Manager\MagentoAdminConnexionManager;
+use Akeneo\Component\MagentoAdminExtractor\Manager\MagentoAdminConnectionManager;
 use Akeneo\Component\MagentoAdminExtractor\Manager\NavigationManager;
 use Akeneo\Component\MagentoAdminExtractor\Manager\LogInException;
 
@@ -140,11 +140,11 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
         $adminLogin = 'root';
         $adminPwd   = 'akeneo2014';
 
-        $connexionManager  = new MagentoAdminConnexionManager($adminUrl, $adminLogin, $adminPwd);
+        $connectionManager  = new MagentoAdminConnectionManager($adminUrl, $adminLogin, $adminPwd);
 
         try {
-            $mainPageCrawler = $connexionManager->connectToAdminPage();
-            $client          = $connexionManager->getClient();
+            $mainPageCrawler = $connectionManager->connectToAdminPage();
+            $client          = $connectionManager->getClient();
         } catch (LogInException $e) {
             die($e->getMessage() . PHP_EOL);
         }
@@ -162,8 +162,10 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
 
             case 'products':
             case 'product':
-                $magExtractedProduct = $this
+                $productsToCheck      = $this->productsTransformer($table->getHash());
+                $magExtractedProducts = $this
                     ->extractProductsFromMagentoAdmin($navigationManager, $mainPageCrawler);
+                $this->checkProducts($magExtractedProducts, $productsToCheck);
                 break;
 
             case 'categories':
@@ -175,6 +177,38 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
                 $this->checkCategories($categoriesToCheck, $magentoCategoryTree);
                 break;
         }
+    }
+
+    /**
+     * @param array $table
+     */
+    protected function productsTransformer(array $table)
+    {
+        $products = [];
+        foreach ($table as $row) {
+            $newRow = $row;
+            unset($newRow['store_view'], $newRow['sku']);
+
+            foreach ($newRow as $paramName => $param) {
+                if (empty($param)) {
+                    unset($newRow[$paramName]);
+                }
+            }
+
+            if (empty($row['store_view'])) {
+                if (isset($newRow['attribute'])) {
+                    $products[$row['sku']]['notLocalized'][$newRow['attribute']] = $newRow['value'];
+                } elseif (isset($newRow['type'])) {
+                    $products[$row['sku']]['notLocalized']['type'] = $newRow['type'];
+                } elseif (isset($newRow['associated'])) {
+                    $products[$row['sku']]['notLocalized']['associated'][$newRow['associated']][] = $newRow['value'];
+                }
+            } else {
+                $products[$row['sku']][$row['store_view']][$newRow['attribute']] = $newRow['value'];
+            }
+        }
+
+        return $products;
     }
 
     /**
@@ -232,6 +266,24 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * Remove " (.*)" and lower characters from the name of extracted magento products categories
+     *
+     * @param array $magProduct
+     *
+     * @return array $magProduct
+     */
+    protected function transformProductCategories(array $magProduct)
+    {
+        foreach ($magProduct['categories'] as &$category) {
+            if (preg_match('#(.*) \(.*\)#', $category, $matches)) {
+                $category = strtolower($matches[1]);
+            }
+        }
+
+        return $magProduct;
+    }
+
+    /**
      * Transform and prune the given categories gherkin array
      * Returns ['store view label 1' => [['text' => 'cat label', 'parent' => 'parent label'], ...], ... ]
      *
@@ -278,7 +330,7 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * Allows to extract product attributes
-     * Returns ['param_1' => ['value1', ...], ...]
+     * Returns [[['store view label' => ['nameOfAttribute' => ['value', 'value2', ...], ...], ...], ...], ...]
      *
      * @param NavigationManager $navigationManager Navigation manager
      * @param Crawler           $mainPageCrawler   Admin page crawler
@@ -415,6 +467,210 @@ class MagentoContext extends RawMinkContext implements PageObjectAwareInterface
                 }
             }
         }
+    }
+
+    /**
+     * Checks if given products are in Magento extracted products
+     *
+     * @param array $magExtractedProducts
+     * @param array $productsToCheck
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function checkProducts(array $magExtractedProducts, array $productsToCheck)
+    {
+        foreach ($productsToCheck as $sku => $product) {
+            $magProduct = $this->getMagentoProductBySku($magExtractedProducts, $sku);
+
+            foreach ($product as $storeView => $attributes) {
+                if ('notLocalized' === $storeView) {
+                    foreach ($attributes as $attributeName => $attribute) {
+                        switch ($attributeName) {
+                            case 'category':
+                            case 'categories':
+                                if (!is_array($attribute)) {
+                                    $attribute = [$attribute];
+                                }
+
+                                $magProduct = $this->transformProductCategories($magProduct);
+                                $this->compareProductCategories($attribute, $magProduct, $sku);
+                            break;
+
+                            case 'type':
+                                if ($attribute !== $magProduct['type']) {
+                                    throw new \InvalidArgumentException(
+                                        sprintf('Product type "%s" not matched with the Magento product "%s"',
+                                            $attribute, $sku)
+                                    );
+                                }
+                            break;
+
+                            case 'associated':
+                            case 'association':
+                                $this->compareAssociatedProducts($attribute, $magProduct, $sku);
+                            break;
+
+                            case 'set_name':
+                            case 'attribute set':
+                                if ($attribute !== $magProduct['set_name']) {
+                                    throw new \InvalidArgumentException(
+                                        sprintf('Attribute set "%s" not matched with the Magento product "%s"',
+                                            $attribute, $sku)
+                                    );
+                                }
+                            break;
+
+                            default:
+                                throw new \InvalidArgumentException(
+                                    sprintf('Attribute type "%s" can not be compared with Magento products.' .
+                                        'You need to implement it.', $attributeName, $sku)
+                                );
+                        }
+                    }
+                } else {
+                    if (isset($magProduct[$storeView])) {
+                        foreach ($attributes as $attributeName => $attribute) {
+                            $attributeFound = false;
+
+                            if (is_numeric($attribute)) {
+                                $attribute = floatval($attribute);
+                            }
+
+                            while ((list($magAttributeName, $magAttribute) = each($magProduct[$storeView])) &&
+                                $attributeFound === false
+                            ) {
+                                if (is_numeric($magAttribute)) {
+                                    $magAttribute = floatval($magAttribute);
+                                }
+
+                                if ($magAttributeName === $attributeName && $magAttribute === $attribute) {
+                                    $attributeFound = true;
+                                }
+                            }
+                            reset($magProduct[$storeView]);
+
+                            if (false === $attributeFound) {
+                                throw new \InvalidArgumentException(
+                                    sprintf('No match found for attribute "%s" or its value "%s"' .
+                                        ' with the Magento product "%s"', $attributeName, $attribute, $sku)
+                                );
+                            }
+                        }
+                    } else {
+                        throw new \InvalidArgumentException(
+                            sprintf('Store view "%s" not found in product "%s"', $storeView, $sku)
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Compare product associations with magento product
+     *
+     * @param array  $associations
+     * @param array  $magProduct
+     * @param string $sku
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function compareAssociatedProducts(array $associations, array $magProduct, $sku)
+    {
+        foreach ($associations as $associationType => $associatedProducts) {
+            $associationFound = false;
+
+            while ((list($magAssocType, $magAssocProducts) = each($magProduct['associated'])) &&
+                false === $associationFound
+            ) {
+                if ($magAssocType === $associationType) {
+                    $associationFound = true;
+
+                    foreach ($associatedProducts as $associatedProduct) {
+                        $assocProductFound = false;
+
+                        while ((list($key, $magAssocProduct) = each($magAssocProducts)) &&
+                            false === $assocProductFound
+                        ) {
+                            if ($magAssocProduct['SKU'] === $associatedProduct) {
+                                $assocProductFound = true;
+                            }
+                        }
+                        reset($magAssocProducts);
+
+                        if (false === $assocProductFound) {
+                            throw new \InvalidArgumentException(
+                                sprintf('Product association "%s" with "%s" not found in product "%s"',
+                                    $associationType, $associatedProduct, $sku)
+                            );
+                        }
+                    }
+                }
+            }
+            reset($magProduct['associated']);
+
+            if (false === $associationFound) {
+                throw new \InvalidArgumentException(
+                    sprintf('Product association "%s" not found in product "%s"', $associationType, $sku)
+                );
+            }
+        }
+    }
+
+    /**
+     * Compare product categories with magento product
+     *
+     * @param array  $categories
+     * @param array  $magProduct
+     * @param string $sku
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function compareProductCategories(array $categories, array $magProduct, $sku)
+    {
+        foreach ($categories as $category) {
+            $categoryFound = false;
+
+            while ((list($key, $magCategory) = each($magProduct['categories'])) &&
+                false === $categoryFound
+            ) {
+                if ($magCategory === $category) {
+                    $categoryFound = true;
+                }
+            }
+            reset($magProduct['categories']);
+
+            if (false === $categoryFound) {
+                throw new \InvalidArgumentException(
+                    sprintf('No match found for category "%s" with the Magento product "%s"',
+                        $category, $sku)
+                );
+            }
+        }
+    }
+
+    /**
+     * Search the matching Magento product with the given sku
+     *
+     * @param $magExtractedProducts
+     * @param $sku
+     *
+     * @return null|array
+     */
+    protected function getMagentoProductBySku($magExtractedProducts, $sku)
+    {
+        $productFound = false;
+        while ((list($key, $magProduct) = each($magExtractedProducts)) && $productFound === false) {
+            reset($magProduct);
+            $firstStoreView = current($magProduct);
+            if ($firstStoreView['sku'] === $sku) {
+                $productFound = true;
+                $product = $magProduct;
+            }
+        }
+        reset($magExtractedProducts);
+
+        return !empty($product) ? $product : null;
     }
 
     /**
