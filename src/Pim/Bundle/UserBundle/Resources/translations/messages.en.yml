@@ -131,8 +131,10 @@ oro:
 
 # User Group
 Create group: Create group
+btn.create.user-group: Create group
 Has group: Has group
 Save and Close: Save and close
+user-group.overview: Groups
 
 # Login page
 Log in: Log in
