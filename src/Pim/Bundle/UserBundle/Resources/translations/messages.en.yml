@@ -32,8 +32,10 @@ pim_title:
 
 # User
 user.title: User
+user.overview: User
 Users Management: Users Management
 Create user: Create user
+btn.create.user: Create user
 New user: New user
 Additional: Additional
 Groups and Roles: Groups and Roles
