@@ -81,8 +81,10 @@ Save and close: Save and close
 Has role : Has role
 role:
     title: role
+    overview: role
     edit: Edit role
     create: Create role
+btn.create.role: Create role
 
 rights:
     action: Permissions
