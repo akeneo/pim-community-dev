@@ -18,6 +18,10 @@
 # 1.0.x
 
 ## Bug fixes
+
+# 1.0.2 (2014-10-10)
+
+## Bug fixes
 - Fix installer fail on requirements when you change the archive and uploads folder
 - Fixed icecat-demo-dev fixtures
 - Setup relationships of published products with interfaces in order to ease overriding
