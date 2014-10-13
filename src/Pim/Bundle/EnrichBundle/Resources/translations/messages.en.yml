@@ -288,6 +288,7 @@ Attribute type:                      Attribute type
 Defaultvalue:                        Default value
 Variant:                             Variant
 Smart:                               Smart
+Useable as grid column:              Usable as grid column
 Useable as grid filter:              Usable as grid filter
 Family:                              Family
 Available locales:                   Available locales
