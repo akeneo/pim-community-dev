@@ -18,7 +18,7 @@ Feature: Import groups
     default;;;RELATED;
     AKENEO_MUG;Akeneo Mug;Tasse Akeneo;VARIANT;color
     AKENEO_TSHIRT;Akeneo T-Shirt;T-Shirt Akeneo;VARIANT;color,size
-    ORO_TSHIRT;Pouet;Pouic;VARIANT;size
+    ORO_TSHIRT;Pouet;Pouic;VARIANT;size,color
     AKENEO_VARIANT;;;VARIANT;size
     """
     And the following job "footwear_group_import" configuration:
@@ -31,7 +31,7 @@ Feature: Import groups
       | default        |                |                | RELATED |            |
       | AKENEO_MUG     | Akeneo Mug     | Tasse Akeneo   | VARIANT | color      |
       | AKENEO_TSHIRT  | Akeneo T-Shirt | T-Shirt Akeneo | VARIANT | color,size |
-      | ORO_TSHIRT     | Oro T-shirt    | Pouic          | VARIANT | size       |
+      | ORO_TSHIRT     | Oro T-shirt    | Pouic          | VARIANT | color,size |
       | AKENEO_VARIANT | Akeneo         |                | VARIANT | size       |
 
   Scenario: Fail to change group type with import
@@ -44,7 +44,7 @@ Feature: Import groups
     And the following file to import:
     """
     code;label-en_US;label-fr_FR;type;attributes
-    AKENEO_VARIANT;;;RELATED;size
+    AKENEO_VARIANT;;;RELATED;
     """
     And the following job "footwear_group_import" configuration:
       | filePath | %file to import% |
@@ -71,3 +71,18 @@ Feature: Import groups
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
     And I should see "Attributes cannot be changed"
+
+  Scenario: Fail to import products groups with no attributes
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following file to import:
+    """
+    code;label-en_US;label-fr_FR;type;attributes
+    ORO_TSHIRT;Oro T-Shirt;Oro T-Shirt;VARIANT;size
+    """
+    And the following job "footwear_group_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_group_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_group_import" job to finish
+    And I should see "Attributes cannot be empty"
