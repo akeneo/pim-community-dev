@@ -61,7 +61,6 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
             $qb = $this->createApprovableQueryBuilder($user);
         } else {
             $qb = $this->createQueryBuilder('ProductDraft');
-
         }
 
         return $qb;

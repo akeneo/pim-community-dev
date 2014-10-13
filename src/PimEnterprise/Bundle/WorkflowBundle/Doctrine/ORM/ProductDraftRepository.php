@@ -90,10 +90,30 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         $qb
             ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author')
             ->from($this->_entityName, 'p', 'p.id')
-            ->join('p.product', 'product')
-            ->where(
-                $qb->expr()->eq('p.status', ProductDraft::READY)
-            );
+            ->join('p.product', 'product');
+
+        if (isset($parameters['currentUser'])) {
+            $user = $parameters['currentUser'];
+            if (!is_object($user) || !$user instanceof UserInterface) {
+                throw new \InvalidArgumentException(
+                    'Current user should be a \Symfony\Component\Security\Core\User\UserInterface.'
+                );
+            }
+
+            $qb
+                ->leftJoin('product.categories', 'category')
+                ->innerJoin('PimEnterpriseSecurityBundle:CategoryAccess', 'a', 'WITH', 'a.category = category')
+                ->where(
+                    $qb->expr()->eq('a.ownProducts', true)
+                )
+                ->andWhere(
+                    $qb->expr()->in('a.userGroup', ':userGroups')
+                )
+                ->andWhere(
+                    $qb->expr()->eq('p.status', ProductDraft::READY)
+                )
+                ->setParameter('userGroups', $user->getGroups()->toArray());
+        }
 
         return $qb;
     }
