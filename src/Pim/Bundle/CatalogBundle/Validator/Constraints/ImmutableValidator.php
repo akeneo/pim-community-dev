@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validator for the immutable constraint
@@ -47,7 +48,9 @@ class ImmutableValidator extends ConstraintValidator
             if (null !== $originalValue) {
                 $newValue = $accessor->getValue($entity, $property);
 
-                if ($originalValue !== $newValue) {
+                if ($originalValue !== $newValue ||
+                    ($newValue instanceof PersistentCollection && $newValue->isDirty())
+                ) {
                     $this->context->addViolationAt($property, $constraint->message);
                 }
             }
