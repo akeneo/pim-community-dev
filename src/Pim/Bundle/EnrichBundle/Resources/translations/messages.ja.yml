@@ -82,6 +82,8 @@ btn:
   save: 保存
   save and back: 保存してグリッドに戻る
   save and create: 保存して新規作成
+  save and next: 保存して次へ
+  save and finish: 保存して終了
   remove: 削除
   delete: 削除
   cancel: キャンセル
@@ -274,7 +276,6 @@ Attribute type: 属性タイプ
 Defaultvalue: 標準の値
 Variant: バリアント
 Smart: スマート
-Useable as grid column: グリッド列として使用可能
 Useable as grid filter: グリッドフィルターとして使用可能
 Family: ファミリー
 Available locales: 使用可能なロケール
@@ -388,6 +389,10 @@ pim_catalog_date: 日付
 pim_catalog_metric: メトリック
 Activated: アクティベート
 Disable: 無効
+pim_enrich.sequential_edit_action:
+  product:
+    previous: '"%product%" を保存せずにスキップします。'
+    next: '"%product%" を保存せずにスキップします。'
 pim_enrich.mass_edit_action:
   limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
   product:
