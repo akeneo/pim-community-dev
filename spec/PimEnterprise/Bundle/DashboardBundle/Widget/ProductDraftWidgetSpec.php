@@ -4,10 +4,10 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -37,13 +37,13 @@ class ProductDraftWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_product_draft_widget_template_parameters($securityContext)
     {
-        $securityContext->isGranted(ProductOwnerVoter::OWN)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $this->getParameters()->shouldBeArray();
     }
 
     function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($securityContext, $user)
     {
-        $securityContext->isGranted(ProductOwnerVoter::OWN)->willReturn(false);
+        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
         $this->getData()->shouldReturn([]);
     }
@@ -57,7 +57,7 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {
-        $securityContext->isGranted(ProductOwnerVoter::OWN)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
         $first->getProduct()->willReturn($firstProduct);

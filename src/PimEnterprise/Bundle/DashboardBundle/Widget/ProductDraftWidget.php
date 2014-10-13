@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -103,6 +103,6 @@ class ProductDraftWidget implements WidgetInterface
      */
     protected function isDisplayable()
     {
-        return $this->securityContext->isGranted(ProductOwnerVoter::OWN);
+        return $this->securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY);
     }
 }

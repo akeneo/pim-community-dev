@@ -44,4 +44,7 @@ final class Attributes
 
     /** @staticvar string */
     const OWN_PRODUCTS = 'OWN_PRODUCTS';
+
+    /** @staticvar string */
+    const OWN_AT_LEAST_ONE_CATEGORY = 'OWN_AT_LEAST_ONE_CATEGORY';
 }

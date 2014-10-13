@@ -11,20 +11,18 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
- * Product owner voter, indicates whether the user is the owner of any products
+ * Category owner voter, indicates whether the user is the owner of products in at least one category
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
-class ProductOwnerVoter implements VoterInterface
+class CategoryOwnerVoter implements VoterInterface
 {
-    /** @staticvar string */
-    const OWN = 'pimee_security_own_products';
-
     /**
      * @var CategoryAccessRepository
      */
@@ -43,7 +41,7 @@ class ProductOwnerVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return $attribute === static::OWN;
+        return $attribute === Attributes::OWN_AT_LEAST_ONE_CATEGORY;
     }
 
     /**

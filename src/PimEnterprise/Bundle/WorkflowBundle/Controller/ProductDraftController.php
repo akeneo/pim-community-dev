@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnerVoter;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
@@ -98,7 +97,7 @@ class ProductDraftController extends AbstractController
      */
     public function indexAction()
     {
-        if (!$this->securityContext->isGranted(ProductOwnerVoter::OWN)) {
+        if (!$this->securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)) {
             throw new AccessDeniedException();
         }
 
