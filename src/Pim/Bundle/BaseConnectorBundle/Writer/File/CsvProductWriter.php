@@ -41,8 +41,8 @@ class CsvProductWriter extends CsvWriter
         foreach ($items as $item) {
             $products[] = $item['product'];
             foreach ($item['media'] as $media) {
-                if ($media) {
-                    $this->copyMedia($media);
+                if ($media && isset($media['filePath']) && $media['filePath']) {
+                    $this->copyMediaFromArray($media);
                 }
             }
         }
@@ -51,6 +51,32 @@ class CsvProductWriter extends CsvWriter
     }
 
     /**
+     * @param array $media
+     *
+     * @return void
+     */
+    protected function copyMediaFromArray(array $media)
+    {
+        $target = sprintf('%s/%s', dirname($this->getPath()), $media['exportPath']);
+
+        if (!is_dir(dirname($target))) {
+            mkdir(dirname($target), 0777, true);
+        }
+        if (copy($media['filePath'], $target)) {
+            $this->writtenFiles[$target] = $media['exportPath'];
+        } else {
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                sprintf('Copy of "%s" failed.', $media['filePath']),
+                [],
+                $media
+            );
+        }
+    }
+
+    /**
+     * @deprecated argument type will be changed in 1.3
+     *
      * @param AbstractProductMedia $media
      *
      * @return void

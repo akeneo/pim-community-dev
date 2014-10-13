@@ -586,4 +586,12 @@ class ProductRepository extends EntityRepository implements
 
         return $attributeIds;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectManager()
+    {
+        return $this->getEntityManager();
+    }
 }
