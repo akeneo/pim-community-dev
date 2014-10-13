@@ -4,34 +4,6 @@
 
 {% set editMode = form.vars.value.id ? true : false %}
 
-{% if form.permissions is defined %}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pimee/manage-permissions'],
-            function ($, managePermissions) {
-                'use strict';
-
-                $(function () {
-                    var options = {
-                        elementId: '#{{form.permissions.vars.id}}',
-                        changeBlockLabel: '{{ 'Changes'|trans }}',
-                        grantMessage: 'permission-changes.attribute group.grant',
-                        revokeMessage: 'permission-changes.attribute group.revoke',
-                        update: {
-                            add: {
-                                '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.view.vars.id }}']
-                            },
-                            remove: {
-                                '{{ form.permissions.view.vars.id }}': ['{{ form.permissions.edit.vars.id }}'],
-                            }
-                        }
-                    };
-                    managePermissions(options);
-                });
-            });
-    </script>
-{% endif %}
-
 {{ JSFV(form) }}
 {{ form_start(form, {
     'action': editMode ? path('pim_enrich_attributegroup_edit', { id: form.vars.value.id }) : path('pim_enrich_attributegroup_create'),
@@ -58,38 +30,12 @@
 
     {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-    {% set tabs = ['Properties'] %}
-    {% if editMode %}
-        {% set tabs = tabs|merge(['Attributes']) %}
-        {% if form.permissions is defined %}
-            {% set tabs = tabs|merge(['Permissions']) %}
-        {% endif %}
-        {% set tabs = tabs|merge(['History']) %}
-    {% endif %}
-
-    {{ elements.form_navbar(tabs) }}
+    {{ elements.form_navbar(tab_titles('pim_enrich_attributegroup_edit')) }}
 
     <div class="tab-content">
         {{ elements.form_errors(form) }}
-
-        <div class="tab-pane active" id="properties">
-            {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.group_values': form_row(form.label) }) }}
-        </div>
         {{ form_row(form.sort_order) }}
 
-        {% if editMode %}
-            {% include 'PimEnrichBundle:AttributeGroup:_attributes.html.twig' %}
-
-            {% if form.permissions is defined %}
-            <div class="tab-pane" id="permissions">
-                {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
-            </div>
-            {% endif %}
-
-            <div class="tab-pane" id="history">
-                {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-            </div>
-        {% endif %}
+        {{ tab_contents('pim_enrich_attributegroup_edit') }}
     </div>
 {{ form_end(form) }}

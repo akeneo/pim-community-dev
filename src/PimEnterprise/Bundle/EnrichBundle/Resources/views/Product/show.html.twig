@@ -50,36 +50,12 @@
 
     <form class="form-horizontal product-edit product-view">
         <div class="layout-content">
-            {% set form_tabs = ['Attributes', 'Completeness'] %}
-            {{ elements.form_navbar(form_tabs) }}
+            {{ elements.form_navbar(tab_titles('pim_enrich_product_show')) }}
 
             <div class="row-fluid tab-content">
-                <div class="tab-pane active" id="attributes">
-                    {% for group in group_product_values(product.values, dataLocale) %}
-                        <div class="row-fluid">
-                            <h3>
-                                {{ group.groupLabel }}
-                            </h3>
-                            {% for value in group.values %}
-                                <div class="control-group attribute-field{{ value.attribute.localizable ? ' localizable' : '' }}">
-                                    <label class="control-label">
-                                        {{ value.attribute }}{{ value.attribute.scopable ? ' - ' ~ value.scope : '' }}
-                                    </label>
-                                    <div class="controls">
-                                        <div class="value-field">
-                                            {{ present_product_value(value) }}
-                                        </div>
-                                        <div class="icons-container"></div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
-                        </div>
-                    {% endfor %}
-                </div>
+
+                {{ tab_contents('pim_enrich_product_show')}}
+
                 <div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id, dataLocale: dataLocale }) }}">
                 </div>
             </div>
