@@ -90,10 +90,11 @@ class ProductDraftController extends AbstractController
     }
 
     /**
-     * List product drafts
+     * List proposals
      *
      * @Template
      * @return Response
+     * @throws AccessDeniedException if the current user is not the owner of any categories
      */
     public function indexAction()
     {

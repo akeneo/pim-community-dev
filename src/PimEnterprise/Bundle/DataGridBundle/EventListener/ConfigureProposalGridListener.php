@@ -15,11 +15,11 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
 
 /**
- * Grid listener to configure columns, filters and sorters based on product attributes and business rules
+ * Grid listener to configure proposal grid
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ConfigureProductDraftGridListener
+class ConfigureProposalGridListener
 {
     /** @var ConfiguratorInterface */
     protected $contextConfigurator;
@@ -35,24 +35,12 @@ class ConfigureProductDraftGridListener
     }
 
     /**
-     * Configure product columns, filters, sorters dynamically
-     *
      * @param BuildBefore $event
-     *
-     * @throws \LogicException
      */
     public function buildBefore(BuildBefore $event)
     {
         $datagridConfig = $event->getConfig();
 
-        $this->getContextConfigurator()->configure($datagridConfig);
-    }
-
-    /**
-     * @return ConfiguratorInterface
-     */
-    protected function getContextConfigurator()
-    {
-        return $this->contextConfigurator;
+        $this->contextConfigurator->configure($datagridConfig);
     }
 }

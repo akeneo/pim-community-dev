@@ -114,7 +114,7 @@ define(
             },
 
             viewAll: function() {
-                Navigation.getInstance().setLocation(Routing.generate('pimee_workflow_product_draft_index'));
+                Navigation.getInstance().setLocation(Routing.generate('pimee_workflow_proposal_index'));
             },
 
             _processResponse: function(data) {

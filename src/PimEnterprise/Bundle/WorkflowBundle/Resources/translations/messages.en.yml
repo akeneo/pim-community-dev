@@ -33,20 +33,20 @@ flash.product.unpublished: The product has been successfully unpublished.
 flash.product_draft.approve.success: The proposal has been applied successfully.
 flash.product_draft.approve.error: The proposal can't be applied due to the following error. %error%
 flash.product_draft.refuse.success: The proposal has been refused.
-pimee_menu:
+pim_menu:
     tab:
         activity: Activity
     item:
         published_product: Published products
-        product_draft:     Proposals
-pimee_title:
+        proposal:          Proposals
+pim_title:
     published_product:
         index: Published products
         view: Published products %product.sku% | View
     product:
         dispatch: "Products %product.sku%"
         show: "Products %product.sku% | Show"
-    product_draft:
+    proposal:
         index: Proposals
 
 btn.editworkingcopy: Edit working copy
@@ -55,4 +55,4 @@ confirmation:
         publish: Are you sure you want to publish this product ?
         unpublish: Are you sure you want to unpublish this product ?
 
-product_draft.overview: Proposals
+proposal.overview: Proposals

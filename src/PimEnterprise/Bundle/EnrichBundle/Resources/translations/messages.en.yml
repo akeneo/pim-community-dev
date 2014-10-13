@@ -1,4 +1,4 @@
-pimee_title.locale:
+pim_title.locale:
     edit: "Locales %locale.code% | Edit"
 
 Permissions: Permissions

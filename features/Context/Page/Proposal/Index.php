@@ -14,5 +14,5 @@ class Index extends Grid
     /**
      * @var string $path
      */
-    protected $path = '/product_draft/';
+    protected $path = '/proposal/';
 }

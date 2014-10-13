@@ -2,9 +2,9 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
-    {% set title = 'product_draft.overview'|trans %}
+    {% set title = 'proposal.overview'|trans %}
 
     {{ elements.page_header(title) }}
 
-    {{ dataGrid.renderGrid('draft-grid', { dataLocale: locale_code(), currentUser: app.user }) }}
+    {{ dataGrid.renderGrid('proposal-grid', { dataLocale: locale_code(), currentUser: app.user }) }}
 {% endblock %}

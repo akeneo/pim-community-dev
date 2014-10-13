@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
+namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Override context configurator to apply permissions on attribute groups
+ * Proposal grif context configurator
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
@@ -72,9 +72,8 @@ class ContextConfigurator implements ConfiguratorInterface
                 } else {
                     $params[$paramName] = $this->requestParams->get($paramName, $this->request->get($paramName, null));
                 }
-
-                $this->configuration->offsetSetByPath($path, $params);
             }
+            $this->configuration->offsetSetByPath($path, $params);
         }
     }
 
