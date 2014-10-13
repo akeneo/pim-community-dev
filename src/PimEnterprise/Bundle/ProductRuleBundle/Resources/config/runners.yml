@@ -1,0 +1,9 @@
+parameters:
+    pimee_product_rule.runner.product.class: PimEnterprise\Bundle\ProductRuleBundle\Runner\ProductRuleRunner
+
+services:
+    pimee_product_rule.runner.product:
+        class: %pimee_product_rule.runner.product.class%
+        parent: pimee_rule_engine.runner.batch
+        tags:
+            - { name: pimee_rule_engine.runner }

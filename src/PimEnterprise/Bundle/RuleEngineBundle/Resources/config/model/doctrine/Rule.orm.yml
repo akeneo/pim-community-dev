@@ -1,0 +1,23 @@
+PimEnterprise\Bundle\RuleEngineBundle\Model\Rule:
+    type: entity
+    table: pimee_rule_engine_rule
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            nullable: false
+            column: code
+        type:
+            type: string
+            length: 255
+            nullable: false
+            column: type
+        content:
+            type: text      # json_array ?
+            nullable: true
+            column: content
