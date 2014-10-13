@@ -1,10 +1,10 @@
 @javascript
-Feature: Display product draft widget
-  In order to easily see which products have pending product drafts
+Feature: Display proposal widget
+  In order to easily see which products have pending proposals
   As a product manager
-  I need to be able to see a widget with pending product drafts on the dashboard
+  I need to be able to see a widget with pending proposals on the dashboard
 
-  Scenario: Display product draft widget
+  Scenario: Display proposal widget
     Given the "clothing" catalog configuration
     And I am logged in as "Julia"
     When I am on the dashboard page
@@ -12,7 +12,7 @@ Feature: Display product draft widget
     When I wait for widgets to load
     Then I should see "No proposals to review"
 
-  Scenario: Successfully display all product drafts that I can review
+  Scenario: Successfully display all proposals that I can review
     Given a "clothing" catalog configuration
     And the following product:
       | sku          | family  | categories |
@@ -27,11 +27,11 @@ Feature: Display product draft widget
     When I am on the dashboard page
     Then I should see "Proposals to review"
     When I wait for widgets to load
-    Then I should the following product drafts:
+    Then I should see the following proposals:
       | product   | author |
       | my-jacket | mary   |
 
-  Scenario: Successfully display new product drafts that I can review
+  Scenario: Successfully display new proposals that I can review
     Given a "clothing" catalog configuration
     And the following product:
       | sku          | family  | categories |
@@ -52,11 +52,11 @@ Feature: Display product draft widget
     And I go to the dashboard page
     Then I should see "Proposals to review"
     When I wait for widgets to load
-    Then I should the following product drafts:
+    Then I should see the following proposals:
       | product      | author |
       | my-tee-shirt | mary   |
 
-  Scenario: Successfully hide product drafts belonging to the last category I was owner of that was removed
+  Scenario: Successfully hide proposals belonging to the last category I was owner of that was removed
     Given a "clothing" catalog configuration
     And the following product:
       | sku          | family  | categories |

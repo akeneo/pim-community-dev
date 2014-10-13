@@ -17,11 +17,11 @@ use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Widget to display product product drafts
+ * Widget to display proposals
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
-class ProductDraftWidget implements WidgetInterface
+class ProposalWidget implements WidgetInterface
 {
     /**
      * @var SecurityContextInterface
@@ -52,7 +52,7 @@ class ProductDraftWidget implements WidgetInterface
      */
     public function getAlias()
     {
-        return 'product_drafts';
+        return 'proposals';
     }
 
     /**
@@ -60,7 +60,7 @@ class ProductDraftWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig';
+        return 'PimEnterpriseDashboardBundle:Widget:proposal.html.twig';
     }
 
     /**
@@ -82,14 +82,14 @@ class ProductDraftWidget implements WidgetInterface
 
         $user = $this->securityContext->getToken()->getUser();
         $result = [];
-        $productDrafts = $this->repository->findApprovableByUser($user, 10);
+        $proposals = $this->repository->findApprovableByUser($user, 10);
 
-        foreach ($productDrafts as $draft) {
+        foreach ($proposals as $proposal) {
             $result[] = [
-                'productId'    => $draft->getProduct()->getId(),
-                'productLabel' => $draft->getProduct()->getLabel(),
-                'author'       => $draft->getAuthor(),
-                'createdAt'    => $draft->getCreatedAt()->format('U')
+                'productId'    => $proposal->getProduct()->getId(),
+                'productLabel' => $proposal->getProduct()->getLabel(),
+                'author'       => $proposal->getAuthor(),
+                'createdAt'    => $proposal->getCreatedAt()->format('U')
             ];
         }
 

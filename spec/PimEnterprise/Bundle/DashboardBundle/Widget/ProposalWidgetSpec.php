@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-class ProductDraftWidgetSpec extends ObjectBehavior
+class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(
         ProductDraftRepositoryInterface $repository,
@@ -30,12 +30,12 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
-    function it_exposes_the_product_draft_widget_template()
+    function it_exposes_the_proposal_widget_template()
     {
-        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig');
+        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:proposal.html.twig');
     }
 
-    function it_exposes_the_product_draft_widget_template_parameters($securityContext)
+    function it_exposes_the_proposal_widget_template_parameters($securityContext)
     {
         $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $this->getParameters()->shouldBeArray();
@@ -48,7 +48,7 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->getData()->shouldReturn([]);
     }
 
-    function it_exposes_product_drafts_data(
+    function it_exposes_proposal_data(
         $securityContext,
         $user,
         $repository,

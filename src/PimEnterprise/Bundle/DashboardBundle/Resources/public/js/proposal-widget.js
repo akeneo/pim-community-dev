@@ -3,10 +3,10 @@ define(
     function ($, _, Routing, Navigation, AbstractWidget, moment) {
         'use strict';
 
-        var ProductDraftsWidget = AbstractWidget.extend({
+        var ProposalWidget = AbstractWidget.extend({
             tagName: 'table',
 
-            id: 'product-drafts-widget',
+            id: 'proposal-widget',
 
             className: 'table table-condensed table-light groups unspaced',
 
@@ -28,19 +28,19 @@ define(
                             '</tr>',
                         '</thead>',
                         '<tbody>',
-                            '<% _.each(data, function(productDraft) { %>',
+                            '<% _.each(data, function(proposal) { %>',
                                 '<tr>',
                                     '<td>',
-                                        '<%= productDraft.createdAt %>',
+                                        '<%= proposal.createdAt %>',
                                     '</td>',
-                                    '<td><%= productDraft.author %></td>',
+                                    '<td><%= proposal.author %></td>',
                                     '<td>',
-                                        '<a href="javascript:void(0);" data-id="<%= productDraft.productId %>">',
-                                            '<%= productDraft.productLabel %>',
+                                        '<a href="javascript:void(0);" data-id="<%= proposal.productId %>">',
+                                            '<%= proposal.productLabel %>',
                                         '</a>',
                                     '</td>',
                                     '<td>',
-                                        '<a class="btn btn-mini" href="javascript:void(0);" data-id="<%= productDraft.productId %>" data-redirecttab="#proposals">',
+                                        '<a class="btn btn-mini" href="javascript:void(0);" data-id="<%= proposal.productId %>" data-redirecttab="#proposals">',
                                             '<%= _.__("pimee_dashboard.widget.product_drafts.review") %>',
                                         '</a>',
                                     '</td>',
@@ -120,12 +120,12 @@ define(
             _processResponse: function(data) {
                 this.options.contentLoaded = true;
 
-                _.each(data, function(productDraft) {
-                    if (productDraft.createdAt) {
-                        var date = moment(new Date(productDraft.createdAt * 1000));
+                _.each(data, function(proposal) {
+                    if (proposal.createdAt) {
+                        var date = moment(new Date(proposal.createdAt * 1000));
                         if (date.isValid()) {
                             var dateFormat = date.isSame(new Date(), 'day') ? 'HH:mm' : 'YYYY-MM-DD HH:mm';
-                            productDraft.createdAt = date.format(dateFormat);
+                            proposal.createdAt = date.format(dateFormat);
                         }
                     }
                 }, this);
@@ -139,7 +139,7 @@ define(
         return {
             init: function(options) {
                 if (!instance) {
-                    instance = new ProductDraftsWidget(options);
+                    instance = new ProposalWidget(options);
                 } else if (_.has(options, 'el')) {
                     instance.setElement(options.el);
                 }

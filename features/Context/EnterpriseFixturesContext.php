@@ -227,44 +227,44 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @Given /^I should the following product drafts:$/
+     * @Given /^I should see the following proposals:$/
      */
-    public function iShouldTheFollowingProductDrafts(TableNode $table)
+    public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
-        $expectedProductDrafts = $table->getHash();
-        $actualProductDrafts = $this->getSession()->getPage()->findAll('css', '#product-drafts-widget tbody tr');
+        $expectedProposals = $table->getHash();
+        $actualProposals = $this->getSession()->getPage()->findAll('css', '#proposal-widget tbody tr');
 
-        $expectedCount = count($expectedProductDrafts);
-        $actualCount   = count($actualProductDrafts);
+        $expectedCount = count($expectedProposals);
+        $actualCount   = count($actualProposals);
         if ($expectedCount !== $actualCount) {
             throw new \Exception(
                 sprintf(
-                    'Expecting %d product drafts, actually saw %d',
+                    'Expecting %d proposals, actually saw %d',
                     $expectedCount,
                     $actualCount
                 )
             );
         }
 
-        foreach ($expectedProductDrafts as $key => $productDraft) {
-            $cells = $actualProductDrafts[$key]->findAll('css', 'td');
-            if ($cells[1]->getText() !== $productDraft['author']) {
+        foreach ($expectedProposals as $key => $proposal) {
+            $cells = $actualProposals[$key]->findAll('css', 'td');
+            if ($cells[1]->getText() !== $proposal['author']) {
                 throw new \Exception(
                     sprintf(
-                        'Product draft #%d author is expected to be "%s", actually is "%s"',
+                        'Proposal #%d author is expected to be "%s", actually is "%s"',
                         $key + 1,
-                        $productDraft['author'],
+                        $proposal['author'],
                         $cells[1]->getText()
                     )
                 );
             }
 
-            if ($cells[2]->getText() !== $productDraft['product']) {
+            if ($cells[2]->getText() !== $proposal['product']) {
                 throw new \Exception(
                     sprintf(
-                        'Product draft #%d product is expected to be "%s", actually is "%s"',
+                        'Proposal #%d product is expected to be "%s", actually is "%s"',
                         $key + 1,
-                        $productDraft['product'],
+                        $proposal['product'],
                         $cells[2]->getText()
                     )
                 );
