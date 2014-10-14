@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Normalizer;
+namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -61,15 +61,85 @@ class TranslationNormalizerSpec extends ObjectBehavior
         ]);
 
         $this->normalize($translatable, 'xml', [
-            'property' => 'description',
+            'property' => 'label',
             'locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']
         ])->shouldReturn([
-            'description' => [
+            'label' => [
                 'en_US' => '',
                 'de_DE' => '',
                 'fr_FR' => '',
                 'fr_BE' => '',
             ]
         ]);
+    }
+
+    function it_ignores_a_locale_not_provided_in_context(
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+        AttributeTranslation $german
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french, $german
+        ]);
+
+        $this->normalize($translatable, 'xml', [
+            'locales'  => ['en_US', 'fr_FR'],
+            'property' => 'label'
+        ])->shouldReturn([
+            'label' => ['en_US' => '', 'fr_FR' => ''],
+        ]);
+    }
+
+    function it_provides_all_locales_if_no_list_provided_in_context(
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+        AttributeTranslation $german
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french, $german
+        ]);
+
+        $english->getLocale()->willReturn('en_US');
+        $english->getLabel()->willReturn('foo');
+
+        $french->getLocale()->willReturn('fr_FR');
+        $french->getLabel()->willReturn('bar');
+
+        $german->getLocale()->willReturn('de_DE');
+        $german->getLabel()->willReturn('baz');
+
+        $this->normalize($translatable, 'xml', [
+            'locales'  => [],
+            'property' => 'label'
+        ])->shouldReturn([
+            'label' => ['en_US' => 'foo', 'fr_FR' => 'bar', 'de_DE' => 'baz'],
+        ]);
+    }
+
+    function it_skip_the_translations_if_method_not_exists(
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+        AttributeTranslation $german
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french, $german
+        ]);
+
+        $english->getLocale()->willReturn('en_US');
+        $english->getLabel()->willReturn('foo');
+
+        $french->getLocale()->willReturn('fr_FR');
+        $french->getLabel()->willReturn('bar');
+
+        $german->getLocale()->willReturn('de_DE');
+        $german->getLabel()->willReturn('baz');
+
+        $this->normalize($translatable, 'csv', [
+            'locales'  => [],
+            'property' => 'unknown_property'
+        ])->shouldReturn(['unknown_property' => []]);
     }
 }

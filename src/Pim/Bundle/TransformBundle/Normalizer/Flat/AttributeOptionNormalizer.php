@@ -52,7 +52,9 @@ class AttributeOptionNormalizer extends Structured\AttributeOptionNormalizer
         }
 
         foreach ($entity->getOptionValues() as $translation) {
-            $labels[sprintf('label-%s', $translation->getLocale())] = $translation->getValue();
+            if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
+                $labels[sprintf('label-%s', $translation->getLocale())] = $translation->getValue();
+            }
         }
 
         return $labels;
