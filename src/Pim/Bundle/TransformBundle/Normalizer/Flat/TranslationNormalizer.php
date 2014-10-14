@@ -44,7 +44,7 @@ class TranslationNormalizer extends Structured\TranslationNormalizer
 
         $method = sprintf('get%s', ucfirst($property));
         foreach ($object->getTranslations() as $translation) {
-            if (method_exists($translation, $method)) {
+            if (method_exists($translation, $method) && in_array($translation->getLocale(), $context['locales'])) {
                 $key = sprintf('%s-%s', $property, $translation->getLocale());
                 $translations[$key] = $translation->$method();
             }

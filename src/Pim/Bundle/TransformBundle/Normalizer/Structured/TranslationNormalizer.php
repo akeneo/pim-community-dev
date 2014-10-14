@@ -34,7 +34,7 @@ class TranslationNormalizer implements NormalizerInterface
         $method = sprintf('get%s', ucfirst($context['property']));
 
         foreach ($object->getTranslations() as $translation) {
-            if (method_exists($translation, $method)) {
+            if (method_exists($translation, $method) && in_array($translation->getLocale(), $context['locales'])) {
                 $translations[$translation->getLocale()] = $translation->$method();
             }
         }
