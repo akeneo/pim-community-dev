@@ -71,7 +71,8 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      */
     public function findApprovableByUser(UserInterface $user, $limit = null)
     {
-        $qb = $this->createApprovableQueryBuilder($user);
+        $qb = $this->createApprovableQueryBuilder($user)
+            ->sort('createdAt', 'desc');
 
         if (null !== $limit) {
             $qb->limit($limit);
@@ -168,8 +169,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
 
         $qb
             ->field('status')->equals(ProductDraft::READY)
-            ->field('categoryIds')->in($this->getGrantedCategoryIds($user))
-            ->sort('createdAt', 'desc');
+            ->field('categoryIds')->in($this->getGrantedCategoryIds($user));
 
         return $qb;
     }
