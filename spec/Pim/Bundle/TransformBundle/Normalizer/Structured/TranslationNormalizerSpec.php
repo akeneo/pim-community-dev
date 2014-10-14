@@ -117,7 +117,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_skip_the_translations_if_method_not_exists(
+    function it_throws_an_exception_if_method_not_exists(
         TranslatableInterface $translatable,
         AttributeTranslation $english,
         AttributeTranslation $french,
@@ -136,9 +136,9 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $german->getLocale()->willReturn('de_DE');
         $german->getLabel()->willReturn('baz');
 
-        $this->normalize($translatable, 'csv', [
+        $this->shouldThrow('\LogicException')->duringNormalize($translatable, 'csv', [
             'locales'  => [],
             'property' => 'unknown_property'
-        ])->shouldReturn(['unknown_property' => []]);
+        ]);
     }
 }
