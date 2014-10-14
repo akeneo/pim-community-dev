@@ -61,7 +61,7 @@ class CategoryAccessRepository extends EntityRepository
      * @param CategoryInterface $category
      * @param Group[]           $excludedGroups
      *
-     * @return integer
+     * @return int
      */
     public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
     {
@@ -76,6 +76,26 @@ class CategoryAccessRepository extends EntityRepository
                 ->andWhere($qb->expr()->notIn('a.userGroup', ':excludedGroups'))
                 ->setParameter('excludedGroups', $excludedGroups);
         }
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Remove access to a group for all categories
+     *
+     * @param Group[] $groups
+     *
+     * @return int
+     */
+    public function revokeAccessToGroups(array $groups)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb
+            ->delete()
+            ->where($qb->expr()->in('a.userGroup', ':groups'))
+            ->setParameter('groups', $groups)
+        ;
 
         return $qb->getQuery()->execute();
     }
