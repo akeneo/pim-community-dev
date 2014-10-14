@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Test related class

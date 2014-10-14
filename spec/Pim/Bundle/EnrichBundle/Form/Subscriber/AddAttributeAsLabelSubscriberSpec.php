@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormEvent;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Prophecy\Argument;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
 class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior

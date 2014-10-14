@@ -740,6 +740,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I press sequential-edit button$/
+     */
+    public function iPressSequentialEditButton()
+    {
+        $this->getCurrentPage()->sequentialEdit();
+        $this->wait();
+    }
+
+    /**
      * @param string $viewLabel
      *
      * @When /^I apply the "([^"]*)" view$/

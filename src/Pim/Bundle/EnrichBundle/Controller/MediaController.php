@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Gaufrette\Filesystem;
+use Imagine\Image\ImagineInterface;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Imagine\Image\ImagineInterface;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Gaufrette\Filesystem;
 
 /**
  * Media controller

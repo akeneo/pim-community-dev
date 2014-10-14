@@ -45,7 +45,7 @@ class AclGroupsExtension extends \Twig_Extension
     /**
      * Get acl groups
      *
-     * @return string
+     * @return string[]
      */
     public function getAclGroups()
     {

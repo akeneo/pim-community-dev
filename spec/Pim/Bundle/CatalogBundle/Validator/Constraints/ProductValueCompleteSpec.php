@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 class ProductValueCompleteSpec extends ObjectBehavior

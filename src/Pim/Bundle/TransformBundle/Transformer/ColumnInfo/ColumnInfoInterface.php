@@ -46,14 +46,14 @@ interface ColumnInfoInterface
     /**
      * Return the column's locale (only available if the attribute has been set)
      *
-     * @return get the column locale
+     * @return string the column locale
      */
     public function getLocale();
 
     /**
      * Returns the column's scope
      *
-     * @return type
+     * @return string
      */
     public function getScope();
 
