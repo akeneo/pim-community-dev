@@ -1,11 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
+namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
@@ -14,26 +15,26 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_csv_normalization_of_attribute_option(AttributeOption $option)
+    function it_supports_xml_normalization_of_attribute_option(AttributeOption $option)
     {
-        $this->supportsNormalization($option, 'csv')->shouldBe(true);
+        $this->supportsNormalization($option, 'xml')->shouldBe(true);
     }
 
-    function it_supports_flat_normalization_of_attribute_option(AttributeOption $option)
+    function it_supports_json_normalization_of_attribute_option(AttributeOption $option)
     {
-        $this->supportsNormalization($option, 'flat')->shouldBe(true);
+        $this->supportsNormalization($option, 'json')->shouldBe(true);
     }
 
-    function it_does_not_support_csv_normalization_of_integer()
+    function it_does_not_support_json_normalization_of_integer()
     {
-        $this->supportsNormalization(1, 'csv')->shouldBe(false);
+        $this->supportsNormalization(1, 'json')->shouldBe(false);
     }
 
-    function it_normalizes_option_code_when_field_name_is_provided(AttributeOption $option)
+    function it_normalizes_option_code_when_product_entity_is_provided(AttributeOption $option)
     {
         $option->getCode()->willReturn('red');
 
-        $this->normalize($option, null, ['field_name' => 'color'])->shouldReturn(['color' => 'red']);
+        $this->normalize($option, null, ['entity' => 'product'])->shouldReturn('red');
     }
 
     function it_normalizes_the_whole_option(
@@ -42,9 +43,9 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         AttributeOptionValue $valueEn,
         AttributeOptionValue $valueFr
     ) {
-        $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('color');
+        $option->getCode()->willReturn('red');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
             'fr_FR' => $valueFr,
@@ -57,9 +58,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => ['en_US', 'fr_FR', 'de_DE']])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
-            'label-en_US' => 'Red',
-            'label-fr_FR' => 'Rouge',
-            'label-de_DE' => '',
+            'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => '']
         ]);
     }
 
@@ -84,8 +83,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => ['en_US', 'de_DE']])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
-            'label-en_US' => 'Red',
-            'label-de_DE' => '',
+            'label' => ['en_US' => 'Red', 'de_DE' => '']
         ]);
     }
 
@@ -114,9 +112,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => []])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
-            'label-en_US' => 'Red',
-            'label-fr_FR' => 'Rouge',
-            'label-de_DE' => '',
+            'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => '']
         ]);
     }
 }

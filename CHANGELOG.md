@@ -47,6 +47,7 @@
 # 1.2.x
 
 ## Bug fixes
+- Fix issue with inactive locales in exports
 
 # 1.2.8 (2014-10-10)
 
