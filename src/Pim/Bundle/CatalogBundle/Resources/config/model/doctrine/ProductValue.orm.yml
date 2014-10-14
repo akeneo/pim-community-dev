@@ -108,6 +108,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 - remove
                 - persist
                 - refresh
+                - detach
             inversedBy: value
             joinColumns:
                 media_id:
@@ -119,6 +120,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 - remove
                 - persist
                 - refresh
+                - detach
             joinColumns:
                 metric_id:
                     referencedColumnName: id
