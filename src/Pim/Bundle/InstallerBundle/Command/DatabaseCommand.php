@@ -30,6 +30,9 @@ class DatabaseCommand extends ContainerAwareCommand
     const LOAD_ALL    = 'all';
     const LOAD_BASE   = 'base';
 
+    /** @var CommandExecutor */
+    protected $commandExecutor;
+
     /**
      * {@inheritdoc}
      */
