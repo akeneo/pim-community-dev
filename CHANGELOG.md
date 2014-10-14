@@ -18,6 +18,7 @@
 # 1.0.x
 
 ## Bug fixes
+- Removing the group "ALL" from categories' permissions after a clean installation.
 
 # 1.0.2 (2014-10-10)
 
