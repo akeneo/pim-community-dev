@@ -6,17 +6,20 @@ define(
         return FiltersManager.extend({
             addButtonTemplate: _.template(
                 '<select id="add-filter-select" multiple>' +
-                    '<%  var groups = {};' +
+                    '<%  var groups = [_.__("system_filter_group")];' +
                         '_.each(filters, function(filter) {' +
                             'if (filter.group) {' +
-                                'groups[filter.groupOrder !== null ? filter.groupOrder : "last"] = filter.group;' +
+                                'var key = filter.groupOrder !== null ? filter.groupOrder : "last";' +
+                                'if (_.isUndefined(groups[key])) {' +
+                                    'groups[key] = filter.group;' +
+                                '} else if (!_.contains(groups, filter.group)) {' +
+                                    'groups.push(filter.group);' +
+                                '}' +
                             '} else {' +
                                 'filter.group = _.__("system_filter_group");' +
-                                'groups[-1] = filter.group;' +
-                            '}' +
+                            '} ' +
                        '});' +
                     '%>' +
-                    '<% var groups = _.sortBy(groups, function(group, index) {return index;}); %>' +
                     '<% _.each(groups, function (group) { %>' +
                         '<optgroup label="<%= group %>">' +
                             '<% _.each(filters, function (filter, name) { %>' +
