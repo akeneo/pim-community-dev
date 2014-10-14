@@ -5,7 +5,6 @@ namespace Pim\Bundle\CommentBundle\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -26,8 +25,32 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CommentController extends AbstractDoctrineController
+class CommentController
 {
+    /** @var Request */
+    protected $request;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var SecurityContextInterface */
+    protected $securityContext;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var CommentBuilder */
     protected $commentBuilder;
 
@@ -60,18 +83,15 @@ class CommentController extends AbstractDoctrineController
         CommentBuilder $commentBuilder,
         $commentClassName
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
+        $this->request         = $request;
+        $this->templating      = $templating;
+        $this->router          = $router;
+        $this->securityContext = $securityContext;
+        $this->formFactory     = $formFactory;
+        $this->validator       = $validator;
+        $this->translator      = $translator;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->doctrine = $doctrine;
         $this->commentBuilder = $commentBuilder;
         $this->commentClassName = $commentClassName;
     }
@@ -184,5 +204,65 @@ class CommentController extends AbstractDoctrineController
         $manager->flush();
 
         return new JsonResponse();
+    }
+
+    /**
+     * Creates and returns a Form instance from the type of the form.
+     *
+     * @param string|FormTypeInterface $type    The built type of the form
+     * @param mixed                    $data    The initial data for the form
+     * @param array                    $options Options for the form
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function createForm($type, $data = null, array $options = array())
+    {
+        return $this->formFactory->create($type, $data, $options);
+    }
+
+    /**
+     * Renders a view.
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
+     *
+     * @return Response A Response instance
+     */
+    public function render($view, array $parameters = array(), Response $response = null)
+    {
+        return $this->templating->renderResponse($view, $parameters, $response);
+    }
+
+    /**
+     * Get a user from the Security Context
+     *
+     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     *
+     * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
+     */
+    public function getUser()
+    {
+        if (null === $token = $this->securityContext->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * Returns the Doctrine manager for the given class
+     *
+     * @param string $class
+     *
+     * @return ObjectManager
+     */
+    protected function getManagerForClass($class)
+    {
+        return $this->doctrine->getManagerForClass($class);
     }
 }
