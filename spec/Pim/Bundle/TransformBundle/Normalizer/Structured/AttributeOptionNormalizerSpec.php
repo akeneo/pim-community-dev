@@ -90,4 +90,35 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
             'label' => ['en_US' => 'Red', 'de_DE' => '']
         ]);
     }
+
+    function it_provides_all_locales_if_no_list_provided_in_context(
+        AttributeOption $option,
+        AbstractAttribute $attribute,
+        AttributeOptionValue $valueEn,
+        AttributeOptionValue $valueFr,
+        AttributeOptionValue $valueDe
+    ) {
+        $option->getCode()->willReturn('red');
+        $option->getAttribute()->willReturn($attribute);
+        $option->isDefault()->willReturn(true);
+        $attribute->getCode()->willReturn('color');
+        $option->getOptionValues()->willReturn([
+            'en_US' => $valueEn,
+            'fr_FR' => $valueFr,
+            'de_DE' => $valueDe
+        ]);
+        $valueEn->getLocale()->willReturn('en_US');
+        $valueEn->getValue()->willReturn('Red');
+        $valueFr->getLocale()->willReturn('fr_FR');
+        $valueFr->getValue()->willReturn('Rouge');
+        $valueDe->getLocale()->willReturn('de_DE');
+        $valueDe->getValue()->willReturn('');
+
+        $this->normalize($option, null, ['locales' => []])->shouldReturn([
+            'attribute' => 'color',
+            'code' => 'red',
+            'default' => '1',
+            'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => '']
+        ]);
+    }
 }

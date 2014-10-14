@@ -55,7 +55,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
     {
         $labels = array_fill_keys($context['locales'], '');
         foreach ($entity->getOptionValues() as $translation) {
-            if (in_array($translation->getLocale(), $context['locales'])) {
+            if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
                 $labels[$translation->getLocale()] = $translation->getValue();
             }
         }
