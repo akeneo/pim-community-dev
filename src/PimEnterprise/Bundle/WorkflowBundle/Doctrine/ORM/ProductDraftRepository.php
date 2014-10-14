@@ -13,11 +13,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,9 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftRepository extends EntityRepository implements
-    ProductDraftRepositoryInterface,
-    ProductDraftOwnershipRepositoryInterface
+class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -80,6 +76,46 @@ class ProductDraftRepository extends EntityRepository implements
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createProposalDatagridQueryBuilder(array $parameters = [])
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb
+            ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author')
+            ->from($this->_entityName, 'p', 'p.id')
+            ->join('p.product', 'product');
+
+        if (isset($parameters['currentUser'])) {
+            $user = $parameters['currentUser'];
+            if (!is_object($user) || !$user instanceof UserInterface) {
+                throw new \InvalidArgumentException(
+                    'Current user should be a \Symfony\Component\Security\Core\User\UserInterface.'
+                );
+            }
+
+            $qb
+                ->leftJoin('product.categories', 'category')
+                ->innerJoin('PimEnterpriseSecurityBundle:CategoryAccess', 'a', 'WITH', 'a.category = category')
+                ->where(
+                    $qb->expr()->eq('a.ownProducts', true)
+                )
+                ->andWhere(
+                    $qb->expr()->in('a.userGroup', ':userGroups')
+                )
+                ->andWhere(
+                    $qb->expr()->eq('p.status', ProductDraft::READY)
+                )
+                ->setParameter('userGroups', $user->getGroups()->toArray());
+        }
+
+        return $qb;
     }
 
     /**

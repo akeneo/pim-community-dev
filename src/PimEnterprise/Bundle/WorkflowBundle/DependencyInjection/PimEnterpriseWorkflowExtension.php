@@ -42,7 +42,6 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('comparators.yml');
         $loader->load('factories.yml');
         $loader->load('controllers.yml');
-        $loader->load('repositories.yml');
         $loader->load('query_builders.yml');
         $loader->load('twig.yml');
 
