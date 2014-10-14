@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Proposal grif context configurator
+ * Proposal grid context configurator
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
