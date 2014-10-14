@@ -55,6 +55,8 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
+            - '@pim_user.context.user'
+            - %pim_catalog.entity.group.class%
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_groups }
 
