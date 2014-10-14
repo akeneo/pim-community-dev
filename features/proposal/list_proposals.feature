@@ -33,10 +33,9 @@ Feature: List proposals
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author and proposed at
     And I should be able to use the following filters:
-      | filter      | value                | result                     |
-      | Author      | Julia                | jacket                     |
-      | Author      | Sandra,Mary          | sweater, tshirt            |
-      | Proposed at | more than 2012-01-01 | tshirt, sweater and jacket |
+      | filter | value       | result          |
+      | Author | Julia       | jacket          |
+      | Author | Sandra,Mary | sweater, tshirt |
 
   Scenario: Successfully approve or refuse a proposal
     Given I am logged in as "admin"

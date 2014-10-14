@@ -53,15 +53,10 @@ datagrid:
                 link: refuse_link
         filters:
             columns:
-                createdAt:
-                    type:      date
-                    ftype:     date
-                    data_name: p.createdAt
-                    label:     pimee_workflow.product_draft.created
-                autor:
-                    type:        choice
+                author:
+                    type:        product_draft_choice
                     ftype:       choice
-                    data_name:   p.author
+                    data_name:   author
                     label:       pimee_workflow.product_draft.author
                     options:
                         field_options:
