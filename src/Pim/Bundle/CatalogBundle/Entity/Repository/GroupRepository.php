@@ -167,6 +167,42 @@ class GroupRepository extends ReferableEntityRepository
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array())
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select('o.id as id, COALESCE(t.label, CONCAT(\'[\', o.code, \']\')) as text')
+            ->leftJoin('o.translations', 't', 'WITH', 't.locale=:locale')
+            ->addOrderBy('text', 'ASC')
+            ->setParameter('locale', $dataLocale);
+
+        if ($search) {
+            $qb->andWhere('t.label like :search OR o.code LIKE :search')
+                ->setParameter('search', "%$search%");
+        }
+
+        if (isset($options['ids'])) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->in('o.id', ':ids')
+                )
+                ->setParameter('ids', $options['ids']);
+        }
+
+        if (isset($options['limit']) && isset($options['page'])) {
+            $qb->setFirstResult($options['limit'] * ($options['page'] - 1))
+                ->setMaxResults($options['limit']);
+        }
+
+        $results = $qb->getQuery()->getArrayResult();
+
+        return array(
+            'results' => $results
+        );
+    }
+
+    /**
      * @return string
      */
     protected function getAlias()

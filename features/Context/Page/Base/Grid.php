@@ -40,6 +40,7 @@ class Grid extends Index
                 'Configure columns' => ['css' => 'a:contains("Columns")'],
                 'View selector'     => ['css' => '#view-selector'],
                 'Views list'        => ['css' => 'div.ui-multiselect-menu.highlight-hover'],
+                'Select2 results'   => ['css' => '.select2-results'],
             ],
             $this->elements
         );
@@ -167,13 +168,25 @@ class Grid extends Index
                 }
             }
         } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
+            $results = $this->getElement('Select2 results');
+            $select2 = $filter->find('css', '.select2-input');
+
             if ($operator !== false) {
                 $filter->find('css', 'button.dropdown-toggle')->click();
                 $filter->find('css', '[data-value="'.$operator.'"]')->click();
             }
-            if ($value !== false) {
+
+            if (null !== $results && null !== $select2) {
+                $driver->getWebDriverSession()
+                    ->element('xpath', $select2->getXpath())
+                    ->postValue(array('value' => array($value)));
+                sleep(2);
+                $results->find('css', 'li')->click();
+                sleep(2);
+            } elseif ($value !== false) {
                 $elt->fillField('value', $value);
             }
+
             $filter->find('css', 'button.filter-update')->click();
         } else {
             throw new \InvalidArgumentException(
