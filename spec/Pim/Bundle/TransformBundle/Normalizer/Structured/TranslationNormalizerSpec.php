@@ -72,4 +72,23 @@ class TranslationNormalizerSpec extends ObjectBehavior
             ]
         ]);
     }
+
+    function it_ignores_a_locale_not_provided_in_context(
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+        AttributeTranslation $german
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french, $german
+        ]);
+
+        $this->normalize($translatable, 'xml', [
+            'locales'  => ['en_US', 'fr_FR'],
+            'property' => 'description'
+        ])->shouldReturn([
+            'description-en_US' => '',
+            'description-fr_FR' => '',
+        ]);
+    }
 }

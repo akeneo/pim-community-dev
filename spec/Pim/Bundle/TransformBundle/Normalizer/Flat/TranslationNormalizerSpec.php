@@ -46,7 +46,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
             $english, $french
         ]);
 
-        $this->normalize($translatable, 'xml', [
+        $this->normalize($translatable, 'csv', [
             'locales'  => ['en_US', 'de_DE', 'fr_FR', 'fr_BE'],
             'property' => 'description'
         ])->shouldReturn([
@@ -54,6 +54,25 @@ class TranslationNormalizerSpec extends ObjectBehavior
             'description-de_DE' => '',
             'description-fr_FR' => '',
             'description-fr_BE' => '',
+        ]);
+    }
+
+    function it_ignores_a_locale_not_provided_in_context(
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+        AttributeTranslation $german
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french, $german
+        ]);
+
+        $this->normalize($translatable, 'csv', [
+            'locales'  => ['en_US', 'fr_FR'],
+            'property' => 'description'
+        ])->shouldReturn([
+            'description-en_US' => '',
+            'description-fr_FR' => '',
         ]);
     }
 }
