@@ -272,6 +272,7 @@ class ProductBuilder
         $locale = null,
         $scope = null
     ) {
+        // TODO : check isLocalizable, isScopable (not in 1.2 to avoid issues ?)
         $value = $this->createProductValue();
         if ($locale) {
             $value->setLocale($locale);
