@@ -88,6 +88,37 @@ Feature: Edit common attributes of many products at once
     And the english name of "sandals" should be "boots"
     And the english name of "sneakers" should be "boots"
 
+  @jira https://akeneo.atlassian.net/browse/PIM-3281
+  Scenario: Successfully update localized values on selected locale
+    Given I add the "french" locale to the "mobile" channel
+    When I mass-edit products boots, sandals and sneakers
+    And I choose the "Edit attributes" operation
+    And I switch the locale to "French (France)"
+    And I display the [name] attribute
+    And I change the "[name]" to "chaussure"
+    And I move on to the next step
+    Then the french name of "boots" should be "chaussure"
+    And the french name of "sandals" should be "chaussure"
+    And the french name of "sneakers" should be "chaussure"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3281
+  Scenario: Successfully update localized and scoped values on selected locale
+    Given I add the "french" locale to the "mobile" channel
+    And I add the "french" locale to the "tablet" channel
+    And I set product "pump" family to "boots"
+    And I mass-edit products boots and pump
+    And I choose the "Edit attributes" operation
+    And I switch the locale to "French (France)"
+    And I display the [description] attribute
+    And I expand the "[description]" attribute
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_mobile_text" with "Foo Fr"
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_tablet_text" with "Bar Fr"
+    And I move on to the next step
+    Then the french mobile description of "boots" should be "Foo Fr"
+    And the french tablet description of "boots" should be "Bar Fr"
+    And the french mobile description of "pump" should be "Foo Fr"
+    And the french tablet description of "pump" should be "Bar Fr"
+
   Scenario: Successfully update many price values at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
