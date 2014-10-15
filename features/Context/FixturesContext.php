@@ -1057,13 +1057,39 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param integer $expectedTotal
+     * @param int $expectedTotal
      *
      * @Then /^there should be (\d+) products?$/
      */
     public function thereShouldBeProducts($expectedTotal)
     {
         $total = count($this->getProductManager()->getProductRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
+    }
+
+    /**
+     * @param int $expectedTotal
+     *
+     * @Then /^there should be (\d+) attributes?$/
+     */
+    public function thereShouldBeAttributes($expectedTotal)
+    {
+        $total = count($this->getProductManager()->getAttributeRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
+    }
+
+    /**
+     * @param int $expectedTotal
+     *
+     * @Then /^there should be (\d+) categor(?:y|ies)$/
+     */
+    public function thereShouldBeCategories($expectedTotal)
+    {
+        $class = $this->getContainer()->getParameter('pim_catalog.entity.category.class');
+        $repository = $this->getSmartRegistry()->getRepository($class);
+        $total = count($repository->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -1079,8 +1105,10 @@ class FixturesContext extends RawMinkContext
         $this->clearUOW();
         $product = $this->getProduct($identifier);
 
-        foreach ($table->getRowsHash() as $code => $value) {
-            $productValue = $product->getValue($code);
+        foreach ($table->getRowsHash() as $rawCode => $value) {
+            list($code, $locale, $scope) = array_replace([null, null, null], explode('-', $rawCode));
+            $productValue = $product->getValue($code, $locale, $scope);
+
             if ('media' === $this->getAttribute($code)->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)

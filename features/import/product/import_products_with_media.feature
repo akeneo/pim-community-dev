@@ -59,19 +59,3 @@ Feature: Import media with products
     And the product "fanatic-freewave-76" should have the following values:
       | frontView  | **empty** |
       | userManual | **empty** |
-
-  Scenario: Fail to import product with media attributes if the media doesn't actually exist
-    Given the following file to import:
-    """
-    sku;family;groups;frontView;name-en_US;userManual;categories
-    fanatic-freewave-76;sneakers;;fanatic-freewave-76.jpg;"Fanatic Freewave 76";fanatic-freewave-76.pdf;2014_collection
-    """
-    And the following job "footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    When I am on the "footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
-    Then there should be 0 products
-    And I should see "frontView: File not found"
-    And I should see "userManual: File not found"
