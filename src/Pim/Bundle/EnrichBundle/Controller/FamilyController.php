@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
@@ -269,6 +270,15 @@ class FamilyController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
+
+            foreach ($family->getAttributeRequirements() as $requirement) {
+                if ($requirement->getAttribute() === $attribute) {
+                    $this->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
+                }
+            }
+
+            $this->completenessManager->scheduleForFamily($family);
+
             $this->getManagerForClass('PimCatalogBundle:Family')->flush();
         }
         if ($this->getRequest()->isXmlHttpRequest()) {
