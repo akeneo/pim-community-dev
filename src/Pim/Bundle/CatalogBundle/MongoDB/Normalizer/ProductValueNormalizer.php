@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
+use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Normalize a product value to store it as mongodb_json

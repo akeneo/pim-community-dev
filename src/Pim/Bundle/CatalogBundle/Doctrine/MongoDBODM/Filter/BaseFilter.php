@@ -3,11 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Base filter
@@ -24,14 +24,82 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
+    protected $supportedOperators;
+
     /**
-     * @param QueryBuilder   $qb
+     * Instanciate the filter
+     *
      * @param CatalogContext $context
+     * @param array          $supportedAttributes
+     * @param array          $supportedFields
+     * @param array          $supportedOperators
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
+    public function __construct(
+        CatalogContext $context,
+        array $supportedAttributes = [],
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
         $this->context = $context;
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 
     /**

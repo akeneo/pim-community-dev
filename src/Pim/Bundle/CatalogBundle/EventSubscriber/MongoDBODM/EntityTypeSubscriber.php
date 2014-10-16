@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Convert identifier into lazy entity

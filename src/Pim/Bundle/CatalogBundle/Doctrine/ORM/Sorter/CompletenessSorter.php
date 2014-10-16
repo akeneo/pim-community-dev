@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
@@ -28,13 +28,27 @@ class CompletenessSorter implements FieldSorterInterface
     /**
      * Instanciate a sorter
      *
-     * @param QueryBuilder   $qb
      * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return $field === 'completeness';
     }
 
     /**
@@ -46,6 +60,9 @@ class CompletenessSorter implements FieldSorterInterface
         $util = new CompletenessJoin($this->qb);
         $util->addJoins($alias);
         $this->qb->addOrderBy($alias.'.ratio', $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

@@ -4,9 +4,8 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Version manager

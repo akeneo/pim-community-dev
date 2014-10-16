@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Symfony\Component\Validator\Constraints;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * Test related class

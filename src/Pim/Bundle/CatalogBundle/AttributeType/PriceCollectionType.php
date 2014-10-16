@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
  * Price attribute type

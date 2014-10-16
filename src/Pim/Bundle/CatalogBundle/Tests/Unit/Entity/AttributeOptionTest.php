@@ -28,22 +28,6 @@ class AttributeOptionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test is/set default property
-     */
-    public function testIsSetDefault()
-    {
-        $this->assertFalse($this->attributeOption->isDefault());
-
-        $expectedIsDefault = true;
-        $this->assertEntity($this->attributeOption->setDefault($expectedIsDefault));
-        $this->assertTrue($this->attributeOption->isDefault());
-
-        $expectedIsDefault = false;
-        $this->assertEntity($this->attributeOption->setDefault($expectedIsDefault));
-        $this->assertFalse($this->attributeOption->isDefault());
-    }
-
-    /**
      * Test __toString method
      */
     public function testToString()

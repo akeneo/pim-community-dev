@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\AbstractType;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
 
 /**
  * Localized collection type

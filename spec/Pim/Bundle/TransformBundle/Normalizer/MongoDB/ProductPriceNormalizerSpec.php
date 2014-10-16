@@ -2,10 +2,9 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
-use PhpSpec\ObjectBehavior;
 
 /**
  * @require \MongoId

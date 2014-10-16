@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -24,16 +24,18 @@ class CompletenessFilter implements FieldFilterInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $supportedOperators;
+
     /**
      * Instanciate a sorter
      *
-     * @param QueryBuilder   $qb
      * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+        $this->supportedOperators = ['=', '<'];
     }
 
     /**
@@ -53,5 +55,37 @@ class CompletenessFilter implements FieldFilterInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return $field === 'completeness';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
     }
 }

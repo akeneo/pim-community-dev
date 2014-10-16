@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -32,8 +32,8 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Count children for a given category.
      *
-     * @param Category $category   the requested node
-     * @param boolean  $onlyDirect true to cound only direct children
+     * @param CategoryInterface $category   the requested node
+     * @param boolean           $onlyDirect true to count only direct children
      *
      * @return integer
      */
@@ -112,7 +112,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Create a query builder with just a link to the category passed in parameter
      *
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -128,8 +128,8 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Shortcut to get all children query builder
      *
-     * @param Category $category    the requested node
-     * @param boolean  $includeNode true to include actual node in query result
+     * @param CategoryInterface $category    the requested node
+     * @param boolean           $includeNode true to include actual node in query result
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -141,7 +141,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Shortcut to get all children ids
      *
-     * @param Category $parent the parent
+     * @param CategoryInterface $parent the parent
      *
      * @return integer[]
      */
@@ -176,7 +176,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
      * Return categories ids provided by the categoryQb or by the provided category
      *
      * @param CategoryInterface $category
-     * @param OrmQueryBuilder   $categoryQb
+     * @param QueryBuilder      $categoryQb
      *
      * @return array $categoryIds
      */
@@ -338,7 +338,6 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
 
         return $tree;
     }
-
 
     /**
      * Search Segment entities from an array of criterias.

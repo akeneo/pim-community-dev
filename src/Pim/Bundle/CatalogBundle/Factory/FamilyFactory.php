@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Family factory

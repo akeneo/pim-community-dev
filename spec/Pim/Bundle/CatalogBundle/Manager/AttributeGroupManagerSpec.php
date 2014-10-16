@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Prophecy\Argument;
 
 class AttributeGroupManagerSpec extends ObjectBehavior
 {
