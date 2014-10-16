@@ -28,6 +28,7 @@ Feature: Remove attribute from a family
     When I am on the "bag-dolce-vita" product page
     Then I should see a remove link next to the "Manufacturer" field
 
+  @skip
   Scenario: Successfully update product completeness when removing a required attribute from a family
     Given I am on the "Bags" family page
     And I visit the "Attributes" tab
