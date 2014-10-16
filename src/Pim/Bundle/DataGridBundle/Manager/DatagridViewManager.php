@@ -3,10 +3,10 @@
 namespace Pim\Bundle\DataGridBundle\Manager;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
  * Datagrid view manager
@@ -18,7 +18,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 class DatagridViewManager
 {
     /** @var EntityRepository */
-    protected $datagridViewRepository;
+    protected $repository;
 
     /** @var DatagridManager */
     protected $datagridManager;
@@ -31,7 +31,7 @@ class DatagridViewManager
      */
     public function __construct(EntityRepository $repository, DatagridManager $datagridManager)
     {
-        $this->datagridViewRepository = $repository;
+        $this->repository      = $repository;
         $this->datagridManager = $datagridManager;
     }
 
@@ -44,7 +44,7 @@ class DatagridViewManager
      */
     public function findPublic($alias)
     {
-        return $this->datagridViewRepository->findBy(
+        return $this->repository->findBy(
             [
                 'datagridAlias' => $alias,
                 'type'          => DatagridView::TYPE_PUBLIC

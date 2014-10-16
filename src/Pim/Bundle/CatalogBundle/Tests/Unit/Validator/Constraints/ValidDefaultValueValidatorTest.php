@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValueValidator;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValue;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValue;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValueValidator;
 
 /**
  * Valid default value validator test

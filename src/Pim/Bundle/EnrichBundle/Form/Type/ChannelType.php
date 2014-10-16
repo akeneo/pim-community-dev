@@ -2,20 +2,19 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Pim\Bundle\EnrichBundle\Helper\SortHelper;
+use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
-
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\EnrichBundle\Helper\SortHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 
 /**
  * Type for channel form

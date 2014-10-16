@@ -5,15 +5,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
@@ -65,7 +61,9 @@ class IndexCreatorSpec extends ObjectBehavior
         $mobile->getLocales()->willReturn([$en_US]);
 
         $namingUtility->getScopableAttributes()->willReturn([$title]);
-        $namingUtility->getAttributeNormFields($title)->willReturn(['normalizedData.title-ecommerce', 'normalizedData.title-mobile']);
+        $namingUtility
+            ->getAttributeNormFields($title)
+            ->willReturn(['normalizedData.title-ecommerce', 'normalizedData.title-mobile']);
 
         $options =  [
             'background' => true,
@@ -105,7 +103,9 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $namingUtility->getChannels()->willReturn([$ecommerce]);
         $namingUtility->getLocalizableAttributes()->willReturn([$description]);
-        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
+        $namingUtility
+            ->getAttributeNormFields($description)
+            ->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
 
         $options =  [
             'background' => true,
@@ -136,11 +136,14 @@ class IndexCreatorSpec extends ObjectBehavior
         $price->isUseableAsGridFilter()->willReturn(true);
         $price->getAttributeType()->willReturn('pim_catalog_price_collection');
 
-
         $namingUtility->getPricesAttributes()->willReturn([$price]);
         $namingUtility->getCurrencyCodes()->willReturn(['EUR', 'USD']);
-        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
-        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
+        $namingUtility
+            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')
+            ->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
+        $namingUtility
+            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')
+            ->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
         $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
 
         $options =  [
@@ -234,8 +237,12 @@ class IndexCreatorSpec extends ObjectBehavior
         $namingUtility->getPricesAttributes()->willReturn([$price]);
         $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
         $namingUtility->getCurrencyCodes()->willReturn(['EUR', 'USD']);
-        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
-        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
+        $namingUtility
+            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')
+            ->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
+        $namingUtility
+            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')
+            ->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
 
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -298,7 +305,9 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
-        $namingUtility->getAttributeNormFields($title)->willReturn(['normalizedData.title-ecommerce', 'normalizedData.title-mobile']);
+        $namingUtility
+            ->getAttributeNormFields($title)
+            ->willReturn(['normalizedData.title-ecommerce', 'normalizedData.title-mobile']);
         $collection->ensureIndex(['normalizedData.title-ecommerce' => 1], $options)->shouldBeCalled();
         $collection->ensureIndex(['normalizedData.title-mobile' => 1], $options)->shouldBeCalled();
 
@@ -322,7 +331,9 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
-        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
+        $namingUtility
+            ->getAttributeNormFields($description)
+            ->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
         $collection->ensureIndex(['normalizedData.description-en_US' => 1], $options)->shouldBeCalled();
         $collection->ensureIndex(['normalizedData.description-de_DE' => 1], $options)->shouldBeCalled();
 
@@ -341,7 +352,15 @@ class IndexCreatorSpec extends ObjectBehavior
         $description->isUseableAsGridFilter()->willReturn(true);
         $description->getAttributeType()->willReturn('pim_catalog_simpleselect');
 
-        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description-en_US-ecommerce', 'normalizedData.description-de_DE-ecommerce', 'normalizedData.description-en_US-mobile']);
+        $namingUtility
+            ->getAttributeNormFields($description)
+            ->willReturn(
+                [
+                    'normalizedData.description-en_US-ecommerce',
+                    'normalizedData.description-de_DE-ecommerce',
+                    'normalizedData.description-en_US-mobile'
+                ]
+            );
 
         $this->ensureIndexesFromAttribute($description);
     }

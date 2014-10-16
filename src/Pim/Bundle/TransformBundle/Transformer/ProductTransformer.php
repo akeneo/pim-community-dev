@@ -258,8 +258,8 @@ class ProductTransformer extends EntityTransformer
     /**
      * Returns a ProductValue
      *
-     * @param ProductInterface $product
-     * @param array            $columnInfo
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $columnInfo
      *
      * @return ProductValueInterface
      */

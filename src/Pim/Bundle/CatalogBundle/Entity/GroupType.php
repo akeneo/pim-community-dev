@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**
  * Group type entity
@@ -30,7 +30,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     protected $code;
 
     /**
-     * @var string $entity
+     * @var boolean $variant
      */
     protected $variant;
 
@@ -229,7 +229,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
      *
      * @param string $label
      *
-     * @return Group
+     * @return GroupType
      */
     public function setLabel($label)
     {

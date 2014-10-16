@@ -7,7 +7,6 @@ attributes:
         type: pim_catalog_identifier
         group: marketing
         unique: true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder: 1
     name:
@@ -17,7 +16,6 @@ attributes:
             de_DE: Name
         type: pim_catalog_text
         group: marketing
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder: 2
     description:
@@ -256,7 +254,6 @@ attributes:
         type: pim_catalog_price_collection
         group: marketing
         useableAsGridFilter: true
-        useableAsGridColumn: true
         sortOrder: 25
         decimalsAllowed: true
     picture:
@@ -267,7 +264,6 @@ attributes:
         type: pim_catalog_image
         group: media
         useableAsGridFilter: false
-        useableAsGridColumn: true
         sortOrder: 27
         allowedExtensions: 'jpg,jpeg,gif'
     pdf_description:
@@ -278,7 +274,6 @@ attributes:
         type: pim_catalog_file
         group: media
         useableAsGridFilter: false
-        useableAsGridColumn: false
         sortOrder: 28
         allowedExtensions: 'pdf'
     container_material:

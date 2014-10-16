@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * A normalizer to transform an AbstractAttribute entity into array
@@ -58,7 +58,6 @@ class AttributeNormalizer implements NormalizerInterface
             array(
                 'group'                   => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
                 'unique'                  => (int) $object->isUnique(),
-                'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
                 'metric_family'           => $object->getMetricFamily(),
@@ -105,7 +104,6 @@ class AttributeNormalizer implements NormalizerInterface
             'localizable'         => $attribute->isLocalizable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),
-            'default_options'     => $this->normalizeDefaultOptions($attribute),
             'sort_order'          => (int) $attribute->getSortOrder(),
             'required'            => (int) $attribute->isRequired(),
             'default_value'       => $this->normalizeDefaultValue($attribute),
@@ -181,26 +179,5 @@ class AttributeNormalizer implements NormalizerInterface
         } else {
             return (string) $defaultValue;
         }
-    }
-
-    /**
-     * Normalize default options
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return array
-     */
-    protected function normalizeDefaultOptions(AbstractAttribute $attribute)
-    {
-        $data = array();
-        $options = $attribute->getDefaultOptions();
-        foreach ($options as $option) {
-            $data[$option->getCode()] = array();
-            foreach ($option->getOptionValues() as $value) {
-                $data[$option->getCode()][$value->getLocale()] = $value->getValue();
-            }
-        }
-
-        return $data;
     }
 }

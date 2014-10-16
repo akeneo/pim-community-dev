@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Selector;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 /**
  * Selector interface, allows to select some extra data in the datasource (for instance join in case or ORM)

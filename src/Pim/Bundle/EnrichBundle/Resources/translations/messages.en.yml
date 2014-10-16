@@ -87,6 +87,8 @@ btn:
     save:            save
     save and back:   save and back to grid
     save and create: save and create new
+    save and next:   save and next
+    save and finish: save and finish
     remove:          remove
     delete:          delete
     cancel:          cancel
@@ -95,6 +97,7 @@ btn:
     confirm:         confirm
     to grid:         back to grid
     to parent:       back to parent
+    download_pdf:    PDF
 
 # Confirmation messages
 confirmation:
@@ -132,8 +135,6 @@ flash:
         removed:                  Attribute successfully removed
         identifier not removable: Identifier attribute can not be removed
         used by groups:           This attribute can not be removed because it is used by %count% variant groups
-        option created:           Option successfully created
-        error creating option:    Error ocurred when trying to create the option, please try again
     attribute group:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
@@ -247,66 +248,66 @@ color:
     cyan:    Cyan
 
 # Form elements
-Options:                       Options
-Created at:                    Created at
-Updated at:                    Updated at
-Created:                       Created
-Updated:                       Updated
-Last update:                   Last update
-by:                            By
-N/A:                           N/A
-Add an option:                 Add an option
-Manage products:               Manage products
-Manage groups:                 Manage groups
-Code:                          Code
-Name:                          Name
-Type:                          Type
-Scope:                         Scope
-Required:                      Required
-Unique:                        Unique
-Not required:                  Not required
-Translatable:                  Translatable
-Scopable:                      Scopable
-Localizable:                   Localizable
-Unique value:                  Unique value
-Attribute group:               Attribute group
-Other:                         Other
-Variants behavior when edited: Variants behavior when edited
-Edit:                          Edit
-Remove:                        Remove
-Delete:                        Delete
-Parameters:                    Parameters
-System:                        System
-Values:                        Values
-General parameters:            General parameters
-Backend parameters:            Backend parameters
-Label:                         Label
-Default label:                 Default label
-Default value:                 Default value
-Attributetype:                 Attribute type
-Attribute type:                Attribute type
-Defaultvalue:                  Default value
-Variant:                       Variant
-Smart:                         Smart
-Useable as grid column:        Usable as grid column
-Useable as grid filter:        Usable as grid filter
-Family:                        Family
-Available locales:             Available locales
-Locale specific:               Locale specific
-default:                       Default
-Axis:                          Axis
-Add attributes:                Add attributes
-Translate from:                Translate from
-switch_on:                     "Yes"
-switch_off:                    "No"
-Close:                         Close
-Choose a color:                Choose a color
-Search:                        Search
-Choose the attribute type:     Choose the attribute type
-Choose the attribute group:    Choose the attribute group
-Drop a file or click here:     Drop a file or click here
-Drop an image or click here:   Drop an image or click here
-Automatic option sorting:      Automatic option sorting
+Options:                             Options
+Created at:                          Created at
+Updated at:                          Updated at
+Created:                             Created
+Updated:                             Updated
+Last update:                         Last update
+by:                                  By
+N/A:                                 N/A
+Manage products:                     Manage products
+Manage groups:                       Manage groups
+Code:                                Code
+Name:                                Name
+Type:                                Type
+Scope:                               Scope
+Required:                            Required
+Unique:                              Unique
+Not required:                        Not required
+Translatable:                        Translatable
+Scopable:                            Scopable
+Localizable:                         Localizable
+Unique value:                        Unique value
+Attribute group:                     Attribute group
+Other:                               Other
+Variants behavior when edited:       Variants behavior when edited
+Edit:                                Edit
+Remove:                              Remove
+Delete:                              Delete
+Parameters:                          Parameters
+System:                              System
+Values:                              Values
+General parameters:                  General parameters
+Backend parameters:                  Backend parameters
+Label:                               Label
+Default label:                       Default label
+Default value:                       Default value
+Attributetype:                       Attribute type
+Attribute type:                      Attribute type
+Defaultvalue:                        Default value
+Variant:                             Variant
+Smart:                               Smart
+Useable as grid column:              Usable as grid column
+Useable as grid filter:              Usable as grid filter
+Family:                              Family
+Available locales:                   Available locales
+Locale specific:                     Locale specific
+default:                             Default
+Axis:                                Axis
+Add attributes:                      Add attributes
+Translate from:                      Translate from
+switch_on:                           "Yes"
+switch_off:                          "No"
+Close:                               Close
+Choose a color:                      Choose a color
+Search:                              Search
+Choose the attribute type:           Choose the attribute type
+Choose the attribute group:          Choose the attribute group
+Drop a file or click here:           Drop a file or click here
+Drop an image or click here:         Drop an image or click here
+Automatic option sorting:            Automatic option sorting
+save_attribute_before_manage_option: To manage options, please save the attribute first
 
 Create:               Create
 Cancel:               Cancel
@@ -438,6 +439,12 @@ Activated: Activated
 Edit:      Edit
 Disable:   Disable
 
+# Sequential edit operations
+pim_enrich.sequential_edit_action:
+    product:
+        previous: Skip back to "%product%" without saving.
+        next: Skip to "%product%" without saving.
+
 # Mass edit operations
 pim_enrich.mass_edit_action:
     limit_exceeded: Please choose less than %limit% items to edit
@@ -555,6 +562,8 @@ pim_enrich:
             change_state: Change state of product
             add_to_groups: Add product to groups
             mass_edit: Product mass edit actions
+            comment: Comment products
+            download: Download the product as PDF
         category:
             list: List categories
             create: Create a category
