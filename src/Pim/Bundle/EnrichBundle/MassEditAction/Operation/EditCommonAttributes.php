@@ -313,15 +313,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
         if (null === $productValue = $this->getProductValue($product, $value)) {
-            $attribute = $value->getAttribute();
-            $localeCode = ($attribute->isLocalizable()) ? $this->getLocale()->getCode() : null;
-            $scopeCode = ($attribute->isScopable()) ? $value->getScope() : null;
-            // TODO : should be checked in product builder itself (not in 1.2 to avoid issue ?)
             $productValue = $this->productBuilder->addProductValue(
                 $product,
-                $attribute,
-                $localeCode,
-                $scopeCode
+                $value->getAttribute(),
+                $this->getLocale()->getCode(),
+                $value->getScope()
             );
         }
 
