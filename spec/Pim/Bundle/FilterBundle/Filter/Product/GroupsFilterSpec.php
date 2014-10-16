@@ -10,12 +10,13 @@ use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 class GroupsFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, UserContext $userContext)
     {
-        $this->beConstructedWith($factory, $utility);
+        $this->beConstructedWith($factory, $utility, $userContext, 'Group');
     }
 
     function it_is_an_oro_choice_filter()
