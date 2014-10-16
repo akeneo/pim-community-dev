@@ -7,6 +7,8 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -22,6 +24,9 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
     StepExecutionAwareInterface
 {
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
+
     /**
      * @var ImportValidatorInterface
      */
@@ -64,19 +69,22 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      * @param TranslatorInterface        $translator
      * @param EntityTransformerInterface $transformer
      * @param string                     $class
-     * @param boolean                    $skipEmpty
+     * @param ManagerRegistry            $managerRegistry
+     * @param bool                       $skipEmpty
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
         EntityTransformerInterface $transformer,
         $class,
+        ManagerRegistry $managerRegistry = null,
         $skipEmpty = false
     ) {
         $this->validator = $validator;
         $this->translator = $translator;
         $this->transformer = $transformer;
         $this->class = $class;
+        $this->managerRegistry = $managerRegistry;
         $this->skipEmpty = $skipEmpty;
     }
 
@@ -92,6 +100,11 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
+            if (null !== $this->managerRegistry) {
+                $manager = $this->managerRegistry->getManagerForClass(ClassUtils::getClass($entity));
+                $manager->detach($entity);
+            }
+
             $this->setItemErrors($item, $errors);
         } else {
             return $entity;
@@ -115,6 +128,18 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     public function addMapping($original, $target)
     {
         $this->mapping[$original] = $target;
+    }
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     *
+     * @return $this
+     */
+    public function setManagerRegistry(ManagerRegistry $managerRegistry)
+    {
+        $this->managerRegistry = $managerRegistry;
+
+        return $this;
     }
 
     /**

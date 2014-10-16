@@ -141,6 +141,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             mappedBy: attribute
             cascade:
                 - persist
+                - detach
             orderBy:
                 sortOrder: ASC
         translations:
@@ -148,6 +149,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
     manyToOne:
         group:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup
