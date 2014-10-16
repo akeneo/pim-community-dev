@@ -316,7 +316,7 @@ class EditCommonAttributes extends ProductMassEditOperation
             $productValue = $this->productBuilder->addProductValue(
                 $product,
                 $value->getAttribute(),
-                $value->getLocale(),
+                $this->getLocale()->getCode(),
                 $value->getScope()
             );
         }
@@ -457,7 +457,6 @@ class EditCommonAttributes extends ProductMassEditOperation
         foreach ($value->getOptions() as $option) {
             $productValue->addOption($option);
         }
-
     }
 
     /**

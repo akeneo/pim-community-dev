@@ -48,6 +48,8 @@
 
 ## Bug fixes
 - Fix issue with inactive locales in exports
+- Fix missing filter groups in grid filter selector when two attribute groups have the same sort orders
+- Fix mass edit issue on localizable values, it uses user locale instead of selected locale
 
 # 1.2.8 (2014-10-10)
 
