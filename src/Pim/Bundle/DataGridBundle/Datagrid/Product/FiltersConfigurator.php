@@ -3,8 +3,11 @@
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Filters configurator for product grid
@@ -16,21 +19,55 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 class FiltersConfigurator implements ConfiguratorInterface
 {
     /**
-     * @param DatagridConfiguration
+     * @var DatagridConfiguration
      */
     protected $configuration;
 
     /**
-     * @param ConfigurationRegistry
+     * @var ConfigurationRegistry
      */
     protected $registry;
 
     /**
-     * @param ConfigurationRegistry $registry the conf registry
+     * @var RequestParameters
      */
-    public function __construct(ConfigurationRegistry $registry)
-    {
+    protected $requestParameters;
+
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * Constructor
+     * 
+     * @param ConfigurationRegistry $registry
+     * @param RequestParameters $requestParameters
+     * @param RouterInterface $router
+     */
+    public function __construct(
+        ConfigurationRegistry $registry,
+        RequestParameters $requestParameters,
+        RouterInterface $router
+    ) {
         $this->registry = $registry;
+        $this->requestParameters = $requestParameters;
+        $this->router = $router;
+    }
+
+    /**
+     * Set the current request
+     * 
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -39,9 +76,11 @@ class FiltersConfigurator implements ConfiguratorInterface
     public function configure(DatagridConfiguration $configuration)
     {
         $this->configuration = $configuration;
+        $appliedFilters = array_keys($this->requestParameters->get('_filter'));
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
+        $getAllFilters = $this->request->get('_get_all_filters');
 
         $displayedFilters = [];
         foreach ($attributes as $attributeCode => $attribute) {
@@ -75,7 +114,9 @@ class FiltersConfigurator implements ConfiguratorInterface
                     $filterConfig['family'] = $attribute['metricFamily'];
                 }
 
-                $displayedFilters[$attributeCode] = $filterConfig;
+                if (($getAllFilters || in_array($attributeCode, $appliedFilters)) || $filterConfig['enabled']) {
+                    $displayedFilters[$attributeCode] = $filterConfig;
+                }
             }
         }
         $this->sortFilters($displayedFilters);
@@ -86,6 +127,17 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $filterConfig
             );
         }
+
+        $this->configuration->offsetSetByPath(
+            '[options][metadataUrl]', 
+            $this->router->generate(
+                'pim_datagrid_loadmetadata',
+                [
+                    'dataLocale' => $this->configuration->offsetGetByPath('[source][locale_code]'),
+                    'alias' => $this->configuration->offsetGetByPath('[name]')
+                ]
+            )
+        );
     }
 
     /**

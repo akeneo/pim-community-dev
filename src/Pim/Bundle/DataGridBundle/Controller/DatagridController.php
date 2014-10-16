@@ -49,4 +49,26 @@ class DatagridController
             new JsonResponse()
         );
     }
+
+
+    /**
+     * Loads the metadata of the grid
+     * 
+     * @param Request $request
+     * @param string  $alias
+     *
+     * @return JsonResponse
+     */
+    public function loadMetaDataAction(Request $request, $alias)
+    {
+        return $this->templating->renderResponse(
+            'PimDataGridBundle:Datagrid:loadMetaData.json.twig',
+            [
+                'alias'  => $alias,
+                'params' => $request->get('params', [])
+            ],
+            new JsonResponse()
+        );
+ 
+    }
 }
