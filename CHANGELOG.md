@@ -47,10 +47,14 @@
 # 1.2.x
 
 ## Bug fixes
-- Fix issue with inactive locales in exports
-- Fix missing filter groups in grid filter selector when two attribute groups have the same sort orders
-- Fix mass edit issue on localizable values, it uses user locale instead of selected locale
-- Fix completeness not being correctly calculated after removing a required attribute from a family
+- PIM-3254 : Fix issue with inactive locales in exports
+- PIM-3217 : Fix missing filter groups in grid filter selector when two attribute groups have the same sort orders
+- PIM-3281 : Fix mass edit issue on localizable values, it uses user locale instead of selected locale
+- PIM-3248 : Fix completeness not being correctly calculated after removing a required attribute from a family
+- PIM-3279 : Fix performance issue with big group sets
+
+## BC breaks
+- Two new arguments have been added to Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter: `userContext` and `groupClass`
 
 # 1.2.8 (2014-10-10)
 

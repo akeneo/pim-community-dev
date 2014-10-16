@@ -7,7 +7,7 @@ define(
             choiceUrl: null,
             choiceUrlParams: {},
             resultCache: {},
-
+            resultsPerPage: 200,
             popupCriteriaTemplate: _.template(
                 '<div class="choicefilter">' +
                     '<div class="input-prepend">' +
@@ -42,22 +42,56 @@ define(
                     multiple: true,
                     allowClear: false,
                     width: '290px',
-                    minimumInputLength: 1
+                    minimumInputLength: 0
                 };
+
                 options.ajax = {
                     url: Routing.generate(this.choiceUrl, this.choiceUrlParams),
                     cache: true,
-                    data: function(term) {
+                    data: _.bind(function(term, page) {
                         return {
-                            search: term
+                            search: term,
+                            options: {
+                                limit: this.resultsPerPage,
+                                page: page
+                            }
                         };
-                    },
-                    results: _.bind(function(data) {
+                    }, this),
+                    results: _.bind(function(data, page) {
                         this._cacheResults(data.results);
+                        data.more = this.resultsPerPage === data.results.length;
+
                         return data;
                     }, this)
                 };
                 $select.select2(options);
+            },
+
+            _onClickCriteriaSelector: function(e) {
+                e.stopPropagation();
+                $('body').trigger('click');
+                if (!this.popupCriteriaShowed) {
+                    this._showCriteria();
+                    this.$(this.criteriaValueSelectors.value).select2('open');
+                } else {
+                    this._hideCriteria();
+                }
+            },
+
+            _onClickCloseCriteria: function() {
+                TextFilter.prototype._onClickCloseCriteria.apply(this, arguments);
+
+                this.$(this.criteriaValueSelectors.value).select2('close');
+            },
+
+            _onClickOutsideCriteria: function(e) {
+                var elem = this.$(this.criteriaSelector)
+
+                if (e.target != $('body').get(0) && e.target !== elem.get(0) && !elem.has(e.target).length) {
+                    this._hideCriteria();
+                    this.setValue(this._formatRawValue(this._readDOMValue()));
+                    e.stopPropagation();
+                }
             },
 
             _cacheResults: function (results) {
