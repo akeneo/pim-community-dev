@@ -158,6 +158,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             $this->translator,
             $this->transformer,
             'class',
+            null,
             $skipEmpty
         );
 

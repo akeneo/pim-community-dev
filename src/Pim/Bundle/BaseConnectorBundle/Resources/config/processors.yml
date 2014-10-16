@@ -47,6 +47,8 @@ services:
             - '@pim_base_connector.validator.import'
             - '@translator'
             - '@pim_transform.transformer.registry'
+        calls:
+            - [setManagerRegistry, ['@pim_catalog.doctrine.smart_manager_registry']]
 
     pim_base_connector.processor.channel:
         parent: pim_base_connector.processor.transformer
@@ -67,6 +69,7 @@ services:
             - '@translator'
             - '@pim_transform.transformer.registry'
             - %pim_catalog.entity.product.class%
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_base_connector.processor.association:
         parent: pim_base_connector.processor.transformer
@@ -117,5 +120,6 @@ services:
             - '@translator'
             - '@pim_transform.transformer.registry'
             - %akeneo_batch.entity.job_instance.class%
+            - '@pim_catalog.doctrine.smart_manager_registry'
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
