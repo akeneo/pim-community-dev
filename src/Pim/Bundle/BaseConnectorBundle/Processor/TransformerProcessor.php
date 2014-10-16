@@ -68,23 +68,23 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      * @param ImportValidatorInterface   $validator
      * @param TranslatorInterface        $translator
      * @param EntityTransformerInterface $transformer
-     * @param string                     $class
      * @param ManagerRegistry            $managerRegistry
+     * @param string                     $class
      * @param bool                       $skipEmpty
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
         EntityTransformerInterface $transformer,
+        ManagerRegistry $managerRegistry,
         $class,
-        ManagerRegistry $managerRegistry = null,
         $skipEmpty = false
     ) {
         $this->validator = $validator;
         $this->translator = $translator;
         $this->transformer = $transformer;
-        $this->class = $class;
         $this->managerRegistry = $managerRegistry;
+        $this->class = $class;
         $this->skipEmpty = $skipEmpty;
     }
 
@@ -100,11 +100,8 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
-            if (null !== $this->managerRegistry) {
-                $manager = $this->managerRegistry->getManagerForClass(ClassUtils::getClass($entity));
-                $manager->detach($entity);
-            }
-
+            $manager = $this->managerRegistry->getManagerForClass(ClassUtils::getClass($entity));
+            $manager->detach($entity);
             $this->setItemErrors($item, $errors);
         } else {
             return $entity;
@@ -128,18 +125,6 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     public function addMapping($original, $target)
     {
         $this->mapping[$original] = $target;
-    }
-
-    /**
-     * @param ManagerRegistry $managerRegistry
-     *
-     * @return $this
-     */
-    public function setManagerRegistry(ManagerRegistry $managerRegistry)
-    {
-        $this->managerRegistry = $managerRegistry;
-
-        return $this;
     }
 
     /**

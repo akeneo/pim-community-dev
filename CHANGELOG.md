@@ -43,6 +43,7 @@
 - Add a $attributeOptionManager argument in AttributeController::__construct
 - Remove MediaManager argument from CsvProductWriter::__construct
 - Update CsvProductWriter::copyMedia argument to replace AbstractProductMedia by an array
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. `Doctrine\Common\Persistence\ManagerRegistry` is used as fourth argument and is mandatory now. The data class is the fifth argument.
 
 # 1.2.x
 
