@@ -111,11 +111,30 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->manager        = $manager;
         $this->attributeClass = $attributeClass;
     }
+
+    /**
+     * Attribute group index
+     *
+     * @Template
+     * @AclAncestor("pim_enrich_attribute_group_index")
+     *
+     * @return Response
+     */
+    public function indexAction()
+    {
+        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+
+        return [
+            'groups' => $groups
+        ];
+    }
+
     /**
      * Create attribute group
      *
      * @Template()
-     * @AclAncestor("pim_enrich_attribute_group_index")
+     * @AclAncestor("pim_enrich_attribute_group_create")
+     *
      * @return array
      */
     public function createAction()
