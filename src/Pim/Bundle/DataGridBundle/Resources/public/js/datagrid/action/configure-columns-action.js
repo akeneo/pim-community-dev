@@ -127,7 +127,7 @@ define(
                     var modal = new Backbone.BootstrapModal({
                         allowCancel: true,
                         cancelText: __('Cancel'),
-                        title: __('Datagrid Configuration'),
+                        title: __('Column Selection'),
                         content: content,
                         okText: __('Apply')
                     });
