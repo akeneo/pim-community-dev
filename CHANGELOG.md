@@ -14,6 +14,7 @@
  - Remove deprecated attribute property *Usable as a grid column*
  - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
  - Refactor of the attribute option screen to manage more than 100 options
+ - Redesign of the loading box
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`

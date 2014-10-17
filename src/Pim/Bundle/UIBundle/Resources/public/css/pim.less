@@ -192,8 +192,9 @@ hr.small {
   font-weight: bold;
   background: linear-gradient(@backgroundColor-white, @color-light_grey);
   border-bottom: 1px solid #ccc;
-  .btn-mini {
-    border-radius: 10px;
+  .btn-refresh {
+    margin-right: 3px;
+    margin-top: 1px;
   }
 }
 
@@ -559,5 +560,49 @@ span.link-label {
 
   .action {
     width: 94px;
+  }
+}
+
+/** Loading ***********************************************************************************************************/
+.loading-frame {
+  .box.well {
+    background: none;
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    margin: 10px 0px;
+  }
+
+  .loading-content {
+    width: 40px;
+    height: 40px;
+    margin: auto auto;
+    background-image: none !important;
+    background-color: #fff;
+    color: transparent;
+
+    border-radius: 4px;
+    -webkit-animation: scaleout 0.7s infinite ease-in-out;
+    animation: scaleout 0.7s infinite ease-in-out;
+  }
+
+}
+
+@-webkit-keyframes scaleout {
+  0% { -webkit-transform: scale(0.0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleout {
+  0% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 100% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+    opacity: 0;
   }
 }
