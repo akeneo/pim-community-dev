@@ -9,11 +9,18 @@ attribute group:
     overview: attribute group overview
     create:   create attribute group
     edit:     edit attribute group
+    suggest creation: Please select an attribute group on the left
+    or: or
+    create new: Create a new attribute group
 category:
     title:    category
     overview: category overview
     create:   create category
     edit:     edit category
+    suggest selection: Please select a category on the left
+    or: or
+    create new: Create a new category
+
 tree:
     title:    tree
     create:   create tree
@@ -368,10 +375,12 @@ Title:      Title
 
 # Page titles
 pim_title.attribute_group:
+    index: "Attribute groups"
     create: "Attribute groups | Create"
     edit: "Attribute groups %group.label% | Edit"
 
 pim_title.category:
+    index: "Category trees"
     create: "Category trees | Create"
     edit: "Category trees %category.label% | Edit"
 
