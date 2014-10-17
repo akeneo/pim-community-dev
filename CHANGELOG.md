@@ -7,6 +7,7 @@
 - PIM-3248: Fix completeness not being correctly calculated after removing a required attribute from a family
 - PIM-3279: Fix performance issue with big group sets
 - PIM-3266: Fix the flush of skipped items during an import that uses the `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. All your custom processors that uses the `TransformmerProcessor` should now inject the `Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry` to fix this issue too.
+- PIM-3282: Fix the grid filters that can be set as json in the request
 
 ## BC breaks
 - Two new arguments have been added to Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter: `userContext` and `groupClass`

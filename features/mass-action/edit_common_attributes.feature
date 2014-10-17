@@ -221,3 +221,26 @@ Feature: Edit common attributes of many products at once
       | amount | currency |
       | 100    | USD      |
       | 150    | EUR      |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3282
+  Scenario: Successfully mass edit products on the non default channel
+    Given the following product values:
+      | product   | attribute                | value                   |
+      | boots     | description-en_US-tablet | A beautiful description |
+      | boots     | weight                   | 500 GRAM                |
+      | sneakers  | description-en_US-tablet | A beautiful description |
+      | sneakers  | weight                   | 500 GRAM                |
+      | sandals   | weight                   | 500 GRAM                |
+      | pump      | weight                   | 500 GRAM                |
+      | highheels | weight                   | 500 GRAM                |
+    When I show the filter "Description"
+    And I filter by "Channel" with value "Tablet"
+    And I filter by "Description" with value "A beautiful description"
+    And I select all products
+    And I press mass-edit button
+    And I choose the "Edit attributes" operation
+    And I display the Weight attribute
+    And I change the "Weight" to "600"
+    And I move on to the next step
+    Then the metric "Weight" of products boots and sneakers should be "600"
+    And the metric "Weight" of products sandals, pump and highheels should be "500"
