@@ -22,13 +22,15 @@ define(
 
             icon: 'th',
 
-            target: 'div.grid-toolbar .actions-panel .btn-group',
+            target: 'div.grid-toolbar .actions-panel',
 
             template: _.template(
-                '<a href="javascript:void(0);" class="action btn" title="<%= label %>" id="configure-columns">' +
-                    '<i class="icon-<%= icon %>"></i>' +
-                    '<%= label %>' +
-                '</a>'
+                '<div class="btn-group">' +
+                    '<a href="javascript:void(0);" class="action btn" title="<%= label %>" id="configure-columns">' +
+                        '<i class="icon-<%= icon %>"></i>' +
+                        '<%= label %>' +
+                    '</a>' +
+                '</div>'
             ),
 
             configureTemplate: _.template(
