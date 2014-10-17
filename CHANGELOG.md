@@ -1,4 +1,4 @@
-# 1.2.x
+# 1.2.9 (2014-10-17)
 
 ## Bug fixes
 - PIM-3254: Fix issue with inactive locales in exports
