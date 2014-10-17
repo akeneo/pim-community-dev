@@ -14,6 +14,10 @@ category:
     overview: category overview
     create:   create category
     edit:     edit category
+    suggest selection: Please select a category on the left
+    or: or
+    create new: Create a new category
+
 tree:
     title:    tree
     create:   create tree
@@ -372,6 +376,7 @@ pim_title.attribute_group:
     edit: "Attribute groups %group.label% | Edit"
 
 pim_title.category:
+    index: "Category trees"
     create: "Category trees | Create"
     edit: "Category trees %category.label% | Edit"
 

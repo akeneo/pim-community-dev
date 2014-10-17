@@ -202,6 +202,16 @@ class CategoryTreeController extends AbstractDoctrineController
     }
 
     /**
+     * @Template()
+     * @AclAncestor("pim_enrich_category_list")
+     * @return array
+     */
+    public function indexAction()
+    {
+        return [];
+    }
+
+    /**
      * Create a tree or category
      *
      * @param Request $request
@@ -299,7 +309,7 @@ class CategoryTreeController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_categorytree_create', $params);
+            return $this->redirectToRoute('pim_enrich_categorytree_index', $params);
         }
     }
 

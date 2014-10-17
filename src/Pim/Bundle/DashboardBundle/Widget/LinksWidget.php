@@ -50,7 +50,7 @@ class LinksWidget implements WidgetInterface
                     'icon' => 'list-ul',
                 ),
                 array(
-                    'route' => 'pim_enrich_categorytree_create',
+                    'route' => 'pim_enrich_categorytree_index',
                     'label' => 'pim_dashboard.link.label.category',
                     'icon' => 'sitemap',
                 ),
