@@ -23,7 +23,7 @@ define(
             needsData: true,
 
             refreshBtnTemplate: _.template(
-                '<button class="btn btn-mini pull-right"><i class="icon-refresh"></i></button>'
+                '<span class="btn-refresh pull-right"><i class="icon-refresh"></i></span>'
             ),
 
             initialize: function(options) {
