@@ -1,23 +1,22 @@
 /* global define */
-define(['backgrid', 'oro/datagrid/cell-formatter'],
-function(Backgrid, CellFormatter) {
+define(['oro/datagrid/string-cell', 'bootstrap'],
+function(StringCell) {
     'use strict';
 
-    /**
-     * Textarea column cell. Added missing behaviour.
-     *
-     * @export  oro/datagrid/textarea-cell
-     * @class   oro.datagrid.TextareaCell
-     * @extends Backgrid.TextareaCell
-     */
-    return Backgrid.TextareaCell.extend({
-        /**
-         @property {(Backgrid.CellFormatter|Object|string)}
-         */
-        formatter: new CellFormatter(),
+    return StringCell.extend({
+        render: function() {
+            StringCell.prototype.render.apply(this, arguments);
 
-        textareaTooltip: function () {
-            this.$('span.cell-truncatable').popover({delay: {show: 500, hide: 100},trigger: 'hover'});
+            this.$el.popover({
+                content: this.formatter.fromRaw(this.model.get(this.column.get('name'))),
+                delay: {
+                    show: 500,
+                    hide: 100
+                },
+                trigger: 'hover'
+            });
+
+            return this;
         }
     });
 });
