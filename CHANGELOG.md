@@ -15,6 +15,7 @@
  - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
  - Refactor of the attribute option screen to manage more than 100 options
  - Redesign of the loading box
+ - Add an information message when there is no common attribute in mass-edit
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
