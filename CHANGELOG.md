@@ -45,15 +45,17 @@
 - Add a $attributeOptionManager argument in AttributeController::__construct
 - Remove MediaManager argument from CsvProductWriter::__construct
 - Update CsvProductWriter::copyMedia argument to replace AbstractProductMedia by an array
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. `Doctrine\Common\Persistence\ManagerRegistry` is used as fourth argument and is mandatory now. The data class is the fifth argument.
 
 # 1.2.x
 
 ## Bug fixes
-- PIM-3254 : Fix issue with inactive locales in exports
-- PIM-3217 : Fix missing filter groups in grid filter selector when two attribute groups have the same sort orders
-- PIM-3281 : Fix mass edit issue on localizable values, it uses user locale instead of selected locale
-- PIM-3248 : Fix completeness not being correctly calculated after removing a required attribute from a family
-- PIM-3279 : Fix performance issue with big group sets
+- PIM-3254: Fix issue with inactive locales in exports
+- PIM-3217: Fix missing filter groups in grid filter selector when two attribute groups have the same sort orders
+- PIM-3281: Fix mass edit issue on localizable values, it uses user locale instead of selected locale
+- PIM-3248: Fix completeness not being correctly calculated after removing a required attribute from a family
+- PIM-3279: Fix performance issue with big group sets
+- PIM-3266: Fix the flush of skipped items during an import that uses the `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. All your custom processors that uses the `TransformmerProcessor` should now inject the `Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry` to fix this issue too.
 
 ## BC breaks
 - Two new arguments have been added to Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter: `userContext` and `groupClass`

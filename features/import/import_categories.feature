@@ -55,3 +55,5 @@ Feature: Import categories
       | laptops     | Laptops     | computers |
       | hard_drives | Hard drives | laptops   |
       | pc          | PC          | computers |
+    # 5 from the catalog + 5 from this test
+    And there should be 10 categories

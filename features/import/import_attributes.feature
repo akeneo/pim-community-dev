@@ -63,3 +63,47 @@ Feature: Import attributes
     And I launch the import job
     And I wait for the "attribute_import" job to finish
     And I should see "metricFamily: This property cannot be changed."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  Scenario: Skip new attributes with invalid data during an import
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
+      pim_catalog_simpleselect;lace_color;"New lace color";colors;0;1;0;0;;;
+      pim_catalog_metric;new_length;"New length";info;0;0;0;0;;Length;INVALID_LENGTH
+
+      """
+    And the following job "footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_attribute_import" job to finish
+    Then I should see "skipped 1"
+    And there should be the following attributes:
+      | type         | code       | label-en_US    | group  | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
+      | simpleselect | lace_color | New lace color | colors | 0      | 1                      | 0           | 0        |                    |               |                     |
+    And there should be 15 attribute
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  Scenario: Skip existing attributes with invalid data during an import
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
+      pim_catalog_simpleselect;lace_color;"New lace color";colors;0;1;0;0;;;
+      pim_catalog_metric;length;"New length";info;0;0;0;0;;Length;INVALID_LENGTH
+
+      """
+    And the following job "footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_attribute_import" job to finish
+    Then I should see "skipped 1"
+    And there should be the following attributes:
+      | type         | code       | label-en_US    | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
+      | simpleselect | lace_color | New lace color | colors    | 0      | 1                      | 0           | 0        |                    |               |                     |
+      | metric       | length     | Length         | info      | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          |

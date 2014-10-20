@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
@@ -36,17 +37,19 @@ class CategoryProcessor extends TransformerProcessor
      * @param ImportValidatorInterface   $validator
      * @param TranslatorInterface        $translator
      * @param EntityTransformerInterface $transformer
-     * @param DoctrineCache              $doctrineCache
+     * @param ManagerRegistry            $managerRegistry
      * @param string                     $class
+     * @param DoctrineCache              $doctrineCache
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
         EntityTransformerInterface $transformer,
-        DoctrineCache $doctrineCache,
-        $class
+        ManagerRegistry $managerRegistry,
+        $class,
+        DoctrineCache $doctrineCache
     ) {
-        parent::__construct($validator, $translator, $transformer, $class);
+        parent::__construct($validator, $translator, $transformer, $managerRegistry, $class);
         $this->doctrineCache = $doctrineCache;
     }
 

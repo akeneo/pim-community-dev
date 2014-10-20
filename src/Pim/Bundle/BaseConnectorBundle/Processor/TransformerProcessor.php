@@ -7,6 +7,8 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -22,6 +24,9 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
     StepExecutionAwareInterface
 {
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
+
     /**
      * @var ImportValidatorInterface
      */
@@ -63,19 +68,22 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      * @param ImportValidatorInterface   $validator
      * @param TranslatorInterface        $translator
      * @param EntityTransformerInterface $transformer
+     * @param ManagerRegistry            $managerRegistry
      * @param string                     $class
-     * @param boolean                    $skipEmpty
+     * @param bool                       $skipEmpty
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
         EntityTransformerInterface $transformer,
+        ManagerRegistry $managerRegistry,
         $class,
         $skipEmpty = false
     ) {
         $this->validator = $validator;
         $this->translator = $translator;
         $this->transformer = $transformer;
+        $this->managerRegistry = $managerRegistry;
         $this->class = $class;
         $this->skipEmpty = $skipEmpty;
     }
@@ -92,6 +100,8 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
         $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
+            $manager = $this->managerRegistry->getManagerForClass(ClassUtils::getClass($entity));
+            $manager->detach($entity);
             $this->setItemErrors($item, $errors);
         } else {
             return $entity;
