@@ -385,14 +385,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findByReference($code)
     {
-        return $this->findOneBy(
-            [
-                [
-                    'attribute' => $this->attributeRepository->getIdentifier(),
-                    'value' => $code,
-                ]
-            ]
-        );
+        return $this->findOneByIdentifier($code);
     }
 
     /**
@@ -669,5 +662,15 @@ class ProductRepository extends DocumentRepository implements
     public function getObjectManager()
     {
         return $this->getDocumentManager();
+    }
+
+    /**
+     * Return the identifier attribute
+     *
+     * @return AbstractAttribute|null
+     */
+    protected function getIdentifierAttribute()
+    {
+        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
     }
 }

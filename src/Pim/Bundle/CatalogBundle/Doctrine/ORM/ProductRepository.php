@@ -523,5 +523,4 @@ class ProductRepository extends EntityRepository implements
     {
         return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
     }
-
 }
