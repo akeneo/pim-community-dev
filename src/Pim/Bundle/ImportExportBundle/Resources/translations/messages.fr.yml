@@ -17,6 +17,15 @@ pim_import_export:
     output: Télécharger le fichier générés|Télécharger les fichiers générés
     input: Télécharger le fichier lu|Télécharger les fichiers lus
     invalid: Télécharger données invalides
+  notification:
+    export:
+      error: "L'export de <strong>%label%</strong> a échoué"
+      warning: "L'export de <strong>%label%</strong> est terminé mais il y a des avertissements"
+      success: "L'export de <strong>%label%</strong> est terminé"
+    import:
+      error: "L'import de <strong>%label%</strong> a échoué"
+      warning: "L'import de <strong>%label%</strong> est terminé mais il y a des avertissements"
+      success: "L'import de <strong>%label%</strong> est terminé"
 pim_title.export_profile.index: "Gestion de profils d'export"
 pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
 pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
@@ -25,7 +34,7 @@ pim_title.export_execution.show: "Executions d'exports | Détails"
 pim_title.import_profile.index: Importer gestion de profils
 pim_title.import_profile.edit: "Profil d'import %job.label% | Edition"
 pim_title.import_profile.show: "Profil d'import %job.label% | Visualisation"
-pim_title.import_execution.index: "Importer l'historique des exécutions"
+pim_title.import_execution.index: "Historique d'exécution des imports"
 pim_title.import_execution.show: "Executions d'imports | Détails"
 export profile:
   title: "Profil d'export"
@@ -118,6 +127,9 @@ job_execution.summary:
   skip: ignoré
   create: créé
   update: mis à jour
+  charset_validator:
+    title: 'Encodage du fichier :'
+    skipped: Ignoré, extension dans la liste blanche
 Step: Étape
 Status: Statut
 Summary: Résumé

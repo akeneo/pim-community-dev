@@ -14,12 +14,3 @@ pim_dashboard:
       title: Vollständigkeit über Ausgabekanäle und Gebietsschemata
     last_operations:
       title: Letzte Vorgänge
-      empty: Keine Vorgänge gefunden
-      status: Status
-      date: Datum
-      type: Typ
-      profile name: Profilname
-      details: Details
-      job_type:
-        import: Import
-        export: Export
