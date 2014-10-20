@@ -1,9 +1,0 @@
-parameters:
-    pimee_enrich.view.tab.voter.class: PimEnterprise\Bundle\EnrichBundle\View\Tab\VoterTab
-
-services:
-    pimee_enrich.view.tab.voter:
-        class: %pimee_enrich.view.tab.voter.class%
-        abstract: true
-        arguments:
-            - '@oro_security.security_facade'

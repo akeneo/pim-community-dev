@@ -1,0 +1,22 @@
+parameters:
+    pimee_enrich.view_element.tab.attributegroup_permission.template: 'PimEnrichBundle:AttributeGroup:Tab/permissions.html.twig'
+
+services:
+    pimee_enrich.view_element.tab.attributegroup_permission_base:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pimee_enrich.view_element.tab.attributegroup_permission.template%
+            - 'tab.pimee_enrich_attributegroup_edit.permissions'
+
+    pimee_enrich.view_element.tab.attributegroup_permission_on_form_edit:
+        parent: pim_enrich.view_element.tab.on_form_edit
+        arguments:
+            - @pimee_enrich.view_element.tab.attributegroup_permission_base
+
+    pimee_enrich.view_element.tab.attributegroup_permission:
+        parent: pim_enrich.view_element.tab.granted
+        arguments:
+            - @pimee_enrich.view_element.tab.attributegroup_permission_on_form_edit
+            - 'pimee_enrich_attribute_group_edit_permissions'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 105, identifier: pim_enrich_attributegroup_edit}

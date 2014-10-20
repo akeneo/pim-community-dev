@@ -1,0 +1,61 @@
+parameters:
+    pim_enrich.view_element.tab.product_attribute.template:  'PimEnterpriseEnrichBundle:Product:Tab/attribute_edit.html.twig'
+    pimee_enrich.view_element.tab.product_proposal.template: 'PimEnterpriseEnrichBundle:Product:Tab/proposal.html.twig'
+
+services:
+    # Category
+    pimee_enrich.view_element.tab.product_category_base:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.product_category.template%
+            - 'tab.pim_enrich_product_edit.category'
+
+    pimee_enrich.view_element.tab.product_category_granted:
+        parent: pim_enrich.view_element.tab.granted
+        arguments:
+            - @pimee_enrich.view_element.tab.product_category_base
+            - 'pim_enrich_product_categories_view'
+
+    pim_enrich.view_element.tab.product_category:
+        parent: pimee_enrich.view_element.tab.voter
+        arguments:
+            - @pimee_enrich.view_element.tab.product_category_granted
+            - {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'entity': 'product'}
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_product_edit}
+
+    # Association
+    pimee_enrich.view_element.tab.product_association_base:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.product_association.template%
+            - 'tab.pim_enrich_product_edit.association'
+
+    pimee_enrich.view_element.tab.product_association_granted:
+        parent: pim_enrich.view_element.tab.granted
+        arguments:
+            - @pimee_enrich.view_element.tab.product_association_base
+            - 'pim_enrich_associations_view'
+
+    pim_enrich.view_element.tab.product_association:
+        parent: pimee_enrich.view_element.tab.voter
+        arguments:
+            - @pimee_enrich.view_element.tab.product_association_granted
+            - {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'entity': 'product'}
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_product_edit}
+
+    # Proposal
+    pim_enrich.view_element.tab.product_proposal_base:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pimee_enrich.view_element.tab.product_proposal.template%
+            - 'tab.pimee_enrich_product_edit.proposals'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 140, identifier: pim_enrich_product_edit}
+
+    pimee_enrich.view_element.tab.product_proposal:
+        parent: pimee_enrich.view_element.tab.voter
+        arguments:
+            - @pim_enrich.view_element.tab.product_proposal_base
+            - {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'entity': 'product'}

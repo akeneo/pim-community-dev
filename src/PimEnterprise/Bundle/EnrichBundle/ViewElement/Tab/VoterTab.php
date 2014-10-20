@@ -1,9 +1,9 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\View\Tab;
+namespace PimEnterprise\Bundle\EnrichBundle\ViewElement\Tab;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\View\Tab\TabInterface;
+use Pim\Bundle\EnrichBundle\ViewElement\Tab\TabInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -26,8 +26,8 @@ class VoterTab implements TabInterface
     protected $voterOptions;
 
     /**
-     * @param SecurityFa* @param TabInterfacecade $securityFacade
-        $tab
+     * @param SecurityFacade $securityFacade
+     * @param TabInterface   $tab
      * @param array          $voterOptions
      */
     public function __construct(
@@ -65,11 +65,11 @@ class VoterTab implements TabInterface
      */
     public function isVisible(array $context = [])
     {
-        return $this->securityFacade->isGranted(
+        return $this->tab->isVisible($context) &&
+            $this->securityFacade->isGranted(
                 constant($this->voterOptions['attribute']),
                 $context[$this->voterOptions['entity']]
-            ) &&
-            $this->tab->isVisible($context);
+            );
     }
 
     /**
