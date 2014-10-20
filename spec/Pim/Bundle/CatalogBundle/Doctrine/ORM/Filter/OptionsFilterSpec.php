@@ -5,17 +5,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Prophecy\Argument;
 
 class OptionsFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CatalogContext $context)
+    function let(QueryBuilder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
         $this->setQueryBuilder($qb);
     }
 

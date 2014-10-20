@@ -46,6 +46,7 @@
 - Remove MediaManager argument from CsvProductWriter::__construct
 - Update CsvProductWriter::copyMedia argument to replace AbstractProductMedia by an array
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. `Doctrine\Common\Persistence\ManagerRegistry` is used as fourth argument and is mandatory now. The data class is the fifth argument.
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\*` and `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\*` to remove the CatalogContext
 
 # 1.2.x
 

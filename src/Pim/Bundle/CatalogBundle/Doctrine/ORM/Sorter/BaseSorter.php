@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Base sorter
@@ -22,9 +21,6 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedAttributes;
 
@@ -34,16 +30,13 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * Instanciate a sorter
      *
-     * @param CatalogContext $context
-     * @param array          $extraSupportedAttributes
-     * @param array          $extraSupportedFields
+     * @param array $extraSupportedAttributes
+     * @param array $extraSupportedFields
      */
     public function __construct(
-        CatalogContext $context,
         array $extraSupportedAttributes = [],
         array $extraSupportedFields = []
     ) {
-        $this->context = $context;
         $this->supportedAttributes = array_merge(
             [
                 'pim_catalog_identifier',
@@ -101,7 +94,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
         $backendType = $attribute->getBackendType();
 
         // join to value and sort on
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
         // Remove current join in order to put the orderBy related join
         // at first place in the join queue for performances reasons
         $joinsSet = $this->qb->getDQLPart('join');
@@ -144,14 +137,17 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
+     * @param array             $context   the context
+     *
+     * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias, $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 
     /**

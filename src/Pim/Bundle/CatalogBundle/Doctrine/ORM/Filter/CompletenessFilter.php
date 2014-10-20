@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness filter
@@ -21,20 +20,14 @@ class CompletenessFilter implements FieldFilterInterface
      */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate a sorter
-     *
-     * @param CatalogContext $context
      */
-    public function __construct(CatalogContext $context)
+    public function __construct()
     {
-        $this->context = $context;
         $this->supportedOperators = ['=', '<'];
     }
 

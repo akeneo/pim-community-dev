@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
 
@@ -21,9 +20,6 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedAttributes;
 
@@ -36,12 +32,10 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param CatalogContext $context
-     * @param array          $extraSupportedFields
+     * @param array $extraSupportedFields
      */
-    public function __construct(CatalogContext $context, array $extraSupportedFields = [])
+    public function __construct(array $extraSupportedFields = [])
     {
-        $this->context = $context;
         $this->supportedAttributes = ['pim_catalog_date'];
         $this->supportedFields = array_merge(
             ['created', 'updated'],
@@ -106,7 +100,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
 
@@ -115,7 +109,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
@@ -125,7 +119,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
             );
 
         } else {
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
                 $this->qb->getRootAlias().'.values',
@@ -243,15 +237,16 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
+     * @param array             $context   the context
      *
      * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias, $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 }

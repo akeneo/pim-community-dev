@@ -21,17 +21,12 @@ class ValueJoin
      */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /**
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * @param QueryBuilder $qb
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(QueryBuilder $qb)
     {
-        $this->qb      = $qb;
-        $this->context = $context;
+        $this->qb = $qb;
     }
 
     /**
@@ -39,18 +34,19 @@ class ValueJoin
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
+     * @param array             $context   the join context used for locale and scope
      *
      * @return string
      */
-    public function prepareCondition(AbstractAttribute $attribute, $joinAlias)
+    public function prepareCondition(AbstractAttribute $attribute, $joinAlias, $context)
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
         if ($attribute->isLocalizable()) {
-            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->context->getLocaleCode());
+            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($context['locale']);
         }
         if ($attribute->isScopable()) {
-            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->context->getScopeCode());
+            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($context['scope']);
         }
 
         return $condition;

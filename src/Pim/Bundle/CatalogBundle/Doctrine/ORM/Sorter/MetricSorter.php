@@ -6,7 +6,6 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Metric sorter
@@ -21,19 +20,6 @@ class MetricSorter implements AttributeSorterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
-
-    /** @var CatalogContext */
-    protected $context;
-
-    /**
-     * Instanciate a sorter
-     *
-     * @param CatalogContext $context
-     */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-    }
 
     /**
      * {@inheritdoc}
@@ -61,7 +47,7 @@ class MetricSorter implements AttributeSorterInterface
         $backendType = $attribute->getBackendType();
 
         // join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
         $this->qb->leftJoin(
             $this->qb->getRootAlias().'.values',
             $joinAlias,
@@ -85,13 +71,16 @@ class MetricSorter implements AttributeSorterInterface
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
+     * @param array             $context   the context
+     *
+     * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias, $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 }

@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Metric filter
@@ -24,20 +23,14 @@ class MetricFilter implements AttributeFilterInterface
      */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the base filter
-     *
-     * @param CatalogContext $context
      */
-    public function __construct(CatalogContext $context)
+    public function __construct()
     {
-        $this->context = $context;
         $this->supportedOperators = ['<', '<=', '=', '>=', '>', 'EMPTY'];
     }
 
@@ -58,7 +51,7 @@ class MetricFilter implements AttributeFilterInterface
         $joinAlias = 'filter'.$attribute->getCode();
 
         // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
 
         if ($operator === 'EMPTY') {
             $this->qb->leftJoin(
@@ -136,15 +129,16 @@ class MetricFilter implements AttributeFilterInterface
      *
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
+     * @param array             $context   the context
      *
      * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias, $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 }

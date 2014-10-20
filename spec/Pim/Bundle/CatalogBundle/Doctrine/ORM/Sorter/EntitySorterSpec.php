@@ -5,17 +5,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Prophecy\Argument;
 
 class EntitySorterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CatalogContext $context)
+    function let(QueryBuilder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
         $this->setQueryBuilder($qb);
     }
 
@@ -79,6 +75,6 @@ class EntitySorterSpec extends ObjectBehavior
         $qb->addOrderBy('sorterOVentity_code.value', 'DESC')->shouldBeCalled();
         $qb->addOrderBy('r.id')->shouldBeCalled();
 
-        $this->addAttributeSorter($entity, 'DESC');
+        $this->addAttributeSorter($entity, 'DESC', ['locale' => 'en_US']);
     }
 }
