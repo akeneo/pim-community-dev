@@ -39,3 +39,5 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
+                - refresh
