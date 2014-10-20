@@ -76,7 +76,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addFilter($field, $operator, $value)
+    public function addFilter($field, $operator, $value, $context = [])
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
 
@@ -108,16 +108,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * Sort by field
-     *
-     * @param string $field     the field to sort on
-     * @param string $direction the direction to use
-     *
-     * @throws \LogicException
-     *
-     * @return ProductQueryBuilderInterface
+     * {@inheritdoc}
      */
-    public function addSorter($field, $direction)
+    public function addSorter($field, $direction, $context = [])
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
 
@@ -134,9 +127,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         if ($attribute !== null) {
-            $this->addAttributeSorter($sorter, $attribute, $direction);
+            $this->addAttributeSorter($sorter, $attribute, $direction, $context);
         } else {
-            $this->addFieldSorter($sorter, $field, $direction);
+            $this->addFieldSorter($sorter, $field, $direction, $context);
         }
 
         return $this;
@@ -149,13 +142,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param string               $field    the field
      * @param string               $operator the operator
      * @param mixed                $value    the value to filter
+     * @param array                $context  the filter context
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value)
+    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, $context)
     {
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addFieldFilter($field, $operator, $value);
+        $filter->addFieldFilter($field, $operator, $value, $context);
 
         return $this;
     }
@@ -167,6 +161,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param AbstractAttribute        $attribute the attribute
      * @param string                   $operator  the operator
      * @param mixed                    $value     the value to filter
+     * @param array                    $context   the filter context
      *
      * @return ProductQueryBuilderInterface
      */
@@ -174,10 +169,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         AttributeFilterInterface $filter,
         AbstractAttribute $attribute,
         $operator,
-        $value
+        $value,
+        $context
     ) {
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addAttributeFilter($attribute, $operator, $value);
+        $filter->addAttributeFilter($attribute, $operator, $value, $context);
 
         return $this;
     }
@@ -188,13 +184,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param FieldSorterInterface $sorter    the sorter
      * @param string               $field     the field to sort on
      * @param string               $direction the direction to use
+     * @param array                $context   the sorter context
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction)
+    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction, $context)
     {
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addFieldSorter($field, $direction);
+        $sorter->addFieldSorter($field, $direction, $context);
 
         return $this;
     }
@@ -205,13 +202,18 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param AttributeSorterInterface $sorter    the sorter
      * @param AbstractAttribute        $attribute the attribute to sort on
      * @param string                   $direction the direction to use
+     * @param array                    $context   the sorter context
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addAttributeSorter(AttributeSorterInterface $sorter, AbstractAttribute $attribute, $direction)
-    {
+    protected function addAttributeSorter(
+        AttributeSorterInterface $sorter,
+        AbstractAttribute $attribute,
+        $direction,
+        $context
+    ) {
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addAttributeSorter($attribute, $direction);
+        $sorter->addAttributeSorter($attribute, $direction, $context);
 
         return $this;
     }

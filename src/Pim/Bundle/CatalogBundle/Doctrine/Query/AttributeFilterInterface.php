@@ -17,12 +17,13 @@ interface AttributeFilterInterface extends FilterInterface
      * Add an attribute to filter
      *
      * @param AbstractAttribute $attribute the attribute
-     * @param string|array      $operator  the used operator
+     * @param string            $operator  the used operator
      * @param string|array      $value     the value(s) to filter
+     * @param array             $context   the filter context, used for locale and scope
      *
      * @return AttributeFilterInterface
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = []);
 
     /**
      * This filter supports the attribute

@@ -18,22 +18,24 @@ interface ProductQueryBuilderInterface
      * @param string $field    the field
      * @param string $operator the used operator
      * @param string $value    the value to filter
+     * @param array  $context  the filter context, used for locale and scope
      *
      * @throws \LogicException
      *
      * @return ProductQueryBuilderInterface
      */
-    public function addFilter($field, $operator, $value);
+    public function addFilter($field, $operator, $value, $context = []);
 
     /**
      * Sort by field
      *
      * @param string $field     the field to sort on
      * @param string $direction the direction to use
+     * @param array  $context   the sorter context, used for locale and scope
      *
      * @throws \LogicException
      *
      * @return ProductQueryBuilderInterface
      */
-    public function addSorter($field, $direction);
+    public function addSorter($field, $direction, $context = []);
 }

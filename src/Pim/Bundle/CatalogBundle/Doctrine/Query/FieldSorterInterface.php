@@ -16,10 +16,11 @@ interface FieldSorterInterface extends SorterInterface
      *
      * @param string $field     the field to sort on
      * @param string $direction the direction to use
+     * @param array  $context   the sorter context, used for locale and scope
      *
      * @return FieldSorterInterface
      */
-    public function addFieldSorter($field, $direction);
+    public function addFieldSorter($field, $direction, $context = []);
 
     /**
      * This filter supports the field
