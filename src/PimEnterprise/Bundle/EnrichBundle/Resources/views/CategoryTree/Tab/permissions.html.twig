@@ -1,4 +1,3 @@
-{% if form.permissions is defined %}
 <script type="text/javascript">
     require(
         ['jquery', 'pimee/manage-permissions'],
@@ -30,29 +29,7 @@
             });
         });
 </script>
-{% endif %}
 
-<div class="tab-pane active" id="properties">
-    {% set generalProperties %}
-        {{ form_row(form.code) }}
-    {% endset %}
-
-    {% set nodeValues %}
-        {{ form_row(form.label) }}
-    {% endset %}
-
-    {{ elements.accordion({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.node_values': nodeValues }) }}
+<div class="tab-pane tab-permission {{ first_tab ? 'active' : '' }}" id="{{ tab_id }}">
+    {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
 </div>
-
-{% if form.permissions is defined %}
-    <div class="tab-pane" id="permissions">
-        {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
-    </div>
-{% endif %}
-
-{% if form.vars.value.id %}
-    <div class="tab-pane" id="history">
-        {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-        {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-    </div>
-{% endif %}
