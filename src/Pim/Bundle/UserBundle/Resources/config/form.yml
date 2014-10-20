@@ -1,0 +1,2 @@
+parameters:
+    oro_user.form.handler.reset.class: Pim\Bundle\UserBundle\Form\Handler\ResetHandler
