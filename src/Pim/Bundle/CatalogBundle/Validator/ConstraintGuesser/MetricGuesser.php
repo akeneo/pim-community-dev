@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
 
 /**
  * Guesser for metric values

@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Scope filter

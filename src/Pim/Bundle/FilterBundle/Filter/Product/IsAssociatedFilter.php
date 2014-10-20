@@ -2,16 +2,17 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Form\FormFactoryInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Product is associated filter (used by association product grid)
@@ -22,15 +23,14 @@ use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
  */
 class IsAssociatedFilter extends BooleanFilter
 {
-    /**
-     * @var RequestParametersExtractorInterface
-     */
+    /** @var RequestParametersExtractorInterface */
     protected $extractor;
 
-    /**
-     * @var AssociationTypeRepository
-     */
+    /** @var AssociationTypeRepository */
     protected $assocTypeRepository;
+
+    /** @var ProductManager */
+    protected $manager;
 
     /**
      * Constructor
@@ -39,16 +39,19 @@ class IsAssociatedFilter extends BooleanFilter
      * @param FilterUtility                       $util
      * @param RequestParametersExtractorInterface $extractor
      * @param AssociationTypeRepository           $repo
+     * @param ProductManager                      $manager
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         RequestParametersExtractorInterface $extractor,
-        AssociationTypeRepository $repo
+        AssociationTypeRepository $repo,
+        ProductManager $manager
     ) {
         parent::__construct($factory, $util);
         $this->assocTypeRepository = $repo;
         $this->extractor = $extractor;
+        $this->manager = $manager;
     }
 
     /**
@@ -66,10 +69,7 @@ class IsAssociatedFilter extends BooleanFilter
         $productIds      = $this->getAssociatedProductIds($product, $associationType);
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
 
-        $qb = $ds->getQueryBuilder();
-        $repository = $this->util->getProductRepository();
-        $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('id', $operator, $productIds);
+        $this->util->applyFilter($ds, 'id', $operator, $productIds);
 
         return true;
     }
@@ -104,7 +104,7 @@ class IsAssociatedFilter extends BooleanFilter
         if (!$productId) {
             throw new \LogicException('The current product type must be configured');
         }
-        $product = $this->util->getProductManager()->find($productId);
+        $product = $this->manager->find($productId);
 
         return $product;
     }

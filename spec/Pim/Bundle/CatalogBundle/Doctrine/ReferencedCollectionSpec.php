@@ -2,15 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\UnitOfWork as MongoDBODMUnitOfWork;
+use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\MongoDB\UnitOfWork as MongoDBODMUnitOfWork;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityManager;
 
 /**
  * @require Doctrine\ODM\MongoDB\UnitOfWork

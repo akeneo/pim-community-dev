@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-
+use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

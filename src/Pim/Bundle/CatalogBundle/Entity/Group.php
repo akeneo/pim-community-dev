@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Symfony\Component\Validator\GroupSequenceProviderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
  * Group entity
@@ -125,7 +125,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Get group type
      *
-     * @return Group
+     * @return GroupType
      */
     public function getType()
     {
