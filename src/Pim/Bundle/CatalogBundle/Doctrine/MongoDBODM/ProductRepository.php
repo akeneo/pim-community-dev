@@ -627,53 +627,6 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Finds documents by a set of criteria
-     *
-     * @param array        $attributes
-     * @param array        $criteria
-     * @param array        $orderBy
-     * @param integer|null $limit
-     * @param integer|null $offset
-     *
-     * @return QueryBuilder
-     *
-     * @throws \RuntimeException
-     */
-    protected function findAllByAttributesQB(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->createQueryBuilder('p');
-
-        foreach ($attributes as $attribute => $value) {
-            $qb->field($attribute)->equals($value);
-        }
-
-        if ($criteria) {
-            foreach ($criteria as $field => $value) {
-                $qb->field('normalizedData.'.$field)->equals($value);
-            }
-        }
-
-        if ($orderBy) {
-            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($limit) {
-            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($offset) {
-            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        return $qb;
-    }
-
-    /**
      * @param integer $productId
      * @param integer $assocTypeCount
      *
