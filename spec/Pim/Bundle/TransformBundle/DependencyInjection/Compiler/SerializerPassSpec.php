@@ -80,6 +80,41 @@ class SerializerPassSpec extends ObjectBehavior
         $this->process($container);
     }
 
+    function it_sets_arguments_of_pim_serializer_with_tagged_normalizers_and_no_encoders_by_default(
+        $container,
+        $bag,
+        $factory,
+        Definition $definition,
+        Reference $fooNormalizer,
+        Reference $barNormalizer
+    ) {
+        // Mock service definition
+        $container->hasDefinition('pim_serializer')->willReturn(true);
+        $container->getDefinition('pim_serializer')->willReturn($definition);
+        $definition->getClass()->willReturn('%pim_serializer.class%');
+        $bag->resolveValue('%pim_serializer.class%')->willReturn('Symfony\Component\Serializer\Serializer');
+
+        $container->findTaggedServiceIds('pim_serializer.normalizer')->willReturn(
+            [
+                'normalizer.foo' => [[]],
+                'normalizer.bar' => [[]]
+            ]
+        );
+        $container->findTaggedServiceIds('pim_serializer.encoder')->willReturn([]);
+
+        $factory->createReference('normalizer.foo')->willReturn($fooNormalizer);
+        $factory->createReference('normalizer.bar')->willReturn($barNormalizer);
+
+        $definition->setArguments(
+            [
+                [$fooNormalizer, $barNormalizer],
+                []
+            ]
+        )->shouldBeCalled();
+
+        $this->process($container);
+    }
+
     function it_sorts_arguments_by_priority(
         $container,
         $bag,
@@ -130,10 +165,13 @@ class SerializerPassSpec extends ObjectBehavior
         $container->hasDefinition('pim_serializer')->willReturn(true);
         $container->findTaggedServiceIds('pim_serializer.normalizer')->willReturn([]);
 
+        $container->hasDefinition('pim_serializer')->willReturn(true);
+        $container->findTaggedServiceIds('pim_serializer.encoder')->willReturn([]);
+
         $this
             ->shouldThrow(
                 new \RuntimeException(
-                    'You must tag at least one service as "pim_serializer.normalizer" to use the Serializer service'
+                    'You must tag at least one normalizer or encoder as "pim_serializer" to use the Serializer service'
                 )
             )
             ->duringProcess($container);
