@@ -55,6 +55,7 @@ class ScopeFilter extends ChoiceFilter
     public function init($name, array $params)
     {
         parent::init($name, $params);
+        // TODO : useful ? I would expect that it's configured in datasource itself
         $this->catalogContext->setScopeCode($this->userContext->getUserChannelCode());
     }
 
