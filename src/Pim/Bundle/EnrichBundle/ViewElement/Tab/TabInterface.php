@@ -15,6 +15,7 @@ interface TabInterface extends ViewElementInterface
 {
     /**
      * Get the tab title (which will be displayed in the tab)
+     *
      * @param array $context The twig context
      *
      * @return string
@@ -23,6 +24,7 @@ interface TabInterface extends ViewElementInterface
 
     /**
      * Return whether or not the tab should be displayed
+     *
      * @param array $context Ths twig context
      *
      * @return boolean
