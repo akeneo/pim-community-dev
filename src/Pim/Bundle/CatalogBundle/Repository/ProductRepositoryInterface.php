@@ -21,25 +21,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 interface ProductRepositoryInterface
 {
     /**
-     * Finds entities and attributes values by a set of criteria, same coverage than findBy
-     *
-     * @param array        $attributes attribute codes
-     * @param array|null   $criteria   criterias
-     * @param array|null   $orderBy    order by
-     * @param integer|null $limit      limit
-     * @param integer|null $offset     offset
-     *
-     * @return array The objects.
-     */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    );
-
-    /**
      * Load a product entity with related attribute values
      *
      * @param integer $id

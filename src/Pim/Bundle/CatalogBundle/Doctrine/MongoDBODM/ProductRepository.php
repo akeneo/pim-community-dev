@@ -88,21 +88,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset);
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($identifier)
     {
         $pqb = $this->productQueryFactory->create();

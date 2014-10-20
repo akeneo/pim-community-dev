@@ -51,6 +51,7 @@
 - Add ProductRepositoryInterface::findOneByIdentifier
 - Remove ProductRepositoryInterface::buildByScope
 - Remove ProductRepositoryInterface::findByExistingFamily
+- Remove ProductRepositoryInterface::findAllByAttributes
 
 # 1.2.x
 

@@ -429,22 +429,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        return $this
-            ->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($identifier)
     {
         $pqb = $this->productQueryFactory->create();
