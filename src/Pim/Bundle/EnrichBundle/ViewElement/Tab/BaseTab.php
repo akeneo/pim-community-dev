@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\View\Tab;
+namespace Pim\Bundle\EnrichBundle\ViewElement\Tab;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -13,6 +13,15 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
  */
 class BaseTab implements TabInterface
 {
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var string */
+    protected $template;
+
+    /** @var string */
+    protected $title;
+
     /**
      * @param EngineInterface $templating
      * @param string          $template

@@ -13,13 +13,16 @@ use Symfony\Component\DependencyInjection\Reference;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterViewsPass implements CompilerPassInterface
+class RegisterViewElementsPass implements CompilerPassInterface
 {
-    /** @staticvar integer The default position for services */
+    /** @staticvar int The default position for services */
     const DEFAULT_POSITION = 100;
 
-    /** @staticvar integer The registry id */
-    const REGISTRY_ID = 'pim_enrich.view.registry';
+    /** @staticvar int The registry id */
+    const REGISTRY_ID = 'pim_enrich.view_element.registry';
+
+    /** @staticvar string */
+    const TAB_TAG = 'pim_enrich_view_element.tab';
 
     /**
      * {@inheritdoc}
@@ -33,7 +36,7 @@ class RegisterViewsPass implements CompilerPassInterface
         }
 
         $views = [];
-        $views['tab'] = $this->findAndSortTaggedServices('pim_enrich_views.tab', $container);
+        $views['tab'] = $this->findAndSortTaggedServices(static::TAB_TAG, $container);
 
         $container->getDefinition(static::REGISTRY_ID)->addMethodCall('setViews', [$views]);
     }

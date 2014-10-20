@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\View\Tab;
+namespace Pim\Bundle\EnrichBundle\ViewElement\Tab;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 

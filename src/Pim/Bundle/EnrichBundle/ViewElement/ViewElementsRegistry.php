@@ -1,16 +1,19 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\View;
+namespace Pim\Bundle\EnrichBundle\ViewElement;
 
 /**
- * View registry
+ * Registry of view elements
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ViewRegistry
+class ViewElementsRegistry
 {
+    /** @var array */
+    protected $views;
+
     /**
      * Register available views
      *
@@ -23,11 +26,12 @@ class ViewRegistry
 
     /**
      * Get the views for the given type and identifier
+     *
      * @param string $type
      * @param string $identifier
      *
-     * @return ViewInterface[]
-     * @throws InvalidArgumentException
+     * @return ViewElementInterface[]
+     * @throws \InvalidArgumentException
      */
     public function getViews($type, $identifier)
     {

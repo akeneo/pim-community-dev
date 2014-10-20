@@ -1,0 +1,38 @@
+parameters:
+    pim_enrich.view_element.tab.attributegroup_property.template:  'PimEnrichBundle:AttributeGroup:Tab/property.html.twig'
+    pim_enrich.view_element.tab.attributegroup_attribute.template: 'PimEnrichBundle:AttributeGroup:Tab/attribute.html.twig'
+    pim_enrich.view_element.tab.attributegroup_history.template:   'PimEnrichBundle:AttributeGroup:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.tab.attributegroup_property:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.attributegroup_property.template%
+            - 'tab.pim_enrich_attributegroup_edit.property'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_attributegroup_edit}
+
+    pim_enrich.view_element.tab.attributegroup_attribute_base:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.attributegroup_attribute.template%
+            - 'tab.pim_enrich_attributegroup_edit.attribute'
+    pim_enrich.view_element.tab.attributegroup_attribute:
+        parent: pim_enrich.view_element.tab.on_form_edit
+        arguments:
+            - @pim_enrich.view_element.tab.attributegroup_attribute_base
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_attributegroup_edit}
+
+    pim_enrich.view_element.tab.attributegroup_history_base:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.attributegroup_history.template%
+            - 'tab.pim_enrich_attributegroup_edit.history'
+
+    pim_enrich.view_element.tab.attributegroup_history:
+        parent: pim_enrich.view_element.tab.on_form_edit
+        arguments:
+            - @pim_enrich.view_element.tab.attributegroup_history_base
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_attributegroup_edit}
