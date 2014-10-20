@@ -108,8 +108,6 @@ flash:
     updated: Attribuut succesvol bijgewerkt
     removed: Attribuut succesvol verwijderd
     identifier not removable: Id-attribuut kan niet worden verwijderd
-    option created: Optie succesvol aangemaakt
-    error creating option: Een fout is opgetreden tijdens het aanmaken van de optie, probeer het opnieuw
   attribute group:
     created: Attribuutgroep succesvol aangemaakt
     updated: Attribuutgroep succesvol bijgewerkt
@@ -213,7 +211,6 @@ Updated: Bijgewerkt
 Last update: Laatst bijgewerkt
 by: Door
 N/A: Niet beschikbaar
-Add an option: Een optie toevoegen
 Manage products: Producten beheren
 Manage groups: Groepen beheren
 Code: Code
@@ -245,7 +242,6 @@ Attribute type: Attribuuttype
 Defaultvalue: Standaardwaarde
 Variant: Variant
 Smart: Slim
-Useable as grid column: Bruikbaar als rasterkolom
 Useable as grid filter: Bruikbaar als rasterfilter
 Family: Familie
 Available locales: Beschikbare lokalisaties
