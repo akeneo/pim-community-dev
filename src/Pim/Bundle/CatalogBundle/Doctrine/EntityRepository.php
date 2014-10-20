@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 use Doctrine\Common\Util\Inflector;
+use Doctrine\ORM\EntityRepository as BaseEntityRepository;
 
 /**
  * Base entity repository

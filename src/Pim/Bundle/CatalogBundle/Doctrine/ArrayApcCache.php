@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * Proxy for ApcCache in http mode and ArrayCache in command line mode

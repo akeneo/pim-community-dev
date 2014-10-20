@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 /**
  * Mass action controller for edit and delete actions

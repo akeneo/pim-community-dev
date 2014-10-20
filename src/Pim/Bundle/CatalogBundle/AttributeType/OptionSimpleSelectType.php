@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Simple options (select) attribute type
@@ -39,10 +39,6 @@ class OptionSimpleSelectType extends AbstractAttributeType
                 'name'      => 'minimumInputLength',
                 'fieldType' => 'pim_number'
             ],
-            'options' => [
-                'name'      => 'options',
-                'fieldType' => 'pim_enrich_options'
-            ],
             'autoOptionSorting' => [
                 'name'      => 'autoOptionSorting',
                 'fieldType' => 'switch',
@@ -51,7 +47,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
                     'property_path' => 'properties[autoOptionSorting]',
                     'help'          => 'info.attribute.auto option sorting',
                     'attr'          => [
-                        'class' => 'hide'
+                        'class' => 'hide automatic-option-sorting',
                     ]
                 ]
             ]

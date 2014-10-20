@@ -5,13 +5,14 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
- * Base filter
+ * Base filter, may be used with different configuration for strings, numbers, booleans, etc
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -19,30 +20,47 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
     /** @var CatalogContext */
     protected $context;
 
-    /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
+    /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
+    protected $supportedOperators;
 
     /**
-     * Instanciate a sorter
+     * Instanciate the base filter
      *
-     * @param QueryBuilder   $qb
      * @param CatalogContext $context
+     * @param array          $supportedAttributes
+     * @param array          $supportedFields
+     * @param array          $supportedOperators
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
+    public function __construct(
+        CatalogContext $context,
+        array $supportedAttributes = [],
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
         $this->context = $context;
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
     }
 
     /**
@@ -50,7 +68,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
+        $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === 'EMPTY') {
@@ -88,6 +106,47 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
+    }
+
+    /**
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name
@@ -99,12 +158,9 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     protected function prepareCriteriaCondition($field, $operator, $value)
     {
-        if (is_array($operator)) {
-            return $this->prepareMultiCriteriaCondition($field, $operator, $value);
+        $criteriaCondition = new CriteriaCondition($this->qb);
 
-        } else {
-            return $this->prepareSingleCriteriaCondition($field, $operator, $value);
-        }
+        return $criteriaCondition->prepareCriteriaCondition($field, $operator, $value);
     }
 
     /**
@@ -122,98 +178,5 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         $joinHelper = new ValueJoin($this->qb, $this->context);
 
         return $joinHelper->prepareCondition($attribute, $joinAlias);
-    }
-
-    /**
-     * Prepare multi criteria condition with field, operator and value
-     *
-     * @param array $field    the backend field name
-     * @param array $operator the operator used to filter
-     * @param array $value    the value(s) to filter
-     *
-     * @throws ProductQueryException
-     *
-     * @return string
-     */
-    protected function prepareMultiCriteriaCondition($field, $operator, $value)
-    {
-        if (!is_array($value)) {
-            throw new ProductQueryException('Values must be array');
-        }
-
-        if (!is_array($field)) {
-            $fieldArray = array();
-            foreach (array_keys($operator) as $key) {
-                $fieldArray[$key] = $field;
-            }
-            $field = $fieldArray;
-        }
-
-        if (array_diff(array_keys($field), array_keys($operator))
-            || array_diff(array_keys($field), array_keys($value))
-        ) {
-            throw new ProductQueryException('Field, operator and value arrays must have the same keys');
-        }
-
-        $conditions = array();
-        foreach ($field as $key => $fieldName) {
-            $conditions[] = $this->prepareSingleCriteriaCondition($fieldName, $operator[$key], $value[$key]);
-        }
-
-        return '(' . implode(' OR ', $conditions) . ')';
-    }
-
-    /**
-     * Prepare single criteria condition with field, operator and value
-     *
-     * @param string $field    the backend field name
-     * @param string $operator the operator used to filter
-     * @param string $value    the value(s) to filter
-     *
-     * @throws ProductQueryException
-     *
-     * @return string
-     */
-    protected function prepareSingleCriteriaCondition($field, $operator, $value)
-    {
-        $operators = array('=' => 'eq', '<' => 'lt', '<=' => 'lte', '>' => 'gt', '>=' => 'gte', 'LIKE' => 'like');
-        if (array_key_exists($operator, $operators)) {
-            $method = $operators[$operator];
-
-            return $this->qb->expr()->$method($field, $this->qb->expr()->literal($value))->__toString();
-        }
-
-        $operators = array('NULL' => 'isNull', 'NOT NULL' => 'isNotNull');
-        if (array_key_exists($operator, $operators)) {
-            $method = $operators[$operator];
-
-            return $this->qb->expr()->$method($field);
-        }
-
-        $operators = array('IN' => 'in', 'NOT IN' => 'notIn');
-        if (array_key_exists($operator, $operators)) {
-            $method = $operators[$operator];
-
-            return $this->qb->expr()->$method($field, $value)->__toString();
-        }
-
-        if ('NOT LIKE' === $operator) {
-            return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
-        }
-
-        if ('BETWEEN' === $operator) {
-            return sprintf(
-                '%s BETWEEN %s AND %s',
-                $field,
-                $this->qb->expr()->literal($value[0]),
-                $this->qb->expr()->literal($value[1])
-            );
-        }
-
-        if ('EMPTY' === $operator) {
-            return $this->qb->expr()->isNull($field);
-        }
-
-        throw new ProductQueryException('operator '.$operator.' is not supported');
     }
 }

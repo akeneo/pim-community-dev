@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Form subscriber for AbstractAttribute
@@ -78,11 +77,6 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
 
             $form = $event->getForm();
 
-            // add related options
-            if ($data->getBackendType() === AbstractAttributeType::BACKEND_TYPE_OPTION) {
-                $this->addOptionCollection($form);
-            }
-
             $this->disableField($form, 'code');
         }
 
@@ -103,28 +97,6 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         foreach ($fields as $field) {
             $form->add($field);
         }
-    }
-
-    /**
-     * Add attribute option collection
-     * @param Form $form
-     */
-    protected function addOptionCollection($form)
-    {
-        $form->add(
-            $this->factory->createNamed(
-                'options',
-                'collection',
-                null,
-                array(
-                    'type'            => 'pim_enrich_attribute_option',
-                    'allow_add'       => true,
-                    'allow_delete'    => true,
-                    'by_reference'    => false,
-                    'auto_initialize' => false
-                )
-            )
-        );
     }
 
     /**

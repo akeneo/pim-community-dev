@@ -43,9 +43,8 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function getRequirements()
     {
         if (!class_exists('PimRequirements')) {
-            require_once $this->getContainer()->getParameter('kernel.root_dir') .
-                DIRECTORY_SEPARATOR .
-                'PimRequirements.php';
+            $path = $this->getContainer()->getParameter('kernel.root_dir').DIRECTORY_SEPARATOR.'PimRequirements.php';
+            require_once $path;
         }
 
         $directories = array();

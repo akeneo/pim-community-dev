@@ -21,7 +21,8 @@ class ProductCacheClearerSpec extends ObjectBehavior
         $entityManager->getUnitOfWork()->willReturn($uow);
     }
 
-    function it_is_initializable() {
+    function it_is_initializable()
+    {
         $this->shouldHaveType('Pim\Bundle\TransformBundle\Cache\ProductCacheClearer');
     }
 
@@ -29,7 +30,7 @@ class ProductCacheClearerSpec extends ObjectBehavior
         DoctrineCache $doctrineCache,
         EntityManager $entityManager,
         UnitOfWork $uow
-    ){
+    ) {
         $this->setNonClearableEntities(['NonClearable']);
         $uow->getIdentityMap()->willReturn(
             [

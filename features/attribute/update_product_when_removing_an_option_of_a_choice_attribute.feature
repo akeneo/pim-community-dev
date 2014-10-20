@@ -15,7 +15,7 @@ Feature: Update product when removing an option of a choice attribute
     And I am on the "manufacturer" attribute page
     And I visit the "Values" tab
     And I remove the "Converse" option
-    And I save the attribute
+    And I wait for options to load
     When I edit the "foo" product
     Then the product Manufacturer should be empty
     When I visit the "History" tab
@@ -30,7 +30,7 @@ Feature: Update product when removing an option of a choice attribute
     And I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I remove the "cold" option
-    And I save the attribute
+    And I wait for options to load
     When I edit the "foo" product
     Then the product Weather conditions should be "Snowy"
     When I visit the "History" tab
@@ -45,9 +45,11 @@ Feature: Update product when removing an option of a choice attribute
     And I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I remove the "hot" option
+    And I wait for options to load
     And I remove the "cold" option
+    And I wait for options to load
     And I remove the "snowy" option
-    And I save the attribute
+    And I wait for options to load
     When I edit the "foo" product
     Then the product Weather conditions should be "Dry"
     When I visit the "History" tab

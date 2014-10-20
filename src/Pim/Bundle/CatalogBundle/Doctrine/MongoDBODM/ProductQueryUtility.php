@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Provides util methods to ease the query building in MongoDB

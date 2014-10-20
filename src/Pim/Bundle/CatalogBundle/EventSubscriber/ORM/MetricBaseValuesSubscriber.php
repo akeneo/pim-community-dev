@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\ORM;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 /**

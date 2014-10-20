@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
@@ -17,24 +18,16 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
  */
 abstract class AbstractProductValue implements ProductValueInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var int|string */
     protected $id;
 
-    /**
-     * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute $attribute
-     */
+    /** @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface */
     protected $attribute;
 
-    /**
-     * @var mixed $data
-     */
+    /** @var mixed */
     protected $data;
 
-    /**
-     * @var ProductInterface $entity
-     */
+    /** @var ProductInterface */
     protected $entity;
 
     /**
@@ -56,8 +49,8 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $varchar;
 
     /**
-     * Store integer value
-     * @var integer $integer
+     * Store int value
+     * @var int $integer
      */
     protected $integer;
 
@@ -69,7 +62,7 @@ abstract class AbstractProductValue implements ProductValueInterface
 
     /**
      * Store boolean value
-     * @var boolean $boolean
+     * @var bool $boolean
      */
     protected $boolean;
 
@@ -87,7 +80,7 @@ abstract class AbstractProductValue implements ProductValueInterface
 
     /**
      * Store datetime value
-     * @var date $datetime
+     * @var \Datetime $datetime
      */
     protected $datetime;
 
@@ -96,30 +89,31 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * This field must by overrided in concret value class
      *
-     * @var options ArrayCollection
+     * @var ArrayCollection $options
      */
     protected $options;
 
+    /** @var array */
     protected $optionIds;
 
     /**
      * Store simple option value
      *
-     * @var Pim\Bundle\CatalogBundle\Entity\AttributeOption $option
+     * @var \Pim\Bundle\CatalogBundle\Entity\AttributeOption $option
      */
     protected $option;
 
     /**
      * Store upload values
      *
-     * @var AbstractProductMedia $media
+     * @var ProductMediaInterface $media
      */
     protected $media;
 
     /**
      * Store metric value
      *
-     * @var AbstractMetric $metric
+     * @var MetricInterface $metric
      */
     protected $metric;
 
@@ -140,9 +134,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -150,11 +142,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AbstractProductValue
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -172,14 +160,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return AbstractProductValue
-     * @throws LogicException
+     * {@inheritdoc}
      */
-    public function setAttribute(AbstractAttribute $attribute = null)
+    public function setAttribute(AttributeInterface $attribute = null)
     {
         if (is_object($this->attribute) && ($attribute != $this->attribute)) {
             throw new \LogicException(
@@ -192,9 +175,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get attribute
-     *
-     * @return AbstractAttribute
+     * {@inheritdoc}
      */
     public function getAttribute()
     {
@@ -202,8 +183,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get used locale
-     * @return string $locale
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -211,8 +191,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set used locale
-     * @param string $locale
+     * {@inheritdoc}
      */
     public function setLocale($locale)
     {
@@ -227,8 +206,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get used scope
-     * @return string $scope
+     * {@inheritdoc}
      */
     public function getScope()
     {
@@ -236,15 +214,14 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set used scope
-     * @param string $scope
+     * {@inheritdoc}
      */
     public function setScope($scope)
     {
         if ($scope && $this->getAttribute() && $this->getAttribute()->isScopable() === false) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new \LogicException(
-                "This value '".$this->getId()."' can't be scopped, see attribute '".$attributeCode."' configuration"
+                "This value '".$this->getId()."' can't be scoped, see attribute '".$attributeCode."' configuration"
             );
         }
 
@@ -252,9 +229,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get entity
-     *
-     * @return AbstractProduct $entity
+     * {@inheritdoc}
      */
     public function getEntity()
     {
@@ -262,13 +237,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set entity
-     *
-     * @param AbstractProduct $entity
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
-    public function setEntity(AbstractProduct $entity = null)
+    public function setEntity(ProductInterface $entity = null)
     {
         $this->entity = $entity;
 
@@ -276,11 +247,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set data
-     *
-     * @param mixed $data
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setData($data)
     {
@@ -290,9 +257,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get data
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getData()
     {
@@ -302,11 +267,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Add data
-     *
-     * @param mixed $data
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function addData($data)
     {
@@ -320,9 +281,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get varchar data
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getVarchar()
     {
@@ -330,11 +289,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set varchar data
-     *
-     * @param string $varchar
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setVarchar($varchar)
     {
@@ -344,9 +299,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get integer data
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getInteger()
     {
@@ -354,11 +307,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set integer data
-     *
-     * @param integer $integer
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setInteger($integer)
     {
@@ -368,9 +317,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get decimal data
-     *
-     * @return double
+     * {@inheritdoc}
      */
     public function getDecimal()
     {
@@ -378,11 +325,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set decimal data
-     *
-     * @param double $decimal
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setDecimal($decimal)
     {
@@ -392,9 +335,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get boolean data
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function getBoolean()
     {
@@ -402,11 +343,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set boolean data
-     *
-     * @param boolean $boolean
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setBoolean($boolean)
     {
@@ -416,9 +353,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get text data
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getText()
     {
@@ -426,11 +361,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set text data
-     *
-     * @param string $text
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setText($text)
     {
@@ -440,9 +371,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get date data
-     *
-     * @return date
+     * {@inheritdoc}
      */
     public function getDate()
     {
@@ -450,11 +379,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set date data
-     *
-     * @param date $date
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setDate($date)
     {
@@ -466,9 +391,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get datetime data
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getDatetime()
     {
@@ -476,11 +399,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set datetime data
-     *
-     * @param datetime $datetime
-     *
-     * @return EntityAttributeValue
+     * {@inheritdoc}
      */
     public function setDatetime($datetime)
     {
@@ -492,11 +411,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set option, used for simple select to set single option
-     *
-     * @param AttributeOption $option
-     *
-     * @return AbstractProductValue
+     * {@inheritdoc}
      */
     public function setOption(AttributeOption $option = null)
     {
@@ -506,9 +421,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get related option, used for simple select to set single option
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
     public function getOption()
     {
@@ -516,9 +429,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get options, used for multi select to retrieve many options
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -526,11 +437,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set options, used for multi select to retrieve many options
-     *
-     * @param ArrayCollection $options
-     *
-     * @return AbstractProductValue
+     * {@inheritdoc}
      */
     public function setOptions($options)
     {
@@ -540,11 +447,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Add option, used for multi select to add many options
-     *
-     * @param AttributeOption $option
-     *
-     * @return AbstractProductValue
+     * {@inheritdoc}
      */
     public function addOption(AttributeOption $option)
     {
@@ -554,11 +457,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Remove an option
-     *
-     * @param AttributeOption $option
-     *
-     * @return ProductValue
+     * {@inheritdoc}
      */
     public function removeOption(AttributeOption $option)
     {
@@ -578,7 +477,7 @@ abstract class AbstractProductValue implements ProductValueInterface
             $data = $data->format(\DateTime::ISO8601);
         }
 
-        if ($data instanceof \Doctrine\Common\Collections\Collection) {
+        if ($data instanceof Collection) {
             $items = array();
             foreach ($data as $item) {
                 $value = (string) $item;
@@ -596,9 +495,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get media
-     *
-     * @return AbstractProductMedia
+     * {@inheritdoc}
      */
     public function getMedia()
     {
@@ -610,13 +507,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set media
-     *
-     * @param AbstractProductMedia $media
-     *
-     * @return ProductValue
+     * {@inheritdoc}
      */
-    public function setMedia(AbstractProductMedia $media)
+    public function setMedia(ProductMediaInterface $media)
     {
         $media->setValue($this);
         $this->media = $media;
@@ -625,9 +518,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get metric
-     *
-     * @return AbstractMetric
+     * {@inheritdoc}
      */
     public function getMetric()
     {
@@ -635,13 +526,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set metric
-     *
-     * @param AbstractMetric $metric
-     *
-     * @return ProductValue
+     * {@inheritdoc}
      */
-    public function setMetric(AbstractMetric $metric)
+    public function setMetric(MetricInterface $metric)
     {
         $this->metric = $metric;
 
@@ -649,9 +536,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get prices
-     *
-     * @return Collection
+     * {@inheritdoc}
      */
     public function getPrices()
     {
@@ -666,11 +551,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get the price matching the given currency
-     *
-     * @param string $currency
-     *
-     * @return null|AbstractProductPrice
+     * {@inheritdoc}
      */
     public function getPrice($currency)
     {
@@ -684,11 +565,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Set prices, used for multi select to retrieve many options
-     *
-     * @param ArrayCollection $prices
-     *
-     * @return ProductValue
+     * {@inheritdoc}
      */
     public function setPrices($prices)
     {
@@ -700,13 +577,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Add price (removing the older one)
-     *
-     * @param AbstractProductPrice $price
-     *
-     * @return ProductValue
+     * {@inheritdoc}
      */
-    public function addPrice(AbstractProductPrice $price)
+    public function addPrice(ProductPriceInterface $price)
     {
         if (null !== $actualPrice = $this->getPrice($price->getCurrency())) {
             $this->removePrice($actualPrice);
@@ -719,13 +592,9 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Remove price
-     *
-     * @param AbstractProductPrice $price
-     *
-     * @return ProductValue
+     * {@inheritdoc}
      */
-    public function removePrice(AbstractProductPrice $price)
+    public function removePrice(ProductPriceInterface $price)
     {
         $this->prices->removeElement($price);
 
@@ -733,7 +602,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isRemovable()
     {
