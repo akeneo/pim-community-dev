@@ -1,0 +1,20 @@
+parameters:
+    pim_enrich.view_element.tab.associationtype_property.template:  'PimEnrichBundle:AssociationType:Tab/property.html.twig'
+    pim_enrich.view_element.tab.associationtype_history.template:   'PimEnrichBundle:AssociationType:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.tab.associationtype_property:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.associationtype_property.template%
+            - 'tab.pim_enrich_associationtype_edit.property'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_associationtype_edit}
+
+    pim_enrich.view_element.tab.associationtype_history:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.associationtype_history.template%
+            - 'tab.pim_enrich_associationtype_edit.history'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_associationtype_edit}

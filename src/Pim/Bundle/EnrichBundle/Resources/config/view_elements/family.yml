@@ -1,0 +1,29 @@
+parameters:
+    pim_enrich.view_element.tab.family_property.template:  'PimEnrichBundle:Family:Tab/property.html.twig'
+    pim_enrich.view_element.tab.family_attribute.template: 'PimEnrichBundle:Family:Tab/attribute.html.twig'
+    pim_enrich.view_element.tab.family_history.template:   'PimEnrichBundle:Family:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.tab.family_property:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.family_property.template%
+            - 'tab.pim_enrich_family_edit.property'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_family_edit}
+
+    pim_enrich.view_element.tab.family_attribute:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.family_attribute.template%
+            - 'tab.pim_enrich_family_edit.attribute'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_family_edit}
+
+    pim_enrich.view_element.tab.family_history:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.family_history.template%
+            - 'tab.pim_enrich_family_edit.history'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_family_edit}

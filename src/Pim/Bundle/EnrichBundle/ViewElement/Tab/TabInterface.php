@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\View\Tab;
+namespace Pim\Bundle\EnrichBundle\ViewElement\Tab;
 
-use Pim\Bundle\EnrichBundle\View\ViewInterface;
+use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
 
 /**
  * Tab interface
@@ -11,7 +11,7 @@ use Pim\Bundle\EnrichBundle\View\ViewInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface TabInterface extends ViewInterface
+interface TabInterface extends ViewElementInterface
 {
     /**
      * Get the tab title (which will be displayed in the tab)

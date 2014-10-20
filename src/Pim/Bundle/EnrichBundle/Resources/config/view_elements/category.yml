@@ -1,0 +1,25 @@
+parameters:
+    pim_enrich.view_element.tab.category_property.template:  'PimEnrichBundle:CategoryTree:Tab/property.html.twig'
+    pim_enrich.view_element.tab.category_history.template:   'PimEnrichBundle:CategoryTree:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.tab.category_property:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.category_property.template%
+            - 'tab.pim_enrich_category_edit.property'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_category_edit}
+
+    pim_enrich.view_element.tab.category_history_base:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.category_history.template%
+            - 'tab.pim_enrich_category_edit.history'
+
+    pim_enrich.view_element.tab.category_history:
+        parent: pim_enrich.view_element.tab.on_form_edit
+        arguments:
+            - @pim_enrich.view_element.tab.category_history_base
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_category_edit}

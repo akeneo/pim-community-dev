@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\EnrichBundle\View\ViewRegistry;
+use Pim\Bundle\EnrichBundle\ViewElement\ViewElementsRegistry;
 
 /**
  * Twig extension to display tabs and manage tab registration
@@ -11,12 +11,12 @@ use Pim\Bundle\EnrichBundle\View\ViewRegistry;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TabExtension extends \Twig_Extension
+class ViewTabExtension extends \Twig_Extension
 {
     /**
-     * @param ViewRegistry $viewRegistry
+     * @param ViewElementsRegistry $viewRegistry
      */
-    public function __construct(ViewRegistry $viewRegistry)
+    public function __construct(ViewElementsRegistry $viewRegistry)
     {
         $this->viewRegistry = $viewRegistry;
     }

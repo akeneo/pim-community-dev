@@ -1,0 +1,29 @@
+parameters:
+    pim_enrich.view_element.tab.group_product.template: 'PimEnrichBundle:Group:Tab/product.html.twig'
+    pim_enrich.view_element.tab.group_property.template:  'PimEnrichBundle:Group:Tab/property.html.twig'
+    pim_enrich.view_element.tab.group_history.template:   'PimEnrichBundle:Group:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.tab.group_product:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.group_product.template%
+            - 'tab.pim_enrich_group_edit.product'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_group_edit}
+
+    pim_enrich.view_element.tab.group_property:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.group_property.template%
+            - 'tab.pim_enrich_group_edit.property'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_group_edit}
+
+    pim_enrich.view_element.tab.group_history:
+        parent: pim_enrich.view_element.tab.base
+        arguments:
+            - %pim_enrich.view_element.tab.group_history.template%
+            - 'tab.pim_enrich_group_edit.history'
+        tags:
+            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_group_edit}

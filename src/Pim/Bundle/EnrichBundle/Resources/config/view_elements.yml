@@ -1,0 +1,25 @@
+parameters:
+    pim_enrich.view_element.tab.base.class:         Pim\Bundle\EnrichBundle\ViewElement\Tab\BaseTab
+    pim_enrich.view_element.tab.on_form_edit.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\OnFormEditTab
+    pim_enrich.view_element.tab.granted.class:      Pim\Bundle\EnrichBundle\ViewElement\Tab\GrantedTab
+    pim_enrich.view_element.registry.class:         Pim\Bundle\EnrichBundle\ViewElement\ViewElementsRegistry
+
+services:
+    pim_enrich.view_element.registry:
+        class: %pim_enrich.view_element.registry.class%
+
+    pim_enrich.view_element.tab.base:
+        class: %pim_enrich.view_element.tab.base.class%
+        abstract: true
+        arguments:
+            - '@templating'
+
+    pim_enrich.view_element.tab.on_form_edit:
+        class: %pim_enrich.view_element.tab.on_form_edit.class%
+        abstract: true
+
+    pim_enrich.view_element.tab.granted:
+        class: %pim_enrich.view_element.tab.granted.class%
+        abstract: true
+        arguments:
+            - '@oro_security.security_facade'

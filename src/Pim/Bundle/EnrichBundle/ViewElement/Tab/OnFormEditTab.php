@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\View\Tab;
+namespace Pim\Bundle\EnrichBundle\ViewElement\Tab;
 
 /**
  * Render a template only if we are in a edit form scenario
