@@ -88,7 +88,7 @@ class ProductRepository extends EntityRepository implements
     {
         $scope = $channel->getCode();
         $qb = $this->buildByScope($scope);
-        $rootAlias = $qb->getRootAlias();
+        $rootAlias = current($qb->getRootAliases());
         $expression =
             'pCompleteness.product = '.$rootAlias.' AND '.
             $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
@@ -450,6 +450,7 @@ class ProductRepository extends EntityRepository implements
     {
         $productQb = $this->productQueryFactory->create();
         $qb = $productQb->getQueryBuilder();
+        $rootAlias = current($qb->getRootAliases());
         $this->addJoinToValueTables($qb);
         $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
         $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
@@ -462,7 +463,7 @@ class ProductRepository extends EntityRepository implements
         $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
         $qb->addSelect('AGroupTranslations');
         $qb->andWhere(
-            $qb->expr()->equals($rootAlias.'.id', $id)
+            $qb->expr()->eq($rootAlias.'.id', $id)
         );
 
         return $qb
