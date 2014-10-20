@@ -51,7 +51,7 @@ class CompletenessSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function addFieldSorter($field, $direction, $context = [])
     {
         $field = sprintf(
             "%s.%s.%s-%s",

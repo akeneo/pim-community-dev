@@ -71,7 +71,7 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, $context = [])
     {
         $field = sprintf(
             "%s.%s.%s-%s",

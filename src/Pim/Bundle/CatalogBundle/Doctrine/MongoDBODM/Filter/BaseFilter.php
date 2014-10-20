@@ -105,7 +105,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = [])
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $this->addFieldFilter($field, $operator, $value);
@@ -116,7 +116,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, $context = [])
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 

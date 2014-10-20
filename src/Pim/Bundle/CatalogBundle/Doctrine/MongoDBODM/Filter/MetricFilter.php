@@ -72,7 +72,7 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = [])
     {
         $data = (float) $value;
 

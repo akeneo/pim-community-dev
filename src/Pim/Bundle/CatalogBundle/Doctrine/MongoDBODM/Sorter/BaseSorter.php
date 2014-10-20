@@ -61,7 +61,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction, $context = [])
     {
         $sortField = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$sortField, $direction);
@@ -73,7 +73,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function addFieldSorter($field, $direction, $context = [])
     {
         $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$field, $direction);
         $this->qb->sort('_id');
