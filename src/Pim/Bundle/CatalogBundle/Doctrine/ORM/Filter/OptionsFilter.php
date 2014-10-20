@@ -51,7 +51,7 @@ class OptionsFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = [])
     {
         $joinAlias    = 'filter'.$attribute->getCode();
         $joinAliasOpt = 'filterO'.$attribute->getCode();

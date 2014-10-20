@@ -52,7 +52,7 @@ class PriceFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = [])
     {
         $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode();

@@ -54,7 +54,7 @@ class MetricSorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction, $context = [])
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();

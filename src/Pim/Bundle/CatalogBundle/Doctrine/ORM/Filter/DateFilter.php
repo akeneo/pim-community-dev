@@ -96,7 +96,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = [])
     {
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
@@ -141,7 +141,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, $context = [])
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
 

@@ -54,7 +54,7 @@ class EntityFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, $context = [])
     {
         $rootAlias  = $this->qb->getRootAlias();
         $entityAlias = 'filter'.$field;

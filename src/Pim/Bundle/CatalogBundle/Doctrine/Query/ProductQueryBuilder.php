@@ -99,9 +99,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         if ($attribute !== null) {
-            $this->addAttributeFilter($filter, $attribute, $operator, $value);
+            $this->addAttributeFilter($filter, $attribute, $operator, $value, $context);
         } else {
-            $this->addFieldFilter($filter, $field, $operator, $value);
+            $this->addFieldFilter($filter, $field, $operator, $value, $context);
         }
 
         return $this;

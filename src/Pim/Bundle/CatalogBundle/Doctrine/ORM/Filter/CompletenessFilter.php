@@ -41,7 +41,7 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, $context = [])
     {
         $alias = 'filterCompleteness';
         $field = $alias.'.ratio';
