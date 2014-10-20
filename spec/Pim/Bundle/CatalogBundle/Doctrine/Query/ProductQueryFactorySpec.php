@@ -49,9 +49,4 @@ class ProductQueryFactorySpec extends ObjectBehavior
             ]
         );
     }
-
-    function it_throws_an_exception_when_creates_without_default_locale_and_scope()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')->duringCreate([]);
-    }
 }
