@@ -154,4 +154,11 @@ interface ProductRepositoryInterface
      * @return ObjectManager
      */
     public function getObjectManager();
+
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface|null
+     */
+    public function findOneByIdentifier($identifier);
 }

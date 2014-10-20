@@ -458,30 +458,13 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria)
+    public function findOneByIdentifier($identifier)
     {
         $pqb = $this->productQueryFactory->create();
         $qb = $pqb->getQueryBuilder();
-        foreach ($criteria as $field => $data) {
-            // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
-            if (is_array($data)) {
-                $attribute = $data['attribute'];
-                $field = $attribute->getCode();
-                $data = $data['value'];
-            }
-            $pqb->addFilter($field, '=', $data);
-        }
-
+        $attribute = $this->getIdentifierAttribute();
+        $pqb->addFilter($attribute->getCode(), '=', $identifier);
         $result = $qb->getQuery()->execute();
-
-        if (count($result) > 1) {
-            throw new \LogicException(
-                sprintf(
-                    'Many products have been found that match criteria:' . "\n" . '%s',
-                    print_r($criteria, true)
-                )
-            );
-        }
 
         return reset($result);
     }
@@ -594,4 +577,15 @@ class ProductRepository extends EntityRepository implements
     {
         return $this->getEntityManager();
     }
+
+    /**
+     * Return the identifier attribute
+     *
+     * @return AbstractAttribute|null
+     */
+    protected function getIdentifierAttribute()
+    {
+        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+    }
+
 }
