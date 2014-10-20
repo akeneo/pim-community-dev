@@ -125,7 +125,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
     {
-        $qb = $this->findAllByAttributesQB([$attribute]);
+        // TODO : the previous code seems really weird as attribute param is never used
+        $productQb = $this->productQueryFactory->create();
+        $qb = $productQb->getQueryBuilder();
+        $this->addJoinToValueTables($qb);
 
         return $this->getCountFromQB($qb);
     }
