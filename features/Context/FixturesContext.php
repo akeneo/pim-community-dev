@@ -659,6 +659,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeTheFollowingGroups(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $group = $this->getProductGroup($data['code']);
             $this->refresh($group);

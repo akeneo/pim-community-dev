@@ -47,6 +47,11 @@
 - Update CsvProductWriter::copyMedia argument to replace AbstractProductMedia by an array
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. `Doctrine\Common\Persistence\ManagerRegistry` is used as fourth argument and is mandatory now. The data class is the fifth argument.
 
+# 1.2.x
+
+## Bug fixes
+- PIM-3221: Fix the possibility to update attributes on variant groups during import
+
 # 1.2.9 (2014-10-17)
 
 ## Bug fixes
