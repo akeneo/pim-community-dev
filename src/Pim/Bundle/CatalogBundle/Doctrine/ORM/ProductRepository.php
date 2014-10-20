@@ -119,19 +119,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByExistingFamily()
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->where(
-            $qb->expr()->isNotNull('p.family')
-        );
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByIds(array $ids)
     {
         $qb = $this->findAllByAttributesQB();

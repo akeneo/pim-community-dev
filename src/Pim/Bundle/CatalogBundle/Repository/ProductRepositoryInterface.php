@@ -57,13 +57,6 @@ interface ProductRepositoryInterface
     public function buildByChannelAndCompleteness(Channel $channel);
 
     /**
-     * Find products by existing family
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function findByExistingFamily();
-
-    /**
      * @param array $ids
      *
      * @return \Doctrine\Common\Collections\ArrayCollection

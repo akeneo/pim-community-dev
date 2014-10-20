@@ -306,14 +306,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByExistingFamily()
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByIds(array $ids)
     {
         $qb = $this->createQueryBuilder('p')->eagerCursor(true);

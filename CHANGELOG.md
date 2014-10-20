@@ -50,6 +50,7 @@
 - Remove ProductRepositoryInterface::findOneBy (still a native support for ORM)
 - Add ProductRepositoryInterface::findOneByIdentifier
 - Remove ProductRepositoryInterface::buildByScope
+- Remove ProductRepositoryInterface::findByExistingFamily
 
 # 1.2.x
 
