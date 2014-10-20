@@ -4,18 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
  */
 class CompletenessFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, CatalogContext $context)
+    function let(Builder $queryBuilder)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -36,7 +32,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->willReturn($queryBuilder);
         $queryBuilder->equals('100')->willReturn($queryBuilder);
 
-        $this->addFieldFilter('completenesses', '=', '100');
+        $this->addFieldFilter('completenesses', '=', '100', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
     function it_adds_a_less_than_filter_on_completeness_in_the_query(Builder $queryBuilder)
@@ -44,6 +40,6 @@ class CompletenessFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->willReturn($queryBuilder);
         $queryBuilder->lt('100')->willReturn($queryBuilder);
 
-        $this->addFieldFilter('completenesses', '<', '100');
+        $this->addFieldFilter('completenesses', '<', '100', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 }

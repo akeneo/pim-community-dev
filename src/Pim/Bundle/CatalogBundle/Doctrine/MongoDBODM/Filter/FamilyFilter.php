@@ -7,7 +7,6 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Family filter
@@ -21,9 +20,6 @@ class FamilyFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedFields;
 
@@ -32,12 +28,9 @@ class FamilyFilter implements FieldFilterInterface
 
     /**
      * Instanciate the filter
-     *
-     * @param CatalogContext $context
      */
-    public function __construct(CatalogContext $context)
+    public function __construct()
     {
-        $this->context = $context;
         $this->supportedFields = ['family'];
         $this->supportedOperators = ['IN', 'NOT IN'];
     }
@@ -77,9 +70,9 @@ class FamilyFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context)
     {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.id', $field);
         $value = array_map('intval', $value);

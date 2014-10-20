@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 
 /**
@@ -20,20 +19,14 @@ class OptionsFilter implements AttributeFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
-     *
-     * @param CatalogContext $context
      */
-    public function __construct(CatalogContext $context)
+    public function __construct()
     {
-        $this->context = $context;
         $this->supportedOperators = ['IN'];
     }
 
@@ -74,7 +67,7 @@ class OptionsFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = [])
     {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $this->addFieldFilter($field, $operator, $value);
 

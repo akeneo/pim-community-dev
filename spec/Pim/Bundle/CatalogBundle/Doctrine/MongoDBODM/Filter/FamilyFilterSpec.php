@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Prophecy\Argument;
 
@@ -14,11 +13,8 @@ use Prophecy\Argument;
  */
 class FamilyFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, CatalogContext $context)
+    function let(Builder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
         $this->setQueryBuilder($qb);
     }
 
@@ -42,7 +38,7 @@ class FamilyFilterSpec extends ObjectBehavior
         $qb->field('normalizedData.color-en_US.id')->willReturn($qb);
         $qb->in([1, 2])->willReturn($qb);
 
-        $this->addAttributeFilter($color, 'IN', [1, 2]);
+        $this->addAttributeFilter($color, 'IN', [1, 2], ['locale' => 'en_US']);
     }
 
     function it_adds_a_in_filter_on_a_field_in_the_query($qb)

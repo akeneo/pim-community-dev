@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
@@ -19,20 +18,14 @@ class CompletenessFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
-     *
-     * @param CatalogContext $context
      */
-    public function __construct(CatalogContext $context)
+    public function __construct()
     {
-        $this->context = $context;
         $this->supportedOperators = ['=', '<'];
     }
 
@@ -77,8 +70,8 @@ class CompletenessFilter implements FieldFilterInterface
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             'completenesses',
-            $this->context->getScopeCode(),
-            $this->context->getLocaleCode()
+            $context['scope'],
+            $context['locale']
         );
         $value = intval($value);
 

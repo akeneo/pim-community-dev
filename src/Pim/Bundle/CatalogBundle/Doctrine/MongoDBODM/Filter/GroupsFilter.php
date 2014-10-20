@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Entity filter
@@ -18,20 +17,14 @@ class GroupsFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
-     *
-     * @param CatalogContext $context
      */
-    public function __construct(CatalogContext $context)
+    public function __construct()
     {
-        $this->context = $context;
         $this->supportedOperators = ['IN', 'NOT IN'];
     }
 

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
@@ -21,9 +20,6 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedAttributes;
 
@@ -36,18 +32,15 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param CatalogContext $context
      * @param array          $supportedAttributes
      * @param array          $supportedFields
      * @param array          $supportedOperators
      */
     public function __construct(
-        CatalogContext $context,
         array $supportedAttributes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->context = $context;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
@@ -107,7 +100,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context = [])
     {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
         $this->addFieldFilter($field, $operator, $value);
 
         return $this;
