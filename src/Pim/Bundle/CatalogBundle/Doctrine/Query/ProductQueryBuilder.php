@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Builds a product query builder by using  shortcuts to easily select, filter or sort products
@@ -27,21 +29,30 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** QuerySorterRegistryInterface */
     protected $sorterRegistry;
 
+    /** @var array */
+    protected $defaultContext;
+
     /**
      * Constructor
      *
      * @param AttributeRepository          $attributeRepository
      * @param QueryFilterRegistryInterface $filterRegistry
      * @param QuerySorterRegistryInterface $sorterRegistry
+     * @param array                        $defaultContext
      */
     public function __construct(
         AttributeRepository $attributeRepository,
         QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry
+        QuerySorterRegistryInterface $sorterRegistry,
+        $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
+
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+        $this->defaultContext = $resolver->resolve($defaultContext);
     }
 
     /**
@@ -98,6 +109,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             );
         }
 
+        $context = $this->getFinalContext($context);
         if ($attribute !== null) {
             $this->addAttributeFilter($filter, $attribute, $operator, $value, $context);
         } else {
@@ -126,6 +138,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             );
         }
 
+        $context = $this->getFinalContext($context);
         if ($attribute !== null) {
             $this->addAttributeSorter($sorter, $attribute, $direction, $context);
         } else {
@@ -148,6 +161,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, $context)
     {
+        $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
         $filter->addFieldFilter($field, $operator, $value, $context);
 
@@ -172,6 +186,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $value,
         $context
     ) {
+        $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
         $filter->addAttributeFilter($attribute, $operator, $value, $context);
 
@@ -190,6 +205,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction, $context)
     {
+        $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
         $sorter->addFieldSorter($field, $direction, $context);
 
@@ -212,9 +228,35 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $direction,
         $context
     ) {
+        $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
         $sorter->addAttributeSorter($attribute, $direction, $context);
 
         return $this;
+    }
+
+    /**
+     * Merge default context with provided one
+     *
+     * @return array
+     */
+    protected function getFinalContext($context)
+    {
+        return array_merge($this->defaultContext, $context);
+    }
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    protected function configureOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(
+            [
+                'locale',
+                'scope'
+            ]
+        );
+
+        return $resolver;
     }
 }

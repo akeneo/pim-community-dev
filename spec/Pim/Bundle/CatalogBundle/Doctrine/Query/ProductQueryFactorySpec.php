@@ -32,7 +32,7 @@ class ProductQueryFactorySpec extends ObjectBehavior
         $om->getRepository(Argument::any())->willReturn($repository);
         $repository->createQueryBuilder('o')->shouldBeCalled();
 
-        $this->create();
+        $this->create(['default_locale' => 'en_US', 'default_scope' => 'print']);
     }
 
     function it_creates_a_product_query_builder_with_a_custom_repository_method($om, ProductRepository $repository)
@@ -40,6 +40,18 @@ class ProductQueryFactorySpec extends ObjectBehavior
         $om->getRepository(Argument::any())->willReturn($repository);
         $repository->createDatagridQueryBuilder(['param1'])->shouldBeCalled();
 
-        $this->create(['repository_method' => 'createDatagridQueryBuilder', 'repository_parameters' => ['param1']]);
+        $this->create(
+            [
+                'default_locale' => 'en_US',
+                'default_scope' => 'print',
+                'repository_method' => 'createDatagridQueryBuilder',
+                'repository_parameters' => ['param1']
+            ]
+        );
+    }
+
+    function it_throws_an_exception_when_creates_without_default_locale_and_scope()
+    {
+        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')->duringCreate([]);
     }
 }

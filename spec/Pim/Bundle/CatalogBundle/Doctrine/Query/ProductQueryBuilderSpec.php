@@ -17,7 +17,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 {
     function let(CustomAttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry)
     {
-        $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry);
+        $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry, ['locale' => 'en_US', 'scope' => 'print']);
         $this->setQueryBuilder('qb');
     }
 
@@ -32,7 +32,12 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $filterRegistry->getFieldFilter('id')->willReturn($filter);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $filter->addFieldFilter('id', '=', '42', [])->shouldBeCalled();
+        $filter->addFieldFilter(
+            'id',
+            '=',
+            '42',
+            ['locale' => 'en_US', 'scope' => 'print']
+        )->shouldBeCalled();
 
         $this->addFilter('id', '=', '42', []);
     }
@@ -43,7 +48,12 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $filterRegistry->getAttributeFilter($attribute)->willReturn($filter);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $filter->addAttributeFilter($attribute, '=', '42', [])->shouldBeCalled();
+        $filter->addAttributeFilter(
+            $attribute,
+            '=',
+            '42',
+            ['locale' => 'en_US', 'scope' => 'print']
+        )->shouldBeCalled();
 
         $this->addFilter('sku', '=', '42', []);
     }
@@ -53,7 +63,11 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $repository->findOneByCode('id')->willReturn(null);
         $sorterRegistry->getFieldSorter('id')->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $sorter->addFieldSorter('id', 'DESC', [])->shouldBeCalled();
+        $sorter->addFieldSorter(
+            'id',
+            'DESC',
+            ['locale' => 'en_US', 'scope' => 'print']
+        )->shouldBeCalled();
 
         $this->addSorter('id', 'DESC', []);
     }
@@ -63,7 +77,11 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $repository->findOneByCode('sku')->willReturn($attribute);
         $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $sorter->addAttributeSorter($attribute, 'DESC', [])->shouldBeCalled();
+        $sorter->addAttributeSorter(
+            $attribute,
+            'DESC',
+            ['locale' => 'en_US', 'scope' => 'print']
+        )->shouldBeCalled();
 
         $this->addSorter('sku', 'DESC', []);
     }

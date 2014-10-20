@@ -70,7 +70,11 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         $pqb = new $this->pqbClass(
             $this->attributeRepository,
             $this->filterRegistry,
-            $this->sorterRegistry
+            $this->sorterRegistry,
+            [
+                'locale' => $options['default_locale'],
+                'scope' => $options['default_scope']
+            ]
         );
 
         $repository = $this->om->getRepository($this->productClass);
@@ -88,7 +92,21 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
      */
     protected function configureOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setOptional(['repository_method', 'repository_parameters', 'currentGroup', 'product']);
+        $resolver->setRequired(
+            [
+                'default_locale',
+                'default_scope'
+            ]
+        );
+
+        $resolver->setOptional(
+            [
+                'repository_method',
+                'repository_parameters',
+                'currentGroup',
+                'product'
+            ]
+        );
         $resolver->setDefaults(
             [
                 'repository_method' => 'createQueryBuilder',
