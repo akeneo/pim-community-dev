@@ -60,7 +60,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function buildByScope($scope)
+    protected function buildByScope($scope)
     {
         $qb = $this->findAllByAttributesQB();
         $rootAlias = current($qb->getRootAliases());

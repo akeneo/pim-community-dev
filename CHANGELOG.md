@@ -49,6 +49,7 @@
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\*` and `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\*` to remove the CatalogContext
 - Remove ProductRepositoryInterface::findOneBy (still a native support for ORM)
 - Add ProductRepositoryInterface::findOneByIdentifier
+- Remove ProductRepositoryInterface::buildByScope
 
 # 1.2.x
 

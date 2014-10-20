@@ -117,14 +117,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function buildByScope($scope)
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildByChannelAndCompleteness(Channel $channel)
     {
         $qb = $this->createQueryBuilder('p');

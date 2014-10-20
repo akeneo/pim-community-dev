@@ -50,13 +50,6 @@ interface ProductRepositoryInterface
     public function findOneByWithValues($id);
 
     /**
-     * @param string $scope
-     *
-     * @return mixed
-     */
-    public function buildByScope($scope);
-
-    /**
      * @param Channel $channel
      *
      * @return mixed
