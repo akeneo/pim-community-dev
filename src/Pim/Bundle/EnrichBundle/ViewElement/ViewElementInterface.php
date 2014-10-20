@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\ViewElement;
 
 /**
- * View Element interface
+ * View element interface
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
