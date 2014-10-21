@@ -3,9 +3,10 @@
 namespace Pim\Component\Resource\Domain\Event;
 
 use Pim\Component\Resource\Domain\ResourceInterface;
+use Pim\Component\Resource\Domain\ResourceSetInterface;
 
 /**
- * Retrieve the event to linked to a resource.
+ * Retrieve the event to linked to a resource or a set of resources.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -17,19 +18,33 @@ class EventResolver
     protected $registry;
 
     /**
-     * @param ResourceInterface $resource
+     * @param ResourceInterface|ResourceSetInterface $resource
      *
      * @return ResourceEvent
      */
-    public function resolves(ResourceInterface $resource)
+    public function resolves($resource)
     {
-        foreach ($this->registry as $className => $event)
+        if ($resource instanceof ResourceInterface) {
+            $wantedEventType = get_class($resource);
+        } elseif ($resource instanceof ResourceSetInterface) {
+            $wantedEventType = $resource->getType();
+        } else {
+            throw new \InvalidArgumentException(
+                'The resolver can only handle "ResourceInterface" and "ResourceSetInterface".'
+            );
+        }
+
+        foreach ($this->registry as $eventType => $event)
         {
-            if (get_class($resource) === $className) {
+            if ($wantedEventType === $eventType) {
                 return $event;
             }
         }
 
-        return new ResourceEvent($resource);
+        if ($resource instanceof ResourceInterface) {
+            return new ResourceEvent($resource);
+        }
+
+        return new ResourceBulkEvent($resource);
     }
 }

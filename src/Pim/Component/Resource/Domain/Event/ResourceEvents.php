@@ -19,4 +19,13 @@ final class ResourceEvents
     const POST_UPDATE = 'post_update';
     const PRE_DELETE = 'pre_delete';
     const POST_DELETE = 'post_delete';
+
+    const PRE_BULK_SAVE = 'pre_bulk_save';
+    const POST_BULK_SAVE = 'post_bulk_save';
+    const PRE_BULK_CREATE = 'pre_bulk_create';
+    const POST_BULK_CREATE = 'post_bulk_create';
+    const PRE_BULK_UPDATE = 'pre_bulk_update';
+    const POST_BULK_UPDATE = 'post_bulk_update';
+    const PRE_BULK_DELETE = 'pre_bulk_delete';
+    const POST_BULK_DELETE = 'post_bulk_delete';
 }

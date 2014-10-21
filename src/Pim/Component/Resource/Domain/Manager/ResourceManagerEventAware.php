@@ -1,11 +1,11 @@
 <?php
 
-
 namespace Pim\Component\Resource\Domain\Manager;
 
 use Pim\Component\Resource\Domain\Event\EventResolver;
 use Pim\Component\Resource\Domain\Event\ResourceEvents;
 use Pim\Component\Resource\Domain\ResourceInterface;
+use Pim\Component\Resource\Domain\ResourceSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -29,13 +29,13 @@ class ResourceManagerEventAware implements ResourceManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function save(ResourceInterface $resource)
+    public function save(ResourceInterface $resource, $andFlush = true)
     {
         $this->dispatch($resource, ResourceEvents::PRE_SAVE);
         if ($resource->isNew()) {
-            $this->create($resource);
+            $this->create($resource, $andFlush);
         } else {
-            $this->update($resource);
+            $this->update($resource, $andFlush);
         }
         $this->dispatch($resource, ResourceEvents::POST_SAVE);
     }
@@ -43,22 +43,43 @@ class ResourceManagerEventAware implements ResourceManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function delete(ResourceInterface $resource)
+    public function bulkSave(ResourceSetInterface $resources, $andFlush = true)
+    {
+        $this->dispatch($resources, ResourceEvents::PRE_BULK_SAVE);
+        $this->resourceManager->bulkSave($resources, $andFlush);
+        $this->dispatch($resources, ResourceEvents::POST_BULK_SAVE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(ResourceInterface $resource, $andFlush = true)
     {
         $this->dispatch($resource, ResourceEvents::PRE_DELETE);
-        $this->resourceManager->delete($resource);
+        $this->resourceManager->delete($resource, $andFlush);
         $this->dispatch($resource, ResourceEvents::POST_DELETE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bulkDelete(ResourceSetInterface $resources, $andFlush = true)
+    {
+        $this->dispatch($resources, ResourceEvents::PRE_BULK_DELETE);
+        $this->resourceManager->bulkDelete($resources, $andFlush);
+        $this->dispatch($resources, ResourceEvents::POST_BULK_DELETE);
     }
 
     /**
      * Creates a new resource.
      *
      * @param ResourceInterface $resource
+     * @param bool              $andFlush
      */
-    protected function create(ResourceInterface $resource)
+    protected function create(ResourceInterface $resource, $andFlush = true)
     {
         $this->dispatch($resource, ResourceEvents::PRE_CREATE);
-        $this->resourceManager->save($resource);
+        $this->resourceManager->save($resource, $andFlush);
         $this->dispatch($resource, ResourceEvents::POST_CREATE);
     }
 
@@ -66,21 +87,22 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      * Updates an existing resource.
      *
      * @param ResourceInterface $resource
+     * @param bool              $andFlush
      */
-    protected function update(ResourceInterface $resource)
+    protected function update(ResourceInterface $resource, $andFlush = true)
     {
         $this->dispatch($resource, ResourceEvents::PRE_CREATE);
-        $this->resourceManager->save($resource);
+        $this->resourceManager->save($resource, $andFlush);
         $this->dispatch($resource, ResourceEvents::POST_CREATE);
     }
 
     /**
      * Dispatchs a resource event.
      *
-     * @param ResourceInterface $resource
-     * @param string            $type
+     * @param ResourceInterface|ResourceSetInterface $resource
+     * @param string                                 $type
      */
-    private function dispatch(ResourceInterface $resource, $type)
+    private function dispatch($resource, $type)
     {
         $event = $this->eventResolver->resolves($resource);
         $this->eventDispatcher->dispatch($type, $event);

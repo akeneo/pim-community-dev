@@ -5,6 +5,7 @@ namespace Pim\Component\Resource\Domain\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Component\Resource\Domain\ResourceInterface;
+use Pim\Component\Resource\Domain\ResourceSetInterface;
 
 /**
  * Base Doctrine resource manager
@@ -34,10 +35,48 @@ class ResourceManager implements ResourceManagerInterface
     /**
      * {@inheritDoc}
      */
+    public function bulkSave(ResourceSetInterface $resources, $andFlush = true)
+    {
+        if (!empty($resources)) {
+            return;
+        }
+
+        $manager = $this->getObjectManager($resources[0]);
+        foreach ($resources as $resource) {
+            $manager->persist($resource);
+        }
+
+        if ($andFlush) {
+            $manager->flush();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function delete(ResourceInterface $resource, $andFlush = true)
     {
         $manager = $this->getObjectManager($resource);
         $manager->remove($resource);
+
+        if ($andFlush) {
+            $manager->flush();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function bulkDelete(ResourceSetInterface $resources, $andFlush = true)
+    {
+        if (!empty($resources)) {
+            return;
+        }
+
+        $manager = $this->getObjectManager($resources[0]);
+        foreach ($resources as $resource) {
+            $manager->remove($resource);
+        }
 
         if ($andFlush) {
             $manager->flush();
