@@ -41,8 +41,18 @@ class ValueJoin
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
+        if ($attribute->isLocalizable() && (!isset($context['locale']) || $context['locale'] === null)) {
+            throw new \InvalidArgumentException(
+                sprintf('Cannot prepare condition on localizable attribute "%s" without locale', $attribute->getCode())
+            );
+        }
         if ($attribute->isLocalizable()) {
             $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($context['locale']);
+        }
+        if ($attribute->isScopable() && (!isset($context['scope']) || $context['scope'] === null)) {
+            throw new \InvalidArgumentException(
+                sprintf('Cannot prepare condition on scopable attribute "%s" without scope', $attribute->getCode())
+            );
         }
         if ($attribute->isScopable()) {
             $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($context['scope']);

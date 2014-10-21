@@ -1,0 +1,60 @@
+<?php
+
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Join;
+
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+
+class ValueJoinSpec extends ObjectBehavior
+{
+    function let(QueryBuilder $qb)
+    {
+        $this->beConstructedWith($qb);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin');
+    }
+
+    function it_prepares_condition_on_localizable_attribute(AbstractAttribute $name, Expr $expr, $qb)
+    {
+        $name->getId()->willReturn(42);
+        $name->isLocalizable()->willReturn(true);
+        $name->isScopable()->willReturn(false);
+        $qb->expr()->shouldBeCalled()->willReturn($expr);
+
+        $this->prepareCondition($name, 'alias', ['locale' => 'en_US']);
+    }
+
+    function it_throws_an_exception_when_the_locale_is_not_provided(AbstractAttribute $name)
+    {
+        $name->getId()->willReturn(42);
+        $name->isLocalizable()->willReturn(true);
+        $name->isScopable()->willReturn(false);
+        $name->getCode()->willReturn('name');
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringPrepareCondition($name, 'alias', []);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringPrepareCondition($name, 'alias', ['locale' => null]);
+    }
+
+    function it_throws_an_exception_when_the_scope_is_not_provided(AbstractAttribute $price)
+    {
+        $price->getId()->willReturn(42);
+        $price->isLocalizable()->willReturn(false);
+        $price->isScopable()->willReturn(true);
+        $price->getCode()->willReturn('price');
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringPrepareCondition($price, 'alias', []);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringPrepareCondition($price, 'alias', ['scope' => null]);
+    }
+}
