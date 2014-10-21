@@ -55,7 +55,7 @@
 - Move CatalogBundle/Doctrine/ORM/CompletenessJoin and CatalogBundle/Doctrine/ORM/ValueJoin to CatalogBundle/Doctrine/ORM/Join
 - Move CatalogBundle/Doctrine/ORM/CriteriaCondition to CatalogBundle/Doctrine/ORM/Condition
 
-# 1.2.x
+# 1.2.9 (2014-10-17)
 
 ## Bug fixes
 - PIM-3221: Fix the possibility to update attributes on variant groups during import
