@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -54,6 +55,9 @@ class JobProfileController extends AbstractDoctrineController
 
     /** @var JobInstanceFactory */
     protected $jobInstanceFactory;
+
+    /** @var ConstraintViolationListInterface  */
+    protected $fileError;
 
     /**
      * Constructor
@@ -311,7 +315,13 @@ class JobProfileController extends AbstractDoctrineController
 
         $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
 
-        if ($uploadMode === true || $violations->count() === 0) {
+        $fileErrorCount = 0;
+
+        if ($this->fileError instanceof ConstraintViolationListInterface) {
+            $fileErrorCount = $this->fileError->count();
+        }
+
+        if ($uploadMode === true || $violations->count() === 0 && $fileErrorCount === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
             $manager = $this->getDoctrine()->getManagerForClass(get_class($jobExecution));
@@ -395,10 +405,10 @@ class JobProfileController extends AbstractDoctrineController
 
                 if ($reader instanceof UploadedFileAwareInterface) {
                     $constraints = $reader->getUploadedFileConstraints();
-                    $errors = $this->getValidator()->validateValue($file, $constraints);
+                    $this->fileError = $this->getValidator()->validateValue($file, $constraints);
 
-                    if ($errors->count() !== 0) {
-                        foreach ($errors as $error) {
+                    if ($this->fileError->count() !== 0) {
+                        foreach ($this->fileError as $error) {
                             $this->addFlash('error', $error->getMessage());
                         }
 
