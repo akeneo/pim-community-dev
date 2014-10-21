@@ -34,4 +34,17 @@ class CompletenessSorterSpec extends ObjectBehavior
 
         $this->addFieldSorter('completenesses', 'desc', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
+
+    function it_throws_an_exception_when_the_locale_and_scope_are_not_provided(Builder $queryBuilder)
+    {
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldSorter('completeness', 'desc', []);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldSorter('completeness', 'desc', ['locale' => null, 'scope' => 'ecommerce']);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldSorter('completeness', 100, ['locale' => 'fr_FR', 'scope' => null]);
+    }
 }

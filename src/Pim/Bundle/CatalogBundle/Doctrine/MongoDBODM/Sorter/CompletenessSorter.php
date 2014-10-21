@@ -39,6 +39,14 @@ class CompletenessSorter implements FieldSorterInterface
      */
     public function addFieldSorter($field, $direction, $context = [])
     {
+        $providedLocale = isset($context['locale']) && $context['locale'] !== null;
+        $providedScope = isset($context['scope']) && $context['scope'] !== null;
+        if (!$providedLocale || !$providedScope) {
+            throw new \InvalidArgumentException(
+                'Cannot prepare condition on completenesses without locale and scope'
+            );
+        }
+
         $field = sprintf(
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
