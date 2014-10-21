@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\ViewElement\Tab;
 
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
 
 /**
  * Tab interface
@@ -30,4 +31,22 @@ interface TabInterface extends ViewElementInterface
      * @return boolean
      */
     public function isVisible(array $context = []);
+
+    /**
+     * Add a new visibility checker to the object
+     *
+     * @param VisibilityCheckerInterface $checker
+     *
+     * @return TabInterface
+     */
+    public function addVisibilityChecker(VisibilityCheckerInterface $checker);
+
+    /**
+     * Set the visibility checkers to the object
+     *
+     * @param array $checkers
+     *
+     * @return TabInterface
+     */
+    public function setVisibilityCheckers(array $checkers);
 }

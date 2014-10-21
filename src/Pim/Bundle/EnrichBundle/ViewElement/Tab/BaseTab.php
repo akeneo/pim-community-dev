@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\ViewElement\Tab;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
 
 /**
  * Simple tab rendering a template
@@ -22,6 +23,9 @@ class BaseTab implements TabInterface
     /** @var string */
     protected $title;
 
+    /** @var VisibilityCheckerInterface[] */
+    protected $visibilityCheckers;
+
     /**
      * @param EngineInterface $templating
      * @param string          $template
@@ -29,9 +33,10 @@ class BaseTab implements TabInterface
      */
     public function __construct(EngineInterface $templating, $template, $title)
     {
-        $this->templating = $templating;
-        $this->template   = $template;
-        $this->title      = $title;
+        $this->templating         = $templating;
+        $this->template           = $template;
+        $this->title              = $title;
+        $this->visibilityCheckers = [];
     }
 
     /**
@@ -56,7 +61,34 @@ class BaseTab implements TabInterface
      */
     public function isVisible(array $context = [])
     {
+        foreach ($this->visibilityCheckers as $checker) {
+            if (false === $checker->isVisible($context)) {
+                return false;
+            }
+        }
+
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addVisibilityChecker(VisibilityCheckerInterface $checker, array $context = [])
+    {
+        $checker->setContext($context);
+        $this->visibilityCheckers[] = $checker;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setVisibilityCheckers(array $checkers)
+    {
+        $this->visibilityCheckers = $checkers;
+
+        return $this;
     }
 
     /**

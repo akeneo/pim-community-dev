@@ -11,15 +11,12 @@ services:
         tags:
             - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_category_edit}
 
-    pim_enrich.view_element.tab.category_history_base:
+    pim_enrich.view_element.tab.category_history:
         parent: pim_enrich.view_element.tab.base
         arguments:
             - %pim_enrich.view_element.tab.category_history.template%
             - 'tab.pim_enrich_category_edit.history'
-
-    pim_enrich.view_element.tab.category_history:
-        parent: pim_enrich.view_element.tab.on_form_edit
-        arguments:
-            - @pim_enrich.view_element.tab.category_history_base
+        calls:
+            - [addVisibilityChecker, [@pim_enrich.view_element.visibility_checker.form_edit]]
         tags:
             - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_category_edit}

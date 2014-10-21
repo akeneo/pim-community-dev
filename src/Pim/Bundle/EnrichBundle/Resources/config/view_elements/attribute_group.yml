@@ -12,27 +12,22 @@ services:
         tags:
             - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_attributegroup_edit}
 
-    pim_enrich.view_element.tab.attributegroup_attribute_base:
+    pim_enrich.view_element.tab.attributegroup_attribute:
         parent: pim_enrich.view_element.tab.base
         arguments:
             - %pim_enrich.view_element.tab.attributegroup_attribute.template%
             - 'tab.pim_enrich_attributegroup_edit.attribute'
-    pim_enrich.view_element.tab.attributegroup_attribute:
-        parent: pim_enrich.view_element.tab.on_form_edit
-        arguments:
-            - @pim_enrich.view_element.tab.attributegroup_attribute_base
+        calls:
+            - [addVisibilityChecker, [@pim_enrich.view_element.visibility_checker.form_edit]]
         tags:
             - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_attributegroup_edit}
 
-    pim_enrich.view_element.tab.attributegroup_history_base:
+    pim_enrich.view_element.tab.attributegroup_history:
         parent: pim_enrich.view_element.tab.base
         arguments:
             - %pim_enrich.view_element.tab.attributegroup_history.template%
             - 'tab.pim_enrich_attributegroup_edit.history'
-
-    pim_enrich.view_element.tab.attributegroup_history:
-        parent: pim_enrich.view_element.tab.on_form_edit
-        arguments:
-            - @pim_enrich.view_element.tab.attributegroup_history_base
+        calls:
+            - [addVisibilityChecker, [@pim_enrich.view_element.visibility_checker.form_edit]]
         tags:
             - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_attributegroup_edit}
