@@ -42,4 +42,17 @@ class CompletenessFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter('completenesses', '<', '100', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
+
+    function it_throws_an_exception_when_the_locale_and_scope_are_not_provided(Builder $queryBuilder)
+    {
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldFilter($queryBuilder, '=', 100, []);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldFilter($queryBuilder, '=', 100, ['locale' => null, 'scope' => 'ecommerce']);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldFilter($queryBuilder, '=', 100, ['locale' => 'fr_FR', 'scope' => null]);
+    }
 }
