@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -16,7 +16,7 @@ class CriteriaConditionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition');
     }
 
     function it_throws_an_exception_when_the_value_is_invalid_for_the_operator()
