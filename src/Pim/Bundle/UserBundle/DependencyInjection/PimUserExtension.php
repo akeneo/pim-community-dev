@@ -32,6 +32,5 @@ class PimUserExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('form.yml');
         $loader->load('datagrid_listeners.yml');
-        $loader->load('form.yml');
     }
 }
