@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
 class MetricSorterSpec extends ObjectBehavior
@@ -24,7 +24,7 @@ class MetricSorterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface');
     }
 
-    function it_supports_metric_attribute(AbstractAttribute $metric)
+    function it_supports_metric_attribute(AttributeInterface $metric)
     {
         $metric->getAttributeType()->willReturn('pim_catalog_metric');
         $this->supportsAttribute($metric)->shouldReturn(true);
@@ -33,7 +33,7 @@ class MetricSorterSpec extends ObjectBehavior
         $this->supportsAttribute($metric)->shouldReturn(false);
     }
 
-    function it_adds_a_sorter_to_the_query($qb, AbstractAttribute $metric)
+    function it_adds_a_sorter_to_the_query($qb, AttributeInterface $metric)
     {
         $metric->getId()->willReturn(42);
         $metric->getCode()->willReturn('metric_code');

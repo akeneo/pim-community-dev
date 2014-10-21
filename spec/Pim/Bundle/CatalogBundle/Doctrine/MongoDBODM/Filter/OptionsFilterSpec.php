@@ -6,7 +6,7 @@ use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
 /**
@@ -34,7 +34,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_supports_multi_select_attribute(AbstractAttribute $attribute)
+    function it_supports_multi_select_attribute(AttributeInterface $attribute)
     {
         $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
         $this->supportsAttribute($attribute)->shouldReturn(true);
@@ -43,7 +43,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_an_in_filter_to_the_query($qb, AbstractAttribute $attribute, Expr $expr)
+    function it_adds_an_in_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
     {
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -58,7 +58,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['118', '270']);
     }
 
-    function it_adds_an_empty_filter_to_the_query($qb, AbstractAttribute $attribute, Expr $expr)
+    function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
     {
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -73,7 +73,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['empty']);
     }
 
-    function it_adds_an_empty_filter_and_another_filter_to_the_query($qb, AbstractAttribute $attribute, Expr $expr)
+    function it_adds_an_empty_filter_and_another_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
     {
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -91,7 +91,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['empty', '118', '270']);
     }
 
-    function it_adds_a_not_in_filter_to_the_query($qb, AbstractAttribute $attribute, Expr $expr)
+    function it_adds_a_not_in_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
     {
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);

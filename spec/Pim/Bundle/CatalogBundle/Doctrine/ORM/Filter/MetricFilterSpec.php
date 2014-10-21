@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
 class MetricFilterSpec extends ObjectBehavior
@@ -27,7 +27,7 @@ class MetricFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_supports_metric_attribute(AbstractAttribute $attribute)
+    function it_supports_metric_attribute(AttributeInterface $attribute)
     {
         $attribute->getAttributeType()->willReturn('pim_catalog_metric');
         $this->supportsAttribute($attribute)->shouldReturn(true);
@@ -36,7 +36,7 @@ class MetricFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_a_filter_to_the_query($qb, AbstractAttribute $attribute)
+    function it_adds_a_filter_to_the_query($qb, AttributeInterface $attribute)
     {
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
@@ -61,7 +61,7 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, '=', 'my_value');
     }
 
-    function it_adds_an_empty_filter_to_the_query($qb, AbstractAttribute $attribute)
+    function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute)
     {
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);

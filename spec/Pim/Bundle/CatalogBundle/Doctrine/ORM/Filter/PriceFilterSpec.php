@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr\Comparison;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class PriceFilterSpec extends ObjectBehavior
@@ -31,7 +31,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_equals_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_equals_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
     {
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
@@ -51,7 +51,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '=', '12 EUR');
     }
 
-    function it_adds_a_greater_than_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_greater_than_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
     {
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
@@ -71,7 +71,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '>', '12 EUR');
     }
 
-    function it_adds_a_greater_than_or_equals_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_greater_than_or_equals_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
     {
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
@@ -91,7 +91,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '>=', '12 EUR');
     }
 
-    function it_adds_a_less_than_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_less_than_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
     {
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
@@ -111,7 +111,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '<', '12 EUR');
     }
 
-    function it_adds_a_less_than_or_equals_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_less_than_or_equals_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
     {
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
@@ -131,13 +131,13 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '<=', '12 EUR');
     }
 
-    function it_checks_if_attribute_is_supported(AbstractAttribute $attribute)
+    function it_checks_if_attribute_is_supported(AttributeInterface $attribute)
     {
         $attribute->getAttributeType()->shouldBeCalled()->willReturn('pim_catalog_price_collection');
         $this->supportsAttribute($attribute)->shouldReturn(true);
     }
 
-    function it_adds_an_empty_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $price, Expr $expr, Comparison $comparison)
+    function it_adds_an_empty_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price, Expr $expr, Comparison $comparison)
     {
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');

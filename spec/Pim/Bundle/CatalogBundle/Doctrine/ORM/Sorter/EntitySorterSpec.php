@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
 class EntitySorterSpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class EntitySorterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface');
     }
 
-    function it_supports_select_attributes(AbstractAttribute $entity)
+    function it_supports_select_attributes(AttributeInterface $entity)
     {
         $entity->getAttributeType()->willReturn('pim_catalog_multiselect');
         $this->supportsAttribute($entity)->shouldReturn(true);
@@ -37,7 +37,7 @@ class EntitySorterSpec extends ObjectBehavior
         $this->supportsAttribute($entity)->shouldReturn(false);
     }
 
-    function it_adds_a_sorter_to_the_query($qb, AbstractAttribute $entity, Expr $expr)
+    function it_adds_a_sorter_to_the_query($qb, AttributeInterface $entity, Expr $expr)
     {
         $entity->getId()->willReturn('42');
         $entity->getCode()->willReturn('entity_code');

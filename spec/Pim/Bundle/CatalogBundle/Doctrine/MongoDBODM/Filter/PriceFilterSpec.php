@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -28,7 +28,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -39,7 +39,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '=', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_greater_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_greater_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -50,7 +50,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '>', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_greater_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_greater_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -61,7 +61,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '>=', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -72,7 +72,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '<', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);

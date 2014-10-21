@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Join;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Join utils class
@@ -31,13 +31,13 @@ class ValueJoin
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
-     * @param array             $context   the join context used for locale and scope
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the join context used for locale and scope
      *
      * @return string
      */
-    public function prepareCondition(AbstractAttribute $attribute, $joinAlias, $context)
+    public function prepareCondition(AttributeInterface $attribute, $joinAlias, $context)
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 

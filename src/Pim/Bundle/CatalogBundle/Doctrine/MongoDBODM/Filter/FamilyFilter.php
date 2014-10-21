@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
@@ -65,20 +64,6 @@ class FamilyFilter implements FieldFilterInterface
     public function getOperators()
     {
         return $this->supportedOperators;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value, $context)
-    {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $field = sprintf('%s.id', $field);
-        $value = array_map('intval', $value);
-        $this->qb->field($field)->in($value);
-
-        return $this;
     }
 
     /**

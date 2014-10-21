@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
@@ -42,7 +42,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addFilter('id', '=', '42', []);
     }
 
-    function it_adds_an_attribute_filter($repository, $filterRegistry, AttributeFilterInterface $filter, AbstractAttribute $attribute)
+    function it_adds_an_attribute_filter($repository, $filterRegistry, AttributeFilterInterface $filter, AttributeInterface $attribute)
     {
         $repository->findOneByCode('sku')->willReturn($attribute);
         $filterRegistry->getAttributeFilter($attribute)->willReturn($filter);
@@ -72,7 +72,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addSorter('id', 'DESC', []);
     }
 
-    function it_adds_an_attribute_sorter($repository, $sorterRegistry, AttributeSorterInterface $sorter, AbstractAttribute $attribute)
+    function it_adds_an_attribute_sorter($repository, $sorterRegistry, AttributeSorterInterface $sorter, AttributeInterface $attribute)
     {
         $repository->findOneByCode('sku')->willReturn($attribute);
         $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);

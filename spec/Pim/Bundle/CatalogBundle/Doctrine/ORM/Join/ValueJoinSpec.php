@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class ValueJoinSpec extends ObjectBehavior
 {
@@ -20,7 +20,7 @@ class ValueJoinSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin');
     }
 
-    function it_prepares_condition_on_localizable_attribute(AbstractAttribute $name, Expr $expr, $qb)
+    function it_prepares_condition_on_localizable_attribute(AttributeInterface $name, Expr $expr, $qb)
     {
         $name->getId()->willReturn(42);
         $name->isLocalizable()->willReturn(true);
@@ -30,7 +30,7 @@ class ValueJoinSpec extends ObjectBehavior
         $this->prepareCondition($name, 'alias', ['locale' => 'en_US']);
     }
 
-    function it_throws_an_exception_when_the_locale_is_not_provided(AbstractAttribute $name)
+    function it_throws_an_exception_when_the_locale_is_not_provided(AttributeInterface $name)
     {
         $name->getId()->willReturn(42);
         $name->isLocalizable()->willReturn(true);
@@ -44,7 +44,7 @@ class ValueJoinSpec extends ObjectBehavior
             ->duringPrepareCondition($name, 'alias', ['locale' => null]);
     }
 
-    function it_throws_an_exception_when_the_scope_is_not_provided(AbstractAttribute $price)
+    function it_throws_an_exception_when_the_scope_is_not_provided(AttributeInterface $price)
     {
         $price->getId()->willReturn(42);
         $price->isLocalizable()->willReturn(false);
