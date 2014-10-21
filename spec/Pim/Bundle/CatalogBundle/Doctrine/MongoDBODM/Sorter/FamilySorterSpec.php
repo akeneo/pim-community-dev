@@ -35,4 +35,14 @@ class FamilySorterSpec extends ObjectBehavior
 
         $this->addFieldSorter('family', 'desc', ['locale' => 'en_US']);
     }
+
+    function it_throws_an_exception_when_the_locale_is_not_provided(Builder $queryBuilder)
+    {
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldSorter('family', 'desc', []);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldSorter('family', 'desc', ['locale' => null, 'scope' => 'ecommerce']);
+    }
 }
