@@ -10,6 +10,9 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ *
+ *
+ * TODO: DELETE IT
  */
 class GrantedTab implements TabInterface
 {
@@ -60,4 +63,30 @@ class GrantedTab implements TabInterface
     {
         return $this->securityFacade->isGranted($this->acl) && $this->tab->isVisible($context);
     }
+
+    /**
+     * Add a new visibility checker to the object
+     *
+     * @param TabVisibilityCheckerInterface $checker
+     *
+     * @return TabInterface
+     */
+    public function addVisibilityChecker(TabVisibilityCheckerInterface $checker)
+    {
+        // TODO: Implement addVisibilityChecker() method.
+    }
+
+    /**
+     * Set the visibility checkers to the object
+     *
+     * @param array $checkers
+     *
+     * @return TabInterface
+     */
+    public function setVisibilityCheckers(array $checkers)
+    {
+        // TODO: Implement setVisibilityCheckers() method.
+    }
+
+
 }

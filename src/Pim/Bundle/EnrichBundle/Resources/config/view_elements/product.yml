@@ -6,17 +6,20 @@ parameters:
     pim_enrich.view_element.tab.product_history.template:      'PimEnrichBundle:Product:Tab/history.html.twig'
 
 services:
-    pim_enrich.view_element.tab.product_attribute_base:
+#    pim_enrich.view_element.tab.product_attribute_base:
+#        parent: pim_enrich.view_element.tab.base
+#        arguments:
+#            - %pim_enrich.view_element.tab.product_attribute.template%
+#            - 'tab.pim_enrich_product_edit.attribute'
+
+
+    pim_enrich.view_element.tab.product_attribute:
         parent: pim_enrich.view_element.tab.base
         arguments:
             - %pim_enrich.view_element.tab.product_attribute.template%
             - 'tab.pim_enrich_product_edit.attribute'
-
-    pim_enrich.view_element.tab.product_attribute:
-        parent: pim_enrich.view_element.tab.granted
-        arguments:
-            - @pim_enrich.view_element.tab.product_attribute_base
-            - 'pim_enrich_product_edit_attributes'
+        calls:
+            - [addVisibilityChecker, [@pim_enrich.view_element.visibility_checker.acl, {acl: 'pim_enrich_product_edit_attributes'}]]
         tags:
             - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_product_edit}
 
