@@ -59,6 +59,7 @@
 
 ## Bug fixes
 - PIM-3221: Fix the possibility to update attributes on variant groups during import
+- PIM-3283: Fix issue on the password reset
 
 # 1.2.9 (2014-10-17)
 
