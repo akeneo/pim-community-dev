@@ -24,7 +24,7 @@ interface ProductQueryBuilderInterface
      *
      * @return ProductQueryBuilderInterface
      */
-    public function addFilter($field, $operator, $value, $context = []);
+    public function addFilter($field, $operator, $value, array $context = []);
 
     /**
      * Sort by field
@@ -37,5 +37,5 @@ interface ProductQueryBuilderInterface
      *
      * @return ProductQueryBuilderInterface
      */
-    public function addSorter($field, $direction, $context = []);
+    public function addSorter($field, $direction, array $context = []);
 }

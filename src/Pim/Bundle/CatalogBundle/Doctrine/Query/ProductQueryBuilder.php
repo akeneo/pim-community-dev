@@ -87,7 +87,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addFilter($field, $operator, $value, $context = [])
+    public function addFilter($field, $operator, $value, array $context = [])
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
 
@@ -122,7 +122,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addSorter($field, $direction, $context = [])
+    public function addSorter($field, $direction, array $context = [])
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
 
@@ -159,7 +159,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, $context)
+    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, array $context)
     {
         $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
@@ -184,7 +184,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         AttributeInterface $attribute,
         $operator,
         $value,
-        $context
+        array $context
     ) {
         $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
@@ -203,7 +203,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction, $context)
+    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction, array $context)
     {
         $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
@@ -226,7 +226,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute,
         $direction,
-        $context
+        array $context
     ) {
         $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
@@ -238,9 +238,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Merge default context with provided one
      *
+     * @param array $context
+     *
      * @return array
      */
-    protected function getFinalContext($context)
+    protected function getFinalContext(array $context)
     {
         return array_merge($this->defaultContext, $context);
     }
