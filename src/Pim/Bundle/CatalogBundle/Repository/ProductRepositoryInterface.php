@@ -128,4 +128,11 @@ interface ProductRepositoryInterface
      * @return ProductInterface|null
      */
     public function findOneByIdentifier($identifier);
+
+    /**
+     * @param string $id
+     *
+     * @return ProductInterface|null
+     */
+    public function findOneById($id);
 }
