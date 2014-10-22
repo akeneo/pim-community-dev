@@ -41,8 +41,7 @@ class ValueJoin
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
-        $providedLocale = isset($context['locale']) && $context['locale'] !== null;
-        if ($attribute->isLocalizable() && !$providedLocale) {
+        if ($attribute->isLocalizable() && !isset($context['locale'])) {
             throw new \InvalidArgumentException(
                 sprintf('Cannot prepare condition on localizable attribute "%s" without locale', $attribute->getCode())
             );
@@ -51,8 +50,7 @@ class ValueJoin
             $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($context['locale']);
         }
 
-        $providedScope = isset($context['scope']) && $context['scope'] !== null;
-        if ($attribute->isScopable() && !$providedScope) {
+        if ($attribute->isScopable() && !isset($context['scope'])) {
             throw new \InvalidArgumentException(
                 sprintf('Cannot prepare condition on scopable attribute "%s" without scope', $attribute->getCode())
             );

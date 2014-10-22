@@ -39,8 +39,7 @@ class FamilySorter implements FieldSorterInterface
      */
     public function addFieldSorter($field, $direction, array $context = [])
     {
-        $providedLocale = isset($context['locale']) && $context['locale'] !== null;
-        if (!$providedLocale) {
+        if (!isset($context['locale'])) {
             throw new \InvalidArgumentException(
                 'Cannot prepare condition on family sorter without locale'
             );

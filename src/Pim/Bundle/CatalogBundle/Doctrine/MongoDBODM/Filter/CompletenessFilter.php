@@ -66,9 +66,7 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, array $context = [])
     {
-        $providedLocale = isset($context['locale']) && $context['locale'] !== null;
-        $providedScope = isset($context['scope']) && $context['scope'] !== null;
-        if (!$providedLocale || !$providedScope) {
+        if (!isset($context['locale']) || !isset($context['scope'])) {
             throw new \InvalidArgumentException(
                 'Cannot prepare condition on completenesses without locale and scope'
             );
