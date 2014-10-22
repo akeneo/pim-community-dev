@@ -130,7 +130,7 @@ interface ProductRepositoryInterface
     public function findOneByIdentifier($identifier);
 
     /**
-     * @param string $id
+     * @param string|integer $id
      *
      * @return ProductInterface|null
      */
