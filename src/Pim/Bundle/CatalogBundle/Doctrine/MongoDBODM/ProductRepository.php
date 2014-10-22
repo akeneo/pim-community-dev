@@ -102,6 +102,19 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findOneById($id)
+    {
+        $pqb = $this->productQueryFactory->create();
+        $pqb->addFilter('id', '=', $id);
+        $qb = $pqb->getQueryBuilder();
+        $result = $qb->getQuery()->execute();
+
+        return $result->getNext();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildByChannelAndCompleteness(Channel $channel)
     {
         $qb = $this->createQueryBuilder('p');
