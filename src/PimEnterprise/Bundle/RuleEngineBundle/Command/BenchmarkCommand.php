@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Command;
 
+use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
-use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * Command to benchmark the rule system
