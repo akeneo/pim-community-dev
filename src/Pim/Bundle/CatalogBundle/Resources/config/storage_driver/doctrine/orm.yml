@@ -180,6 +180,9 @@ services:
 
     pim_catalog.doctrine.query.filter.option:
         class: %pim_catalog.doctrine.query.filter.option.class%
+        arguments:
+            - 'pim_catalog_simpleselect'
+            - ['IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
