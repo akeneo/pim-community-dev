@@ -36,7 +36,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $record->getValue('id')->willReturn(42);
         $record->getValue('dataLocale')->willReturn('en_US');
         $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
-        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+        $productRepository->findOneById(42)->willReturn($product);
 
         $this->beConstructedWith($registry, $securityContext, $productRepository, $localeRepository);
     }

@@ -12,7 +12,6 @@ services:
     pim_catalog.doctrine.query.filter.original_product_id:
         class: %pim_catalog.doctrine.query.filter.base.class%
         arguments:
-            - @pim_catalog.context.catalog
             - []
             - ['originalProduct']
             - ['=', 'IN']
