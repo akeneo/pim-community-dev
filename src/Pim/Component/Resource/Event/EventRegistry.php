@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Resource\Domain\Event;
+namespace Pim\Component\Resource\Event;
 
 /**
  * Event registry.
@@ -33,7 +33,7 @@ class EventRegistry
     {
         if ($event instanceof ResourceEventInterface) {
             $key  = get_class($event->getResource());
-        } elseif($event instanceof ResourceBulkEventInterface) {
+        } elseif ($event instanceof ResourceBulkEventInterface) {
             $key  = self::BULK_PREFIX . $event->getResources()->getType();
         } else {
             throw new \InvalidArgumentException(

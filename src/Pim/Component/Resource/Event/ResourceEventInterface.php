@@ -1,20 +1,20 @@
 <?php
 
-namespace Pim\Component\Resource\Domain;
+namespace Pim\Component\Resource\Event;
+
+use Pim\Component\Resource\ResourceInterface;
 
 /**
- * Resource interface
+ * Default resource event interface
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ResourceInterface
+interface ResourceEventInterface
 {
     /**
-     * Determines if a resource is new or not.
-     *
-     * @return bool
+     * @return ResourceInterface
      */
-    public function isNew();
+    public function getResource();
 }

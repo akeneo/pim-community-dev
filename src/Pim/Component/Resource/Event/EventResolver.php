@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Resource\Domain\Event;
+namespace Pim\Component\Resource\Event;
 
-use Pim\Component\Resource\Domain\ResourceInterface;
-use Pim\Component\Resource\Domain\ResourceSetInterface;
+use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\ResourceSetInterface;
 
 /**
  * Retrieve the event to linked to a resource or a set of resources.

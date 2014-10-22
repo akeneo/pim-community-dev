@@ -1,10 +1,9 @@
 <?php
 
+namespace Pim\Component\Resource\Manager;
 
-namespace Pim\Component\Resource\Domain\Manager;
-
-use Pim\Component\Resource\Domain\ResourceInterface;
-use Pim\Component\Resource\Domain\ResourceSetInterface;
+use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\ResourceSetInterface;
 
 /**
  * Resource manager interface
@@ -37,7 +36,7 @@ interface ResourceManagerInterface
      * large collection of resources before proceeding to a bulk operation.
      *
      * @param ResourceSetInterface $resources
-     * @param bool              $andFlush
+     * @param bool                 $andFlush
      */
     public function bulkSave(ResourceSetInterface $resources, $andFlush = true);
 
@@ -47,7 +46,7 @@ interface ResourceManagerInterface
      * large collection of resources before proceeding to a bulk operation.
      *
      * @param ResourceSetInterface $resources
-     * @param bool              $andFlush
+     * @param bool                 $andFlush
      */
     public function bulkDelete(ResourceSetInterface $resources, $andFlush = true);
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Resource\Domain\Event;
+namespace Pim\Component\Resource\Event;
 
 /**
  * Resource events types that can be dispatched.

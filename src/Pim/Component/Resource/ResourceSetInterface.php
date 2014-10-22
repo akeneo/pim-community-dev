@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Pim\Component\Resource\Domain;
+namespace Pim\Component\Resource;
 
 /**
  * Resource set interface

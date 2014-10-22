@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Component\Resource\Domain\Manager;
+namespace Pim\Component\Resource\Manager;
 
-use Pim\Component\Resource\Domain\Event\EventResolver;
-use Pim\Component\Resource\Domain\Event\ResourceEvents;
-use Pim\Component\Resource\Domain\ResourceInterface;
-use Pim\Component\Resource\Domain\ResourceSetInterface;
+use Pim\Component\Resource\Event\EventResolver;
+use Pim\Component\Resource\Event\ResourceEvents;
+use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\ResourceSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

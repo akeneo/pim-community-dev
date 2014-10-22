@@ -5,9 +5,9 @@ namespace Pim\Bundle\ResourceBundle\Doctrine;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Resource\Domain\Manager\ResourceManagerInterface;
-use Pim\Component\Resource\Domain\ResourceInterface;
-use Pim\Component\Resource\Domain\ResourceSetInterface;
+use Pim\Component\Resource\Manager\ResourceManagerInterface;
+use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\ResourceSetInterface;
 
 /**
  * Base Doctrine resource manager
