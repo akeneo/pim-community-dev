@@ -17,9 +17,9 @@ interface AttributeFilterInterface extends FilterInterface
      * Add an attribute to filter
      *
      * @param AttributeInterface $attribute the attribute
-     * @param string            $operator  the used operator
-     * @param string|array      $value     the value(s) to filter
-     * @param array             $context   the filter context, used for locale and scope
+     * @param string             $operator  the used operator
+     * @param string|array       $value     the value(s) to filter
+     * @param array              $context   the filter context, used for locale and scope
      *
      * @return AttributeFilterInterface
      */

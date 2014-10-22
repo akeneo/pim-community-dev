@@ -17,8 +17,8 @@ interface AttributeSorterInterface extends SorterInterface
      * Sort by attribute value
      *
      * @param AttributeInterface $attribute the attribute to sort on
-     * @param string            $direction the direction to use
-     * @param array             $context   the sorter context, used for locale and scope
+     * @param string             $direction the direction to use
+     * @param array              $context   the sorter context, used for locale and scope
      *
      * @return AttributeSorterInterface
      */

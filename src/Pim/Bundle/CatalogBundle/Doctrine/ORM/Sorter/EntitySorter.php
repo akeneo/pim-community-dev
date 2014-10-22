@@ -35,7 +35,6 @@ class EntitySorter implements AttributeSorterInterface
         return in_array(
             $attribute->getAttributeType(),
             [
-                'pim_catalog_multiselect', // TODO : to disable, not make sense on a many relation
                 'pim_catalog_simpleselect'
             ]
         );
@@ -49,6 +48,12 @@ class EntitySorter implements AttributeSorterInterface
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
+
+        if (!isset($context['locale'])) {
+            throw new \InvalidArgumentException(
+                sprintf('Cannot prepare condition on type "%s" without locale', $attribute->getAttributeType())
+            );
+        }
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
@@ -81,8 +86,8 @@ class EntitySorter implements AttributeSorterInterface
      * Prepare join to attribute condition with current locale and scope criterias
      *
      * @param AttributeInterface $attribute the attribute
-     * @param string            $joinAlias the value join alias
-     * @param array             $context   the context
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the context
      *
      * @throws ProductQueryException
      *

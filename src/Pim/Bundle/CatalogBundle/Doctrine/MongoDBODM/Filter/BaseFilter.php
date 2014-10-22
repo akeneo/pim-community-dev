@@ -32,9 +32,9 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param array          $supportedAttributes
-     * @param array          $supportedFields
-     * @param array          $supportedOperators
+     * @param array $supportedAttributes
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
     public function __construct(
         array $supportedAttributes = [],

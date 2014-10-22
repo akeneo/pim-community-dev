@@ -136,8 +136,8 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      * Prepare join to attribute condition with current locale and scope criterias
      *
      * @param AttributeInterface $attribute the attribute
-     * @param string            $joinAlias the value join alias
-     * @param array             $context   the context
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the context
      *
      * @throws ProductQueryException
      *

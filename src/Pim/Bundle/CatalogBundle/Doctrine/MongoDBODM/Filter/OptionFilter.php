@@ -29,8 +29,8 @@ class OptionFilter implements AttributeFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param array          $supportedAttributes
-     * @param array          $supportedOperators
+     * @param array $supportedAttributes
+     * @param array $supportedOperators
      */
     public function __construct(
         array $supportedAttributes = [],

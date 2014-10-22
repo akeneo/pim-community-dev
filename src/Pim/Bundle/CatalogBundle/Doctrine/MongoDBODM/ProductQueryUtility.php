@@ -27,7 +27,7 @@ class ProductQueryUtility
      * Normalize the field name from attribute and catalog context
      *
      * @param AttributeInterface $attribute
-     * @param array             $context
+     * @param array              $context
      *
      * @return string
      */

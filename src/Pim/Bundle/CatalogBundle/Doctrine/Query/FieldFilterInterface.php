@@ -17,7 +17,7 @@ interface FieldFilterInterface extends FilterInterface
      * @param string       $field    the field
      * @param string|array $operator the used operator
      * @param string|array $value    the value(s) to filter
-     * @param array        $context   the filter context, used for locale and scope
+     * @param array        $context  the filter context, used for locale and scope
      *
      * @return FieldFilterInterface
      */

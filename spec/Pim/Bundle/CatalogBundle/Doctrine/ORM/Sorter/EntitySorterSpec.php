@@ -25,25 +25,22 @@ class EntitySorterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface');
     }
 
-    function it_supports_select_attributes(AttributeInterface $entity)
+    function it_supports_select_attributes(AttributeInterface $attribute)
     {
-        $entity->getAttributeType()->willReturn('pim_catalog_multiselect');
-        $this->supportsAttribute($entity)->shouldReturn(true);
+        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $this->supportsAttribute($attribute)->shouldReturn(true);
 
-        $entity->getAttributeType()->willReturn('pim_catalog_simpleselect');
-        $this->supportsAttribute($entity)->shouldReturn(true);
-
-        $entity->getAttributeType()->willReturn(Argument::any());
-        $this->supportsAttribute($entity)->shouldReturn(false);
+        $attribute->getAttributeType()->willReturn(Argument::any());
+        $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_a_sorter_to_the_query($qb, AttributeInterface $entity, Expr $expr)
+    function it_adds_a_sorter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
     {
-        $entity->getId()->willReturn('42');
-        $entity->getCode()->willReturn('entity_code');
-        $entity->isLocalizable()->willReturn(false);
-        $entity->isScopable()->willReturn(false);
-        $entity->getBackendType()->willReturn('entity');
+        $attribute->getId()->willReturn('42');
+        $attribute->getCode()->willReturn('entity_code');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('entity');
 
         $qb->getRootAlias()->willReturn('r');
         $qb->expr()->willReturn($expr);
@@ -75,6 +72,19 @@ class EntitySorterSpec extends ObjectBehavior
         $qb->addOrderBy('sorterOVentity_code.value', 'DESC')->shouldBeCalled();
         $qb->addOrderBy('r.id')->shouldBeCalled();
 
-        $this->addAttributeSorter($entity, 'DESC', ['locale' => 'en_US']);
+        $this->addAttributeSorter($attribute, 'DESC', ['locale' => 'en_US']);
+    }
+
+    function it_throws_an_exception_when_the_locale_is_not_provided($qb, AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('my_code');
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddAttributeSorter($attribute, 'desc', []);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddAttributeSorter($attribute, 'desc', ['locale' => null]);
     }
 }
