@@ -167,6 +167,9 @@ services:
 
     pim_catalog.doctrine.query.filter.metric:
         class: %pim_catalog.doctrine.query.filter.metric.class%
+        arguments:
+            - 'pim_catalog_metric'
+            - ['<', '<=', '=', '>=', '>', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
