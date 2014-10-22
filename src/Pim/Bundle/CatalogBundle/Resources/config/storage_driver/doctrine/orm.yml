@@ -168,20 +168,23 @@ services:
     pim_catalog.doctrine.query.filter.metric:
         class: %pim_catalog.doctrine.query.filter.metric.class%
         arguments:
-            - 'pim_catalog_metric'
+            - ['pim_catalog_metric']
             - ['<', '<=', '=', '>=', '>', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.options:
         class: %pim_catalog.doctrine.query.filter.options.class%
+        arguments:
+            - ['pim_catalog_multiselect']
+            - ['IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.option:
         class: %pim_catalog.doctrine.query.filter.option.class%
         arguments:
-            - 'pim_catalog_simpleselect'
+            - ['pim_catalog_simpleselect']
             - ['IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

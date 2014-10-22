@@ -12,6 +12,7 @@ class OptionsFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb)
     {
+        $this->beConstructedWith(['pim_catalog_multiselect'], ['IN']);
         $this->setQueryBuilder($qb);
     }
 
