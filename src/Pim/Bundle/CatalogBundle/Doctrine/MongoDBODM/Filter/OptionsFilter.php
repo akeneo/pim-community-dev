@@ -20,14 +20,23 @@ class OptionsFilter implements AttributeFilterInterface
     protected $qb;
 
     /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
+     *
+     * @param array          $supportedAttributes
+     * @param array          $supportedOperators
      */
-    public function __construct()
-    {
-        $this->supportedOperators = ['IN'];
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -43,7 +52,10 @@ class OptionsFilter implements AttributeFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return $attribute->getAttributeType() === 'pim_catalog_multiselect';
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
     }
 
     /**

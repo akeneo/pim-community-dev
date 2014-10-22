@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -14,11 +13,9 @@ use Prophecy\Argument;
  */
 class OptionsFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, CatalogContext $context)
+    function let(Builder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith(['pim_catalog_multiselect'], ['IN']);
         $this->setQueryBuilder($qb);
     }
 
