@@ -428,6 +428,9 @@ services:
 
     pim_catalog.doctrine.query.filter.family:
         class: %pim_catalog.doctrine.query.filter.family.class%
+        arguments:
+            - ['family']
+            - ['IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

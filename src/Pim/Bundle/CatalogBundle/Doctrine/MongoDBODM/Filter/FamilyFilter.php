@@ -27,11 +27,16 @@ class FamilyFilter implements FieldFilterInterface
 
     /**
      * Instanciate the filter
+     *
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct()
-    {
-        $this->supportedFields = ['family'];
-        $this->supportedOperators = ['IN', 'NOT IN'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

@@ -15,6 +15,7 @@ class FamilyFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb)
     {
+        $this->beConstructedWith(['family'], ['IN', 'NOT IN']);
         $this->setQueryBuilder($qb);
     }
 
