@@ -10,6 +10,7 @@ class EntityFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb)
     {
+        $this->beConstructedWith(['family', 'groups'], ['IN', 'NOT IN']);
         $this->setQueryBuilder($qb);
     }
 

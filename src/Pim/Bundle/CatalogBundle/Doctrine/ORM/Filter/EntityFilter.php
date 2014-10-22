@@ -26,15 +26,15 @@ class EntityFilter implements FieldFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param array $extraSupportedFields
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(array $extraSupportedFields = [])
-    {
-        $this->supportedFields = array_merge(
-            ['family', 'groups'],
-            $extraSupportedFields
-        );
-        $this->supportedOperators = ['IN', 'NOT IN'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**

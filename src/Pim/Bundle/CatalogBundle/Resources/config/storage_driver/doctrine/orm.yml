@@ -134,6 +134,9 @@ services:
 
     pim_catalog.doctrine.query.filter.entity:
         class: %pim_catalog.doctrine.query.filter.entity.class%
+        arguments:
+            - ['family', 'groups']
+            - ['IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
@@ -167,6 +170,7 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
+    # PQB sorters
     pim_catalog.doctrine.query.sorter.base:
         class: %pim_catalog.doctrine.query.sorter.base.class%
         tags:
