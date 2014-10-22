@@ -16,5 +16,5 @@ services:
         class: %pimee_product_rule.selector.product.class%
         arguments:
             - %pimee_rule_engine.entity.rule_subject_set.class%
-            - @pim_catalog.doctrine.product_query_builder
+            - @pim_catalog.doctrine.query.product_query_factory
             - @pim_catalog.repository.product

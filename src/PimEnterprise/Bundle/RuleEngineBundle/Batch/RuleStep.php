@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Batch;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
+use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 
 /**
  * Batch rule step that allows to run a rule.
@@ -22,14 +23,11 @@ use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
  */
 class RuleStep extends AbstractStep
 {
-    /** @var BatchLoaderInterface */
-    protected $loader;
+    /** @var RuleReaderInterface */
+    protected $reader;
 
-    /** @var BatchSelectorInterface */
-    protected $selector;
-
-    /** @var BatchApplierInterface */
-    protected $applier;
+    /** @var RunnerInterface */
+    protected $runner;
 
     /**
      * {@inheritdoc}
@@ -67,80 +65,49 @@ class RuleStep extends AbstractStep
      */
     protected function doExecute(StepExecution $stepExecution)
     {
-        $this->loader->setStepExecution($stepExecution);
-        $this->selector->setStepExecution($stepExecution);
+        $this->reader->setStepExecution($stepExecution);
 
-        $rule = $this->loader->loadFromDatabase($this->getRuleCodeFromConfiguration());
-        $loadedRule = $this->loader->load($rule);
-        $subjects = $this->selector->select($loadedRule);
+        $rule = $this->reader->read();
 
-        $this->applier->apply($subjects);
+        $this->runner->run($rule);
     }
 
     /**
-     * @return string
+     * @return RuleReaderInterface
      */
-    protected function getRuleCodeFromConfiguration()
+    public function getReader()
     {
-        return $this->getConfiguration()['ruleCode'];
+        return $this->reader;
     }
 
     /**
-     * @return BatchLoaderInterface
-     */
-    public function getLoader()
-    {
-        return $this->loader;
-    }
-
-    /**
-     * @param BatchLoaderInterface $loader
+     * @param RuleReaderInterface $reader
      *
      * @return RuleStep
      */
-    public function setLoader(BatchLoaderInterface $loader)
+    public function setReader(RuleReaderInterface $reader)
     {
-        $this->loader = $loader;
+        $this->reader = $reader;
 
         return $this;
     }
 
     /**
-     * @return BatchSelectorInterface
+     * @return RunnerInterface
      */
-    public function getSelector()
+    public function getRunner()
     {
-        return $this->selector;
+        return $this->runner;
     }
 
     /**
-     * @param BatchSelectorInterface $selector
+     * @param RunnerInterface $runner
      *
      * @return RuleStep
      */
-    public function setSelector(BatchSelectorInterface $selector)
+    public function setRunner(RunnerInterface $runner)
     {
-        $this->selector = $selector;
-
-        return $this;
-    }
-
-    /**
-     * @return BatchApplierInterface
-     */
-    public function getApplier()
-    {
-        return $this->applier;
-    }
-
-    /**
-     * @param BatchApplierInterface $applier
-     *
-     * @return RuleStep
-     */
-    public function setApplier(BatchApplierInterface $applier)
-    {
-        $this->applier = $applier;
+        $this->runner = $runner;
 
         return $this;
     }
@@ -151,7 +118,7 @@ class RuleStep extends AbstractStep
     public function getConfigurableStepElements()
     {
         return [
-            'loader' => $this->getLoader(),
+            'reader' => $this->getReader(),
         ];
     }
 }

@@ -13,32 +13,18 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use PimEnterprise\Bundle\RuleEngineBundle\Batch\BatchLoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleDecorator;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 
 /**
- * Loads product rules via a batch.
+ * Loads product rules.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleLoader extends AbstractConfigurableStepElement implements BatchLoaderInterface
+class ProductRuleLoader implements LoaderInterface
 {
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var RuleRepositoryInterface */
-    protected $repository;
-
-    /** @var string */
-    protected $ruleCode;
-
-    public function __construct(RuleRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -56,50 +42,8 @@ class ProductRuleLoader extends AbstractConfigurableStepElement implements Batch
     /**
      * {@inheritdoc}
      */
-    public function loadFromDatabase()
-    {
-        return $this->repository->findOneBy(['code' => $this->ruleCode]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [
-            'ruleCode' => []
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRuleCode()
-    {
-        return $this->ruleCode;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRuleCode($ruleCode)
-    {
-        $this->ruleCode = $ruleCode;
     }
 }

@@ -12,39 +12,41 @@
 namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Batch\BatchSelectorInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
- * Selects subjects impacted by a rule via a batch.
+ * Selects subjects impacted by a rule.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleSelector implements BatchSelectorInterface
+class ProductRuleSelector implements SelectorInterface
 {
     /** @var string */
     protected $subjectSetClass;
 
-    /** @var ProductQueryBuilderInterface */
-    protected $pqb;
+    /** @var ProductQueryFactory */
+    protected $productQueryFactory;
 
     /** @var ProductRepositoryInterface */
     protected $repo;
 
-    /** @var StepExecution */
-    protected $stepExecution;
-
     /**
-     * @param string $subjectSetClass
+     * @param string                     $subjectSetClass
+     * @param ProductQueryFactory        $productQueryFactory
+     * @param ProductRepositoryInterface $repo
      */
-    public function __construct($subjectSetClass, ProductQueryBuilderInterface $pqb, ProductRepositoryInterface $repo)
-    {
-        $this->subjectSetClass = $subjectSetClass;
-        $this->pqb = $pqb;
-        $this->repo = $repo;
+    public function __construct(
+        $subjectSetClass,
+        ProductQueryFactory $productQueryFactory,
+        ProductRepositoryInterface $repo
+    ) {
+        $this->subjectSetClass     = $subjectSetClass;
+        $this->productQueryFactory = $productQueryFactory;
+        $this->repo                = $repo;
     }
 
     /**
@@ -55,9 +57,8 @@ class ProductRuleSelector implements BatchSelectorInterface
         /** @var RuleSubjectSetInterface $subjectSet */
         $subjectSet = new $this->subjectSetClass();
 
-        //TODO: remove this
-        $qb = $this->repo->createQueryBuilder('p');
-        $this->pqb->setQueryBuilder($qb);
+        $start = microtime(true);
+        $pqb = $this->productQueryFactory->create(/*['default_locale' => 'en_US', 'default_scope' => 'ecommerce']*/);
 
         $content = json_decode($rule->getContent(), true);
         foreach ($content['conditions'] as $condition) {
@@ -66,16 +67,18 @@ class ProductRuleSelector implements BatchSelectorInterface
                 $rule->getCode(),
                 $condition['field'],
                 $condition['operator'],
-                $condition['value']
+                is_array($condition['value']) ? implode(', ', $condition['value']) : $condition['value']
             );
-            $this->pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
+            $pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
         }
 
-        $products = $this->pqb->getQueryBuilder()->getQuery()->execute();
+        $products = $pqb->getQueryBuilder()->getQuery()->execute();
 
         $subjectSet->setCode($rule->getCode());
         $subjectSet->setType('product');
         $subjectSet->setSubjects($products);
+
+        echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
 
         return $subjectSet;
     }
@@ -86,13 +89,5 @@ class ProductRuleSelector implements BatchSelectorInterface
     public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 }

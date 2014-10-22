@@ -32,7 +32,6 @@ class GenerateFakeCommand extends ContainerAwareCommand
         'pim_catalog_metric'           => ['1.0', '2', '1000', '123'],
         'pim_catalog_number'           => ['1.0', '2', '1000', '123'],
         'pim_catalog_date'             => ['2014-10-07', '1990-05-22'],
-        'pim_catalog_price_collection' => ['2014-10-07', '1990-05-22'],
         'pim_catalog_boolean'          => [true, false],
         'pim_catalog_simpleselect'     => ['red', 'blue'],
         'pim_catalog_multiselect'      => ['green', 'blue'],
@@ -100,9 +99,14 @@ class GenerateFakeCommand extends ContainerAwareCommand
         $cpt = rand(1, $max);
 
         $conditions = [];
+        $attributes = [];
         while ($cpt > 0) {
-            $conditions[] = $filters[array_rand($filters)];
+            do {
+                $condition = $filters[array_rand($filters)];
+            } while (in_array($condition['field'], $attributes));
 
+            $conditions[] = $condition;
+            $attributes[] = $condition['field'];
             $cpt--;
         }
 
@@ -122,17 +126,37 @@ class GenerateFakeCommand extends ContainerAwareCommand
         foreach ($attributes as $attribute) {
             if ($filter = $filterRegistry->getAttributeFilter($attribute)) {
                 foreach ($filter->getOperators() as $operator) {
-                    foreach ($this->values[$attribute->getAttributeType()] as $value) {
-                        $filters[] = [
-                            'field'    => $attribute->getCode(),
-                            'operator' => $operator,
-                            'value'    => $value
-                        ];
+                    if (isset($this->values[$attribute->getAttributeType()]) && !$attribute->isScopable()) {
+                        foreach ($this->values[$attribute->getAttributeType()] as $value) {
+                            $value = $this->getValue($operator, $attribute, $value);
+
+                            $filters[] = [
+                                'field'    => $attribute->getCode(),
+                                'operator' => $operator,
+                                'value'    => $value
+                            ];
+                        }
                     }
                 }
             }
         }
 
         return $filters;
+    }
+
+    protected function getValue($operator, $attribute, $value)
+    {
+        switch ($operator) {
+            case 'IN':
+                $value = [$value];
+                break;
+            case 'EMPTY':
+                $value = null;
+                break;
+            default:
+                break;
+        }
+
+        return $value;
     }
 }

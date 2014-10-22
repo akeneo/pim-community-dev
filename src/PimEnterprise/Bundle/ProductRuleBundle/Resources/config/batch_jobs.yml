@@ -2,13 +2,12 @@ connector:
     name: Akeneo Rule Engine Connector
     jobs:
         rule_engine:
-            title: mon titre
+            title: Rule engine
             type: rule_engine
             steps:
                 rule_engine:
                     class: PimEnterprise\Bundle\RuleEngineBundle\Batch\RuleStep
-                    title: mon autre titre
+                    title: Rule runner
                     services:
-                        loader: pimee_product_rule.loader.product
-                        selector: pimee_product_rule.selector.product
-                        applier: pimee_product_rule.applier.product
+                        reader: pimee_product_rule.reader.product
+                        runner: pimee_product_rule.runner.product
