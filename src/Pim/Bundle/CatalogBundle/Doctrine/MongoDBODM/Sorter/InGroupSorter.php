@@ -37,7 +37,7 @@ class InGroupSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $context = [])
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $field = sprintf("%s.%s", ProductQueryUtility::NORMALIZED_FIELD, $field);
         $this->qb->sort($field, $direction);

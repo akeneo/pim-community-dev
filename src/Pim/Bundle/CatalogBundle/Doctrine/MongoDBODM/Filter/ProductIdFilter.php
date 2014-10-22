@@ -78,7 +78,7 @@ class ProductIdFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $context = [])
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $field = '_id';
         $value = is_array($value) ? $value : [$value];

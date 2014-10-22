@@ -64,7 +64,7 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $context = [])
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $providedLocale = isset($context['locale']) && $context['locale'] !== null;
         $providedScope = isset($context['scope']) && $context['scope'] !== null;

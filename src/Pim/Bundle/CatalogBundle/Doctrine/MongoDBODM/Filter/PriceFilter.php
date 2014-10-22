@@ -65,7 +65,7 @@ class PriceFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         list($data, $currency) = explode(' ', $value);
         $data = (float) $data;

@@ -37,7 +37,7 @@ class CompletenessSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $context = [])
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $providedLocale = isset($context['locale']) && $context['locale'] !== null;
         $providedScope = isset($context['scope']) && $context['scope'] !== null;

@@ -249,6 +249,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
     /**
      * @param OptionsResolverInterface $resolver
+     *
+     * @return null
      */
     protected function configureOptions(OptionsResolverInterface $resolver)
     {
@@ -258,7 +260,5 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
                 'scope'
             ]
         );
-
-        return $resolver;
     }
 }

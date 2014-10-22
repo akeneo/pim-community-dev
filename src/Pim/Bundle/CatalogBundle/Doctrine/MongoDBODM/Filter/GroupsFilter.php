@@ -63,7 +63,7 @@ class GroupsFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $context = [])
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $value = is_array($value) ? $value : [$value];
         $value = array_map('intval', $value);
