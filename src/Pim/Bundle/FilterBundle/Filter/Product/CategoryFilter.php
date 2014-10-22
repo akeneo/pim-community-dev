@@ -163,7 +163,6 @@ class CategoryFilter extends NumberFilter
     }
 
     /**
-     *
      * Get product ids in category (and children)
      *
      * @param CategoryInterface $category
