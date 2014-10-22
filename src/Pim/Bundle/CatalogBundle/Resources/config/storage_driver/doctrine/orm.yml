@@ -140,16 +140,20 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
-    pim_catalog.doctrine.query.filter.date:
-        class: %pim_catalog.doctrine.query.filter.date.class%
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
     pim_catalog.doctrine.query.filter.completeness:
         class: %pim_catalog.doctrine.query.filter.completeness.class%
         arguments:
             - ['completeness']
             - ['=', '<']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.date:
+        class: %pim_catalog.doctrine.query.filter.date.class%
+        arguments:
+            - ['pim_catalog_date']
+            - ['created', 'updated']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

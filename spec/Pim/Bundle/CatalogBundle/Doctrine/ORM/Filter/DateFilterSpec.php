@@ -11,6 +11,7 @@ class DateFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb)
     {
+        $this->beConstructedWith(['pim_catalog_date'], ['created', 'updated'], ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']);
         $this->setQueryBuilder($qb);
 
         $qb->getRootAliases()->willReturn(array('p'));

@@ -30,18 +30,20 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     protected $supportedOperators;
 
     /**
-     * Instanciate the filter
+     * Instanciate the base filter
      *
-     * @param array $extraSupportedFields
+     * @param array $supportedAttributes
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(array $extraSupportedFields = [])
-    {
-        $this->supportedAttributes = ['pim_catalog_date'];
-        $this->supportedFields = array_merge(
-            ['created', 'updated'],
-            $extraSupportedFields
-        );
-        $this->supportedOperators = ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY'];
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
