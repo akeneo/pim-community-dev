@@ -14,6 +14,7 @@ class MetricFilterSpec extends ObjectBehavior
 {
     function let(Builder $queryBuilder)
     {
+        $this->beConstructedWith(['pim_catalog_metric'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
         $this->setQueryBuilder($queryBuilder);
     }
 

@@ -20,14 +20,23 @@ class MetricFilter implements AttributeFilterInterface
     protected $qb;
 
     /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
+     *
+     * @param array          $supportedAttributes
+     * @param array          $supportedOperators
      */
-    public function __construct()
-    {
-        $this->supportedOperators = ['<', '<=', '=', '>=', '>', 'EMPTY'];
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -43,7 +52,10 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return $attribute->getAttributeType() === 'pim_catalog_metric';
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
     }
 
     /**
