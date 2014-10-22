@@ -29,7 +29,7 @@ class EventRegistry
      *
      * @return EventRegistry
      */
-    public function addEvent($event)
+    public function register($event)
     {
         if ($event instanceof ResourceEventInterface) {
             $key  = get_class($event->getResource());

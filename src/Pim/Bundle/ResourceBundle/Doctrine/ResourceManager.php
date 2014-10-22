@@ -1,9 +1,11 @@
 <?php
 
-namespace Pim\Component\Resource\Domain\Manager;
+namespace Pim\Bundle\ResourceBundle\Doctrine;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Domain\Manager\ResourceManagerInterface;
 use Pim\Component\Resource\Domain\ResourceInterface;
 use Pim\Component\Resource\Domain\ResourceSetInterface;
 
@@ -16,8 +18,16 @@ use Pim\Component\Resource\Domain\ResourceSetInterface;
  */
 class ResourceManager implements ResourceManagerInterface
 {
-    /** @var SmartManagerRegistry */
-    protected $smartManagerRegistry;
+    /** @var ManagerRegistry */
+    protected $registry;
+
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
 
     /**
      * {@inheritdoc}
@@ -92,6 +102,6 @@ class ResourceManager implements ResourceManagerInterface
      */
     private function getObjectManager(ResourceInterface $resource)
     {
-        return $this->smartManagerRegistry->getManagerForClass(get_class($resource));
+        return $this->registry->getManagerForClass(ClassUtils::getClass($resource));
     }
 }

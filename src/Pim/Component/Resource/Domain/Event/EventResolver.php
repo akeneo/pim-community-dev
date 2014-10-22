@@ -18,6 +18,14 @@ class EventResolver
     protected $registry;
 
     /**
+     * @param EventRegistry $registry
+     */
+    public function __construct(EventRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
      * @param ResourceInterface|ResourceSetInterface $resource
      *
      * @return ResourceEventInterface|ResourceBulkEventInterface

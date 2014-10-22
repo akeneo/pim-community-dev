@@ -1,0 +1,8 @@
+parameters:
+    pim_resource.doctrine.manager.class: Pim\Bundle\ResourceBundle\Doctrine\ResourceManager
+
+services:
+    pim_resource.doctrine.manager:
+        class: %pim_resource.doctrine.manager.class%
+        arguments:
+            - @pim_catalog.doctrine.smart_manager_registry
