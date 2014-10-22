@@ -118,9 +118,8 @@ class CategoryFilter extends NumberFilter
 
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
-            $data['includeSub'] = true;
-            $productIds = $this->getProductIdsInCategory($tree, $data);
-            $productRepository->applyFilterByIds($qb, $productIds, false);
+            $categoryIds = $categoryRepository->getAllChildrenIds($tree);
+            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
 
             return true;
         }
@@ -164,12 +163,15 @@ class CategoryFilter extends NumberFilter
     }
 
     /**
+     *
      * Get product ids in category (and children)
      *
      * @param CategoryInterface $category
      * @param array             $data
      *
      * @return integer[]
+     *
+     * @deprecated since version 1.2.10. Will be removed in 1.3. Please do not load all product ids for filtering.
      */
     protected function getProductIdsInCategory(CategoryInterface $category, $data)
     {
