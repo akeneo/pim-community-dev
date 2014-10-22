@@ -13,6 +13,7 @@ class PriceFilterSpec extends ObjectBehavior
 {
     function let(Builder $queryBuilder)
     {
+        $this->beConstructedWith(['pim_catalog_price_collection'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
         $this->setQueryBuilder($queryBuilder);
     }
 

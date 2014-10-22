@@ -470,12 +470,15 @@ services:
         class: %pim_catalog.doctrine.query.filter.metric.class%
         arguments:
             - ['pim_catalog_metric']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY'];
+            - ['<', '<=', '=', '>=', '>', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.price:
         class: %pim_catalog.doctrine.query.filter.price.class%
+        arguments:
+            - ['pim_catalog_price_collection']
+            - ['<', '<=', '=', '>=', '>', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
