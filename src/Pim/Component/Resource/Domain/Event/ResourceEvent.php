@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\Event as BaseEvent;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ResourceEvent extends BaseEvent
+class ResourceEvent extends BaseEvent implements ResourceEventInterface
 {
     /** @var ResourceInterface */
     protected $resource;
@@ -26,7 +26,7 @@ class ResourceEvent extends BaseEvent
     }
 
     /**
-     * @return ResourceInterface
+     * {@inheritdoc}
      */
     public function getResource()
     {

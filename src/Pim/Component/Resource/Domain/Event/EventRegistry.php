@@ -11,11 +11,13 @@ namespace Pim\Component\Resource\Domain\Event;
  */
 class EventRegistry
 {
-    /** @var ResourceEvent[] */
+    const BULK_PREFIX = 'bulk_';
+
+    /** @var ResourceEventInterface[] */
     protected $events = [];
 
     /**
-     * @return ResourceEvent[] array which key is the class of the resource and value is the event.
+     * @return ResourceEventInterface[] array which key is type of the event of the resource and value is the event.
      */
     public function getEvents()
     {
@@ -23,25 +25,23 @@ class EventRegistry
     }
 
     /**
-     * @param ResourceEvent[] $events
+     * @param ResourceEventInterface|ResourceBulkEventInterface $event
      *
      * @return EventRegistry
      */
-    public function setEvents(array $events)
+    public function addEvent($event)
     {
-        $this->events = $events;
+        if ($event instanceof ResourceEventInterface) {
+            $key  = get_class($event->getResource());
+        } elseif($event instanceof ResourceBulkEventInterface) {
+            $key  = self::BULK_PREFIX . $event->getResources()->getType();
+        } else {
+            throw new \InvalidArgumentException(
+                'Event should be an instance of "ResourceEventInterface" or "ResourceBulkEventInterface".'
+            );
+        }
 
-        return $this;
-    }
-
-    /**
-     * @param ResourceEvent $event
-     *
-     * @return EventRegistry
-     */
-    public function addEvent(ResourceEvent $event)
-    {
-        $this->events[get_class($event->getResource())] = $event;
+        $this->events[$key] = $event;
 
         return $this;
     }

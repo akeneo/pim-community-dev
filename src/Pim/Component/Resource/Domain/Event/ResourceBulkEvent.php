@@ -3,6 +3,7 @@
 namespace Pim\Component\Resource\Domain\Event;
 
 use Pim\Component\Resource\Domain\ResourceSetInterface;
+use Symfony\Component\EventDispatcher\Event as BaseEvent;
 
 /**
  * Default resource bulk event
@@ -11,7 +12,7 @@ use Pim\Component\Resource\Domain\ResourceSetInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ResourceBulkEvent
+class ResourceBulkEvent extends BaseEvent implements ResourceBulkEventInterface
 {
     /** @var ResourceSetInterface */
     protected $resources;
@@ -25,7 +26,7 @@ class ResourceBulkEvent
     }
 
     /**
-     * @return ResourceSetInterface
+     * {@inheritdoc}
      */
     public function getResources()
     {

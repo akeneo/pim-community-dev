@@ -20,22 +20,21 @@ class EventResolver
     /**
      * @param ResourceInterface|ResourceSetInterface $resource
      *
-     * @return ResourceEvent
+     * @return ResourceEventInterface|ResourceBulkEventInterface
      */
     public function resolves($resource)
     {
         if ($resource instanceof ResourceInterface) {
             $wantedEventType = get_class($resource);
         } elseif ($resource instanceof ResourceSetInterface) {
-            $wantedEventType = $resource->getType();
+            $wantedEventType = EventRegistry::BULK_PREFIX . $resource->getType();
         } else {
             throw new \InvalidArgumentException(
-                'The resolver can only handle "ResourceInterface" and "ResourceSetInterface".'
+                'Resource should be an instance of "ResourceInterface" or "ResourceSetInterface".'
             );
         }
 
-        foreach ($this->registry as $eventType => $event)
-        {
+        foreach ($this->registry as $eventType => $event) {
             if ($wantedEventType === $eventType) {
                 return $event;
             }
