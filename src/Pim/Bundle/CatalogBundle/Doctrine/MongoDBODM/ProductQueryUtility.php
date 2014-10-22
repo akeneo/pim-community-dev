@@ -33,6 +33,13 @@ class ProductQueryUtility
      */
     public static function getNormalizedValueFieldFromAttribute(AttributeInterface $attribute, array $context)
     {
+        if ($attribute->isLocalizable() && !isset($context['locale'])) {
+            throw new \LogicException('Locale is not configured');
+        }
+        if ($attribute->isScopable() && !isset($context['scope'])) {
+            throw new \LogicException('Scope is not configured');
+        }
+
         return self::getNormalizedValueField(
             $attribute->getCode(),
             $attribute->isLocalizable(),
