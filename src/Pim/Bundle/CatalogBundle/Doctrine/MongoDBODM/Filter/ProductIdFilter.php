@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Product id filter
@@ -18,9 +17,6 @@ class ProductIdFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedFields;
 
@@ -30,16 +26,13 @@ class ProductIdFilter implements FieldFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param CatalogContext $context
-     * @param array          $supportedFields
-     * @param array          $supportedOperators
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
     public function __construct(
-        CatalogContext $context,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->context = $context;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -85,7 +78,7 @@ class ProductIdFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $field = '_id';
         $value = is_array($value) ? $value : [$value];

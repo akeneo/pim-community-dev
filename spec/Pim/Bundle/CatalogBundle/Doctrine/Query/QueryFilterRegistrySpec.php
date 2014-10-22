@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class QueryFilterRegistrySpec extends ObjectBehavior
 {
@@ -33,13 +33,13 @@ class QueryFilterRegistrySpec extends ObjectBehavior
         $this->getFieldFilter('field')->shouldReturn(null);
     }
 
-    function it_returns_a_supported_attribute_filter($attributeFilter, AbstractAttribute $attribute)
+    function it_returns_a_supported_attribute_filter($attributeFilter, AttributeInterface $attribute)
     {
         $attributeFilter->supportsAttribute($attribute)->willReturn(true);
         $this->getAttributeFilter($attribute)->shouldReturn($attributeFilter);
     }
 
-    function it_returns_null_when_not_supported_attribute_filter($attributeFilter, AbstractAttribute $attribute)
+    function it_returns_null_when_not_supported_attribute_filter($attributeFilter, AttributeInterface $attribute)
     {
         $attributeFilter->supportsAttribute($attribute)->willReturn(false);
         $this->getAttributeFilter($attribute)->shouldReturn(null);

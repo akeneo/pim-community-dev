@@ -75,6 +75,9 @@ class ProductDatasource extends Datasource
     {
         $factoryConfig['repository_parameters'] = $config;
         $factoryConfig['repository_method'] = $method;
+        $factoryConfig['default_locale'] =  $this->getConfiguration('locale_code');
+        $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
+
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();
 

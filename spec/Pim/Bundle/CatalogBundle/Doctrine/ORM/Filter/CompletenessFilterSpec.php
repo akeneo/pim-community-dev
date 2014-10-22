@@ -7,16 +7,12 @@ use \Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class CompletenessFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder, CatalogContext $context)
+    function let(QueryBuilder $queryBuilder)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith(['completeness'], ['=', '<']);
         $this->setQueryBuilder($queryBuilder);
     }
 

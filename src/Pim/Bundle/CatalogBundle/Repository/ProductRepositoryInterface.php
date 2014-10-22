@@ -21,25 +21,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 interface ProductRepositoryInterface
 {
     /**
-     * Finds entities and attributes values by a set of criteria, same coverage than findBy
-     *
-     * @param array        $attributes attribute codes
-     * @param array|null   $criteria   criterias
-     * @param array|null   $orderBy    order by
-     * @param integer|null $limit      limit
-     * @param integer|null $offset     offset
-     *
-     * @return array The objects.
-     */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    );
-
-    /**
      * Load a product entity with related attribute values
      *
      * @param integer $id
@@ -50,25 +31,11 @@ interface ProductRepositoryInterface
     public function findOneByWithValues($id);
 
     /**
-     * @param string $scope
-     *
-     * @return mixed
-     */
-    public function buildByScope($scope);
-
-    /**
      * @param Channel $channel
      *
      * @return mixed
      */
     public function buildByChannelAndCompleteness(Channel $channel);
-
-    /**
-     * Find products by existing family
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function findByExistingFamily();
 
     /**
      * @param array $ids
@@ -154,4 +121,11 @@ interface ProductRepositoryInterface
      * @return ObjectManager
      */
     public function getObjectManager();
+
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface|null
+     */
+    public function findOneByIdentifier($identifier);
 }

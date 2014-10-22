@@ -46,8 +46,22 @@
 - Remove MediaManager argument from CsvProductWriter::__construct
 - Update CsvProductWriter::copyMedia argument to replace AbstractProductMedia by an array
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. `Doctrine\Common\Persistence\ManagerRegistry` is used as fourth argument and is mandatory now. The data class is the fifth argument.
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\*` and `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\*` to remove the CatalogContext
+- Remove ProductRepositoryInterface::findOneBy (still a native support for ORM)
+- Add ProductRepositoryInterface::findOneByIdentifier
+- Remove ProductRepositoryInterface::buildByScope
+- Remove ProductRepositoryInterface::findByExistingFamily
+- Remove ProductRepositoryInterface::findAllByAttributes
+- Move CatalogBundle/Doctrine/ORM/CompletenessJoin and CatalogBundle/Doctrine/ORM/ValueJoin to CatalogBundle/Doctrine/ORM/Join
+- Move CatalogBundle/Doctrine/ORM/CriteriaCondition to CatalogBundle/Doctrine/ORM/Condition
 
 # 1.2.x
+
+## Bug fixes
+- PIM-3221: Fix the possibility to update attributes on variant groups during import
+- PIM-3283: Fix issue on the password reset
+
+# 1.2.9 (2014-10-17)
 
 ## Bug fixes
 - PIM-3221: Fix the possibility to update attributes on variant groups during import

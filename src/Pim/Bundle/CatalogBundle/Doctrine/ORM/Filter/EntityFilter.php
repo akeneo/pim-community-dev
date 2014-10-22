@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Entity filter
@@ -18,9 +17,6 @@ class EntityFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedFields;
 
@@ -30,17 +26,15 @@ class EntityFilter implements FieldFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param CatalogContext $context
-     * @param array          $extraSupportedFields
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(CatalogContext $context, array $extraSupportedFields = [])
-    {
-        $this->context = $context;
-        $this->supportedFields = array_merge(
-            ['family', 'groups'],
-            $extraSupportedFields
-        );
-        $this->supportedOperators = ['IN', 'NOT IN'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -54,7 +48,7 @@ class EntityFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $rootAlias  = $this->qb->getRootAlias();
         $entityAlias = 'filter'.$field;

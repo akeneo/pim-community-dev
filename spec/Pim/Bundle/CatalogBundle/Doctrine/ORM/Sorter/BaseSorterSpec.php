@@ -5,17 +5,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
 class BaseSorterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CatalogContext $context)
+    function let(QueryBuilder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
         $this->setQueryBuilder($qb);
     }
 
@@ -34,13 +30,13 @@ class BaseSorterSpec extends ObjectBehavior
     }
 
     function it_supports_attributes(
-        AbstractAttribute $identifier,
-        AbstractAttribute $text,
-        AbstractAttribute $textarea,
-        AbstractAttribute $number,
-        AbstractAttribute $boolean,
-        AbstractAttribute $date,
-        AbstractAttribute $other
+        AttributeInterface $identifier,
+        AttributeInterface $text,
+        AttributeInterface $textarea,
+        AttributeInterface $number,
+        AttributeInterface $boolean,
+        AttributeInterface $date,
+        AttributeInterface $other
     ) {
         $identifier->getAttributeType()->willReturn('pim_catalog_identifier');
         $this->supportsAttribute($identifier)->shouldReturn(true);
@@ -64,7 +60,7 @@ class BaseSorterSpec extends ObjectBehavior
         $this->supportsAttribute($other)->shouldReturn(false);
     }
 
-    function it_adds_an_attribute_sorter_to_the_query($qb, AbstractAttribute $sku)
+    function it_adds_an_attribute_sorter_to_the_query($qb, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');

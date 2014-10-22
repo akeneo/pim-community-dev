@@ -3,9 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness filter
@@ -16,32 +15,33 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class CompletenessFilter implements FieldFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedFields;
 
     /** @var array */
     protected $supportedOperators;
 
     /**
-     * Instanciate a sorter
+     * Instanciate the base filter
      *
-     * @param CatalogContext $context
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-        $this->supportedOperators = ['=', '<'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $alias = 'filterCompleteness';
         $field = $alias.'.ratio';
@@ -70,7 +70,7 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field === 'completeness';
+        return in_array($field, $this->supportedFields);
     }
 
     /**

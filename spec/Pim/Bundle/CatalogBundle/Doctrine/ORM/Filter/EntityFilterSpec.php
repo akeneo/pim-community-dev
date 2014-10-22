@@ -5,15 +5,12 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class EntityFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CatalogContext $context)
+    function let(QueryBuilder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith(['family', 'groups'], ['IN', 'NOT IN']);
         $this->setQueryBuilder($qb);
     }
 

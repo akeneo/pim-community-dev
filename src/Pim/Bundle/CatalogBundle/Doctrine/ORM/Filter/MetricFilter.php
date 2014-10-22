@@ -3,12 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 
 /**
  * Metric filter
@@ -19,13 +18,11 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class MetricFilter implements AttributeFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedAttributes;
 
     /** @var array */
     protected $supportedOperators;
@@ -33,12 +30,15 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param CatalogContext $context
+     * @param array $supportedAttributes
+     * @param array $supportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-        $this->supportedOperators = ['<', '<=', '=', '>=', '>', 'EMPTY'];
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -52,13 +52,13 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode();
 
         // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
 
         if ($operator === 'EMPTY') {
             $this->qb->leftJoin(
@@ -93,9 +93,12 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
-        return $attribute->getAttributeType() === 'pim_catalog_metric';
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
     }
 
     /**
@@ -134,17 +137,18 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the context
      *
      * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 }

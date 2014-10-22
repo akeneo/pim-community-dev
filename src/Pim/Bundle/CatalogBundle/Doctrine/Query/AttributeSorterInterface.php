@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Sorter interface
@@ -16,19 +16,20 @@ interface AttributeSorterInterface extends SorterInterface
     /**
      * Sort by attribute value
      *
-     * @param AbstractAttribute $attribute the attribute to sort on
-     * @param string            $direction the direction to use
+     * @param AttributeInterface $attribute the attribute to sort on
+     * @param string             $direction the direction to use
+     * @param array              $context   the sorter context, used for locale and scope
      *
      * @return AttributeSorterInterface
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction);
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = []);
 
     /**
      * This filter supports the attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    public function supportsAttribute(AbstractAttribute $attribute);
+    public function supportsAttribute(AttributeInterface $attribute);
 }

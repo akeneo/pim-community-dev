@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
@@ -24,7 +24,7 @@ class CriteriaCondition
      */
     public function __construct(QueryBuilder $qb)
     {
-        $this->qb      = $qb;
+        $this->qb = $qb;
     }
 
     /**

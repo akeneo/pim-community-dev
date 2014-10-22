@@ -88,56 +88,15 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset);
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneBy(array $criteria)
+    public function findOneByIdentifier($identifier)
     {
         $pqb = $this->productQueryFactory->create();
         $qb = $pqb->getQueryBuilder();
-
-        foreach ($criteria as $field => $data) {
-            // TODO : fix the calls to this method, no need to pass the attribute object in data, pass only the value
-            if (is_array($data)) {
-                $attribute = $data['attribute'];
-                $field = $attribute->getCode();
-                $data = $data['value'];
-            }
-            $pqb->addFilter($field, '=', $data);
-        }
-
+        $attribute = $this->getIdentifierAttribute();
+        $pqb->addFilter($attribute->getCode(), '=', $identifier);
         $result = $qb->getQuery()->execute();
 
-        if ($result->count() > 1) {
-            throw new \LogicException(
-                sprintf(
-                    'Many products have been found that match criteria:' . "\n" . '%s',
-                    print_r($criteria, true)
-                )
-            );
-        }
-
         return $result->getNext();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildByScope($scope)
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
@@ -332,14 +291,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByExistingFamily()
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByIds(array $ids)
     {
         $qb = $this->createQueryBuilder('p')->eagerCursor(true);
@@ -434,14 +385,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findByReference($code)
     {
-        return $this->findOneBy(
-            [
-                [
-                    'attribute' => $this->attributeRepository->getIdentifier(),
-                    'value' => $code,
-                ]
-            ]
-        );
+        return $this->findOneByIdentifier($code);
     }
 
     /**
@@ -676,53 +620,6 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Finds documents by a set of criteria
-     *
-     * @param array        $attributes
-     * @param array        $criteria
-     * @param array        $orderBy
-     * @param integer|null $limit
-     * @param integer|null $offset
-     *
-     * @return QueryBuilder
-     *
-     * @throws \RuntimeException
-     */
-    protected function findAllByAttributesQB(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->createQueryBuilder('p');
-
-        foreach ($attributes as $attribute => $value) {
-            $qb->field($attribute)->equals($value);
-        }
-
-        if ($criteria) {
-            foreach ($criteria as $field => $value) {
-                $qb->field('normalizedData.'.$field)->equals($value);
-            }
-        }
-
-        if ($orderBy) {
-            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($limit) {
-            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($offset) {
-            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        return $qb;
-    }
-
-    /**
      * @param integer $productId
      * @param integer $assocTypeCount
      *
@@ -765,5 +662,15 @@ class ProductRepository extends DocumentRepository implements
     public function getObjectManager()
     {
         return $this->getDocumentManager();
+    }
+
+    /**
+     * Return the identifier attribute
+     *
+     * @return AbstractAttribute|null
+     */
+    protected function getIdentifierAttribute()
+    {
+        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
     }
 }

@@ -3,10 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Metric filter
@@ -20,8 +19,8 @@ class MetricFilter implements AttributeFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedAttributes;
 
     /** @var array */
     protected $supportedOperators;
@@ -29,12 +28,15 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param CatalogContext $context
+     * @param array $supportedAttributes
+     * @param array $supportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-        $this->supportedOperators = ['<', '<=', '=', '>=', '>', 'EMPTY'];
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -48,9 +50,12 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
-        return $attribute->getAttributeType() === 'pim_catalog_metric';
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
     }
 
     /**
@@ -72,11 +77,11 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $data = (float) $value;
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $fieldData = sprintf('%s.baseData', $field);
 

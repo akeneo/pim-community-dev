@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Family sorter
@@ -18,19 +17,6 @@ class FamilySorter implements FieldSorterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
-
-    /** @var CatalogContext */
-    protected $context;
-
-    /**
-     * Instanciate the filter
-     *
-     * @param CatalogContext $context
-     */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-    }
 
     /**
      * {@inheritdoc}
@@ -51,13 +37,19 @@ class FamilySorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function addFieldSorter($field, $direction, array $context = [])
     {
+        if (!isset($context['locale'])) {
+            throw new \InvalidArgumentException(
+                'Cannot prepare condition on family sorter without locale'
+            );
+        }
+
         $fieldLabel = sprintf(
             "%s.%s.label.%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
-            $this->context->getLocaleCode()
+            $context['locale']
         );
         $fieldCode = sprintf(
             "%s.%s.code",

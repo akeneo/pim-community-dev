@@ -3,8 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Builds a product query builder by using  shortcuts to easily select, filter or sort products
@@ -27,21 +29,30 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** QuerySorterRegistryInterface */
     protected $sorterRegistry;
 
+    /** @var array */
+    protected $defaultContext;
+
     /**
      * Constructor
      *
      * @param AttributeRepository          $attributeRepository
      * @param QueryFilterRegistryInterface $filterRegistry
      * @param QuerySorterRegistryInterface $sorterRegistry
+     * @param array                        $defaultContext
      */
     public function __construct(
         AttributeRepository $attributeRepository,
         QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry
+        QuerySorterRegistryInterface $sorterRegistry,
+        array $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
+
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+        $this->defaultContext = $resolver->resolve($defaultContext);
     }
 
     /**
@@ -76,7 +87,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addFilter($field, $operator, $value)
+    public function addFilter($field, $operator, $value, array $context = [])
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
 
@@ -98,26 +109,20 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             );
         }
 
+        $context = $this->getFinalContext($context);
         if ($attribute !== null) {
-            $this->addAttributeFilter($filter, $attribute, $operator, $value);
+            $this->addAttributeFilter($filter, $attribute, $operator, $value, $context);
         } else {
-            $this->addFieldFilter($filter, $field, $operator, $value);
+            $this->addFieldFilter($filter, $field, $operator, $value, $context);
         }
 
         return $this;
     }
 
     /**
-     * Sort by field
-     *
-     * @param string $field     the field to sort on
-     * @param string $direction the direction to use
-     *
-     * @throws \LogicException
-     *
-     * @return ProductQueryBuilderInterface
+     * {@inheritdoc}
      */
-    public function addSorter($field, $direction)
+    public function addSorter($field, $direction, array $context = [])
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
 
@@ -133,10 +138,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             );
         }
 
+        $context = $this->getFinalContext($context);
         if ($attribute !== null) {
-            $this->addAttributeSorter($sorter, $attribute, $direction);
+            $this->addAttributeSorter($sorter, $attribute, $direction, $context);
         } else {
-            $this->addFieldSorter($sorter, $field, $direction);
+            $this->addFieldSorter($sorter, $field, $direction, $context);
         }
 
         return $this;
@@ -149,13 +155,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param string               $field    the field
      * @param string               $operator the operator
      * @param mixed                $value    the value to filter
+     * @param array                $context  the filter context
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value)
+    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, array $context)
     {
+        $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addFieldFilter($field, $operator, $value);
+        $filter->addFieldFilter($field, $operator, $value, $context);
 
         return $this;
     }
@@ -164,20 +172,23 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Add a filter condition on an attribute
      *
      * @param AttributeFilterInterface $filter    the filter
-     * @param AbstractAttribute        $attribute the attribute
+     * @param AttributeInterface       $attribute the attribute
      * @param string                   $operator  the operator
      * @param mixed                    $value     the value to filter
+     * @param array                    $context   the filter context
      *
      * @return ProductQueryBuilderInterface
      */
     protected function addAttributeFilter(
         AttributeFilterInterface $filter,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         $operator,
-        $value
+        $value,
+        array $context
     ) {
+        $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addAttributeFilter($attribute, $operator, $value);
+        $filter->addAttributeFilter($attribute, $operator, $value, $context);
 
         return $this;
     }
@@ -188,13 +199,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * @param FieldSorterInterface $sorter    the sorter
      * @param string               $field     the field to sort on
      * @param string               $direction the direction to use
+     * @param array                $context   the sorter context
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction)
+    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction, array $context)
     {
+        $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addFieldSorter($field, $direction);
+        $sorter->addFieldSorter($field, $direction, $context);
 
         return $this;
     }
@@ -203,16 +216,49 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Sort by attribute value
      *
      * @param AttributeSorterInterface $sorter    the sorter
-     * @param AbstractAttribute        $attribute the attribute to sort on
+     * @param AttributeInterface       $attribute the attribute to sort on
      * @param string                   $direction the direction to use
+     * @param array                    $context   the sorter context
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function addAttributeSorter(AttributeSorterInterface $sorter, AbstractAttribute $attribute, $direction)
-    {
+    protected function addAttributeSorter(
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute,
+        $direction,
+        array $context
+    ) {
+        $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addAttributeSorter($attribute, $direction);
+        $sorter->addAttributeSorter($attribute, $direction, $context);
 
         return $this;
+    }
+
+    /**
+     * Merge default context with provided one
+     *
+     * @param array $context
+     *
+     * @return array
+     */
+    protected function getFinalContext(array $context)
+    {
+        return array_merge($this->defaultContext, $context);
+    }
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     *
+     * @return null
+     */
+    protected function configureOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(
+            [
+                'locale',
+                'scope'
+            ]
+        );
     }
 }

@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * In group sorter
@@ -18,19 +17,6 @@ class InGroupSorter implements FieldSorterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
-
-    /** @var CatalogContext */
-    protected $context;
-
-    /**
-     * Instanciate the filter
-     *
-     * @param CatalogContext $context
-     */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-    }
 
     /**
      * {@inheritdoc}
@@ -51,7 +37,7 @@ class InGroupSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $field = sprintf("%s.%s", ProductQueryUtility::NORMALIZED_FIELD, $field);
         $this->qb->sort($field, $direction);

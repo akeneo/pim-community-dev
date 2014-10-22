@@ -3,10 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 
 /**
  * Metric sorter
@@ -22,19 +21,6 @@ class MetricSorter implements AttributeSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
-    /**
-     * Instanciate a sorter
-     *
-     * @param CatalogContext $context
-     */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -46,7 +32,7 @@ class MetricSorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return $attribute->getAttributeType() === 'pim_catalog_metric';
     }
@@ -54,14 +40,14 @@ class MetricSorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = [])
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
         $this->qb->leftJoin(
             $this->qb->getRootAlias().'.values',
             $joinAlias,
@@ -83,15 +69,18 @@ class MetricSorter implements AttributeSorterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the context
+     *
+     * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 }

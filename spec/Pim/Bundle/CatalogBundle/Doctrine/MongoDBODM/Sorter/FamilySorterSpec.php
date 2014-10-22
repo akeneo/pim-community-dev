@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Prophecy\Argument;
 
 /**
@@ -12,11 +11,8 @@ use Prophecy\Argument;
  */
 class FamilySorterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, CatalogContext $context)
+    function let(Builder $queryBuilder)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -37,6 +33,16 @@ class FamilySorterSpec extends ObjectBehavior
         $queryBuilder->sort('normalizedData.family.code', 'desc')->willReturn($queryBuilder);
         $queryBuilder->sort('_id')->shouldBeCalled();
 
-        $this->addFieldSorter('family', 'desc');
+        $this->addFieldSorter('family', 'desc', ['locale' => 'en_US']);
+    }
+
+    function it_throws_an_exception_when_the_locale_is_not_provided(Builder $queryBuilder)
+    {
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldSorter('family', 'desc', []);
+        $this
+            ->shouldThrow('\InvalidArgumentException')
+            ->duringAddFieldSorter('family', 'desc', ['locale' => null, 'scope' => 'ecommerce']);
     }
 }

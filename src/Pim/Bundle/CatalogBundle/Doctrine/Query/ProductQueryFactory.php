@@ -67,20 +67,45 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         $this->configureOptions($resolver);
         $options = $resolver->resolve($options);
 
-        $pqb = new $this->pqbClass(
-            $this->attributeRepository,
-            $this->filterRegistry,
-            $this->sorterRegistry
+        $pqb = $this->createProductQueryBuilder(
+            [
+                'locale' => $options['default_locale'],
+                'scope' => $options['default_scope']
+            ]
         );
 
-        $repository = $this->om->getRepository($this->productClass);
-        $method = $options['repository_method'];
-        $parameters = $options['repository_parameters'];
-
-        $qb = $repository->$method($parameters);
+        $qb = $this->createQueryBuilder($options);
         $pqb->setQueryBuilder($qb);
 
         return $pqb;
+    }
+
+    /**
+     * @return ProductQueryBuilderInterface
+     */
+    protected function createProductQueryBuilder(array $options)
+    {
+        $pqb = new $this->pqbClass(
+            $this->attributeRepository,
+            $this->filterRegistry,
+            $this->sorterRegistry,
+            $options
+        );
+
+        return $pqb;
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     */
+    protected function createQueryBuilder(array $options)
+    {
+        $repository = $this->om->getRepository($this->productClass);
+        $method = $options['repository_method'];
+        $parameters = $options['repository_parameters'];
+        $qb = $repository->$method($parameters);
+
+        return $qb;
     }
 
     /**
@@ -88,11 +113,22 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
      */
     protected function configureOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setOptional(['repository_method', 'repository_parameters', 'currentGroup', 'product']);
+        $resolver->setOptional(
+            [
+                'repository_method',
+                'repository_parameters',
+                'currentGroup',
+                'product',
+                'default_locale',
+                'default_scope'
+            ]
+        );
         $resolver->setDefaults(
             [
                 'repository_method' => 'createQueryBuilder',
                 'repository_parameters' => 'o',
+                'default_locale' => null,
+                'default_scope' => null
             ]
         );
     }

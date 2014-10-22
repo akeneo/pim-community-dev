@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Base sorter
@@ -20,19 +19,6 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
-
-    /** @var CatalogContext */
-    protected $context;
-
-    /**
-     * Instanciate the filter
-     *
-     * @param CatalogContext $context
-     */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-    }
 
     /**
      * {@inheritdoc}
@@ -53,7 +39,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return true;
     }
@@ -61,9 +47,9 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = [])
     {
-        $sortField = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+        $sortField = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
         $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$sortField, $direction);
         $this->qb->sort('_id');
 
@@ -73,7 +59,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$field, $direction);
         $this->qb->sort('_id');

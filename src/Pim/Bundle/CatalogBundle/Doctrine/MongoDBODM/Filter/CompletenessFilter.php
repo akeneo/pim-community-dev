@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
@@ -19,8 +18,8 @@ class CompletenessFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedFields;
 
     /** @var array */
     protected $supportedOperators;
@@ -28,12 +27,15 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param CatalogContext $context
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-        $this->supportedOperators = ['=', '<'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -49,7 +51,10 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field === 'completeness';
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**
@@ -71,14 +76,20 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
+        if (!isset($context['locale']) || !isset($context['scope'])) {
+            throw new \InvalidArgumentException(
+                'Cannot prepare condition on completenesses without locale and scope'
+            );
+        }
+
         $field = sprintf(
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             'completenesses',
-            $this->context->getScopeCode(),
-            $this->context->getLocaleCode()
+            $context['scope'],
+            $context['locale']
         );
         $value = intval($value);
 

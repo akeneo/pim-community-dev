@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Entity filter
@@ -18,8 +17,8 @@ class GroupsFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedFields;
 
     /** @var array */
     protected $supportedOperators;
@@ -27,12 +26,15 @@ class GroupsFilter implements FieldFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param CatalogContext $context
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-        $this->supportedOperators = ['IN', 'NOT IN'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -48,7 +50,10 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field === 'groups';
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**
@@ -56,7 +61,10 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, $this->supportedOperators);
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
     }
 
     /**
@@ -70,7 +78,7 @@ class GroupsFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $value = is_array($value) ? $value : [$value];
         $value = array_map('intval', $value);

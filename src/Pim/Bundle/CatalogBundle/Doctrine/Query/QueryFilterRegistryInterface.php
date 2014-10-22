@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Aims to register filters useable on product query builder
@@ -32,9 +32,9 @@ interface QueryFilterRegistryInterface
     /**
      * Get the attribute filter
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return FilterInterface|null
      */
-    public function getAttributeFilter(AbstractAttribute $attribute);
+    public function getAttributeFilter(AttributeInterface $attribute);
 }

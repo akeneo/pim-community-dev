@@ -5,17 +5,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
 class OptionFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CatalogContext $context)
+    function let(QueryBuilder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN']);
         $this->setQueryBuilder($qb);
     }
 
@@ -31,7 +28,7 @@ class OptionFilterSpec extends ObjectBehavior
         $this->supportsOperator(Argument::any())->shouldReturn(false);
     }
 
-    function it_supports_simple_select_attribute(AbstractAttribute $attribute)
+    function it_supports_simple_select_attribute(AttributeInterface $attribute)
     {
         $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
         $this->supportsAttribute($attribute)->shouldReturn(true);
@@ -40,7 +37,7 @@ class OptionFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_a_filter_to_the_query($qb, AbstractAttribute $attribute)
+    function it_adds_a_filter_to_the_query($qb, AttributeInterface $attribute)
     {
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
@@ -61,7 +58,7 @@ class OptionFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['my_value1', 'my_value2']);
     }
 
-    function it_adds_an_empty_filter_to_the_query($qb, AbstractAttribute $attribute)
+    function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute)
     {
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
@@ -83,7 +80,7 @@ class OptionFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['empty']);
     }
 
-    function it_adds_an_empty_filter_and_another_filter_to_the_query($qb, AbstractAttribute $attribute)
+    function it_adds_an_empty_filter_and_another_filter_to_the_query($qb, AttributeInterface $attribute)
     {
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);

@@ -3,10 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 
 /**
  * Entity sorter
@@ -20,19 +19,6 @@ class EntitySorter implements AttributeSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
-    /**
-     * Instanciate a sorter
-     *
-     * @param CatalogContext $context
-     */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -44,12 +30,11 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
             [
-                'pim_catalog_multiselect', // TODO : to disable, not make sense on a many relation
                 'pim_catalog_simpleselect'
             ]
         );
@@ -58,14 +43,20 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = [])
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
+        if (!isset($context['locale'])) {
+            throw new \InvalidArgumentException(
+                sprintf('Cannot prepare condition on type "%s" without locale', $attribute->getAttributeType())
+            );
+        }
+
         // join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
         $this->qb->leftJoin(
             $this->qb->getRootAlias().'.values',
             $joinAlias,
@@ -79,7 +70,7 @@ class EntitySorter implements AttributeSorterInterface
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
 
         $joinAliasOptVal = $aliasPrefix.'OV'.$attribute->getCode();
-        $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($this->context->getLocaleCode());
+        $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($context['locale']);
         $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
 
         $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
@@ -94,15 +85,18 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the context
+     *
+     * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 }

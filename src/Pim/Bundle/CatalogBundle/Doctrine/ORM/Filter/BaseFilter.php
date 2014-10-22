@@ -3,13 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\CriteriaCondition;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 
 /**
  * Base filter, may be used with different configuration for strings, numbers, booleans, etc
@@ -23,9 +22,6 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /** @var array */
     protected $supportedAttributes;
 
@@ -38,18 +34,15 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param CatalogContext $context
-     * @param array          $supportedAttributes
-     * @param array          $supportedFields
-     * @param array          $supportedOperators
+     * @param array $supportedAttributes
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
     public function __construct(
-        CatalogContext $context,
         array $supportedAttributes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->context = $context;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
@@ -66,7 +59,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
@@ -76,11 +69,11 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
                 $this->qb->getRootAlias().'.values',
@@ -96,7 +89,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
         $condition = $this->prepareCriteriaCondition($field, $operator, $value);
@@ -119,7 +112,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
@@ -166,17 +159,18 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the context
      *
      * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 }

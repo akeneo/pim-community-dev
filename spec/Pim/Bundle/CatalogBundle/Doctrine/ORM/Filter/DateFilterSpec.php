@@ -5,16 +5,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class DateFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CatalogContext $context)
+    function let(QueryBuilder $qb)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith(['pim_catalog_date'], ['created', 'updated'], ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']);
         $this->setQueryBuilder($qb);
 
         $qb->getRootAliases()->willReturn(array('p'));
@@ -50,7 +47,7 @@ class DateFilterSpec extends ObjectBehavior
         $this->supportsField('other')->shouldReturn(false);
     }
 
-    function it_supports_date_attributes(AbstractAttribute $dateAtt, AbstractAttribute $otherAtt)
+    function it_supports_date_attributes(AttributeInterface $dateAtt, AttributeInterface $otherAtt)
     {
         $dateAtt->getAttributeType()->willReturn('pim_catalog_date');
         $this->supportsAttribute($dateAtt)->shouldReturn(true);
@@ -171,7 +168,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_empty_operator_filter_on_an_attribute_to_the_query(
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         QueryBuilder $qb,
         Expr $expr
     ) {
@@ -195,7 +192,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_greater_than_filter_on_an_attribute_to_the_query(
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         QueryBuilder $qb,
         Expr $expr,
         Expr\Comparison $comparison

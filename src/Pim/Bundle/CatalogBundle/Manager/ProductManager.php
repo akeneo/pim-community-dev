@@ -163,15 +163,7 @@ class ProductManager
      */
     public function findByIdentifier($identifier)
     {
-        $product = $this->getProductRepository()->findOneBy(
-            [
-                [
-                    'attribute' => $this->getIdentifierAttribute(),
-                    'value' => $identifier
-                ]
-            ]
-        );
-
+        $product = $this->getProductRepository()->findOneByIdentifier($identifier);
         if ($product) {
             $this->builder->addMissingProductValues($product);
         }

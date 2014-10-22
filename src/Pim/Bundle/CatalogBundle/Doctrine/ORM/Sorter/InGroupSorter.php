@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * In group sorter
@@ -15,24 +14,8 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class InGroupSorter implements FieldSorterInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
-
-    /** @var CatalogContext */
-    protected $context;
-
-    /**
-     * Instanciate a sorter
-     *
-     * @param CatalogContext $context
-     */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-    }
 
     /**
      * {@inheritdoc}
@@ -53,7 +36,7 @@ class InGroupSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $alias = 'inGroupSorter';
         $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';

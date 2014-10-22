@@ -3,11 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 
 /**
  * Filtering by multi option backend type
@@ -18,13 +17,11 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class OptionsFilter implements AttributeFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedAttributes;
 
     /** @var array */
     protected $supportedOperators;
@@ -32,12 +29,15 @@ class OptionsFilter implements AttributeFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param CatalogContext $context
+     * @param array $supportedAttributes
+     * @param array $supportedOperators
      */
-    public function __construct(CatalogContext $context)
-    {
-        $this->context = $context;
-        $this->supportedOperators = ['IN'];
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -51,7 +51,7 @@ class OptionsFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $joinAlias    = 'filter'.$attribute->getCode();
         $joinAliasOpt = 'filterO'.$attribute->getCode();
@@ -63,7 +63,7 @@ class OptionsFilter implements AttributeFilterInterface
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
 
             $condition = $this->prepareEmptyCondition($backendField, $operator, $value);
@@ -76,7 +76,7 @@ class OptionsFilter implements AttributeFilterInterface
                     $this->qb->getRootAlias().'.values',
                     $joinAlias,
                     'WITH',
-                    $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+                    $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
                 )
                 ->innerJoin(
                     $joinAlias .'.'. $attribute->getBackendType(),
@@ -92,9 +92,12 @@ class OptionsFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
-        return $attribute->getAttributeType() === 'pim_catalog_multiselect';
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
     }
 
     /**
@@ -116,18 +119,19 @@ class OptionsFilter implements AttributeFilterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AbstractAttribute $attribute the attribute
-     * @param string            $joinAlias the value join alias
+     * @param AttributeInterface $attribute the attribute
+     * @param string             $joinAlias the value join alias
+     * @param array              $context   the context
      *
      * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->context);
+        $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
     }
 
     /**

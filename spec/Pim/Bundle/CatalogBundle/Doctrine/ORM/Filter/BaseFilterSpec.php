@@ -5,16 +5,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class BaseFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder, CatalogContext $context)
+    function let(QueryBuilder $queryBuilder)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context, ['pim_catalog_identifier'], [], ['LIKE', 'NOT LIKE', '=', 'IN']);
+        $this->beConstructedWith(['pim_catalog_identifier'], [], ['LIKE', 'NOT LIKE', '=', 'IN']);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -30,7 +27,7 @@ class BaseFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_like_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $sku)
+    function it_adds_a_like_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');

@@ -17,6 +17,9 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\FieldSorterInterface/CatalogBundle\\Doctrine\\Query\\FieldSorterInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ProductQueryBuilderInterface/CatalogBundle\\Doctrine\\Query\\ProductQueryBuilderInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ProductQueryBuilder/CatalogBundle\\Doctrine\\Query\\ProductQueryBuilder/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ORM\\CriteriaCondition/CatalogBundle\\Doctrine\\ORM\\Condition\\CriteriaCondition/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ORM\\ValueJoin/CatalogBundle\\Doctrine\\ORM\\Join\\ValueJoin/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ORM\\CompletenessJoin/CatalogBundle\\Doctrine\\ORM\\Join\\CompletenessJoin/g'
 ```
 
 ## CatalogBundle

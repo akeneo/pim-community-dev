@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
@@ -32,7 +32,7 @@ class ProductQueryFactorySpec extends ObjectBehavior
         $om->getRepository(Argument::any())->willReturn($repository);
         $repository->createQueryBuilder('o')->shouldBeCalled();
 
-        $this->create();
+        $this->create(['default_locale' => 'en_US', 'default_scope' => 'print']);
     }
 
     function it_creates_a_product_query_builder_with_a_custom_repository_method($om, ProductRepository $repository)
@@ -40,6 +40,13 @@ class ProductQueryFactorySpec extends ObjectBehavior
         $om->getRepository(Argument::any())->willReturn($repository);
         $repository->createDatagridQueryBuilder(['param1'])->shouldBeCalled();
 
-        $this->create(['repository_method' => 'createDatagridQueryBuilder', 'repository_parameters' => ['param1']]);
+        $this->create(
+            [
+                'default_locale' => 'en_US',
+                'default_scope' => 'print',
+                'repository_method' => 'createDatagridQueryBuilder',
+                'repository_parameters' => ['param1']
+            ]
+        );
     }
 }
