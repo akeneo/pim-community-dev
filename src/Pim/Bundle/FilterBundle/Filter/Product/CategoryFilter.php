@@ -143,12 +143,19 @@ class CategoryFilter extends NumberFilter
         $qb                 = $ds->getQueryBuilder();
 
         $category = $categoryRepository->find($data['categoryId']);
+
         if (!$category) {
             $category = $categoryRepository->find($data['treeId']);
         }
+
         if ($category) {
-            $productIds = $this->getProductIdsInCategory($category, $data);
-            $productRepository->applyFilterByIds($qb, $productIds, true);
+            if ($data['includeSub']) {
+                $categoryIds = $categoryRepository->getAllChildrenIds($category);
+            } else {
+                $categoryIds = array();
+            }
+            $categoryIds[] = $category->getId();
+            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, true);
 
             return true;
         }
