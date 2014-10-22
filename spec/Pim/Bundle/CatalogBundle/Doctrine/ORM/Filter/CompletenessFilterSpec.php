@@ -12,6 +12,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $queryBuilder)
     {
+        $this->beConstructedWith(['completeness'], ['=', '<']);
         $this->setQueryBuilder($queryBuilder);
     }
 

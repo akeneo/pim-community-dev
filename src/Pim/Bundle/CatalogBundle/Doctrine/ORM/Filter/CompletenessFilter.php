@@ -15,20 +15,27 @@ use Doctrine\ORM\QueryBuilder;
  */
 class CompletenessFilter implements FieldFilterInterface
 {
-    /**
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
+
+    /** @var array */
+    protected $supportedFields;
 
     /** @var array */
     protected $supportedOperators;
 
     /**
-     * Instanciate a sorter
+     * Instanciate the base filter
+     *
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct()
-    {
-        $this->supportedOperators = ['=', '<'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -63,7 +70,7 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field === 'completeness';
+        return in_array($field, $this->supportedFields);
     }
 
     /**
