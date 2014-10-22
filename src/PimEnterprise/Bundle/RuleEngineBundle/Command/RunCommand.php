@@ -46,6 +46,10 @@ class RunCommand extends ContainerAwareCommand
         $repo = $this->getContainer()->get('pimee_rule_engine.repository.rule');
         $rule = $repo->findOneByCode($code);
 
+        if (null === $rule) {
+            throw new \InvalidArgumentException(sprintf('The rule %s does not exists', $code));
+        }
+
         // run the rule
         $runnerRegistry = $this->getContainer()->get('pimee_rule_engine.runner.chained');
 
