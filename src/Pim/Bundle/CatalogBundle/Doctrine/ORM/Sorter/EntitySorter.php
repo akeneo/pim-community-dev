@@ -44,7 +44,7 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, $context = [])
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = [])
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
@@ -88,7 +88,7 @@ class EntitySorter implements AttributeSorterInterface
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
         $joinHelper = new ValueJoin($this->qb);
 

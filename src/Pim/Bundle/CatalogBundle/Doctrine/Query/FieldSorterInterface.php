@@ -20,7 +20,7 @@ interface FieldSorterInterface extends SorterInterface
      *
      * @return FieldSorterInterface
      */
-    public function addFieldSorter($field, $direction, $context = []);
+    public function addFieldSorter($field, $direction, array $context = []);
 
     /**
      * This filter supports the field

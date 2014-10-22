@@ -22,7 +22,7 @@ interface AttributeSorterInterface extends SorterInterface
      *
      * @return AttributeSorterInterface
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, $context = []);
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = []);
 
     /**
      * This filter supports the attribute

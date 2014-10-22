@@ -36,7 +36,7 @@ class FamilySorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $context = [])
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $rootAlias = $this->qb->getRootAlias();
 

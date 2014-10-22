@@ -44,7 +44,7 @@ class OptionFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $joinAlias = 'filter'.$attribute->getCode();
 
@@ -118,7 +118,7 @@ class OptionFilter implements AttributeFilterInterface
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
         $joinHelper = new ValueJoin($this->qb);
 

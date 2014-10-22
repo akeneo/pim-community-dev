@@ -44,7 +44,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         AttributeRepository $attributeRepository,
         QueryFilterRegistryInterface $filterRegistry,
         QuerySorterRegistryInterface $sorterRegistry,
-        $defaultContext
+        array $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;

@@ -21,7 +21,7 @@ interface FieldFilterInterface extends FilterInterface
      *
      * @return FieldFilterInterface
      */
-    public function addFieldFilter($field, $operator, $value, $context = []);
+    public function addFieldFilter($field, $operator, $value, array $context = []);
 
     /**
      * This filter supports the field

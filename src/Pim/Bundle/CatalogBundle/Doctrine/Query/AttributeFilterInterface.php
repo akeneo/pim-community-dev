@@ -23,7 +23,7 @@ interface AttributeFilterInterface extends FilterInterface
      *
      * @return AttributeFilterInterface
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $context = []);
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = []);
 
     /**
      * This filter supports the attribute

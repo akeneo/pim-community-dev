@@ -36,7 +36,7 @@ class IsAssociatedSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $context = [])
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $this->qb->addOrderBy($field, $direction);
 

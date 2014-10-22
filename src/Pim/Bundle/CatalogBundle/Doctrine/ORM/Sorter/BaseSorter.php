@@ -87,7 +87,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, $context = [])
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = [])
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
@@ -121,7 +121,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $context = [])
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
         $this->qb->addOrderBy($field, $direction);
@@ -143,7 +143,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
         $joinHelper = new ValueJoin($this->qb);
 

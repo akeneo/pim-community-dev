@@ -59,7 +59,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
@@ -89,7 +89,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $context = [])
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
         $condition = $this->prepareCriteriaCondition($field, $operator, $value);
@@ -167,7 +167,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
     {
         $joinHelper = new ValueJoin($this->qb);
 

@@ -37,7 +37,7 @@ class CompletenessSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $context = [])
+    public function addFieldSorter($field, $direction, array $context = [])
     {
         $alias = 'sorterCompleteness';
         $util = new CompletenessJoin($this->qb);
