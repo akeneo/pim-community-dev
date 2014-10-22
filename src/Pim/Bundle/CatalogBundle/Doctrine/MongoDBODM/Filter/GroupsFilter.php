@@ -18,14 +18,23 @@ class GroupsFilter implements FieldFilterInterface
     protected $qb;
 
     /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
+     *
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct()
-    {
-        $this->supportedOperators = ['IN', 'NOT IN'];
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -41,7 +50,10 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return $field === 'groups';
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**
@@ -49,7 +61,10 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, $this->supportedOperators);
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
     }
 
     /**

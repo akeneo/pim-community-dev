@@ -12,6 +12,7 @@ class GroupsFilterSpec extends ObjectBehavior
 {
     function let(Builder $queryBuilder)
     {
+        $this->beConstructedWith(['groups'], ['IN', 'NOT IN']);
         $this->setQueryBuilder($queryBuilder);
     }
 
