@@ -4,6 +4,9 @@ parameters:
 services:
     pimee_product_rule.runner.product:
         class: %pimee_product_rule.runner.product.class%
-        parent: pimee_rule_engine.runner.batch
+        arguments:
+            - @pimee_product_rule.loader.product
+            - @pimee_product_rule.selector.product
+            - @pimee_product_rule.applier.product
         tags:
             - { name: pimee_rule_engine.runner }

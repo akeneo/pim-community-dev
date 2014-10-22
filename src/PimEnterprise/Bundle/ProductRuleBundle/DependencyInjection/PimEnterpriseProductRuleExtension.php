@@ -31,5 +31,6 @@ class PimEnterpriseProductRuleExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('engine.yml');
         $loader->load('runners.yml');
+        $loader->load('readers.yml');
     }
 }

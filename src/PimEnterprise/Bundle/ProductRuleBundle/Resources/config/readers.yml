@@ -1,0 +1,8 @@
+parameters:
+    pimee_product_rule.reader.product.class: PimEnterprise\Bundle\RuleEngineBundle\Batch\RuleReader
+
+services:
+    pimee_product_rule.reader.product:
+        class: '%pimee_product_rule.reader.product.class%'
+        arguments:
+            - @pimee_rule_engine.repository.rule

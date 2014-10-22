@@ -12,16 +12,14 @@
 namespace PimEnterprise\Bundle\ProductRuleBundle\Runner;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractBatchRunner;
+use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
 
 /**
  * Product rule runner
  *
- * TODO : rename to BatchProductRuleRunner and introduce a ProductRuleRunner
- *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleRunner extends AbstractBatchRunner
+class ProductRuleRunner extends AbstractRunner
 {
     /**
      * {@inheritdoc}

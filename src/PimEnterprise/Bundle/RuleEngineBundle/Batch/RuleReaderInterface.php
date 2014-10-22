@@ -11,14 +11,17 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Batch;
 
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-
 /**
- * Applies rules via a batch.
+ * Get a rule
  *
- * @author Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Sanchez <julien@akeneo.com>
  */
-interface BatchApplierInterface extends ApplierInterface, StepExecutionAwareInterface
+interface RuleReaderInterface
 {
+    /**
+     * Return a rule
+     *
+     * @return RuleInterface
+     */
+    public function read();
 }
