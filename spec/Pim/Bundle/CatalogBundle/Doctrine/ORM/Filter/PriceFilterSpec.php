@@ -7,15 +7,12 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder, CatalogContext $context)
+    function let(QueryBuilder $queryBuilder)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($context);
+        $this->beConstructedWith(['pim_catalog_price_collection'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
         $this->setQueryBuilder($queryBuilder);
     }
 
