@@ -23,9 +23,6 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var OrmExpressionBuilder */
-    protected $expressionBuilder;
-
     /**
      * Constructor
      *

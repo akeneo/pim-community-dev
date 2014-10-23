@@ -45,6 +45,7 @@ parameters:
     pim_catalog.mongodb_odm_query_generator.multiple_option_value_updated.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionValueUpdatedQueryGenerator
 
     pim_catalog.doctrine.query.filter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter
+    pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter
     pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter
     pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter
     pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter
@@ -374,7 +375,7 @@ services:
 
     # PQB filters
     pim_catalog.doctrine.query.filter.identifier:
-        class: %pim_catalog.doctrine.query.filter.base.class%
+        class: %pim_catalog.doctrine.query.filter.string.class%
         arguments:
             - ['pim_catalog_identifier']
             - []
@@ -383,7 +384,7 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
     pim_catalog.doctrine.query.filter.string:
-        class: %pim_catalog.doctrine.query.filter.base.class%
+        class: %pim_catalog.doctrine.query.filter.string.class%
         arguments:
             - ['pim_catalog_text', 'pim_catalog_textarea']
             - []

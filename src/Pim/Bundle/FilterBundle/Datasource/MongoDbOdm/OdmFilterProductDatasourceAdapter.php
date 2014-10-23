@@ -23,9 +23,6 @@ class OdmFilterProductDatasourceAdapter extends OdmFilterDatasourceAdapter imple
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var OrmExpressionBuilder */
-    protected $expressionBuilder;
-
     /**
      * Constructor
      *
