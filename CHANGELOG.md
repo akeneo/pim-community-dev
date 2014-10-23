@@ -1,7 +1,8 @@
 # 1.0.x
 
 ## Bug fixes
-- Removing the group "ALL" from categories' permissions after a clean installation.
+- PIM-3206: Removing the group "ALL" from categories' permissions after a clean installation.
+- PIM-3234: Fix performance issue on granted category filter
 
 # 1.0.2 (2014-10-10)
 
