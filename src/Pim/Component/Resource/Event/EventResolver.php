@@ -14,44 +14,54 @@ use Pim\Component\Resource\ResourceSetInterface;
  */
 class EventResolver
 {
-    /** @var EventRegistry */
+    /** @var EventTypeRegistry */
     protected $registry;
 
+    /** @var string */
+    protected $eventClass;
+
     /**
-     * @param EventRegistry $registry
+     * @param EventTypeRegistry $registry
+     * @param string            $eventClass
      */
-    public function __construct(EventRegistry $registry)
+    public function __construct(EventTypeRegistry $registry, $eventClass = 'Pim\Component\Resource\Event\ResourceEvent')
     {
         $this->registry = $registry;
+        $this->eventClass = $eventClass;
     }
 
     /**
      * @param ResourceInterface|ResourceSetInterface $resource
      *
-     * @return ResourceEventInterface|ResourceBulkEventInterface
+     * @return ResourceEventInterface
+     *
+     * @throws \InvalidArgumentException
      */
-    public function resolves($resource)
+    public function resolve($resource)
     {
         if ($resource instanceof ResourceInterface) {
-            $wantedEventType = get_class($resource);
+            $resourceClass = get_class($resource);
         } elseif ($resource instanceof ResourceSetInterface) {
-            $wantedEventType = EventRegistry::BULK_PREFIX . $resource->getType();
+            $resourceClass = get_class($resource[0]);
         } else {
             throw new \InvalidArgumentException(
                 'Resource should be an instance of "ResourceInterface" or "ResourceSetInterface".'
             );
         }
 
-        foreach ($this->registry as $eventType => $event) {
-            if ($wantedEventType === $eventType) {
-                return $event;
+        // TODO: argument for this
+        $eventClass = $this->eventClass;
+        foreach ($this->registry->getEventTypes() as $eventType) {
+            if ($resourceClass === $eventType->getSubjectClass()) {
+                $eventClass = get_class($eventType);
+                break;
             }
         }
 
-        if ($resource instanceof ResourceInterface) {
-            return new ResourceEvent($resource);
-        }
+        /** @var ResourceEventInterface $event */
+        $event = new $eventClass($resourceClass);
+        $event->setSubject($resource);
 
-        return new ResourceBulkEvent($resource);
+        return $event;
     }
 }

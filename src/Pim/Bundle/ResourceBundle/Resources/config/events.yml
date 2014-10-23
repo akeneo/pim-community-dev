@@ -1,12 +1,12 @@
 parameters:
-    pim_resource.event.registry: Pim\Component\Resource\Event\EventRegistry
+    pim_resource.event.type_registry: Pim\Component\Resource\Event\EventTypeRegistry
     pim_resource.event.resolver: Pim\Component\Resource\Event\EventResolver
 
 services:
-    pim_resource.event.registry:
-        class: %pim_resource.event.registry%
+    pim_resource.event.type_registry:
+        class: %pim_resource.event.type_registry%
 
     pim_resource.event.resolver:
         class: %pim_resource.event.resolver%
         arguments:
-            - @pim_resource.event.registry
+            - @pim_resource.event.type_registry

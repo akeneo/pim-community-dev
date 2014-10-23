@@ -14,8 +14,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class RegisterEventsCompilerPass extends AbstractCompilerPass
 {
     const DEFAULT_PRIORITY = 100;
-    const RESOURCE_EVENT_TAG = 'pim_resource.event';
-    const RESOURCE_EVENT_REGISTRY_ID = 'pim_resource.event.registry';
+    const RESOURCE_EVENT_TYPE_TAG = 'pim_resource.event';
+    const RESOURCE_EVENT_REGISTRY_ID = 'pim_resource.event.type_registry';
 
     /**
      * {@inheritdoc}
@@ -27,10 +27,14 @@ class RegisterEventsCompilerPass extends AbstractCompilerPass
         }
 
         $registry = $container->getDefinition(self::RESOURCE_EVENT_REGISTRY_ID);
+        $eventTypes = $this->findAndSortTaggedServices(
+            $container,
+            self::RESOURCE_EVENT_TYPE_TAG,
+            self::DEFAULT_PRIORITY
+        );
 
-        $events = $this->findAndSortTaggedServices($container, self::RESOURCE_EVENT_TAG, self::DEFAULT_PRIORITY);
-        foreach ($events as $event) {
-            $registry->addMethodCall('register', [$event]);
+        foreach ($eventTypes as $eventType) {
+            $registry->addMethodCall('register', [$eventType]);
         }
     }
 }
