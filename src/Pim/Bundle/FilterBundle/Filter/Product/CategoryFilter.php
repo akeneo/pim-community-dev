@@ -118,7 +118,7 @@ class CategoryFilter extends NumberFilter
 
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
-            $categoryIds = $categoryRepository->getAllChildrenIds($tree);
+            $categoryIds = $this->getAllChildrenIds($tree);
             $productRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
 
             return true;
@@ -149,7 +149,7 @@ class CategoryFilter extends NumberFilter
 
         if ($category) {
             if ($data['includeSub']) {
-                $categoryIds = $categoryRepository->getAllChildrenIds($category);
+                $categoryIds = $this->getAllChildrenIds($category);
             } else {
                 $categoryIds = array();
             }
@@ -160,6 +160,21 @@ class CategoryFilter extends NumberFilter
         }
 
         return false;
+    }
+
+    /**
+     * Get children category ids
+     *
+     * @param CategoryInterface $category
+     *
+     * @return integer[]
+     */
+    protected function getAllChildrenIds(CategoryInterface $category)
+    {
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $categoryIds = $categoryRepository->getAllChildrenIds($category);
+
+        return $categoryIds;
     }
 
     /**
