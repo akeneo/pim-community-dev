@@ -76,8 +76,16 @@ class DatagridViewManager
             ->offsetGetByPath($path);
 
         if ($columnsConfig) {
+            $properties = ['label', 'sortOrder', 'group', 'groupOrder'];
+
             foreach ($columnsConfig as $code => $meta) {
-                $choices[$code] = $meta['label'];
+                $choice = ['code' => $code];
+                foreach ($properties as $property) {
+                    if (isset($meta[$property])) {
+                        $choice[$property] = $meta[$property];
+                    }
+                }
+                $choices[] = $choice;
             }
         }
 

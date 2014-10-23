@@ -31,19 +31,28 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
     {
         $attributes = [
             'sku' => [
-                'code'  => 'sku',
-                'label' => 'Sku',
-                'attributeType' => 'pim_catalog_identifier'
+                'code'          => 'sku',
+                'label'         => 'Sku',
+                'attributeType' => 'pim_catalog_identifier',
+                'sortOrder'     => 1,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
             'name' => [
-                'code'  => 'name',
-                'label' => 'Name',
-                'attributeType' => 'pim_catalog_text'
+                'code'          => 'name',
+                'label'         => 'Name',
+                'attributeType' => 'pim_catalog_text',
+                'sortOrder'     => 2,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
             'desc' => [
-                'code'  => 'desc',
-                'label' => 'Desc',
-                'attributeType' => 'pim_catalog_text'
+                'code'          => 'desc',
+                'label'         => 'Desc',
+                'attributeType' => 'pim_catalog_text',
+                'sortOrder'     => 3,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
         ];
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
@@ -55,18 +64,27 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $availableColumns = [
             'sku' => [
                 'identifier_config',
-                'label' => 'Sku'
+                'label'      => 'Sku',
+                'order'      => 1,
+                'group'      => 'General',
+                'groupOrder' => 1
             ],
             'family' => [
                 'family_config',
             ],
-            'desc' => [
-                'text_config',
-                'label' => 'Desc'
-            ],
             'name' => [
                 'text_config',
-                'label' => 'Name'
+                'label'      => 'Name',
+                'order'      => 2,
+                'group'      => 'General',
+                'groupOrder' => 1
+            ],
+            'desc' => [
+                'text_config',
+                'label'      => 'Desc',
+                'order'      => 3,
+                'group'      => 'General',
+                'groupOrder' => 1
             ]
         ];
 
@@ -90,26 +108,35 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
 
         $attributes = [
             'sku' => [
-                'code'  => 'sku',
-                'label' => 'Sku',
-                'attributeType' => 'pim_catalog_identifier'
+                'code'          => 'sku',
+                'label'         => 'Sku',
+                'attributeType' => 'pim_catalog_identifier',
+                'sortOrder'     => 1,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
             'name' => [
-                'code'  => 'name',
-                'label' => 'Name',
-                'attributeType' => 'pim_catalog_text'
+                'code'          => 'name',
+                'label'         => 'Name',
+                'attributeType' => 'pim_catalog_text',
+                'sortOrder'     => 2,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
             'desc' => [
-                'code'  => 'desc',
-                'label' => 'Desc',
-                'attributeType' => 'pim_catalog_text'
+                'code'          => 'desc',
+                'label'         => 'Desc',
+                'attributeType' => 'pim_catalog_text',
+                'sortOrder'     => 3,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
         ];
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $userColumnsPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
-        $configuration->offsetGetByPath($userColumnsPath)->willReturn(array('family', 'sku'));
+        $configuration->offsetGetByPath($userColumnsPath)->willReturn(['family', 'sku']);
 
         $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
@@ -117,7 +144,10 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $columns = [
             'sku' => [
                 'identifier_config',
-                'label' => 'Sku'
+                'label'      => 'Sku',
+                'order'      => 1,
+                'group'      => 'General',
+                'groupOrder' => 1
             ],
             'family' => [
                 'family_config',
@@ -128,18 +158,27 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $columns = [
             'sku' => [
                 'identifier_config',
-                'label' => 'Sku'
+                'label'      => 'Sku',
+                'order'      => 1,
+                'group'      => 'General',
+                'groupOrder' => 1
             ],
             'family' => [
                 'family_config',
             ],
             'name' => [
                 'text_config',
-                'label' => 'Name'
+                'label'      => 'Name',
+                'order'      => 2,
+                'group'      => 'General',
+                'groupOrder' => 1
             ],
             'desc' => [
                 'text_config',
-                'label' => 'Desc',
+                'label'      => 'Desc',
+                'order'      => 3,
+                'group'      => 'General',
+                'groupOrder' => 1
             ],
         ];
         $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
@@ -150,20 +189,26 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
 
     function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
     {
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
+        $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
         $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
 
         $attributes = [
             'sku' => [
-                'code'  => 'sku',
-                'label' => 'Sku',
-                'attributeType' => 'pim_catalog_identifier'
+                'code'          => 'sku',
+                'label'         => 'Sku',
+                'attributeType' => 'pim_catalog_identifier',
+                'sortOrder'     => 1,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
             'name' => [
-                'code'  => 'name',
-                'label' => 'Name',
-                'attributeType' => 'pim_catalog_text'
+                'code'          => 'name',
+                'label'         => 'Name',
+                'attributeType' => 'pim_catalog_text',
+                'sortOrder'     => 2,
+                'group'         => 'General',
+                'groupOrder'    => 1
             ],
         ];
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);

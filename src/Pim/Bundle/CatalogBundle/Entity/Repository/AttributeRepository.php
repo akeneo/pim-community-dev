@@ -324,8 +324,8 @@ class AttributeRepository extends EntityRepository implements
             if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
             }
-            $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-            foreach ($labels as $data) {
+            $attributes = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            foreach ($attributes as $data) {
                 $results[$data['code']]['label']      = $data['label'];
                 $results[$data['code']]['group']      = $data['groupLabel'];
                 $results[$data['code']]['groupOrder'] = $data['sortOrder'];

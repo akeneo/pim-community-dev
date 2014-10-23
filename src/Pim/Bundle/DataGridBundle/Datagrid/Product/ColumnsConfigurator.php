@@ -135,7 +135,10 @@ class ColumnsConfigurator implements ConfiguratorInterface
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
-                    'label' => $attribute['label'],
+                    'label'      => $attribute['label'],
+                    'order'      => $attribute['sortOrder'],
+                    'group'      => $attribute['group'],
+                    'groupOrder' => $attribute['groupOrder']
                 );
 
                 if ($attributeType === 'pim_catalog_identifier') {
