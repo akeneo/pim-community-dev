@@ -47,7 +47,7 @@ class ResourceManager implements ResourceManagerInterface
      */
     public function bulkSave(ResourceSetInterface $resources, $andFlush = true)
     {
-        if (!empty($resources)) {
+        if (empty($resources->getResources())) {
             return;
         }
 
@@ -79,7 +79,7 @@ class ResourceManager implements ResourceManagerInterface
      */
     public function bulkDelete(ResourceSetInterface $resources, $andFlush = true)
     {
-        if (!empty($resources)) {
+        if (empty($resources->getResources())) {
             return;
         }
 

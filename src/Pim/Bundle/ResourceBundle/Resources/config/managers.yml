@@ -1,8 +1,17 @@
 parameters:
     pim_resource.doctrine.manager.class: Pim\Bundle\ResourceBundle\Doctrine\ResourceManager
+    pim_resource.manager.class: Pim\Component\Resource\Manager\ResourceManagerEventAware
 
 services:
     pim_resource.doctrine.manager:
         class: %pim_resource.doctrine.manager.class%
+        public: false
         arguments:
             - @pim_catalog.doctrine.smart_manager_registry
+
+    pim_resource.manager:
+        class: %pim_resource.manager.class%
+        arguments:
+            - @pim_resource.doctrine.manager
+            - @event_dispatcher
+            - @pim_resource.event.resolver

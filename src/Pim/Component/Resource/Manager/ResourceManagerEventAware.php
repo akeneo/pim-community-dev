@@ -27,6 +27,21 @@ class ResourceManagerEventAware implements ResourceManagerInterface
     protected $eventResolver;
 
     /**
+     * @param ResourceManagerInterface $resourceManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param EventResolver            $eventResolver
+     */
+    public function __construct(
+        ResourceManagerInterface $resourceManager,
+        EventDispatcherInterface $eventDispatcher,
+        EventResolver $eventResolver
+    ) {
+        $this->resourceManager = $resourceManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->eventResolver = $eventResolver;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function save(ResourceInterface $resource, $andFlush = true)
@@ -104,7 +119,7 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      */
     private function dispatch($resource, $type)
     {
-        $event = $this->eventResolver->resolves($resource);
+        $event = $this->eventResolver->resolve($resource);
         $this->eventDispatcher->dispatch($type, $event);
     }
 }
