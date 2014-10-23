@@ -3,12 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Base filter, may be used with different configuration for strings, numbers, booleans, etc
@@ -64,7 +65,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if ($operator === 'EMPTY') {
+        if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,

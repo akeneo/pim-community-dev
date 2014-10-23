@@ -3,9 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -113,9 +114,9 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if ('EMPTY' === $operator) {
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->field($field)->exists(false);
-        } elseif ('IN' === $operator) {
+        } elseif (Operators::NOT_IN_LIST === $operator) {
             $this->qb->field($field)->in($value);
         } else {
             $value = $this->prepareValue($operator, $value);
@@ -128,21 +129,28 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
 
     /**
      * Prepare value of the filter
-     * @param string|array  $operator
+     * @param string|array $operator
      * @param string|array $value
      *
      * @return string
      */
     protected function prepareValue($operator, $value)
     {
-        if ($operator === 'START WITH') {
-            $value = new \MongoRegex(sprintf('/^%s/i', $value));
-        } elseif ($operator === 'END WITH') {
-            $value = new \MongoRegex(sprintf('/%s$/i', $value));
-        } elseif ($operator === 'CONTAINS') {
-            $value = new \MongoRegex(sprintf('/%s/i', $value));
-        } elseif ($operator === 'DOES NOT CONTAIN') {
-            $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', $value));
+        switch ($operator) {
+            case Operators::STARTS_WITH:
+                $value = new \MongoRegex(sprintf('/^%s/i', $value));
+                break;
+            case Operators::ENDS_WITH:
+                $value = new \MongoRegex(sprintf('/%s$/i', $value));
+                break;
+            case Operators::CONTAINS:
+                $value = new \MongoRegex(sprintf('/%s/i', $value));
+                break;
+            case Operators::DOES_NOT_CONTAIN:
+                $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', $value));
+                break;
+            default:
+                break;
         }
 
         return $value;

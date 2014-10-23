@@ -3,9 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Multi options filter for MongoDB
@@ -98,7 +99,7 @@ class OptionsFilter implements AttributeFilterInterface
     {
         $value = is_array($value) ? $value : [$value];
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             if (in_array('empty', $value)) {

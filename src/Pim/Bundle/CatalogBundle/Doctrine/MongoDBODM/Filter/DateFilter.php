@@ -3,10 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Date filter
@@ -114,33 +115,28 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         switch ($operator) {
-            case 'BETWEEN':
+            case Operators::BETWEEN:
                 $this->qb->field($field)->gte($this->getTimestamp($value[0]));
                 $this->qb->field($field)->lte($this->getTimestamp($value[1], true));
                 break;
-
-            case 'NOT BETWEEN':
+            case Operators::NOT_BETWEEN:
                 $this->qb->addAnd(
                     $this->qb->expr()
                         ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value[0])))
                         ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value[1], true)))
                 );
                 break;
-
-            case '>':
+            case Operators::GREATER_THAN:
                 $this->qb->field($field)->gt($this->getTimestamp($value, true));
                 break;
-
-            case '<':
+            case Operators::LOWER_THAN:
                 $this->qb->field($field)->lt($this->getTimestamp($value));
                 break;
-
-            case '=':
+            case Operators::EQUALS:
                 $this->qb->field($field)->gte($this->getTimestamp($value));
                 $this->qb->field($field)->lte($this->getTimestamp($value, true));
                 break;
-
-            case 'EMPTY':
+            case Operators::IS_EMPTY:
                 $this->qb->field($field)->exists(false);
                 break;
         }

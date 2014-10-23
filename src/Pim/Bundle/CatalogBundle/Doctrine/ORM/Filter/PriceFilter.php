@@ -3,11 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Price filter
@@ -60,7 +61,7 @@ class PriceFilter implements AttributeFilterInterface
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
 
-        if ('EMPTY' === $operator) {
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,

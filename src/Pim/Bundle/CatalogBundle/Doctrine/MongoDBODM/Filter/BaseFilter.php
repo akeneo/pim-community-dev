@@ -3,9 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -113,14 +114,11 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if ('EMPTY' === $operator) {
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->field($field)->exists(false);
-        } elseif ('IN' === $operator) {
+        } elseif (Operators::NOT_IN_LIST === $operator) {
             $this->qb->field($field)->in($value);
         } else {
-            if (strpos($value, '/') !== false) {
-                $value = new \MongoRegex($value);
-            }
             $this->qb->field($field)->equals($value);
         }
 

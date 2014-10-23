@@ -36,6 +36,18 @@ class OdmFilterProductDatasourceAdapter extends OdmFilterDatasourceAdapter imple
     }
 
     /**
+     * Return value format depending on comparison type
+     *
+     * @param string $comparisonType
+     *
+     * @return string
+     */
+    public function getFormatByComparisonType($comparisonType)
+    {
+        return '%s';
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getProductQueryBuilder()

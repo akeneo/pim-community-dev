@@ -3,12 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * String filter
@@ -64,7 +65,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if ($operator === 'EMPTY') {
+        if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
@@ -74,8 +75,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
-
-            $condition .= 'AND ' . $this->prepareCondition($backendField, $operator, $value);
+            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
 
             $this->qb->innerJoin(
                 $this->qb->getRootAlias() . '.values',
@@ -150,18 +150,25 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     protected function prepareCondition($backendField, $operator, $value)
     {
-        if ($operator === 'START WITH') {
-            $operator = 'LIKE';
-            $value    = '%' . $value;
-        } elseif ($operator === 'END WITH') {
-            $operator = 'LIKE';
-            $value    = $value . '%';
-        } elseif ($operator === 'CONTAINS') {
-            $operator = 'LIKE';
-            $value    = '%' . $value . '%';
-        } elseif ($operator === 'DOES NOT CONTAIN') {
-            $operator = 'NOT LIKE';
-            $value    = '%' . $value . '%';
+        switch ($operator) {
+            case Operators::STARTS_WITH:
+                $operator = 'LIKE';
+                $value    = '%' . $value;
+                break;
+            case Operators::ENDS_WITH:
+                $operator = 'LIKE';
+                $value    = $value . '%';
+                break;
+            case Operators::CONTAINS:
+                $operator = 'LIKE';
+                $value    = '%' . $value . '%';
+                break;
+            case Operators::DOES_NOT_CONTAIN:
+                $operator = 'NOT LIKE';
+                $value    = '%' . $value . '%';
+                break;
+            default:
+                break;
         }
 
         return $this->prepareCriteriaCondition($backendField, $operator, $value);

@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
@@ -84,13 +85,13 @@ class StringFilter extends OroStringFilter
     protected function getOperator($type)
     {
         $operatorTypes = array(
-            TextFilterType::TYPE_CONTAINS     => 'CONTAINS',
-            TextFilterType::TYPE_NOT_CONTAINS => 'DOES NOT CONTAIN',
-            TextFilterType::TYPE_EQUAL        => '=',
-            TextFilterType::TYPE_STARTS_WITH  => 'START WITH',
-            TextFilterType::TYPE_ENDS_WITH    => 'END WITH',
-            FilterType::TYPE_EMPTY            => 'EMPTY',
-            FilterType::TYPE_IN_LIST          => 'IN',
+            TextFilterType::TYPE_CONTAINS     => Operators::CONTAINS,
+            TextFilterType::TYPE_NOT_CONTAINS => Operators::DOES_NOT_CONTAIN,
+            TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
+            TextFilterType::TYPE_STARTS_WITH  => Operators::STARTS_WITH,
+            TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
+            FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
+            FilterType::TYPE_IN_LIST          => Operators::NOT_IN_LIST,
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -77,7 +78,7 @@ class FamilyFilter implements FieldFilterInterface
     {
         $value = is_array($value) ? $value : [$value];
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             // TODO: fix this weird support of EMPTY operator

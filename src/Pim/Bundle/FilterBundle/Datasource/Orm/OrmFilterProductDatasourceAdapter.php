@@ -42,4 +42,16 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
     {
         return $this->pqb;
     }
+
+    /**
+     * Return value format depending on comparison type
+     *
+     * @param string $comparisonType
+     *
+     * @return string
+     */
+    public function getFormatByComparisonType($comparisonType)
+    {
+        return '%s';
+    }
 }

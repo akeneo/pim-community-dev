@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -83,7 +84,7 @@ class ProductIdFilter implements FieldFilterInterface
         $field = '_id';
         $value = is_array($value) ? $value : [$value];
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             $this->qb->field($field)->in($value);

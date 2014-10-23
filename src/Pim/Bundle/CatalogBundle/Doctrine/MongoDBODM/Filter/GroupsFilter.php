@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -84,7 +85,7 @@ class GroupsFilter implements FieldFilterInterface
         $value = array_map('intval', $value);
         $field = 'groupIds';
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             $this->qb->field($field)->in($value);

@@ -31,6 +31,35 @@ class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     }
 
     /**
+     * Return value format depending on comparison type
+     *
+     * @param string $comparisonType
+     *
+     * @return string
+     */
+    public function getFormatByComparisonType($comparisonType)
+    {
+        switch ($comparisonType) {
+            case TextFilterType::TYPE_STARTS_WITH:
+                $format = '/^%s/i';
+                break;
+            case TextFilterType::TYPE_ENDS_WITH:
+                $format = '/%s$/i';
+                break;
+            case TextFilterType::TYPE_CONTAINS:
+                $format = '/%s/i';
+                break;
+            case TextFilterType::TYPE_NOT_CONTAINS:
+                $format = '/^((?!%s).)*$/i';
+                break;
+            default:
+                $format = '%s';
+        }
+
+        return $format;
+    }
+
+    /**
      * Adds a new WHERE or HAVING restriction depends on the given parameters.
      *
      * @param mixed   $restriction The restriction to add.

@@ -95,7 +95,7 @@ services:
         arguments:
             - ['pim_catalog_identifier']
             - []
-            - ['START WITH', 'END WITH', 'CONTAINS', 'DOES NOT CONTAINS', '=', 'IN']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -104,7 +104,7 @@ services:
         arguments:
             - ['pim_catalog_text', 'pim_catalog_textarea']
             - []
-            - ['START WITH', 'END WITH', 'CONTAINS', '=', 'EMPTY']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', '=', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
