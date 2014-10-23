@@ -2,9 +2,6 @@
 
 namespace Pim\Component\Resource\Event;
 
-use Pim\Component\Resource\ResourceInterface;
-use Symfony\Component\EventDispatcher\Event as BaseEvent;
-
 /**
  * Default resource event
  *
@@ -12,24 +9,6 @@ use Symfony\Component\EventDispatcher\Event as BaseEvent;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ResourceEvent extends BaseEvent implements ResourceEventInterface
+class ResourceEvent extends AbstractResourceEvent
 {
-    /** @var ResourceInterface */
-    protected $resource;
-
-    /**
-     * @param ResourceInterface $resource
-     */
-    public function __construct(ResourceInterface $resource)
-    {
-        $this->resource = $resource;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResource()
-    {
-        return $this->resource;
-    }
 }

@@ -3,6 +3,7 @@
 namespace Pim\Component\Resource\Event;
 
 use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\ResourceSetInterface;
 
 /**
  * Default resource event interface
@@ -14,7 +15,21 @@ use Pim\Component\Resource\ResourceInterface;
 interface ResourceEventInterface
 {
     /**
-     * @return ResourceInterface
+     * @return string
      */
-    public function getResource();
+    public function getSubjectClass();
+
+    /**
+     * @return ResourceInterface|ResourceSetInterface
+     */
+    public function getSubject();
+
+    /**
+     * @param ResourceInterface|ResourceSetInterface $subject
+     *
+     * @return ResourceEventInterface
+     *
+     * @throws \InvalidArgumentException if the subject is not a ResourceInterface or aResourceSetInterface
+     */
+    public function setSubject($subject);
 }
