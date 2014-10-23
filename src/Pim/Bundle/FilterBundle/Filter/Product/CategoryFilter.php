@@ -118,9 +118,8 @@ class CategoryFilter extends NumberFilter
 
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
-            $data['includeSub'] = true;
-            $productIds = $this->getProductIdsInCategory($tree, $data);
-            $productRepository->applyFilterByIds($qb, $productIds, false);
+            $categoryIds = $this->getAllChildrenIds($tree);
+            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
 
             return true;
         }
@@ -143,17 +142,39 @@ class CategoryFilter extends NumberFilter
         $qb                 = $ds->getQueryBuilder();
 
         $category = $categoryRepository->find($data['categoryId']);
+
         if (!$category) {
             $category = $categoryRepository->find($data['treeId']);
         }
+
         if ($category) {
-            $productIds = $this->getProductIdsInCategory($category, $data);
-            $productRepository->applyFilterByIds($qb, $productIds, true);
+            if ($data['includeSub']) {
+                $categoryIds = $this->getAllChildrenIds($category);
+            } else {
+                $categoryIds = array();
+            }
+            $categoryIds[] = $category->getId();
+            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, true);
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get children category ids
+     *
+     * @param CategoryInterface $category
+     *
+     * @return integer[]
+     */
+    protected function getAllChildrenIds(CategoryInterface $category)
+    {
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $categoryIds = $categoryRepository->getAllChildrenIds($category);
+
+        return $categoryIds;
     }
 
     /**
@@ -163,6 +184,8 @@ class CategoryFilter extends NumberFilter
      * @param array             $data
      *
      * @return integer[]
+     *
+     * @deprecated since version 1.2.10. Will be removed in 1.3. Please do not load all product ids for filtering.
      */
     protected function getProductIdsInCategory(CategoryInterface $category, $data)
     {
