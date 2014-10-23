@@ -2,12 +2,14 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Component\Resource\ResourceInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
@@ -18,7 +20,7 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface AttributeInterface extends TimestampableInterface, TranslatableInterface,
- GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
+ GroupSequenceProviderInterface, ReferableInterface, VersionableInterface, ResourceInterface
 {
     /**
      * Set code
@@ -175,7 +177,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get options
-     * @return \ArrayAccess
+     * @return Collection
      */
     public function getOptions();
 
