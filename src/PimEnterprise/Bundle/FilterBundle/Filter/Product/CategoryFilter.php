@@ -78,19 +78,61 @@ class CategoryFilter extends BaseCategoryFilter
     }
 
     /**
+     * Override to apply category permissions
+     *
      * {@inheritdoc}
      */
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $this->applyFilterByAll($ds, $data);
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $productRepository  = $this->manager->getProductCategoryRepository();
+        $qb                 = $ds->getQueryBuilder();
 
-        return parent::applyFilterByUnclassified($ds, $data);
+        $tree = $categoryRepository->find($data['treeId']);
+        if ($tree) {
+            // categories of this tree
+            $currentTreeIds = $this->getAllChildrenIds($tree);
+            // granted categories
+            $user = $this->securityContext->getToken()->getUser();
+            $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+            // granted categories not in this tree
+            $categoryIds = array_diff($grantedIds, $currentTreeIds);
+            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $categoryIds);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Override to apply category permissions
+     *
+     * {@inheritdoc}
+     */
+    protected function getAllChildrenIds(CategoryInterface $category)
+    {
+        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            return [];
+        }
+
+        $childrenIds = parent::getAllChildrenIds($category);
+
+        $user = $this->securityContext->getToken()->getUser();
+        $grantedIds = $this->accessRepository->getCategoryIdsWithExistingAccess(
+            $user->getGroups()->toArray(),
+            $childrenIds
+        );
+
+        return $grantedIds;
     }
 
     /**
      * Override to apply category permissions (not for unclassified)
      *
      * {@inheritdoc}
+     *
+     * @deprecated since version 1.0.3. Will be removed in 1.1. Please do not load all product ids for filtering.
      */
     protected function getProductIdsInCategory(CategoryInterface $category, $data)
     {
