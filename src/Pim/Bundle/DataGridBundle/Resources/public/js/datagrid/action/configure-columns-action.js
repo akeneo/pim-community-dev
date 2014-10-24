@@ -47,7 +47,7 @@ define(
                 '</div>' +
                 '<div class="span4">' +
                     '<h4>' +
-                        '<%= _.__("Displayed Columns") %>' +
+                        '<%= _.__("pim_datagrid.column_configurator.displayed_columns") %>' +
                         '<button class="btn pull-right reset">' +
                             '<%= _.__("pim_datagrid.column_configurator.clear") %>' +
                         '</button>' +
@@ -186,7 +186,7 @@ define(
 
             locale: null,
 
-            label: _.__('Columns'),
+            label: _.__('pim_datagrid.column_configurator.label'),
 
             icon: 'th',
 
@@ -270,10 +270,10 @@ define(
                     var modal = new Backbone.BootstrapModal({
                         allowCancel: true,
                         okCloses: false,
-                        cancelText: _.__('Cancel'),
-                        title: _.__('Column Selection'),
+                        cancelText: _.__('pim_datagrid.column_configurator.cancel'),
+                        title: _.__('pim_datagrid.column_configurator.title'),
                         content: this.configuratorTemplate(),
-                        okText: _.__('Apply')
+                        okText: _.__('pim_datagrid.column_configurator.apply')
                     });
 
                     loadingMask.hide();
