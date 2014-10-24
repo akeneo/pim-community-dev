@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
 
 /**
  * Attribute options

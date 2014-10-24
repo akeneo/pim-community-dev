@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Resource\Event;
 
-use Pim\Component\Resource\ResourceInterface;
-use Pim\Component\Resource\ResourceSetInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
+use Pim\Component\Resource\Model\ResourceSetInterface;
 
 /**
  * Default resource event interface
@@ -23,15 +23,15 @@ interface ResourceEventInterface
 
     /**
      * Get the subject of this event.
-     *
-     * @return ResourceInterface|ResourceSetInterface
+
+     * @return \Pim\Component\Resource\Model\ResourceInterface|ResourceSetInterface
      */
     public function getSubject();
 
     /**
      * Set the subject of this event.
      *
-     * @param ResourceInterface|ResourceSetInterface $subject
+     * @param \Pim\Component\Resource\Model\ResourceInterface|ResourceSetInterface $subject
      *
      * @return ResourceEventInterface
      *

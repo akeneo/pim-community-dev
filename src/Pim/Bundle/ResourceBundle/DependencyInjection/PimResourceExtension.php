@@ -23,6 +23,6 @@ class PimResourceExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('events.yml');
-        $loader->load('managers.yml');
+        $loader->load('persisters.yml');
     }
 }

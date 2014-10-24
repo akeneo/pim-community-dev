@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**

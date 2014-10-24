@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Resource\Event;
 
-use Pim\Component\Resource\ResourceInterface;
-use Pim\Component\Resource\ResourceSetInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
+use Pim\Component\Resource\Model\ResourceSetInterface;
 use Symfony\Component\EventDispatcher\Event as BaseEvent;
 
 /**

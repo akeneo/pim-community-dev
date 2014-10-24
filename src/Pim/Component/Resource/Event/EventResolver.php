@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Resource\Event;
 
-use Pim\Component\Resource\ResourceInterface;
-use Pim\Component\Resource\ResourceSetInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
+use Pim\Component\Resource\Model\ResourceSetInterface;
 
 /**
  * Retrieve the event linked to a resource or a set of resources.
@@ -36,8 +36,7 @@ class EventResolver
      * @param ResourceInterface|ResourceSetInterface $resource
      *
      * @return ResourceEventInterface
-     *
-     * @throws \InvalidArgumentException
+    * @throws \InvalidArgumentException
      */
     public function resolve($resource)
     {

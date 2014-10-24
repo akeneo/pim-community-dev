@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Resource\Manager;
+namespace Pim\Component\Resource\Persister;
 
-use Pim\Component\Resource\ResourceInterface;
-use Pim\Component\Resource\ResourceSetInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
+use Pim\Component\Resource\Model\ResourceSetInterface;
 
 /**
  * Resource manager interface
@@ -12,7 +12,7 @@ use Pim\Component\Resource\ResourceSetInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ResourceManagerInterface
+interface ResourcePersisterInterface
 {
     /**
      * Saves (creates or updates) a resource.

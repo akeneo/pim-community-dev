@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Component\Resource\Manager\ResourceManagerInterface;
+use Pim\Component\Resource\Persister\ResourcePersisterInterface;
 
 /**
  * Attribute manager
@@ -26,22 +26,22 @@ class AttributeManager
     /** @var AttributeTypeFactory */
     protected $factory;
 
-    /** @var ResourceManagerInterface */
+    /** @var ResourcePersisterInterface */
     protected $resourceManager;
 
     /**
      * Constructor
      *
-     * @param string                   $attributeClass   Attribute class
-     * @param string                   $productClass     Product class
-     * @param AttributeTypeFactory     $factory          Attribute type factory
-     * @param ResourceManagerInterface $resourceManager  Resource manager
+     * @param string                   $attributeClass    Attribute class
+     * @param string                   $productClass      Product class
+     * @param AttributeTypeFactory     $factory           Attribute type factory
+     * @param ResourcePersisterInterface $resourceManager Resource manager
      */
     public function __construct(
         $attributeClass,
         $productClass,
         AttributeTypeFactory $factory,
-        ResourceManagerInterface $resourceManager
+        ResourcePersisterInterface $resourceManager
     ) {
         $this->attributeClass   = $attributeClass;
         $this->productClass     = $productClass;

@@ -1,23 +1,23 @@
 <?php
 
-namespace Pim\Bundle\ResourceBundle\Doctrine;
+namespace Pim\Component\Resource\Persister;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Resource\Manager\ResourceManagerInterface;
-use Pim\Component\Resource\ResourceInterface;
-use Pim\Component\Resource\ResourceSet;
-use Pim\Component\Resource\ResourceSetInterface;
+use Pim\Component\Resource\Persister\ResourcePersisterInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
+use Pim\Component\Resource\Model\ResourceSet;
+use Pim\Component\Resource\Model\ResourceSetInterface;
 
 /**
- * Base Doctrine resource manager
+ * Base Doctrine resource persister
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ResourceManager implements ResourceManagerInterface
+class ResourceDoctrinePersister implements ResourcePersisterInterface
 {
     /** @var ManagerRegistry */
     protected $registry;
