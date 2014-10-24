@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Prophecy\Argument;
 
 class GroupDenormalizerSpec extends ObjectBehavior
 {

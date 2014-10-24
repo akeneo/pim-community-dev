@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Add the product draft form view to the product edit template parameters
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInterface
 {

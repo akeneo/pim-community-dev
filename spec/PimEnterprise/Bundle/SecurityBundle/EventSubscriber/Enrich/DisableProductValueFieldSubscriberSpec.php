@@ -3,14 +3,13 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
 {

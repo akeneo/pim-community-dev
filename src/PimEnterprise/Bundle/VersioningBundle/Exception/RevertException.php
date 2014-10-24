@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Exception;
 /**
  * Revert exception
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class RevertException extends \Exception
 {

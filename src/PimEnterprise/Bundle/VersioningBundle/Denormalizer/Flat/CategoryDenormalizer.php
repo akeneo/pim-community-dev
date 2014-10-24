@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 /**
  * Category flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class CategoryDenormalizer extends AbstractEntityDenormalizer
 {

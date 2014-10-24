@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 /**
  * Locale access interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface LocaleAccessInterface extends AccessInterface
 {

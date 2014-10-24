@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 /**
  * Attribute option publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AttributeOptionPublisher implements PublisherInterface
 {

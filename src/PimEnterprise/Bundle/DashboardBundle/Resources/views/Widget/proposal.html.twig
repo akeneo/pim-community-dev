@@ -1,0 +1,23 @@
+{% if show %}
+    <div class="quick-launchpad-widget span6">
+        <div class="clearfix">
+            <div class="widget-header">
+                {{ 'pimee_dashboard.widget.product_drafts.title'|trans }}
+            </div>
+            <div class="widget-content">
+                <table id="proposal-widget" class="table table-condensed table-light groups unspaced"></table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pimee/dashboard/proposal-widget'],
+            function ($, ProposalWidget) {
+                'use strict';
+                $(function() {
+                    ProposalWidget.init({el: '#proposal-widget', alias: 'proposals'});
+                });
+            }
+        );
+    </script>
+{% endif %}

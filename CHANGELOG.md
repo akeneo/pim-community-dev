@@ -1,3 +1,26 @@
+# 1.1.x
+
+## BC breaks
+- Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
+- Move method `findApprovableByUser` from `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface` to `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`.
+- Remove interface `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface`
+- Rename `PimEnterprise\Bundle\DashboardBundle\Widget\ProductDraftWidget` to `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`, replace the first constructor argument with `Symfony\Component\Security\Core\SecurityContextInterface` and remove the third argument
+
+# 1.1.0 (based on CE 1.2.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/1.2/CHANGELOG.md))
+
+## Improvements
+
+- remove the fixed mysql socket location
+- switch to minimum-stability:stable in composer.json
+- base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+
+## Bug fixes
+
+- Remove the `is_default` from fixtures for attribute options
+
+## BC breaks
+- `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
+
 # 1.0.x
 
 ## Bug fixes
@@ -16,18 +39,18 @@
 - Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
 
 ## Improvements
+- Setup relationships of published products with interfaces in order to easy overriding
 
 ## BC breaks
 
 # 1.0.1 (2014-09-10)
 
 ## Bug fixes
-
-## Improvements
+- Fixed problem on view rights on attribute groups which were not displayed on family configuration
 
 ## BC breaks
 
-# 1.0.0 (2014-08-29)
+# 1.0.0 (2014-08-29) (based on CE 1.2.0, see [changelog](https://github.com/akeneo/pim-community-dev/blob/dd64effbe173f595e4afea08d0e80528fd441741/CHANGELOG.md))
 
 ## Improvements
 

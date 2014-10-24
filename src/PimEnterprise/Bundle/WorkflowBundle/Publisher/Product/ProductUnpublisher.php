@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositor
 /**
  * Product unpublisher
  *
- * @author    Julien Janvier <nicolas@akeneo.com>
+ * @author Julien Janvier <nicolas@akeneo.com>
  */
 class ProductUnpublisher implements UnpublisherInterface
 {

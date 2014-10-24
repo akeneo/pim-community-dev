@@ -11,20 +11,20 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as BaseCategoryFilter;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as BaseCategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Override category filter to apply permissions on categories
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class CategoryFilter extends BaseCategoryFilter
 {

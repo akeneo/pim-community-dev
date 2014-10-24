@@ -3,16 +3,16 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class MetricPresenterSpec extends ObjectBehavior
 {
     function let(TranslatorInterface $translator)
     {
-        $translator->trans(Argument::type('string'))->will(function($args) {
+        $translator->trans(Argument::type('string'))->will(function ($args) {
             return 'trans_'.strtolower($args[0]);
         });
     }
@@ -43,7 +43,9 @@ class MetricPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present($value, ['metric' => ['unit' => 'MILLIMETER', 'data' => '123']])->shouldReturn('diff between two metrics');
+        $this
+            ->present($value, ['metric' => ['unit' => 'MILLIMETER', 'data' => '123']])
+            ->shouldReturn('diff between two metrics');
     }
 
     function it_presents_metric_new_value_even_if_metric_does_not_have_a_value_yet(

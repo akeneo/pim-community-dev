@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 /**
  * Product price publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PricePublisher implements PublisherInterface
 {

@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Helper for product history to display revert action
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class GridHelper
 {
@@ -49,7 +49,7 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->productRepository->findOneBy(['id' => $record->getValue('resourceId')]);
+            $product = $this->productRepository->findOneById($record->getValue('resourceId'));
             $ownershipGranted = $this->securityContext->isGranted(Attributes::OWN, $product);
 
             return [

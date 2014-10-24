@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Rendering;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\DiffFactory;
 
 class PhpDiffRendererSpec extends ObjectBehavior

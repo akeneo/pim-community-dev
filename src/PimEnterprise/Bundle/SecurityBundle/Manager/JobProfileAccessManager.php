@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\UserBundle\Entity\Group;
-use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
 
 /**
  * Job profile access manager
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfileAccessManager
 {
@@ -134,8 +134,7 @@ class JobProfileAccessManager
             $access = new $this->objectAccessClass();
             $access
                 ->setJobProfile($jobProfile)
-                ->setUserGroup($group)
-            ;
+                ->setUserGroup($group);
         }
 
         return $access;

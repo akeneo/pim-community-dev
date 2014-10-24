@@ -9,3 +9,12 @@ services:
             - %pim_catalog.entity.product.class%
             - '@pim_catalog.repository.family'
             - '@pimee_workflow.repository.published_product'
+
+    pim_catalog.doctrine.query.filter.original_product_id:
+        class: %pim_catalog.doctrine.query.filter.base.class%
+        arguments:
+            - []
+            - ['originalProduct']
+            - ['=', 'IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
