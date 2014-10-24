@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Component\Resource\Model\ResourceInterface;
 
 /**
  * Attribute options
@@ -16,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeOption implements ReferableInterface
+class AttributeOption implements ReferableInterface, ResourceInterface
 {
     /**
      * @var integer $id
@@ -81,6 +82,14 @@ class AttributeOption implements ReferableInterface
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isNew()
+    {
+        return null === $this->getId();
     }
 
     /**

@@ -201,6 +201,14 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
+    public function isNew()
+    {
+        return null === $this->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setCode($code)
     {
         $this->code = $code;

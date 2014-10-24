@@ -1,0 +1,19 @@
+parameters:
+    pim_catalog.event.attribute.class: Pim\Bundle\CatalogBundle\Event\AttributeEvent
+    pim_catalog.event.attribute_option.class: Pim\Bundle\CatalogBundle\Event\AttributeOptionEvent
+
+services:
+    pim_catalog.event.attribute:
+        class: %pim_catalog.event.attribute.class%
+        arguments:
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: pim_resource.event }
+
+    pim_catalog.event.attribute_option:
+        class: %pim_catalog.event.attribute_option.class%
+        arguments:
+            - %pim_catalog.entity.attribute_option.class%
+        tags:
+            - { name: pim_resource.event }
+

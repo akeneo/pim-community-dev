@@ -2,14 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Pim\Component\Resource\Persister\ResourcePersisterInterface;
 
 /**
  * Attribute manager
@@ -26,36 +23,30 @@ class AttributeManager
     /** @var string */
     protected $productClass;
 
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /** @var AttributeTypeFactory */
     protected $factory;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
+    /** @var ResourcePersisterInterface */
+    protected $resourceManager;
 
     /**
      * Constructor
      *
-     * @param string                   $attributeClass   Attribute class
-     * @param string                   $productClass     Product class
-     * @param ObjectManager            $objectManager    Object manager
-     * @param AttributeTypeFactory     $factory          Attribute type factory
-     * @param EventDispatcherInterface $eventDispatcher  Event dispatcher
+     * @param string                   $attributeClass    Attribute class
+     * @param string                   $productClass      Product class
+     * @param AttributeTypeFactory     $factory           Attribute type factory
+     * @param ResourcePersisterInterface $resourceManager Resource manager
      */
     public function __construct(
         $attributeClass,
         $productClass,
-        ObjectManager $objectManager,
         AttributeTypeFactory $factory,
-        EventDispatcherInterface $eventDispatcher
+        ResourcePersisterInterface $resourceManager
     ) {
         $this->attributeClass   = $attributeClass;
         $this->productClass     = $productClass;
-        $this->objectManager    = $objectManager;
         $this->factory          = $factory;
-        $this->eventDispatcher  = $eventDispatcher;
+        $this->resourceManager  = $resourceManager;
     }
 
     /**
@@ -114,10 +105,7 @@ class AttributeManager
      */
     public function remove(AbstractAttribute $attribute)
     {
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($attribute));
-
-        $this->objectManager->remove($attribute);
-        $this->objectManager->flush();
+        $this->resourceManager->delete($attribute);
     }
 
     /**
@@ -128,17 +116,16 @@ class AttributeManager
      */
     public function updateSorting(AttributeInterface $attribute, array $sorting = [])
     {
-        foreach ($attribute->getOptions() as $option) {
+        $options = $attribute->getOptions()->toArray();
+        foreach ($options as $option) {
             if (isset($sorting[$option->getId()])) {
                 $option->setSortOrder($sorting[$option->getId()]);
             } else {
                 $option->setSortOrder(0);
             }
-
-            $this->objectManager->persist($option);
         }
 
-        $this->objectManager->flush();
+        $this->resourceManager->bulkSave($this->resourceManager->createResourceSet($options));
     }
 
     /**
@@ -150,7 +137,10 @@ class AttributeManager
      */
     public function getAttribute($id)
     {
-        $attribute = $this->objectManager->find($this->getAttributeClass(), $id);
+        $attribute = $this->resourceManager
+            ->getObjectManagerTransitional($this->getAttributeClass())
+            ->find($this->getAttributeClass(), $id)
+        ;
 
         if (null === $attribute) {
             throw new EntityNotFoundException();
