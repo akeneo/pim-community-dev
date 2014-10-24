@@ -19,7 +19,7 @@ define(
             template: _.template(
                 '<div class="span4">' +
                     '<h4></h4>' +
-                    '<ul id="column-groups" class="nav nav-list">' +
+                    '<ul class="nav nav-list">' +
                         '<li class="tab active">' +
                             '<%= _.__("pim_datagrid.column_configurator.all_groups") %>' +
                             '<span class="badge badge-transparent pull-right"><%= columns.length %></span>' +
@@ -37,7 +37,7 @@ define(
                         '<i class="icon-search"></i>' +
                         '<input type="search" placeholder="<%= _.__("pim_datagrid.column_configurator.search") %>"/>' +
                     '</h4>' +
-                    '<ul id="bucket" class="connected-sortable">' +
+                    '<ul id="column-list" class="connected-sortable">' +
                         '<% _.each(_.where(columns, {displayed: false}), function(column) { %>' +
                             '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
                                 '<i class="icon-th"></i><%= column.label %>' +
@@ -46,8 +46,13 @@ define(
                     '</ul>' +
                 '</div>' +
                 '<div class="span4">' +
-                    '<h4><%= _.__("Displayed Columns") %></h4>' +
-                    '<ul id="columns" class="connected-sortable">' +
+                    '<h4>' +
+                        '<%= _.__("Displayed Columns") %>' +
+                        '<button class="btn pull-right reset">' +
+                            '<%= _.__("pim_datagrid.column_configurator.clear") %>' +
+                        '</button>' +
+                    '</h4>' +
+                    '<ul id="column-selection" class="connected-sortable">' +
                         '<% _.each(_.where(columns, {displayed: true}), function(column) { %>' +
                             '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
                                 '<i class="icon-th"></i><%= column.label %>' +
@@ -60,7 +65,8 @@ define(
 
             events: {
                 'input input[type="search"]': 'search',
-                'click #column-groups li': 'filter'
+                'click .nav-list li':         'filter',
+                'click button.reset':         'reset'
             },
 
             search: function(e) {
@@ -70,7 +76,7 @@ define(
                     return (''+text).toUpperCase().indexOf((''+search).toUpperCase()) >= 0;
                 };
 
-                this.$('#bucket').find('li').each(function() {
+                this.$('#column-list').find('li').each(function() {
                     if (matchesSearch($(this).data('value')) || matchesSearch($(this).text())) {
                         $(this).removeClass('hide');
                     } else {
@@ -85,9 +91,9 @@ define(
                 $(e.currentTarget).addClass('active').siblings('.active').removeClass('active');
 
                 if (_.isUndefined(filter)) {
-                    this.$('#bucket li').removeClass('filtered');
+                    this.$('#column-list li').removeClass('filtered');
                 } else {
-                    this.$('#bucket').find('li').each(function() {
+                    this.$('#column-list').find('li').each(function() {
                         if (filter === $(this).data('group')) {
                             $(this).removeClass('filtered');
                         } else {
@@ -95,6 +101,14 @@ define(
                         }
                     });
                 }
+            },
+
+            reset: function() {
+                this.$('#column-selection li').appendTo(this.$('#column-list'));
+                _.each(this.collection.where({displayed: true}), function(model) {
+                    model.set('displayed', false);
+                });
+                this.validateSubmission();
             },
 
             render: function() {
@@ -126,7 +140,7 @@ define(
                     })
                 );
 
-                this.$('#columns, #bucket').sortable({
+                this.$('#column-list, #column-selection').sortable({
                     connectWith: '.connected-sortable',
                     containment: this.$el,
                     tolerance: 'pointer',
@@ -134,14 +148,8 @@ define(
                     cancel: 'div.alert',
                     receive: _.bind(function(event, ui) {
                         var model = _.first(this.collection.where({code: ui.item.data('value')}));
-                        model.set('displayed', ui.sender.is('#bucket'));
-                        if (this.collection.where({displayed: true}).length) {
-                            this.$('.alert').hide();
-                            this.$el.closest('.modal').find('.btn.ok:not(.btn-primary)').addClass('btn-primary').attr('disabled', false);
-                        } else {
-                            this.$('.alert').show();
-                            this.$el.closest('.modal').find('.btn.ok.btn-primary').removeClass('btn-primary').attr('disabled', true);
-                        }
+                        model.set('displayed', ui.sender.is('#column-list'));
+                        this.validateSubmission();
                     }, this)
                 }).disableSelection();
 
@@ -150,8 +158,18 @@ define(
                 return this;
             },
 
+            validateSubmission: function() {
+                if (this.collection.where({displayed: true}).length) {
+                    this.$('.alert').hide();
+                    this.$el.closest('.modal').find('.btn.ok:not(.btn-primary)').addClass('btn-primary').attr('disabled', false);
+                } else {
+                    this.$('.alert').show();
+                    this.$el.closest('.modal').find('.btn.ok.btn-primary').removeClass('btn-primary').attr('disabled', true);
+                }
+            },
+
             getDisplayed: function() {
-                return _.map(this.$('#columns li'), function (el) {
+                return _.map(this.$('#column-selection li'), function (el) {
                     return $(el).data('value');
                 });
             }
