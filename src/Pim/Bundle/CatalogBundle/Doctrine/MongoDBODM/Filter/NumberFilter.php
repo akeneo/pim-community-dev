@@ -4,19 +4,18 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Base filter
+ * Number filter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
+class NumberFilter implements AttributeFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -25,26 +24,20 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $supportedAttributes;
 
     /** @var array */
-    protected $supportedFields;
-
-    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
      *
      * @param array $supportedAttributes
-     * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
         array $supportedAttributes = [],
-        array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -53,17 +46,6 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     public function setQueryBuilder($queryBuilder)
     {
         $this->qb = $queryBuilder;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array(
-            $field,
-            $this->supportedFields
-        );
     }
 
     /**
@@ -102,16 +84,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
-        $this->addFieldFilter($field, $operator, $value);
 
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
-    {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         if (Operators::IS_EMPTY === $operator) {

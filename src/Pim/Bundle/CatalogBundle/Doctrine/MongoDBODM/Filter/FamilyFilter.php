@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -35,7 +35,7 @@ class FamilyFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields = $supportedFields;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

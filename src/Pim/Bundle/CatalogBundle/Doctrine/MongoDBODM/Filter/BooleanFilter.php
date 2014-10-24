@@ -6,16 +6,17 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Price filter
+ * Boolean filter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceFilter implements AttributeFilterInterface
+class BooleanFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -24,19 +25,25 @@ class PriceFilter implements AttributeFilterInterface
     protected $supportedAttributes;
 
     /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the filter
      *
      * @param array $supportedAttributes
+     * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
         array $supportedAttributes = [],
+        array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
 
@@ -46,6 +53,17 @@ class PriceFilter implements AttributeFilterInterface
     public function setQueryBuilder($queryBuilder)
     {
         $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
     }
 
     /**
@@ -64,7 +82,10 @@ class PriceFilter implements AttributeFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, $this->supportedOperators);
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
     }
 
     /**
@@ -80,33 +101,20 @@ class PriceFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
-        list($data, $currency) = explode(' ', $value);
-        $data = (float) $data;
-
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $field = sprintf('%s.%s', $field, $currency);
-        $fieldData = sprintf('%s.data', $field);
+        $this->addFieldFilter($field, $operator, $value);
 
-        switch ($operator) {
-            case Operators::LOWER_THAN:
-                $this->qb->field($fieldData)->lt($data);
-                break;
-            case Operators::LOWER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->lte($data);
-                break;
-            case Operators::GREATER_THAN:
-                $this->qb->field($fieldData)->gt($data);
-                break;
-            case Operators::GREATER_OR_EQUAL_THAN:
-                $this->qb->field($fieldData)->gte($data);
-                break;
-            case Operators::IS_EMPTY:
-                $this->qb->field($fieldData)->equals(null);
-                break;
-            default:
-                $this->qb->field($fieldData)->equals($data);
-        }
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value, array $context = [])
+    {
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+
+        $this->qb->field($field)->equals($value);
 
         return $this;
     }

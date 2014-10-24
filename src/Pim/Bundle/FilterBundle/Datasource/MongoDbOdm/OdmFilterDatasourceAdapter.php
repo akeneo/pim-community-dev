@@ -26,8 +26,7 @@ class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      */
     public function __construct(DatasourceInterface $datasource)
     {
-        $this->qb  = $datasource->getQueryBuilder();
-        $this->expressionBuilder = null;
+        $this->qb = $datasource->getQueryBuilder();
     }
 
     /**

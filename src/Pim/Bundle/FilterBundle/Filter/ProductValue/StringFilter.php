@@ -6,7 +6,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
@@ -18,6 +18,17 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
  */
 class StringFilter extends OroStringFilter
 {
+    /** @var array */
+    protected $operatorTypes = array(
+        TextFilterType::TYPE_CONTAINS     => Operators::CONTAINS,
+        TextFilterType::TYPE_NOT_CONTAINS => Operators::DOES_NOT_CONTAIN,
+        TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
+        TextFilterType::TYPE_STARTS_WITH  => Operators::STARTS_WITH,
+        TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
+        FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
+        FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -84,16 +95,10 @@ class StringFilter extends OroStringFilter
      */
     protected function getOperator($type)
     {
-        $operatorTypes = array(
-            TextFilterType::TYPE_CONTAINS     => Operators::CONTAINS,
-            TextFilterType::TYPE_NOT_CONTAINS => Operators::DOES_NOT_CONTAIN,
-            TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
-            TextFilterType::TYPE_STARTS_WITH  => Operators::STARTS_WITH,
-            TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
-            FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
-            FilterType::TYPE_IN_LIST          => Operators::NOT_IN_LIST,
-        );
+        if (!isset($this->operatorTypes[$type])) {
+            throw new InvalidArgumentException(sprintf('Operator %s is not supported', $type));
+        }
 
-        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
+        return $this->operatorTypes[$type];
     }
 }

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -34,7 +34,7 @@ class EntityFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields = $supportedFields;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

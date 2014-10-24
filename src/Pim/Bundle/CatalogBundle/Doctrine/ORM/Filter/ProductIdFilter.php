@@ -1,19 +1,20 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Completeness filter
+ * Product id filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessFilter implements FieldFilterInterface
+class ProductIdFilter implements FieldFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -25,7 +26,7 @@ class CompletenessFilter implements FieldFilterInterface
     protected $supportedOperators;
 
     /**
-     * Instanciate the filter
+     * Instanciate the base filter
      *
      * @param array $supportedFields
      * @param array $supportedOperators
@@ -49,6 +50,18 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
+    public function addFieldFilter($field, $operator, $value, array $context = [])
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $condition = $this->prepareCriteriaCondition($field, $operator, $value);
+        $this->qb->andWhere($condition);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supportsField($field)
     {
         return in_array(
@@ -62,7 +75,10 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, $this->supportedOperators);
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
     }
 
     /**
@@ -74,31 +90,19 @@ class CompletenessFilter implements FieldFilterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Prepare criteria condition with field, operator and value
+     *
+     * @param string|array $field    the backend field name
+     * @param string|array $operator the operator used to filter
+     * @param string|array $value    the value(s) to filter
+     *
+     * @return string
+     * @throws ProductQueryException
      */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
+    protected function prepareCriteriaCondition($field, $operator, $value)
     {
-        if (!isset($context['locale']) || !isset($context['scope'])) {
-            throw new \InvalidArgumentException(
-                'Cannot prepare condition on completenesses without locale and scope'
-            );
-        }
+        $criteriaCondition = new CriteriaCondition($this->qb);
 
-        $field = sprintf(
-            "%s.%s.%s-%s",
-            ProductQueryUtility::NORMALIZED_FIELD,
-            'completenesses',
-            $context['scope'],
-            $context['locale']
-        );
-        $value = intval($value);
-
-        if ($operator === '=') {
-            $this->qb->field($field)->equals($value);
-        } else {
-            $this->qb->field($field)->lt($value);
-        }
-
-        return $this;
+        return $criteriaCondition->prepareCriteriaCondition($field, $operator, $value);
     }
 }

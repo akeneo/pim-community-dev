@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
@@ -12,13 +10,13 @@ use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Base filter, may be used with different configuration for strings, numbers, booleans, etc
+ * Boolean filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
+class BooleanFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -45,8 +43,8 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedFields     = $supportedFields;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -65,24 +63,14 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if ($operator === Operators::IS_EMPTY) {
-            $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.values',
-                $joinAlias,
-                'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
-            );
-            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
-        } else {
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
-            $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.values',
-                $joinAlias,
-                'WITH',
-                $condition
-            );
-        }
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+        $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
+        $this->qb->innerJoin(
+            $this->qb->getRootAlias().'.values',
+            $joinAlias,
+            'WITH',
+            $condition
+        );
 
         return $this;
     }

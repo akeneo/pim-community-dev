@@ -37,7 +37,7 @@ class OptionFilter implements AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**

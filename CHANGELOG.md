@@ -8,17 +8,18 @@
 - Load dashboard widgets asynchronously and allow to refresh the data
 
 ## Improvements
- - Remove the fixed mysql socket location
- - Switch to stability stable
- - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
- - Remove deprecated attribute property *Usable as a grid column*
- - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
- - Refactor of the attribute option screen to manage more than 100 options
- - Redesign of the loading box
- - Add an information message when there is no common attribute in mass-edit
- - JobProfileController refactoring
- - Add ACL on entity history
- - Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
+- Remove the fixed mysql socket location
+- Switch to stability stable
+- Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+- Remove deprecated attribute property *Usable as a grid column*
+- Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
+- Refactor of the attribute option screen to manage more than 100 options
+- Redesign of the loading box
+- Add an information message when there is no common attribute in mass-edit
+- Move filter transformation to CatalogBundle
+- JobProfileController refactoring
+- Add ACL on entity history
+- Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -59,6 +60,7 @@
 - Move CatalogBundle/Doctrine/ORM/CriteriaCondition to CatalogBundle/Doctrine/ORM/Condition
 - Remove the 'defaultValue' property of attributes and `Pim/Bundle/CatalogBundle/Model/AttributeInterface::setDefaultValue()` and `getDefaultValue()`
 - Refactor `Pim\Bundle\EnrichBundle\Controller\SequentialEditController`
+- Remove the `Pim\Bundle\CatalogBundle\Doctrine\(ORM|MongoDBODM)\Filter\BaseFilter` to use proper dedicated filters
 
 # 1.2.x
 

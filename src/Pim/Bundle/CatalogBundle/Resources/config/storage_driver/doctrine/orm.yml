@@ -8,8 +8,10 @@ parameters:
     pim_catalog.event_subscriber.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber
     pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber
 
-    pim_catalog.doctrine.query.filter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter
+    pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\ProductIdFilter
+    pim_catalog.doctrine.query.filter.number.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter
     pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter
+    pim_catalog.doctrine.query.filter.boolean.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BooleanFilter
     pim_catalog.doctrine.query.filter.entity.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter
     pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter
     pim_catalog.doctrine.query.filter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter
@@ -109,25 +111,23 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.product_id:
-        class: %pim_catalog.doctrine.query.filter.base.class%
+        class: %pim_catalog.doctrine.query.filter.product_id.class%
         arguments:
-            - []
             - ['id']
             - ['=']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.number:
-        class: %pim_catalog.doctrine.query.filter.base.class%
+        class: %pim_catalog.doctrine.query.filter.number.class%
         arguments:
             - ['pim_catalog_number']
-            - []
             - ['<', '<=', '=', '>=', '>', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.boolean:
-        class: %pim_catalog.doctrine.query.filter.base.class%
+        class: %pim_catalog.doctrine.query.filter.boolean.class%
         arguments:
             - ['pim_catalog_boolean']
             - ['enabled']

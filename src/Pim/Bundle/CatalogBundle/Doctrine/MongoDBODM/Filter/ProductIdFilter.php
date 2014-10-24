@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -34,7 +34,7 @@ class ProductIdFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields = $supportedFields;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 

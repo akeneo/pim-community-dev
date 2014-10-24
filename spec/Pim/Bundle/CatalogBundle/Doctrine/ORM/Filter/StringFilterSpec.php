@@ -37,7 +37,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE '%My Sku'";
+        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE 'My Sku%'";
 
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
@@ -54,7 +54,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE 'My Sku%'";
+        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE '%My Sku'";
 
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
@@ -93,5 +93,40 @@ class StringFilterSpec extends ObjectBehavior
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku');
+    }
+
+    function it_adds_a_equal_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    {
+        $sku->getId()->willReturn(42);
+        $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('varchar');
+        $sku->isLocalizable()->willReturn(false);
+        $sku->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+        $condition = "filtersku.attribute = 42 AND filtersku.varchar = 'My Sku'";
+
+        $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
+
+        $this->addAttributeFilter($sku, '=', 'My Sku');
+    }
+
+    function it_adds_an_empty_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    {
+        $sku->getId()->willReturn(42);
+        $sku->getCode()->willReturn('sku');
+        $sku->getBackendType()->willReturn('varchar');
+        $sku->isLocalizable()->willReturn(false);
+        $sku->isScopable()->willReturn(false);
+
+        $queryBuilder->expr()->willReturn(new Expr());
+        $queryBuilder->getRootAlias()->willReturn('p');
+        $condition = "filtersku.attribute = 42";
+
+        $queryBuilder->leftJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->andWhere('filtersku.varchar IS NULL')->shouldBeCalled();
+
+        $this->addAttributeFilter($sku, 'EMPTY', ['My Sku']);
     }
 }

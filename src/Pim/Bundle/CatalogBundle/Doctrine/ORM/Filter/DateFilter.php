@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
@@ -43,8 +43,8 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedFields     = $supportedFields;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**

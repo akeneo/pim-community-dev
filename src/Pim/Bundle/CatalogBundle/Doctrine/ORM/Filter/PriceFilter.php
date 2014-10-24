@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
@@ -39,7 +39,7 @@ class PriceFilter implements AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**

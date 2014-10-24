@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
@@ -37,7 +37,7 @@ class OptionsFilter implements AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**

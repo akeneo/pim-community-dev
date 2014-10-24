@@ -2,22 +2,21 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Metric filter
+ * Number filter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricFilter implements AttributeFilterInterface
+class NumberFilter implements AttributeFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -32,6 +31,7 @@ class MetricFilter implements AttributeFilterInterface
      * Instanciate the base filter
      *
      * @param array $supportedAttributes
+     * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
@@ -55,37 +55,26 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
-        $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode();
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+        $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $condition
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
-
-            $joinAliasOpt = 'filterM'.$attribute->getCode();
-            $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt);
-            $this->qb->andWhere($condition);
+            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+            $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition
             );
-
-            $joinAliasOpt = 'filterM'.$attribute->getCode();
-            $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
         }
 
         return $this;
@@ -107,7 +96,10 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array($operator, $this->supportedOperators);
+        return in_array(
+            $operator,
+            $this->supportedOperators
+        );
     }
 
     /**

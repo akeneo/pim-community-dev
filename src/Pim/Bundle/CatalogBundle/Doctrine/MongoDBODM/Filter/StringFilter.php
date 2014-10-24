@@ -4,13 +4,13 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Doctrine\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Base filter
+ * String filter
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
