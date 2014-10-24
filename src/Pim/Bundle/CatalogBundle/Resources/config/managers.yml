@@ -65,7 +65,6 @@ services:
         arguments:
             - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.product.class%
-            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.factory.attribute_type'
             - '@pim_resource.manager'
 

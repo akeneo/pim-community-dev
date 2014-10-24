@@ -11,9 +11,6 @@ namespace Pim\Component\Resource;
  */
 class ResourceSet implements ResourceSetInterface
 {
-    /** @var string */
-    protected $type;
-
     /** @var array */
     protected $resources;
 
@@ -21,12 +18,10 @@ class ResourceSet implements ResourceSetInterface
     private $position;
 
     /**
-     * @param array  $resources
-     * @param string $type
+     * @param array $resources
      */
-    public function __construct(array $resources, $type)
+    public function __construct(array $resources)
     {
-        $this->type = $type;
         $this->position = 0;
         $this->resources = (array) $resources;
     }
@@ -34,9 +29,13 @@ class ResourceSet implements ResourceSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getResourceClass()
     {
-        return $this->type;
+        if (empty($this->resources)) {
+            return null;
+        }
+
+        return get_class($this->resources[0]);
     }
 
     /**

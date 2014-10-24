@@ -12,11 +12,15 @@ namespace Pim\Component\Resource;
 interface ResourceSetInterface extends \ArrayAccess, \Iterator
 {
     /**
-     * @return string
+     * Get the type of resource in this set.
+     *
+     * @return string|null
      */
-    public function getType();
+    public function getResourceClass();
 
     /**
+     * Get the resources of the set.
+     *
      * @return ResourceInterface[]
      */
     public function getResources();

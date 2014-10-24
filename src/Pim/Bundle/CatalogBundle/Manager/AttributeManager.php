@@ -2,13 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Resource\Manager\ResourceManagerInterface;
-use Pim\Component\Resource\ResourceSet;
 
 /**
  * Attribute manager
@@ -25,9 +23,6 @@ class AttributeManager
     /** @var string */
     protected $productClass;
 
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /** @var AttributeTypeFactory */
     protected $factory;
 
@@ -39,20 +34,17 @@ class AttributeManager
      *
      * @param string                   $attributeClass   Attribute class
      * @param string                   $productClass     Product class
-     * @param ObjectManager            $objectManager    Object manager
      * @param AttributeTypeFactory     $factory          Attribute type factory
      * @param ResourceManagerInterface $resourceManager  Resource manager
      */
     public function __construct(
         $attributeClass,
         $productClass,
-        ObjectManager $objectManager,
         AttributeTypeFactory $factory,
         ResourceManagerInterface $resourceManager
     ) {
         $this->attributeClass   = $attributeClass;
         $this->productClass     = $productClass;
-        $this->objectManager    = $objectManager;
         $this->factory          = $factory;
         $this->resourceManager  = $resourceManager;
     }
@@ -133,9 +125,7 @@ class AttributeManager
             }
         }
 
-        // TODO: what to do with the type ?
-        $set = new ResourceSet($options, 'attribute_option');
-        $this->resourceManager->bulkSave($set);
+        $this->resourceManager->bulkSave($this->resourceManager->createResourceSet($options));
     }
 
     /**
@@ -147,7 +137,10 @@ class AttributeManager
      */
     public function getAttribute($id)
     {
-        $attribute = $this->objectManager->find($this->getAttributeClass(), $id);
+        $attribute = $this->resourceManager
+            ->getObjectManagerTransitional($this->getAttributeClass())
+            ->find($this->getAttributeClass(), $id)
+        ;
 
         if (null === $attribute) {
             throw new EntityNotFoundException();

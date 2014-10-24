@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Resource\Manager\ResourceManagerInterface;
 use Pim\Component\Resource\ResourceInterface;
+use Pim\Component\Resource\ResourceSet;
 use Pim\Component\Resource\ResourceSetInterface;
 
 /**
@@ -91,6 +92,22 @@ class ResourceManager implements ResourceManagerInterface
         if ($andFlush) {
             $manager->flush();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createResourceSet(array $resources)
+    {
+        return new ResourceSet($resources);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectManagerTransitional($class)
+    {
+        return $this->registry->getManagerForClass($class);
     }
 
     /**

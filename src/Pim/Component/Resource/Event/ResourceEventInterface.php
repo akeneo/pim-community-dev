@@ -15,16 +15,22 @@ use Pim\Component\Resource\ResourceSetInterface;
 interface ResourceEventInterface
 {
     /**
+     * Get the class of the subject related to this event.
+     *
      * @return string
      */
     public function getSubjectClass();
 
     /**
+     * Get the subject of this event.
+     *
      * @return ResourceInterface|ResourceSetInterface
      */
     public function getSubject();
 
     /**
+     * Set the subject of this event.
+     *
      * @param ResourceInterface|ResourceSetInterface $subject
      *
      * @return ResourceEventInterface

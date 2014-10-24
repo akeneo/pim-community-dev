@@ -49,4 +49,25 @@ interface ResourceManagerInterface
      * @param bool                 $andFlush
      */
     public function bulkDelete(ResourceSetInterface $resources, $andFlush = true);
+
+    /**
+     * Creates a set of resources from an array.
+     *
+     * @param array $resources
+     *
+     * @return ResourceSetInterface
+     */
+    public function createResourceSet(array $resources);
+
+    /**
+     * This is a transitional method. For internal purpose only. This method will allow us to use the
+     * object manager for special cases that we do not handle correctly at the moment.
+     *
+     * TODO: delete this method once everything has been cleaned.
+     *
+     * @param string $class
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    public function getObjectManagerTransitional($class);
 }

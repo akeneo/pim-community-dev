@@ -46,13 +46,13 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      */
     public function save(ResourceInterface $resource, $andFlush = true)
     {
-        $this->dispatch($resource, ResourceEvents::PRE_SAVE);
+        $this->dispatch(ResourceEvents::PRE_SAVE, $resource);
         if ($resource->isNew()) {
             $this->create($resource, $andFlush);
         } else {
             $this->update($resource, $andFlush);
         }
-        $this->dispatch($resource, ResourceEvents::POST_SAVE);
+        $this->dispatch(ResourceEvents::POST_SAVE, $resource);
     }
 
     /**
@@ -60,9 +60,9 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      */
     public function bulkSave(ResourceSetInterface $resources, $andFlush = true)
     {
-        $this->dispatch($resources, ResourceEvents::PRE_BULK_SAVE);
+        $this->dispatch(ResourceEvents::PRE_BULK_SAVE, $resources);
         $this->resourceManager->bulkSave($resources, $andFlush);
-        $this->dispatch($resources, ResourceEvents::POST_BULK_SAVE);
+        $this->dispatch(ResourceEvents::POST_BULK_SAVE, $resources);
     }
 
     /**
@@ -70,9 +70,9 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      */
     public function delete(ResourceInterface $resource, $andFlush = true)
     {
-        $this->dispatch($resource, ResourceEvents::PRE_DELETE);
+        $this->dispatch(ResourceEvents::PRE_DELETE, $resource);
         $this->resourceManager->delete($resource, $andFlush);
-        $this->dispatch($resource, ResourceEvents::POST_DELETE);
+        $this->dispatch(ResourceEvents::POST_DELETE, $resource);
     }
 
     /**
@@ -80,9 +80,25 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      */
     public function bulkDelete(ResourceSetInterface $resources, $andFlush = true)
     {
-        $this->dispatch($resources, ResourceEvents::PRE_BULK_DELETE);
+        $this->dispatch(ResourceEvents::PRE_BULK_DELETE, $resources);
         $this->resourceManager->bulkDelete($resources, $andFlush);
-        $this->dispatch($resources, ResourceEvents::POST_BULK_DELETE);
+        $this->dispatch(ResourceEvents::POST_BULK_DELETE, $resources);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createResourceSet(array $resources)
+    {
+        return $this->resourceManager->createResourceSet($resources);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectManagerTransitional($class)
+    {
+        return $this->resourceManager->getObjectManagerTransitional($class);
     }
 
     /**
@@ -93,9 +109,9 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      */
     protected function create(ResourceInterface $resource, $andFlush = true)
     {
-        $this->dispatch($resource, ResourceEvents::PRE_CREATE);
+        $this->dispatch(ResourceEvents::PRE_CREATE, $resource);
         $this->resourceManager->save($resource, $andFlush);
-        $this->dispatch($resource, ResourceEvents::POST_CREATE);
+        $this->dispatch(ResourceEvents::POST_CREATE, $resource);
     }
 
     /**
@@ -106,18 +122,18 @@ class ResourceManagerEventAware implements ResourceManagerInterface
      */
     protected function update(ResourceInterface $resource, $andFlush = true)
     {
-        $this->dispatch($resource, ResourceEvents::PRE_CREATE);
+        $this->dispatch(ResourceEvents::PRE_CREATE, $resource);
         $this->resourceManager->save($resource, $andFlush);
-        $this->dispatch($resource, ResourceEvents::POST_CREATE);
+        $this->dispatch(ResourceEvents::POST_CREATE, $resource);
     }
 
     /**
      * Dispatchs a resource event.
      *
-     * @param ResourceInterface|ResourceSetInterface $resource
      * @param string                                 $type
+     * @param ResourceInterface|ResourceSetInterface $resource
      */
-    private function dispatch($resource, $type)
+    private function dispatch($type, $resource)
     {
         $event = $this->eventResolver->resolve($resource);
         $this->eventDispatcher->dispatch($type, $event);
