@@ -2,6 +2,7 @@ parameters:
     pim_catalog.manager.association.class:         Pim\Bundle\CatalogBundle\Manager\AssociationManager
     pim_catalog.manager.association_type.class:    Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager
     pim_catalog.manager.attribute.class:           Pim\Bundle\CatalogBundle\Manager\AttributeManager
+    pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.manager.channel.class:             Pim\Bundle\CatalogBundle\Manager\ChannelManager
@@ -63,12 +64,18 @@ services:
         class: %pim_catalog.manager.attribute.class%
         arguments:
             - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.attribute_option.class%
-            - %pim_catalog.entity.attribute_option_value.class%
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.factory.attribute_type'
             - '@event_dispatcher'
+
+    pim_catalog.manager.attribute_option:
+        class: %pim_catalog.manager.attribute_option.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - %pim_catalog.entity.attribute_option.class%
+            - %pim_catalog.entity.attribute_option_value.class%
 
     pim_catalog.manager.attribute_group:
         class: %pim_catalog.manager.attribute_group.class%

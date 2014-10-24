@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use PIm\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Form handler for family

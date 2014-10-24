@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 class OutdateIndexedValuesSubscriberSpec extends ObjectBehavior
 {

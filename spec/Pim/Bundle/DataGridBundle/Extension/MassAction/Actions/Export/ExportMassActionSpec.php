@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class ExportMassActionSpec extends ObjectBehavior
 {

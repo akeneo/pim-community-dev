@@ -27,7 +27,7 @@ class MetricFactory
      *
      * @param string $family
      *
-     * @return Metric
+     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
      */
     public function createMetric($family)
     {

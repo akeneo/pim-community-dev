@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Provides util methods to ease the query building in MongoDB
@@ -27,19 +26,26 @@ class ProductQueryUtility
     /**
      * Normalize the field name from attribute and catalog context
      *
-     * @param AbstractAttribute $attribute
-     * @param CatalogContext    $context
+     * @param AttributeInterface $attribute
+     * @param array              $context
      *
      * @return string
      */
-    public static function getNormalizedValueFieldFromAttribute(AbstractAttribute $attribute, CatalogContext $context)
+    public static function getNormalizedValueFieldFromAttribute(AttributeInterface $attribute, array $context)
     {
+        if ($attribute->isLocalizable() && !isset($context['locale'])) {
+            throw new \LogicException('Locale is not configured');
+        }
+        if ($attribute->isScopable() && !isset($context['scope'])) {
+            throw new \LogicException('Scope is not configured');
+        }
+
         return self::getNormalizedValueField(
             $attribute->getCode(),
             $attribute->isLocalizable(),
             $attribute->isScopable(),
-            ($attribute->isLocalizable() ? $context->getLocaleCode() : null),
-            ($attribute->isScopable() ? $context->getScopeCode() : null)
+            ($attribute->isLocalizable() ? $context['locale'] : null),
+            ($attribute->isScopable() ? $context['scope'] : null)
         );
     }
 

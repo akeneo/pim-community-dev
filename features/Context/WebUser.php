@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
@@ -361,16 +362,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^the option should not be removable$/
-     */
-    public function theOptionShouldNotBeRemovable()
-    {
-        if (0 !== $this->getCurrentPage()->countRemovableOptions()) {
-            throw $this->createExpectationException('The option should not be removable.');
-        }
-    }
-
-    /**
      * @param string $optionName
      *
      * @Then /^I remove the "([^"]*)" option$/
@@ -701,6 +692,26 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see reorder handles$/
+     */
+    public function iShouldSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() <= 0) {
+            throw $this->createExpectationException('No reorder handle found');
+        }
+    }
+
+    /**
+     * @Then /^I should not see reorder handles$/
+     */
+    public function iShouldNotSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() > 0) {
+            throw $this->createExpectationException('Reorder handle was not expected');
+        }
+    }
+
+    /**
      * @param string $attributes
      *
      * @Then /^eligible attributes as label should be (.*)$/
@@ -948,8 +959,33 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Code'], $data['Selected by default']);
+            $this->getCurrentPage()->addOption($data['Code']);
+            $this->wait(3000);
         }
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
+     */
+    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
+        $this->wait(3000);
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+     */
+    public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
+        $this->wait(3000);
     }
 
     /**
@@ -1244,6 +1280,24 @@ class WebUser extends RawMinkContext
             // Call the wait method again to trigger timeout failure
             $this->wait(100, $condition);
         }
+    }
+
+    /**
+     * @Given /^I wait for (the )?widgets to load$/
+     */
+    public function iWaitForTheWidgetsToLoad()
+    {
+        $this->wait(2000, false);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I wait for (the )?options to load$/
+     */
+    public function iWaitForTheOptionsToLoad()
+    {
+        $this->wait(2000, false);
+        $this->wait();
     }
 
     /**
@@ -1784,6 +1838,125 @@ class WebUser extends RawMinkContext
     public function scrollContainerTo($y = 400)
     {
         $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
+    }
+
+    /**
+     * @Given /^I should see the following product comments:$/
+     *
+     * @param TableNode $table
+     *
+     * @return array
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheFollowingProductComments(TableNode $table)
+    {
+        $comments = [];
+
+        foreach ($table->getHash() as $data) {
+            try {
+                $author = $this->getFixturesContext()->getUser($data['author']);
+                $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+                /** @var NodeElement $comment */
+                $comment = $this->getCurrentPage()->findComment($data['message'], $authorName);
+                $comments[$data['#']] = $comment;
+
+                if (!empty($data['parent'])) {
+                    $expectedParent = $comments[$data['parent']];
+                    if (true !== $this->getCurrentPage()->isReplyOfComment($comment, $expectedParent)) {
+                        throw $this->createExpectationException(
+                            sprintf('The comment #%s is not a reply of the comment #%s', $data['#'], $data['parent'])
+                        );
+                    }
+                }
+
+            } catch (\LogicException $e) {
+                throw $this->createExpectationException($e->getMessage());
+            }
+        }
+
+        return $comments;
+    }
+
+    /**
+     * @When /^I delete the "([^"]*)" comment$/
+     *
+     * @param $message
+     */
+    public function iDeleteTheComment($message)
+    {
+        $username = $this->getMainContext()->getSubcontext('fixtures')->getUsername();
+        $author = $this->getFixturesContext()->getUser($username);
+        $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+
+        // doing that because $commment->mouseOver() has no effect
+        $this->getMainContext()->executeScript("$('.comment-buttons').css('display', 'inherit');");
+        $this->getCurrentPage()->deleteComment($comment);
+    }
+
+    /**
+     * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
+     *
+     * @param $message
+     * @param $author
+     *
+     * @return bool
+     * @throws ExpectationException
+     */
+    public function iShouldNotSeeTheLinkToDeleteTheComment($message, $author)
+    {
+        $author = $this->getFixturesContext()->getUser($author);
+        $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+
+        try {
+            $this->getCurrentPage()->deleteComment($comment);
+        } catch (\LogicException $e) {
+            // the delete link is missing, that's ok
+            return true;
+        }
+
+        throw $this->createExpectationException(
+            sprintf('Expecting not to see link to delete the comment "%s"', $message)
+        );
+    }
+
+    /**
+     * @When /^I add a new comment "([^"]*)"$/
+     *
+     * @param $message
+     */
+    public function iAddANewComment($message)
+    {
+        $this->getCurrentPage()->createComment($message);
+        $this->wait();
+    }
+
+    /**
+     * @When /^I reply to the comment "([^"]*)" of "([^"]*)" with "([^"]*)"$/
+     *
+     * @param $comment
+     * @param $author
+     * @param $reply
+     */
+    public function iReplyToTheCommentWith($comment, $author, $reply)
+    {
+        $author = $this->getFixturesContext()->getUser($author);
+        $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+        $comment = $this->getCurrentPage()->findComment($comment, $authorName);
+
+        $this->getCurrentPage()->replyComment($comment, $reply);
+        $this->wait();
+    }
+
+    /**
+     * @Then /^the response content type should be "([^"]*)"$/
+     */
+    public function contentTypeShouldBe($contentType)
+    {
+        $headers = $this->getSession()->getResponseHeaders();
+
+        assertTrue(in_array($contentType, $headers['content-type']));
     }
 
     /**

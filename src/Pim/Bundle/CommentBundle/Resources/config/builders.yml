@@ -1,0 +1,8 @@
+parameters:
+    pim_comment.builder.comment.class: Pim\Bundle\CommentBundle\Builder\CommentBuilder
+
+services:
+    pim_comment.builder.comment:
+        class: %pim_comment.builder.comment.class%
+        arguments:
+            - %pim_comment.entity.comment.class%

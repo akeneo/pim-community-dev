@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -43,6 +43,7 @@ class PimCatalogExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('entities.yml');
         $loader->load('repositories.yml');
+        $loader->load('query_builders.yml');
 
         $this->loadStorageDriver($config, $container);
         $this->loadValidationFiles($container);

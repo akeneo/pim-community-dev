@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 
 /**
  * Product category repository

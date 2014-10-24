@@ -3,9 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness filter
@@ -19,30 +18,78 @@ class CompletenessFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
+    protected $supportedOperators;
 
     /**
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * Instanciate the filter
+     *
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
-        $this->context = $context;
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function setQueryBuilder($queryBuilder)
     {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array(
+            $field,
+            $this->supportedFields
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value, array $context = [])
+    {
+        if (!isset($context['locale']) || !isset($context['scope'])) {
+            throw new \InvalidArgumentException(
+                'Cannot prepare condition on completenesses without locale and scope'
+            );
+        }
+
         $field = sprintf(
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             'completenesses',
-            $this->context->getScopeCode(),
-            $this->context->getLocaleCode()
+            $context['scope'],
+            $context['locale']
         );
         $value = intval($value);
 

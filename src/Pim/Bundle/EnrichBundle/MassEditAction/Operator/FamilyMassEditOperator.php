@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use JMS\Serializer\Annotation\Exclude;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**
  * A batch operation operator

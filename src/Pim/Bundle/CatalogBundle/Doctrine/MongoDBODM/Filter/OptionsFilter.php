@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 
 /**
  * Multi options filter for MongoDB
@@ -15,30 +14,72 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionsFilter extends EntityFilter
+class OptionsFilter implements AttributeFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedAttributes;
+
+    /** @var array */
+    protected $supportedOperators;
 
     /**
-     * @param QueryBuilder   $qb      the query builder
-     * @param CatalogContext $context the catalog context
+     * Instanciate the filter
+     *
+     * @param array $supportedAttributes
+     * @param array $supportedOperators
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
-        $this->context = $context;
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function setQueryBuilder($queryBuilder)
     {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AttributeInterface $attribute)
+    {
+        return in_array(
+            $attribute->getAttributeType(),
+            $this->supportedAttributes
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
+    {
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $this->addFieldFilter($field, $operator, $value);
 
@@ -46,9 +87,13 @@ class OptionsFilter extends EntityFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @param string|array $field
+     * @param string       $operator
+     * @param string|array $value
+     *
+     * @return OptionsFilter
      */
-    public function addFieldFilter($field, $operator, $value)
+    protected function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $value = is_array($value) ? $value : [$value];
 
@@ -58,15 +103,13 @@ class OptionsFilter extends EntityFilter
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
 
-                $expr = new Expr();
-                $expr = $expr->field($field)->exists(false);
+                $expr = $this->qb->expr()->field($field)->exists(false);
                 $this->qb->addOr($expr);
             }
 
             if (count($value) > 0) {
-                $expr = new Expr();
                 $value = array_map('intval', $value);
-                $expr->field($field .'.id')->in($value);
+                $expr = $this->qb->expr()->field($field .'.id')->in($value);
                 $this->qb->addOr($expr);
             }
         }

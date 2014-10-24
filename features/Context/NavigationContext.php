@@ -52,7 +52,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     protected $pageMapping = [
         'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
-        'categories'               => 'Category tree creation',
+        'categories'               => 'Category tree index',
         'channels'                 => 'Channel index',
         'currencies'               => 'Currency index',
         'exports'                  => 'Export index',

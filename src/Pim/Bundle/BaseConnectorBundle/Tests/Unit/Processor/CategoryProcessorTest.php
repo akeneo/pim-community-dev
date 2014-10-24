@@ -42,8 +42,9 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
             $this->validator,
             $this->translator,
             $this->transformer,
-            $this->doctrineCache,
-            'class'
+            $this->managerRegistry,
+            'class',
+            $this->doctrineCache
         );
 
         $this->stepExecution = $this

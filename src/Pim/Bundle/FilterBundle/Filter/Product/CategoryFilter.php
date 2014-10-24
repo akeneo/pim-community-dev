@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Form\FormFactoryInterface;
-use Oro\Bundle\FilterBundle\Filter\NumberFilter;
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Category filter

@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Aims to add all values / required values when create or load a new product
