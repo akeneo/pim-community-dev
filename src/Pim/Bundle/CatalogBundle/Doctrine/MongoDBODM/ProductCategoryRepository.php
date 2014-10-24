@@ -216,9 +216,13 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCategoryIds($qb, array $categoryIds)
+    public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
     {
-        $qb->addAnd($qb->expr()->field('categoryIds')->in($categoryIds));
+        if ($include) {
+            $qb->addAnd($qb->expr()->field('categoryIds')->in($categoryIds));
+        } else {
+            $qb->addAnd($qb->expr()->field('categoryIds')->notIn($categoryIds));
+        }
     }
 
     /**

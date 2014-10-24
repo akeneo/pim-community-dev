@@ -1317,6 +1317,19 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $file
+     *
+     * @Given /^I upload and import an invalid file "([^"]*)"$/
+     */
+    public function iUploadAndImportAnInvalidFile($file)
+    {
+        $this->getCurrentPage()->clickLink('Upload and import');
+        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
+        $this->getCurrentPage()->pressButton('Upload and import now');
+        $this->wait();
+    }
+
+    /**
      * @param string    $fileName
      * @param TableNode $table
      *

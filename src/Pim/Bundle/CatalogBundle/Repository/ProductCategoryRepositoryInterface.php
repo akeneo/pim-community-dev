@@ -68,10 +68,12 @@ interface ProductCategoryRepositoryInterface
     /**
      * Apply a filter by category ids
      *
-     * @param mixed $qb          query builder to update
-     * @param array $categoryIds category ids
+     * @param mixed   $qb          query builder to update
+     * @param array   $categoryIds category ids
+     * @param boolean $include     if yes, get product in those categories, if false
+     *                             products NOT in those categories
      */
-    public function applyFilterByCategoryIds($qb, array $categoryIds);
+    public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true);
 
     /**
      * Apply filter by category ids or unclassified
