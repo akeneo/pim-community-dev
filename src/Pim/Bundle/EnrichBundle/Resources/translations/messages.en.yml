@@ -574,6 +574,7 @@ pim_enrich:
             mass_edit: Product mass edit actions
             comment: Comment products
             download: Download the product as PDF
+            history: View product history
         category:
             list: List categories
             create: Create a category
@@ -582,17 +583,20 @@ pim_enrich:
             move: Move category
             children: See category children
             products: See category's products
+            history: View category history
         channel:
             index: List channels
             create: Create a channel
             edit: Edit a channel
             remove: Remove a channel
+            history: View channel history
         family:
             index: List families
             create: Create a family
             edit_properties: Edit properties of a family
             edit_attributes: Edit attributes of a family
             remove: Remove a family
+            history: View family history
         attribute_group:
             index: List attribute groups
             create: Create an attribute group
@@ -601,17 +605,20 @@ pim_enrich:
             sort: Sort attribute groups
             add_attribute: Add attribute to a group
             remove_attribute: Remove attribute from a group
+            history: View attribute group history
         attribute:
             index: List attributes
             create: Create an attribute
             edit: Edit an attribute
             remove: Remove an attribute
             sort: Sort attributes inside attribute groups
+            history: View attribute history
         group:
             index: List groups
             create: Create a group
             edit: Edit a group
             remove: Remove a group
+            history: View group history
         group_type:
             index: List group types
             create: Create a group type
@@ -622,6 +629,7 @@ pim_enrich:
             create: Create an association type
             edit: Edit an association type
             remove: Remove an association type
+            history: View association type history
     acl_group:
         association_type: Association types
         attribute: Attributes

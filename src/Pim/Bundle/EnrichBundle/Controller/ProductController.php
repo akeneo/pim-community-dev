@@ -401,6 +401,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
+     * @AclAncestor("pim_enrich_product_history")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)

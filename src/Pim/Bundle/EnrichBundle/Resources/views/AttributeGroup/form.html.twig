@@ -32,7 +32,10 @@
 
     {% set tabs = ['Properties'] %}
     {% if editMode %}
-        {% set tabs = tabs|merge(['Attributes', 'History']) %}
+        {% set tabs = tabs|merge(['Attributes']) %}
+        {% if resource_granted('pim_enrich_attribute_group_history') %}
+            {% set tabs = tabs|merge(['History']) %}
+        {% endif %}
     {% endif %}
 
     {{ elements.form_navbar(tabs) }}
@@ -48,10 +51,12 @@
         {% if editMode %}
             {% include 'PimEnrichBundle:AttributeGroup:_attributes.html.twig' %}
 
-            <div class="tab-pane" id="history">
-                {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-            </div>
+            {% if resource_granted('pim_enrich_attribute_group_history') %}
+                <div class="tab-pane" id="history">
+                    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+                </div>
+            {% endif %}
         {% endif %}
     </div>
 {{ form_end(form) }}

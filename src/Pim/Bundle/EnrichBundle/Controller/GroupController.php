@@ -192,6 +192,7 @@ class GroupController extends AbstractController
      *
      * @param Group $group
      *
+     * @AclAncestor("pim_enrich_group_history")
      * @return Response
      */
     public function historyAction(Group $group)

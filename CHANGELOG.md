@@ -16,6 +16,7 @@
  - Refactor of the attribute option screen to manage more than 100 options
  - Redesign of the loading box
  - Add an information message when there is no common attribute in mass-edit
+ - Add ACL on entity history
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`

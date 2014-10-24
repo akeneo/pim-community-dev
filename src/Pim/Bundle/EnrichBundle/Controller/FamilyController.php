@@ -187,6 +187,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $family
      *
+     * @AclAncestor("pim_enrich_family_history")
      * @return Response
      */
     public function historyAction(Family $family)
