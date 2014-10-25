@@ -5,17 +5,17 @@
                 {{ 'pimee_dashboard.widget.product_drafts.title'|trans }}
             </div>
             <div class="widget-content">
-                <table id="product-drafts-widget" class="table table-condensed table-light groups unspaced"></table>
+                <table id="proposal-widget" class="table table-condensed table-light groups unspaced"></table>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         require(
-            ['jquery', 'pimee/dashboard/product-drafts-widget'],
-            function ($, ProductDraftsWidget) {
+            ['jquery', 'pimee/dashboard/proposal-widget'],
+            function ($, ProposalWidget) {
                 'use strict';
                 $(function() {
-                    ProductDraftsWidget.init({el: '#product-drafts-widget', alias: 'product_drafts'});
+                    ProposalWidget.init({el: '#proposal-widget', alias: 'proposals'});
                 });
             }
         );

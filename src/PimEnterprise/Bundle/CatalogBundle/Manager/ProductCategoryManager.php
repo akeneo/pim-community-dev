@@ -100,6 +100,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
     /**
      * {@inheritdoc}
      * @see getProductIdsInCategory same logic with applying permissions
+     * @deprecated since version 1.0.3. Will be removed in 1.1. Please do not load all product ids for filtering.
      */
     public function getProductIdsInGrantedCategory(CategoryInterface $category, $inChildren = false)
     {

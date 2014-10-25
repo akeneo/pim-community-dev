@@ -31,9 +31,10 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('form_types.yml');
         $loader->load('mass_actions.yml');
-        $loader->load('parameters.yml');!
+        $loader->load('parameters.yml');
         $loader->load('controllers.yml');
         $loader->load('event_listeners.yml');
+        $loader->load('datagrid_listeners.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('twig.yml');
     }

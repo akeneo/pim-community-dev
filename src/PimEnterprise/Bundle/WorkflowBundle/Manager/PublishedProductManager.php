@@ -110,14 +110,7 @@ class PublishedProductManager
      */
     public function findByIdentifier($identifier)
     {
-        return $this->repository->findOneBy(
-            [
-                [
-                    'attribute' => $this->productManager->getIdentifierAttribute(),
-                    'value' => $identifier
-                ]
-            ]
-        );
+        return $this->repository->findOneByIdentifier($identifier);
     }
 
     /**

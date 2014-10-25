@@ -107,11 +107,9 @@ class ImagePresenter implements PresenterInterface
             case $data instanceof ProductMedia:
                 $mimeType = $data->getMimeType();
                 break;
-
             case is_array($data) && isset($data['mimeType']):
                 $mimeType = $data['mimeType'];
                 break;
-
             default:
                 $mimeType = null;
                 break;

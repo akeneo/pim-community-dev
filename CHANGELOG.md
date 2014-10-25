@@ -1,5 +1,11 @@
 # 1.1.x
 
+## BC breaks
+- Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
+- Move method `findApprovableByUser` from `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface` to `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`.
+- Remove interface `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface`
+- Rename `PimEnterprise\Bundle\DashboardBundle\Widget\ProductDraftWidget` to `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`, replace the first constructor argument with `Symfony\Component\Security\Core\SecurityContextInterface` and remove the third argument
+
 # 1.1.0 (based on CE 1.2.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/1.2/CHANGELOG.md))
 
 ## Improvements
@@ -18,6 +24,8 @@
 # 1.0.x
 
 ## Bug fixes
+- PIM-3206: Removing the group "ALL" from categories' permissions after a clean installation.
+- PIM-3234: Fix performance issue on granted category filter
 
 # 1.0.2 (2014-10-10)
 

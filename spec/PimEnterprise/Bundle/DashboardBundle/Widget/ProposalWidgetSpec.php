@@ -4,23 +4,25 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
-class ProductDraftWidgetSpec extends ObjectBehavior
+class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftOwnershipRepositoryInterface $ownershipRepo,
-        CategoryAccessRepository $accessRepo,
-        UserContext $context,
+        ProductDraftRepositoryInterface $repository,
+        SecurityContextInterface $securityContext,
+        TokenInterface $token,
         User $user
     ) {
-        $context->getUser()->willReturn($user);
+        $securityContext->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($accessRepo, $ownershipRepo, $context);
+        $this->beConstructedWith($securityContext, $repository);
     }
 
     function it_is_a_widget()
@@ -28,34 +30,35 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
-    function it_exposes_the_product_draft_widget_template()
+    function it_exposes_the_proposal_widget_template()
     {
-        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig');
+        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:proposal.html.twig');
     }
 
-    function it_exposes_the_product_draft_widget_template_parameters()
+    function it_exposes_the_proposal_widget_template_parameters($securityContext)
     {
+        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($accessRepo, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($securityContext, $user)
     {
-        $accessRepo->isOwner($user)->willReturn(false);
+        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
         $this->getData()->shouldReturn([]);
     }
 
-    function it_exposes_product_drafts_data(
-        $accessRepo,
+    function it_exposes_proposal_data(
+        $securityContext,
         $user,
-        $ownershipRepo,
+        $repository,
         ProductDraft $first,
         ProductDraft $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {
-        $accessRepo->isOwner($user)->willReturn(true);
-        $ownershipRepo->findApprovableByUser($user, 10)->willReturn([$first, $second]);
+        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
+        $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
         $first->getProduct()->willReturn($firstProduct);
         $second->getProduct()->willReturn($secondProduct);
