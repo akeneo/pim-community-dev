@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Batch;
 
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepository;
 
 /**
