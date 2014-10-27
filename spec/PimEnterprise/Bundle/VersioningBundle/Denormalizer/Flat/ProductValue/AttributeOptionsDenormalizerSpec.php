@@ -3,19 +3,18 @@
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class AttributeOptionsDenormalizerSpec extends ObjectBehavior
 {
-    function let(AttributeOptionRepository $repository)
+    function let(AttributeOptionDenormalizer $denormalizer)
     {
         $this->beConstructedWith(
             ['pim_catalog_multiselect'],
-            $repository
+            $denormalizer
         );
     }
 
@@ -24,17 +23,14 @@ class AttributeOptionsDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_attribute_options(AttributeOptionRepository $repository, ProductValueInterface $productValueInterface, AbstractAttribute $abstractAttribute)
+    function it_denormalizes_attribute_options(ProductValueInterface $productValueInterface, $denormalizer)
     {
         $data = '1,2,3';
         $context['value'] = $productValueInterface;
 
-        $productValueInterface->getAttribute()->shouldBeCalled()->willReturn($abstractAttribute);
-        $abstractAttribute->getCode()->willReturn('code');
-
-        $repository->findByReference('code.1')->shouldBeCalled()->willReturn();
-        $repository->findByReference('code.2')->shouldBeCalled()->willReturn();
-        $repository->findByReference('code.3')->shouldBeCalled()->willReturn();
+        $denormalizer->denormalize('1', 'pim_catalog_simpleselect', null, $context)->shouldBeCalled();
+        $denormalizer->denormalize('2', 'pim_catalog_simpleselect', null, $context)->shouldBeCalled();
+        $denormalizer->denormalize('3', 'pim_catalog_simpleselect', null, $context)->shouldBeCalled();
 
         $this->denormalize($data, 'className', null, $context);
     }
