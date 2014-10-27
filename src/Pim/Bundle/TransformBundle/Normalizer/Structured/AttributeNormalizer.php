@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -106,7 +104,6 @@ class AttributeNormalizer implements NormalizerInterface
             'options'             => $this->normalizeOptions($attribute),
             'sort_order'          => (int) $attribute->getSortOrder(),
             'required'            => (int) $attribute->isRequired(),
-            'default_value'       => $this->normalizeDefaultValue($attribute),
             'max_characters'      => (string) $attribute->getMaxCharacters(),
             'validation_rule'     => (string) $attribute->getValidationRule(),
             'validation_regexp'   => (string) $attribute->getValidationRegexp(),
@@ -159,25 +156,5 @@ class AttributeNormalizer implements NormalizerInterface
         }
 
         return $data;
-    }
-
-    /**
-     * Normalize default value
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return array
-     */
-    protected function normalizeDefaultValue(AbstractAttribute $attribute)
-    {
-        $defaultValue = $attribute->getDefaultValue();
-
-        if ($defaultValue instanceof \DateTime) {
-            return $defaultValue->format(\DateTime::ISO8601);
-        } elseif ($defaultValue instanceof ArrayCollection || $defaultValue instanceof AttributeOption) {
-            return $this->normalizeDefaultOptions($attribute);
-        } else {
-            return (string) $defaultValue;
-        }
     }
 }

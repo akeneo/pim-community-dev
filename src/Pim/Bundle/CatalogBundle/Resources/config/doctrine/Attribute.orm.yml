@@ -101,11 +101,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         unique:
             type: boolean
             column: is_unique
-        defaultValue:
-            type: text
-            length: 65532
-            nullable: true
-            column: default_value
         localizable:
             type: boolean
             column: is_localizable

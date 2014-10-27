@@ -80,7 +80,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'sort_order'             => '5',
                     'required'               => '0',
                     'unique'                 => '0',
-                    'default_value'          => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
                     'metric_family'          => '',
@@ -102,7 +101,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'sort_order'             => '1',
                     'required'               => '1',
                     'unique'                 => '0',
-                    'default_value'          => 'No description',
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
                     'metric_family'          => '',
@@ -125,7 +123,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
     protected function getOptionalProperties()
     {
         return array(
-            'default_value',
             'max_characters',
             'validation_rule',
             'validation_regexp',

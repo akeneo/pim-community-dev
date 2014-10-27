@@ -78,7 +78,6 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'sort_order'             => 1,
                     'required'               => 1,
                     'unique'                 => 0,
-                    'default_value'          => 'No description',
                     'localizable'            => '1',
                     'available_locales'      => 'en,fr',
                     'metric_family'          => '',

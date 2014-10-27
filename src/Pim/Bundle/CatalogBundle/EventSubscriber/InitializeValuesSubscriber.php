@@ -54,9 +54,6 @@ class InitializeValuesSubscriber implements EventSubscriberInterface
         foreach ($attributes as $attribute) {
             $value = $manager->createProductValue();
             $value->setAttribute($attribute);
-            if ($attribute->getDefaultValue() !== null) {
-                $value->setData($attribute->getDefaultValue());
-            }
             $product->addValue($value);
         }
     }

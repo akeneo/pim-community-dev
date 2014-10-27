@@ -199,7 +199,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     public function prepareValueFormData(ProductValueInterface $value)
     {
-        return is_null($value->getData()) ? $value->getAttribute()->getDefaultValue() : $value->getData();
+        return $value->getData();
     }
 
     /**

@@ -69,12 +69,6 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     protected $unique;
 
-    /**
-     * Default attribute value
-     * @var string $defaultValue
-     */
-    protected $defaultValue;
-
     /** @var bool */
     protected $localizable;
 
@@ -169,7 +163,6 @@ abstract class AbstractAttribute implements AttributeInterface
         $this->options             = new ArrayCollection();
         $this->required            = false;
         $this->unique              = false;
-        $this->defaultValue        = null;
         $this->localizable         = false;
         $this->scopable            = false;
         $this->useableAsGridFilter = false;
@@ -454,61 +447,6 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         return $groups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultValue()
-    {
-        $default = $this->defaultValue;
-
-        switch ($this->getBackendType()) {
-            case 'option':
-                $default = null;
-                break;
-            case 'options':
-                $default = null;
-                break;
-            case 'date':
-                if (null !== $this->defaultValue) {
-                    $default = new \DateTime();
-                    $default->setTimestamp((int) $this->defaultValue);
-                }
-                break;
-            case 'boolean':
-                if (null !== $this->defaultValue) {
-                    $default = (bool) $this->defaultValue;
-                }
-                break;
-        }
-
-        return $default;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultValue($defaultValue)
-    {
-        if (is_null($defaultValue)
-            || ($defaultValue instanceof ArrayCollection && $defaultValue->isEmpty())) {
-            $this->defaultValue = null;
-        } else {
-            switch ($this->getBackendType()) {
-                case 'date':
-                    $this->defaultValue = $defaultValue->format('U');
-                    break;
-                case 'boolean':
-                    $this->defaultValue = (int) $defaultValue;
-                    break;
-                default:
-                    $this->defaultValue = $defaultValue;
-                    break;
-            }
-        }
-
-        return $this;
     }
 
     /**
