@@ -4,14 +4,15 @@ Feature: Filter products by category
   As a regular user
   I need to be able to manually filter products by category
 
+  # @jira https://akeneo.atlassian.net/browse/PIM-3308 (a product should be multi-categorized to handle all cases)
   Background:
     Given an "apparel" catalog configuration
     And the following products:
-      | sku           | categories      |
-      | purple-tshirt | women_2015      |
-      | green-tshirt  | women_2015      |
-      | akeneo-mug    |                 |
-      | blue-jeans    | men_2015_summer |
+      | sku           | categories             |
+      | purple-tshirt | women_2015, women_2014 |
+      | green-tshirt  | women_2015             |
+      | akeneo-mug    |                        |
+      | blue-jeans    | men_2015_summer        |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by category

@@ -1,6 +1,7 @@
 # 1.2.x
 
 ## Bug fixes
+- PIM-3308: Fix regression on unclassified filter
 
 # 1.2.10 (2014-10-24)
 
