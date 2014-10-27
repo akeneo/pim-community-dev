@@ -32,10 +32,6 @@ class TextAreaType extends AbstractAttributeType
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name'      => 'defaultValue',
-                'fieldType' => 'textarea'
-            ],
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'text'

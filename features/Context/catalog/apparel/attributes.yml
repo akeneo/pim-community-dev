@@ -531,7 +531,6 @@ attributes:
             de_DE: Handgefertigt
         type:  pim_catalog_boolean
         group: additional
-        defaultValue:        false
         useableAsGridFilter: true
         sortOrder:           3
     weather_conditions:

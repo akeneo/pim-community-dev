@@ -208,7 +208,6 @@ attributes:
         group: colors
         useableAsGridFilter: true
         sortOrder:           2
-        defaultValue:        laces_black
         options:
             laces_black:
                 labels:

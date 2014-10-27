@@ -34,7 +34,7 @@ class MetricTypeSpec extends ObjectBehavior
 
     function it_builds_the_attribute_forms(FormFactory $factory, $size)
     {
-        $this->buildAttributeFormTypes($factory, $size)->shouldHaveCount(11);
+        $this->buildAttributeFormTypes($factory, $size)->shouldHaveCount(10);
     }
 
     function it_prepares_the_product_value_form($value, $size)

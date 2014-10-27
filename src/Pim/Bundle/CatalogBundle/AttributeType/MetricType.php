@@ -74,10 +74,7 @@ class MetricType extends AbstractAttributeType
             return $value->getData();
         };
 
-        $data = $this->metricFactory->createMetric($value->getAttribute()->getMetricFamily());
-        $data->setData($value->getAttribute()->getDefaultValue());
-
-        return $data;
+        return $this->metricFactory->createMetric($value->getAttribute()->getMetricFamily());
     }
 
     /**
@@ -86,9 +83,6 @@ class MetricType extends AbstractAttributeType
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name' => 'defaultValue'
-            ],
             'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'pim_number'

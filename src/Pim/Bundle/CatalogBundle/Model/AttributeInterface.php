@@ -307,13 +307,6 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     public function addFamily(Family $family);
 
     /**
-     * Get default value
-     *
-     * @return mixed $defaultValue
-     */
-    public function getDefaultValue();
-
-    /**
      * Set Validation rule
      *
      * @param string $validationRule
@@ -514,15 +507,6 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
      * @return AttributeInterface
      */
     public function setDefaultMetricUnit($defaultMetricUnit);
-
-    /**
-     * Set default value
-     *
-     * @param mixed $defaultValue
-     *
-     * @return AttributeInterface
-     */
-    public function setDefaultValue($defaultValue);
 
     /**
      * Remove option

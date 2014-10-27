@@ -20,7 +20,7 @@ class BooleanTypeSpec extends ObjectBehavior
 
     function it_builds_the_attribute_forms(FormFactory $factory, $isAvailable)
     {
-        $this->buildAttributeFormTypes($factory, $isAvailable)->shouldHaveCount(5);
+        $this->buildAttributeFormTypes($factory, $isAvailable)->shouldHaveCount(4);
     }
 
     function it_prepares_the_product_value_form($value, $isAvailable)

@@ -44,7 +44,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->attribute->isRequired());
         $this->assertFalse($this->attribute->isUnique());
-        $this->assertNull($this->attribute->getDefaultValue());
         $this->assertFalse($this->attribute->isLocalizable());
         $this->assertFalse($this->attribute->isScopable());
         $this->assertFalse($this->attribute->isUseableAsGridFilter());
@@ -394,18 +393,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $expectedOrder = 3;
         $this->assertEntity($this->attribute->setSortOrder($expectedOrder));
         $this->assertEquals($expectedOrder, $this->attribute->getSortOrder());
-    }
-
-    /**
-     * Test getter/setter for defaultValue property
-     */
-    public function testGetSetDefaultValue()
-    {
-        $this->assertEquals('', $this->attribute->getDefaultValue());
-
-        $expectedDefaultValue = 'test-default-value';
-        $this->assertEntity($this->attribute->setDefaultValue($expectedDefaultValue));
-        $this->assertEquals($expectedDefaultValue, $this->attribute->getDefaultValue());
     }
 
     /**

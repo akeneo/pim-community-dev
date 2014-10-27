@@ -20,7 +20,7 @@ class DateTypeSpec extends ObjectBehavior
 
     function it_builds_the_attribute_forms(FormFactory $factory, $releaseDate)
     {
-        $this->buildAttributeFormTypes($factory, $releaseDate)->shouldHaveCount(7);
+        $this->buildAttributeFormTypes($factory, $releaseDate)->shouldHaveCount(6);
     }
 
     function it_prepares_the_product_value_form($value, $releaseDate)

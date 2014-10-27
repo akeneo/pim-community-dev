@@ -36,7 +36,7 @@
 
     {% set optionalFields = ['dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
     'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
-    'allowedExtensions', 'validationRule', 'validationRegexp', 'minimumInputLength', 'defaultValue', 'sortOrder'] %}
+    'allowedExtensions', 'validationRule', 'validationRegexp', 'minimumInputLength', 'sortOrder'] %}
 
     {% for property in form.vars.value.properties|keys %}
         {% set optionalFields = optionalFields|merge([property]) %}

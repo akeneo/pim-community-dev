@@ -10,11 +10,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Migration 1.2 => 1.3
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20140926142324 extends AbstractMigration implements ContainerAwareInterface
+class Version20141027152640 extends AbstractMigration implements ContainerAwareInterface
 {
     protected $container;
 
@@ -27,14 +27,14 @@ class Version20140926142324 extends AbstractMigration implements ContainerAwareI
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql(sprintf('ALTER TABLE %s DROP useable_as_grid_column', $this->getTableName()));
+        $this->addSql(sprintf('ALTER TABLE %s DROP default_value', $this->getTableName()));
     }
 
     public function down(Schema $schema)
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql(sprintf('ALTER TABLE %s ADD useable_as_grid_column TINYINT(1) DEFAULT \'0\' NOT NULL', $this->getTableName()));
+        $this->addSql(sprintf('ALTER TABLE %s ADD default_value LONGTEXT DEFAULT NULL', $this->getTableName()));
     }
 
     protected function getTableName()

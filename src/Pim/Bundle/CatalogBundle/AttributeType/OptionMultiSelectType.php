@@ -35,10 +35,6 @@ class OptionMultiSelectType extends AbstractAttributeType
      */
     public function prepareValueFormData(ProductValueInterface $value)
     {
-        if ($value->getData() && $value->getData()->isEmpty()) {
-            return $value->getAttribute()->getDefaultValue();
-        }
-
         $iterator = $value->getData()->getIterator();
 
         if (true === $value->getAttribute()->getProperty('autoOptionSorting')) {
