@@ -74,10 +74,10 @@ class CategoryFilter implements FieldFilterInterface
             $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, false);
 
         } elseif ($operator === 'UNCLASSIFIED') {
-            $this->productRepository->applyFilterByUnclassified($qb);
+            $this->productRepository->applyFilterByUnclassified($this->qb);
 
         } elseif ($operator === 'IN OR UNCLASSIFIED') {
-            $this->productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $categoryIds);
+            $this->productRepository->applyFilterByCategoryIdsOrUnclassified($this->qb, $categoryIds);
         }
 
         return $this;
@@ -124,14 +124,14 @@ class CategoryFilter implements FieldFilterInterface
      */
     protected function getAllChildrenIds(array $categoryIds)
     {
-        if (count($categoryIds) !== 1) {
-            throw new \Exception('Not yet implementedd, supports only one parent category for now');
+        $allChildrenIds = [];
+        foreach ($categoryIds as $categoryId) {
+            $category = $this->categoryRepository->find($categoryId);
+            $childrenIds = $this->categoryRepository->getAllChildrenIds($category);
+            $childrenIds[] = $category->getId();
+            $allChildrenIds = array_merge($allChildrenIds, $childrenIds);
         }
-        $categoryId = current($categoryIds);
-        $category = $this->categoryRepository->find($categoryId);
-        $childrenIds = $this->categoryRepository->getAllChildrenIds($category);
-        $childrenIds[] = $category->getId();
 
-        return $childrenIds;
+        return $allChildrenIds;
     }
 }
