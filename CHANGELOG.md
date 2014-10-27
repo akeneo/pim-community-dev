@@ -16,6 +16,7 @@
  - Refactor of the attribute option screen to manage more than 100 options
  - Redesign of the loading box
  - Add an information message when there is no common attribute in mass-edit
+ - JobProfileController refactoring
  - Add ACL on entity history
 
 ## BC breaks
