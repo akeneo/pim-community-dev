@@ -12,7 +12,11 @@
     {% set form_tabs = form_tabs|merge(['Associations']) %}
 {% endif %}
 
-{% set form_tabs = form_tabs|merge(['Completeness', 'History']) %}
+{% set form_tabs = form_tabs|merge(['Completeness']) %}
+
+{% if resource_granted('pim_enrich_product_history') %}
+    {% set form_tabs = form_tabs|merge(['History']) %}
+{% endif %}
 
 {% if resource_granted('pim_enrich_product_comment') %}
     {% set form_tabs = form_tabs|merge(['Comments']) %}

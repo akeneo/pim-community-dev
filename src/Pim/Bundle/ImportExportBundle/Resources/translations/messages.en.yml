@@ -72,6 +72,7 @@ pim_importexport:
             edit: Edit an export profile
             remove: Remove an export profile
             launch: Launch an export profile
+            history: View export profile history
         import_profile:
             index: View import profiles list
             create: Create an import profile
@@ -79,6 +80,7 @@ pim_importexport:
             edit: Edit an import profile
             remove: Remove an import profile
             launch: Launch an import profile
+            history: View import profile history
         export_execution:
             index: View export reports list
             show: View export report details

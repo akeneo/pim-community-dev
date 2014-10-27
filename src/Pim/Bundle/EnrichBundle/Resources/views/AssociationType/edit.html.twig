@@ -33,7 +33,12 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_navbar(['Properties', 'History']) }}
+        {% set tabs = ['Properties'] %}
+        {% if resource_granted('pim_enrich_association_type_history') %}
+            {% set tabs = tabs|merge(['History']) %}
+        {% endif %}
+
+        {{ elements.form_navbar(tabs) }}
 
         <div class="row-fluid tab-content">
 
@@ -43,9 +48,11 @@
                 {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.locale_values': form_row(form.label) }) }}
             </div>
 
-            <div class="tab-pane" id="history">
-                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-            </div>
+            {% if resource_granted('pim_enrich_association_type_history') %}
+                <div class="tab-pane" id="history">
+                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+                </div>
+            {% endif %}
         </div>
     {{ form_end(form) }}
 {% endblock %}
