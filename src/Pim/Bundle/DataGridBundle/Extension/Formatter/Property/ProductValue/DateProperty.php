@@ -20,6 +20,10 @@ class DateProperty extends FieldProperty
     {
         $result = $this->getBackendData($value);
 
-        return OroFieldProperty::convertValue($result);
+        if ($result instanceof \DateTime) {
+            $result = $result->format('Y-m-d');
+        }
+
+        return (string) $result;
     }
 }
