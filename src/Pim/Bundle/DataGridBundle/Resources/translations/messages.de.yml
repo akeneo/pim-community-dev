@@ -19,6 +19,7 @@ datagrid_view:
   create: Ansicht erstellen
   placeholder: Name der neuen Ansicht
   remove: Diese Ansicht löschen
+  save_changes: Diese Ansicht speichern
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   columns:
     min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
