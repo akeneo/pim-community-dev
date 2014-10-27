@@ -78,6 +78,8 @@ interface ProductCategoryRepositoryInterface
     /**
      * Apply filter by category ids or unclassified
      *
+     * @deprecated since 1.2.11. Will be removed in 1.3.
+     *
      * @param mixed $qb          query builder to update
      * @param array $categoryIds category ids
      */
