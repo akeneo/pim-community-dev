@@ -90,6 +90,7 @@ class OptionsFilter implements AttributeFilterInterface
      * @param string|array $field
      * @param string       $operator
      * @param string|array $value
+     * @param array        $context
      *
      * @return OptionsFilter
      */

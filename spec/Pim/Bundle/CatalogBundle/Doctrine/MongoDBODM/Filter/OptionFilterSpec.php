@@ -53,7 +53,7 @@ class OptionFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('option_code');
 
         $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.option_code.id' )->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.option_code.id')->shouldBeCalled()->willReturn($expr);
         $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
         $qb->addOr($expr)->shouldBeCalled();
 
@@ -68,7 +68,7 @@ class OptionFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('option_code');
 
         $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.option_code.id' )->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.option_code.id')->shouldBeCalled()->willReturn($expr);
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $qb->addOr($expr)->shouldBeCalled();
 
@@ -82,7 +82,7 @@ class OptionFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('option');
         $attribute->getCode()->willReturn('option_code');
 
-        $expr->field('normalizedData.option_code.id' )->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.option_code.id')->shouldBeCalled()->willReturn($expr);
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $expr->in([1 => 118, 2 => 270])->shouldBeCalled()->willReturn($expr);
 

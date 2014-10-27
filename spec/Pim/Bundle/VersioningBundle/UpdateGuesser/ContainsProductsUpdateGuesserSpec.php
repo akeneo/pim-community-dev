@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;

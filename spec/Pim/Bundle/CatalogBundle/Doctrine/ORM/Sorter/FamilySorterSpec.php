@@ -56,5 +56,4 @@ class FamilySorterSpec extends ObjectBehavior
 
         $this->addFieldSorter('family', 'DESC');
     }
-
 }

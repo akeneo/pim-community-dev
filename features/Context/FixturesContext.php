@@ -444,6 +444,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following product comments:$/
      */
     public function theFollowingProductComments(TableNode $table)
@@ -507,6 +509,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following datagrid views:$/
      */
     public function theFollowingDatagridViews(TableNode $table)
@@ -1331,7 +1335,6 @@ class FixturesContext extends RawMinkContext
         assertNotNull($requirement);
         assertFalse($requirement->isRequired());
     }
-
 
     /**
      * @param string $attributeCode

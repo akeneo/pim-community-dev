@@ -190,5 +190,7 @@ class ValueStub
 
 class FooStub
 {
-    public function getId() { }
+    public function getId()
+    {
+    }
 }

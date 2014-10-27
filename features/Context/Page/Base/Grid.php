@@ -535,8 +535,7 @@ class Grid extends Index
 
         return $this
             ->getElement('Views list')
-            ->find('css', sprintf('label:contains("%s")', $viewLabel))
-        ;
+            ->find('css', sprintf('label:contains("%s")', $viewLabel));
     }
 
     /**

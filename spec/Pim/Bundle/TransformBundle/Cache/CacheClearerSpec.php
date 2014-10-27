@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ProductCacheClearerSpec extends ObjectBehavior
+class CacheClearerSpec extends ObjectBehavior
 {
     function let(
         DoctrineCache $doctrineCache,
@@ -23,7 +23,7 @@ class ProductCacheClearerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Cache\ProductCacheClearer');
+        $this->shouldHaveType('Pim\Bundle\TransformBundle\Cache\CacheClearer');
     }
 
     function it_clears_the_import_cache(

@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -23,29 +22,29 @@ class AttributeOptionManager
     protected $objectManager;
 
     /** @var string */
-    protected $attributeOptionClass;
+    protected $optionClass;
 
     /** @var string */
-    protected $attributeOptionValueClass;
+    protected $optionValueClass;
 
     /**
      * Constructor
      *
      * @param ObjectManager   $objectManager
      * @param EventDispatcher $eventDispatcher
-     * @param string          $attributeOptionClass
-     * @param string          $attributeOptionValueClass
+     * @param string          $optionClass
+     * @param string          $optionValueClass
      */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcher $eventDispatcher,
-        $attributeOptionClass,
-        $attributeOptionValueClass
+        $optionClass,
+        $optionValueClass
     ) {
-        $this->objectManager             = $objectManager;
-        $this->eventDispatcher           = $eventDispatcher;
-        $this->attributeOptionClass      = $attributeOptionClass;
-        $this->attributeOptionValueClass = $attributeOptionValueClass;
+        $this->objectManager    = $objectManager;
+        $this->eventDispatcher  = $eventDispatcher;
+        $this->optionClass      = $optionClass;
+        $this->optionValueClass = $optionValueClass;
     }
 
     /**
@@ -55,7 +54,7 @@ class AttributeOptionManager
      */
     public function createAttributeOption()
     {
-        $class = $this->attributeOptionClass;
+        $class = $this->optionClass;
 
         return new $class();
     }
@@ -67,7 +66,7 @@ class AttributeOptionManager
      */
     public function createAttributeOptionValue()
     {
-        $class = $this->attributeOptionValueClass;
+        $class = $this->optionValueClass;
 
         return new $class();
     }
@@ -79,7 +78,7 @@ class AttributeOptionManager
      */
     public function getAttributeOptionClass()
     {
-        return $this->attributeOptionClass;
+        return $this->optionClass;
     }
 
     /**
@@ -89,7 +88,7 @@ class AttributeOptionManager
      */
     public function getAttributeOptionValueClass()
     {
-        return $this->attributeOptionValueClass;
+        return $this->optionValueClass;
     }
 
     /**

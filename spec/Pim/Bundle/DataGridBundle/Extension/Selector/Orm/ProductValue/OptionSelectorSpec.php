@@ -10,7 +10,7 @@ use Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\BaseSelector;
 
 class OptionSelectorSpec extends ObjectBehavior
 {
-     function let(BaseSelector $predecessor)
+    function let(BaseSelector $predecessor)
     {
         $this->beConstructedWith($predecessor);
     }

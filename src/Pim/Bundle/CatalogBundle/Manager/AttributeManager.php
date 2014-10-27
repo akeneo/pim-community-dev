@@ -38,11 +38,11 @@ class AttributeManager
     /**
      * Constructor
      *
-     * @param string                   $attributeClass   Attribute class
-     * @param string                   $productClass     Product class
-     * @param ObjectManager            $objectManager    Object manager
-     * @param AttributeTypeFactory     $factory          Attribute type factory
-     * @param EventDispatcherInterface $eventDispatcher  Event dispatcher
+     * @param string                   $attributeClass  Attribute class
+     * @param string                   $productClass    Product class
+     * @param ObjectManager            $objectManager   Object manager
+     * @param AttributeTypeFactory     $factory         Attribute type factory
+     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
     public function __construct(
         $attributeClass,

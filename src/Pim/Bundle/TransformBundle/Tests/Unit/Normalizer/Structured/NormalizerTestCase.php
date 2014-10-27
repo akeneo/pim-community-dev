@@ -65,7 +65,10 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
     {
         $entity = $this->createEntity($data);
 
-        $this->assertEquals($data, $this->normalizer->normalize($entity, $this->format, ['locales' => ['en_US', 'fr_FR']]));
+        $this->assertEquals(
+            $data,
+            $this->normalizer->normalize($entity, $this->format, ['locales' => ['en_US', 'fr_FR']])
+        );
     }
 
     /**

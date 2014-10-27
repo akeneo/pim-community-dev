@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Attribute option value normalizer

@@ -2,19 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
-use FOS\RestBundle\View\View as RestVIew;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,11 +45,11 @@ class AttributeOptionController
     /**
      * Constructor
      *
-     * @param NormalizerInterface  $normalizer
-     * @param EntityManager        $entityManager
-     * @param FormFactoryInterface $formFactory
-     * @param ViewHandlerInterface $viewHandler
-     * @param AttributeManager $attributeManager
+     * @param NormalizerInterface    $normalizer
+     * @param EntityManager          $entityManager
+     * @param FormFactoryInterface   $formFactory
+     * @param ViewHandlerInterface   $viewHandler
+     * @param AttributeManager       $attributeManager
      * @param AttributeOptionManager $attributeOptionManager
      */
     public function __construct(

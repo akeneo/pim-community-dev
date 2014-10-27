@@ -92,11 +92,11 @@ interface ProductRepositoryInterface
     public function valueExists(ProductValueInterface $value);
 
     /**
-     * @param ProductQueryFactoryInterface
+     * @param ProductQueryFactoryInterface $factory
      *
      * @return ProductRepositoryInterface
      */
-    public function setProductQueryFactory($factory);
+    public function setProductQueryFactory(ProductQueryFactoryInterface $factory);
 
     /**
      * Get available attribute ids from a product ids list

@@ -6,20 +6,26 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class ProductQueryFactorySpec extends ObjectBehavior
 {
-    function let(AttributeRepository $attRepository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, ObjectManager $om)
-    {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder', $om, 'Pim\Bundle\CatalogBundle\Model\Product', $attRepository, $filterRegistry, $sorterRegistry);
+    function let(
+        AttributeRepository $attRepository,
+        QueryFilterRegistryInterface $filterRegistry,
+        QuerySorterRegistryInterface $sorterRegistry,
+        ObjectManager $om
+    ) {
+        $this->beConstructedWith(
+            'Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder',
+            $om,
+            'Pim\Bundle\CatalogBundle\Model\Product',
+            $attRepository,
+            $filterRegistry,
+            $sorterRegistry
+        );
     }
 
     function it_is_a_product_query_factory()
