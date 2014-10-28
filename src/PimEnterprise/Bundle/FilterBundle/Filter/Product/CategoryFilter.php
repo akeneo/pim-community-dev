@@ -66,12 +66,11 @@ class CategoryFilter extends BaseCategoryFilter
         $qb = $ds->getQueryBuilder();
         $user = $this->securityContext->getToken()->getUser();
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-        $productRepository = $this->manager->getProductCategoryRepository();
-
         if (count($grantedCategoryIds) > 0) {
-            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
+            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED',  $grantedCategoryIds);
+
         } else {
-            $productRepository->applyFilterByUnclassified($qb);
+            $this->util->applyFilter($ds, 'categories', 'UNCLASSIFIED',  []);
         }
 
         return true;
@@ -85,19 +84,18 @@ class CategoryFilter extends BaseCategoryFilter
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
         $categoryRepository = $this->manager->getCategoryRepository();
-        $productRepository  = $this->manager->getProductCategoryRepository();
         $qb                 = $ds->getQueryBuilder();
 
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
-            // categories of this tree
-            $currentTreeIds = $this->getAllChildrenIds($tree);
+            // all categories of this tree (without permissions)
+            $currentTreeIds = $categoryRepository->getAllChildrenIds($tree);
             // granted categories
             $user = $this->securityContext->getToken()->getUser();
             $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
             // granted categories not in this tree
-            $categoryIds = array_diff($grantedIds, $currentTreeIds);
-            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $categoryIds);
+            $categoryIds = array_values(array_diff($grantedIds, $currentTreeIds));
+            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED',  $categoryIds);
 
             return true;
         }
@@ -125,23 +123,5 @@ class CategoryFilter extends BaseCategoryFilter
         );
 
         return $grantedIds;
-    }
-
-    /**
-     * Override to apply category permissions (not for unclassified)
-     *
-     * {@inheritdoc}
-     *
-     * @deprecated since version 1.0.3. Will be removed in 1.1. Please do not load all product ids for filtering.
-     */
-    protected function getProductIdsInCategory(CategoryInterface $category, $data)
-    {
-        if ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
-            $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
-        } else {
-            $productIds = $this->manager->getProductIdsInGrantedCategory($category, $data['includeSub']);
-        }
-
-        return (empty($productIds)) ? [0] : $productIds;
     }
 }
