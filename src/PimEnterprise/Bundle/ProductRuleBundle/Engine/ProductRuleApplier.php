@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
@@ -26,26 +27,29 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(RuleSubjectSetInterface $subjectSet)
+    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = [])
     {
+
         /** @var ProductInterface[] $products */
-        $products = $subjectSet->getSubjects();
+        // $products = $subjectSet->getSubjects();
 
-        echo sprintf("Running rule %s on %s products.\n", $subjectSet->getCode(), count($products));
+        // echo sprintf("Running rule %s on %s products.\n", $subjectSet->getCode(), count($products));
 
-        $start = microtime(true);
-        foreach ($products as $product) {
-            $name = $product->getValue('name')->getData();
-            $product->getValue('name')->setData($name . ' // ' . $product->getIdentifier());
-        }
+        // $start = microtime(true);
+        // foreach ($products as $product) {
+        //     $name = $product->getValue('name')->getData();
+        //     $product->getValue('name')->setData($name . ' // ' . $product->getIdentifier());
+        // }
 
-        echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
+        // echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
+        //
+
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleSubjectSetInterface $subjectSet)
+    public function supports(RuleSubjectSetInterface $subjectSet, array $context = [])
     {
         return 'product' === $subjectSet->getType();
     }

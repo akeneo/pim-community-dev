@@ -38,4 +38,23 @@ interface LoadedRuleDecoratorInterface extends RuleInterface
      * @return LoadedRuleDecoratorInterface
      */
     public function addCondition(array $condition);
+
+    /**
+     * @return array
+     */
+    public function getActions();
+
+    /**
+     * @param array $actions
+     *
+     * @return LoadedRuleDecoratorInterface
+     */
+    public function setActions(array $actions);
+
+    /**
+     * @param array $action
+     *
+     * @return LoadedRuleDecoratorInterface
+     */
+    public function addAction(array $action);
 }

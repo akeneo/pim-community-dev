@@ -28,7 +28,7 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $rule)
+    public function load(RuleInterface $rule, array $context = [])
     {
         //TODO: do not hardcode this
         $loaded = new LoadedRuleDecorator($rule);
@@ -42,7 +42,7 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule)
+    public function supports(RuleInterface $rule, array $context = [])
     {
         return 'product' === $rule->getType();
     }

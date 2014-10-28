@@ -26,12 +26,12 @@ interface LoaderInterface
      *
      * @return LoadedRuleDecoratorInterface
      */
-    public function load(RuleInterface $rule);
+    public function load(RuleInterface $rule, array $context = []);
 
     /**
      * @param RuleInterface $rule
      *
      * @return bool
      */
-    public function supports(RuleInterface $rule);
+    public function supports(RuleInterface $rule, array $context = []);
 }

@@ -52,6 +52,6 @@ abstract class AbstractRunner implements RunnerInterface
         $loadedRule = $this->loader->load($rule);
         $subjects = $this->selector->select($loadedRule);
 
-        $this->applier->apply($subjects);
+        $this->applier->apply($loadedRule, $subjects);
     }
 }

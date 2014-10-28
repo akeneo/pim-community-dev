@@ -43,6 +43,7 @@ class PimEnterpriseRuleEngineBundle extends Bundle
                 )
             )
             ->addCompilerPass(new RegisterRunnerPass())
+            ->addCompilerPass(new RegisterActionPass())
         ;
     }
 }
