@@ -82,6 +82,8 @@ btn:
   save: 保存
   save and back: 保存してグリッドに戻る
   save and create: 保存して新規作成
+  save and next: 保存して次へ
+  save and finish: 保存して終了
   remove: 削除
   delete: 削除
   cancel: キャンセル
@@ -124,8 +126,6 @@ flash:
     removed: 属性を削除しました
     identifier not removable: 識別子の属性は削除できません
     used by groups: 'この属性は %count% 件のバリアントグループが使用しているために削除できません。'
-    option created: オプションを作成しました
-    error creating option: オプションの保存中にエラーが発生しました、やり直してください
   attribute group:
     created: 属性グループを作成しました
     updated: 属性グループを作成しました
@@ -241,7 +241,6 @@ Updated: 更新日時
 Last update: 最終更新
 by: 投稿
 N/A: N/A
-Add an option: オプションを追加
 Manage products: 商品管理
 Manage groups: グループ管理
 Code: コード
@@ -274,7 +273,6 @@ Attribute type: 属性タイプ
 Defaultvalue: 標準の値
 Variant: バリアント
 Smart: スマート
-Useable as grid column: グリッド列として使用可能
 Useable as grid filter: グリッドフィルターとして使用可能
 Family: ファミリー
 Available locales: 使用可能なロケール
@@ -388,6 +386,10 @@ pim_catalog_date: 日付
 pim_catalog_metric: メトリック
 Activated: アクティベート
 Disable: 無効
+pim_enrich.sequential_edit_action:
+  product:
+    previous: '"%product%" を保存せずにスキップします。'
+    next: '"%product%" を保存せずにスキップします。'
 pim_enrich.mass_edit_action:
   limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
   product:

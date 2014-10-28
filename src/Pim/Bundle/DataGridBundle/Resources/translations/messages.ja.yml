@@ -19,6 +19,7 @@ datagrid_view:
   create: ビューを作成
   placeholder: 新しいビューの名前
   remove: このビューを削除
+  save_changes: このビューを保存
   choose_label: ビューのラベルを選択
   columns:
     min_message: 最低でも1つの表示する列を選択してください
