@@ -123,5 +123,4 @@ class AssociationDenormalizerSpec extends ObjectBehavior
             ['part' => 'products', 'entity' => $association]
         );
     }
-
 }

@@ -16,8 +16,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrin
 /**
  * Resolves doctrine target models mapping
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModelsPass
 {
