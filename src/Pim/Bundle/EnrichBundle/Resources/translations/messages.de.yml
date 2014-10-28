@@ -122,8 +122,6 @@ flash:
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
     used by groups: 'Dieses Attribut kann nicht gelöscht werden, da es in %count% Variantengruppen verwendet wird'
-    option created: Option erfolgreich angelegt
-    error creating option: Es trat ein Fehler bei dem Versuch auf, eine Option anzulegen. Bitte wiederholen Sie den Vorgang.
   attribute group:
     created: Attributgruppe erfolgreich angelegt
     updated: Attributgruppe erfolgreich aktualisiert
@@ -239,7 +237,6 @@ Updated: Aktualisiert
 Last update: Letzte Aktualisierung
 by: durch
 N/A: N/A
-Add an option: Auswahlmöglichkeit hinzufügen
 Manage products: Produkte verwalten
 Manage groups: Gruppen verwalten
 Code: Code
@@ -272,7 +269,6 @@ Attribute type: Attributtyp
 Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
-Useable as grid column: Verwendbar als Spalte in der Übersicht
 Useable as grid filter: Verwendbar als Filter in der Übersicht
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata

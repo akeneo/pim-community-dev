@@ -82,6 +82,8 @@ btn:
   save: Enregistrer
   save and back: Enregistrer et revenir à la grille
   save and create: Sauver et créer un nouveau
+  save and next: Enregistrer et passer au suivant
+  save and finish: Enregistrer et terminer
   remove: Retirer
   delete: Supprimer
   cancel: Annuler
@@ -90,6 +92,7 @@ btn:
   confirm: Confirmer
   to grid: Retour à la grille
   to parent: Retour au parent
+  download_pdf: PDF
 confirmation:
   confirm: Confirmation
   delete: Confirmation de la suppression
@@ -123,8 +126,6 @@ flash:
     removed: Attribut supprimé avec succès
     identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
     used by groups: 'Cet attribut ne peut pas être supprimé car il est utilisé par %count% groupes de variantes'
-    option created: Option créée avec succès
-    error creating option: "Une erreur s'est produite durant la création d'une option, merci d'essayer à nouveau"
   attribute group:
     created: "Groupe d'attributs créé avec succès"
     updated: "Groupe d'attributs mis à jour avec succès"
@@ -240,7 +241,6 @@ Updated: Mis à jour
 Last update: Dernière mise à jour
 by: par
 N/A: N/A
-Add an option: Ajouter une option
 Manage products: Gérer les produits
 Manage groups: Gérer les groupes
 Code: Code
@@ -273,7 +273,6 @@ Attribute type: "Type d'attribut"
 Defaultvalue: Valeur par défaut
 Variant: Variante
 Smart: Intelligent
-Useable as grid column: Utilisable en tant que colonne de la grille
 Useable as grid filter: Utilisable en tant que filtre de la grille
 Family: Famille
 Available locales: Locales disponibles
@@ -292,6 +291,7 @@ Choose the attribute group: "Choisissez le groupe d'attributs"
 Drop a file or click here: Déposez un fichier ou cliquez ici
 Drop an image or click here: Déposez une image ou cliquez ici
 Automatic option sorting: Option de tri automatique
+save_attribute_before_manage_option: "Pour gérer les options, veuillez d'abord enregistrer l'attribut"
 Create: Créer
 Cancel: Annuler
 Choose a family: Choisissez une famille
@@ -387,6 +387,10 @@ pim_catalog_date: Date
 pim_catalog_metric: Unité de mesure
 Activated: Activé
 Disable: Désactivé
+pim_enrich.sequential_edit_action:
+  product:
+    previous: 'Revenir à "%product%" sans enregistrer.'
+    next: 'Passer à "%product%" sans enregistrer.'
 pim_enrich.mass_edit_action:
   limit_exceeded: 'Veuillez sélectionner moins de %limit% éléments à éditer'
   product:
@@ -482,6 +486,8 @@ pim_enrich:
       change_state: "Changer l'état du produit"
       add_to_groups: Ajouter le produit à des groupes
       mass_edit: Actions de modification des produits en masse
+      comment: Commenter les produits
+      download: Télécharger le produit en PDF
     category:
       list: Lister les catégories
       create: Créer une catégorie

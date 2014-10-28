@@ -65,6 +65,7 @@ Toggle status: ステータスを切り替える
 pim.grid.mass_action.quick_export.csv_all: CSV (すべての属性)
 pim.grid.mass_action.delete: 削除
 pim.grid.mass_action.mass_edit: 一括編集
+pim.grid.mass_action.sequential_edit: シーケンシャル編集
 jstree.create: 作成
 switch_on: はい
 switch_off: いいえ

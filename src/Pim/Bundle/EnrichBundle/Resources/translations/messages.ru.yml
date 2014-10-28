@@ -108,8 +108,6 @@ flash:
     updated: Атрибут успешно обновлен
     removed: Атрибут успешно удален
     identifier not removable: Идентификатор атрибута не может быть удален
-    option created: Свойство успешно добавлено
-    error creating option: Произошла ошибка при попытке создать свойство, пожалуйста, попробуйте снова
   attribute group:
     created: Группа атрибутов успешно создана
     updated: Группа атрибутов успешно обновлена
@@ -213,7 +211,6 @@ Updated: Обновлено
 Last update: Последнее обновление
 by: Создано
 N/A: Н/Д
-Add an option: Добавить свойство
 Manage products: Управление продуктами
 Manage groups: Управление группами
 Code: Код
@@ -245,7 +242,6 @@ Attribute type: Тип атрибута
 Defaultvalue: Значение по умолчанию
 Variant: Вариант
 Smart: Smart
-Useable as grid column: Может использоваться как столбец таблицы
 Useable as grid filter: Может использоваться как фильтр таблицы
 Family: Семейство
 Available locales: Доступные локали
