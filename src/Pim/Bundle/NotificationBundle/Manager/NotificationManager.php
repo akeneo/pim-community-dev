@@ -30,7 +30,7 @@ class NotificationManager
     protected $notificationFactory;
 
     /** @var UserNotificationFactory */
-    protected $userNotificationFactory;
+    protected $userNotifFactory;
 
     /** @var UserProviderInterface */
     protected $userProvider;
@@ -41,21 +41,21 @@ class NotificationManager
      * @param EntityManager           $em
      * @param EntityRepository        $repository
      * @param NotificationFactory     $notificationFactory
-     * @param UserNotificationFactory $userNotificationFactory
+     * @param UserNotificationFactory $userNotifFactory
      * @param UserProviderInterface   $userProvider
      */
     public function __construct(
         EntityManager $em,
         EntityRepository $repository,
         NotificationFactory $notificationFactory,
-        UserNotificationFactory $userNotificationFactory,
+        UserNotificationFactory $userNotifFactory,
         UserProviderInterface $userProvider
     ) {
-        $this->em                      = $em;
-        $this->repository              = $repository;
-        $this->notificationFactory     = $notificationFactory;
-        $this->userNotificationFactory = $userNotificationFactory;
-        $this->userProvider            = $userProvider;
+        $this->em                  = $em;
+        $this->repository          = $repository;
+        $this->notificationFactory = $notificationFactory;
+        $this->userNotifFactory    = $userNotifFactory;
+        $this->userProvider        = $userProvider;
     }
 
     /**
@@ -78,7 +78,7 @@ class NotificationManager
         foreach ($users as $user) {
             try {
                 $user = is_object($user) ? $user : $this->userProvider->loadUserByUsername($user);
-                $userNotifications[] = $this->userNotificationFactory->createUserNotification($notification, $user);
+                $userNotifications[] = $this->userNotifFactory->createUserNotification($notification, $user);
             } catch (UsernameNotFoundException $e) {
                 continue;
             }

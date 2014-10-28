@@ -19,29 +19,29 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var array $supportedFormat */
+    /** @var array */
     protected $supportedFormat = ['array'];
 
-    /** @var array $activeLocales */
+    /** @var array */
     protected $activeLocales;
 
-    /** @var SerializerInterface $serializer */
+    /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var LocaleManager $localeManager */
+    /** @var LocaleManager */
     protected $localeManager;
 
-    /** @var AttributeOptionManager $attributeOptionManager */
-    protected $attributeOptionManager;
+    /** @var AttributeOptionManager */
+    protected $optionManager;
 
     /**
      * @param LocaleManager          $localeManager
-     * @param AttributeOptionManager $attributeOptionManager
+     * @param AttributeOptionManager $optionManager
      */
-    public function __construct(LocaleManager $localeManager, AttributeOptionManager $attributeOptionManager)
+    public function __construct(LocaleManager $localeManager, AttributeOptionManager $optionManager)
     {
-        $this->localeManager          = $localeManager;
-        $this->attributeOptionManager = $attributeOptionManager;
+        $this->localeManager = $localeManager;
+        $this->optionManager = $optionManager;
     }
 
     /**
@@ -53,12 +53,12 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
             $this->ensureEmptyOptionValues($object->getOptionValues()) :
             $object->getOptionValues();
 
-        $normalizedOptionValues = $this->serializer->normalize($optionsValues, $format, $context);
+        $normalizedValues = $this->serializer->normalize($optionsValues, $format, $context);
 
         return [
             'id'           => $object->getId(),
             'code'         => $object->getCode(),
-            'optionValues' => $normalizedOptionValues
+            'optionValues' => $normalizedValues
         ];
     }
 
@@ -96,7 +96,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
 
         foreach ($activeLocales as $activatedLocale) {
             if (!in_array($activatedLocale->getCode(), $usedLocales)) {
-                $attributeOptionValue = $this->attributeOptionManager->createAttributeOptionValue();
+                $attributeOptionValue = $this->optionManager->createAttributeOptionValue();
                 $attributeOptionValue->setLocale($activatedLocale->getCode());
                 $attributeOptionValue->setValue('');
 

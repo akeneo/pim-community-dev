@@ -40,7 +40,7 @@ class AttributeOptionController
     protected $attributeManager;
 
     /** @var AttributeOptionManager */
-    protected $attributeOptionManager;
+    protected $optionManager;
 
     /**
      * Constructor
@@ -50,7 +50,7 @@ class AttributeOptionController
      * @param FormFactoryInterface   $formFactory
      * @param ViewHandlerInterface   $viewHandler
      * @param AttributeManager       $attributeManager
-     * @param AttributeOptionManager $attributeOptionManager
+     * @param AttributeOptionManager $optionManager
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -58,14 +58,14 @@ class AttributeOptionController
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewHandler,
         AttributeManager $attributeManager,
-        AttributeOptionManager $attributeOptionManager
+        AttributeOptionManager $optionManager
     ) {
-        $this->normalizer             = $normalizer;
-        $this->entityManager          = $entityManager;
-        $this->formFactory            = $formFactory;
-        $this->viewHandler            = $viewHandler;
-        $this->attributeManager       = $attributeManager;
-        $this->attributeOptionManager = $attributeOptionManager;
+        $this->normalizer       = $normalizer;
+        $this->entityManager    = $entityManager;
+        $this->formFactory      = $formFactory;
+        $this->viewHandler      = $viewHandler;
+        $this->attributeManager = $attributeManager;
+        $this->optionManager    = $optionManager;
     }
 
     /**
@@ -100,7 +100,7 @@ class AttributeOptionController
     {
         $attribute = $this->findAttributeOr404($attributeId);
 
-        $attributeOption = $this->attributeOptionManager->createAttributeOption();
+        $attributeOption = $this->optionManager->createAttributeOption();
         $attributeOption->setAttribute($attribute);
 
         //Should be replaced by a paramConverter
@@ -143,7 +143,7 @@ class AttributeOptionController
         $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
 
         try {
-            $this->attributeOptionManager->remove($attributeOption);
+            $this->optionManager->remove($attributeOption);
         } catch (\Exception $e) {
             return new JsonResponse(['message' => $e->getMessage()], $e->getCode());
         }
@@ -188,7 +188,7 @@ class AttributeOptionController
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            $this->attributeOptionManager->update($attributeOption);
+            $this->optionManager->update($attributeOption);
 
             $option = $this->normalizer->normalize($attributeOption, 'array', ['onlyActivatedLocales' => true]);
 
@@ -228,7 +228,7 @@ class AttributeOptionController
     protected function findAttributeOptionOr404($id)
     {
         try {
-            $result = $this->attributeOptionManager->getAttributeOption($id);
+            $result = $this->optionManager->getAttributeOption($id);
         } catch (EntityNotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

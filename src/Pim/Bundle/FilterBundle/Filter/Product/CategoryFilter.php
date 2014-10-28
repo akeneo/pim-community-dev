@@ -116,7 +116,7 @@ class CategoryFilter extends NumberFilter
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
             $categoryIds = $this->getAllChildrenIds($tree);
-            $this->util->applyFilter($ds, 'categories', 'NOT IN',  $categoryIds);
+            $this->util->applyFilter($ds, 'categories', 'NOT IN', $categoryIds);
 
             return true;
         }

@@ -33,23 +33,23 @@ class JobManager
     /**
      * @var string
      */
-    protected $jobExecutionClassName;
+    protected $jobExecutionClass;
 
     /**
      * Constructor
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param SmartManagerRegistry     $managerRegistry
-     * @param string                   $jobExecutionClassName
+     * @param string                   $jobExecutionClass
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         SmartManagerRegistry $managerRegistry,
-        $jobExecutionClassName
+        $jobExecutionClass
     ) {
-        $this->eventDispatcher       = $eventDispatcher;
-        $this->managerRegistry       = $managerRegistry;
-        $this->jobExecutionClassName = $jobExecutionClassName;
+        $this->eventDispatcher   = $eventDispatcher;
+        $this->managerRegistry   = $managerRegistry;
+        $this->jobExecutionClass = $jobExecutionClass;
     }
 
     /**
@@ -103,7 +103,7 @@ class JobManager
      */
     protected function create(JobInstance $jobInstance, UserInterface $user)
     {
-        $jobExecution = new $this->jobExecutionClassName();
+        $jobExecution = new $this->jobExecutionClass();
 
         $jobExecution->setJobInstance($jobInstance)->setUser($user->getUsername());
         $manager = $this->managerRegistry->getManagerForClass(get_class($jobExecution));

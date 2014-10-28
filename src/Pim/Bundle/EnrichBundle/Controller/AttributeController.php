@@ -33,44 +33,28 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class AttributeController extends AbstractDoctrineController
 {
-    /**
-     * @var AttributeHandler
-     */
+    /** @var AttributeHandler */
     protected $attributeHandler;
 
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $attributeForm;
 
-    /**
-     * @var AttributeManager
-     */
+    /** @var AttributeManager */
     protected $attributeManager;
 
-    /**
-     * @var AttributeOptionManager
-     */
-    protected $attributeOptionManager;
+    /** @var AttributeOptionManager */
+    protected $optionManager;
 
-    /**
-     * @var LocaleManager
-     */
+    /** @var LocaleManager */
     protected $localeManager;
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $measuresConfig;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $choiceAttributeTypes = array(
         'pim_catalog_simpleselect',
         'pim_catalog_multiselect'
@@ -91,7 +75,7 @@ class AttributeController extends AbstractDoctrineController
      * @param AttributeHandler         $attributeHandler
      * @param Form                     $attributeForm
      * @param AttributeManager         $attributeManager
-     * @param AttributeOptionManager   $attributeOptionManager
+     * @param AttributeOptionManager   $optionManager
      * @param LocaleManager            $localeManager
      * @param VersionManager           $versionManager
      * @param array                    $measuresConfig
@@ -109,7 +93,7 @@ class AttributeController extends AbstractDoctrineController
         AttributeHandler $attributeHandler,
         Form $attributeForm,
         AttributeManager $attributeManager,
-        AttributeOptionManager $attributeOptionManager,
+        AttributeOptionManager $optionManager,
         LocaleManager $localeManager,
         VersionManager $versionManager,
         $measuresConfig
@@ -126,13 +110,13 @@ class AttributeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->attributeHandler       = $attributeHandler;
-        $this->attributeForm          = $attributeForm;
-        $this->attributeManager       = $attributeManager;
-        $this->attributeOptionManager = $attributeOptionManager;
-        $this->localeManager          = $localeManager;
-        $this->versionManager         = $versionManager;
-        $this->measuresConfig         = $measuresConfig;
+        $this->attributeHandler = $attributeHandler;
+        $this->attributeForm    = $attributeForm;
+        $this->attributeManager = $attributeManager;
+        $this->optionManager    = $optionManager;
+        $this->localeManager    = $localeManager;
+        $this->versionManager   = $versionManager;
+        $this->measuresConfig   = $measuresConfig;
     }
 
     /**
@@ -260,9 +244,9 @@ class AttributeController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_attribute_edit', array('id'=> $attribute->getId()));
         }
 
-        $option = $this->attributeOptionManager->createAttributeOption();
+        $option = $this->optionManager->createAttributeOption();
 
-        $optionValue = $this->attributeOptionManager->createAttributeOptionValue();
+        $optionValue = $this->optionManager->createAttributeOptionValue();
         $optionValue->setLocale($dataLocale);
         $optionValue->setValue('');
         $option->addOptionValue($optionValue);

@@ -20,19 +20,13 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class AttributeTransformer extends NestedEntityTransformer
 {
-    /**
-     * @var AttributeManager
-     */
+    /** @var AttributeManager */
     protected $attributeManager;
 
-    /**
-     * @var AttributeOptionManager
-     */
-    protected $attributeOptionManager;
+    /** @var AttributeOptionManager */
+    protected $optionManager;
 
-    /**
-     * @var DoctrineCache
-     */
+    /** @var DoctrineCache */
     protected $doctrineCache;
 
     /**
@@ -44,7 +38,7 @@ class AttributeTransformer extends NestedEntityTransformer
      * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
      * @param AttributeManager               $attributeManager
-     * @param AttributeOptionManager         $attributeOptionManager
+     * @param AttributeOptionManager         $optionManager
      * @param DoctrineCache                  $doctrineCache
      */
     public function __construct(
@@ -54,14 +48,14 @@ class AttributeTransformer extends NestedEntityTransformer
         ColumnInfoTransformerInterface $colInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
         AttributeManager $attributeManager,
-        AttributeOptionManager $attributeOptionManager,
+        AttributeOptionManager $optionManager,
         DoctrineCache $doctrineCache
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer, $transformerRegistry);
 
-        $this->attributeManager       = $attributeManager;
-        $this->attributeOptionManager = $attributeOptionManager;
-        $this->doctrineCache          = $doctrineCache;
+        $this->attributeManager = $attributeManager;
+        $this->optionManager    = $optionManager;
+        $this->doctrineCache    = $doctrineCache;
     }
 
     /**
@@ -91,7 +85,7 @@ class AttributeTransformer extends NestedEntityTransformer
     protected function setOptions($class, AbstractAttribute $attribute, array $optionsData)
     {
         $this->doctrineCache->setReference($attribute);
-        $optionClass = $this->attributeOptionManager->getAttributeOptionClass();
+        $optionClass = $this->optionManager->getAttributeOptionClass();
         foreach ($optionsData as $code => $optionData) {
             $optionData['attribute'] = $attribute->getCode();
             if (!isset($optionData['code'])) {
