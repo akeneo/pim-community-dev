@@ -100,7 +100,7 @@ services:
         class: %pimee_versioning.denormalizer.attribute_options.class%
         arguments:
             - ['pim_catalog_multiselect']
-            - '@pim_catalog.repository.attribute_option'
+            - '@pimee_versioning.denormalizer.attribute_option'
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
