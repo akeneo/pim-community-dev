@@ -28,8 +28,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
         UnpublisherInterface $unpublisher
-    )
-    {
+    ) {
         $this->beConstructedWith($manager, $repository, $eventDispatcher, $publisher, $unpublisher);
     }
 

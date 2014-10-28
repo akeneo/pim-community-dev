@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Sequential edit action controller for products
  *
- * @author    Rémy Bétus <remy.betus@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Rémy Bétus <remy.betus@akeneo.com>
  */
 class SequentialEditController extends BaseSequentialEditController
 {
