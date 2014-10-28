@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleDecorator;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 
@@ -31,10 +31,11 @@ class ProductRuleLoader implements LoaderInterface
     public function load(RuleInterface $rule, array $context = [])
     {
         //TODO: do not hardcode this
-        $loaded = new LoadedRuleDecorator($rule);
+        $loaded = new LoadedRule($rule);
 
         $content = json_decode($rule->getContent(), true);
         $loaded->setConditions($content['conditions']);
+        $loaded->setActions($content['actions']);
 
         return $loaded;
     }

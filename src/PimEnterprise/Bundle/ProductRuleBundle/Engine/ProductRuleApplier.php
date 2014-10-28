@@ -29,28 +29,25 @@ class ProductRuleApplier implements ApplierInterface
      */
     public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = [])
     {
+        echo sprintf("Running rule %s on %s products.\n", $subjectSet->getCode(), count($subjectSet->getSubjects()));
+        $start = microtime(true);
 
-        /** @var ProductInterface[] $products */
-        // $products = $subjectSet->getSubjects();
+        $actions = $rule->getActions();
+        foreach ($actions as $action) {
+            if ($action['type'] === 'set_value') {
+                echo sprintf("\$this->productUpdater->setValue([], %s, %s, []); \n", $action['field'], $action['value']);
+            }
+        }
 
-        // echo sprintf("Running rule %s on %s products.\n", $subjectSet->getCode(), count($products));
-
-        // $start = microtime(true);
-        // foreach ($products as $product) {
-        //     $name = $product->getValue('name')->getData();
-        //     $product->getValue('name')->setData($name . ' // ' . $product->getIdentifier());
-        // }
-
-        // echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
-        //
-
+        echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleSubjectSetInterface $subjectSet, array $context = [])
+    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = [])
     {
-        return 'product' === $subjectSet->getType();
+        return 'product' === $subjectSet->getType() &&
+            $rule instanceof LoadedRule;
     }
 }

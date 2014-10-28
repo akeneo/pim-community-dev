@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Engine;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleDecoratorInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
@@ -24,7 +24,7 @@ interface LoaderInterface
     /**
      * @param RuleInterface $rule
      *
-     * @return LoadedRuleDecoratorInterface
+     * @return LoadedRuleInterface
      */
     public function load(RuleInterface $rule, array $context = []);
 

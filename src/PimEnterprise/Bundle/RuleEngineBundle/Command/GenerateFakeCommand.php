@@ -68,7 +68,8 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rule = new Rule();
             $rule->setCode('rule_' . $cpt);
             $rule->setContent(json_encode([
-                'conditions' => $this->getConditions($filters, 2)
+                'conditions' => $this->getConditions($filters, 2),
+                'actions'    => [['type' => 'set_value', 'field' => 'name', 'value' => 'toto']]
             ]));
             $rule->setType('product');
 
