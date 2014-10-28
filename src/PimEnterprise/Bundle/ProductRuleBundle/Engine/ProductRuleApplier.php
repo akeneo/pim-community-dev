@@ -14,8 +14,11 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Applies product rules via a batch.
@@ -24,12 +27,24 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
+    /** @var EventDispatcher */
+    protected $eventDispatcher;
+
+    /**
+     * @param EventDispatcher $eventDispatcher
+     */
+    public function __construct(EventDispatcher $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = [])
     {
-        echo sprintf("Running rule %s on %s products.\n", $subjectSet->getCode(), count($subjectSet->getSubjects()));
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+
         $start = microtime(true);
 
         $actions = $rule->getActions();
@@ -39,7 +54,7 @@ class ProductRuleApplier implements ApplierInterface
             }
         }
 
-        echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
     }
 
     /**

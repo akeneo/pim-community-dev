@@ -37,11 +37,14 @@ abstract class AbstractRunner implements RunnerInterface
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
      */
-    public function __construct(LoaderInterface $loader, SelectorInterface $selector, ApplierInterface $applier)
-    {
-        $this->loader   = $loader;
-        $this->selector = $selector;
-        $this->applier  = $applier;
+    public function __construct(
+        LoaderInterface $loader,
+        SelectorInterface $selector,
+        ApplierInterface $applier
+    ) {
+        $this->loader              = $loader;
+        $this->selector            = $selector;
+        $this->applier             = $applier;
     }
 
     /**

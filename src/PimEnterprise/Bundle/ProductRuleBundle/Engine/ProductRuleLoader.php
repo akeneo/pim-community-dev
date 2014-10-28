@@ -14,9 +14,13 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\LoadedRuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Loads product rules.
@@ -25,17 +29,32 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
  */
 class ProductRuleLoader implements LoaderInterface
 {
+    /** @var EventDispatcher */
+    protected $eventDispatcher;
+
+    /**
+     * @param EventDispatcher $eventDispatcher
+     */
+    public function __construct(EventDispatcher $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function load(RuleInterface $rule, array $context = [])
     {
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($rule));
+
         //TODO: do not hardcode this
         $loaded = new LoadedRule($rule);
 
         $content = json_decode($rule->getContent(), true);
         $loaded->setConditions($content['conditions']);
         $loaded->setActions($content['actions']);
+
+        $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($rule));
 
         return $loaded;
     }

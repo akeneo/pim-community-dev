@@ -4,13 +4,10 @@ parameters:
     pimee_product_rule.selector.product.class: PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleSelector
 
 services:
-    pimee_product_rule.applier.product:
-        class: %pimee_product_rule.applier.product.class%
-
     pimee_product_rule.loader.product:
         class: %pimee_product_rule.loader.product.class%
         arguments:
-            - @pimee_rule_engine.repository.rule
+            - @event_dispatcher
 
     pimee_product_rule.selector.product:
         class: %pimee_product_rule.selector.product.class%
@@ -18,3 +15,9 @@ services:
             - %pimee_rule_engine.entity.rule_subject_set.class%
             - @pim_catalog.doctrine.query.product_query_factory
             - @pim_catalog.repository.product
+            - @event_dispatcher
+
+    pimee_product_rule.applier.product:
+        class: %pimee_product_rule.applier.product.class%
+        arguments:
+            - @event_dispatcher

@@ -68,5 +68,30 @@ class BenchmarkCommand extends ContainerAwareCommand
             echo "\n";
             $cpt++;
         }
+
+        $stopWatch = $this->getContainer()->get('debug.stopwatch');
+
+        $events = $stopWatch->getSectionEvents('__root__');
+
+
+        $stats = [];
+
+        foreach ($events as $name => $event) {
+            if (!isset($stats[$event->getCategory()])) {
+                $stats[$event->getCategory()] = [
+                    'duration' => 0
+                ];
+            }
+
+            $stats[$event->getCategory()]['duration'] += $event->getDuration();
+
+            echo sprintf("%s : \t\t%sms, %smb\n", $name, $event->getDuration(), $event->getMemory() / 1000000);
+        }
+
+        echo "\n";
+
+        foreach ($stats as $category => $stat) {
+            echo sprintf("Category %s : \t%sms\n", $category, $stat['duration']);
+        }
     }
 }

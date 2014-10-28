@@ -15,8 +15,13 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Selects subjects impacted by a rule.
@@ -34,19 +39,25 @@ class ProductRuleSelector implements SelectorInterface
     /** @var ProductRepositoryInterface */
     protected $repo;
 
+    /** @var EventDispatcher */
+    protected $eventDispatcher;
+
     /**
      * @param string                     $subjectSetClass
      * @param ProductQueryFactory        $productQueryFactory
      * @param ProductRepositoryInterface $repo
+     * @param EventDispatcher            $eventDispatcher
      */
     public function __construct(
         $subjectSetClass,
         ProductQueryFactory $productQueryFactory,
-        ProductRepositoryInterface $repo
+        ProductRepositoryInterface $repo,
+        EventDispatcher $eventDispatcher
     ) {
         $this->subjectSetClass     = $subjectSetClass;
         $this->productQueryFactory = $productQueryFactory;
         $this->repo                = $repo;
+        $this->eventDispatcher     = $eventDispatcher;
     }
 
     /**
@@ -57,11 +68,12 @@ class ProductRuleSelector implements SelectorInterface
         /** @var RuleSubjectSetInterface $subjectSet */
         $subjectSet = new $this->subjectSetClass();
 
-        $start = microtime(true);
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
+
         $pqb = $this->productQueryFactory->create(/*['default_locale' => 'en_US', 'default_scope' => 'ecommerce']*/);
 
-        $content = json_decode($rule->getContent(), true);
-        foreach ($content['conditions'] as $condition) {
+        $conditions = $rule->getConditions();
+        foreach ($conditions as $condition) {
             echo sprintf(
                 "Selecting products for rule %s (%s %s %s).\n",
                 $rule->getCode(),
@@ -78,7 +90,7 @@ class ProductRuleSelector implements SelectorInterface
         $subjectSet->setType('product');
         $subjectSet->setSubjects($products);
 
-        echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SELECT, new SelectedRuleEvent($rule, $subjectSet));
 
         return $subjectSet;
     }
@@ -88,6 +100,7 @@ class ProductRuleSelector implements SelectorInterface
      */
     public function supports(RuleInterface $rule, array $context = [])
     {
-        return 'product' === $rule->getType();
+        return 'product' === $rule->getType() &&
+            $rule instanceof LoadedRuleInterface;
     }
 }
