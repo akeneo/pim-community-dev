@@ -58,4 +58,17 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: sandals"
     Then the category of "sandals" should be "winter_collection"
 
-
+  Scenario: Successfully revert multiselect attribute options of a product
+    Given the following product:
+      | sku  | family |
+      | jean | pants  |
+    Given I am on the "jean" product page
+    Given I add a new option to the "Weather conditions" attribute
+    When I fill in the following information in the popin:
+      | Code  | very_wet      |
+      | en_US | Extremely wet |
+    And I press the "Save" button in the popin
+    And I save the product
+    And I visit the "History" tab
+    When I click on the "Revert to this version" action of the row which contains "sku: jean"
+    Then I should see a flash message "Successfully revert the product to the previous version"

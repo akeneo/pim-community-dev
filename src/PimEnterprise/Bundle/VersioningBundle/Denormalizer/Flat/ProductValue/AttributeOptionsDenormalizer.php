@@ -28,9 +28,10 @@ class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
     {
         $options = new ArrayCollection();
         foreach (explode(',', $data) as $optionCode) {
-            $options->add(
-                parent::denormalize($optionCode, 'pim_catalog_simpleselect', $format, $context)
-            );
+            $option = parent::denormalize($optionCode, 'pim_catalog_simpleselect', $format, $context);
+            if (null !== $option) {
+                $options->add($option);
+            }
         }
 
         return $options;
