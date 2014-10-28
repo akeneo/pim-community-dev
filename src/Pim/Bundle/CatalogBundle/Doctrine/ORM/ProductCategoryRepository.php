@@ -157,16 +157,21 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         $rootAlias = $qb->getRootAlias();
         $alias = 'filterCategory'.md5(microtime());
-        $qb->leftJoin($rootAlias.'.categories', $alias);
         if ($include) {
+            $qb->leftJoin($rootAlias.'.categories', $alias);
             $qb->andWhere($qb->expr()->in($alias.'.id', ':filterCatIds'));
         } else {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->notIn($alias.'.id', ':filterCatIds'),
-                    $qb->expr()->isNull($alias.'.id')
-                )
-            );
+            $rootAliasIn = $rootAlias.'2';
+            $rootEntity = current($qb->getRootEntities());
+            $qbIn = $qb->getEntityManager()->createQueryBuilder();
+            $qbIn
+                ->select($rootAliasIn.'.id')
+                ->from($rootEntity, $rootAliasIn, $rootAliasIn.'.id')
+                ->leftJoin($rootAliasIn.'.categories', $alias)
+                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'))
+            ;
+
+            $qb->andWhere($qb->expr()->notIn($rootAlias.'.id', $qbIn->getDQL()));
         }
         $qb->setParameter('filterCatIds', $categoryIds);
     }
