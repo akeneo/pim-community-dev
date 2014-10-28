@@ -5,6 +5,7 @@ parameters:
     pim_catalog.doctrine.query.sorter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistry
     pim_catalog.doctrine.query.field_filter_dumper.class:     Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterDumper
     pim_catalog.doctrine.query.attribute_filter_dumper.class: Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterDumper
+    pim_catalog.doctrine.query.filter.category.class:         Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
 
 services:
     pim_catalog.doctrine.query.product_query_factory:
@@ -43,3 +44,14 @@ services:
         arguments:
             - '@pim_catalog.doctrine.query.filter_registry'
             - '@pim_catalog.repository.attribute'
+
+    # PQB common filter
+    pim_catalog.doctrine.query.filter.category:
+        class: %pim_catalog.doctrine.query.filter.category.class%
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.product_category'
+            - ['categories']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
