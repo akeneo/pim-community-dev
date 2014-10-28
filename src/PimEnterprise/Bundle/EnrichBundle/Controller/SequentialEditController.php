@@ -3,8 +3,9 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Pim\Bundle\EnrichBundle\Controller\SequentialEditController as BaseSequentialEditController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Sequential edit action controller for products
@@ -16,33 +17,34 @@ use Pim\Bundle\EnrichBundle\Controller\SequentialEditController as BaseSequentia
 class SequentialEditController extends BaseSequentialEditController
 {
     /**
-     * Action for product sequential edition
+     * {@inheritdoc}
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
-     *
-     * @return RedirectResponse
      */
-    public function sequentialEditAction()
+    public function sequentialEditAction(Request $request)
     {
         $sequentialEdit = $this->seqEditManager->createEntity(
-            $this->getObjects(),
+            $this->getObjects($request),
             $this->userContext->getUser()
         );
 
-        if ($this->seqEditManager->findByUser($this->getUser())) {
-            return $this->redirectToRoute(
-                'pim_enrich_product_index',
-                ['dataLocale' => $this->request->get('dataLocale')]
+        if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
+            return new RedirectResponse(
+                $this->router->generate(
+                    'pim_enrich_product_index',
+                    ['dataLocale' => $request->get('dataLocale')]
+                )
             );
         }
-
         $this->seqEditManager->save($sequentialEdit);
 
-        return $this->redirectToRoute(
-            'pimee_enrich_product_dispatch',
-            array(
-                'dataLocale' => $this->request->get('dataLocale'),
-                'id'         => current($sequentialEdit->getObjectSet())
+        return new RedirectResponse(
+            $this->router->generate(
+                'pim_enrich_product_edit',
+                [
+                    'dataLocale' => $request->get('dataLocale'),
+                    'id' => current($sequentialEdit->getObjectSet())
+                ]
             )
         );
     }
