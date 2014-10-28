@@ -20,22 +20,28 @@ pim_base_connector:
       export.title: Gruppen-Export
     csv_product_import:
       title: Produkt-Export als CSV-Datei
+      validation.title: Dateivalidierung
       import.title: Produkt import
       import_associations.title: Produktverbindungen-Import
     csv_category_import:
       title: Kategorie-Import aus CSV-Datei
+      validation.title: Dateivalidierung
       import.title: Kategorie-Import
     csv_attribute_import:
       title: Attribut-Import aus CSV-Datei
+      validation.title: Dateivalidierung
       import.title: Attribut-Import
     csv_attribute_option_import:
       title: Attribut-Optionen aus CSV-Datei importieren
+      validation.title: Dateivalidierung
       import.title: Attribut-Option import
     csv_association_type_import:
       title: Verbindungstyp-Import als CSV-Datei
+      validation.title: Dateivalidierung
       import.title: Verbindungstyp-Import
     csv_group_import:
       title: Gruppen-Import aus CSV-Datei
+      validation.title: Dateivalidierung
       import.title: Gruppen-Import
   steps:
     dummy_reader.title: Dummy reader
@@ -61,6 +67,7 @@ pim_base_connector:
     product_writer.title: Produkt-Speicher
     category_writer.title: Kategorie-Speicher
     writer.title: Entitäten-Speicher
+    csv_writer.title: CSV Writer
   export:
     delimiter:
       label: Trennzeichen

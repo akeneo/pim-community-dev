@@ -123,8 +123,6 @@ flash:
     removed: Attributo eliminato con successo
     identifier not removable: "L'dentificatore attributo non può essere rimosso"
     used by groups: 'Questo attributo non può essere rimosso perché è utilizzato dalla variante di gruppi %count%'
-    option created: Opzione creata con successo
-    error creating option: "Si è verificato un errore quando si tentava di creare l'opzione, per favore riprova"
   attribute group:
     created: Gruppo di attributi creato con successo
     updated: Gruppo di attributi aggiornato con successo
@@ -240,7 +238,6 @@ Updated: Caricato
 Last update: Ultimo aggiornamento
 by: Di
 N/A: N/A
-Add an option: "Aggiungere un'opzione"
 Manage products: Gestione articoli
 Manage groups: Gestione gruppi
 Code: Codice
@@ -273,7 +270,6 @@ Attribute type: Tipo di attributo
 Defaultvalue: Valore predefinito
 Variant: Variante
 Smart: Smart
-Useable as grid column: Utilizzabile come colonna della griglia
 Useable as grid filter: Utilizzabile come filtro griglia
 Family: Famiglia
 Available locales: Impostazioni locali disponibili

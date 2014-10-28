@@ -20,22 +20,28 @@ pim_base_connector:
       export.title: Export de groupes
     csv_product_import:
       title: Import produits en CSV
+      validation.title: Validation du fichier
       import.title: Import de produits
       import_associations.title: "Import d'associations de produits"
     csv_category_import:
       title: Import catégories (CSV)
+      validation.title: Validation du fichier
       import.title: Import de catégories
     csv_attribute_import:
       title: Import attributs en CSV
+      validation.title: Validation du fichier
       import.title: "Import d'attributs"
     csv_attribute_option_import:
       title: "Import des options d'attributs en CSV"
+      validation.title: Validation du fichier
       import.title: "Import d'options d'attributs"
     csv_association_type_import:
       title: "Import des types d'association en CSV"
+      validation.title: Validation du fichier
       import.title: "Import des types d'association"
     csv_group_import:
       title: Import des groupes en CSV
+      validation.title: Validation du fichier
       import.title: Import de groupes
   steps:
     dummy_reader.title: Lecteur factice
