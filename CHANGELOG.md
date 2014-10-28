@@ -18,6 +18,7 @@
  - Add an information message when there is no common attribute in mass-edit
  - JobProfileController refactoring
  - Add ACL on entity history
+ - Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
