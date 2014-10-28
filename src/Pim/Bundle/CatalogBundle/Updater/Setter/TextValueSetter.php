@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -63,9 +62,7 @@ class TextValueSetter implements SetterInterface
     }
 
     /**
-     * Supports the field
-     *
-     * @return true
+     * {@inheritdoc}
      */
     public function supports($field)
     {
@@ -98,9 +95,16 @@ class TextValueSetter implements SetterInterface
      */
     protected function validateContext(AttributeInterface $attribute, array $context)
     {
-        // TODO check the locale and scope exists
+        // TODO check the existence of locale and scope used as options
         $resolver = new OptionsResolver();
-        $this->configureOptions($attribute, $resolver);
+        $required = [];
+        if ($attribute->isLocalizable()) {
+            $required[] = 'locale';
+        }
+        if ($attribute->isScopable()) {
+            $required[] = 'scope';
+        }
+        $resolver->setRequired($required);
 
         return $resolver->resolve($context);
     }

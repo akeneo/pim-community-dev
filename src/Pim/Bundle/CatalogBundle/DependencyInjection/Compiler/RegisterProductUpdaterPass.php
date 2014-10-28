@@ -21,15 +21,17 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     /** @staticvar */
     const SETTER_TAG = 'pim_catalog.updater.setter';
 
+    /** @staticvar */
+    const COPIER_REGISTRY = 'pim_catalog.updater.copier.registry';
+
+    /** @staticvar */
+    const COPIER_TAG = 'pim_catalog.updater.copier';
+
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::SETTER_REGISTRY)) {
-            return;
-        }
-
         $registry = $container->getDefinition(self::SETTER_REGISTRY);
         $setters = $container->findTaggedServiceIds(self::SETTER_TAG);
 
@@ -37,6 +39,11 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
             $registry->addMethodCall('register', [new Reference($setterId)]);
         }
 
-        // TODO : same for copier
+        $registry = $container->getDefinition(self::COPIER_REGISTRY);
+        $copiers = $container->findTaggedServiceIds(self::COPIER_TAG);
+
+        foreach (array_keys($copiers) as $copierId) {
+            $registry->addMethodCall('register', [new Reference($copierId)]);
+        }
     }
 }

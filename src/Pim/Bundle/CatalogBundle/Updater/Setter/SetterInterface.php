@@ -26,6 +26,8 @@ interface SetterInterface
     /**
      * Supports the field
      *
+     * @param string $field
+     *
      * @return true
      */
     public function supports($field);

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\DumperInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,14 +34,17 @@ class ProductUpdaterTestCommand extends ContainerAwareCommand
             ->addFilter('family', 'IN', [14])
             ->addFilter('main_color', 'IN', [39]);
 
+        // TODO : this execution part is still weird, we could "wrap" the execution but we need to cover
+        // both ORM/MongoODM hydration
         $products = $pqb->getQueryBuilder()->getQuery()->getResult();
         $output->writeln(sprintf("<info>%d selected<info>", count($products)));
 
         // update via another clean API FTW
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
         $updater
-            ->setValue($products, 'name', 'new name')
-            ->setValue($products, 'description', 'my desc !', ['locale' => 'en_US', 'scope' => 'ecommerce']);
+            ->setValue($products, 'name', 'my new name')
+            ->setValue($products, 'description', 'my awesome desc !', ['locale' => 'en_US', 'scope' => 'ecommerce'])
+            ->copyValue($products, 'description', 'description', ['from_locale' => 'en_US', 'from_scope' => 'ecommerce', 'to_locale' => 'en_US', 'to_scope' => 'print']);
 
         // flush with doctrine
         $om = $this->getContainer()->get('pim_catalog.object_manager.product');
