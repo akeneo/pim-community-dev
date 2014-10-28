@@ -40,7 +40,9 @@ class ProductUpdaterTestCommand extends ContainerAwareCommand
 
         // update via another clean API FTW
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
-        $updater->setValue($products, 'name', 'new name');
+        $updater
+            ->setValue($products, 'name', 'new name')
+            ->setValue($products, 'description', 'my desc !', ['locale' => 'en_US', 'scope' => 'ecommerce']);
 
         // flush with doctrine
         $om = $this->getContainer()->get('pim_catalog.object_manager.product');
