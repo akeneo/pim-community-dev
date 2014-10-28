@@ -167,5 +167,5 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                         referencedColumnName: id
                         onDelete: CASCADE
         families:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
             mappedBy: attributes

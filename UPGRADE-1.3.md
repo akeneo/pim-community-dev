@@ -20,6 +20,7 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ORM\\CriteriaCondition/CatalogBundle\\Doctrine\\ORM\\Condition\\CriteriaCondition/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ORM\\ValueJoin/CatalogBundle\\Doctrine\\ORM\\Join\\ValueJoin/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Doctrine\\ORM\\CompletenessJoin/CatalogBundle\\Doctrine\\ORM\\Join\\CompletenessJoin/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Entity\\Family/CatalogBundle\\Model\\FamilyInterface/g'
 ```
 
 ## CatalogBundle

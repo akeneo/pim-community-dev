@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer;
@@ -27,7 +27,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_product(
         SerializerInterface $serializer,
         ProductInterface $product,
-        Family $family,
+        FamilyInterface $family,
         Completeness $completeness
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');

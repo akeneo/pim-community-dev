@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
@@ -124,9 +124,9 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all product
      * of a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      */
-    public function scheduleForFamily(Family $family)
+    public function scheduleForFamily(FamilyInterface $family)
     {
         if ($family->getId()) {
             $this->generator->scheduleForFamily($family);

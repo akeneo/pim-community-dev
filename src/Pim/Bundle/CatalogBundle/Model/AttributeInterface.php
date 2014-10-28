@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
@@ -300,11 +300,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Add family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return AttributeInterface
      */
-    public function addFamily(Family $family);
+    public function addFamily(FamilyInterface $family);
 
     /**
      * Set Validation rule
@@ -443,11 +443,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Remove family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return AttributeInterface
      */
-    public function removeFamily(Family $family);
+    public function removeFamily(FamilyInterface $family);
 
     /**
      * Set numberMax

@@ -72,7 +72,7 @@ class FamilyFactory
     /**
      * Get the PIM channels
      *
-     * @return Pim\Bundle\CatalogBundle\Entity\Channel[]
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
      */
     protected function getChannels()
     {

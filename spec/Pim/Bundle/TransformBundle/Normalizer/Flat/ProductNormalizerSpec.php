@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
@@ -52,7 +52,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         AbstractAttribute $skuAttribute,
         AbstractProductValue $sku,
         Collection $values,
-        Family $family,
+        FamilyInterface $family,
         $serializer
     ) {
         $family->getCode()->willReturn('shoes');
@@ -101,7 +101,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         AbstractProductValue $skuAssocProduct1,
         AbstractProductValue $skuAssocProduct2,
         Collection $values,
-        Family $family,
+        FamilyInterface $family,
         $serializer
     ) {
         $family->getCode()->willReturn('shoes');
@@ -166,7 +166,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         AttributeOption $red,
         AttributeOption $blue,
         Collection $values,
-        Family $family
+        FamilyInterface $family
     ) {
         $family->getCode()->willReturn('shoes');
         $skuAttribute->getCode()->willReturn('sku');

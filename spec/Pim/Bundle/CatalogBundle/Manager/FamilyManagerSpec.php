@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -38,7 +38,7 @@ class FamilyManagerSpec extends ObjectBehavior
     function it_dispatches_an_event_when_removing_a_family(
         $eventDispatcher,
         $objectManager,
-        Family $family
+        FamilyInterface $family
     ) {
         $eventDispatcher->dispatch(
             FamilyEvents::PRE_REMOVE,

@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Model;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 class ProductSpec extends ObjectBehavior
 {
-    function it_has_family(Family $family)
+    function it_has_family(FamilyInterface $family)
     {
         $family->getId()->willReturn(42);
         $this->setFamily($family);
