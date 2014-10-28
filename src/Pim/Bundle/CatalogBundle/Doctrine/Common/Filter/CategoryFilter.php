@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
