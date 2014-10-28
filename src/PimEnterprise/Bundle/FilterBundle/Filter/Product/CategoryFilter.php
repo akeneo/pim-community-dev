@@ -67,10 +67,10 @@ class CategoryFilter extends BaseCategoryFilter
         $user = $this->securityContext->getToken()->getUser();
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
         if (count($grantedCategoryIds) > 0) {
-            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED',  $grantedCategoryIds);
+            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
 
         } else {
-            $this->util->applyFilter($ds, 'categories', 'UNCLASSIFIED',  []);
+            $this->util->applyFilter($ds, 'categories', 'UNCLASSIFIED', []);
         }
 
         return true;
@@ -95,7 +95,7 @@ class CategoryFilter extends BaseCategoryFilter
             $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
             // granted categories not in this tree
             $categoryIds = array_values(array_diff($grantedIds, $currentTreeIds));
-            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED',  $categoryIds);
+            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $categoryIds);
 
             return true;
         }
