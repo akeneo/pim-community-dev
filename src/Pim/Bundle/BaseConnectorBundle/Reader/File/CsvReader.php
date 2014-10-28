@@ -232,9 +232,14 @@ class CsvReader extends FileReader implements
     public function read()
     {
         if (null === $this->csv) {
-            if (mime_content_type($this->filePath) === 'application/zip') {
-                $this->extractZipArchive();
-            }
+            /*
+            * mime_content_type is deprecated
+            * Import feature of Akeneo on Windows is not working with mime_content_type
+            */
+
+            // if (mime_content_type($this->filePath) === 'application/zip') {
+            //     $this->extractZipArchive();
+            // }
 
             $this->csv = new \SplFileObject($this->filePath);
             $this->csv->setFlags(

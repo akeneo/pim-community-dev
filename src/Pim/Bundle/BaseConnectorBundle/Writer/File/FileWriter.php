@@ -22,10 +22,12 @@ class FileWriter extends AbstractConfigurableStepElement implements
     StepExecutionAwareInterface
 {
     /**
+     * Get Linux or Windows temp folder path
+     * Windows does not allow ":" character for the files names and '/tmp/' folder does not exist
      * @Assert\NotBlank(groups={"Execution"})
      * @WritableDirectory(groups={"Execution"})
      */
-    protected $filePath = '/tmp/export_%datetime%.csv';
+    protected $filePath = sys_get_temp_dir().'/export_%datetime%.csv';
 
     /**
      * @var StepExecution
@@ -68,14 +70,25 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     public function getPath()
     {
-        if (!isset($this->resolvedFilePath)) {
-            $this->resolvedFilePath = strtr(
-                $this->filePath,
-                array(
-                    '%datetime%' => date('Y-m-d_H:i:s')
-                )
-            );
-        }
+    	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+	        if (!isset($this->resolvedFilePath)) {
+	            $this->resolvedFilePath = strtr(
+	                $this->filePath,
+	                array(
+	                    '%datetime%' => date('Y-m-d_H-i-s')
+	                )
+	            );
+	        }
+	    }else{
+	    	if (!isset($this->resolvedFilePath)) {
+	            $this->resolvedFilePath = strtr(
+	                $this->filePath,
+	                array(
+	                    '%datetime%' => date('Y-m-d_H:i:s')
+	                )
+	            );
+	        }
+	    }
 
         return $this->resolvedFilePath;
     }
