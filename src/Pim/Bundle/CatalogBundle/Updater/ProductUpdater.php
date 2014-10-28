@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 
 /**
  * Update many products at a time
@@ -18,14 +18,16 @@ class ProductUpdater implements ProductUpdaterInterface
     protected $setterRegistry;
 
     /** @var CopierRegistryInterface */
-    //protected $copierRegistry;
+    protected $copierRegistry;
 
     /**
      * @param SetterRegistryInterface $setterRegistry
+     * @param CopierRegistryInterface $copierRegistry
      */
-    public function __construct(SetterRegistryInterface $setterRegistry)
+    public function __construct(SetterRegistryInterface $setterRegistry, CopierRegistryInterface $copierRegistry)
     {
         $this->setterRegistry = $setterRegistry;
+        $this->copierRegistry = $copierRegistry;
     }
 
     /**
@@ -44,8 +46,9 @@ class ProductUpdater implements ProductUpdaterInterface
      */
     public function copyValue(array $products, $sourceField, $destinationField, array $context = [])
     {
-        //$copier = $this->copierRegistry->get($field);
-        //$copier->copyValue($products, $sourceField, $destinationField, $context);
-        //return $this;
+        $copier = $this->copierRegistry->get($sourceField, $destinationField);
+        $copier->copyValue($products, $sourceField, $destinationField, $context);
+
+        return $this;
     }
 }
