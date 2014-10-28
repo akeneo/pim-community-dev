@@ -312,6 +312,15 @@ class EditCommonAttributes extends ProductMassEditOperation
      */
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
+        // TODO :
+        // $field = $value->getAttribute()->getCode();
+        // $locale = $this->getLocale()->getCode();
+        // $scope = $value->getScope();
+        // $data = $value->getData();
+        // -> how to properly format data ?
+        // -> updater would expect raw or structured data but not object as price, metric or media
+        // $updater->setValue([$product], $field, $data, ['locale' => $locale, 'scope' => $scope]);
+
         if (null === $productValue = $this->getProductValue($product, $value)) {
             $productValue = $this->productBuilder->addProductValue(
                 $product,
@@ -345,6 +354,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater
+     *
      * Get product value
      *
      * @param ProductInterface      $product
@@ -362,6 +373,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater and if update is able to create or update
+     *
      * Add all the values required by the given attribute
      * Locale is not present because we current locale is bound at the same time as values during form submission
      *
@@ -381,6 +394,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater
+     *
      * Create a value
      *
      * @param AbstractAttribute $attribute
@@ -412,6 +427,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater
      * Create a price
      *
      * @param string $currency
@@ -424,6 +440,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater
+     *
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */
@@ -438,6 +456,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater
+     *
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */
@@ -460,6 +480,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater
+     *
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */
@@ -478,6 +500,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * TODO : should be removed if we use updater
+     *
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */

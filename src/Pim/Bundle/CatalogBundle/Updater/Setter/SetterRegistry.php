@@ -26,6 +26,7 @@ class SetterRegistry implements SetterRegistryInterface
     public function __construct(AttributeRepository $repository)
     {
         $this->attributeRepository = $repository;
+        $this->setters = [];
     }
 
     /**
@@ -48,15 +49,19 @@ class SetterRegistry implements SetterRegistryInterface
         if ($attribute !== null) {
             $setter = $this->getAttributeSetter($attribute);
         } else {
+            // TODO :
+            // - updatable fields are : family, groups, categories, enabled, association
+            // - not updatable are : id, created, updated
+            // so the best shot could be to provided dedicated methods in ProductUpdater for the updatable fields
+            // for instance a setFamily(
             $setter = $this->getFieldSetter($field);
         }
 
         if ($setter === null) {
-            throw new \LogicException(sprintf('%s is not supported by any setter', $field));
+            throw new \LogicException(sprintf('Field "%s" is not supported by any setter', $field));
         }
 
         return $setter;
-
     }
 
     /**

@@ -19,7 +19,7 @@ interface SetterRegistryInterface
     public function register(SetterInterface $setter);
 
     /**
-     * Fetch the setter wich supports the field
+     * Fetch the setter which supports the field
      *
      * @param string $field
      *
