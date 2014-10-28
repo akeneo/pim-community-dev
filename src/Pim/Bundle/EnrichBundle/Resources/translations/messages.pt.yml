@@ -108,8 +108,6 @@ flash:
     updated: Atributo atualizado com sucesso
     removed: Atributo removido com sucesso
     identifier not removable: O identificador do atributo não pode ser removido
-    option created: Opção criada com sucesso
-    error creating option: Ocorreu um erro ao tentar criar a opção. Por favor, tente novamente
   attribute group:
     created: Grupo de atributos criado com sucesso
     updated: Grupo de atributos atualizado com sucesso
@@ -213,7 +211,6 @@ Updated: Atualizado
 Last update: Última atualização
 by: Por
 N/A: Não aplicável
-Add an option: Adicionar uma opção
 Manage products: Gerenciar produtos
 Manage groups: Gerenciar grupos
 Code: Código
@@ -246,7 +243,6 @@ Attribute type: Tipo de atributo
 Defaultvalue: Valor padrão
 Variant: Variante
 Smart: Inteligente
-Useable as grid column: Pode ser usado como coluna no grid
 Useable as grid filter: Pode ser usado como filtro no grid
 Family: Família
 Available locales: Localidades disponíveis

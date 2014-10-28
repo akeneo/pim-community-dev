@@ -18,9 +18,16 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: Name
+pim_title:
+  user.index: Benutzer
+  user_role.index: Rollen
+  user_group.index: Gruppen
+  system_configuration.index: Konfiguration
 user.title: Benutzer
+user.overview: Benutzer
 Users Management: Benutzerverwaltung
 Create user: Benutzer anlegen
+btn.create.user: Benutzer anlegen
 New user: Neuer Benutzer
 Additional: Ergänzend
 Groups and Roles: Gruppen und Rollen
@@ -62,6 +69,35 @@ Entity: Entität
 Capabilities: Fähigkeiten
 Save and close: Speichern und schließen
 Has role: hat Rolle
+role:
+  title: Rolle
+  overview: Rolle
+  edit: Rolle bearbeiten
+  create: Rolle anlegen
+btn.create.role: Rolle anlegen
+rights:
+  action: Berechtigungen
+oro_security:
+  acl_group:
+    user: Benutzer
+    role: Rollen
+    group: Benutzergruppen
+  acl:
+    user:
+      view: Benutzer auflisten
+      create: Benutzer anlegen
+      edit: Benutzer bearbeiten
+      delete: Benutzer entfernen
+    role:
+      view: Rollen auflisten
+      create: Rolle anlegen
+      edit: Rolle bearbeiten
+      delete: Rolle entfernen
+    group:
+      view: Benutzergruppen auflisten
+      create: Benutzergruppe anlegen
+      edit: Benutzergruppe bearbeiten
+      delete: Benutzergruppe entfernen
 (default): Standardberechtigung für Entitäten
 VIEW: Ansehen
 CREATE: Anlegen
@@ -79,8 +115,10 @@ oro:
       SYSTEM: System
       NONE: Keine
 Create group: Gruppe anlegen
+btn.create.user-group: Gruppe anlegen
 Has group: hat Gruppe
 Save and Close: Speichern und schließen
+user-group.overview: Gruppen
 Log in: Anmelden
 Remember me on this computer: Automatisch anmelden
 Forgot your password?: Passwort vergessen?

@@ -55,6 +55,21 @@ error:
     export profile: "Impossible de supprimer ce profil d'export"
     user: Impossible de supprimer cet utilisateur
     role: Impossible de supprimer ce rôle
+    attribute_option: "Erreur lors de la suppression de l'option de l'attribut"
+  saving:
+    attribute_option: "Impossible d'enregistrer l'option de l'attribut"
+alert:
+  attribute_option:
+    error_occured_during_submission: "Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur"
+    save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Attention, vous allez perdre les données non sauvegardées. Êtes-vous certain de vouloir annuler les modifications sur cette nouvelle option ?
+    cancel_edition_on_new_option_title: Annuler les modifications
+label:
+  attribute_option:
+    add_option: Ajouter une option
+Code: Code
 Edit: Editer
 Delete: Supprimer
 Edit attributes of the product: Modifier les attributs du produit
@@ -65,6 +80,7 @@ Toggle status: Changer le statut
 pim.grid.mass_action.quick_export.csv_all: CSV (tous les attributs)
 pim.grid.mass_action.delete: Supprimer
 pim.grid.mass_action.mass_edit: Edition de masse
+pim.grid.mass_action.sequential_edit: Modification séquentielle
 jstree.create: Créer
 switch_on: Oui
 switch_off: Non

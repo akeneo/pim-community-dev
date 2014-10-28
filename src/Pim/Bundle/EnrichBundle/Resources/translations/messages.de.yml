@@ -8,11 +8,17 @@ attribute group:
   overview: Attributgruppen Übersicht
   create: Attributgruppe anlegen
   edit: Attributgruppe bearbeiten
+  suggest creation: Bitte wählen Sie eine Attributgruppe auf der linken Seite
+  or: oder
+  create new: Eine neue Attributgruppe anlegen
 category:
   title: Kategorie
   overview: Kategorieübersicht
   create: Kategorie anlegen
   edit: Kategorie bearbeiten
+  suggest selection: Bitte wählen Sie eine Kategorie auf der linken Seite
+  or: oder
+  create new: Eine neue Kategorie anlegen
 tree:
   title: Struktur
   create: Strukturbaum anlegen
@@ -82,6 +88,8 @@ btn:
   save: Speichern
   save and back: Speichern und zurück zur Übersicht
   save and create: Speichern und neuen anlegen
+  save and next: Speichern und weiter
+  save and finish: Speichern und fertigstellen
   remove: Entfernen
   delete: Löschen
   cancel: Abbrechen
@@ -90,7 +98,9 @@ btn:
   confirm: Bestätigen
   to grid: Zurück zur Übersicht
   to parent: Zurück zur übergeordneten Ebene
+  download_pdf: PDF
 confirmation:
+  confirm: Bestätigung
   delete: Löschbestätigung
   leave: Möchten Sie diese Seite wirklich verlassen?
   discard changes: 'Änderungen an der %entity% gehen verloren, wenn Sie die Seite verlassen.'
@@ -122,8 +132,6 @@ flash:
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
     used by groups: 'Dieses Attribut kann nicht gelöscht werden, da es in %count% Variantengruppen verwendet wird'
-    option created: Option erfolgreich angelegt
-    error creating option: Es trat ein Fehler bei dem Versuch auf, eine Option anzulegen. Bitte wiederholen Sie den Vorgang.
   attribute group:
     created: Attributgruppe erfolgreich angelegt
     updated: Attributgruppe erfolgreich aktualisiert
@@ -239,7 +247,6 @@ Updated: Aktualisiert
 Last update: Letzte Aktualisierung
 by: durch
 N/A: N/A
-Add an option: Auswahlmöglichkeit hinzufügen
 Manage products: Produkte verwalten
 Manage groups: Gruppen verwalten
 Code: Code
@@ -291,6 +298,7 @@ Choose the attribute group: Wählen Sie die Attributgruppe
 Drop a file or click here: Datei hierhin ziehen oder klicken
 Drop an image or click here: Bild hierhin ziehen oder klicken
 Automatic option sorting: Option automatisch sortieren
+save_attribute_before_manage_option: Um Auswahlmöglichkeiten zu verwalten, speichern Sie bitte zunächst das Attribut
 Create: Anlegen
 Cancel: Abbrechen
 Choose a family: Wählen Sie eine Produktfamilie
@@ -333,9 +341,11 @@ Default: Standard
 Attributes: Attribute
 Title: Titel
 pim_title.attribute_group:
+  index: Attributgruppen
   create: Attributgruppen | Anlegen
   edit: 'Attributgruppen %group.label% | Bearbeiten'
 pim_title.category:
+  index: Kategorie-Strukturbäume
   create: Kategorie-Strukturbäume | Anlegen
   edit: 'Kategorie-Strukturbäume %category.label% | Bearbeiten'
 pim_title.attribute:
@@ -386,6 +396,10 @@ pim_catalog_date: Datum
 pim_catalog_metric: Maßeinheit
 Activated: Aktiviert
 Disable: Deaktivieren
+pim_enrich.sequential_edit_action:
+  product:
+    previous: 'Zurück zu "%product%" ohne zu speichern.'
+    next: 'Weiter zu "%product%" ohne zu speichern.'
 pim_enrich.mass_edit_action:
   limit_exceeded: 'Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung'
   product:
@@ -419,6 +433,8 @@ pim_enrich.mass_edit_action:
     description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
+    message:
+      warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
   classify:
     label: Zuordnung von Produkten in Kategorien
     description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
@@ -471,6 +487,7 @@ pim_enrich:
     product:
       index: Produkte auflisten
       create: Ein Produkt anlegen
+      edit_attributes: Die Attribute eines Produktes bearbeiten
       remove: Ein Produkt löschen
       add_attribute: Ein Attribut zu einem Produkt hinzufügen
       remove_attribute: Ein Attribut von einem Produkt entfernen
@@ -480,6 +497,8 @@ pim_enrich:
       change_state: Status eines Produktes ändern
       add_to_groups: Ein Produkt zu Gruppen zuordnen
       mass_edit: Aktionen zur Massenbearbeitung von Produkten
+      comment: Produkte kommentieren
+      download: Produkt als PDF herunterladen
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen
@@ -496,8 +515,11 @@ pim_enrich:
     family:
       index: Produktfamilien auflisten
       create: Eine Produktfamilie anlegen
+      edit_properties: Die Eigenschaften einer Produktfamilie bearbeiten
+      edit_attributes: Die Attribute einer Produktfamilie bearbeiten
       remove: Eine Produktfamilie löschen
     attribute_group:
+      index: Attributgruppen auflisten
       create: Eine Attributgruppe anlegen
       edit: Eine Attributgruppe bearbeiten
       remove: Eine Attributgruppe löschen
@@ -525,6 +547,18 @@ pim_enrich:
       create: Einen Verbindungstyp anlegen
       edit: Einen Verbindungstyp bearbeiten
       remove: Einen Verbindungstyp löschen
+  acl_group:
+    association_type: Verbindungstypen
+    attribute: Attribute
+    attribute_group: Attributgruppen
+    category: Kategorien
+    channel: Ausgabekanäle
+    currency: Währungen
+    family: Produktfamilien
+    group: Gruppen
+    group_type: Gruppentypen
+    locale: Gebietsschemata
+    product: Produkte
 pim_menu:
   tab:
     collect: Sammeln
