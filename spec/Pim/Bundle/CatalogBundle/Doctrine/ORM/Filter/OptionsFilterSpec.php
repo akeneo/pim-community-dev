@@ -81,7 +81,7 @@ class OptionsFilterSpec extends ObjectBehavior
             'WITH',
             'filteroptions_code.attribute = 42'
         )->shouldBeCalled()->willReturn($qb);
-        $qb->leftJoin( 'filteroptions_code.options', 'filterOoptions_code')->shouldBeCalled()->willReturn($qb);
+        $qb->leftJoin('filteroptions_code.options', 'filterOoptions_code')->shouldBeCalled()->willReturn($qb);
         $qb
             ->andWhere(
                 'filterOoptions_code.id IS NULL OR filterOoptions_code.id IN(\'my_value2\', \'my_value3\')'

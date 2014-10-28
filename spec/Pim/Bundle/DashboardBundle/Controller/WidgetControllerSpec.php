@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\DashboardBundle\Controller;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DashboardBundle\Widget\Registry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
-use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class WidgetControllerSpec extends ObjectBehavior

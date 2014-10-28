@@ -32,7 +32,8 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver');
     }
 
-    function it_creates_a_file_when_writer_is_valid($filesystem, $writer, $jobExecution, $jobInstance, $job, $step) {
+    function it_creates_a_file_when_writer_is_valid($filesystem, $writer, $jobExecution, $jobInstance, $job, $step)
+    {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getJob()->willReturn($job);
@@ -99,7 +100,8 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $this->archive($jobExecution);
     }
 
-    function it_returns_the_name_of_the_archiver() {
+    function it_returns_the_name_of_the_archiver()
+    {
         $this->getName()->shouldReturn('output');
     }
 

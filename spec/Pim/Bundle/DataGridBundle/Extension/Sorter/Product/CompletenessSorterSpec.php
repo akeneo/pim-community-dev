@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;

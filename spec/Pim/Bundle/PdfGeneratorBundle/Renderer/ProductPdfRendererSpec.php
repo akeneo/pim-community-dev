@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
-use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
@@ -30,8 +29,12 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $this->supports($printer, 'pdf')->shouldReturn(false);
     }
 
-    function it_renders_a_product_without_images(AbstractProduct $blender, AttributeGroup $design, AbstractAttribute $color, $templating)
-    {
+    function it_renders_a_product_without_images(
+        AbstractProduct $blender,
+        AttributeGroup $design,
+        AbstractAttribute $color,
+        $templating
+    ) {
         $blender->getAttributes()->willReturn([$color]);
 
         $color->getGroup()->willReturn($design);
@@ -51,8 +54,12 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $this->render($blender, 'pdf', ['locale' => 'en_US', 'scope' => 'ecommerce']);
     }
 
-    function it_renders_a_product_with_an_image(AbstractProduct $blender, AttributeGroup $media, AbstractAttribute $mainImage, $templating)
-    {
+    function it_renders_a_product_with_an_image(
+        AbstractProduct $blender,
+        AttributeGroup $media,
+        AbstractAttribute $mainImage,
+        $templating
+    ) {
         $blender->getAttributes()->willReturn([$mainImage]);
 
         $mainImage->getGroup()->willReturn($media);

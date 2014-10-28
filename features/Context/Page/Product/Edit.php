@@ -275,7 +275,7 @@ class Edit extends Form
     }
 
     /**
-     * @param $message
+     * @param string $message
      *
      * @throws \LogicException
      */
@@ -337,8 +337,8 @@ class Edit extends Form
     }
 
     /**
-     * @param $message
-     * @param $author
+     * @param string $message
+     * @param string $author
      *
      * @return NodeElement     the comment
      * @throws \LogicException in case the comment does not exist

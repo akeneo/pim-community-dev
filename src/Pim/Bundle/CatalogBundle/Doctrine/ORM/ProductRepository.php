@@ -33,11 +33,9 @@ class ProductRepository extends EntityRepository implements
     protected $attributeRepository;
 
     /**
-     * @param ProductQueryFactoryInterface
-     *
-     * @return ProductQueryBuilderInterface
+     * {@inheritdoc}
      */
-    public function setProductQueryFactory($factory)
+    public function setProductQueryFactory(ProductQueryFactoryInterface $factory)
     {
         $this->productQueryFactory = $factory;
     }

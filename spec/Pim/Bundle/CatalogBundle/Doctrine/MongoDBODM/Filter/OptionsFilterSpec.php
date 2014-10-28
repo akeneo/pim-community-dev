@@ -48,7 +48,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('options_code');
 
         $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.options_code.id' )->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($expr);
         $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
         $qb->addOr($expr)->shouldBeCalled();
 
@@ -63,7 +63,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('options_code');
 
         $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.options_code' )->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.options_code')->shouldBeCalled()->willReturn($expr);
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $qb->addOr($expr)->shouldBeCalled();
 
@@ -77,8 +77,8 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->getCode()->willReturn('options_code');
 
-        $expr->field('normalizedData.options_code' )->shouldBeCalled()->willReturn($expr);
-        $expr->field('normalizedData.options_code.id' )->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.options_code')->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.options_code.id')->shouldBeCalled()->willReturn($expr);
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $expr->in([1 => 118, 2 => 270])->shouldBeCalled()->willReturn($expr);
 
@@ -96,7 +96,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('options_code');
 
         $qb->expr()->willReturn($expr);
-        $qb->field('normalizedData.options_code' )->shouldBeCalled()->willReturn($qb);
+        $qb->field('normalizedData.options_code')->shouldBeCalled()->willReturn($qb);
         $qb->notIn(['118', '270'])->shouldBeCalled()->willReturn($qb);
 
         $this->addAttributeFilter($attribute, 'NOT IN', ['118', '270']);

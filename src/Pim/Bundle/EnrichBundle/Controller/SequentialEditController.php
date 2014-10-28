@@ -2,21 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Sequential edit action controller for products
@@ -25,19 +17,13 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SequentialEditController extends AbstractDoctrineController
+class SequentialEditController
 {
-    /** @var MassActionParametersParser */
-    protected $parametersParser;
+    /** @var RouterInterface */
+    protected $router;
 
     /** @var MassActionDispatcher */
     protected $massActionDispatcher;
-
-    /** @var integer */
-    protected $massEditLimit;
-
-    /** @var array */
-    protected $objects;
 
     /** @var SequentialEditManager */
     protected $seqEditManager;
@@ -45,145 +31,86 @@ class SequentialEditController extends AbstractDoctrineController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var array */
+    protected $objects;
+
     /**
      * Constructor
      *
-     * @param Request                    $request
-     * @param EngineInterface            $templating
-     * @param RouterInterface            $router
-     * @param SecurityContextInterface   $securityContext
-     * @param FormFactoryInterface       $formFactory
-     * @param ValidatorInterface         $validator
-     * @param TranslatorInterface        $translator
-     * @param EventDispatcherInterface   $eventDispatcher
-     * @param ManagerRegistry            $doctrine
-     * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher       $massActionDispatcher
-     * @param integer                    $massEditLimit
-     * @param SequentialEditManager      $seqEditManager
-     * @param UserContext                $userContext
+     * @param RouterInterface       $router
+     * @param MassActionDispatcher  $massActionDispatcher
+     * @param SequentialEditManager $seqEditManager
+     * @param UserContext           $userContext
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
-        MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
-        $massEditLimit,
         SequentialEditManager $seqEditManager,
         UserContext $userContext
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
-        $this->parametersParser = $parametersParser;
+        $this->router               = $router;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->massEditLimit = $massEditLimit;
-        $this->seqEditManager = $seqEditManager;
-        $this->userContext = $userContext;
+        $this->seqEditManager       = $seqEditManager;
+        $this->userContext          = $userContext;
     }
 
     /**
      * Action for product sequential edition
+     * @param Request $request
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
-     *
      * @return RedirectResponse
      */
-    public function sequentialEditAction()
+    public function sequentialEditAction(Request $request)
     {
         $sequentialEdit = $this->seqEditManager->createEntity(
-            $this->getObjects(),
-            $this->getUser()
+            $this->getObjects($request),
+            $this->userContext->getUser()
         );
 
-        if ($this->seqEditManager->findByUser($this->getUser())) {
-            return $this->redirectToRoute(
-                'pim_enrich_product_index',
-                ['dataLocale' => $this->request->get('dataLocale')]
+        if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
+            return new RedirectResponse(
+                $this->router->generate(
+                    'pim_enrich_product_index',
+                    ['dataLocale' => $request->get('dataLocale')]
+                )
             );
         }
         $this->seqEditManager->save($sequentialEdit);
 
-        return $this->redirectToRoute(
-            'pim_enrich_product_edit',
-            array(
-                'dataLocale' => $this->request->get('dataLocale'),
-                'id' => current($sequentialEdit->getObjectSet())
+        return new RedirectResponse(
+            $this->router->generate(
+                'pim_enrich_product_edit',
+                [
+                    'dataLocale' => $request->get('dataLocale'),
+                    'id' => current($sequentialEdit->getObjectSet())
+                ]
             )
         );
     }
 
     /**
-     * Check if the mass action is executable
-     *
-     * @return boolean
-     */
-    protected function isExecutable()
-    {
-        return $this->exceedsMassEditLimit() === false;
-    }
-
-    /**
-     * Temporary method to avoid editing too many objects
-     *
-     * @return boolean
-     */
-    protected function exceedsMassEditLimit()
-    {
-        if ($this->getObjectCount() > $this->massEditLimit) {
-            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Dispatch mass action
-     */
-    protected function dispatchMassAction()
-    {
-        $this->objects = $this->massActionDispatcher->dispatch($this->request);
-    }
-
-    /**
      * Get products to mass edit
+     * @param Request $request
      *
      * @return array
      */
-    protected function getObjects()
+    protected function getObjects(Request $request)
     {
         if ($this->objects === null) {
-            $this->dispatchMassAction();
+            $this->dispatchMassAction($request);
         }
 
         return $this->objects;
     }
 
     /**
-     * Get the count of objects to perform the mass action on
+     * Dispatch mass action
      *
-     * @return integer
+     * @param Request $request
      */
-    protected function getObjectCount()
+    protected function dispatchMassAction(Request $request)
     {
-        return count($this->getObjects());
+        $this->objects = $this->massActionDispatcher->dispatch($request);
     }
 }

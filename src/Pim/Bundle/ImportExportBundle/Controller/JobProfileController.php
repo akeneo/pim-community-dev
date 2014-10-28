@@ -80,6 +80,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param string                   $environment
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
+     * @param JobManager               $jobManager
      */
     public function __construct(
         Request $request,

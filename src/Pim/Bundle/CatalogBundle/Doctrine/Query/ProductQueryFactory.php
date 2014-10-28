@@ -81,6 +81,8 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     }
 
     /**
+     * @param array $options
+     *
      * @return ProductQueryBuilderInterface
      */
     protected function createProductQueryBuilder(array $options)
@@ -96,6 +98,8 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     }
 
     /**
+     * @param array $options
+     *
      * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
      */
     protected function createQueryBuilder(array $options)

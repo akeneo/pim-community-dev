@@ -209,9 +209,9 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         ];
         $reflFoo->getValue($document)->willReturn($bars);
         $bars->map(Argument::any())->willReturn($bars);
-        $bars->toArray()->willReturn([1,2,3]);
+        $bars->toArray()->willReturn([1, 2, 3]);
 
-        $reflFooIds->setValue($document, [1,2,3])->shouldBeCalled();
+        $reflFooIds->setValue($document, [1, 2, 3])->shouldBeCalled();
 
         $this->preFlush($args);
     }

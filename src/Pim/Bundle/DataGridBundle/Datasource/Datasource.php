@@ -192,7 +192,8 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     }
 
     /**
-     * @param array $config the query builder creation config
+     * @param string $method the query builder creation method
+     * @param array  $config the query builder creation config
      *
      * @return Datasource
      */

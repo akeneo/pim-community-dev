@@ -1866,12 +1866,12 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I should see the following product comments:$/
-     *
      * @param TableNode $table
      *
      * @return array
      * @throws ExpectationException
+     *
+     * @Given /^I should see the following product comments:$/
      */
     public function iShouldSeeTheFollowingProductComments(TableNode $table)
     {
@@ -1903,9 +1903,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @When /^I delete the "([^"]*)" comment$/
+     * @param string $message
      *
-     * @param $message
+     * @When /^I delete the "([^"]*)" comment$/
      */
     public function iDeleteTheComment($message)
     {
@@ -1920,13 +1920,13 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
-     *
-     * @param $message
-     * @param $author
+     * @param string $message
+     * @param string $author
      *
      * @return bool
      * @throws ExpectationException
+     *
+     * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
      */
     public function iShouldNotSeeTheLinkToDeleteTheComment($message, $author)
     {
@@ -1947,9 +1947,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @When /^I add a new comment "([^"]*)"$/
+     * @param string $message
      *
-     * @param $message
+     * @When /^I add a new comment "([^"]*)"$/
      */
     public function iAddANewComment($message)
     {
@@ -1958,11 +1958,11 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @When /^I reply to the comment "([^"]*)" of "([^"]*)" with "([^"]*)"$/
+     * @param string $comment
+     * @param string $author
+     * @param string $reply
      *
-     * @param $comment
-     * @param $author
-     * @param $reply
+     * @When /^I reply to the comment "([^"]*)" of "([^"]*)" with "([^"]*)"$/
      */
     public function iReplyToTheCommentWith($comment, $author, $reply)
     {
@@ -1975,6 +1975,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $contentType
+     *
      * @Then /^the response content type should be "([^"]*)"$/
      */
     public function contentTypeShouldBe($contentType)

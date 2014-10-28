@@ -44,7 +44,6 @@ class JobManagerSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldBeCalled();
         $objectManager->flush(Argument::any())->shouldBeCalled();
 
-
         $this->launch($jobInstance, $user, 'test', 'test', true);
     }
 }

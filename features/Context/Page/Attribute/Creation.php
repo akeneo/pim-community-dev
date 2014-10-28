@@ -50,7 +50,7 @@ class Creation extends Form
 
     /**
      * Add an attribute option
-     * @param string  $name
+     * @param string $name
      */
     public function addOption($name)
     {
@@ -68,7 +68,8 @@ class Creation extends Form
 
     /**
      * Edit an attribute option
-     * @param string  $name
+     * @param string $name
+     * @param string $newValue
      */
     public function editOption($name, $newValue)
     {
@@ -81,7 +82,8 @@ class Creation extends Form
 
     /**
      * Edit and cancel edition on an attribute option
-     * @param string  $name
+     * @param string $name
+     * @param string $newValue
      */
     public function editOptionAndCancel($name, $newValue)
     {

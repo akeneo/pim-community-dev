@@ -159,8 +159,6 @@ class PriceFilterSpec extends ObjectBehavior
         $expr->orX(' AND filterPprice.data IS NULL', 'filterPprice.id IS NULL')->shouldBeCalled();
         $queryBuilder->andWhere(null)->shouldBeCalled();
 
-
-
         $this->addAttributeFilter($price, 'EMPTY', ' ');
     }
 }

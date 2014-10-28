@@ -198,10 +198,8 @@ services:
     pim_enrich.controller.sequential_edit:
         scope: request
         class: %pim_enrich.controller.sequential_edit.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@router'
             - '@pim_datagrid.extension.mass_action.dispatcher'
-            - %mass_edit_limit%
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_user.context.user'

@@ -769,6 +769,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @return Then[]
      * @When /^I create the view:$/
      */
     public function iCreateTheView(TableNode $table)
@@ -791,6 +794,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
+     * @param string $viewLabel
+     *
      * @Then /^I should( not)? see the "([^"]*)" view$/
      */
     public function iShouldSeeTheView($not, $viewLabel)

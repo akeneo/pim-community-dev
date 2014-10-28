@@ -94,8 +94,13 @@ class SetProductsSubscriberSpec extends ObjectBehavior
 
 class ProductsAware
 {
-    public function getId() {}
-    public function setProducts($products) {}
+    public function getId()
+    {
+    }
+
+    public function setProducts($products)
+    {
+    }
 }
 
 class InvalidProductsAware
@@ -104,5 +109,7 @@ class InvalidProductsAware
 
 class ProductsUnaware
 {
-    public function setProducts($products) {}
+    public function setProducts($products)
+    {
+    }
 }

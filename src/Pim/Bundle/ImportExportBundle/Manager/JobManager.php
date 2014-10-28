@@ -56,10 +56,10 @@ class JobManager
      * Launch a job with command
      *
      * @param JobInstance   $jobInstance
+     * @param UserInterface $user
      * @param string        $rootDir
      * @param string        $environment
      * @param boolean       $uploadMode
-     * @param UserInterface $user
      *
      * @return JobExecution
      */

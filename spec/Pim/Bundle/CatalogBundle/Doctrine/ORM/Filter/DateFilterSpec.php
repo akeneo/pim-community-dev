@@ -66,7 +66,6 @@ class DateFilterSpec extends ObjectBehavior
         $this->addFieldFilter('release_date', '<', '2014-03-15');
     }
 
-
     function it_adds_a_empty_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
         $qb->expr()->shouldBeCalled()->willReturn($expr);

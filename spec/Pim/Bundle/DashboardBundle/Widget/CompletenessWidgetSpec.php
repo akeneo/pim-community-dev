@@ -33,7 +33,6 @@ class CompletenessWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldReturn([]);
     }
 
-
     function it_exposes_the_completeness_data($completenessRepo, $localeHelper)
     {
         $completenessRepo->getProductsCountPerChannels()->willReturn(

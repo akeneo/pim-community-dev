@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Join;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class ValueJoinSpec extends ObjectBehavior

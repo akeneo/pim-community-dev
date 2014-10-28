@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
