@@ -49,12 +49,12 @@ class ProductUpdater implements ProductUpdaterInterface
         $fromField,
         $toField,
         $fromLocale = null,
-        $toLocale = null,
         $fromScope = null,
+        $toLocale = null,
         $toScope = null
     ) {
         $copier = $this->copierRegistry->get($fromField, $toField);
-        $copier->copyValue($products, $fromField, $toField, $fromLocale, $toLocale, $fromScope, $toScope);
+        $copier->copyValue($products, $fromField, $toField, $fromLocale, $fromScope, $toLocale, $toScope);
 
         return $this;
     }

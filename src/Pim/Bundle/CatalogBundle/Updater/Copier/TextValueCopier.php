@@ -41,8 +41,8 @@ class TextValueCopier implements CopierInterface
         $fromField,
         $toField,
         $fromLocale = null,
-        $toLocale = null,
         $fromScope = null,
+        $toLocale = null,
         $toScope = null
     ) {
         $fromAttribute = $this->attributeRepository->findOneByCode($fromField);
@@ -58,8 +58,8 @@ class TextValueCopier implements CopierInterface
             $fromAttribute,
             $toAttribute,
             $fromLocale,
-            $toLocale,
             $fromScope,
+            $toLocale,
             $toScope
         );
 
@@ -109,8 +109,8 @@ class TextValueCopier implements CopierInterface
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
-     * @param string             $toLocale
      * @param string             $fromScope
+     * @param string             $toLocale
      * @param string             $toScope
      *
      * @throws \LogicException
@@ -119,8 +119,8 @@ class TextValueCopier implements CopierInterface
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
-        $toLocale,
         $fromScope,
+        $toLocale,
         $toScope
     ) {
         // TODO check the existence of locale and scope used as options
