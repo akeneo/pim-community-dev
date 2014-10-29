@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Sets a value in many products
@@ -17,19 +18,19 @@ interface SetterInterface
      * Set the value in products
      *
      * @param ProductInterface[] $products
-     * @param string             $field
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope
      */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null);
+    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null);
 
     /**
-     * Supports the field
+     * Supports the attribute
      *
-     * @param string $field
+     * @param AttributeInterface $attribute
      *
      * @return true
      */
-    public function supports($field);
+    public function supports(AttributeInterface $attribute);
 }

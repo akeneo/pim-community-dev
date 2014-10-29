@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Registry of setters
@@ -14,20 +13,8 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
  */
 class SetterRegistry implements SetterRegistryInterface
 {
-    /** @var AttributeRepository */
-    protected $attributeRepository;
-
     /** @var array */
-    protected $setters;
-
-    /**
-     * @param AttributeRepository $repository
-     */
-    public function __construct(AttributeRepository $repository)
-    {
-        $this->attributeRepository = $repository;
-        $this->setters = [];
-    }
+    protected $setters = [];
 
     /**
      * {@inheritdoc}
@@ -40,25 +27,14 @@ class SetterRegistry implements SetterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function get($field)
+    public function get(AttributeInterface $attribute)
     {
-        $attribute = $this->attributeRepository->findOneByCode($field);
-        if ($attribute === null) {
-            throw new \LogicException(sprintf('Attribute "%s" not found', $field));
-        }
-
         foreach ($this->setters as $setter) {
-            if ($setter->supports($attribute->getAttributeType())) {
+            if ($setter->supports($attribute)) {
                 return $setter;
             }
         }
 
-        // TODO :
-        // - updatable fields are : family, groups, categories, enabled, association
-        // - not updatable are : id, created, updated
-        // so the best shot could be to provided dedicated methods in ProductUpdater for the updatable fields
-        // for instance a setFamily(
-
-        throw new \LogicException(sprintf('Field "%s" is not supported by any setter', $field));
+        throw new \LogicException(sprintf('Attribute "%s" is not supported by any setter', $attribute->getCode()));
     }
 }
