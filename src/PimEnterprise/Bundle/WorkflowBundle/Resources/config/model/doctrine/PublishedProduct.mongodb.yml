@@ -15,7 +15,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: date
         family:
             type: entity
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
         groups:
             notSaved: true
             type: entities
