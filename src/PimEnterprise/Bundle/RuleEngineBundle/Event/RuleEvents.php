@@ -1,13 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\RuleEngineBundle\Event;
 
 /**
  * Rule events
  *
- * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @author Julien Sanchez <julien@akeneo.com>
  */
 final class RuleEvents
 {
@@ -35,7 +42,7 @@ final class RuleEvents
      * This event is thrown before executing rule selection.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\ProductEvent instance.
+     * PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent instance.
      *
      * @staticvar string
      */

@@ -20,4 +20,5 @@ services:
     pimee_product_rule.applier.product:
         class: %pimee_product_rule.applier.product.class%
         arguments:
+            - @pim_catalog.updater.product
             - @event_dispatcher

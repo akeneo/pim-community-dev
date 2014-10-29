@@ -22,6 +22,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Selects subjects impacted by a rule.
@@ -70,17 +71,15 @@ class ProductRuleSelector implements SelectorInterface
 
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
-        $pqb = $this->productQueryFactory->create(['default_locale' => 'en_US', 'default_scope' => 'ecommerce']);
+        $pqb = $this->productQueryFactory->create();
 
         $conditions = $rule->getConditions();
         foreach ($conditions as $condition) {
-            echo sprintf(
-                "Selecting products for rule %s (%s %s %s).\n",
-                $rule->getCode(),
-                $condition['field'],
-                $condition['operator'],
-                is_array($condition['value']) ? implode(', ', $condition['value']) : $condition['value']
-            );
+            $resolver = new OptionsResolver();
+            $this->configureCondition($resolver);
+
+            $condition = $resolver->resolve($condition);;
+
             $pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
         }
 
@@ -102,5 +101,10 @@ class ProductRuleSelector implements SelectorInterface
     {
         return 'product' === $rule->getType() &&
             $rule instanceof LoadedRuleInterface;
+    }
+
+    protected function configureCondition(OptionsResolver $optionsResolver)
+    {
+        $optionsResolver->setRequired(['field', 'operator', 'value']);
     }
 }
