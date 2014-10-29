@@ -5,8 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Sets a text value in many products
@@ -38,7 +36,7 @@ class TextValueSetter implements SetterInterface
      *
      * TODO : first draft, lot of re-work / discuss to have here, about validation and concern
      */
-    public function setValue(array $products, $field, $data, array $context = [])
+    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
         if (!$attribute) {
@@ -46,10 +44,10 @@ class TextValueSetter implements SetterInterface
         }
 
         $this->validateData($data);
-        $context = $this->validateContext($attribute, $context);
+        $this->validateContext($attribute, $locale, $scope);
 
-        $locale = ($attribute->isLocalizable()) ? $context['locale'] : null;
-        $scope = ($attribute->isScopable()) ? $context['scope'] : null;
+        $locale = ($attribute->isLocalizable()) ? $locale : null;
+        $scope = ($attribute->isScopable()) ? $scope : null;
 
         foreach ($products as $product) {
             $value = $product->getValue($field, $locale, $scope);
@@ -75,6 +73,8 @@ class TextValueSetter implements SetterInterface
      * Validate the data
      *
      * @param string $data
+     *
+     * @throws \LogicException
      */
     protected function validateData($data)
     {
@@ -87,41 +87,19 @@ class TextValueSetter implements SetterInterface
      * Validate the context
      *
      * @param AttributeInterface $attribute
-     * @param array              $context
+     * @param string             $locale
+     * @param string             $scope
      *
-     * @throws Symfony\Component\OptionsResolver\Exception\ExceptionInterface
-     *
-     * @return array
+     * @throws \LogicException
      */
-    protected function validateContext(AttributeInterface $attribute, array $context)
+    protected function validateContext(AttributeInterface $attribute, $locale, $scope)
     {
         // TODO check the existence of locale and scope used as options
-        $resolver = new OptionsResolver();
-        $required = [];
-        if ($attribute->isLocalizable()) {
-            $required[] = 'locale';
+        if ($attribute->isLocalizable() && $locale === null) {
+            throw new \LogicException(sprintf('A locale is expected for field %s', $attribute->getCode()));
         }
-        if ($attribute->isScopable()) {
-            $required[] = 'scope';
+        if ($attribute->isScopable() && $scope === null) {
+            throw new \LogicException(sprintf('A scope is expected for field %s', $attribute->getCode()));
         }
-        $resolver->setRequired($required);
-
-        return $resolver->resolve($context);
-    }
-
-    /**
-     * @param AttributeInterface       $attribute
-     * @param OptionsResolverInterface $resolver
-     */
-    protected function configureOptions(AttributeInterface $attribute, OptionsResolverInterface $resolver)
-    {
-        $required = [];
-        if ($attribute->isLocalizable()) {
-            $required[] = 'locale';
-        }
-        if ($attribute->isScopable()) {
-            $required[] = 'scope';
-        }
-        $resolver->setRequired($required);
     }
 }

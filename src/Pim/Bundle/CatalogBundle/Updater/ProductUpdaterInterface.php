@@ -19,21 +19,33 @@ interface ProductUpdaterInterface
      * @param ProductInterface[] $products
      * @param string             $field
      * @param mixed              $data
-     * @param array              $context
+     * @param string             $locale
+     * @param string             $scope
      *
      * @return ProductUpdaterInterface
      */
-    public function setValue(array $products, $field, $data, array $context = []);
+    public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
     /**
      * Copy a value from a source field to a destination field in many products
      *
      * @param ProductInterface[] $products
-     * @param string             $sourceField
-     * @param string             $destinationField
-     * @param array              $context
+     * @param string             $fromField
+     * @param string             $toField
+     * @param string             $fromLocale
+     * @param string             $toLocale
+     * @param string             $fromScope
+     * @param string             $toScope
      *
      * @return ProductUpdaterInterface
      */
-    public function copyValue(array $products, $sourceField, $destinationField, array $context = []);
+    public function copyValue(
+        array $products,
+        $fromField,
+        $toField,
+        $fromLocale = null,
+        $toLocale = null,
+        $fromScope = null,
+        $toScope = null
+    );
 }
