@@ -213,3 +213,43 @@ Feature: Execute a job
       | frontView  | **empty**    |
       | userManual | **empty**    |
       | name-en_US | Bic Core 148 |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  Scenario: Skip products with empty SKU
+    Given the following file to import:
+      """
+      sku;name-en_US
+      ;invalid product
+      ;another invalid product
+      SKU-002;product 002
+      ;last invalid product
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "skipped 3"
+    And I should see "identifier: This value should not be blank"
+    And there should be 1 product
+    And the product "SKU-002" should have the following value:
+      | name-en_US | product 002 |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  Scenario: Skip products with a SKU that has just been created
+    Given the following file to import:
+      """
+      sku;name-en_US
+      SKU-001;high heels
+      SKU-001;invalid high heels
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "The unique code"
+    And I should see "was already read in this file"
+    And there should be 1 product
+    And the product "SKU-001" should have the following value:
+      | name-en_US | high heels |
