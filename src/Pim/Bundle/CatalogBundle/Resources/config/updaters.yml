@@ -27,13 +27,10 @@ services:
 
     pim_catalog.updater.copier.registry:
         class: %pim_catalog.updater.copier.registry.class%
-        arguments:
-            - @pim_catalog.repository.attribute
 
     pim_catalog.updater.copier.text_value:
         class: %pim_catalog.updater.copier.text_value.class%
         arguments:
-            - @pim_catalog.repository.attribute
             - @pim_catalog.builder.product
         tags:
             - { name: 'pim_catalog.updater.copier' }
