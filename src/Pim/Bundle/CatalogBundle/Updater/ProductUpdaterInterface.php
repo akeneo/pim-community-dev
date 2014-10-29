@@ -33,8 +33,8 @@ interface ProductUpdaterInterface
      * @param string             $fromField
      * @param string             $toField
      * @param string             $fromLocale
-     * @param string             $toLocale
      * @param string             $fromScope
+     * @param string             $toLocale
      * @param string             $toScope
      *
      * @return ProductUpdaterInterface
@@ -44,8 +44,8 @@ interface ProductUpdaterInterface
         $fromField,
         $toField,
         $fromLocale = null,
-        $toLocale = null,
         $fromScope = null,
+        $toLocale = null,
         $toScope = null
     );
 }

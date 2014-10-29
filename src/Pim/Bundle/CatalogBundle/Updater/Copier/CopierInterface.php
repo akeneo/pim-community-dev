@@ -29,8 +29,8 @@ interface CopierInterface
         $fromField,
         $toField,
         $fromLocale = null,
-        $toLocale = null,
         $fromScope = null,
+        $toLocale = null,
         $toScope = null
     );
 
