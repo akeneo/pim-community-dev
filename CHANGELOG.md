@@ -17,6 +17,7 @@
 - remove the fixed mysql socket location
 - switch to minimum-stability:stable in composer.json
 - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+- remove BaseFilter usage
 
 ## Bug fixes
 
