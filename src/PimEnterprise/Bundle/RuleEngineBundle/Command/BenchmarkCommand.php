@@ -85,7 +85,7 @@ class BenchmarkCommand extends ContainerAwareCommand
 
             $stats[$event->getCategory()]['duration'] += $event->getDuration();
 
-            echo sprintf("%s : \t\t%sms, %smb\n", $name, $event->getDuration(), $event->getMemory() / 1000000);
+            echo sprintf("%s : \t%sms, %smb\n", $name, $event->getDuration(), $event->getMemory() / 1000000);
         }
 
         echo "\n";
