@@ -54,6 +54,10 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!(($queryBuilder instanceof QueryBuilder))) {
+            throw new \InvalidArgumentException('Query builder should be an instance of Doctrine\ORM\QueryBuilder');
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -105,10 +109,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array(
-            $field,
-            $this->supportedFields
-        );
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -116,10 +117,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array(
-            $attribute->getAttributeType(),
-            $this->supportedAttributes
-        );
+        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**
@@ -127,10 +125,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array(
-            $operator,
-            $this->supportedOperators
-        );
+        return in_array($operator, $this->supportedOperators);
     }
 
     /**

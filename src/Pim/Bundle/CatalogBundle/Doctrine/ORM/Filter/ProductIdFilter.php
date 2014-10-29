@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
@@ -44,6 +45,10 @@ class ProductIdFilter implements FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!(($queryBuilder instanceof QueryBuilder))) {
+            throw new \InvalidArgumentException('Query builder should be an instance of Doctrine\ORM\QueryBuilder');
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -64,10 +69,7 @@ class ProductIdFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array(
-            $field,
-            $this->supportedFields
-        );
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -75,10 +77,7 @@ class ProductIdFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array(
-            $operator,
-            $this->supportedOperators
-        );
+        return in_array($operator, $this->supportedOperators);
     }
 
     /**

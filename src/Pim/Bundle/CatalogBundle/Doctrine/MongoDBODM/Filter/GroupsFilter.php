@@ -43,6 +43,12 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -51,10 +57,7 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array(
-            $field,
-            $this->supportedFields
-        );
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -62,10 +65,7 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array(
-            $operator,
-            $this->supportedOperators
-        );
+        return in_array($operator, $this->supportedOperators);
     }
 
     /**
