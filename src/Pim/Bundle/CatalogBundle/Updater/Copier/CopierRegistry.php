@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
  */
 class CopierRegistry implements CopierRegistryInterface
 {
-    /** @var array */
+    /** @var CopierInterface[] */
     protected $copiers = [];
 
     /**

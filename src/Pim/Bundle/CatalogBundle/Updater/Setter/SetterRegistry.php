@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class SetterRegistry implements SetterRegistryInterface
 {
-    /** @var array */
+    /** @var SetterInterface[] */
     protected $setters = [];
 
     /**
