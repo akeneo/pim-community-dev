@@ -30,7 +30,7 @@ interface SetterInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return true
+     * @return boolean
      */
     public function supports(AttributeInterface $attribute);
 }
