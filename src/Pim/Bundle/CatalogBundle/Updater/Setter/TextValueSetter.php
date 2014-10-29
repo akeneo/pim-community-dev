@@ -27,16 +27,11 @@ class TextValueSetter implements SetterInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO : first draft, lot of re-work / discuss to have here, about validation and concern
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->validateData($data);
+        $this->validateData($attribute, $data);
         $this->validateContext($attribute, $locale, $scope);
-
-        $locale = ($attribute->isLocalizable()) ? $locale : null;
-        $scope = ($attribute->isScopable()) ? $scope : null;
 
         foreach ($products as $product) {
             $value = $product->getValue($attribute->getCode(), $locale, $scope);
@@ -84,12 +79,39 @@ class TextValueSetter implements SetterInterface
      */
     protected function validateContext(AttributeInterface $attribute, $locale, $scope)
     {
-        // TODO check the existence of locale and scope used as options
+        // TODO : check the existence of locale and scope used as options
+        // TODO : extract this code in a dedicated class
         if ($attribute->isLocalizable() && $locale === null) {
-            throw new \LogicException(sprintf('Locale expected for the attribute "%s"', $attribute->getCode()));
+            throw new \LogicException(
+                sprintf(
+                    'Locale is expected for the attribute "%s"',
+                    $attribute->getCode()
+                )
+            );
+        }
+        if (!$attribute->isLocalizable() && $locale !== null) {
+            throw new \LogicException(
+                sprintf(
+                    'Locale is not expected for the attribute "%s"',
+                    $attribute->getCode()
+                )
+            );
         }
         if ($attribute->isScopable() && $scope === null) {
-            throw new \LogicException(sprintf('Scope expected for the attribute "%s"', $attribute->getCode()));
+            throw new \LogicException(
+                sprintf(
+                    'Scope is expected for the attribute "%s"',
+                    $attribute->getCode()
+                )
+            );
+        }
+        if (!$attribute->isScopable() && $scope !== null) {
+            throw new \LogicException(
+                sprintf(
+                    'Scope is not expected for the attribute "%s"',
+                    $attribute->getCode()
+                )
+            );
         }
     }
 }

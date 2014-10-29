@@ -41,7 +41,7 @@ interface CopierInterface
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      *
-     * @return true
+     * @return boolean
      */
     public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute);
 }

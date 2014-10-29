@@ -16,9 +16,9 @@ interface CopierRegistryInterface
     /**
      * Register a copier
      *
-     * @param CopierInterface $setter
+     * @param CopierInterface $copier
      */
-    public function register(CopierInterface $setter);
+    public function register(CopierInterface $copier);
 
     /**
      * Fetch the setter which supports the source and destination attributes
@@ -28,7 +28,7 @@ interface CopierRegistryInterface
      *
      * @throws \LogicException
      *
-     * @return SetterInterface
+     * @return CopierInterface
      */
     public function get(AttributeInterface $fromAttribute, AttributeInterface $toAttribute);
 }
