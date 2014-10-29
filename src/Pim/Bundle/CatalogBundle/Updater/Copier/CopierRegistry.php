@@ -40,18 +40,17 @@ class CopierRegistry implements CopierRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function get($sourceField, $destField)
+    public function get($fromField, $toField)
     {
-        $sourceAttribute = $this->attributeRepository->findOneByCode($sourceField);
-        $destAttribute = $this->attributeRepository->findOneByCode($destField);
+        $fromAttribute = $this->attributeRepository->findOneByCode($fromField);
+        $toAttribute = $this->attributeRepository->findOneByCode($toField);
 
         // TODO : other possiblity is to use AttributeInterface in supports method
-        // TODO : dont see the point to add a field copier
 
         $copier = null;
-        if ($sourceAttribute !== null && $destAttribute !== null) {
+        if ($fromAttribute !== null && $toAttribute !== null) {
             foreach ($this->copiers as $currentCopier) {
-                if ($currentCopier->supports($sourceAttribute->getAttributeType(), $destAttribute->getAttributeType())) {
+                if ($currentCopier->supports($fromAttribute->getAttributeType(), $toAttribute->getAttributeType())) {
                     $copier = $currentCopier;
                     break;
                 }
@@ -62,8 +61,8 @@ class CopierRegistry implements CopierRegistryInterface
             throw new \LogicException(
                 sprintf(
                     'Source field "%s" and destination field "%s" are not supported by any copier',
-                    $sourceField,
-                    $destField
+                    $fromField,
+                    $toField
                 )
             );
         }
