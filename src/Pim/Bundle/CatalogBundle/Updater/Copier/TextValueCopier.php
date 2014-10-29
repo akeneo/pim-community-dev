@@ -113,16 +113,16 @@ class TextValueCopier implements CopierInterface
     ) {
         // TODO check the existence of locale and scope used as options
         if ($fromAttribute->isLocalizable() && $fromLocale === null) {
-            throw new \LogicException(sprintf('A locale is expected for field %s', $fromAttribute->getCode()));
+            throw new \LogicException(sprintf('Locale expected for the attribute "%s"', $fromAttribute->getCode()));
         }
         if ($toAttribute->isLocalizable() && $toLocale === null) {
-            throw new \LogicException(sprintf('A locale is expected for field %s', $toAttribute->getCode()));
+            throw new \LogicException(sprintf('Locale expected for the attribute "%s"', $toAttribute->getCode()));
         }
         if ($fromAttribute->isScopable() && $fromScope === null) {
-            throw new \LogicException(sprintf('A scope is expected for field %s', $fromAttribute->getCode()));
+            throw new \LogicException(sprintf('Scope expected for the attribute "%s"', $fromAttribute->getCode()));
         }
         if ($toAttribute->isScopable() && $toScope === null) {
-            throw new \LogicException(sprintf('A scope is expected for field %s', $toAttribute->getCode()));
+            throw new \LogicException(sprintf('Scope expected for the attribute "%s"', $toAttribute->getCode()));
         }
     }
 }

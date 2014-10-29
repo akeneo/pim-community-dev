@@ -61,14 +61,15 @@ class TextValueSetter implements SetterInterface
     /**
      * Validate the data
      *
-     * @param string $data
+     * @param AttributeInterface $attribute
+     * @param string             $data
      *
      * @throws \LogicException
      */
-    protected function validateData($data)
+    protected function validateData(AttributeInterface $attribute, $data)
     {
         if (!is_string($data)) {
-            throw new \LogicException('A string is expected');
+            throw new \LogicException('Attribute "%s" expects a string data', $attribute->getCode());
         }
     }
 
@@ -85,10 +86,10 @@ class TextValueSetter implements SetterInterface
     {
         // TODO check the existence of locale and scope used as options
         if ($attribute->isLocalizable() && $locale === null) {
-            throw new \LogicException(sprintf('A locale is expected for field %s', $attribute->getCode()));
+            throw new \LogicException(sprintf('Locale expected for the attribute "%s"', $attribute->getCode()));
         }
         if ($attribute->isScopable() && $scope === null) {
-            throw new \LogicException(sprintf('A scope is expected for field %s', $attribute->getCode()));
+            throw new \LogicException(sprintf('Scope expected for the attribute "%s"', $attribute->getCode()));
         }
     }
 }
