@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+
 /**
  * Registry of copiers
  *
@@ -19,14 +21,14 @@ interface CopierRegistryInterface
     public function register(CopierInterface $setter);
 
     /**
-     * Fetch the copier which supports the copy of a field to another
+     * Fetch the setter which supports the source and destination attributes
      *
-     * @param string $toField
-     * @param string $fromField
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      *
      * @throws \LogicException
      *
-     * @return CopierInterface
+     * @return SetterInterface
      */
-    public function get($fromField, $toField);
+    public function get(AttributeInterface $fromAttribute, AttributeInterface $toAttribute);
 }

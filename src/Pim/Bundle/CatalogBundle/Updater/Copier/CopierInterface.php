@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Copy a value from a field to another in many products
@@ -17,8 +18,8 @@ interface CopierInterface
      * Copy a value from a source field to a destination field in many products
      *
      * @param ProductInterface[] $products
-     * @param string             $fromField
-     * @param string             $toField
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
      * @param string             $toLocale
      * @param string             $fromScope
@@ -26,8 +27,8 @@ interface CopierInterface
      */
     public function copyValue(
         array $products,
-        $fromField,
-        $toField,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
         $fromLocale = null,
         $toLocale = null,
         $fromScope = null,
@@ -35,12 +36,12 @@ interface CopierInterface
     );
 
     /**
-     * Supports the fields
+     * Supports the source and destination attributes
      *
-     * @param string $fromField
-     * @param string $toField
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      *
      * @return true
      */
-    public function supports($fromField, $toField);
+    public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute);
 }

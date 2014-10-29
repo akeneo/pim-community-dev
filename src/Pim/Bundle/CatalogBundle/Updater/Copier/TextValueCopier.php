@@ -15,19 +15,14 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
  */
 class TextValueCopier implements CopierInterface
 {
-    /** @var AttributeRepository */
-    protected $attributeRepository;
-
     /** @var ProductBuilder */
     protected $productBuilder;
 
     /**
-     * @param AttributeRepository $repository
-     * @param ProductBuilder      $builder
+     * @param ProductBuilder $builder
      */
-    public function __construct(AttributeRepository $repository, ProductBuilder $builder)
+    public function __construct(ProductBuilder $builder)
     {
-        $this->attributeRepository = $repository;
         $this->productBuilder = $builder;
     }
 
@@ -38,22 +33,13 @@ class TextValueCopier implements CopierInterface
      */
     public function copyValue(
         array $products,
-        $fromField,
-        $toField,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
         $fromLocale = null,
         $toLocale = null,
         $fromScope = null,
         $toScope = null
     ) {
-        $fromAttribute = $this->attributeRepository->findOneByCode($fromField);
-        if (!$fromAttribute) {
-            throw new \LogicException(sprintf('Attribute "%s" not exists', $fromField));
-        }
-        $toAttribute = $this->attributeRepository->findOneByCode($toField);
-        if (!$toAttribute) {
-            throw new \LogicException(sprintf('Attribute "%s" not exists', $toField));
-        }
-
         $context = $this->validateContext(
             $fromAttribute,
             $toAttribute,
@@ -70,9 +56,9 @@ class TextValueCopier implements CopierInterface
         $toScope = ($toAttribute->isScopable()) ? $toScope : null;
 
         foreach ($products as $product) {
-            $fromValue = $product->getValue($fromField, $fromLocale, $fromScope);
+            $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
             $fromData = (null === $fromValue) ? '' : $fromValue->getData();
-            $toValue = $product->getValue($toField, $toLocale, $toScope);
+            $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
                 // TODO : not sure about the relevancy of product builder for this kind of operation
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
@@ -84,11 +70,13 @@ class TextValueCopier implements CopierInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($fromField, $toField)
+    public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
         $types = ['pim_catalog_text', 'pim_catalog_textarea'];
+        $supportsFrom = in_array($fromAttribute->getAttributeType(), $types);
+        $supportsTo = in_array($toAttribute->getAttributeType(), $types);
 
-        return in_array($fromField, $types) && in_array($toField, $types);
+        return $supportsFrom && $supportsTo;
     }
 
     /**
