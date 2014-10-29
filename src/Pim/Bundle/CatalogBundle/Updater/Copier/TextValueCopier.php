@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Copy a text value in many products
@@ -37,33 +36,46 @@ class TextValueCopier implements CopierInterface
      *
      * TODO : first draft, lot of re-work / discuss to have here, about validation and concern
      */
-    public function copyValue(array $products, $sourceField, $destinationField, array $context = [])
-    {
-        $attributeSource = $this->attributeRepository->findOneByCode($sourceField);
-        if (!$attributeSource) {
-            throw new \LogicException(sprintf('Attribute "%s" not exists', $sourceField));
+    public function copyValue(
+        array $products,
+        $fromField,
+        $toField,
+        $fromLocale = null,
+        $toLocale = null,
+        $fromScope = null,
+        $toScope = null
+    ) {
+        $fromAttribute = $this->attributeRepository->findOneByCode($fromField);
+        if (!$fromAttribute) {
+            throw new \LogicException(sprintf('Attribute "%s" not exists', $fromField));
         }
-        $attributeDest = $this->attributeRepository->findOneByCode($destinationField);
-        if (!$attributeDest) {
-            throw new \LogicException(sprintf('Attribute "%s" not exists', $destinationField));
+        $toAttribute = $this->attributeRepository->findOneByCode($toField);
+        if (!$toAttribute) {
+            throw new \LogicException(sprintf('Attribute "%s" not exists', $toField));
         }
 
-        $context = $this->validateContext($attributeSource, $attributeDest, $context);
+        $context = $this->validateContext(
+            $fromAttribute,
+            $toAttribute,
+            $fromLocale,
+            $toLocale,
+            $fromScope,
+            $toScope
+        );
 
-        $fromLocale = ($attributeSource->isLocalizable()) ? $context['from_locale'] : null;
-        $fromScope = ($attributeSource->isScopable()) ? $context['from_scope'] : null;
-        $toLocale = ($attributeDest->isLocalizable()) ? $context['to_locale'] : null;
-        $toScope = ($attributeDest->isScopable()) ? $context['to_scope'] : null;
+        // TODO reset if not useable locale or scope is passed, could be better to throw exception
+        $fromLocale = ($fromAttribute->isLocalizable()) ? $fromLocale : null;
+        $fromScope = ($fromAttribute->isScopable()) ? $fromScope : null;
+        $toLocale = ($toAttribute->isLocalizable()) ? $toLocale : null;
+        $toScope = ($toAttribute->isScopable()) ? $toScope : null;
 
         foreach ($products as $product) {
-            // from value
-            $fromValue = $product->getValue($sourceField, $fromLocale, $fromScope);
+            $fromValue = $product->getValue($fromField, $fromLocale, $fromScope);
             $fromData = (null === $fromValue) ? '' : $fromValue->getData();
-            // to value
-            $toValue = $product->getValue($destinationField, $toLocale, $toScope);
+            $toValue = $product->getValue($toField, $toLocale, $toScope);
             if (null === $toValue) {
                 // TODO : not sure about the relevancy of product builder for this kind of operation
-                $toValue = $this->productBuilder->addProductValue($product, $attributeDest, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
             $toValue->setData($fromData);
         }
@@ -72,11 +84,11 @@ class TextValueCopier implements CopierInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($sourceField, $destinationField)
+    public function supports($fromField, $toField)
     {
         $types = ['pim_catalog_text', 'pim_catalog_textarea'];
 
-        return in_array($sourceField, $types) && in_array($destinationField, $types);
+        return in_array($fromField, $types) && in_array($toField, $types);
     }
 
     /**
@@ -94,36 +106,35 @@ class TextValueCopier implements CopierInterface
     /**
      * Validate the context
      *
-     * @param AttributeInterface $attributeSource
-     * @param AttributeInterface $attributeDest
-     * @param array              $context
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
+     * @param string             $fromLocale
+     * @param string             $toLocale
+     * @param string             $fromScope
+     * @param string             $toScope
      *
-     * @throws Symfony\Component\OptionsResolver\Exception\ExceptionInterface
-     *
-     * @return array
+     * @throws \LogicException
      */
     protected function validateContext(
-        AttributeInterface $attributeSource,
-        AttributeInterface $attributeDest,
-        array $context
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $fromLocale,
+        $toLocale,
+        $fromScope,
+        $toScope
     ) {
         // TODO check the existence of locale and scope used as options
-        $resolver = new OptionsResolver();
-        $required = [];
-        if ($attributeSource->isLocalizable()) {
-            $required[] = 'from_locale';
+        if ($fromAttribute->isLocalizable() && $fromLocale === null) {
+            throw new \LogicException(sprintf('A locale is expected for field %s', $fromAttribute->getCode()));
         }
-        if ($attributeDest->isLocalizable()) {
-            $required[] = 'to_locale';
+        if ($toAttribute->isLocalizable() && $toLocale === null) {
+            throw new \LogicException(sprintf('A locale is expected for field %s', $toAttribute->getCode()));
         }
-        if ($attributeSource->isScopable()) {
-            $required[] = 'from_scope';
+        if ($fromAttribute->isScopable() && $fromScope === null) {
+            throw new \LogicException(sprintf('A scope is expected for field %s', $fromAttribute->getCode()));
         }
-        if ($attributeDest->isScopable()) {
-            $required[] = 'to_scope';
+        if ($toAttribute->isScopable() && $toScope === null) {
+            throw new \LogicException(sprintf('A scope is expected for field %s', $toAttribute->getCode()));
         }
-        $resolver->setRequired($required);
-
-        return $resolver->resolve($context);
     }
 }
