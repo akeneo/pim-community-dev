@@ -14,20 +14,8 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
  */
 class CopierRegistry implements CopierRegistryInterface
 {
-    /** @var AttributeRepository */
-    protected $attributeRepository;
-
     /** @var array */
-    protected $copiers;
-
-    /**
-     * @param AttributeRepository $repository
-     */
-    public function __construct(AttributeRepository $repository)
-    {
-        $this->attributeRepository = $repository;
-        $this->copiers = [];
-    }
+    protected $copiers = [];
 
     /**
      * {@inheritdoc}
@@ -40,33 +28,20 @@ class CopierRegistry implements CopierRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function get($fromField, $toField)
+    public function get(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $fromAttribute = $this->attributeRepository->findOneByCode($fromField);
-        $toAttribute = $this->attributeRepository->findOneByCode($toField);
-
-        // TODO : other possiblity is to use AttributeInterface in supports method
-
-        $copier = null;
-        if ($fromAttribute !== null && $toAttribute !== null) {
-            foreach ($this->copiers as $currentCopier) {
-                if ($currentCopier->supports($fromAttribute->getAttributeType(), $toAttribute->getAttributeType())) {
-                    $copier = $currentCopier;
-                    break;
-                }
+        foreach ($this->copiers as $copier) {
+            if ($copier->supports($fromAttribute, $toAttribute)) {
+                return $copier;
             }
         }
 
-        if ($copier === null) {
-            throw new \LogicException(
-                sprintf(
-                    'Source field "%s" and destination field "%s" are not supported by any copier',
-                    $fromField,
-                    $toField
-                )
-            );
-        }
-
-        return $copier;
+        throw new \LogicException(
+            sprintf(
+                'Source and destination attributes "%s" and "%s" are not supported by any copier',
+                $fromAttribute->getCode(),
+                $toAttribute->getCode()
+            )
+        );
     }
 }

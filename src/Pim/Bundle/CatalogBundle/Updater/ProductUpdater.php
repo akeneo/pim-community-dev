@@ -64,9 +64,10 @@ class ProductUpdater implements ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     ) {
-        // TODO use attribute here too !!
-        $copier = $this->copierRegistry->get($fromField, $toField);
-        $copier->copyValue($products, $fromField, $toField, $fromLocale, $toLocale, $fromScope, $toScope);
+        $fromAttribute = $this->getAttribute($fromField);
+        $toAttribute = $this->getAttribute($toField);
+        $copier = $this->copierRegistry->get($fromAttribute, $toAttribute);
+        $copier->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
 
         return $this;
     }
