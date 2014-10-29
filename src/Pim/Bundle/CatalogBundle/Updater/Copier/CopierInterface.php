@@ -17,21 +17,30 @@ interface CopierInterface
      * Copy a value from a source field to a destination field in many products
      *
      * @param ProductInterface[] $products
-     * @param string             $sourceField
-     * @param string             $destinationField
-     * @param array              $context
-     *
-     * @return ProductUpdaterInterface
+     * @param string             $fromField
+     * @param string             $toField
+     * @param string             $fromLocale
+     * @param string             $toLocale
+     * @param string             $fromScope
+     * @param string             $toScope
      */
-    public function copyValue(array $products, $sourceField, $destinationField, array $context = []);
+    public function copyValue(
+        array $products,
+        $fromField,
+        $toField,
+        $fromLocale = null,
+        $toLocale = null,
+        $fromScope = null,
+        $toScope = null
+    );
 
     /**
      * Supports the fields
      *
-     * @param string $sourceField
-     * @param string $destinationField
+     * @param string $fromField
+     * @param string $toField
      *
      * @return true
      */
-    public function supports($sourceField, $destinationField);
+    public function supports($fromField, $toField);
 }

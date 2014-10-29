@@ -19,9 +19,10 @@ interface SetterInterface
      * @param ProductInterface[] $products
      * @param string             $field
      * @param mixed              $data
-     * @param array              $context
+     * @param string             $locale
+     * @param string             $scope
      */
-    public function setValue(array $products, $field, $data, array $context = []);
+    public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
     /**
      * Supports the field
