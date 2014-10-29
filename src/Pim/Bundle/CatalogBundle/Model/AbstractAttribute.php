@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
