@@ -49,8 +49,18 @@ class ProductRuleApplier implements ApplierInterface
 
         $actions = $rule->getActions();
         foreach ($actions as $action) {
-            if ($action['type'] === 'set_value') {
-                echo sprintf("\$this->productUpdater->setValue([], %s, %s, []); \n", $action['field'], $action['value']);
+            if (isset($action['type'])) {
+                switch ($action['type']) {
+                    case 'set_value':
+                        echo sprintf("\$this->productUpdater->setValue([], %s, %s, []); \n", $action['field'], $action['value']);
+                        break;
+                    case 'copy_value':
+                        echo sprintf("\$this->productUpdater->copyValue([], %s, %s, []); \n", $action['field'], $action['value']);
+                        break;
+                    default:
+                        throw new \InvalidArgumentException(sprintf('The action %s is not supported yet.', $action['type']));
+                        break;
+                }
             }
         }
 

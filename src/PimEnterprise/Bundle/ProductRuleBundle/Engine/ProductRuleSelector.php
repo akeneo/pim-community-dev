@@ -70,7 +70,7 @@ class ProductRuleSelector implements SelectorInterface
 
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
-        $pqb = $this->productQueryFactory->create(/*['default_locale' => 'en_US', 'default_scope' => 'ecommerce']*/);
+        $pqb = $this->productQueryFactory->create(['default_locale' => 'en_US', 'default_scope' => 'ecommerce']);
 
         $conditions = $rule->getConditions();
         foreach ($conditions as $condition) {
