@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
@@ -15,19 +14,14 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
  */
 class TextValueSetter implements SetterInterface
 {
-    /** @var AttributeRepository */
-    protected $attributeRepository;
-
     /** @var ProductBuilder */
     protected $productBuilder;
 
     /**
-     * @param AttributeRepository $repository
-     * @param ProductBuilder      $builder
+     * @param ProductBuilder $builder
      */
-    public function __construct(AttributeRepository $repository, ProductBuilder $builder)
+    public function __construct(ProductBuilder $builder)
     {
-        $this->attributeRepository = $repository;
         $this->productBuilder = $builder;
     }
 
@@ -36,13 +30,8 @@ class TextValueSetter implements SetterInterface
      *
      * TODO : first draft, lot of re-work / discuss to have here, about validation and concern
      */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
+    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $attribute = $this->attributeRepository->findOneByCode($field);
-        if (!$attribute) {
-            throw new \LogicException(sprintf('Attribute "%s" not exists', $field));
-        }
-
         $this->validateData($data);
         $this->validateContext($attribute, $locale, $scope);
 
@@ -50,7 +39,7 @@ class TextValueSetter implements SetterInterface
         $scope = ($attribute->isScopable()) ? $scope : null;
 
         foreach ($products as $product) {
-            $value = $product->getValue($field, $locale, $scope);
+            $value = $product->getValue($attribute->getCode(), $locale, $scope);
             if (null === $value) {
                 // TODO : not sure about the relevancy of product builder for this kind of operation
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
@@ -62,11 +51,11 @@ class TextValueSetter implements SetterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($field)
+    public function supports(AttributeInterface $attribute)
     {
         $types = ['pim_catalog_text', 'pim_catalog_textarea'];
 
-        return in_array($field, $types);
+        return in_array($attribute->getAttributeType(), $types);
     }
 
     /**
