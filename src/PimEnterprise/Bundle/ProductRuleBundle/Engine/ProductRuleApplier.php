@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -29,8 +30,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductRuleApplier implements ApplierInterface
 {
-    const SET_ACTION_LABEL  = 'set_value';
-    const COPY_ACTION_LABEL = 'copy_value';
+    //TODO: Move those actions to a dedicated class
+    const SET_ACTION  = 'set_value';
+    const COPY_ACTION = 'copy_value';
 
     /** @var EventDispatcher */
     protected $eventDispatcher;
@@ -61,11 +63,10 @@ class ProductRuleApplier implements ApplierInterface
         foreach ($actions as $action) {
             if (isset($action['type'])) {
                 switch ($action['type']) {
-                    case static::SET_ACTION_LABEL:
+                    case static::SET_ACTION:
                         $resolver = new OptionsResolver();
                         $this->configureSetValueAction($resolver);
-
-                        $action = $resolver->resolve($action);;
+                        $action = $resolver->resolve($action);
 
                         $this->productUpdater->setValue(
                             $subjectSet->getSubjects(),
@@ -75,11 +76,10 @@ class ProductRuleApplier implements ApplierInterface
                             $action['scope']
                         );
                         break;
-                    case static::COPY_ACTION_LABEL:
+                    case static::COPY_ACTION:
                         $resolver = new OptionsResolver();
                         $this->configureCopyValueAction($resolver);
-
-                        $action = $resolver->resolve($action);;
+                        $action = $resolver->resolve($action);
 
                         $this->productUpdater->setValue(
                             $subjectSet->getSubjects(),
@@ -92,7 +92,9 @@ class ProductRuleApplier implements ApplierInterface
                         );
                         break;
                     default:
-                        throw new \InvalidArgumentException(sprintf('The action %s is not supported yet.', $action['type']));
+                        throw new \InvalidArgumentException(
+                            sprintf('The action %s is not supported yet.', $action['type'])
+                        );
                         break;
                 }
             }
@@ -110,13 +112,20 @@ class ProductRuleApplier implements ApplierInterface
             $rule instanceof LoadedRule;
     }
 
+    /**
+     * Configure the set value action optionResolver
+     * @param  OptionsResolver $optionsResolver
+     */
     protected function configureSetValueAction(OptionsResolver $optionsResolver)
     {
         $optionsResolver->setDefaults(['locale' => null, 'scope'  => null]);
-
         $optionsResolver->setRequired(['field', 'value', 'type']);
     }
 
+    /**
+     * Configure the copy value action optionResolver
+     * @param  OptionsResolver $optionsResolver
+     */
     protected function configureCopyValueAction(OptionsResolver $optionsResolver)
     {
         $optionsResolver->setDefaults([
@@ -125,7 +134,6 @@ class ProductRuleApplier implements ApplierInterface
             'from_scope'  => null,
             'to_scope'    => null
         ]);
-
         $optionsResolver->setRequired(['from_field', 'to_field', 'type']);
     }
 }

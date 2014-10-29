@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Command;
+namespace PimEnterprise\Bundle\ProductRuleBundle\Command;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -56,18 +56,21 @@ class BenchmarkCommand extends ContainerAwareCommand
         $runnerCommand = $this->getApplication()->find('pim:rule:run');
         $cpt = 0;
 
+        $progress = $this->getHelper('progress');
+        $progress->start($output, $count);
         while ($cpt < $count) {
             $arguments = array(
                 'command' => 'pim:rule:run',
                 'code'    => 'rule_' . $cpt
             );
-            echo sprintf("### Running rule %s : \n", $cpt);
             $input = new ArrayInput($arguments);
             $runnerCommand->run($input, $output);
 
-            echo "\n";
+            $progress->advance();
             $cpt++;
         }
+
+        $progress->finish();
 
         $stopWatch = $this->getContainer()->get('debug.stopwatch');
 

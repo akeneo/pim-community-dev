@@ -23,11 +23,18 @@ class RuleEvent extends Event
 {
     protected $rule;
 
+    /**
+     * @param RuleInterface $rule
+     */
     public function __construct(RuleInterface $rule)
     {
         $this->rule = $rule;
     }
 
+    /**
+     * Get rule
+     * @return RuleInterface
+     */
     public function getRule()
     {
         return $this->rule;

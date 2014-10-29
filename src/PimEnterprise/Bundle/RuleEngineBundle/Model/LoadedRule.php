@@ -22,10 +22,10 @@ class LoadedRule implements LoadedRuleInterface
     protected $rule;
 
     /** @var array */
-    protected $conditions;
+    protected $conditions = [];
 
     /** @var array */
-    protected $actions;
+    protected $actions = [];
 
     /**
      * The constructor
@@ -48,7 +48,7 @@ class LoadedRule implements LoadedRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function setConditions(array $conditions = [])
+    public function setConditions(array $conditions)
     {
         $this->conditions = $conditions;
 
@@ -58,7 +58,7 @@ class LoadedRule implements LoadedRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function addCondition(array $condition = [])
+    public function addCondition(array $condition)
     {
         $this->conditions[] = $condition;
 
@@ -76,7 +76,7 @@ class LoadedRule implements LoadedRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function setActions(array $actions = [])
+    public function setActions(array $actions)
     {
         $this->actions = $actions;
 
@@ -86,7 +86,7 @@ class LoadedRule implements LoadedRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function addAction(array $action = [])
+    public function addAction(array $action)
     {
         $this->actions[] = $action;
 

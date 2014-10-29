@@ -66,6 +66,9 @@ class ProductRuleSelector implements SelectorInterface
      */
     public function select(RuleInterface $rule)
     {
+        $resolver = new OptionsResolver();
+        $this->configureCondition($resolver);
+
         /** @var RuleSubjectSetInterface $subjectSet */
         $subjectSet = new $this->subjectSetClass();
 
@@ -74,11 +77,9 @@ class ProductRuleSelector implements SelectorInterface
         $pqb = $this->productQueryFactory->create();
 
         $conditions = $rule->getConditions();
-        foreach ($conditions as $condition) {
-            $resolver = new OptionsResolver();
-            $this->configureCondition($resolver);
 
-            $condition = $resolver->resolve($condition);;
+        foreach ($conditions as $condition) {
+            $condition = $resolver->resolve($condition);
 
             $pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
         }
@@ -103,6 +104,10 @@ class ProductRuleSelector implements SelectorInterface
             $rule instanceof LoadedRuleInterface;
     }
 
+    /**
+     * Configure the condition's optionResolver
+     * @param  OptionsResolver $optionsResolver
+     */
     protected function configureCondition(OptionsResolver $optionsResolver)
     {
         $optionsResolver->setRequired(['field', 'operator', 'value']);

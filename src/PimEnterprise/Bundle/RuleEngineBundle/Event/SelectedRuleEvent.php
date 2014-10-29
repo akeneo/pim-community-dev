@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Event;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Symfony\Component\EventDispatcher\Event;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
@@ -20,26 +19,20 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class SelectedRuleEvent extends Event
+class SelectedRuleEvent extends RuleEvent
 {
-    /** @var RuleInterface */
-    protected $rule;
-
     /** @var RuleSubjectSetInterface */
     protected $subjectSet;
 
+    /**
+     * @param RuleInterface           $rule
+     * @param RuleSubjectSetInterface $subjectSet
+     */
     public function __construct(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
-        $this->rule       = $rule;
-        $this->subjectSet = $subjectSet;
-    }
+        parent::__construct($rule);
 
-    /**
-     * @return RuleInterface
-     */
-    public function getRule()
-    {
-        return $this->rule;
+        $this->subjectSet = $subjectSet;
     }
 
     /**

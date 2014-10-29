@@ -30,14 +30,14 @@ interface LoadedRuleInterface extends RuleInterface
      *
      * @return LoadedRuleInterface
      */
-    public function setConditions(array $conditions = []);
+    public function setConditions(array $conditions);
 
     /**
      * @param array $condition
      *
      * @return LoadedRuleInterface
      */
-    public function addCondition(array $condition = []);
+    public function addCondition(array $condition);
 
     /**
      * @return array
@@ -49,12 +49,12 @@ interface LoadedRuleInterface extends RuleInterface
      *
      * @return LoadedRuleInterface
      */
-    public function setActions(array $actions = []);
+    public function setActions(array $actions);
 
     /**
      * @param array $action
      *
      * @return LoadedRuleInterface
      */
-    public function addAction(array $action = []);
+    public function addAction(array $action);
 }
