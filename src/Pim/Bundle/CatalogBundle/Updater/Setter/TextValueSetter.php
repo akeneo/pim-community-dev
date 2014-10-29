@@ -52,7 +52,7 @@ class TextValueSetter implements SetterInterface
         $scope = ($attribute->isScopable()) ? $context['scope'] : null;
 
         foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
+            $value = $product->getValue($field, $locale, $scope);
             if (null === $value) {
                 // TODO : not sure about the relevancy of product builder for this kind of operation
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
