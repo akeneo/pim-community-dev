@@ -33,10 +33,10 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function setValue(array $products, $field, $data, array $context = [])
+    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
         $setter = $this->setterRegistry->get($field);
-        $setter->setValue($products, $field, $data, $context);
+        $setter->setValue($products, $field, $data, $locale, $scope);
 
         return $this;
     }
@@ -44,10 +44,17 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function copyValue(array $products, $sourceField, $destinationField, array $context = [])
-    {
-        $copier = $this->copierRegistry->get($sourceField, $destinationField);
-        $copier->copyValue($products, $sourceField, $destinationField, $context);
+    public function copyValue(
+        array $products,
+        $fromField,
+        $toField,
+        $fromLocale = null,
+        $toLocale = null,
+        $fromScope = null,
+        $toScope = null
+    ) {
+        $copier = $this->copierRegistry->get($fromField, $toField);
+        $copier->copyValue($products, $fromField, $toField, $fromLocale, $toLocale, $fromScope, $toScope);
 
         return $this;
     }
