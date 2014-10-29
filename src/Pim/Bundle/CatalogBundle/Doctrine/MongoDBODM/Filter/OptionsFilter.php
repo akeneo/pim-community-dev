@@ -3,9 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Multi options filter for MongoDB
@@ -36,7 +37,7 @@ class OptionsFilter implements AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -44,6 +45,12 @@ class OptionsFilter implements AttributeFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -52,10 +59,7 @@ class OptionsFilter implements AttributeFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array(
-            $attribute->getAttributeType(),
-            $this->supportedAttributes
-        );
+        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**
@@ -98,7 +102,7 @@ class OptionsFilter implements AttributeFilterInterface
     {
         $value = is_array($value) ? $value : [$value];
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             if (in_array('empty', $value)) {

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -34,7 +35,7 @@ class FamilyFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields = $supportedFields;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -43,6 +44,12 @@ class FamilyFilter implements FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -77,7 +84,7 @@ class FamilyFilter implements FieldFilterInterface
     {
         $value = is_array($value) ? $value : [$value];
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             // TODO: fix this weird support of EMPTY operator

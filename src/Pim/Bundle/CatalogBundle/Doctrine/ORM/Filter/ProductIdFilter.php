@@ -1,10 +1,12 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Product id filter
@@ -25,7 +27,7 @@ class ProductIdFilter implements FieldFilterInterface
     protected $supportedOperators;
 
     /**
-     * Instanciate the filter
+     * Instanciate the base filter
      *
      * @param array $supportedFields
      * @param array $supportedOperators
@@ -43,13 +45,23 @@ class ProductIdFilter implements FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
-        if (!($queryBuilder instanceof QueryBuilder)) {
-            throw new \InvalidArgumentException(
-                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
-            );
+        if (!(($queryBuilder instanceof QueryBuilder))) {
+            throw new \InvalidArgumentException('Query builder should be an instance of Doctrine\ORM\QueryBuilder');
         }
 
         $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value, array $context = [])
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $condition = $this->prepareCriteriaCondition($field, $operator, $value);
+        $this->qb->andWhere($condition);
+
+        return $this;
     }
 
     /**
@@ -77,19 +89,19 @@ class ProductIdFilter implements FieldFilterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Prepare criteria condition with field, operator and value
+     *
+     * @param string|array $field    the backend field name
+     * @param string|array $operator the operator used to filter
+     * @param string|array $value    the value(s) to filter
+     *
+     * @return string
+     * @throws ProductQueryException
      */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
+    protected function prepareCriteriaCondition($field, $operator, $value)
     {
-        $field = '_id';
-        $value = is_array($value) ? $value : [$value];
+        $criteriaCondition = new CriteriaCondition($this->qb);
 
-        if ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->field($field)->notIn($value);
-        } else {
-            $this->qb->field($field)->in($value);
-        }
-
-        return $this;
+        return $criteriaCondition->prepareCriteriaCondition($field, $operator, $value);
     }
 }

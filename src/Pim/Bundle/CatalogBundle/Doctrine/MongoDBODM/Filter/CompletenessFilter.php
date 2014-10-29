@@ -34,7 +34,7 @@ class CompletenessFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields = $supportedFields;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -43,6 +43,12 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -51,10 +57,7 @@ class CompletenessFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array(
-            $field,
-            $this->supportedFields
-        );
+        return in_array($field, $this->supportedFields);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -33,7 +34,7 @@ class GroupsFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields = $supportedFields;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -42,6 +43,12 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -50,10 +57,7 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array(
-            $field,
-            $this->supportedFields
-        );
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -61,10 +65,7 @@ class GroupsFilter implements FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array(
-            $operator,
-            $this->supportedOperators
-        );
+        return in_array($operator, $this->supportedOperators);
     }
 
     /**
@@ -84,7 +85,7 @@ class GroupsFilter implements FieldFilterInterface
         $value = array_map('intval', $value);
         $field = 'groupIds';
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             $this->qb->field($field)->in($value);

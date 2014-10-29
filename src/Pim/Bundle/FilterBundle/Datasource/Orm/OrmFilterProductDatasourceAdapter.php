@@ -23,9 +23,6 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var OrmExpressionBuilder */
-    protected $expressionBuilder;
-
     /**
      * Constructor
      *
@@ -44,5 +41,17 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
     public function getProductQueryBuilder()
     {
         return $this->pqb;
+    }
+
+    /**
+     * Return value format depending on comparison type
+     *
+     * @param string $comparisonType
+     *
+     * @return string
+     */
+    public function getFormatByComparisonType($comparisonType)
+    {
+        return '%s';
     }
 }

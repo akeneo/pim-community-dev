@@ -3,11 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Metric filter
@@ -38,7 +39,7 @@ class MetricFilter implements AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -46,6 +47,10 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException('Query builder should be an instance of Doctrine\ORM\QueryBuilder');
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -60,7 +65,7 @@ class MetricFilter implements AttributeFilterInterface
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
 
-        if ($operator === 'EMPTY') {
+        if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
@@ -95,10 +100,7 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array(
-            $attribute->getAttributeType(),
-            $this->supportedAttributes
-        );
+        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**

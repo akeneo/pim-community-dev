@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Datasource\Orm;
 
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter as OroOrmFilterDatasourceAdapter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
  * Customize the OroPlatform datasource adapter

@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Date filter
@@ -42,8 +44,8 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedFields     = $supportedFields;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -51,6 +53,10 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException('Query builder should be an instance of Doctrine\ORM\QueryBuilder');
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -67,10 +73,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array(
-            $attribute->getAttributeType(),
-            $this->supportedAttributes
-        );
+        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**
@@ -97,7 +100,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        if ($operator === 'EMPTY') {
+        if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
@@ -106,7 +109,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
             );
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
 
-        } elseif ($operator === 'NOT BETWEEN') {
+        } elseif ($operator === Operators::NOT_BETWEEN) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
@@ -142,7 +145,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
         $field = current($this->qb->getRootAliases()).'.'.$field;
 
         switch ($operator) {
-            case 'BETWEEN':
+            case Operators::BETWEEN:
                 $this->qb->andWhere(
                     $this->qb->expr()->andX(
                         $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value[0])),
@@ -151,7 +154,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 );
                 break;
 
-            case 'NOT BETWEEN':
+            case Operators::NOT_BETWEEN:
                 $this->qb->andWhere(
                     $this->qb->expr()->orX(
                         $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value[0])),
@@ -160,15 +163,15 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 );
                 break;
 
-            case '>':
+            case Operators::GREATER_THAN:
                 $this->qb->andWhere($this->qb->expr()->gt($field, $this->getDateLiteralExpr($value, true)));
                 break;
 
-            case '<':
+            case Operators::LOWER_THAN:
                 $this->qb->andWhere($this->qb->expr()->lt($field, $this->getDateLiteralExpr($value)));
                 break;
 
-            case '=':
+            case Operators::EQUALS:
                 $this->qb->andWhere(
                     $this->qb->expr()->andX(
                         $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value)),
@@ -177,7 +180,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 );
                 break;
 
-            case 'EMPTY':
+            case Operators::IS_EMPTY:
                 $this->qb->andWhere($this->qb->expr()->isNull($field));
                 break;
         }

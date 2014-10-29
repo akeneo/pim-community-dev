@@ -41,7 +41,6 @@ class CriteriaCondition
     {
         if (is_array($operator)) {
             return $this->prepareMultiCriteriaCondition($field, $operator, $value);
-
         } else {
             return $this->prepareSingleCriteriaCondition($field, $operator, $value);
         }

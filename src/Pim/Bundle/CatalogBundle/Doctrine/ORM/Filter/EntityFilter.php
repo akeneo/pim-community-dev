@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
@@ -33,7 +34,7 @@ class EntityFilter implements FieldFilterInterface
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->supportedFields = $supportedFields;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
@@ -42,6 +43,10 @@ class EntityFilter implements FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException('Query builder should be an instance of Doctrine\ORM\QueryBuilder');
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -54,7 +59,7 @@ class EntityFilter implements FieldFilterInterface
         $entityAlias = 'filter'.$field;
         $this->qb->leftJoin($rootAlias.'.'.$field, $entityAlias);
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
                     $this->qb->expr()->notIn($entityAlias.'.id', $value),

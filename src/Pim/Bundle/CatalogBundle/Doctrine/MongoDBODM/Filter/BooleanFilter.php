@@ -3,19 +3,20 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Base filter
+ * Boolean filter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
+class BooleanFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -42,8 +43,8 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedFields     = $supportedFields;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -51,6 +52,12 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -59,10 +66,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsField($field)
     {
-        return in_array(
-            $field,
-            $this->supportedFields
-        );
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -70,10 +74,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array(
-            $attribute->getAttributeType(),
-            $this->supportedAttributes
-        );
+        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**
@@ -81,10 +82,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function supportsOperator($operator)
     {
-        return in_array(
-            $operator,
-            $this->supportedOperators
-        );
+        return in_array($operator, $this->supportedOperators);
     }
 
     /**
@@ -113,16 +111,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if ('EMPTY' === $operator) {
-            $this->qb->field($field)->exists(false);
-        } elseif ('IN' === $operator) {
-            $this->qb->field($field)->in($value);
-        } else {
-            if (strpos($value, '/') !== false) {
-                $value = new \MongoRegex($value);
-            }
-            $this->qb->field($field)->equals($value);
-        }
+        $this->qb->field($field)->equals($value);
 
         return $this;
     }

@@ -3,19 +3,21 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Filtering by simple option backend type
+ * Boolean filter
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionFilter implements AttributeFilterInterface
+class BooleanFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -24,19 +26,25 @@ class OptionFilter implements AttributeFilterInterface
     protected $supportedAttributes;
 
     /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the base filter
      *
      * @param array $supportedAttributes
+     * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
         array $supportedAttributes = [],
+        array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
 
@@ -58,40 +66,38 @@ class OptionFilter implements AttributeFilterInterface
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
         $joinAlias = 'filter'.$attribute->getCode();
+        $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        // prepare join value condition
-        $optionAlias = $joinAlias .'.option';
-        //TODO: the value should not contain empty  (comes from the frontend) => it should be in the operator
-        if (in_array('empty', $value)) {
-            unset($value[array_search('empty', $value)]);
-            $expr = $this->qb->expr()->isNull($optionAlias);
-
-            if (count($value) > 0) {
-                $exprIn = $this->qb->expr()->in($optionAlias, $value);
-                $expr = $this->qb->expr()->orX($expr, $exprIn);
-            }
-
-            $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.values',
-                $joinAlias,
-                'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
-            );
-            $this->qb->andWhere($expr);
-        } else {
-            // inner join to value
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
-            $condition .= ' AND ( '. $this->qb->expr()->in($optionAlias, $value) .' ) ';
-
-            $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.values',
-                $joinAlias,
-                'WITH',
-                $condition
-            );
-        }
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+        $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
+        $this->qb->innerJoin(
+            $this->qb->getRootAlias().'.values',
+            $joinAlias,
+            'WITH',
+            $condition
+        );
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value, array $context = [])
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $condition = $this->prepareCriteriaCondition($field, $operator, $value);
+        $this->qb->andWhere($condition);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -116,6 +122,23 @@ class OptionFilter implements AttributeFilterInterface
     public function getOperators()
     {
         return $this->supportedOperators;
+    }
+
+    /**
+     * Prepare criteria condition with field, operator and value
+     *
+     * @param string|array $field    the backend field name
+     * @param string|array $operator the operator used to filter
+     * @param string|array $value    the value(s) to filter
+     *
+     * @return string
+     * @throws ProductQueryException
+     */
+    protected function prepareCriteriaCondition($field, $operator, $value)
+    {
+        $criteriaCondition = new CriteriaCondition($this->qb);
+
+        return $criteriaCondition->prepareCriteriaCondition($field, $operator, $value);
     }
 
     /**

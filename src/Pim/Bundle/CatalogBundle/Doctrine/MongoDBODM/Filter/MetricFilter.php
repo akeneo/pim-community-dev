@@ -3,9 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Metric filter
@@ -36,7 +37,7 @@ class MetricFilter implements AttributeFilterInterface
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -44,6 +45,12 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function setQueryBuilder($queryBuilder)
     {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
         $this->qb = $queryBuilder;
     }
 
@@ -52,10 +59,7 @@ class MetricFilter implements AttributeFilterInterface
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        return in_array(
-            $attribute->getAttributeType(),
-            $this->supportedAttributes
-        );
+        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
     }
 
     /**
@@ -86,19 +90,19 @@ class MetricFilter implements AttributeFilterInterface
         $fieldData = sprintf('%s.baseData', $field);
 
         switch ($operator) {
-            case '<':
+            case Operators::LOWER_THAN:
                 $this->qb->field($fieldData)->lt($data);
                 break;
-            case '<=':
+            case Operators::LOWER_OR_EQUAL_THAN:
                 $this->qb->field($fieldData)->lte($data);
                 break;
-            case '>':
+            case Operators::GREATER_THAN:
                 $this->qb->field($fieldData)->gt($data);
                 break;
-            case '>=':
+            case Operators::GREATER_OR_EQUAL_THAN:
                 $this->qb->field($fieldData)->gte($data);
                 break;
-            case 'EMPTY':
+            case Operators::IS_EMPTY:
                 $this->qb->field($fieldData)->equals(null);
                 break;
             default:

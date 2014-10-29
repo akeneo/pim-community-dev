@@ -16,15 +16,6 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface as OroFi
 interface FilterDatasourceAdapterInterface extends OroFilterDatasourceAdapterInterface
 {
     /**
-     * Return value format depending on comparison type
-     *
-     * @param string $comparisonType
-     *
-     * @return string
-     */
-    public function getFormatByComparisonType($comparisonType);
-
-    /**
      * Get query builder
      *
      * @return mixed

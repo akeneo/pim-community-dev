@@ -10,13 +10,13 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Date filter
+ * String filter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateFilter implements AttributeFilterInterface, FieldFilterInterface
+class StringFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -111,52 +111,45 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        switch ($operator) {
-            case Operators::BETWEEN:
-                $this->qb->field($field)->gte($this->getTimestamp($value[0]));
-                $this->qb->field($field)->lte($this->getTimestamp($value[1], true));
-                break;
-            case Operators::NOT_BETWEEN:
-                $this->qb->addAnd(
-                    $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value[0])))
-                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value[1], true)))
-                );
-                break;
-            case Operators::GREATER_THAN:
-                $this->qb->field($field)->gt($this->getTimestamp($value, true));
-                break;
-            case Operators::LOWER_THAN:
-                $this->qb->field($field)->lt($this->getTimestamp($value));
-                break;
-            case Operators::EQUALS:
-                $this->qb->field($field)->gte($this->getTimestamp($value));
-                $this->qb->field($field)->lte($this->getTimestamp($value, true));
-                break;
-            case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
-                break;
+        if (Operators::IS_EMPTY === $operator) {
+            $this->qb->field($field)->exists(false);
+        } elseif (Operators::NOT_IN_LIST === $operator) {
+            $this->qb->field($field)->in($value);
+        } else {
+            $value = $this->prepareValue($operator, $value);
+
+            $this->qb->field($field)->equals($value);
         }
 
         return $this;
     }
 
     /**
-     * Get timestamp from data
+     * Prepare value of the filter
+     * @param string|array $operator
+     * @param string|array $value
      *
-     * @param \DateTime|string $data
-     * @param boolean          $endOfDay
-     *
-     * @return integer
+     * @return string
      */
-    protected function getTimestamp($data, $endOfDay = false)
+    protected function prepareValue($operator, $value)
     {
-        if ($data instanceof \DateTime && true === $endOfDay) {
-            $data->setTime(23, 59, 59);
-        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
-            $data = sprintf('%s 23:59:59', $data);
+        switch ($operator) {
+            case Operators::STARTS_WITH:
+                $value = new \MongoRegex(sprintf('/^%s/i', $value));
+                break;
+            case Operators::ENDS_WITH:
+                $value = new \MongoRegex(sprintf('/%s$/i', $value));
+                break;
+            case Operators::CONTAINS:
+                $value = new \MongoRegex(sprintf('/%s/i', $value));
+                break;
+            case Operators::DOES_NOT_CONTAIN:
+                $value = new \MongoRegex(sprintf('/^((?!%s).)*$/i', $value));
+                break;
+            default:
+                break;
         }
 
-        return $data instanceof \DateTime ? $data->getTimestamp() : strtotime($data);
+        return $value;
     }
 }

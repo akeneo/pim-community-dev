@@ -3,21 +3,22 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Price filter
+ * String filter
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceFilter implements AttributeFilterInterface
+class StringFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -26,19 +27,25 @@ class PriceFilter implements AttributeFilterInterface
     protected $supportedAttributes;
 
     /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
     protected $supportedOperators;
 
     /**
      * Instanciate the base filter
      *
      * @param array $supportedAttributes
+     * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
         array $supportedAttributes = [],
+        array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
+        $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
 
@@ -59,45 +66,50 @@ class PriceFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
     {
-        $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode();
+        $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        // join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
-
-        if (Operators::IS_EMPTY === $operator) {
+        if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $condition
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
-
-            // join to price
-            $joinAliasPrice = 'filterP'.$attribute->getCode();
-            $priceData      = $joinAlias.'.'.$backendType;
-            $this->qb->leftJoin($priceData, $joinAliasPrice);
-
-            // add conditions
-            $condition = $this->preparePriceCondition($joinAliasPrice, $operator, $value);
-            $exprNull = $this->qb->expr()->isNull($joinAliasPrice.'.id');
-            $exprOr = $this->qb->expr()->orX($condition, $exprNull);
-            $this->qb->andWhere($exprOr);
+            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $condition
             );
-
-            $joinAliasPrice = 'filterP'.$attribute->getCode();
-            $condition = $this->preparePriceCondition($joinAliasPrice, $operator, $value);
-
-            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasPrice, 'WITH', $condition);
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value, array $context = [])
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $condition = $this->prepareCondition($backendField, $operator, $value);
+        $this->qb->andWhere($condition);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array($field, $this->supportedFields);
     }
 
     /**
@@ -122,6 +134,39 @@ class PriceFilter implements AttributeFilterInterface
     public function getOperators()
     {
         return $this->supportedOperators;
+    }
+
+    /**
+     * Prepare conditions of the filter
+     * @param string|array  $operator
+     * @param string|array $value
+     *
+     * @return string
+     */
+    protected function prepareCondition($backendField, $operator, $value)
+    {
+        switch ($operator) {
+            case Operators::STARTS_WITH:
+                $operator = 'LIKE';
+                $value    = $value . '%';
+                break;
+            case Operators::ENDS_WITH:
+                $operator = 'LIKE';
+                $value    = '%' . $value;
+                break;
+            case Operators::CONTAINS:
+                $operator = 'LIKE';
+                $value    = '%' . $value . '%';
+                break;
+            case Operators::DOES_NOT_CONTAIN:
+                $operator = 'NOT LIKE';
+                $value    = '%' . $value . '%';
+                break;
+            default:
+                break;
+        }
+
+        return $this->prepareCriteriaCondition($backendField, $operator, $value);
     }
 
     /**
@@ -157,27 +202,5 @@ class PriceFilter implements AttributeFilterInterface
         $joinHelper = new ValueJoin($this->qb);
 
         return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
-    }
-
-    /**
-     * Prepare price condition to join
-     *
-     * @param string $joinAlias
-     * @param string $operator
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function preparePriceCondition($joinAlias, $operator, $value)
-    {
-        list($value, $currency) = explode(' ', $value);
-
-        $valueField     = sprintf('%s.%s', $joinAlias, 'data');
-        $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value);
-
-        $currencyField     = sprintf('%s.%s', $joinAlias, 'currency');
-        $currencyCondition = $this->prepareCriteriaCondition($currencyField, '=', $currency);
-
-        return sprintf('%s AND %s', $currencyCondition, $valueCondition);
     }
 }
