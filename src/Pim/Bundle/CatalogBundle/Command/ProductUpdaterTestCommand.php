@@ -32,7 +32,7 @@ class ProductUpdaterTestCommand extends ContainerAwareCommand
         $pqbFactory = $this->getContainer()->get('pim_catalog.doctrine.query.product_query_factory');
         $pqb = $pqbFactory->create()
             ->addFilter('family', 'IN', [14])
-            ->addFilter('main_color', 'IN', [39]);
+            ->addFilter('main_color', 'IN', [41]);
 
         // TODO : this execution part is still weird, we could "wrap" the execution but we need to cover
         // both ORM/MongoODM hydration
@@ -42,9 +42,9 @@ class ProductUpdaterTestCommand extends ContainerAwareCommand
         // update via another clean API FTW
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
         $updater
-            ->setValue($products, 'name', 'my new name')
-            ->setValue($products, 'description', 'my awesome desc !', ['locale' => 'en_US', 'scope' => 'ecommerce'])
-            ->copyValue($products, 'description', 'description', ['from_locale' => 'en_US', 'from_scope' => 'ecommerce', 'to_locale' => 'en_US', 'to_scope' => 'print']);
+            ->setValue($products, 'name', 'new name')
+            ->setValue($products, 'description', 'new desc', ['locale' => 'en_US', 'scope' => 'mobile'])
+            ->copyValue($products, 'description', 'description', ['from_locale' => 'en_US', 'from_scope' => 'mobile', 'to_locale' => 'en_US', 'to_scope' => 'print']);
 
         // flush with doctrine
         $om = $this->getContainer()->get('pim_catalog.object_manager.product');
