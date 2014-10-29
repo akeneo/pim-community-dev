@@ -28,8 +28,6 @@ class TextValueCopier implements CopierInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO : first draft, lot of re-work / discuss to have here, about validation and concern
      */
     public function copyValue(
         array $products,
@@ -40,7 +38,7 @@ class TextValueCopier implements CopierInterface
         $fromScope = null,
         $toScope = null
     ) {
-        $context = $this->validateContext(
+        $this->validateContext(
             $fromAttribute,
             $toAttribute,
             $fromLocale,
