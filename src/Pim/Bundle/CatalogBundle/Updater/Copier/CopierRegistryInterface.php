@@ -21,12 +21,12 @@ interface CopierRegistryInterface
     /**
      * Fetch the copier which supports the copy of a field to another
      *
-     * @param string $sourceField
-     * @param string $destField
+     * @param string $toField
+     * @param string $fromField
      *
      * @throws \LogicException
      *
      * @return CopierInterface
      */
-    public function get($sourceField, $destField);
+    public function get($fromField, $toField);
 }
