@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+
 /**
  * Registry of setters
  *
@@ -19,13 +21,13 @@ interface SetterRegistryInterface
     public function register(SetterInterface $setter);
 
     /**
-     * Fetch the setter which supports the field
+     * Fetch the setter which supports the attribute
      *
-     * @param string $field
+     * @param AttributeInterface $attribute
      *
      * @throws \LogicException
      *
      * @return SetterInterface
      */
-    public function get($field);
+    public function get(AttributeInterface $attribute);
 }

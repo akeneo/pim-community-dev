@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
 /**
  * Update many products at a time
@@ -14,6 +16,9 @@ use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
  */
 class ProductUpdater implements ProductUpdaterInterface
 {
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
     /** @var SetterRegistryInterface */
     protected $setterRegistry;
 
@@ -21,11 +26,16 @@ class ProductUpdater implements ProductUpdaterInterface
     protected $copierRegistry;
 
     /**
+     * @param AttributeRepository     $repository
      * @param SetterRegistryInterface $setterRegistry
      * @param CopierRegistryInterface $copierRegistry
      */
-    public function __construct(SetterRegistryInterface $setterRegistry, CopierRegistryInterface $copierRegistry)
-    {
+    public function __construct(
+        AttributeRepository $repository,
+        SetterRegistryInterface $setterRegistry,
+        CopierRegistryInterface $copierRegistry
+    ) {
+        $this->attributeRepository = $repository;
         $this->setterRegistry = $setterRegistry;
         $this->copierRegistry = $copierRegistry;
     }
@@ -35,8 +45,9 @@ class ProductUpdater implements ProductUpdaterInterface
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
-        $setter = $this->setterRegistry->get($field);
-        $setter->setValue($products, $field, $data, $locale, $scope);
+        $attribute = $this->getAttribute($field);
+        $setter = $this->setterRegistry->get($attribute);
+        $setter->setValue($products, $attribute, $data, $locale, $scope);
 
         return $this;
     }
@@ -53,9 +64,27 @@ class ProductUpdater implements ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     ) {
+        // TODO use attribute here too !!
         $copier = $this->copierRegistry->get($fromField, $toField);
         $copier->copyValue($products, $fromField, $toField, $fromLocale, $toLocale, $fromScope, $toScope);
 
         return $this;
+    }
+
+    /**
+     * Fetch the attribute by its code
+     *
+     * @throws \LogicException
+     *
+     * @return AttributeInterface
+     */
+    protected function getAttribute($code)
+    {
+        $attribute = $this->attributeRepository->findOneByCode($code);
+        if ($attribute === null) {
+            throw new \LogicException(sprintf('Unknown attribute "%s"', $code));
+        }
+
+        return $attribute;
     }
 }
