@@ -51,7 +51,7 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = [])
+    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
@@ -104,7 +104,7 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = [])
+    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         return 'product' === $subjectSet->getType() &&
             $rule instanceof LoadedRule;

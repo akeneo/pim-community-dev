@@ -26,12 +26,12 @@ interface ApplierInterface
      *
      * @return mixed
      */
-    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = []);
+    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet);
 
     /**
      * @param RuleSubjectSetInterface $subjectSet
      *
      * @return bool
      */
-    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet, array $context = []);
+    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet);
 }

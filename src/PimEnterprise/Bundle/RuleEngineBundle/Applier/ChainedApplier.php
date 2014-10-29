@@ -51,8 +51,8 @@ class ChainedApplier implements ApplierInterface
     public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         foreach ($this->appliers as $applier) {
-            if ($applier->supports($rule)) {
-                return $applier->run($rule);
+            if ($applier->supports($rule, $subjectSet)) {
+                return $applier->apply($rule, $subjectSet);
             }
         }
 

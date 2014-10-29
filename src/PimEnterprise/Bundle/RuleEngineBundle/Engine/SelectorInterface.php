@@ -26,12 +26,12 @@ interface SelectorInterface
      *
      * @return RuleSubjectSetInterface
      */
-    public function select(RuleInterface $instance, array $context = []);
+    public function select(RuleInterface $instance);
 
     /**
      * @param RuleInterface $instance
      *
      * @return bool
      */
-    public function supports(RuleInterface $instance, array $context = []);
+    public function supports(RuleInterface $instance);
 }

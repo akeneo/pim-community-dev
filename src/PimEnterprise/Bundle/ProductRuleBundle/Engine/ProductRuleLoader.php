@@ -43,7 +43,7 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $rule, array $context = [])
+    public function load(RuleInterface $rule)
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($rule));
 
@@ -62,7 +62,7 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule, array $context = [])
+    public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();
     }

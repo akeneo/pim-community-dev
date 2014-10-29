@@ -64,7 +64,7 @@ class ProductRuleSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function select(RuleInterface $rule, array $context = [])
+    public function select(RuleInterface $rule)
     {
         /** @var RuleSubjectSetInterface $subjectSet */
         $subjectSet = new $this->subjectSetClass();
@@ -97,7 +97,7 @@ class ProductRuleSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule, array $context = [])
+    public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType() &&
             $rule instanceof LoadedRuleInterface;
