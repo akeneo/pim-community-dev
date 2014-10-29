@@ -43,56 +43,22 @@ class SetterRegistry implements SetterRegistryInterface
     public function get($field)
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
-        // TODO : other possiblity is to have different support methods for attribute and field in setters
-        // as in product query builder but i have the feeling that only the attribute type matters,
-        // we'll not create many setters for one attribute type
-        if ($attribute !== null) {
-            $setter = $this->getAttributeSetter($attribute);
-        } else {
-            // TODO :
-            // - updatable fields are : family, groups, categories, enabled, association
-            // - not updatable are : id, created, updated
-            // so the best shot could be to provided dedicated methods in ProductUpdater for the updatable fields
-            // for instance a setFamily(
-            $setter = $this->getFieldSetter($field);
+        if ($attribute === null) {
+            throw new \LogicException(sprintf('Attribute "%s" not found', $field));
         }
 
-        if ($setter === null) {
-            throw new \LogicException(sprintf('Field "%s" is not supported by any setter', $field));
-        }
-
-        return $setter;
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return SetterInterface
-     */
-    protected function getAttributeSetter(AttributeInterface $attribute)
-    {
         foreach ($this->setters as $setter) {
             if ($setter->supports($attribute->getAttributeType())) {
                 return $setter;
             }
         }
 
-        return null;
-    }
+        // TODO :
+        // - updatable fields are : family, groups, categories, enabled, association
+        // - not updatable are : id, created, updated
+        // so the best shot could be to provided dedicated methods in ProductUpdater for the updatable fields
+        // for instance a setFamily(
 
-    /**
-     * @param string field
-     *
-     * @return SetterInterface
-     */
-    protected function getFieldSetter($field)
-    {
-        foreach ($this->setters as $setter) {
-            if ($setter->supports($field)) {
-                return $setter;
-            }
-        }
-
-        return null;
+        throw new \LogicException(sprintf('Field "%s" is not supported by any setter', $field));
     }
 }
