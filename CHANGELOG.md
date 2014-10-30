@@ -9,6 +9,7 @@
 - PIM-3308: Fix regression on unclassified filter
 - PIM-3311: Fix creation of products with missing identifier during imports
 - PIM-3312: Fix CSV import of product values with invalid channel, locale or currency
+- PIM-3309: Fix check on product value uniqueness
 
 # 1.2.10 (2014-10-24)
 
