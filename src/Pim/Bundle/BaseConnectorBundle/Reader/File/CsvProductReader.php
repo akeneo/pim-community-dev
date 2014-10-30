@@ -3,6 +3,11 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
  * Product csv reader
@@ -21,16 +26,53 @@ class CsvProductReader extends CsvReader
     /** @var array Media attribute codes */
     protected $mediaAttributes = array();
 
+    /** @var FieldNameBuilder */
+    protected $fieldNameBuilder;
+
+    /** @var array */
+    protected $locales;
+
+    /** @var array */
+    protected $channels;
+
+    /** @var array */
+    protected $currencies;
+
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
-     * @param string        $attributeClass
+     * @param EntityManager    $entityManager
+     * @param FieldNameBuilder $fieldNameBuilder,
+     * @param string           $attributeClass
+     * @param string           $channelClass
+     * @param string           $localeClass
+     * @param string           $currencyClass
      */
-    public function __construct(EntityManager $entityManager, $attributeClass)
-    {
-        $repository = $entityManager->getRepository($attributeClass);
-        $this->mediaAttributes = $repository->findMediaAttributeCodes();
+    public function __construct(
+        EntityManager $entityManager,
+        $attributeClass,
+        FieldNameBuilder $fieldNameBuilder,
+        $channelClass,
+        $localeClass,
+        $currencyClass
+    ) {
+        $this->fieldNameBuilder = $fieldNameBuilder;
+
+        /** @var AttributeRepository $attributeRepository */
+        $attributeRepository = $entityManager->getRepository($attributeClass);
+        $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
+
+        /** @var ChannelRepository $channelRepository */
+        $channelRepository = $entityManager->getRepository($channelClass);
+        $this->channels = $channelRepository->getChannelCodes();
+
+        /** @var LocaleRepository $localeRepository */
+        $localeRepository = $entityManager->getRepository($localeClass);
+        $this->locales = $localeRepository->getActivatedLocaleCodes();
+
+        /** @var CurrencyRepository $currencyRepository */
+        $currencyRepository = $entityManager->getRepository($currencyClass);
+        $this->currencies = $currencyRepository->getActivatedCurrencyCodes();
     }
 
     /**
@@ -103,5 +145,41 @@ class CsvProductReader extends CsvReader
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initializeRead()
+    {
+        parent::initializeRead();
+
+        $this->checkAttributesInHeader();
+    }
+
+    /**
+     * Checks that attributes in the header have existing locale, scope and currency.
+     *
+     * @throws \LogicException
+     */
+    protected function checkAttributesInHeader()
+    {
+        foreach ($this->fieldNames as $fieldName) {
+            if (null !== $info = $this->fieldNameBuilder->extractAttributeFieldNameInfos($fieldName)) {
+                $locale = $info['locale_code'];
+                $channel = $info['scope_code'];
+                $currency = isset($info['price_currency']) ? $info['price_currency'] : null;
+
+                if (null !== $locale && !in_array($locale, $this->locales)) {
+                    throw new \LogicException(sprintf('Locale %s does not exist.', $locale));
+                }
+                if (null !== $channel && !in_array($channel, $this->channels)) {
+                    throw new \LogicException(sprintf('Channel %s does not exist.', $channel));
+                }
+                if (null !== $currency && !in_array($currency, $this->currencies)) {
+                    throw new \LogicException(sprintf('Currency %s does not exist.', $currency));
+                }
+            }
+        }
     }
 }

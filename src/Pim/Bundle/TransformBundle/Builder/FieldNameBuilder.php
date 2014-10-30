@@ -64,9 +64,11 @@ class FieldNameBuilder
      *     "price_currency" => <currency_code> // this key is optional
      * ]
      *
+     * Return null if the field name does not match an attribute.
+     *
      * @param string $fieldName
      *
-     * @return array
+     * @return array|null
      */
     public function extractAttributeFieldNameInfos($fieldName)
     {
@@ -75,7 +77,11 @@ class FieldNameBuilder
 
         $attribute = $this->getRepository($this->attributeClass)->findByReference($attributeCode);
 
-        return $this->extractAttributeInfos($attribute, $explodedFieldName);
+        if (null !== $attribute) {
+            return $this->extractAttributeInfos($attribute, $explodedFieldName);
+        }
+
+        return null;
     }
 
     /**
