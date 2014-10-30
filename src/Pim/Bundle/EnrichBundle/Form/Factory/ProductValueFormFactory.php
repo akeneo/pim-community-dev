@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Factory;
 
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Build the product value form

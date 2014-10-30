@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityNotFoundException;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Attribute manager
@@ -20,12 +22,6 @@ class AttributeManager
 {
     /** @var string */
     protected $attributeClass;
-
-    /** @var string */
-    protected $optionClass;
-
-    /** @var string */
-    protected $optionValueClass;
 
     /** @var string */
     protected $productClass;
@@ -42,26 +38,20 @@ class AttributeManager
     /**
      * Constructor
      *
-     * @param string                   $attributeClass   Attribute class
-     * @param string                   $optionClass      Option class
-     * @param string                   $optionValueClass Option value class
-     * @param string                   $productClass     Product class
-     * @param ObjectManager            $objectManager    Object manager
-     * @param AttributeTypeFactory     $factory          Attribute type factory
-     * @param EventDispatcherInterface $eventDispatcher  Event dispatcher
+     * @param string                   $attributeClass  Attribute class
+     * @param string                   $productClass    Product class
+     * @param ObjectManager            $objectManager   Object manager
+     * @param AttributeTypeFactory     $factory         Attribute type factory
+     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
     public function __construct(
         $attributeClass,
-        $optionClass,
-        $optionValueClass,
         $productClass,
         ObjectManager $objectManager,
         AttributeTypeFactory $factory,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->attributeClass   = $attributeClass;
-        $this->optionClass      = $optionClass;
-        $this->optionValueClass = $optionValueClass;
         $this->productClass     = $productClass;
         $this->objectManager    = $objectManager;
         $this->factory          = $factory;
@@ -91,30 +81,6 @@ class AttributeManager
     }
 
     /**
-     * Create an attribute option
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
-     */
-    public function createAttributeOption()
-    {
-        $class = $this->optionClass;
-
-        return new $class();
-    }
-
-    /**
-     * Create an attribute option value
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
-     */
-    public function createAttributeOptionValue()
-    {
-        $class = $this->optionValueClass;
-
-        return new $class();
-    }
-
-    /**
      * Get the attribute FQCN
      *
      * @return string
@@ -122,16 +88,6 @@ class AttributeManager
     public function getAttributeClass()
     {
         return $this->attributeClass;
-    }
-
-    /**
-     * Get the attribute option FQCN
-     *
-     * @return string
-     */
-    public function getAttributeOptionClass()
-    {
-        return $this->optionClass;
     }
 
     /**
@@ -162,5 +118,44 @@ class AttributeManager
 
         $this->objectManager->remove($attribute);
         $this->objectManager->flush();
+    }
+
+    /**
+     * Update attribute option sorting
+     *
+     * @param AttributeInterface $attribute
+     * @param array              $sorting
+     */
+    public function updateSorting(AttributeInterface $attribute, array $sorting = [])
+    {
+        foreach ($attribute->getOptions() as $option) {
+            if (isset($sorting[$option->getId()])) {
+                $option->setSortOrder($sorting[$option->getId()]);
+            } else {
+                $option->setSortOrder(0);
+            }
+
+            $this->objectManager->persist($option);
+        }
+
+        $this->objectManager->flush();
+    }
+
+    /**
+     * Get an attribute or throw an exception
+     * @param integer $id
+     *
+     * @return AttributeInterface
+     * @throws EntityNotFoundException
+     */
+    public function getAttribute($id)
+    {
+        $attribute = $this->objectManager->find($this->getAttributeClass(), $id);
+
+        if (null === $attribute) {
+            throw new EntityNotFoundException();
+        }
+
+        return $attribute;
     }
 }

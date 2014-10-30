@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
+use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler;
-use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 
 /**
  * Overriden UserHandler to remove tag management

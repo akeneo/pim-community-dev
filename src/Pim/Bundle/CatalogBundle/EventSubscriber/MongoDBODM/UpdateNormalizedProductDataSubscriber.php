@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQueryGeneratorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Sets the normalized data of a Product document when related entities are modified

@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
  * A normalizer to transform a product entity into an array

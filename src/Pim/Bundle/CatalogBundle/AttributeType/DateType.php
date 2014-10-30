@@ -32,13 +32,6 @@ class DateType extends AbstractAttributeType
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
         $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name'      => 'defaultValue',
-                'fieldType' => 'oro_date',
-                'options'   => [
-                    'widget' => 'single_text'
-                ]
-            ],
             'dateMin' => [
                 'name'      => 'dateMin',
                 'fieldType' => 'oro_date',

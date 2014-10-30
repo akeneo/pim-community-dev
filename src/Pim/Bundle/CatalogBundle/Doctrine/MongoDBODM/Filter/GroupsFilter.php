@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
  * Entity filter
@@ -18,29 +18,74 @@ class GroupsFilter implements FieldFilterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedFields;
+
+    /** @var array */
+    protected $supportedOperators;
 
     /**
-     * @param QueryBuilder   $qb      the query builder
-     * @param CatalogContext $context the catalog context
+     * Instanciate the filter
+     *
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
-        $this->context = $context;
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields    = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function setQueryBuilder($queryBuilder)
+    {
+        if (!($queryBuilder instanceof QueryBuilder)) {
+            throw new \InvalidArgumentException(
+                'Query builder should be an instance of Doctrine\ODM\MongoDB\Query\Builder'
+            );
+        }
+
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, $this->supportedOperators);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperators()
+    {
+        return $this->supportedOperators;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value, array $context = [])
     {
         $value = is_array($value) ? $value : [$value];
         $value = array_map('intval', $value);
         $field = 'groupIds';
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             $this->qb->field($field)->in($value);

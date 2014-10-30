@@ -4,10 +4,10 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 
 /**
  * Set attribute requirements
@@ -116,7 +116,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(Family $family)
+    protected function doPerform(FamilyInterface $family)
     {
         foreach ($this->attRequirements as $attributeRequirement) {
             $family->addAttribute($attributeRequirement->getAttribute());

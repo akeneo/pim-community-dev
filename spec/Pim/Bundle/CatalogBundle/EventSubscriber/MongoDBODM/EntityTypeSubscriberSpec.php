@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\ODM\MongoDB\Events;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ODM\MongoDB\Events;
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 
 /**
  * @require Doctrine\ODM\MongoDB\Events
@@ -190,5 +190,7 @@ class ValueStub
 
 class FooStub
 {
-    public function getId() { }
+    public function getId()
+    {
+    }
 }

@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Abstract attribute type
@@ -200,7 +199,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     public function prepareValueFormData(ProductValueInterface $value)
     {
-        return is_null($value->getData()) ? $value->getAttribute()->getDefaultValue() : $value->getData();
+        return $value->getData();
     }
 
     /**

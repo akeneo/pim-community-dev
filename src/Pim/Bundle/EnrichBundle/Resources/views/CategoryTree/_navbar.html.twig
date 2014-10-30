@@ -1,2 +1,2 @@
-{% set tabs = form.vars.value.id ? ['Properties', 'History'] : 'Properties' %}
+{% set tabs = form.vars.value.id and resource_granted('pim_enrich_category_history') ? ['Properties', 'History'] : 'Properties' %}
 {{ elements.form_navbar(tabs) }}

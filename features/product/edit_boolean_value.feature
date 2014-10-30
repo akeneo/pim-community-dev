@@ -8,16 +8,15 @@ Feature: Edit a boolean value
     Given the "default" catalog configuration
     And a "tshirt" product
     And the following attributes:
-      | code             | label            | type    | scopable | localizable | default_value |
-      | boolean          | Boolean          | boolean | no       | no          | no            |
-      | scopable_boolean | Scopable boolean | boolean | yes      | yes         | yes           |
+      | code             | label            | type    | scopable | localizable |
+      | boolean          | Boolean          | boolean | no       | no          |
+      | scopable_boolean | Scopable boolean | boolean | yes      | yes         |
     And I am logged in as "Mary"
     And I am on the "tshirt" product page
     And I add available attributes Boolean and Scopable boolean
     And I save the product
 
   Scenario: Successfully update a boolean value
-    Then attribute boolean of "tshirt" should be "false"
     When I check the "Boolean" switch
     And I press the "Save" button
     Then attribute boolean of "tshirt" should be "true"
@@ -26,10 +25,9 @@ Feature: Edit a boolean value
     Then attribute boolean of "tshirt" should be "false"
 
   Scenario: Successfully update a scopable boolean value
+    When I check the "ecommerce Scopable boolean" switch
+    And I press the "Save" button
     Then the english ecommerce scopable_boolean of "tshirt" should be "true"
     When I uncheck the "ecommerce Scopable boolean" switch
     And I press the "Save" button
     Then the english ecommerce scopable_boolean of "tshirt" should be "false"
-    When I check the "ecommerce Scopable boolean" switch
-    And I press the "Save" button
-    Then the english ecommerce scopable_boolean of "tshirt" should be "true"
