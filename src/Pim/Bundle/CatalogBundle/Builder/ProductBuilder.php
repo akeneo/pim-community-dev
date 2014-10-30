@@ -155,6 +155,7 @@ class ProductBuilder
         $scope = null
     ) {
         $value = $this->createProductValue();
+        $value->setAttribute($attribute);
         if ($attribute->isLocalizable()) {
             if ($locale !== null) {
                 $value->setLocale($locale);
@@ -179,8 +180,6 @@ class ProductBuilder
                 );
             }
         }
-
-        $value->setAttribute($attribute);
         $product->addValue($value);
 
         return $value;
