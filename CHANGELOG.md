@@ -78,12 +78,6 @@
 # 1.2.9 (2014-10-17)
 
 ## Bug fixes
-- PIM-3221: Fix the possibility to update attributes on variant groups during import
-- PIM-3283: Fix issue on the password reset
-
-# 1.2.9 (2014-10-17)
-
-## Bug fixes
 - PIM-3254: Fix issue with inactive locales in exports
 - PIM-3217: Fix missing filter groups in grid filter selector when two attribute groups have the same sort orders
 - PIM-3281: Fix mass edit issue on localizable values, it uses user locale instead of selected locale
