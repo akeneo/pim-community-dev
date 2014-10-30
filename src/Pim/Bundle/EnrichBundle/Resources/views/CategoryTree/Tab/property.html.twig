@@ -1,4 +1,4 @@
-<div class="tab-pane {{ first_tab ? 'active' : ''}}" id="{{ tab_id }}">
+<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({'.': '-'}) }}">
     {% set generalProperties %}
         {{ form_row(form.code) }}
     {% endset %}

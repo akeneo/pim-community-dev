@@ -6,63 +6,45 @@ parameters:
     pim_enrich.view_element.tab.product_history.template:      'PimEnrichBundle:Product:Tab/history.html.twig'
 
 services:
-#    pim_enrich.view_element.tab.product_attribute_base:
-#        parent: pim_enrich.view_element.tab.base
-#        arguments:
-#            - %pim_enrich.view_element.tab.product_attribute.template%
-#            - 'tab.pim_enrich_product_edit.attribute'
-
-
     pim_enrich.view_element.tab.product_attribute:
-        parent: pim_enrich.view_element.tab.base
+        parent: pim_enrich.view_element.base_protected
         arguments:
-            - %pim_enrich.view_element.tab.product_attribute.template%
             - 'tab.pim_enrich_product_edit.attribute'
-        calls:
-            - [addVisibilityChecker, [@pim_enrich.view_element.visibility_checker.acl, {acl: 'pim_enrich_product_edit_attributes'}]]
+            - %pim_enrich.view_element.tab.product_attribute.template%
+            - ['pim_enrich_product_edit_attributes']
         tags:
-            - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_product_edit}
-
-    pim_enrich.view_element.tab.product_category_base:
-        parent: pim_enrich.view_element.tab.base
-        arguments:
-            - %pim_enrich.view_element.tab.product_category.template%
-            - 'tab.pim_enrich_product_edit.category'
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 90 }
 
     pim_enrich.view_element.tab.product_category:
-        parent: pim_enrich.view_element.tab.granted
+        parent: pim_enrich.view_element.base_protected
         arguments:
-            - @pim_enrich.view_element.tab.product_category_base
-            - 'pim_enrich_product_categories_view'
+            - 'tab.pim_enrich_product_edit.category'
+            - %pim_enrich.view_element.tab.product_category.template%
+            - ['pim_enrich_product_categories_view']
         tags:
-            - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_product_edit}
-
-    pim_enrich.view_element.tab.product_association_base:
-        parent: pim_enrich.view_element.tab.base
-        arguments:
-            - %pim_enrich.view_element.tab.product_association.template%
-            - 'tab.pim_enrich_product_edit.association'
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 100 }
 
     pim_enrich.view_element.tab.product_association:
-        parent: pim_enrich.view_element.tab.granted
+        parent: pim_enrich.view_element.base_protected
         arguments:
-            - @pim_enrich.view_element.tab.product_association_base
-            - 'pim_enrich_associations_view'
+            - 'tab.pim_enrich_product_edit.association'
+            - %pim_enrich.view_element.tab.product_association.template%
+            - ['pim_enrich_associations_view']
         tags:
-            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_product_edit}
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 110 }
 
     pim_enrich.view_element.tab.product_completeness:
-        parent: pim_enrich.view_element.tab.base
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pim_enrich.view_element.tab.product_completeness.template%
             - 'tab.pim_enrich_product_edit.completeness'
+            - %pim_enrich.view_element.tab.product_completeness.template%
         tags:
-            - { name: pim_enrich_view_element.tab, position: 120, identifier: pim_enrich_product_edit}
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 120 }
 
     pim_enrich.view_element.tab.product_history:
-        parent: pim_enrich.view_element.tab.base
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pim_enrich.view_element.tab.product_history.template%
             - 'tab.pim_enrich_product_edit.history'
+            - %pim_enrich.view_element.tab.product_history.template%
         tags:
-            - { name: pim_enrich_view_element.tab, position: 130, identifier: pim_enrich_product_edit}
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 130 }

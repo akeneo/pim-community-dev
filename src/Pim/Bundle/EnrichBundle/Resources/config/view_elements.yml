@@ -1,45 +1,20 @@
 parameters:
-    pim_enrich.view_element.tab.base.class:         Pim\Bundle\EnrichBundle\ViewElement\Tab\BaseTab
-    pim_enrich.view_element.tab.on_form_edit.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\OnFormEditTab
-    pim_enrich.view_element.tab.granted.class:      Pim\Bundle\EnrichBundle\ViewElement\Tab\GrantedTab
-    pim_enrich.view_element.registry.class:         Pim\Bundle\EnrichBundle\ViewElement\ViewElementsRegistry
-
-    pim_enrich.view_element.visibility_checker.acl.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\TabVisibilityCheckerAcl
-    pim_enrich.view_element.visibility_checker.voter.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\TabVisibilityCheckerVoter
-    pim_enrich.view_element.visibility_checker.form_edit.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\TabVisibilityCheckerFormEdit
+    pim_enrich.view_element.registry.class:                     Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry
+    pim_enrich.view_element.base.class:                         Pim\Bundle\EnrichBundle\ViewElement\BaseViewElement
+    pim_enrich.view_element.base_protected.class:               Pim\Bundle\EnrichBundle\ViewElement\BaseProtectedViewElement
+    pim_enrich.view_element.visibility_checker.edit_form.class: Pim\Bundle\EnrichBundle\ViewElement\EditFormVisibilityChecker
 
 services:
     pim_enrich.view_element.registry:
         class: %pim_enrich.view_element.registry.class%
 
-    pim_enrich.view_element.tab.base:
-        class: %pim_enrich.view_element.tab.base.class%
-        abstract: true
-        arguments:
-            - '@templating'
-
-    pim_enrich.view_element.visibility_checker.acl:
-        class: %pim_enrich.view_element.visibility_checker.acl.class%
-        arguments:
-        - @oro_security.security_facade
-
-    pim_enrich.view_element.visibility_checker.voter:
-        class: %pim_enrich.view_element.visibility_checker.voter.class%
-        arguments:
-        - @oro_security.security_facade
-
-    pim_enrich.view_element.visibility_checker.form_edit:
-        class: %pim_enrich.view_element.visibility_checker.form_edit.class%
-
-
-
-    #TODO: delete below
-    pim_enrich.view_element.tab.on_form_edit:
-        class: %pim_enrich.view_element.tab.on_form_edit.class%
+    pim_enrich.view_element.base:
+        class: %pim_enrich.view_element.base.class%
         abstract: true
 
-    pim_enrich.view_element.tab.granted:
-        class: %pim_enrich.view_element.tab.granted.class%
+    pim_enrich.view_element.base_protected:
+        class: %pim_enrich.view_element.base_protected.class%
         abstract: true
-        arguments:
-            - '@oro_security.security_facade'
+
+    pim_enrich.view_element.visibility_checker.edit_form:
+        class: %pim_enrich.view_element.visibility_checker.edit_form.class%
