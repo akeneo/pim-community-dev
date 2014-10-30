@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
  * Sets a text value in many products
@@ -30,13 +31,16 @@ class TextValueSetter implements SetterInterface
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->validateData($attribute, $data);
-        $this->validateContext($attribute, $locale, $scope);
+        AttributeUtility::validateLocale($attribute, $locale);
+        AttributeUtility::validateScope($attribute, $scope);
+
+        if (!is_string($data)) {
+            throw new \LogicException('Attribute "%s" expects a string data', $attribute->getCode());
+        }
 
         foreach ($products as $product) {
             $value = $product->getValue($attribute->getCode(), $locale, $scope);
             if (null === $value) {
-                // TODO : not sure about the relevancy of product builder for this kind of operation
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
             $value->setData($data);
@@ -51,67 +55,5 @@ class TextValueSetter implements SetterInterface
         $types = ['pim_catalog_text', 'pim_catalog_textarea'];
 
         return in_array($attribute->getAttributeType(), $types);
-    }
-
-    /**
-     * Validate the data
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $data
-     *
-     * @throws \LogicException
-     */
-    protected function validateData(AttributeInterface $attribute, $data)
-    {
-        if (!is_string($data)) {
-            throw new \LogicException('Attribute "%s" expects a string data', $attribute->getCode());
-        }
-    }
-
-    /**
-     * Validate the context
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     *
-     * @throws \LogicException
-     */
-    protected function validateContext(AttributeInterface $attribute, $locale, $scope)
-    {
-        // TODO : check the existence of locale and scope used as options
-        // TODO : extract this code in a dedicated class
-        if ($attribute->isLocalizable() && $locale === null) {
-            throw new \LogicException(
-                sprintf(
-                    'Locale is expected for the attribute "%s"',
-                    $attribute->getCode()
-                )
-            );
-        }
-        if (!$attribute->isLocalizable() && $locale !== null) {
-            throw new \LogicException(
-                sprintf(
-                    'Locale is not expected for the attribute "%s"',
-                    $attribute->getCode()
-                )
-            );
-        }
-        if ($attribute->isScopable() && $scope === null) {
-            throw new \LogicException(
-                sprintf(
-                    'Scope is expected for the attribute "%s"',
-                    $attribute->getCode()
-                )
-            );
-        }
-        if (!$attribute->isScopable() && $scope !== null) {
-            throw new \LogicException(
-                sprintf(
-                    'Scope is not expected for the attribute "%s"',
-                    $attribute->getCode()
-                )
-            );
-        }
     }
 }
