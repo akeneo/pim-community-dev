@@ -113,7 +113,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
 
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->field($field)->exists(false);
-        } elseif (Operators::NOT_IN_LIST === $operator) {
+        } elseif (Operators::IN_LIST === $operator) {
             $this->qb->field($field)->in($value);
         } else {
             $value = $this->prepareValue($operator, $value);
