@@ -84,7 +84,7 @@ class TextValueSetter implements SetterInterface
         if ($attribute->isLocalizable() && $locale === null) {
             throw new \LogicException(
                 sprintf(
-                    'Locale expected for the attribute "%s"',
+                    'Locale is expected for the attribute "%s"',
                     $attribute->getCode()
                 )
             );
@@ -100,7 +100,7 @@ class TextValueSetter implements SetterInterface
         if ($attribute->isScopable() && $scope === null) {
             throw new \LogicException(
                 sprintf(
-                    'Scope expected for the attribute "%s"',
+                    'Scope is expected for the attribute "%s"',
                     $attribute->getCode()
                 )
             );
