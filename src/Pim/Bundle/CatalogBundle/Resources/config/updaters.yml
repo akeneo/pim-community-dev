@@ -25,6 +25,14 @@ services:
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
+    pim_catalog.updater.setter.metric_value:
+        class: %pim_catalog.updater.setter.text_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.factory.metric
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
     pim_catalog.updater.copier.registry:
         class: %pim_catalog.updater.copier.registry.class%
 
