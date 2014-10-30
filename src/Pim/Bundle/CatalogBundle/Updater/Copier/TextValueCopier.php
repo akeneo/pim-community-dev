@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
  * Copy a text value in many products
@@ -38,27 +39,16 @@ class TextValueCopier implements CopierInterface
         $fromScope = null,
         $toScope = null
     ) {
-        $this->validateContext(
-            $fromAttribute,
-            $toAttribute,
-            $fromLocale,
-            $toLocale,
-            $fromScope,
-            $toScope
-        );
-
-        // TODO reset if not useable locale or scope is passed, could be better to throw exception
-        $fromLocale = ($fromAttribute->isLocalizable()) ? $fromLocale : null;
-        $fromScope = ($fromAttribute->isScopable()) ? $fromScope : null;
-        $toLocale = ($toAttribute->isLocalizable()) ? $toLocale : null;
-        $toScope = ($toAttribute->isScopable()) ? $toScope : null;
+        AttributeUtility::validateLocale($fromAttribute, $fromLocale);
+        AttributeUtility::validateScope($fromAttribute, $fromScope);
+        AttributeUtility::validateLocale($toAttribute, $toLocale);
+        AttributeUtility::validateScope($toAttribute, $toScope);
 
         foreach ($products as $product) {
             $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
             $fromData = (null === $fromValue) ? '' : $fromValue->getData();
             $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                // TODO : not sure about the relevancy of product builder for this kind of operation
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
             $toValue->setData($fromData);
@@ -75,52 +65,5 @@ class TextValueCopier implements CopierInterface
         $supportsTo = in_array($toAttribute->getAttributeType(), $types);
 
         return $supportsFrom && $supportsTo;
-    }
-
-    /**
-     * Validate the data
-     *
-     * @param string $data
-     */
-    protected function validateData($data)
-    {
-        if (!is_string($data)) {
-            throw new \LogicException('A string is expected');
-        }
-    }
-
-    /**
-     * Validate the context
-     *
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string             $fromLocale
-     * @param string             $toLocale
-     * @param string             $fromScope
-     * @param string             $toScope
-     *
-     * @throws \LogicException
-     */
-    protected function validateContext(
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        $fromLocale,
-        $toLocale,
-        $fromScope,
-        $toScope
-    ) {
-        // TODO check the existence of locale and scope used as options
-        if ($fromAttribute->isLocalizable() && $fromLocale === null) {
-            throw new \LogicException(sprintf('Locale expected for the attribute "%s"', $fromAttribute->getCode()));
-        }
-        if ($toAttribute->isLocalizable() && $toLocale === null) {
-            throw new \LogicException(sprintf('Locale expected for the attribute "%s"', $toAttribute->getCode()));
-        }
-        if ($fromAttribute->isScopable() && $fromScope === null) {
-            throw new \LogicException(sprintf('Scope expected for the attribute "%s"', $fromAttribute->getCode()));
-        }
-        if ($toAttribute->isScopable() && $toScope === null) {
-            throw new \LogicException(sprintf('Scope expected for the attribute "%s"', $toAttribute->getCode()));
-        }
     }
 }
