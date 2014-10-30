@@ -114,7 +114,7 @@ Feature: Import attributes
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following file to import:
-    """
+      """
       type;code;label-en_US
       pim_catalog_simpleselect;;"New lace color"
       """
