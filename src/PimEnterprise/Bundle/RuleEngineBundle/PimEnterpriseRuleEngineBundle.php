@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterRunnerPass;
+use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterApplierPass;
 use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

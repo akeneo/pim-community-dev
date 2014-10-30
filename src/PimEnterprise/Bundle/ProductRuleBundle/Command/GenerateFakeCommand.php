@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Command;
+namespace PimEnterprise\Bundle\ProductRuleBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -68,7 +68,17 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rule = new Rule();
             $rule->setCode('rule_' . $cpt);
             $rule->setContent(json_encode([
-                'conditions' => $this->getConditions($filters, 2)
+                'conditions' => $this->getConditions($filters, 2),
+                'actions'    => [
+                    ['type' => 'set_value', 'field' => 'name', 'value' => 'toto'],
+                    [
+                        'type'       => 'copy_value',
+                        'from_field' => 'name',
+                        'to_field'   => 'description',
+                        'to_scope'   => 'mobile',
+                        'to_locale'  => 'fr_FR'
+                    ],
+                ]
             ]));
             $rule->setType('product');
 

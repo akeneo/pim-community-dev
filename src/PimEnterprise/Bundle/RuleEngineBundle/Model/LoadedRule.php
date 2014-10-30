@@ -16,13 +16,16 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class LoadedRuleDecorator implements LoadedRuleDecoratorInterface
+class LoadedRule implements LoadedRuleInterface
 {
     /** @var RuleInterface */
     protected $rule;
 
     /** @var array */
-    protected $conditions;
+    protected $conditions = [];
+
+    /** @var array */
+    protected $actions = [];
 
     /**
      * The constructor
@@ -58,6 +61,34 @@ class LoadedRuleDecorator implements LoadedRuleDecoratorInterface
     public function addCondition(array $condition)
     {
         $this->conditions[] = $condition;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        return $this->actions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActions(array $actions)
+    {
+        $this->actions = $actions;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAction(array $action)
+    {
+        $this->actions[] = $action;
 
         return $this;
     }

@@ -15,8 +15,14 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Selects subjects impacted by a rule.
@@ -34,19 +40,25 @@ class ProductRuleSelector implements SelectorInterface
     /** @var ProductRepositoryInterface */
     protected $repo;
 
+    /** @var EventDispatcher */
+    protected $eventDispatcher;
+
     /**
      * @param string                     $subjectSetClass
      * @param ProductQueryFactory        $productQueryFactory
      * @param ProductRepositoryInterface $repo
+     * @param EventDispatcher            $eventDispatcher
      */
     public function __construct(
         $subjectSetClass,
         ProductQueryFactory $productQueryFactory,
-        ProductRepositoryInterface $repo
+        ProductRepositoryInterface $repo,
+        EventDispatcher $eventDispatcher
     ) {
         $this->subjectSetClass     = $subjectSetClass;
         $this->productQueryFactory = $productQueryFactory;
         $this->repo                = $repo;
+        $this->eventDispatcher     = $eventDispatcher;
     }
 
     /**
@@ -54,21 +66,21 @@ class ProductRuleSelector implements SelectorInterface
      */
     public function select(RuleInterface $rule)
     {
+        $resolver = new OptionsResolver();
+        $this->configureCondition($resolver);
+
         /** @var RuleSubjectSetInterface $subjectSet */
         $subjectSet = new $this->subjectSetClass();
 
-        $start = microtime(true);
-        $pqb = $this->productQueryFactory->create(/*['default_locale' => 'en_US', 'default_scope' => 'ecommerce']*/);
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
-        $content = json_decode($rule->getContent(), true);
-        foreach ($content['conditions'] as $condition) {
-            echo sprintf(
-                "Selecting products for rule %s (%s %s %s).\n",
-                $rule->getCode(),
-                $condition['field'],
-                $condition['operator'],
-                is_array($condition['value']) ? implode(', ', $condition['value']) : $condition['value']
-            );
+        $pqb = $this->productQueryFactory->create();
+
+        $conditions = $rule->getConditions();
+
+        foreach ($conditions as $condition) {
+            $condition = $resolver->resolve($condition);
+
             $pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
         }
 
@@ -78,7 +90,7 @@ class ProductRuleSelector implements SelectorInterface
         $subjectSet->setType('product');
         $subjectSet->setSubjects($products);
 
-        echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SELECT, new SelectedRuleEvent($rule, $subjectSet));
 
         return $subjectSet;
     }
@@ -88,6 +100,16 @@ class ProductRuleSelector implements SelectorInterface
      */
     public function supports(RuleInterface $rule)
     {
-        return 'product' === $rule->getType();
+        return 'product' === $rule->getType() &&
+            $rule instanceof LoadedRuleInterface;
+    }
+
+    /**
+     * Configure the condition's optionResolver
+     * @param  OptionsResolver $optionsResolver
+     */
+    protected function configureCondition(OptionsResolver $optionsResolver)
+    {
+        $optionsResolver->setRequired(['field', 'operator', 'value']);
     }
 }

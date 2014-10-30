@@ -18,7 +18,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-interface LoadedRuleDecoratorInterface extends RuleInterface
+interface LoadedRuleInterface extends RuleInterface
 {
     /**
      * @return array
@@ -28,14 +28,33 @@ interface LoadedRuleDecoratorInterface extends RuleInterface
     /**
      * @param array $conditions
      *
-     * @return LoadedRuleDecoratorInterface
+     * @return LoadedRuleInterface
      */
     public function setConditions(array $conditions);
 
     /**
      * @param array $condition
      *
-     * @return LoadedRuleDecoratorInterface
+     * @return LoadedRuleInterface
      */
     public function addCondition(array $condition);
+
+    /**
+     * @return array
+     */
+    public function getActions();
+
+    /**
+     * @param array $actions
+     *
+     * @return LoadedRuleInterface
+     */
+    public function setActions(array $actions);
+
+    /**
+     * @param array $action
+     *
+     * @return LoadedRuleInterface
+     */
+    public function addAction(array $action);
 }

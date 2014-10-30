@@ -13,8 +13,15 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Applies product rules via a batch.
@@ -23,30 +30,110 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
+    //TODO: Move those actions to a dedicated class
+    const SET_ACTION  = 'set_value';
+    const COPY_ACTION = 'copy_value';
+
+    /** @var EventDispatcher */
+    protected $eventDispatcher;
+
+    /** @var ProductUpdaterInterface */
+    protected $productUpdater;
+
     /**
-     * {@inheritdoc}
+     * @param ProductUpdaterInterface $productUpdater
+     * @param EventDispatcher         $eventDispatcher
      */
-    public function apply(RuleSubjectSetInterface $subjectSet)
+    public function __construct(ProductUpdaterInterface $productUpdater, EventDispatcher $eventDispatcher)
     {
-        /** @var ProductInterface[] $products */
-        $products = $subjectSet->getSubjects();
-
-        echo sprintf("Running rule %s on %s products.\n", $subjectSet->getCode(), count($products));
-
-        $start = microtime(true);
-        foreach ($products as $product) {
-            $name = $product->getValue('name')->getData();
-            $product->getValue('name')->setData($name . ' // ' . $product->getIdentifier());
-        }
-
-        echo sprintf("Done : %sms\n", round((microtime(true) - $start) * 100));
+        $this->productUpdater  = $productUpdater;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleSubjectSetInterface $subjectSet)
+    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
-        return 'product' === $subjectSet->getType();
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+
+        $start = microtime(true);
+
+        $actions = $rule->getActions();
+        foreach ($actions as $action) {
+            if (isset($action['type'])) {
+                switch ($action['type']) {
+                    case static::SET_ACTION:
+                        $resolver = new OptionsResolver();
+                        $this->configureSetValueAction($resolver);
+                        $action = $resolver->resolve($action);
+
+                        $this->productUpdater->setValue(
+                            $subjectSet->getSubjects(),
+                            $action['field'],
+                            $action['value'],
+                            $action['locale'],
+                            $action['scope']
+                        );
+                        break;
+                    case static::COPY_ACTION:
+                        $resolver = new OptionsResolver();
+                        $this->configureCopyValueAction($resolver);
+                        $action = $resolver->resolve($action);
+
+                        $this->productUpdater->setValue(
+                            $subjectSet->getSubjects(),
+                            $action['from_field'],
+                            $action['to_field'],
+                            $action['from_locale'],
+                            $action['to_locale'],
+                            $action['from_scope'],
+                            $action['to_scope']
+                        );
+                        break;
+                    default:
+                        throw new \InvalidArgumentException(
+                            sprintf('The action %s is not supported yet.', $action['type'])
+                        );
+                        break;
+                }
+            }
+        }
+
+        $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
+    {
+        return 'product' === $subjectSet->getType() &&
+            $rule instanceof LoadedRule;
+    }
+
+    /**
+     * Configure the set value action optionResolver
+     * @param  OptionsResolver $optionsResolver
+     */
+    protected function configureSetValueAction(OptionsResolver $optionsResolver)
+    {
+        $optionsResolver->setDefaults(['locale' => null, 'scope'  => null]);
+        $optionsResolver->setRequired(['field', 'value', 'type']);
+    }
+
+    /**
+     * Configure the copy value action optionResolver
+     * @param  OptionsResolver $optionsResolver
+     */
+    protected function configureCopyValueAction(OptionsResolver $optionsResolver)
+    {
+        $optionsResolver->setDefaults([
+            'from_locale' => null,
+            'to_locale'   => null,
+            'from_scope'  => null,
+            'to_scope'    => null
+        ]);
+        $optionsResolver->setRequired(['from_field', 'to_field', 'type']);
     }
 }

@@ -1,0 +1,11 @@
+parameters:
+    pimee_rule_engine.event_subscriber.stop_watch.class: PimEnterprise\Bundle\RuleEngineBundle\EventSubscriber\StopWatchEventSubscriber
+
+services:
+    pimee_rule_engine.event_subscriber.stop_watch:
+        class: %pimee_rule_engine.event_subscriber.stop_watch.class%
+        arguments:
+            - @?debug.stopwatch
+        tags:
+            - { name: kernel.event_subscriber}
+
