@@ -31,20 +31,18 @@ class ProductUpdaterTestCommand extends ContainerAwareCommand
         // select via a cleaner API
         $pqbFactory = $this->getContainer()->get('pim_catalog.doctrine.query.product_query_factory');
         $pqb = $pqbFactory->create()
+            ->addFilter('sku', 'CONTAINS', 'AK')
             ->addFilter('family', 'IN', [14])
             ->addFilter('main_color', 'IN', [38]);
-        //$output->writeln(sprintf("<info>query '%s'<info>", $pqb->getQueryBuilder()->getQuery()->getSQL()));
 
-        // TODO : this execution part is still weird, we could "wrap" the execution but we need to cover
-        // both ORM/MongoODM hydration
-        $products = $pqb->getQueryBuilder()->getQuery()->getResult();
+        $products = $pqb->getQueryBuilder()->getQuery()->execute()->toArray(); //->getResult();
         $output->writeln(sprintf("<info>%d selected<info>", count($products)));
 
         // update via another clean API FTW
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
         $updater
-            ->setValue($products, 'name', 'new name')
-            ->setValue($products, 'description', 'new desc', 'en_US', 'ecommerce')
+            ->setValue($products, 'name', 'new name !!')
+            ->setValue($products, 'description', 'new swag desc', 'en_US', 'ecommerce')
             ->copyValue($products, 'description', 'description', 'en_US', 'en_US', 'ecommerce', 'print');
 
         // flush with doctrine
