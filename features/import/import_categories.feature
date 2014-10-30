@@ -57,3 +57,20 @@ Feature: Import categories
       | pc          | PC          | computers |
     # 5 from the catalog + 5 from this test
     And there should be 10 categories
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  Scenario: Skip categories with empty code
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following file to import:
+    """
+    code;parent;label-en_US
+    ;;label US
+    """
+    And the following job "footwear_category_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_category_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_category_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "code: This value should not be blank"

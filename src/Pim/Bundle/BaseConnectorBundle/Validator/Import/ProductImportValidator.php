@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Validates an imported product
@@ -55,6 +56,11 @@ class ProductImportValidator extends ImportValidator
      */
     public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
+        if (null === $identifier = $this->getIdentifier($columnsInfo, $entity)) {
+            $notBlank = new NotBlank();
+            $errors['identifier'] = [[$notBlank->message]];
+        }
+
         $this->checkIdentifier($entity, $columnsInfo, $data);
         $this->checkUniqueValues($entity, $columnsInfo, $data);
 

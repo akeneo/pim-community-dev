@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3308: Fix regression on unclassified filter
+- PIM-3311: fix creation of products with missing identifier during imports
 
 # 1.2.10 (2014-10-24)
 
