@@ -7,6 +7,7 @@ use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\FormFactoryInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 class GroupsFilterSpec extends ObjectBehavior
 {
