@@ -1,4 +1,4 @@
-<div class="tab-pane tab-history {{ first_tab ? 'active' : '' }}" id="{{ tab_id }}">
+<div class="tab-pane tab-history {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({'.': '-'}) }}">
     {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
     {{ dataGrid.renderHistoryGrid(form.vars.value) }}
 </div>

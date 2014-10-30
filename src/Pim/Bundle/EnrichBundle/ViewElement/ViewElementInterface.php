@@ -12,11 +12,34 @@ namespace Pim\Bundle\EnrichBundle\ViewElement;
 interface ViewElementInterface
 {
     /**
-     * Get the content
+     * Get the view element alias
      *
-     * @param array $context the twig context
+     * @param array $context The twig context
      *
      * @return string
      */
-    public function getContent(array $context = []);
+    public function getAlias(array $context = []);
+
+    /**
+     * Indicates if this element supports the current context
+     *
+     * @param array $context The twig context
+     *
+     * @return boolean
+     */
+    public function supportsContext(array $context = []);
+
+    /**
+     * Get the template
+     *
+     * @return string
+     */
+    public function getTemplate();
+
+    /**
+     * Get additional template parameters
+     *
+     * @return array
+     */
+    public function getParameters();
 }

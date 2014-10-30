@@ -41,17 +41,12 @@
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
 
-        {% set tabs = ['Parameters', 'Values'] %}
-        {% if form.vars.value.id and resource_granted('pim_enrich_attribute_history') %}
-            {% set tabs = tabs|merge(['History']) %}
-        {% endif %}
-
-        {{ elements.form_navbar(tab_titles('pim_enrich_attribute_edit')) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
         <div class="row-fluid tab-content">
             {{ elements.form_errors(form) }}
 
-            {{ tab_contents('pim_enrich_attribute_edit') }}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
 
             {{ form_row(form.id) }}
         </div>

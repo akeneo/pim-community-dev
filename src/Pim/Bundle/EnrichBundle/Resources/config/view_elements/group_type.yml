@@ -3,9 +3,9 @@ parameters:
 
 services:
     pim_enrich.view_element.tab.grouptype_property:
-        parent: pim_enrich.view_element.tab.base
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pim_enrich.view_element.tab.grouptype_property.template%
             - 'tab.pim_enrich_grouptype_edit.property'
+            - %pim_enrich.view_element.tab.grouptype_property.template%
         tags:
-            - { name: pim_enrich_view_element.tab, position: 90, identifier: pim_enrich_grouptype_edit}
+            - { name: pim_enrich.view_element, type: pim_enrich_group_type_form.form_tab, position: 90 }
