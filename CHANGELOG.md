@@ -61,6 +61,7 @@
 - Remove the 'defaultValue' property of attributes and `Pim/Bundle/CatalogBundle/Model/AttributeInterface::setDefaultValue()` and `getDefaultValue()`
 - Refactor `Pim\Bundle\EnrichBundle\Controller\SequentialEditController`
 - Remove the `Pim\Bundle\CatalogBundle\Doctrine\(ORM|MongoDBODM)\Filter\BaseFilter` to use proper dedicated filters
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader`. Now `FieldNameBuilder`, channel, locale and currency entity classes are mandatory.
 
 # 1.2.x
 

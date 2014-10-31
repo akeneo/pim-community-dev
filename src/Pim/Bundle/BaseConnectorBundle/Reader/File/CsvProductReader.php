@@ -30,13 +30,13 @@ class CsvProductReader extends CsvReader
     protected $fieldNameBuilder;
 
     /** @var array */
-    protected $locales = [];
+    protected $locales;
 
     /** @var array */
-    protected $channels = [];
+    protected $channels;
 
     /** @var array */
-    protected $currencies = [];
+    protected $currencies;
 
     /**
      * Constructor
@@ -50,11 +50,11 @@ class CsvProductReader extends CsvReader
      */
     public function __construct(
         EntityManager $entityManager,
+        FieldNameBuilder $fieldNameBuilder,
         $attributeClass,
-        FieldNameBuilder $fieldNameBuilder = null,
-        $channelClass = null,
-        $localeClass = null,
-        $currencyClass = null
+        $channelClass,
+        $localeClass,
+        $currencyClass
     ) {
         $this->fieldNameBuilder = $fieldNameBuilder;
 
@@ -62,23 +62,17 @@ class CsvProductReader extends CsvReader
         $attributeRepository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
 
-        if (null !== $channelClass) {
-            /** @var ChannelRepository $channelRepository */
-            $channelRepository = $entityManager->getRepository($channelClass);
-            $this->channels = $channelRepository->getChannelCodes();
-        }
+        /** @var ChannelRepository $channelRepository */
+        $channelRepository = $entityManager->getRepository($channelClass);
+        $this->channels = $channelRepository->getChannelCodes();
 
-        if (null !== $localeClass) {
-            /** @var LocaleRepository $localeRepository */
-            $localeRepository = $entityManager->getRepository($localeClass);
-            $this->locales = $localeRepository->getActivatedLocaleCodes();
-        }
+        /** @var LocaleRepository $localeRepository */
+        $localeRepository = $entityManager->getRepository($localeClass);
+        $this->locales = $localeRepository->getActivatedLocaleCodes();
 
-        if (null !== $currencyClass) {
-            /** @var CurrencyRepository $currencyRepository */
-            $currencyRepository = $entityManager->getRepository($currencyClass);
-            $this->currencies = $currencyRepository->getActivatedCurrencyCodes();
-        }
+        /** @var CurrencyRepository $currencyRepository */
+        $currencyRepository = $entityManager->getRepository($currencyClass);
+        $this->currencies = $currencyRepository->getActivatedCurrencyCodes();
     }
 
     /**
@@ -160,9 +154,7 @@ class CsvProductReader extends CsvReader
     {
         parent::initializeRead();
 
-        if (null !== $this->fieldNameBuilder) {
-            $this->checkAttributesInHeader();
-        }
+        $this->checkAttributesInHeader();
     }
 
     /**
