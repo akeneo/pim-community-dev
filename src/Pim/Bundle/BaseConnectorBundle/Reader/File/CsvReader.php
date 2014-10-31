@@ -58,20 +58,17 @@ class CsvReader extends FileReader implements
      */
     protected $uploadAllowed = false;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var string $extractedPath
-     */
+    /** @var string */
     protected $extractedPath;
 
-    /**
-     * @var SplFileObject
-     */
+    /** @var \SplFileObject */
     protected $csv;
+
+    /** @var array */
+    protected $fieldNames = [];
 
     /**
      * Remove the extracted directory
@@ -103,7 +100,8 @@ class CsvReader extends FileReader implements
 
     /**
      * Set uploaded file
-     * @param string $uploadedFile
+     *
+     * @param File $uploadedFile
      *
      * @return CsvReader
      */
@@ -232,19 +230,7 @@ class CsvReader extends FileReader implements
     public function read()
     {
         if (null === $this->csv) {
-            if (mime_content_type($this->filePath) === 'application/zip') {
-                $this->extractZipArchive();
-            }
-
-            $this->csv = new \SplFileObject($this->filePath);
-            $this->csv->setFlags(
-                \SplFileObject::READ_CSV   |
-                \SplFileObject::READ_AHEAD |
-                \SplFileObject::SKIP_EMPTY |
-                \SplFileObject::DROP_NEW_LINE
-            );
-            $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
-            $this->fieldNames = $this->csv->fgetcsv();
+            $this->initializeRead();
         }
 
         $data = $this->csv->fgetcsv();
@@ -379,5 +365,26 @@ class CsvReader extends FileReader implements
         if (null !== $this->csv) {
             $this->csv->rewind();
         }
+    }
+
+    /**
+     * Initialize read process by extracting zip if needed, setting CSV options
+     * and settings field names.
+     */
+    protected function initializeRead()
+    {
+        if (mime_content_type($this->filePath) === 'application/zip') {
+            $this->extractZipArchive();
+        }
+
+        $this->csv = new \SplFileObject($this->filePath);
+        $this->csv->setFlags(
+            \SplFileObject::READ_CSV   |
+            \SplFileObject::READ_AHEAD |
+            \SplFileObject::SKIP_EMPTY |
+            \SplFileObject::DROP_NEW_LINE
+        );
+        $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
+        $this->fieldNames = $this->csv->fgetcsv();
     }
 }

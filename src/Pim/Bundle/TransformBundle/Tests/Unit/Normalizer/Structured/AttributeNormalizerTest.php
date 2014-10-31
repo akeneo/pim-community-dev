@@ -61,7 +61,11 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
         $this->assertEquals(
             $expectedResult,
-            $this->normalizer->normalize($attribute, $this->format, array('versioning' => true, 'locales' => ['en_US', 'fr_FR']))
+            $this->normalizer->normalize(
+                $attribute,
+                $this->format,
+                array('versioning' => true, 'locales' => ['en_US', 'fr_FR'])
+            )
         );
     }
 
