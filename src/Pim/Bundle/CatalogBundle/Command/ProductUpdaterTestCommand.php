@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * TODO : temporary command to explain / discuss the archi, will be droped before merge
+ * TODO : temporary command to explain / discuss, will be droped before merge
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -35,15 +35,15 @@ class ProductUpdaterTestCommand extends ContainerAwareCommand
             ->addFilter('family', 'IN', [14])
             ->addFilter('main_color', 'IN', [38]);
 
-        $products = $pqb->getQueryBuilder()->getQuery()->execute()->toArray(); //->getResult();
+        $products = $pqb->getQueryBuilder()->getQuery()->getResult();
         $output->writeln(sprintf("<info>%d selected<info>", count($products)));
 
         // update via another clean API FTW
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
         $updater
-            ->setValue($products, 'name', 'new name !!')
-            ->setValue($products, 'description', 'new swag desc', 'en_US', 'ecommerce')
-            ->copyValue($products, 'description', 'description', 'en_US', 'en_US', 'ecommerce', 'print');
+            ->setValue($products, 'name', 'Akeneo T-Shirt (new)')
+            ->setValue($products, 'description', 'Akeneo T-Shirt white with short sleeve (new)', 'en_US', 'ecommerce')
+            ->copyValue($products, 'description', 'description', 'en_US', 'en_US', 'ecommerce', 'mobile');
 
         // flush with doctrine
         $om = $this->getContainer()->get('pim_catalog.object_manager.product');
