@@ -64,7 +64,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
             $this->normalizer->normalize(
                 $attribute,
                 $this->format,
-                ['versioning' => true, 'locales' => ['en_US', 'fr_FR']]
+                array('versioning' => true, 'locales' => ['en_US', 'fr_FR'])
             )
         );
     }

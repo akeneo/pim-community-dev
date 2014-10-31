@@ -253,3 +253,54 @@ Feature: Execute a job
     And there should be 1 product
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3312
+  Scenario: Stop imports with attributes where local is wrong (PIM-3312)
+    Given the following file to import:
+      """
+      sku;name-en_US;description-wronglocale-ecommerce
+      SKU-001;high heels;red high heels
+      SKU-002;rangers;black rangers
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "PRODUCT IMPORT Locale wronglocale does not exist."
+    And I should see "FAILED"
+    And there should be 0 product
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3312
+  Scenario: Stop imports with attributes where channel is wrong (PIM-3312)
+    Given the following file to import:
+      """
+      sku;name-en_US;description-en_US-wrongchannel
+      SKU-001;high heels;red high heels
+      SKU-002;rangers;black rangers
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "PRODUCT IMPORT Channel wrongchannel does not exist."
+    And I should see "FAILED"
+    And there should be 0 product
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3312
+  Scenario: Stop imports with attributes where channel is wrong (PIM-3312)
+    Given the following file to import:
+      """
+      sku;price-FCFA
+      SKU-001;100
+      SKU-002;50
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "PRODUCT IMPORT Currency FCFA does not exist."
+    And I should see "FAILED"
+    And there should be 0 product
