@@ -1403,7 +1403,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheUploadedImage()
     {
-        $maxTime = 30000;
+        $maxTime = 10000;
 
         while ($maxTime > 0) {
             $this->wait(1000, false);
@@ -2053,7 +2053,7 @@ class WebUser extends RawMinkContext
      *
      * @return void
      */
-    protected function wait($time = 30000, $condition = null)
+    protected function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

@@ -275,7 +275,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      *
      * @throws BehaviorException If timeout is reached
      */
-    public function wait($time = 30000, $condition = null)
+    public function wait($time = 10000, $condition = null)
     {
         if (!$this->getSession()->getDriver() instanceof Selenium2Driver) {
             return;
