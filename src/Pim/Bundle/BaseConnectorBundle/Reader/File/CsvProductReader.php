@@ -38,6 +38,15 @@ class CsvProductReader extends CsvReader
     /** @var array */
     protected $currencies = [];
 
+    /** @var ChannelRepository */
+    protected $channelRepository;
+
+    /** @var LocaleRepository */
+    protected $localeRepository;
+
+    /** @var CurrencyRepository */
+    protected $currencyRepository;
+
     /**
      * Constructor
      *
@@ -63,21 +72,13 @@ class CsvProductReader extends CsvReader
         $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
 
         if (null !== $channelClass) {
-            /** @var ChannelRepository $channelRepository */
-            $channelRepository = $entityManager->getRepository($channelClass);
-            $this->channels = $channelRepository->getChannelCodes();
+            $this->channelRepository = $entityManager->getRepository($channelClass);
         }
-
         if (null !== $localeClass) {
-            /** @var LocaleRepository $localeRepository */
-            $localeRepository = $entityManager->getRepository($localeClass);
-            $this->locales = $localeRepository->getActivatedLocaleCodes();
+            $this->localeRepository = $entityManager->getRepository($localeClass);
         }
-
         if (null !== $currencyClass) {
-            /** @var CurrencyRepository $currencyRepository */
-            $currencyRepository = $entityManager->getRepository($currencyClass);
-            $this->currencies = $currencyRepository->getActivatedCurrencyCodes();
+            $this->currencyRepository = $entityManager->getRepository($currencyClass);
         }
     }
 
@@ -159,6 +160,16 @@ class CsvProductReader extends CsvReader
     protected function initializeRead()
     {
         parent::initializeRead();
+
+        if (null !== $this->channelRepository) {
+            $this->channels = $this->channelRepository->getChannelCodes();
+        }
+        if (null !== $this->localeRepository) {
+            $this->locales = $this->localeRepository->getActivatedLocaleCodes();
+        }
+        if (null !== $this->channelRepository) {
+            $this->currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+        }
 
         if (null !== $this->fieldNameBuilder) {
             $this->checkAttributesInHeader();
