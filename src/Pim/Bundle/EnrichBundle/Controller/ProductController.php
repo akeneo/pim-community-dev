@@ -21,7 +21,6 @@ use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -493,20 +492,20 @@ class ProductController extends AbstractDoctrineController
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Request           $request The request object
-     * @param integer           $id      Product id
-     * @param CategoryInterface $parent  The parent category
+     * @param Request        $request    The request object
+     * @param integer|string $id         Product id
+     * @param integer        $categoryId The parent category id
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
-     * @ParamConverter("parent", class="PimCatalogBundle:Category", options={"id" = "category_id"})
      * @Template
      * @AclAncestor("pim_enrich_product_categories_view")
      * @return array
      */
-    public function listCategoriesAction(Request $request, $id, CategoryInterface $parent)
+    public function listCategoriesAction(Request $request, $id, $categoryId)
     {
         $product = $this->findProductOr404($id);
+        $parent = $this->findOr404($this->categoryManager->getCategoryClass(), $categoryId);
         $categories = null;
 
         $includeParent = $request->get('include_parent', false);
