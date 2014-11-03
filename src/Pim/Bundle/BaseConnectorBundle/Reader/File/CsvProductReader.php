@@ -30,13 +30,22 @@ class CsvProductReader extends CsvReader
     protected $fieldNameBuilder;
 
     /** @var array */
-    protected $locales;
+    protected $locales = [];
 
     /** @var array */
-    protected $channels;
+    protected $channels = [];
 
     /** @var array */
-    protected $currencies;
+    protected $currencies = [];
+
+    /** @var ChannelRepository */
+    protected $channelRepository;
+
+    /** @var LocaleRepository */
+    protected $localeRepository;
+
+    /** @var CurrencyRepository */
+    protected $currencyRepository;
 
     /**
      * Constructor
@@ -154,6 +163,10 @@ class CsvProductReader extends CsvReader
     {
         parent::initializeRead();
 
+        $this->channels = $this->channelRepository->getChannelCodes();
+        $this->locales = $this->localeRepository->getActivatedLocaleCodes();
+        $this->currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+                
         $this->checkAttributesInHeader();
     }
 
