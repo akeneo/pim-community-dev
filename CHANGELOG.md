@@ -61,7 +61,11 @@
 - Remove the 'defaultValue' property of attributes and `Pim/Bundle/CatalogBundle/Model/AttributeInterface::setDefaultValue()` and `getDefaultValue()`
 - Refactor `Pim\Bundle\EnrichBundle\Controller\SequentialEditController`
 - Remove the `Pim\Bundle\CatalogBundle\Doctrine\(ORM|MongoDBODM)\Filter\BaseFilter` to use proper dedicated filters
+- The parameter `category_id` for the route `pim_enrich_product_listcategories` has been renamed to `categoryId`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader`. Now `FieldNameBuilder`, channel, locale and currency entity classes are mandatory.
+
+## Bug fixes
+- PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 
 # 1.2.x
 
