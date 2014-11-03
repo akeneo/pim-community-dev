@@ -71,17 +71,9 @@ class CsvProductReader extends CsvReader
         $attributeRepository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
 
-        /** @var ChannelRepository $channelRepository */
-        $channelRepository = $entityManager->getRepository($channelClass);
-        $this->channels = $channelRepository->getChannelCodes();
-
-        /** @var LocaleRepository $localeRepository */
-        $localeRepository = $entityManager->getRepository($localeClass);
-        $this->locales = $localeRepository->getActivatedLocaleCodes();
-
-        /** @var CurrencyRepository $currencyRepository */
-        $currencyRepository = $entityManager->getRepository($currencyClass);
-        $this->currencies = $currencyRepository->getActivatedCurrencyCodes();
+        $this->channelRepository = $entityManager->getRepository($channelClass);
+        $this->localeRepository = $entityManager->getRepository($localeClass);
+        $this->currencyRepository = $entityManager->getRepository($currencyClass);
     }
 
     /**
