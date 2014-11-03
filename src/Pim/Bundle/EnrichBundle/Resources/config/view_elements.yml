@@ -4,6 +4,10 @@ parameters:
     pim_enrich.view_element.tab.granted.class:      Pim\Bundle\EnrichBundle\ViewElement\Tab\GrantedTab
     pim_enrich.view_element.registry.class:         Pim\Bundle\EnrichBundle\ViewElement\ViewElementsRegistry
 
+    pim_enrich.view_element.visibility_checker.acl.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\TabVisibilityCheckerAcl
+    pim_enrich.view_element.visibility_checker.voter.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\TabVisibilityCheckerVoter
+    pim_enrich.view_element.visibility_checker.form_edit.class: Pim\Bundle\EnrichBundle\ViewElement\Tab\TabVisibilityCheckerFormEdit
+
 services:
     pim_enrich.view_element.registry:
         class: %pim_enrich.view_element.registry.class%
@@ -14,6 +18,22 @@ services:
         arguments:
             - '@templating'
 
+    pim_enrich.view_element.visibility_checker.acl:
+        class: %pim_enrich.view_element.visibility_checker.acl.class%
+        arguments:
+        - @oro_security.security_facade
+
+    pim_enrich.view_element.visibility_checker.voter:
+        class: %pim_enrich.view_element.visibility_checker.voter.class%
+        arguments:
+        - @oro_security.security_facade
+
+    pim_enrich.view_element.visibility_checker.form_edit:
+        class: %pim_enrich.view_element.visibility_checker.form_edit.class%
+
+
+
+    #TODO: delete below
     pim_enrich.view_element.tab.on_form_edit:
         class: %pim_enrich.view_element.tab.on_form_edit.class%
         abstract: true

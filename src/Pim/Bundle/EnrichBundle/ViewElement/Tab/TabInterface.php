@@ -30,4 +30,22 @@ interface TabInterface extends ViewElementInterface
      * @return boolean
      */
     public function isVisible(array $context = []);
+
+    /**
+     * Add a new visibility checker to the object
+     *
+     * @param TabVisibilityCheckerInterface $checker
+     *
+     * @return TabInterface
+     */
+    public function addVisibilityChecker(TabVisibilityCheckerInterface $checker);
+
+    /**
+     * Set the visibility checkers to the object
+     *
+     * @param array $checkers
+     *
+     * @return TabInterface
+     */
+    public function setVisibilityCheckers(array $checkers);
 }
