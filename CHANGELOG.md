@@ -62,15 +62,19 @@
 - Refactor `Pim\Bundle\EnrichBundle\Controller\SequentialEditController`
 - Remove the `Pim\Bundle\CatalogBundle\Doctrine\(ORM|MongoDBODM)\Filter\BaseFilter` to use proper dedicated filters
 - The parameter `category_id` for the route `pim_enrich_product_listcategories` has been renamed to `categoryId`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader`. Now `FieldNameBuilder`, channel, locale and currency entity classes are mandatory.
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 
 # 1.2.x
 
+# 1.2.11 (2014-10-31)
+
 ## Bug fixes
 - PIM-3308: Fix regression on unclassified filter
-- PIM-3311: fix creation of products with missing identifier during imports
+- PIM-3311: Fix creation of products with missing identifier during imports
+- PIM-3312: Fix CSV import of product values with invalid channel, locale or currency
 
 # 1.2.10 (2014-10-24)
 

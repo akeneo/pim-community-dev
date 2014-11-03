@@ -26,9 +26,29 @@ class CurrencyRepository extends ReferableEntityRepository
     }
 
     /**
+     * Return an array of currency codes
+     *
+     * @return array
+     */
+    public function getActivatedCurrencyCodes()
+    {
+        $qb = $this->getActivatedCurrenciesQB();
+        $qb->select('c.code');
+
+        $res = $qb->getQuery()->getScalarResult();
+
+        $codes = [];
+        foreach ($res as $row) {
+            $codes[] = $row['code'];
+        }
+
+        return $codes;
+    }
+
+    /**
      * Return a query builder for activated currencies
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getActivatedCurrenciesQB()
     {
@@ -40,7 +60,7 @@ class CurrencyRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function createDatagridQueryBuilder()
     {

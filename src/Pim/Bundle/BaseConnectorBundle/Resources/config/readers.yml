@@ -67,7 +67,11 @@ services:
         class: %pim_base_connector.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@pim_transform.builder.field_name'
             - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.channel.class%
+            - %pim_catalog.entity.locale.class%
+            - %pim_catalog.entity.currency.class%
 
     pim_base_connector.reader.file.csv_attribute_option:
         parent: pim_base_connector.reader.file.csv

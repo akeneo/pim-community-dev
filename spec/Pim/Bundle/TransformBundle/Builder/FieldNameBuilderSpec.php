@@ -61,6 +61,16 @@ class FieldNameBuilderSpec extends ObjectBehavior
         );
     }
 
+    function it_returns_null_attribute_informations_from_unknown_field_name(
+        $managerRegistry,
+        AttributeRepository $repository
+    ) {
+        $repository->findByReference('foo')->willReturn(null);
+        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+
+        $this->extractAttributeFieldNameInfos('foo')->shouldReturn(null);
+    }
+
     function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
         $managerRegistry,
         AttributeRepository $repository,

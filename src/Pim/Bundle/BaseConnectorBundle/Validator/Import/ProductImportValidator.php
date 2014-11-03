@@ -56,7 +56,7 @@ class ProductImportValidator extends ImportValidator
      */
     public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
-        if (null === $identifier = $this->getIdentifier($columnsInfo, $entity)) {
+        if (null === $this->getIdentifier($columnsInfo, $entity)) {
             $notBlank = new NotBlank();
             $errors['identifier'] = [[$notBlank->message]];
         }
