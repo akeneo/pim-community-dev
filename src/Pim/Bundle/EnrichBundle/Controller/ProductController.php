@@ -18,7 +18,6 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
@@ -443,20 +442,20 @@ class ProductController extends AbstractDoctrineController
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Request           $request The request object
-     * @param integer           $id      Product id
-     * @param CategoryInterface $parent  The parent category
+     * @param Request        $request    The request object
+     * @param integer|string $id         Product id
+     * @param integer        $category_id The parent category id
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
-     * @ParamConverter("parent", class="PimCatalogBundle:Category", options={"id" = "category_id"})
      * @Template
      * @AclAncestor("pim_enrich_product_categories_view")
      * @return array
      */
-    public function listCategoriesAction(Request $request, $id, CategoryInterface $parent)
+    public function listCategoriesAction(Request $request, $id, $category_id)
     {
         $product = $this->findProductOr404($id);
+        $parent = $this->findOr404($this->categoryManager->getCategoryClass(), $category_id);
         $categories = null;
 
         $includeParent = $request->get('include_parent', false);
