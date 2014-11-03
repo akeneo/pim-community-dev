@@ -30,5 +30,6 @@ class PimCommentExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
         $loader->load('controllers.yml');
+        $loader->load('view_elements/product.yml');
     }
 }

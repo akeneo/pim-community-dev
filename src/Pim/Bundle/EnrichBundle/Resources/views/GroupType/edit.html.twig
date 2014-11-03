@@ -31,15 +31,12 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_navbar(['Properties']) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
         <div class="row-fluid tab-content">
-
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="properties">
-                {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.locale_values': form_row(form.label) }) }}
-            </div>
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
     {{ form_end(form) }}
 {% endblock %}

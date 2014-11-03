@@ -28,15 +28,15 @@
                 });
             });
 
-            $("#comments .comment-thread").on("click", function() {
-                $("#comments .active").removeClass("active");
+            $(".tab-comment .comment-thread").on("click", function() {
+                $(".tab-comment .active").removeClass("active");
                 $(this).addClass("active");
             });
 
-            $("#comments .cancel").on("click", function(e) {
+            $(".tab-comment .cancel").on("click", function(e) {
                 e.stopPropagation();
-                $("#comments .active").removeClass("active");
-                $("#comments textarea").val('');
+                $(".tab-comment .active").removeClass("active");
+                $(".tab-comment textarea").val('');
             });
         });
     });

@@ -1,0 +1,12 @@
+parameters:
+    pim_comment.view_element.tab.product_comment.template: 'PimCommentBundle:Product:Tab/comment.html.twig'
+
+services:
+    pim_comment.view_element.tab.product_comment:
+        parent: pim_enrich.view_element.base_protected
+        arguments:
+            - 'tab.pim_enrich_product_edit.comment'
+            - %pim_comment.view_element.tab.product_comment.template%
+            - ['pim_enrich_product_comment']
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 125 }

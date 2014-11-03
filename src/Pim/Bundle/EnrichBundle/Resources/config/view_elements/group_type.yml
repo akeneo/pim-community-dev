@@ -1,0 +1,11 @@
+parameters:
+    pim_enrich.view_element.tab.grouptype_property.template:  'PimEnrichBundle:GroupType:Tab/property.html.twig'
+
+services:
+    pim_enrich.view_element.tab.grouptype_property:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'tab.pim_enrich_grouptype_edit.property'
+            - %pim_enrich.view_element.tab.grouptype_property.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_group_type_form.form_tab, position: 90 }

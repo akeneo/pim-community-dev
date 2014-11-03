@@ -1,0 +1,33 @@
+parameters:
+    pim_enrich.view_element.tab.attributegroup_property.template:  'PimEnrichBundle:AttributeGroup:Tab/property.html.twig'
+    pim_enrich.view_element.tab.attributegroup_attribute.template: 'PimEnrichBundle:AttributeGroup:Tab/attribute.html.twig'
+    pim_enrich.view_element.tab.attributegroup_history.template:   'PimEnrichBundle:AttributeGroup:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.tab.attributegroup_property:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'tab.pim_enrich_attributegroup_edit.property'
+            - %pim_enrich.view_element.tab.attributegroup_property.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 90 }
+
+    pim_enrich.view_element.tab.attributegroup_attribute:
+        parent: pim_enrich.view_element.base_protected
+        arguments:
+            - 'tab.pim_enrich_attributegroup_edit.attribute'
+            - %pim_enrich.view_element.tab.attributegroup_attribute.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 100 }
+
+    pim_enrich.view_element.tab.attributegroup_history_base:
+        parent: pim_enrich.view_element.base_protected
+        arguments:
+            - 'tab.pim_enrich_attributegroup_edit.history'
+            - %pim_enrich.view_element.tab.attributegroup_history.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 110 }

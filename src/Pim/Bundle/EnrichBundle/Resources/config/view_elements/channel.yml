@@ -1,0 +1,20 @@
+parameters:
+    pim_enrich.view_element.tab.channel_property.template:  'PimEnrichBundle:Channel:Tab/property.html.twig'
+    pim_enrich.view_element.tab.channel_history.template:   'PimEnrichBundle:Channel:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.tab.channel_property:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'tab.pim_enrich_channel_edit.property'
+            - %pim_enrich.view_element.tab.channel_property.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_channel_form.form_tab, position: 90 }
+
+    pim_enrich.view_element.tab.channel_history:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'tab.pim_enrich_channel_edit.history'
+            - %pim_enrich.view_element.tab.channel_history.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_channel_form.form_tab, position: 110 }
