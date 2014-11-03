@@ -29,15 +29,6 @@ class CsvProductReader extends CsvReader
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
 
-    /** @var array */
-    protected $locales = [];
-
-    /** @var array */
-    protected $channels = [];
-
-    /** @var array */
-    protected $currencies = [];
-
     /** @var ChannelRepository */
     protected $channelRepository;
 
@@ -155,10 +146,6 @@ class CsvProductReader extends CsvReader
     {
         parent::initializeRead();
 
-        $this->channels = $this->channelRepository->getChannelCodes();
-        $this->locales = $this->localeRepository->getActivatedLocaleCodes();
-        $this->currencies = $this->currencyRepository->getActivatedCurrencyCodes();
-                
         $this->checkAttributesInHeader();
     }
 
@@ -169,19 +156,23 @@ class CsvProductReader extends CsvReader
      */
     protected function checkAttributesInHeader()
     {
+        $channels = $this->channelRepository->getChannelCodes();
+        $locales = $this->localeRepository->getActivatedLocaleCodes();
+        $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+
         foreach ($this->fieldNames as $fieldName) {
             if (null !== $info = $this->fieldNameBuilder->extractAttributeFieldNameInfos($fieldName)) {
                 $locale = $info['locale_code'];
                 $channel = $info['scope_code'];
                 $currency = isset($info['price_currency']) ? $info['price_currency'] : null;
 
-                if (null !== $locale && !in_array($locale, $this->locales)) {
+                if (null !== $locale && !in_array($locale, $locales)) {
                     throw new \LogicException(sprintf('Locale %s does not exist.', $locale));
                 }
-                if (null !== $channel && !in_array($channel, $this->channels)) {
+                if (null !== $channel && !in_array($channel, $channels)) {
                     throw new \LogicException(sprintf('Channel %s does not exist.', $channel));
                 }
-                if (null !== $currency && !in_array($currency, $this->currencies)) {
+                if (null !== $currency && !in_array($currency, $currencies)) {
                     throw new \LogicException(sprintf('Currency %s does not exist.', $currency));
                 }
             }
