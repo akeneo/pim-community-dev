@@ -21,7 +21,9 @@ class AttributeOptionProperty extends FieldProperty
         if (isset($data['optionValues']) && count($data['optionValues']) === 1) {
             $optionValue = current($data['optionValues']);
 
-            return $optionValue['value'];
+            if (null !== $optionValue['value']) {
+                return $optionValue['value'];
+            }
         }
 
         return isset($data['code']) ? sprintf('[%s]', $data['code']) : null;
