@@ -238,6 +238,8 @@ class ProductDraftPersister implements ProductPersister
                             $manager->refresh($price);
                         }
                     }
+                } else {
+                    $value->setData(null);
                 }
             }
         } else {

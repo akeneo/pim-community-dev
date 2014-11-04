@@ -29,6 +29,7 @@
 # 1.0.x
 
 ## Bug fixes
+- PIM-3331: Fix draft creation when saving values for newly added attributes for the first time
 
 # 1.0.3 (2014-10-24)
 
