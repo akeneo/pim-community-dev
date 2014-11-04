@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -39,7 +39,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ProductValueInterface $taxValue,
-        AbstractAttribute $taxAttribute // TODO use AttributeInterface in 1.3
+        AttributeInterface $taxAttribute
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
@@ -58,7 +58,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ProductValueInterface $taxValue,
-        AbstractAttribute $taxAttribute // TODO use AttributeInterface in 1.3
+        AttributeInterface $taxAttribute
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
@@ -79,7 +79,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ProductValueInterface $nameValue,
-        AbstractAttribute $nameAttribute // TODO use AttributeInterface in 1.3
+        AttributeInterface $nameAttribute
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['name' => $nameValue]);
