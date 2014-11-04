@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Event;
 
-use Symfony\Component\EventDispatcher\Event;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Mass action event allows to do add easily some extra code

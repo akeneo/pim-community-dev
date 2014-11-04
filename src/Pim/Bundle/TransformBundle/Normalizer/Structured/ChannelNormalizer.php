@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Channel normalizer
@@ -106,7 +105,7 @@ class ChannelNormalizer implements NormalizerInterface
      *
      * @param Channel $channel
      *
-     * @return array
+     * @return string
      */
     protected function normalizeConversionUnits(Channel $channel)
     {

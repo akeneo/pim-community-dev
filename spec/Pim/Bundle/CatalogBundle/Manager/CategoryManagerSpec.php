@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -30,12 +30,12 @@ class CategoryManagerSpec extends ObjectBehavior
         $this->getObjectManager()->shouldReturn($objectManager);
     }
 
-    function it_instanciates_a_category()
+    function it_instantiates_a_category()
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }
 
-    function it_instanciates_a_tree(CategoryInterface $tree)
+    function it_instantiates_a_tree(CategoryInterface $tree)
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }

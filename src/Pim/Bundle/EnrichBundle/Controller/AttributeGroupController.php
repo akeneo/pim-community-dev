@@ -2,31 +2,28 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
-use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Response;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * AttributeGroup controller
@@ -114,11 +111,30 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->manager        = $manager;
         $this->attributeClass = $attributeClass;
     }
+
+    /**
+     * Attribute group index
+     *
+     * @Template
+     * @AclAncestor("pim_enrich_attribute_group_index")
+     *
+     * @return Response
+     */
+    public function indexAction()
+    {
+        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
+
+        return [
+            'groups' => $groups
+        ];
+    }
+
     /**
      * Create attribute group
      *
      * @Template()
-     * @AclAncestor("pim_enrich_attribute_group_index")
+     * @AclAncestor("pim_enrich_attribute_group_create")
+     *
      * @return array
      */
     public function createAction()

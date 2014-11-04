@@ -535,8 +535,7 @@ class Grid extends Index
 
         return $this
             ->getElement('Views list')
-            ->find('css', sprintf('label:contains("%s")', $viewLabel))
-        ;
+            ->find('css', sprintf('label:contains("%s")', $viewLabel));
     }
 
     /**
@@ -839,6 +838,14 @@ class Grid extends Index
     public function massDelete()
     {
         $this->pressButton('Delete');
+    }
+
+    /**
+     * Press the sequential edit button
+     */
+    public function sequentialEdit()
+    {
+        $this->pressButton('Sequential Edit');
     }
 
     /**

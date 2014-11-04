@@ -38,7 +38,7 @@ class FamilySpec extends ObjectBehavior
     function it_allows_defining_an_attribute_to_use_as_label(AbstractAttribute $name)
     {
         $name->getAttributeType()->willReturn('pim_catalog_text');
-        $this->getAttributeAsLabel()->shouldReturn(null);;
+        $this->getAttributeAsLabel()->shouldReturn(null);
         $this->setAttributeAsLabel($name)->shouldReturn($this);
     }
 }

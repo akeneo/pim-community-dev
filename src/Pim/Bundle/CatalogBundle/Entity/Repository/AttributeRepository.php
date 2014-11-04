@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\AbstractQuery;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
  * Repository for attribute entity
@@ -324,8 +324,8 @@ class AttributeRepository extends EntityRepository implements
             if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
             }
-            $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-            foreach ($labels as $data) {
+            $attributes = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            foreach ($attributes as $data) {
                 $results[$data['code']]['label']      = $data['label'];
                 $results[$data['code']]['group']      = $data['groupLabel'];
                 $results[$data['code']]['groupOrder'] = $data['sortOrder'];
@@ -336,7 +336,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get ids of attributes useable in grid
+     * Get ids of attributes usable in grid
      *
      * @param array $codes
      * @param array $groupIds
@@ -348,8 +348,6 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->_em->createQueryBuilder()
             ->select('att.id')
             ->from($this->_entityName, 'att', 'att.id');
-
-        $qb->andWhere("att.useableAsGridColumn = 1 OR att.useableAsGridFilter = 1");
 
         if (is_array($codes) && !empty($codes)) {
             $qb->andWhere("att.code IN (:codes)");

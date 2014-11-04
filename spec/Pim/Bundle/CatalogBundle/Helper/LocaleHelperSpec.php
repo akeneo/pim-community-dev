@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\Helper;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Intl;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Intl;
 
 class LocaleHelperSpec extends ObjectBehavior
 {

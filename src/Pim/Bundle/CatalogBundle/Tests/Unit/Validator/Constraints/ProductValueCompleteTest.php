@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
 /**
  * Test related class

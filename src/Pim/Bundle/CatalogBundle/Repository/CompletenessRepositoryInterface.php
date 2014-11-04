@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-
 /**
  * CompletenessRepository interface
  *

@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Cache;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\DataFixtures\ReferenceRepository;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class DoctrineCacheSpec extends ObjectBehavior
 {

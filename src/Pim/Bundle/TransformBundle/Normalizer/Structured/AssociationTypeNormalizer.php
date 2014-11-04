@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Association type normalizer

@@ -2,30 +2,44 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
  */
 class MetricFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, CatalogContext $context)
+    function let(Builder $queryBuilder)
     {
-        $context->getLocaleCode()->willReturn('en_US');
-        $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($queryBuilder, $context);
+        $this->beConstructedWith(['pim_catalog_metric'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->setQueryBuilder($queryBuilder);
     }
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
     }
 
-    function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
+    function it_supports_operators()
+    {
+        $this->getOperators()->shouldReturn(['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->supportsOperator('=')->shouldReturn(true);
+        $this->supportsOperator('FAKE')->shouldReturn(false);
+    }
+
+    function it_supports_metric_attribute(AttributeInterface $attribute)
+    {
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $this->supportsAttribute($attribute)->shouldReturn(true);
+
+        $attribute->getAttributeType()->willReturn(Argument::any());
+        $this->supportsAttribute($attribute)->shouldReturn(false);
+    }
+
+    function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
     {
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -33,10 +47,10 @@ class MetricFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
         $queryBuilder->equals(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($metric, '=', '22.5');
+        $this->addAttributeFilter($metric, '=', '22.5', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_greater_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
+    function it_adds_a_greater_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
     {
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -44,10 +58,10 @@ class MetricFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
         $queryBuilder->gt(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($metric, '>', '22.5');
+        $this->addAttributeFilter($metric, '>', '22.5', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_greater_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
+    function it_adds_a_greater_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
     {
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -55,10 +69,10 @@ class MetricFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
         $queryBuilder->gte(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($metric, '>=', '22.5');
+        $this->addAttributeFilter($metric, '>=', '22.5', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
+    function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
     {
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -66,10 +80,10 @@ class MetricFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
         $queryBuilder->lt(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($metric, '<', '22.5');
+        $this->addAttributeFilter($metric, '<', '22.5', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 
-    function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
+    function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
     {
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -77,6 +91,6 @@ class MetricFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.weight-en_US-mobile.baseData')->willReturn($queryBuilder);
         $queryBuilder->lte(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($metric, '<=', '22.5');
+        $this->addAttributeFilter($metric, '<=', '22.5', ['locale' => 'en_US', 'scope' => 'mobile']);
     }
 }

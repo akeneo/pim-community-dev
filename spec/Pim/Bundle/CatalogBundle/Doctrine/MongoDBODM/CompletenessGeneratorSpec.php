@@ -2,16 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager

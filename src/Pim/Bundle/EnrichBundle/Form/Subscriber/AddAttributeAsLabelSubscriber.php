@@ -3,11 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Add useable attributes as labels
@@ -56,7 +56,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        if ($data instanceof Family && $data->getId()) {
+        if ($data instanceof FamilyInterface && $data->getId()) {
             $form = $event->getForm();
             $form->add(
                 $this->factory->createNamed(

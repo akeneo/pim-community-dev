@@ -3,23 +3,24 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Product repository
@@ -33,14 +34,10 @@ class ProductRepository extends DocumentRepository implements
     ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface
 {
-    /** @var ProductQueryBuilder */
-    protected $productQB;
+    /** @var ProductQueryFactoryInterface */
+    protected $productQueryFactory;
 
-    /**
-     * ORM EntityManager to access ORM entities
-     *
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
     /** @var AttributeRepository */
@@ -92,38 +89,13 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset);
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneBy(array $criteria)
+    public function findOneByIdentifier($identifier)
     {
-        $qb = $this->createQueryBuilder('p');
-        $pqb = $this->getProductQueryBuilder($qb);
-        foreach ($criteria as $field => $data) {
-            if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
-            }
-        }
-
+        $pqb = $this->productQueryFactory->create();
+        $qb = $pqb->getQueryBuilder();
+        $attribute = $this->getIdentifierAttribute();
+        $pqb->addFilter($attribute->getCode(), '=', $identifier);
         $result = $qb->getQuery()->execute();
-
-        if ($result->count() > 1) {
-            throw new \LogicException('Many products have been found that match criteria.');
-        }
 
         return $result->getNext();
     }
@@ -131,9 +103,14 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function buildByScope($scope)
+    public function findOneById($id)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $pqb = $this->productQueryFactory->create();
+        $pqb->addFilter('id', '=', $id);
+        $qb = $pqb->getQueryBuilder();
+        $result = $qb->getQuery()->execute();
+
+        return $result->getNext();
     }
 
     /**
@@ -177,11 +154,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return string[]
      */
-    public function findAllIdsForFamily(Family $family)
+    public function findAllIdsForFamily(FamilyInterface $family)
     {
         $qb = $this->createQueryBuilder('p')
             ->hydrate(false)
@@ -328,14 +305,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByExistingFamily()
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByIds(array $ids)
     {
         $qb = $this->createQueryBuilder('p')->eagerCursor(true);
@@ -430,14 +399,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findByReference($code)
     {
-        return $this->findOneBy(
-            [
-                [
-                    'attribute' => $this->attributeRepository->getIdentifier(),
-                    'value' => $code,
-                ]
-            ]
-        );
+        return $this->findOneByIdentifier($code);
     }
 
     /**
@@ -453,9 +415,10 @@ class ProductRepository extends DocumentRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $qb = $this->createQueryBuilder();
-        $productQueryBuilder = $this->getProductQueryBuilder($qb);
-        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $productQueryBuilder = $this->productQueryFactory->create();
+        $qb = $productQueryBuilder->getQueryBuilder();
+
+        $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
         if (0 === $result->count() ||
@@ -470,26 +433,12 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function setProductQueryBuilder($productQB)
+    public function setProductQueryFactory(ProductQueryFactoryInterface $factory)
     {
-        $this->productQB = $productQB;
+        $this->productQueryFactory = $factory;
 
         return $this;
 
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductQueryBuilder($qb)
-    {
-        if (!$this->productQB) {
-            throw new \LogicException('Product query builder must be configured');
-        }
-
-        $this->productQB->setQueryBuilder($qb);
-
-        return $this->productQB;
     }
 
     /**
@@ -685,53 +634,6 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Finds documents by a set of criteria
-     *
-     * @param array        $attributes
-     * @param array        $criteria
-     * @param array        $orderBy
-     * @param integer|null $limit
-     * @param integer|null $offset
-     *
-     * @return QueryBuilder
-     *
-     * @throws \RuntimeException
-     */
-    protected function findAllByAttributesQB(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->createQueryBuilder('p');
-
-        foreach ($attributes as $attribute => $value) {
-            $qb->field($attribute)->equals($value);
-        }
-
-        if ($criteria) {
-            foreach ($criteria as $field => $value) {
-                $qb->field('normalizedData.'.$field)->equals($value);
-            }
-        }
-
-        if ($orderBy) {
-            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($limit) {
-            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($offset) {
-            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        return $qb;
-    }
-
-    /**
      * @param integer $productId
      * @param integer $assocTypeCount
      *
@@ -774,5 +676,15 @@ class ProductRepository extends DocumentRepository implements
     public function getObjectManager()
     {
         return $this->getDocumentManager();
+    }
+
+    /**
+     * Return the identifier attribute
+     *
+     * @return AbstractAttribute|null
+     */
+    protected function getIdentifierAttribute()
+    {
+        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
     }
 }

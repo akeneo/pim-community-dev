@@ -31,7 +31,7 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {% if form.vars.value.id %}
+        {% if form.vars.value.id and resource_granted('pim_enrich_channel_history') %}
             {{ elements.form_navbar(['Properties', 'History']) }}
         {% else %}
             {{ elements.form_navbar(['Properties']) }}
@@ -59,7 +59,7 @@
                     'pim_enrich.channel.pick_conversion_unit': conversionOptions
                 }) }}
             </div>
-            {% if form.vars.value.id %}
+            {% if form.vars.value.id and resource_granted('pim_enrich_channel_history') %}
                 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
                 <div class="tab-pane" id="history">
                     {{ dataGrid.renderHistoryGrid(form.vars.value) }}

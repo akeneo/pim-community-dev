@@ -95,31 +95,19 @@ class FieldNameBuilder
      */
     protected function extractAttributeInfos(AbstractAttribute $attribute, array $explodedFieldName)
     {
-        if ($attribute->isLocalizable() && $attribute->isScopable()) {
-            $localeCode = $explodedFieldName[1];
-            $scopeCode  = $explodedFieldName[2];
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[3] : null;
-        } elseif ($attribute->isLocalizable()) {
-            $localeCode = $explodedFieldName[1];
-            $scopeCode  = null;
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[2] : null;
-        } elseif ($attribute->isScopable()) {
-            $localeCode = null;
-            $scopeCode  = $explodedFieldName[1];
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[2] : null;
-        } else {
-            $localeCode = null;
-            $scopeCode  = null;
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[1] : null;
+        array_shift($explodedFieldName);
+
+        $info = [
+            'attribute'   => $attribute,
+            'locale_code' => $attribute->isLocalizable() ? array_shift($explodedFieldName) : null,
+            'scope_code'  => $attribute->isScopable() ? array_shift($explodedFieldName) : null,
+        ];
+
+        if ('prices' === $attribute->getBackendType()) {
+            $info['price_currency'] = array_shift($explodedFieldName);
         }
 
-        $priceArray = (null === $priceCurrency) ? [] : ['price_currency' => $priceCurrency];
-
-        return [
-            'attribute'   => $attribute,
-            'locale_code' => $localeCode,
-            'scope_code'  => $scopeCode,
-        ] + $priceArray;
+        return $info;
     }
 
     /**

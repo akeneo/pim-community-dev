@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Aims to audit data updates on versionable entities
