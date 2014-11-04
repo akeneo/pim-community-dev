@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\JsFormValidationBundle\Twig\Extension;
 
-use Symfony\Component\Form\FormView;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use APY\JsFormValidationBundle\Twig\Extension\JsFormValidationTwigExtension as APYJsFormValidationTwigExtension;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * Override the form validation twig extension to render the form validation script inline

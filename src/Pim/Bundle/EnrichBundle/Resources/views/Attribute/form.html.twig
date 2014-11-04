@@ -41,7 +41,10 @@
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
 
-        {% set tabs = form.vars.value.id ? ['Parameters', 'Values', 'History'] : ['Parameters', 'Values'] %}
+        {% set tabs = ['Parameters', 'Values'] %}
+        {% if form.vars.value.id and resource_granted('pim_enrich_attribute_history') %}
+            {% set tabs = tabs|merge(['History']) %}
+        {% endif %}
 
         {{ elements.form_navbar(tabs) }}
 
@@ -57,7 +60,7 @@
                 {% include 'PimEnrichBundle:Attribute:_form_values.html.twig' with {'form': form} %}
             </div>
 
-            {% if form.vars.value.id %}
+            {% if form.vars.value.id and resource_granted('pim_enrich_attribute_history') %}
                 <div class="tab-pane" id="history">
                     {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
                     {{ dataGrid.renderHistoryGrid(form.vars.value) }}

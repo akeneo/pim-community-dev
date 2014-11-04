@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\Form\Transformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * Transforms access levels into boolean values and vice versa

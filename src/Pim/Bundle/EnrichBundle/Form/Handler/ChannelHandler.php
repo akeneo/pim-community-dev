@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Form handler for channel

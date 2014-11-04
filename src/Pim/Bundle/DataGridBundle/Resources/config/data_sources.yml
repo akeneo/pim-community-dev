@@ -26,6 +26,7 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_datagrid.datasource.result_record.hydrator.product'
+            - '@pim_catalog.doctrine.query.product_query_factory'
         calls:
             - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action'] ]
         tags:
@@ -42,5 +43,8 @@ services:
     pim_datagrid.datasource.adapter_resolver:
         class: %pim_datagrid.datasource.adapter_resolver.class%
         arguments:
-            - @pim_datagrid.datasource.support_resolver
+            - '@pim_datagrid.datasource.support_resolver'
             - %pim_filter.datasource.orm_adapter.class%
+            - %pim_filter.datasource.product_orm_adapter.class%
+        calls:
+            - [addProductDatasource, ['pim_datasource_product']]

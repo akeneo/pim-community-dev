@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 class MetricNormalizerSpec extends ObjectBehavior
@@ -101,14 +100,23 @@ class MetricNormalizerSpec extends ObjectBehavior
     function it_throws_exception_when_the_context_field_name_key_is_not_provided(AbstractMetric $metric)
     {
         $this
-            ->shouldThrow(new \InvalidArgumentException('Missing required "field_name" context value, got "metric_format, foo, bar"'))
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    'Missing required "field_name" context value, got "metric_format, foo, bar"'
+                )
+            )
             ->duringNormalize($metric, null, ['foo' => true, 'bar' => true]);
     }
 
     function it_throws_exception_when_the_context_metric_format_is_not_valid(AbstractMetric $metric)
     {
         $this
-            ->shouldThrow(new \InvalidArgumentException('Value "foo" of "metric_format" context value is not allowed (allowed values: "single_field, multiple_fields"'))
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    'Value "foo" of "metric_format" context value is not allowed ' .
+                    '(allowed values: "single_field, multiple_fields"'
+                )
+            )
             ->duringNormalize($metric, null, ['field_name' => 'weight', 'metric_format' => 'foo']);
     }
 }

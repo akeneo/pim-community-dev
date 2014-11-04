@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 
 /**
  * Completeness Repository for ORM

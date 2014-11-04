@@ -2,22 +2,22 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Prophecy\Argument;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Prophecy\Argument;
 
 class EditCommonAttributesSpec extends ObjectBehavior
 {
@@ -139,7 +139,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
         $name->getGroup()->willReturn(new AttributeGroup());
-        $name->getAvailableLocales()->willReturn(null);
+        $name->getAvailableLocaleCodes()->willReturn(null);
 
         $massActionManager->findCommonAttributes([1, 2])->willReturn([$name]);
 

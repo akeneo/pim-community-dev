@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\VersioningBundle\DependencyInjection\PimVersioningExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Test related class

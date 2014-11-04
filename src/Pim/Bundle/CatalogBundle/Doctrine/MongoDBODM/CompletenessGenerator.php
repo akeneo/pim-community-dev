@@ -2,19 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\Completeness;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Generate the completeness when Product are in MongoDBODM
@@ -347,9 +345,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Apply the query part to search for product where the completenesses
      * are missing. Apply only to the channel or product if provided.
      *
-     * @param Builder $productsQb
-     * @param Product $product
-     * @param Channel $channel
+     * @param Builder          $productsQb
+     * @param ProductInterface $product
+     * @param Channel          $channel
      */
     protected function applyFindMissingQuery(
         Builder $productsQb,
@@ -413,7 +411,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function scheduleForFamily(Family $family)
+    public function scheduleForFamily(FamilyInterface $family)
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 

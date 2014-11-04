@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeGroupNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Attribute group normalizer test

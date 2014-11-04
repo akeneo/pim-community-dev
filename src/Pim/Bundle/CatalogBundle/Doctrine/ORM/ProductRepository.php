@@ -4,15 +4,15 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 
 /**
  * Product repository
@@ -25,28 +25,18 @@ class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
-    /**
-     * @var ProductQueryBuilder
-     */
-    protected $productQB;
+    /** @var ProductQueryFactoryInterface */
+    protected $productQueryFactory;
 
-    /**
-     * @var AttributeRepository
-     */
+    /** @var AttributeRepository */
     protected $attributeRepository;
 
     /**
-     * Set product query builder
-     *
-     * @param ProductQueryBuilder $productQB
-     *
-     * @return ProductRepositoryInterface
+     * {@inheritdoc}
      */
-    public function setProductQueryBuilder($productQB)
+    public function setProductQueryFactory(ProductQueryFactoryInterface $factory)
     {
-        $this->productQB = $productQB;
-
-        return $this;
+        $this->productQueryFactory = $factory;
     }
 
     /**
@@ -66,12 +56,15 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function buildByScope($scope)
+    protected function buildByScope($scope)
     {
-        $qb = $this->findAllByAttributesQB();
+        $productQb = $this->productQueryFactory->create();
+        $qb = $productQb->getQueryBuilder();
+        $this->addJoinToValueTables($qb);
+        $rootAlias = current($qb->getRootAliases());
         $qb
             ->andWhere(
-                $qb->expr()->eq('Entity.enabled', ':enabled')
+                $qb->expr()->eq($rootAlias.'.enabled', ':enabled')
             )
             ->andWhere(
                 $qb->expr()->orX(
@@ -92,7 +85,7 @@ class ProductRepository extends EntityRepository implements
     {
         $scope = $channel->getCode();
         $qb = $this->buildByScope($scope);
-        $rootAlias = $qb->getRootAlias();
+        $rootAlias = current($qb->getRootAliases());
         $expression =
             'pCompleteness.product = '.$rootAlias.' AND '.
             $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
@@ -124,24 +117,14 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByExistingFamily()
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->where(
-            $qb->expr()->isNotNull('p.family')
-        );
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findByIds(array $ids)
     {
-        $qb = $this->findAllByAttributesQB();
+        $productQb = $this->productQueryFactory->create();
+        $qb = $productQb->getQueryBuilder();
+        $this->addJoinToValueTables($qb);
+        $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
-            $qb->expr()->in('Entity.id', $ids)
+            $qb->expr()->in($rootAlias.'.id', $ids)
         );
 
         return $qb->getQuery()->execute();
@@ -314,18 +297,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Returns the Attribute
-     *
-     * @param string $code
-     *
-     * @return AbstractAttribute
-     */
-    protected function getAttributeByCode($code)
-    {
-        return $this->attributeRepository->findOneByCode($code);
-    }
-
-    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -458,60 +429,26 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
+    public function findOneByIdentifier($identifier)
     {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        return $this
-            ->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneBy(array $criteria)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $pqb = $this->getProductQueryBuilder($qb);
-        foreach ($criteria as $field => $data) {
-            if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
-            }
-        }
-
+        $pqb = $this->productQueryFactory->create();
+        $qb = $pqb->getQueryBuilder();
+        $attribute = $this->getIdentifierAttribute();
+        $pqb->addFilter($attribute->getCode(), '=', $identifier);
         $result = $qb->getQuery()->execute();
 
-        if (count($result) > 1) {
-            throw new \LogicException(
-                sprintf(
-                    'Many products have been found that match criteria:' . "\n" . '%s',
-                    print_r($criteria, true)
-                )
-            );
-        }
+        return reset($result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneById($id)
+    {
+        $pqb = $this->productQueryFactory->create();
+        $pqb->addFilter('id', '=', $id);
+        $qb = $pqb->getQueryBuilder();
+        $result = $qb->getQuery()->execute();
 
         return reset($result);
     }
@@ -521,7 +458,10 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByWithValues($id)
     {
-        $qb = $this->findAllByAttributesQB(array(), array('id' => $id));
+        $productQb = $this->productQueryFactory->create();
+        $qb = $productQb->getQueryBuilder();
+        $rootAlias = current($qb->getRootAliases());
+        $this->addJoinToValueTables($qb);
         $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
         $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
         $qb->addSelect('Value');
@@ -532,28 +472,13 @@ class ProductRepository extends EntityRepository implements
         $qb->addSelect('AttributeGroup');
         $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
         $qb->addSelect('AGroupTranslations');
+        $qb->andWhere(
+            $qb->expr()->eq($rootAlias.'.id', $id)
+        );
 
         return $qb
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return ProductQueryBuilder
-     */
-    public function getProductQueryBuilder($qb)
-    {
-        if (!$this->productQB) {
-            throw new \LogicException('Product query builder must be configured');
-        }
-
-        $this->productQB->setQueryBuilder($qb);
-
-        return $this->productQB;
     }
 
     /**
@@ -567,60 +492,6 @@ class ProductRepository extends EntityRepository implements
             ->leftJoin('Value.attribute', 'Attribute')
             ->leftJoin('Value.options', 'ValueOption')
             ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
-    }
-
-    /**
-     * Finds entities and attributes values by a set of criteria, same coverage than findBy
-     *
-     * @param array      $attributes attribute codes
-     * @param array      $criteria   criterias
-     * @param array|null $orderBy    order by
-     * @param int|null   $limit      limit
-     * @param int|null   $offset     offset
-     *
-     * @return array The objects.
-     */
-    protected function findAllByAttributesQB(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->createQueryBuilder('Entity');
-        $this->addJoinToValueTables($qb);
-        $productQb = $this->getProductQueryBuilder($qb);
-
-        if (!is_null($criteria)) {
-            foreach ($criteria as $attCode => $attValue) {
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeFilter($attribute, '=', $attValue);
-                } else {
-                    $productQb->addFieldFilter($attCode, '=', $attValue);
-                }
-            }
-        }
-        if (!is_null($orderBy)) {
-            foreach ($orderBy as $attCode => $direction) {
-                $attribute = $this->getAttributeByCode($attCode);
-                if ($attribute) {
-                    $productQb->addAttributeSorter($attribute, $direction);
-                } else {
-                    $productQb->addFieldSorter($attCode, $direction);
-                }
-            }
-        }
-
-        // use doctrine paginator to avoid count problem with left join of values
-        if (!is_null($offset) && !is_null($limit)) {
-            $qb->setFirstResult($offset)->setMaxResults($limit);
-            $paginator = new Paginator($qb->getQuery());
-
-            return $paginator;
-        }
-
-        return $qb;
     }
 
     /**
@@ -651,5 +522,15 @@ class ProductRepository extends EntityRepository implements
     public function getObjectManager()
     {
         return $this->getEntityManager();
+    }
+
+    /**
+     * Return the identifier attribute
+     *
+     * @return AbstractAttribute|null
+     */
+    protected function getIdentifierAttribute()
+    {
+        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
     }
 }

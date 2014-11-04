@@ -2,10 +2,21 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,20 +25,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler;
 
 /**
  * Family controller
@@ -190,7 +187,8 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $family
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @AclAncestor("pim_enrich_family_history")
+     * @return Response
      */
     public function historyAction(Family $family)
     {

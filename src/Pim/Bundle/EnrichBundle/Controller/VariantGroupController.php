@@ -2,14 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Variant group controller
