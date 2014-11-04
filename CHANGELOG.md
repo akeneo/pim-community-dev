@@ -1,8 +1,9 @@
 # 1.2.x
 
 ## Bug fixes
-- PIM-3298 : Fix issue with locale specific property of an attribute when edit and mass edit
+- PIM-3298: Fix issue with locale specific property of an attribute when edit and mass edit
 - PIM-3229: Fix values for simple and multi select attributes with missing translations not being displayed in the grid
+- PIM-3309: Fix check on product value uniqueness
 
 # 1.2.11 (2014-10-31)
 
@@ -10,7 +11,6 @@
 - PIM-3308: Fix regression on unclassified filter
 - PIM-3311: Fix creation of products with missing identifier during imports
 - PIM-3312: Fix CSV import of product values with invalid channel, locale or currency
-- PIM-3309: Fix check on product value uniqueness
 
 # 1.2.10 (2014-10-24)
 
