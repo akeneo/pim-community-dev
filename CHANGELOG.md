@@ -67,6 +67,7 @@
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
+- PIM-3309: Fix check on product value uniqueness
 
 # 1.2.x
 
