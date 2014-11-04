@@ -268,6 +268,11 @@ define(
                     var columnListView = new ColumnListView({collection: columnList});
 
                     var modal = new Backbone.BootstrapModal({
+                        className: 'modal column-configurator-modal',
+                        modalOptions: {
+                            backdrop: 'static',
+                            keyboard: false
+                        },
                         allowCancel: true,
                         okCloses: false,
                         cancelText: _.__('pim_datagrid.column_configurator.cancel'),
@@ -280,8 +285,6 @@ define(
                     loadingMask.$el.remove();
 
                     modal.open();
-                    modal.$el.addClass('column-configurator-modal');
-
                     columnListView.setElement('#column-configurator').render();
 
                     modal.on('cancel', this.subscribe.bind(this));
