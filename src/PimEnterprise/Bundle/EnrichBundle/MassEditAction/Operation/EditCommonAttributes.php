@@ -78,6 +78,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         return array(
             'locales'          => $this->userContext->getGrantedUserLocales(Attributes::EDIT_PRODUCTS),
             'common_attributes' => $this->commonAttributes,
+            'current_locale' => $this->getLocale()->getCode()
         );
     }
 
