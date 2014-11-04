@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3298 : Fix issue with locale specific property of an attribute when edit and mass edit
+- PIM-3229: Fix values for simple and multi select attributes with missing translations not being displayed in the grid
 
 # 1.2.11 (2014-10-31)
 
