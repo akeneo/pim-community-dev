@@ -74,7 +74,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new RevertException('This version can not be restored. Some errors occurs during the validation.')
+                new RevertException('This version can not be restored. Some errors occured during the validation.')
             )
             ->during('revert', [$version]);
     }
