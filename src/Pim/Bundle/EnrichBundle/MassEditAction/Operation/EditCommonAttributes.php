@@ -229,6 +229,7 @@ class EditCommonAttributes extends ProductMassEditOperation
         return array(
             'locales'          => $this->userContext->getUserLocales(),
             'common_attributes' => $this->commonAttributes,
+            'current_locale' => $this->getLocale()->getCode()
         );
     }
 
@@ -269,11 +270,36 @@ class EditCommonAttributes extends ProductMassEditOperation
         $attributes = $this->massActionManager->findCommonAttributes($productIds);
 
         foreach ($attributes as $attribute) {
-            $attribute->setLocale($currentLocaleCode);
-            $attribute->getGroup()->setLocale($currentLocaleCode);
-
-            $this->commonAttributes[] = $attribute;
+            if ($this->filtersLocaleSpecificAttribute($attribute, $currentLocaleCode) === false) {
+                $attribute->setLocale($currentLocaleCode);
+                $attribute->getGroup()->setLocale($currentLocaleCode);
+                $this->commonAttributes[] = $attribute;
+            }
         }
+    }
+
+    /**
+     * Filters a locale specific attribute
+     *
+     * @param AbstractAttribute $attribute
+     * @param string            $currentLocaleCode
+     *
+     * @return boolean
+     */
+    protected function filtersLocaleSpecificAttribute(AbstractAttribute $attribute, $currentLocaleCode)
+    {
+        if ($attribute->getAvailableLocales()) {
+            $availableCodes = $attribute->getAvailableLocales()->map(
+                function ($locale) {
+                    return $locale->getCode();
+                }
+            )->toArray();
+            if (!in_array($currentLocaleCode, $availableCodes)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
