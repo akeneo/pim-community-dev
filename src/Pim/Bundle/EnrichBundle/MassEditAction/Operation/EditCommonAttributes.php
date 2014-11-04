@@ -268,38 +268,39 @@ class EditCommonAttributes extends ProductMassEditOperation
 
         // Get common attributes
         $attributes = $this->massActionManager->findCommonAttributes($productIds);
+        $attributes = $this->filterLocaleSpecificAttributes($attributes, $currentLocaleCode);
 
         foreach ($attributes as $attribute) {
-            if ($this->filtersLocaleSpecificAttribute($attribute, $currentLocaleCode) === false) {
-                $attribute->setLocale($currentLocaleCode);
-                $attribute->getGroup()->setLocale($currentLocaleCode);
-                $this->commonAttributes[] = $attribute;
-            }
+            $attribute->setLocale($currentLocaleCode);
+            $attribute->getGroup()->setLocale($currentLocaleCode);
+            $this->commonAttributes[] = $attribute;
         }
     }
 
     /**
-     * Filters a locale specific attribute
+     * Filter the locale specific attributes
      *
-     * @param AbstractAttribute $attribute
-     * @param string            $currentLocaleCode
+     * @param AbstractAttribute[] $attributes
+     * @param string              $currentLocaleCode
      *
      * @return boolean
      */
-    protected function filtersLocaleSpecificAttribute(AbstractAttribute $attribute, $currentLocaleCode)
+    protected function filterLocaleSpecificAttributes(array $attributes, $currentLocaleCode)
     {
-        if ($attribute->getAvailableLocales()) {
-            $availableCodes = $attribute->getAvailableLocales()->map(
-                function ($locale) {
-                    return $locale->getCode();
+        foreach ($attributes as $indAttribute => $attribute) {
+            if ($attribute->getAvailableLocales()) {
+                $availableCodes = $attribute->getAvailableLocales()->map(
+                    function ($locale) {
+                        return $locale->getCode();
+                    }
+                )->toArray();
+                if (!in_array($currentLocaleCode, $availableCodes)) {
+                    unset($attributes[$indAttribute]);
                 }
-            )->toArray();
-            if (!in_array($currentLocaleCode, $availableCodes)) {
-                return true;
             }
         }
 
-        return false;
+        return $attributes;
     }
 
     /**
