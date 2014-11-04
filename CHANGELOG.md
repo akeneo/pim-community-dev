@@ -1,7 +1,7 @@
 # 1.2.x
 
 ## Bug fixes
-- PIM-3298 : Fix issue with locale specific property of an attribute
+- PIM-3298 : Fix issue with locale specific property of an attribute when edit and mass edit
 
 # 1.2.11 (2014-10-31)
 
