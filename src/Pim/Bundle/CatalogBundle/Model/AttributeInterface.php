@@ -106,6 +106,8 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Get available locales
      *
+     * @deprecated will be removed in 1.4
+     *
      * @return ArrayCollection|null
      */
     public function getAvailableLocales();
