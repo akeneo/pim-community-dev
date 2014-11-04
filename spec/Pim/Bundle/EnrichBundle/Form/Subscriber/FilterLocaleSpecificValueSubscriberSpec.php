@@ -46,7 +46,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $taxValue->getAttribute()->willReturn($taxAttribute);
         $fr = new Locale();
         $fr->setCode('fr_FR');
-        $taxAttribute->getAvailableLocales()->willReturn(new ArrayCollection([$fr]));
+        $taxAttribute->getAvailableLocaleCodes()->willReturn(['fr_FR']);
         $form->remove('tax')->shouldBeCalled();
          
         $this->preSetData($event);
@@ -67,7 +67,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $fr->setCode('fr_FR');
         $en = new Locale();
         $en->setCode('en_US');
-        $taxAttribute->getAvailableLocales()->willReturn(new ArrayCollection([$fr, $en]));
+        $taxAttribute->getAvailableLocaleCodes()->willReturn(['fr_FR', 'en_US']);
         $form->remove('tax')->shouldNotBeCalled();
          
         $this->preSetData($event);
@@ -84,7 +84,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['name' => $nameValue]);
         $nameValue->getAttribute()->willReturn($nameAttribute);
-        $nameAttribute->getAvailableLocales()->willReturn(null);
+        $nameAttribute->getAvailableLocaleCodes()->willReturn(null);
         $form->remove('name')->shouldNotBeCalled();
          
         $this->preSetData($event);

@@ -105,9 +105,17 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get available locales
+     *
      * @return ArrayCollection|null
      */
     public function getAvailableLocales();
+
+    /**
+     * Get available locale codes
+     *
+     * @return array|null
+     */
+    public function getAvailableLocaleCodes();
 
     /**
      * Set entity type

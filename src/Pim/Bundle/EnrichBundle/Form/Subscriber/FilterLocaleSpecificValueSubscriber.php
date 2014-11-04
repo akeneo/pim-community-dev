@@ -51,13 +51,8 @@ class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
         }
 
         foreach ($data as $name => $value) {
-            if ($this->currentLocale && $value->getAttribute()->getAvailableLocales()) {
-                // TODO : should be provided by Attribute itself, we'll do in 1.3 to avoid BC Break
-                $availableCodes = $value->getAttribute()->getAvailableLocales()->map(
-                    function ($locale) {
-                        return $locale->getCode();
-                    }
-                )->toArray();
+            if ($this->currentLocale && $value->getAttribute()->getAvailableLocaleCodes()) {
+                $availableCodes = $value->getAttribute()->getAvailableLocaleCodes();
                 if (!in_array($this->currentLocale, $availableCodes)) {
                     $form->remove($name);
                 }

@@ -365,11 +365,7 @@ class ProductBuilder
     protected function filterExpectedValues(AttributeInterface $attribute, array $values)
     {
         if ($attribute->getAvailableLocales()) {
-            $availableLocales = $attribute->getAvailableLocales()->map(
-                function ($locale) {
-                    return $locale->getCode();
-                }
-            )->toArray();
+            $availableLocales = $attribute->getAvailableLocaleCodes();
             foreach ($values as $index => $value) {
                 if ($value['locale'] && !in_array($value['locale'], $availableLocales)) {
                     unset($values[$index]);

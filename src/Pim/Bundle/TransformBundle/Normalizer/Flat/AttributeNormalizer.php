@@ -31,14 +31,9 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
      */
     protected function normalizeAvailableLocales(AbstractAttribute $attribute)
     {
-        $availableLocales = $attribute->getAvailableLocales();
+        $availableLocales = $attribute->getAvailableLocaleCodes();
 
         if ($availableLocales) {
-            $availableLocales = $availableLocales->map(
-                function ($locale) {
-                    return $locale->getCode();
-                }
-            )->toArray();
             $availableLocales = implode(self::ITEM_SEPARATOR, $availableLocales);
         }
 

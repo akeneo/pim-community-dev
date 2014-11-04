@@ -286,12 +286,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function filterLocaleSpecificAttributes(array $attributes, $currentLocaleCode)
     {
         foreach ($attributes as $indAttribute => $attribute) {
-            if ($attribute->getAvailableLocales()) {
-                $availableCodes = $attribute->getAvailableLocales()->map(
-                    function ($locale) {
-                        return $locale->getCode();
-                    }
-                )->toArray();
+            if ($attribute->getAvailableLocaleCodes()) {
+                $availableCodes = $attribute->getAvailableLocaleCodes();
                 if (!in_array($currentLocaleCode, $availableCodes)) {
                     unset($attributes[$indAttribute]);
                 }
