@@ -6,7 +6,6 @@ Feature: Edit common attributes of many products at once with locale specific ca
 
   Background:
     Given the "apparel" catalog configuration
-    And a "tshirt" product
     And the following products:
     | sku    | family   |
     | tshirt | tshirts  |
