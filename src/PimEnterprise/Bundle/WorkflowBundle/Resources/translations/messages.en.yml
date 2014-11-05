@@ -34,8 +34,6 @@ flash.product_draft.approve.success: The proposal has been applied successfully.
 flash.product_draft.approve.error: The proposal can't be applied due to the following error. %error%
 flash.product_draft.refuse.success: The proposal has been refused.
 pim_menu:
-    tab:
-        activity: Activity
     item:
         published_product: Published products
         proposal:          Proposals
