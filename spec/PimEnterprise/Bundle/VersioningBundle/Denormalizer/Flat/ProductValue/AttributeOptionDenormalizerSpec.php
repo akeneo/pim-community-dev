@@ -7,12 +7,12 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
-class AttributeOptionsDenormalizerSpec extends ObjectBehavior
+class AttributeOptionDenormalizerSpec extends ObjectBehavior
 {
     function let(AttributeOptionRepository $repository)
     {
         $this->beConstructedWith(
-            ['pim_catalog_multiselect'],
+            ['pim_catalog_simpleselect'],
             $repository
         );
     }
@@ -22,22 +22,22 @@ class AttributeOptionsDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_attribute_options($repository, ProductValueInterface $productValueInterface, AbstractAttribute $abstractAttribute, AttributeOption $red, AttributeOption $blue, AttributeOption $green)
+    function it_denormalizes_attribute_option($repository, ProductValueInterface $productValueInterface, AbstractAttribute $abstractAttribute, AttributeOption $red)
     {
-        $data = '1,2,3';
+        $data = '1';
         $context['value'] = $productValueInterface;
 
         $productValueInterface->getAttribute()->shouldBeCalled()->willReturn($abstractAttribute);
         $abstractAttribute->getCode()->willReturn('color');
 
         $repository->findByReference('color.1')->shouldBeCalled()->willReturn($red);
-        $repository->findByReference('color.2')->shouldBeCalled()->willReturn($blue);
-        $repository->findByReference('color.3')->shouldBeCalled()->willReturn($green);
 
-        $options = $this->denormalize($data, 'className', null, $context);
+        $this->denormalize($data, 'className', null, $context)->shouldReturn($red);
+    }
 
-        $options->get(0)->shouldReturn($red);
-        $options->get(1)->shouldReturn($blue);
-        $options->get(2)->shouldReturn($green);
+    function it_returns_null_if_the_data_is_empty(ProductValueInterface $productValueInterface)
+    {
+        $this->denormalize('', 'className', null, [])->shouldReturn(null);
+        $this->denormalize(null, 'className', null, [])->shouldReturn(null);
     }
 }

@@ -3,8 +3,7 @@
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager;
 
 class MediaDenormalizerSpec extends ObjectBehavior
@@ -45,7 +44,7 @@ class MediaDenormalizerSpec extends ObjectBehavior
     function it_dernomalizes_media(
         $manager,
         $factory,
-        Model\AbstractProductMedia $media
+        AbstractProductMedia $media
     ) {
         $manager->createFromFilename('preview.jpg')->willReturn($media);
 
@@ -55,7 +54,7 @@ class MediaDenormalizerSpec extends ObjectBehavior
     function it_does_not_create_media_for_empty_filename(
         $manager,
         $factory,
-        Model\AbstractProductMedia $media
+        AbstractProductMedia $media
     ) {
         $this->denormalize(null, 'pim_catalog_image')->shouldReturn(null);
         $this->denormalize('', 'pim_catalog_image')->shouldReturn(null);

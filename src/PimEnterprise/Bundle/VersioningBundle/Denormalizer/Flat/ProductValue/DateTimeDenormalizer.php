@@ -17,7 +17,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
  *
  * TODO: Should be used for \DateTime objects
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class DateTimeDenormalizer extends AbstractValueDenormalizer
 {
@@ -26,6 +26,10 @@ class DateTimeDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if ($data === null || $data === '') {
+            return null;
+        }
+
         return new \DateTime(trim($data));
     }
 }

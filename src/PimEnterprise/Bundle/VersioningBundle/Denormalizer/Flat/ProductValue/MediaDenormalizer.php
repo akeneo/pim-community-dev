@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager;
 /**
  * Denormalize a product media
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class MediaDenormalizer extends AbstractValueDenormalizer
 {
