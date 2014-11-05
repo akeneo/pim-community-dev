@@ -11,17 +11,16 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Batch;
 
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepository;
 
 /**
- * Get a rule from database with the givent rule code
+ * Get a rule from database with the given rule code
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class RuleReader extends AbstractConfigurableStepElement implements StepExecutionAwareInterface, RuleReaderInterface
+class RuleReader extends AbstractConfigurableStepElement implements RuleReaderInterface
 {
     /** @var string */
     protected $ruleCode;
@@ -41,13 +40,11 @@ class RuleReader extends AbstractConfigurableStepElement implements StepExecutio
     }
 
     /**
-     * Get the Rule from database
-     *
-     * @return RuleInterface
+     * {@inheritdoc}
      */
     public function read()
     {
-        $this->ruleRepository->findByCode($this->getRuleCode());
+        $this->ruleRepository->findBy(['code' => $this->getRuleCode()]);
     }
 
     /**

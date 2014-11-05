@@ -11,17 +11,19 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Batch;
 
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
 /**
- * Get a rule
+ * Get a rule from database with the given rule code
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-interface RuleReaderInterface
+interface RuleReaderInterface extends StepExecutionAwareInterface
 {
     /**
-     * Return a rule
+     * Get the Rule from database
      *
-     * @return RuleInterface
+     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
      */
     public function read();
 }

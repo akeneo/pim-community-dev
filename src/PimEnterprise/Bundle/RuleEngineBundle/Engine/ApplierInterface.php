@@ -22,6 +22,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 interface ApplierInterface
 {
     /**
+     * @param RuleInterface           $rule
      * @param RuleSubjectSetInterface $subjectSet
      *
      * @return mixed
@@ -29,6 +30,7 @@ interface ApplierInterface
     public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet);
 
     /**
+     * @param RuleInterface           $rule
      * @param RuleSubjectSetInterface $subjectSet
      *
      * @return bool
