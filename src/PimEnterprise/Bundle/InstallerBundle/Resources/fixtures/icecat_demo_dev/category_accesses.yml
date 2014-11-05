@@ -1,8 +1,8 @@
 category_accesses:
     master:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
-        ownProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
+        ownProducts: [IT support, Manager]
     sales:
         viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager]
@@ -12,20 +12,20 @@ category_accesses:
         editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     home_appliances:
-        viewProducts: [IT support, Manager]
+        viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     tvs_projectors:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     pc_monitors:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     led_tvs:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     cameras:
         viewProducts: [IT support, Manager, Redactor]
