@@ -26,7 +26,8 @@ class FieldsTransformerSpec extends ObjectBehavior
             'updated' => null,
             'enabled' => false,
             'id'      => 42,
-            'dataLocale' => 'fr_FR'
+            'dataLocale' => 'fr_FR',
+            'dataScope' => null,
         ];
 
         $this->transform($result, $locale)->shouldReturn($expected);

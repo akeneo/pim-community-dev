@@ -59,6 +59,9 @@
 
                     _.each($('form div.scopable:not(.currency)'), function (field) {
                         new Scopable({ el: $(field) });
+                        {# TODO: inject the scope here too
+                        new Scopable({ el: $(field), initialScope: '{{ dataScope }}' });
+                        #}
                     });
 
                     _.each($('form div.currency'), function (field) {

@@ -10,7 +10,7 @@
                 });
 
                 _.each($('form div.scopable:not(.currency)'), function (field) {
-                    new Scopable({ el: $(field) });
+                    new Scopable({ el: $(field), initialScope: '{{ dataScope }}' });
                 });
 
                 _.each($('form div.currency'), function (field) {
