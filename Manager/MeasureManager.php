@@ -47,6 +47,19 @@ class MeasureManager
     }
 
     /**
+     * Check if unit exists in the given family
+     *
+     * @param string $unit   the unit to check
+     * @param string $family the measure family
+     *
+     * @return bool
+     */
+    public function unitExistsInFamily($unit, $family)
+    {
+        return in_array($unit, $this->getUnitSymbolsForFamily($family));
+    }
+
+    /**
      * Get standard unit for a measure family
      *
      * @param string $family
