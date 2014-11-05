@@ -41,6 +41,9 @@ define(
                         '<% _.each(_.where(columns, {displayed: false}), function(column) { %>' +
                             '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
                                 '<i class="icon-th"></i><%= column.label %>' +
+                                '<a href="javascript:void(0);" class="action pull-right" title="<%= _.__("pim_datagrid.column_configurator.remove_column")  %>">' +
+                                    '<i class="icon-trash"></i>' +
+                                '</a>' +
                             '</li>' +
                         '<% }); %>' +
                     '</ul>' +
@@ -56,6 +59,9 @@ define(
                         '<% _.each(_.where(columns, {displayed: true}), function(column) { %>' +
                             '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
                                 '<i class="icon-th"></i><%= column.label %>' +
+                                '<a href="javascript:void(0);" class="action pull-right" title="<%= _.__("pim_datagrid.column_configurator.remove_column")  %>">' +
+                                    '<i class="icon-trash"></i>' +
+                                '</a>' +
                             '</li>' +
                         '<% }); %>' +
                         '<div class="alert alert-error hide"><%= _.__("datagrid_view.columns.min_message") %></div>' +
@@ -64,9 +70,9 @@ define(
             ),
 
             events: {
-                'input input[type="search"]': 'search',
-                'click .nav-list li':         'filter',
-                'click button.reset':         'reset'
+                'input input[type="search"]':      'search',
+                'click .nav-list li':              'filter',
+                'click #column-selection .action': 'remove'
             },
 
             search: function(e) {
@@ -101,6 +107,16 @@ define(
                         }
                     });
                 }
+            },
+
+            remove: function(e) {
+                var $item = $(e.currentTarget).parent();
+                $item.appendTo(this.$('#column-list'));
+
+                var model = _.first(this.collection.where({code: $item.data('value')}));
+                model.set('displayed', false);
+
+                this.validateSubmission();
             },
 
             reset: function() {

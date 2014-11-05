@@ -20,6 +20,7 @@
 - JobProfileController refactoring
 - Add ACL on entity history
 - Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
+- Improve the UI of the datagrid column configuration popin
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
