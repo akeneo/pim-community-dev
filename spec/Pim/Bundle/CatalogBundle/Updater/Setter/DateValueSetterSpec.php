@@ -8,12 +8,13 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Prophecy\Argument;
 
-class TextValueSetterSpec extends ObjectBehavior
+class DateValueSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea']);
+        $this->beConstructedWith($builder, ['pim_catalog_date']);
     }
 
     function it_is_a_setter()
@@ -21,24 +22,48 @@ class TextValueSetterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface');
     }
 
-    function it_supports_text_attributes(
-        AttributeInterface $textAttribute,
-        AttributeInterface $textareaAttribute,
-        AttributeInterface $numberAttribute
+    function it_supports_date_attributes(
+        AttributeInterface $dateAttribute,
+        AttributeInterface $textareaAttribute
     ) {
-        $textAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($textAttribute)->shouldReturn(true);
+        $dateAttribute->getAttributeType()->willReturn('pim_catalog_date');
+        $this->supports($dateAttribute)->shouldReturn(true);
 
         $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($textareaAttribute)->shouldReturn(true);
-
-        $numberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $this->supports($numberAttribute)->shouldReturn(false);
+        $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
     function it_returns_supported_attributes_types()
     {
-        $this->getSupportedTypes()->shouldReturn(['pim_catalog_text', 'pim_catalog_textarea']);
+        $this->getSupportedTypes()->shouldReturn(['pim_catalog_date']);
+    }
+
+    function it_throws_an_error_if_data_is_not_a_valid_date_format(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = 'not a date';
+
+        $this->shouldThrow(
+            InvalidArgumentException::expected('attributeCode', 'a string with the format yyyy-mm-dd', 'setter', 'date')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_data_is_not_correctly_formatted(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = '1970-mm-01';
+
+        $this->shouldThrow(
+            InvalidArgumentException::expected('attributeCode', 'a string with the format yyyy-mm-dd', 'setter', 'date')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
     function it_throws_an_error_if_data_is_not_a_string(
@@ -48,14 +73,14 @@ class TextValueSetterSpec extends ObjectBehavior
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = 42;
+        $data = new \Datetime();
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text value')
+            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'date')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_sets_text_value_to_a_product_value(
+    function it_sets_date_value_to_a_product_value(
         AttributeInterface $attribute,
         AbstractProduct $product1,
         AbstractProduct $product2,
@@ -65,12 +90,12 @@ class TextValueSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = 'data';
+        $data = '1970-01-01';
 
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData($data)->shouldBeCalled();
+        $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)

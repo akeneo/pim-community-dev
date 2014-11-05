@@ -123,6 +123,17 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $data)
+    {
+        $price = $this->addPriceForCurrency($value, $currency);
+        $price->setData($data);
+
+        return $price;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
     {
         foreach ($value->getPrices() as $price) {

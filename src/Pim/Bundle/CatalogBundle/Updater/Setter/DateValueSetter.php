@@ -8,13 +8,13 @@ use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
- * Sets a text value in many products
+ * Sets a date value in many products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextValueSetter extends AbstractValueSetter
+class DateValueSetter extends AbstractValueSetter
 {
     /** @var ProductBuilder */
     protected $productBuilder;
@@ -38,7 +38,22 @@ class TextValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'text value');
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'date');
+        }
+
+        $dateValues = explode('-', $data);
+
+        if (
+            count($dateValues) !== 3
+            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
+            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
+        ) {
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                'a string with the format yyyy-mm-dd',
+                'setter',
+                'date'
+            );
         }
 
         foreach ($products as $product) {
@@ -46,7 +61,7 @@ class TextValueSetter extends AbstractValueSetter
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            $value->setData($data);
+            $value->setData(new \DateTime($data));
         }
     }
 }

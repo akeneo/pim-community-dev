@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 
@@ -14,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricValueSetter implements SetterInterface
+class MetricValueSetter extends AbstractValueSetter
 {
     /** @var ProductBuilder */
     protected $productBuilder;
@@ -22,54 +24,86 @@ class MetricValueSetter implements SetterInterface
     /** @var MetricFactory */
     protected $factory;
 
+    /** @var MeasureManager */
+    protected $measureManager;
+
     /**
      * @param ProductBuilder $builder
      * @param MetricFactory  $factory
+     * @param MeasureManager $measureManager
+     * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, MetricFactory $factory)
-    {
+    public function __construct(
+        ProductBuilder $builder,
+        MetricFactory $factory,
+        MeasureManager $measureManager,
+        array $supportedTypes
+    ) {
         $this->productBuilder = $builder;
-        $this->factory = $factory;
+        $this->factory        = $factory;
+        $this->measureManager = $measureManager;
+        $this->types          = $supportedTypes;
     }
 
     /**
      * {@inheritdoc}
      *
-     * setValue( '12 KG'
-     *           ['data' => 12, 'unit' => 'KG']
+     * setValue( '12 KILOGRAM'
+     *           ['data' => 12, 'unit' => 'kg']
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
+        //TODO: pmd is to hight need to split the method
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
-        // TODO : check the unit belongs to the family
-        // TODO : check the data is a number
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric');
+        }
+
+        if (!array_key_exists('data', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'data', 'setter', 'metric');
+        }
+
+        if (!array_key_exists('unit', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'unit', 'setter', 'metric');
+        }
+
+        if (!is_numeric($data['data'])) {
+            throw InvalidArgumentException::arrayNumericKeyExpected($attribute->getCode(), 'data', 'setter', 'metric');
+        }
+
+        if (!is_string($data['unit'])) {
+            throw InvalidArgumentException::arrayStringKeyExpected($attribute->getCode(), 'unit', 'setter', 'metric');
+        }
+
+        if (!$this->measureManager->unitExistsInFamily($data['unit'], $attribute->getMetricFamily())) {
+            throw InvalidArgumentException::arrayInvalidKey(
+                $attribute->getCode(),
+                'unit',
+                sprintf('"%s" does not exist in any attribute\'s families', $data['unit']),
+                'setter',
+                'metric'
+            );
+        }
 
         $unit = $data['unit'];
         $data = $data['data'];
+
+        $fullUnitName = $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily());
+        $fullUnitName = array_flip($fullUnitName);
+        $fullUnitName = $fullUnitName[$unit];
 
         foreach ($products as $product) {
             $value = $product->getValue($attribute->getCode(), $locale, $scope);
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            if (null === $metric = $value->getMetric()) {
-                $metric = $this->factory->createMetric($attribute->getMetricFamily());
-                $value->setMetric($metric);
-            }
-            $metric->setUnit($unit);
+            $metric = $this->factory->createMetric($attribute->getMetricFamily());
+            $metric->setUnit($fullUnitName);
             $metric->setData($data);
+
+            $value->setMetric($metric);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(AttributeInterface $attribute)
-    {
-        $types = ['pim_catalog_metric'];
-
-        return in_array($attribute->getAttributeType(), $types);
     }
 }
