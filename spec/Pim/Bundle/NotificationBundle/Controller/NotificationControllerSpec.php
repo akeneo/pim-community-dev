@@ -45,6 +45,16 @@ class NotificationControllerSpec extends ObjectBehavior
         $this->listAction($request);
     }
 
+    function it_counts_unread_user_notifications_for_the_current_user(UserInterface $user, $manager, $context)
+    {
+        $context->getUser()->willReturn($user);
+        $manager->countUnreadForUser($user)->willReturn(3);
+
+        $response = $this->countUnreadAction($user);
+        $response->shouldBeAnInstanceOf('Symfony\Component\HttpFoundation\JsonResponse');
+        $response->getContent()->shouldReturn('3');
+    }
+
     function it_marks_a_notification_as_viewed_for_a_user(UserInterface $user, $manager, $context)
     {
         $notifsToMark = '3';

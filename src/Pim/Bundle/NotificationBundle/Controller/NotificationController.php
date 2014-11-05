@@ -62,6 +62,18 @@ class NotificationController
     }
 
     /**
+     * Return the number of unread notifications for the current user
+     *
+     * @return JsonResponse
+     */
+    public function countUnreadAction()
+    {
+        $user = $this->userContext->getUser();
+
+        return new JsonResponse($this->manager->countUnreadForUser($user));
+    }
+
+    /**
      * Mark user notifications as viewed
      *
      * @param integer|null $id If null, all notifications will be marked as viewed
