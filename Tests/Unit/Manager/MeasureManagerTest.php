@@ -15,7 +15,7 @@ class MeasureManagerTest extends \PHPUnit_Framework_TestCase
                     'standard' => 'KILOGRAM',
                     'units' => array(
                         'KILOGRAM' => array('symbol' => 'kg'),
-                        'GRAM'     => array('symbol' => 'g')
+                        'GRAM' => array('symbol' => 'g')
                     )
                 )
             )
@@ -27,7 +27,7 @@ class MeasureManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'KILOGRAM' => 'kg',
-                'GRAM'     => 'g',
+                'GRAM' => 'g',
             ),
             $this->measureManager->getUnitSymbolsForFamily('WEIGHT')
         );
@@ -51,6 +51,18 @@ class MeasureManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             'KILOGRAM',
             $this->measureManager->getStandardUnitForFamily('WEIGHT')
+        );
+    }
+
+    public function testUnitExistsInFamily()
+    {
+        $this->assertEquals(
+            true,
+            $this->measureManager->unitExistsInFamily('kg', 'WEIGHT')
+        );
+        $this->assertEquals(
+            false,
+            $this->measureManager->unitExistsInFamily('KG', 'WEIGHT')
         );
     }
 }
