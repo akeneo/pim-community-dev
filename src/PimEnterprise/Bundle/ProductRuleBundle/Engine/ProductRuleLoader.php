@@ -11,15 +11,11 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\LoadedRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**

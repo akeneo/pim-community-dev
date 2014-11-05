@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -114,7 +112,7 @@ class ProductRuleApplier implements ApplierInterface
 
     /**
      * Configure the set value action optionResolver
-     * @param  OptionsResolver $optionsResolver
+     * @param OptionsResolver $optionsResolver
      */
     protected function configureSetValueAction(OptionsResolver $optionsResolver)
     {
@@ -124,7 +122,7 @@ class ProductRuleApplier implements ApplierInterface
 
     /**
      * Configure the copy value action optionResolver
-     * @param  OptionsResolver $optionsResolver
+     * @param OptionsResolver $optionsResolver
      */
     protected function configureCopyValueAction(OptionsResolver $optionsResolver)
     {

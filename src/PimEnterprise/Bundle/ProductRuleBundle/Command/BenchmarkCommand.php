@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -75,7 +74,6 @@ class BenchmarkCommand extends ContainerAwareCommand
         $stopWatch = $this->getContainer()->get('debug.stopwatch');
 
         $events = $stopWatch->getSectionEvents('__root__');
-
 
         $stats = [];
 
