@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
@@ -106,7 +105,7 @@ class ProductRuleSelector implements SelectorInterface
 
     /**
      * Configure the condition's optionResolver
-     * @param  OptionsResolver $optionsResolver
+     * @param OptionsResolver $optionsResolver
      */
     protected function configureCondition(OptionsResolver $optionsResolver)
     {

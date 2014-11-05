@@ -14,12 +14,12 @@ namespace PimEnterprise\Bundle\ProductRuleBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 
 /**
  * Command to generate fake rules
+ * TODO: remove this
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
@@ -99,7 +99,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
 
     /**
      * Get a collection of condition for a fake rule
-     * @param array  $filters
+     * @param array   $filters
      * @param integer $max
      *
      * @return array
