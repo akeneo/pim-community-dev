@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3331: Fix draft creation when saving values for newly added attributes for the first time
+- PIM-3351: Test data value in PricesDenormalizer to avoid creating empty ProductPrices.
 
 # 1.0.4 (2014-10-31)
 

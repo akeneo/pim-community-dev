@@ -42,6 +42,8 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $value    = $context['value'];
         $currency = $context['price_currency'];
 
+        $data = $data === '' ? null : $data;
+
         $priceValue = $this->productBuilder->addPriceForCurrency($value, $currency);
         $priceValue->setCurrency($currency);
         $priceValue->setData($data);
