@@ -15,8 +15,7 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,11 +50,9 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
+    public function apply(LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
-
-        $start = microtime(true);
 
         $actions = $rule->getActions();
         foreach ($actions as $action) {
@@ -104,14 +101,14 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
+    public function supports(LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
-        return 'product' === $subjectSet->getType() &&
-            $rule instanceof LoadedRule;
+        return 'product' === $subjectSet->getType();
     }
 
     /**
      * Configure the set value action optionResolver
+     *
      * @param OptionsResolver $optionsResolver
      */
     protected function configureSetValueAction(OptionsResolver $optionsResolver)
@@ -122,6 +119,7 @@ class ProductRuleApplier implements ApplierInterface
 
     /**
      * Configure the copy value action optionResolver
+     *
      * @param OptionsResolver $optionsResolver
      */
     protected function configureCopyValueAction(OptionsResolver $optionsResolver)

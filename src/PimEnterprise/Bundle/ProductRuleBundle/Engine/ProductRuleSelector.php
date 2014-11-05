@@ -63,7 +63,7 @@ class ProductRuleSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function select(RuleInterface $rule)
+    public function select(LoadedRuleInterface $rule)
     {
         $resolver = new OptionsResolver();
         $this->configureCondition($resolver);
@@ -97,10 +97,9 @@ class ProductRuleSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule)
+    public function supports(LoadedRuleInterface $rule)
     {
-        return 'product' === $rule->getType() &&
-            $rule instanceof LoadedRuleInterface;
+        return 'product' === $rule->getType();
     }
 
     /**

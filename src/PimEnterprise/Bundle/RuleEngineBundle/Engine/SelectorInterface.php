@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Engine;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
@@ -22,16 +22,16 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 interface SelectorInterface
 {
     /**
-     * @param RuleInterface $instance
+     * @param LoadedRuleInterface $rule
      *
      * @return RuleSubjectSetInterface
      */
-    public function select(RuleInterface $instance);
+    public function select(LoadedRuleInterface $rule);
 
     /**
-     * @param RuleInterface $instance
+     * @param LoadedRuleInterface $rule
      *
      * @return bool
      */
-    public function supports(RuleInterface $instance);
+    public function supports(LoadedRuleInterface $rule);
 }
