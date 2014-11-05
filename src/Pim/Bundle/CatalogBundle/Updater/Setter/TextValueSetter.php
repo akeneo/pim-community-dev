@@ -35,7 +35,7 @@ class TextValueSetter implements SetterInterface
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_string($data)) {
-            throw new \LogicException('Attribute "%s" expects a string data', $attribute->getCode());
+            throw new \LogicException(sprintf('Attribute "%s" expects a string data', $attribute->getCode()));
         }
 
         foreach ($products as $product) {
