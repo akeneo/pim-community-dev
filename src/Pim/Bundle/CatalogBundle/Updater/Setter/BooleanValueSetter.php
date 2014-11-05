@@ -8,13 +8,13 @@ use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
- * Sets a text value in many products
+ * Sets a boolean value in many products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextValueSetter extends AbstractValueSetter
+class BooleanValueSetter extends AbstractValueSetter
 {
     /** @var ProductBuilder */
     protected $productBuilder;
@@ -37,8 +37,8 @@ class TextValueSetter extends AbstractValueSetter
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
-        if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'text value');
+        if (!is_bool($data)) {
+            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean');
         }
 
         foreach ($products as $product) {
