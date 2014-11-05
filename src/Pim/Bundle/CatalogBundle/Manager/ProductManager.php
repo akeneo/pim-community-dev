@@ -217,6 +217,7 @@ class ProductManager
             'recalculate' => $recalculate,
             'flush' => $flush,
             'schedule' => $schedule,
+            'versioning' => true
         ];
 
         return $this->saveProduct($product, $options);
@@ -237,6 +238,7 @@ class ProductManager
                 'recalculate' => true,
                 'flush' => true,
                 'schedule' => true,
+                'versioning' => true
             ],
             $options
         );
@@ -261,6 +263,7 @@ class ProductManager
             'recalculate' => $recalculate,
             'flush' => $flush,
             'schedule' => $schedule,
+            'versioning' => true
         ];
 
         return $this->saveAllProducts($products, $options);
@@ -279,6 +282,7 @@ class ProductManager
                 'recalculate' => false,
                 'flush' => true,
                 'schedule' => true,
+                'versioning' => true
             ],
             $options
         );
