@@ -1,0 +1,71 @@
+<?php
+
+namespace spec\PimEnterprise\Bundle\ProductRuleBundle\Engine;
+
+use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+class ProductRuleLoaderSpec extends ObjectBehavior
+{
+    public function let(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->beConstructedWith(
+            $eventDispatcher,
+            'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule'
+        );
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleLoader');
+    }
+
+    function it_is_a_rule_loader()
+    {
+        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface');
+    }
+
+    function it_supports_a_product_rule(
+        RuleInterface $ruleOK,
+        RuleInterface $ruleKO
+    ) {
+        $ruleOK->getType()->willReturn('product');
+        $ruleKO->getType()->willReturn('foo');
+
+        $this->supports($ruleOK)->shouldReturn(true);
+        $this->supports($ruleKO)->shouldReturn(false);
+    }
+
+    function it_loads_a_rule($eventDispatcher, RuleInterface $rule)
+    {
+        $content = json_encode(['conditions' => [], 'actions' => []]);
+        $rule->getContent()->willReturn($content);
+
+        $eventDispatcher->dispatch(RuleEvents::PRE_LOAD, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(RuleEvents::POST_LOAD, Argument::any())->shouldBeCalled();
+
+        $this->load($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule');
+    }
+
+    function it_does_not_load_a_rule_with_bad_content($eventDispatcher, RuleInterface $rule1, RuleInterface $rule2)
+    {
+        $rule1->getContent()->willReturn(json_encode(['actions' => []]));
+        $rule2->getContent()->willReturn(json_encode(['conditions' => []]));
+        $rule1->getCode()->willReturn('rule1');
+        $rule2->getCode()->willReturn('rule2');
+
+        $eventDispatcher->dispatch(RuleEvents::PRE_LOAD, Argument::any())->shouldBeCalled();
+
+        $this
+            ->shouldThrow(new \LogicException('Rule "rule1" should have a "conditions" key in its content.'))
+            ->during('load', [$rule1])
+        ;
+        $this
+            ->shouldThrow(new \LogicException('Rule "rule2" should have a "actions" key in its content.'))
+            ->during('load', [$rule2])
+        ;
+    }
+}

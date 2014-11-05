@@ -12,15 +12,16 @@
 namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -39,25 +40,34 @@ class ProductRuleSelector implements SelectorInterface
     /** @var ProductRepositoryInterface */
     protected $repo;
 
-    /** @var EventDispatcher */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
-     * @param string                     $subjectSetClass
-     * @param ProductQueryFactory        $productQueryFactory
-     * @param ProductRepositoryInterface $repo
-     * @param EventDispatcher            $eventDispatcher
+     * @param ProductQueryFactoryInterface $productQueryFactory
+     * @param ProductRepositoryInterface   $repo
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param string                       $subjectSetClass
      */
     public function __construct(
-        $subjectSetClass,
-        ProductQueryFactory $productQueryFactory,
+        ProductQueryFactoryInterface $productQueryFactory,
         ProductRepositoryInterface $repo,
-        EventDispatcher $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        $subjectSetClass
     ) {
-        $this->subjectSetClass     = $subjectSetClass;
         $this->productQueryFactory = $productQueryFactory;
         $this->repo                = $repo;
         $this->eventDispatcher     = $eventDispatcher;
+        $this->subjectSetClass     = $subjectSetClass;
+
+        $refClass = new \ReflectionClass($subjectSetClass);
+        $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface';
+        if (!$refClass->implementsInterface($interface)) {
+            throw new \InvalidArgumentException(
+                sprintf('The provided class name "%s" must implement interface "%s".', $subjectSetClass, $interface)
+            );
+        }
+
     }
 
     /**
@@ -68,22 +78,19 @@ class ProductRuleSelector implements SelectorInterface
         $resolver = new OptionsResolver();
         $this->configureCondition($resolver);
 
-        /** @var RuleSubjectSetInterface $subjectSet */
-        $subjectSet = new $this->subjectSetClass();
-
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
-        $pqb = $this->productQueryFactory->create();
-
+        /** @var RuleSubjectSetInterface $subjectSet */
+        $subjectSet = new $this->subjectSetClass();
         $conditions = $rule->getConditions();
+        $pqb = $this->productQueryFactory->create();
 
         foreach ($conditions as $condition) {
             $condition = $resolver->resolve($condition);
-
             $pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
         }
 
-        $products = $pqb->getQueryBuilder()->getQuery()->execute();
+        $products = $pqb->execute();
 
         $subjectSet->setCode($rule->getCode());
         $subjectSet->setType('product');
@@ -104,6 +111,7 @@ class ProductRuleSelector implements SelectorInterface
 
     /**
      * Configure the condition's optionResolver
+     *
      * @param OptionsResolver $optionsResolver
      */
     protected function configureCondition(OptionsResolver $optionsResolver)

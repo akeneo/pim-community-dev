@@ -22,10 +22,10 @@ class LoadedRule implements LoadedRuleInterface
     protected $rule;
 
     /** @var array */
-    protected $conditions = [];
+    protected $conditions;
 
     /** @var array */
-    protected $actions = [];
+    protected $actions;
 
     /**
      * The constructor
@@ -35,6 +35,8 @@ class LoadedRule implements LoadedRuleInterface
     public function __construct(RuleInterface $rule)
     {
         $this->rule = $rule;
+        $this->actions = [];
+        $this->conditions = [];
     }
 
     /**

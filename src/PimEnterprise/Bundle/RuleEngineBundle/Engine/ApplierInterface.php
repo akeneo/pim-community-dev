@@ -30,10 +30,9 @@ interface ApplierInterface
     public function apply(LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet);
 
     /**
-     * @param LoadedRuleInterface     $rule
-     * @param RuleSubjectSetInterface $subjectSet
+     * @param LoadedRuleInterface $rule
      *
      * @return bool
      */
-    public function supports(LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet);
+    public function supports(LoadedRuleInterface $rule);
 }
