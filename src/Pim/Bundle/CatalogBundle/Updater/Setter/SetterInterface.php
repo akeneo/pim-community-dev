@@ -33,4 +33,11 @@ interface SetterInterface
      * @return boolean
      */
     public function supports(AttributeInterface $attribute);
+
+    /**
+     * Return the supported types of the attribute
+     *
+     * @return array
+     */
+    public function getSupportedTypes();
 }

@@ -8,11 +8,11 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
-class TextValueSetterSpec extends ObjectBehavior
+class BooleanValueSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea']);
+        $this->beConstructedWith($builder, ['pim_catalog_boolean']);
     }
 
     function it_is_a_setter()
@@ -20,39 +20,37 @@ class TextValueSetterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface');
     }
 
-    function it_supports_text_attributes(
-        AttributeInterface $textAttribute,
-        AttributeInterface $textareaAttribute,
-        AttributeInterface $numberAttribute
+    function it_supports_boolean_attributes(
+        AttributeInterface $booleanAttribute,
+        AttributeInterface $textareaAttribute
     ) {
-        $textAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($textAttribute)->shouldReturn(true);
+        $booleanAttribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $this->supports($booleanAttribute)->shouldReturn(true);
 
         $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($textareaAttribute)->shouldReturn(true);
-
-        $numberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $this->supports($numberAttribute)->shouldReturn(false);
+        $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
     function it_returns_supported_attributes_types()
     {
-        $this->getSupportedTypes()->shouldReturn(['pim_catalog_text', 'pim_catalog_textarea']);
+        $this->getSupportedTypes()->shouldReturn(['pim_catalog_boolean']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_string(
+    function it_throws_an_error_if_data_is_not_a_boolean(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = 42;
+        $data = 'not a boolean';
 
-        $this->shouldThrow('\LogicException')->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+        $this->shouldThrow(
+            new \LogicException('Attribute "attributeCode" expects a boolean as data')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_sets_text_value_to_a_product_value(
+    function it_sets_boolean_value_to_a_product_value(
         AttributeInterface $attribute,
         AbstractProduct $product1,
         AbstractProduct $product2,
@@ -62,7 +60,7 @@ class TextValueSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = 'data';
+        $data = true;
 
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);

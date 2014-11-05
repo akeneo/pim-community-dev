@@ -7,13 +7,13 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
- * Sets a text value in many products
+ * Sets a number value in many products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextValueSetter extends AbstractValueSetter
+class NumberValueSetter extends AbstractValueSetter
 {
     /** @var ProductBuilder */
     protected $productBuilder;
@@ -36,8 +36,8 @@ class TextValueSetter extends AbstractValueSetter
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
-        if (!is_string($data)) {
-            throw new \LogicException(sprintf('Attribute "%s" expects a string data', $attribute->getCode()));
+        if (!is_numeric($data)) {
+            throw new \LogicException(sprintf('Attribute "%s" expects a number as data', $attribute->getCode()));
         }
 
         foreach ($products as $product) {
