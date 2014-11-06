@@ -34,12 +34,9 @@ class MetricValueSetterSpec extends ObjectBehavior
         $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_throw_an_error_if_data_is_not_array(
+    function it_throws_an_error_if_data_is_not_array(
         AttributeInterface $attribute
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
@@ -47,33 +44,27 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = 'Not an array';
 
         $this->shouldThrow(
-            new \LogicException('$data have to be an array')
-        )->during('setValue', [[], $attribute, $data, $locale, $scope]);
+            new \InvalidArgumentException('$data have to be an array')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throw_an_error_if_there_is_no_data_key_in_array(
+    function it_throws_an_error_if_there_is_no_data_key_in_array(
         AttributeInterface $attribute
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['unit' => 'KILOGRAM'];
+        $data = ['unit' => 'kg'];
 
         $this->shouldThrow(
             new \LogicException('Missing "data" key in array')
-        )->during('setValue', [[], $attribute, $data, $locale, $scope]);
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throw_an_error_if_there_is_no_unit_key_in_array(
+    function it_throws_an_error_if_there_is_no_unit_key_in_array(
         AttributeInterface $attribute
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
@@ -82,48 +73,39 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('Missing "unit" key in array')
-        )->during('setValue', [[], $attribute, $data, $locale, $scope]);
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throw_an_error_if_data_is_not_a_number(
+    function it_throws_an_error_if_data_is_not_a_number(
         AttributeInterface $attribute
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['data' => 'text', 'unit' => 'KG'];
+        $data = ['data' => 'text', 'unit' => 'kg'];
 
         $this->shouldThrow(
-            new \LogicException('Attribute "attributeCode" expects a numeric data')
-        )->during('setValue', [[], $attribute, $data, $locale, $scope]);
+            new \LogicException('Invalid data type or invalid unit type')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throw_an_error_if_unit_is_not_a_string(
+    function it_throws_an_error_if_unit_is_not_a_string(
         AttributeInterface $attribute
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = ['data' => 42, 'unit' => 123];
 
-        $this->shouldThrow(new \LogicException('Attribute "attributeCode" expects a string unit'))->during('setValue', [[], $attribute, $data, $locale, $scope]);
+        $this->shouldThrow(new \LogicException('Invalid data type or invalid unit type'))->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throw_an_error_if_unit_does_not_exist(
+    function it_throws_an_error_if_unit_does_not_exist(
         AttributeInterface $attribute,
         $measureManager
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
@@ -131,9 +113,9 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $data = ['data' => 42, 'unit' => 'incorrect unit'];
 
-        $measureManager->unitExistInFamily($data['unit'], 'Weight')->shouldBeCalled()->willReturn(false);
+        $measureManager->unitExistsInFamily($data['unit'], 'Weight')->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(new \LogicException('"incorrect unit" does not exist in any attribute\'s families'))->during('setValue', [[], $attribute, $data, $locale, $scope]);
+        $this->shouldThrow(new \LogicException('"incorrect unit" does not exist in any attribute\'s families'))->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
     function it_sets_numeric_value_to_a_product_value(
@@ -149,14 +131,14 @@ class MetricValueSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = ['data' => 107, 'unit' => 'KILOGRAM'];
+        $data = ['data' => 107, 'unit' => 'kg'];
 
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
 
-        $measureManager->unitExistInFamily($data['unit'], 'Weight')->shouldBeCalled()->willReturn(true);
+        $measureManager->unitExistsInFamily($data['unit'], 'Weight')->shouldBeCalled()->willReturn(true);
 
         $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();
@@ -170,7 +152,7 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $factory->createMetric('Weight')->shouldBeCalled()->willReturn($metric);
 
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
 

@@ -50,7 +50,7 @@ class MetricValueSetter implements SetterInterface
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_array($data)) {
-            throw new \LogicException('$data have to be an array');
+            throw new \InvalidArgumentException('$data have to be an array');
         }
 
         if (!array_key_exists('data', $data)) {
@@ -61,15 +61,11 @@ class MetricValueSetter implements SetterInterface
             throw new \LogicException('Missing "unit" key in array');
         }
 
-        if (!is_numeric($data['data'])) {
-            throw new \LogicException(sprintf('Attribute "%s" expects a numeric data', $attribute->getCode()));
+        if (!is_numeric($data['data']) || !is_string($data['unit'])) {
+            throw new \LogicException('Invalid data type or invalid unit type');
         }
 
-        if (!is_string($data['unit'])) {
-            throw new \LogicException(sprintf('Attribute "%s" expects a string unit', $attribute->getCode()));
-        }
-
-        if (!$this->measureManager->unitExistInFamily($data['unit'], $attribute->getMetricFamily())) {
+        if (!$this->measureManager->unitExistsInFamily($data['unit'], $attribute->getMetricFamily())) {
             throw new \LogicException(
                 sprintf('"%s" does not exist in any attribute\'s families', $data['unit'])
             );

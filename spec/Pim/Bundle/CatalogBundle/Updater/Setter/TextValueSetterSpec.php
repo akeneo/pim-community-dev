@@ -38,16 +38,13 @@ class TextValueSetterSpec extends ObjectBehavior
     function it_throw_an_error_if_data_is_not_a_string(
         AttributeInterface $attribute
     ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 42;
 
-        $this->shouldThrow('\LogicException')->during('setValue', [[], $attribute, $data, $locale, $scope]);
+        $this->shouldThrow('\LogicException')->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
     function it_sets_text_value_to_a_product_value(
