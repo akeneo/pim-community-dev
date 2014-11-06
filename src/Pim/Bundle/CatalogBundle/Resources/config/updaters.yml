@@ -1,10 +1,16 @@
 parameters:
-    pim_catalog.updater.product.class:             Pim\Bundle\CatalogBundle\Updater\ProductUpdater
-    pim_catalog.updater.setter.registry.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
-    pim_catalog.updater.setter.text_value.class:   Pim\Bundle\CatalogBundle\Updater\Setter\TextValueSetter
-    pim_catalog.updater.setter.metric_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\MetricValueSetter
-    pim_catalog.updater.copier.registry.class:     Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
-    pim_catalog.updater.copier.text_value.class:   Pim\Bundle\CatalogBundle\Updater\Copier\TextValueCopier
+    pim_catalog.updater.product.class:                   Pim\Bundle\CatalogBundle\Updater\ProductUpdater
+    pim_catalog.updater.setter.registry.class:           Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
+
+    pim_catalog.updater.setter.text_value.class:         Pim\Bundle\CatalogBundle\Updater\Setter\TextValueSetter
+    pim_catalog.updater.setter.metric_value.class:       Pim\Bundle\CatalogBundle\Updater\Setter\MetricValueSetter
+    pim_catalog.updater.setter.boolean_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\BooleanValueSetter
+    pim_catalog.updater.setter.identifier_value.class:   Pim\Bundle\CatalogBundle\Updater\Setter\IdentifierValueSetter
+    pim_catalog.updater.setter.number_value.class:       Pim\Bundle\CatalogBundle\Updater\Setter\NumberValueSetter
+    pim_catalog.updater.setter.simpleselect_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
+
+    pim_catalog.updater.copier.registry.class:           Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
+    pim_catalog.updater.copier.text_value.class:         Pim\Bundle\CatalogBundle\Updater\Copier\TextValueCopier
 
 services:
     pim_catalog.updater.product:
@@ -28,6 +34,42 @@ services:
 
     pim_catalog.updater.setter.metric_value:
         class: %pim_catalog.updater.setter.metric_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.factory.metric
+            - @akeneo_measure.manager
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.boolean_value:
+        class: %pim_catalog.updater.setter.boolean_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.factory.metric
+            - @akeneo_measure.manager
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.number_value:
+        class: %pim_catalog.updater.setter.number_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.factory.metric
+            - @akeneo_measure.manager
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.simpleselect_value:
+        class: %pim_catalog.updater.setter.simpleselect_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.factory.metric
+            - @akeneo_measure.manager
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.identifier_value:
+        class: %pim_catalog.updater.setter.identifier_value.class%
         arguments:
             - @pim_catalog.builder.product
             - @pim_catalog.factory.metric
