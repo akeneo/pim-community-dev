@@ -44,7 +44,7 @@ class TextValueCopierSpec extends ObjectBehavior
         $this->supports($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
-    function it_copy_numeric_value_to_a_product_value(
+    function it_copies_numeric_value_to_a_product_value(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         AbstractProduct $product1,
