@@ -35,7 +35,7 @@ class TextValueSetterSpec extends ObjectBehavior
         $this->supports($numberAttribute)->shouldReturn(false);
     }
 
-    function it_throw_an_error_if_data_is_not_a_string(
+    function it_throws_an_error_if_data_is_not_a_string(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
