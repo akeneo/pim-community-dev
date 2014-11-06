@@ -10,21 +10,21 @@ Feature: Revert a product to a previous version
 
   @skip
   Scenario: Successfully revert the status of a product (disabled)
-    Given an enabled "boat" product
-    And I am on the "boat" product page
+    Given an enabled "shirt" product
+    And I am on the "shirt" product page
     And I disable the product
     And I visit the "History" tab
-    When I click on the "Revert to this version" action of the row which contains "sku: boat"
-    Then product "boat" should be enabled
+    When I click on the "Revert to this version" action of the row which contains "sku: shirt"
+    Then product "shirt" should be enabled
 
   @skip
   Scenario: Successfully revert the status of a product (enable)
-    Given a disabled "boat" product
-    And I am on the "boat" product page
+    Given a disabled "shirt" product
+    And I am on the "shirt" product page
     And I enable the product
     And I visit the "History" tab
-    When I click on the "Revert to this version" action of the row which contains "sku: boat"
-    Then product "boat" should be disabled
+    When I click on the "Revert to this version" action of the row which contains "sku: shirt"
+    Then product "shirt" should be disabled
 
   @skip
   Scenario: Successfully revert the family of a product
@@ -72,3 +72,51 @@ Feature: Revert a product to a previous version
     And I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: jean"
     Then I should see a flash message "Successfully revert the product to the previous version"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3351
+  Scenario: Successfully revert a product with prices and leaving them empty
+    And the following product:
+      | sku   | name-fr_FR | family |
+      | jeans | Nice jeans | pants  |
+    And I am logged in as "Julia"
+    When I edit the "jeans" product
+    And I fill in the following information:
+      | Name | Really nice jeans |
+    And I save the product
+    And I visit the "History" tab
+    When I click on the "Revert to this version" action of the row which contains "sku: jeans"
+    And I visit the "Attributes" tab
+    And I visit the "Marketing" group
+    And the product "jeans" should have the following values:
+      | price      | |
+      | name-fr_FR | Nice jeans |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3301
+  Scenario: Successfully revert a product date and leaving it empty
+    And the following product:
+      | sku   | family |
+      | jeans | jackets  |
+    And I am logged in as "Julia"
+    When I edit the "jeans" product
+    And I change the "mobile Release date" to "2014-05-20"
+    And I save the product
+    And I visit the "History" tab
+    When I click on the "Revert to this version" action of the row which contains "sku: jeans"
+    And I save the product
+    And the product "jeans" should have the following values:
+      | release_date-mobile |  |
+
+  Scenario: Successfully revert a product number and leaving it empty
+    And the following product:
+      | sku   | family |
+      | jeans | jackets  |
+    And I am logged in as "Julia"
+    When I edit the "jeans" product
+    And I visit the "Marketing" group
+    And I change the "mobile Number in stock" to "100"
+    And I save the product
+    And I visit the "History" tab
+    When I click on the "Revert to this version" action of the row which contains "sku: jeans"
+    And I save the product
+    And the product "jeans" should have the following values:
+      | number_in_stock-mobile |  |

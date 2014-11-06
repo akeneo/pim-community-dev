@@ -74,7 +74,7 @@ class ProductReverter
         /** @var \Symfony\Component\Validator\ConstraintViolationList $violationsList */
         $violationsList = $this->validator->validate($revertedObject);
         if ($violationsList->count() > 0) {
-            throw new RevertException('This version can not be restored. Some errors occurs during the validation.');
+            throw new RevertException('This version can not be restored. Some errors occured during the validation.');
         }
 
         $this->productManager->saveProduct($revertedObject);

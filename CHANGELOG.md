@@ -30,13 +30,19 @@
 
 ## Bug fixes
 - PIM-3331: Fix draft creation when saving values for newly added attributes for the first time
+- PIM-3351: Test data value in PricesDenormalizer to avoid creating empty ProductPrices
+- PIM-3301: Test data value in DateTimeDenormalizer to avoid reverted date to be set on current day
+
+# 1.0.4 (2014-10-31)
+
+## Bug fixes
+- PIM-3300: Fixed bug on revert of a multi-select attribute options
 
 # 1.0.3 (2014-10-24)
 
 ## Bug fixes
 - PIM-3206: Removing the group "ALL" from categories' permissions after a clean installation.
 - PIM-3234: Fix performance issue on granted category filter
-- PIM-3300: Fixed bug on revert of a multiselect attribute options
 
 # 1.0.2 (2014-10-10)
 
