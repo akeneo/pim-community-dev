@@ -56,11 +56,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * Get query builder
-     *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
-     *
-     * @return ProductQueryBuilderInterface
+     * {@inheritdoc}
      */
     public function setQueryBuilder($qb)
     {
@@ -70,10 +66,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * Get query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
-     * @throws \LogicException
+     * {@inheritdoc}
      */
     public function getQueryBuilder()
     {
@@ -146,6 +139,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute()
+    {
+        $this->getQueryBuilder()->getQuery()->execute();
     }
 
     /**

@@ -18,5 +18,5 @@ interface ProductQueryFactoryInterface
      *
      * @return ProductQueryBuilderInterface
      */
-    public function create(array $options);
+    public function create(array $options = []);
 }
