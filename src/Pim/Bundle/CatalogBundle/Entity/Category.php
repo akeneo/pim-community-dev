@@ -284,19 +284,6 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     /**
      * {@inheritdoc}
      */
-    public function addProduct(ProductInterface $product)
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasProducts()
     {
         return $this->products->count() !== 0;
@@ -319,26 +306,6 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     public function getProducts()
     {
         return $this->products;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProducts($products)
-    {
-        if (null !== $this->getProducts()) {
-            foreach ($this->getProducts() as $product) {
-                $product->removeCategory($this);
-            }
-        }
-
-        if (null !== $products) {
-            foreach ($products as $product) {
-                $product->addCategory($this);
-            }
-        }
-
-        return $this;
     }
 
     /**
