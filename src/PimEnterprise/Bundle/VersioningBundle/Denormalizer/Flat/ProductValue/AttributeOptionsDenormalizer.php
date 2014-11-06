@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Attribute options collection flat denormalizer used for following attribute types:
  * - pim_catalog_multiselect
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
 {
@@ -26,6 +26,10 @@ class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if ($data === null || $data === '') {
+            return null;
+        }
+
         $options = new ArrayCollection();
         foreach (explode(',', $data) as $optionCode) {
             $option = parent::denormalize($optionCode, 'pim_catalog_simpleselect', $format, $context);

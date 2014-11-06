@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 /**
  * Abstract value flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 abstract class AbstractValueDenormalizer implements DenormalizerInterface
 {

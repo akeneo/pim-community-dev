@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
  * - pim_catalog_text
  * - pim_catalog_textarea
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class BaseValueDenormalizer extends AbstractValueDenormalizer
 {
@@ -28,6 +28,6 @@ class BaseValueDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        return $data;
+        return $data === '' ? null : $data;
     }
 }

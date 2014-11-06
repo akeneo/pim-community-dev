@@ -12,12 +12,14 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Price collection flat denormalizer used for attribute type:
  * - pim_catalog_price_collection
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PricesDenormalizer extends AbstractValueDenormalizer
 {
@@ -39,15 +41,30 @@ class PricesDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if ($data === null || $data === '') {
+            return null;
+        }
+
+        $resolver = new OptionsResolver();
+        $this->configContext($resolver);
+        $context = $resolver->resolve($context);
+
         $value    = $context['value'];
         $currency = $context['price_currency'];
-
-        $data = $data === '' ? null : $data;
 
         $priceValue = $this->productBuilder->addPriceForCurrency($value, $currency);
         $priceValue->setCurrency($currency);
         $priceValue->setData($data);
 
         return $priceValue;
+    }
+
+    /**
+     * Define context requirements
+     * @param OptionsResolverInterface $resolver
+     */
+    protected function configContext(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(['value', 'price_currency']);
     }
 }
