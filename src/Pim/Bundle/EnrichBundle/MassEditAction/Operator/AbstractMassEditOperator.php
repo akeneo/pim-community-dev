@@ -124,7 +124,7 @@ abstract class AbstractMassEditOperator
      *
      * @param string $operationAlias
      *
-     * @throws InvalidArgumentException when the alias is not registered
+     * @throws \InvalidArgumentException when the alias is not registered
      *
      * @return AbstractMassEditOperator
      */
