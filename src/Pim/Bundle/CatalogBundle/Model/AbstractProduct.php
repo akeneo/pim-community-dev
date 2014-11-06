@@ -588,7 +588,6 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            $category->addProduct($this);
         }
 
         return $this;

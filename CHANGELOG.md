@@ -4,6 +4,7 @@
 - PIM-3298: Fix issue with locale specific property of an attribute when edit and mass edit
 - PIM-3229: Fix values for simple and multi select attributes with missing translations not being displayed in the grid
 - PIM-3309: Fix check on product value uniqueness
+- PIM-3288: Fix memory leak on product import (avoid to hydrate all products of a category when we add a category to a product)
 
 # 1.2.11 (2014-10-31)
 
