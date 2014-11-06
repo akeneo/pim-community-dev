@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductBuilder
+class ProductBuilder implements ProductBuilderInterface
 {
     /**
      * @var string
@@ -58,7 +58,6 @@ class ProductBuilder
     /**
      * Constructor
      *
-     * @param ObjectManager   $objectManager   Storage manager
      * @param ChannelManager  $channelManager  Channel Manager
      * @param LocaleManager   $localeManager   Locale Manager
      * @param CurrencyManager $currencyManager Currency manager
@@ -81,14 +80,7 @@ class ProductBuilder
     }
 
     /**
-     * Add empty values for family and product-specific attributes for relevant scopes and locales
-     *
-     * It makes sure that if an attribute is localizable/scopable, then all values in the required locales/channels
-     * exist. If the attribute is not scopable or localizable, makes sure that a single value exists.
-     *
-     * @param ProductInterface $product
-     *
-     * @return null
+     * {@inheritdoc}
      */
     public function addMissingProductValues(ProductInterface $product)
     {
@@ -111,12 +103,7 @@ class ProductBuilder
     }
 
     /**
-     * Creates required value(s) to add the attribute to the product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     *
-     * @return null
+     * {@inheritdoc}
      */
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
     {
@@ -128,12 +115,7 @@ class ProductBuilder
     }
 
     /**
-     * Deletes values that link an attribute to a product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
     {
@@ -147,12 +129,7 @@ class ProductBuilder
     }
 
     /**
-     * Add a product price with currency to the value
-     *
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     *
-     * @return null|ProductPrice
+     * {@inheritdoc}
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency)
     {
@@ -164,10 +141,7 @@ class ProductBuilder
     }
 
     /**
-     * Remove extra prices that are not in the currencies passed in arguments
-     *
-     * @param ProductValueInterface $value
-     * @param array                 $currencies
+     * {@inheritdoc}
      */
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
     {
@@ -179,14 +153,7 @@ class ProductBuilder
     }
 
     /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
-     *
-     * @return ProductValueInterface
+     * {@inheritdoc}
      */
     public function addProductValue(
         ProductInterface $product,
@@ -195,6 +162,7 @@ class ProductBuilder
         $scope = null
     ) {
         $value = $this->createProductValue();
+        $value->setAttribute($attribute);
         if ($attribute->isLocalizable()) {
             if ($locale !== null) {
                 $value->setLocale($locale);
@@ -219,8 +187,6 @@ class ProductBuilder
                 );
             }
         }
-
-        $value->setAttribute($attribute);
         $product->addValue($value);
 
         return $value;
