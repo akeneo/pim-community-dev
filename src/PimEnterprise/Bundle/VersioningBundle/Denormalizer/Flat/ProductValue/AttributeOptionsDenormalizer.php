@@ -39,6 +39,10 @@ class AttributeOptionsDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
+        if ($data === null || $data === '') {
+            return null;
+        }
+
         $options = new ArrayCollection();
         foreach (explode(',', $data) as $optionCode) {
             $option = $this->denormalizer->denormalize(
