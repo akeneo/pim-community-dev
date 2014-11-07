@@ -80,7 +80,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
      *
      * @param string $identifier
      *
-     * @return AttributeOption
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
      */
     protected function findEntity($identifier)
     {
