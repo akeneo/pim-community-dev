@@ -74,6 +74,7 @@ services:
         class: %pim_catalog.updater.setter.multiselect_value.class%
         arguments:
             - @pim_catalog.builder.product
+            - @pim_catalog.doctrine.smart_manager_registry
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -90,6 +91,7 @@ services:
         class: %pim_catalog.updater.setter.simpleselect_value.class%
         arguments:
             - @pim_catalog.builder.product
+            - @pim_catalog.doctrine.smart_manager_registry
             - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }

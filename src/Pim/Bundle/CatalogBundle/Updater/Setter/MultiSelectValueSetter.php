@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
@@ -22,14 +24,19 @@ class MultiSelectValueSetter implements SetterInterface
     /** @var array */
     protected $types;
 
+    /** @var SmartManagerRegistry */
+    protected $em;
+
     /**
      * @param ProductBuilder $builder
+     * @param EntityManager  $entityManager
      * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, array $supportedTypes)
+    public function __construct(ProductBuilder $builder, SmartManagerRegistry $entityManager, array $supportedTypes)
     {
         $this->productBuilder = $builder;
         $this->types = $supportedTypes;
+        $this->em = $entityManager;
     }
 
     /**
@@ -44,12 +51,28 @@ class MultiSelectValueSetter implements SetterInterface
             throw new \InvalidArgumentException('$data have to be an array');
         }
 
-        foreach ($data as $value) {
-            if (!$value instanceof AttributeOption) {
-                throw new \LogicException(
-                    sprintf('Attribute "%s" expects a multi select option as data', $attribute->getCode())
-                );
-            }
+//        if (!array_key_exists('attribute', $data)) {
+//            throw new \LogicException('Missing "attribute" key in array');
+//        }
+//
+//        if (!array_key_exists('code', $data)) {
+//            throw new \LogicException('Missing "code" key in array');
+//        }
+//
+//        if (!array_key_exists('label', $data)) {
+//            throw new \LogicException('Missing "label" key in array');
+//        }
+//
+//        if (!is_array($data['label'])) {
+//            throw new \LogicException('Invalid data type for the "label" key');
+//        }
+
+        $attributeOptions = [];
+
+        foreach ($data as $attributeOption) {
+            $attributeOptions[] = $this->em
+                ->getRepository('AttributeOption')
+                ->findOneBy(['code' => $attributeOption['code']]);
         }
 
         foreach ($products as $product) {
@@ -57,7 +80,7 @@ class MultiSelectValueSetter implements SetterInterface
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            $value->setData($data);
+            $value->setOptions(new ArrayCollection($attributeOptions));
         }
     }
 

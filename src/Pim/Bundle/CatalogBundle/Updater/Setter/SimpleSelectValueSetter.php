@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -22,12 +23,21 @@ class SimpleSelectValueSetter implements SetterInterface
     /** @var array */
     protected $types;
 
+    /** @var SmartManagerRegistry */
+    protected $smartManagerRegistry;
+
     /**
-     * @param ProductBuilder $builder
+     * @param ProductBuilder       $builder
+     * @param SmartManagerRegistry $smartManagerRegistry
+     * @param array                $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, array $supportedTypes)
-    {
+    public function __construct(
+        ProductBuilder $builder,
+        SmartManagerRegistry $smartManagerRegistry,
+        array $supportedTypes
+    ) {
         $this->productBuilder = $builder;
+        $this->smartManagerRegistry = $smartManagerRegistry;
         $this->types = $supportedTypes;
     }
 
@@ -39,18 +49,36 @@ class SimpleSelectValueSetter implements SetterInterface
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
-        if (!$data instanceof AttributeOption) {
-            throw new \LogicException(
-                sprintf('Attribute "%s" expects a simple select option as data', $attribute->getCode())
-            );
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException('$data have to be an array');
         }
+
+        if (!array_key_exists('attribute', $data)) {
+            throw new \LogicException('Missing "attribute" key in array');
+        }
+
+        if (!array_key_exists('code', $data)) {
+            throw new \LogicException('Missing "code" key in array');
+        }
+
+        if (!array_key_exists('label', $data)) {
+            throw new \LogicException('Missing "label" key in array');
+        }
+
+        if (!is_array($data['label'])) {
+            throw new \LogicException('Invalid data type for the "label" key');
+        }
+
+        $attributeOption = $this->smartManagerRegistry
+            ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeOption')
+            ->findOneBy(['code' => $data['code']]);
 
         foreach ($products as $product) {
             $value = $product->getValue($attribute->getCode(), $locale, $scope);
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            $value->setData($data);
+            $value->setOption($attributeOption);
         }
     }
 
