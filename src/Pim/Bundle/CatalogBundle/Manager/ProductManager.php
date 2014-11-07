@@ -200,14 +200,12 @@ class ProductManager
     }
 
     /**
-     * Save a product
+     * Save a single product
      *
      * @param ProductInterface $product The product to save
      * @param array            $options Saving options
-     *
-     * @deprecated use save() instead. Will be removed in 1.4
      */
-    public function saveProduct(ProductInterface $product, array $options = [])
+    public function save(ProductInterface $product, array $options = [])
     {
         $options = array_merge(
             [
@@ -227,12 +225,10 @@ class ProductManager
      *
      * @param ProductInterface[] $products The products to save
      * @param array              $options  Saving options
-     *
-     * @deprecated use saveAll() instead. Will be removed in 1.4
      */
-    public function saveAllProducts(array $products, array $options = [])
+    public function saveAll(array $products, array $options = [])
     {
-        $allOptions = array_merge(
+        $options = array_merge(
             [
                 'recalculate' => false,
                 'flush' => true,
@@ -242,7 +238,33 @@ class ProductManager
             $options
         );
 
-        $this->persister->persistAll($products, $allOptions);
+        $this->persister->persistAll($products, $options);
+    }
+
+    /**
+     * Save a product
+     *
+     * @param ProductInterface $product The product to save
+     * @param array            $options Saving options
+     *
+     * @deprecated use save() instead. Will be removed in 1.4
+     */
+    public function saveProduct(ProductInterface $product, array $options = [])
+    {
+        $this->save($product, $options);
+    }
+
+    /**
+     * Save multiple products
+     *
+     * @param ProductInterface[] $products The products to save
+     * @param array              $options  Saving options
+     *
+     * @deprecated use saveAll() instead. Will be removed in 1.4
+     */
+    public function saveAllProducts(array $products, array $options = [])
+    {
+        $this->saveAll($products, $options);
     }
 
     /**
