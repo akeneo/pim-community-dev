@@ -3,14 +3,14 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Prophecy\Argument;
 
 class MetadataSubscriberSpec extends ObjectBehavior
 {

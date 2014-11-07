@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 /**
  * Group flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class GroupDenormalizer extends AbstractEntityDenormalizer
 {

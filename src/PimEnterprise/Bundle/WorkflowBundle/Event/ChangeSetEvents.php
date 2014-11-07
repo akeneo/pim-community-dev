@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 /**
  * Change set events
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ChangeSetEvents
 {

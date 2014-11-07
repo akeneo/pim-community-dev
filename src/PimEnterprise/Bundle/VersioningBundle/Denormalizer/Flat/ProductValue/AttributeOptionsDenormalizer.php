@@ -19,12 +19,25 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
+class AttributeOptionsDenormalizer extends AbstractValueDenormalizer
 {
+    /** @var  AttributeOptionDenormalizer */
+    protected $denormalizer;
+
+    /**
+     * @param array                       $supportedTypes
+     * @param AttributeOptionDenormalizer $denormalizer
+     */
+    public function __construct(array $supportedTypes, AttributeOptionDenormalizer $denormalizer)
+    {
+        parent::__construct($supportedTypes);
+        $this->denormalizer = $denormalizer;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if ($data === null || $data === '') {
             return null;
@@ -32,7 +45,12 @@ class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
 
         $options = new ArrayCollection();
         foreach (explode(',', $data) as $optionCode) {
-            $option = parent::denormalize($optionCode, 'pim_catalog_simpleselect', $format, $context);
+            $option = $this->denormalizer->denormalize(
+                $optionCode,
+                'pim_catalog_simpleselect',
+                $format,
+                $context
+            );
             if (null !== $option) {
                 $options->add($option);
             }

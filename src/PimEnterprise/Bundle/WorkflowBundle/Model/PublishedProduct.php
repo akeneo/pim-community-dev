@@ -20,7 +20,7 @@ use Pim\Bundle\VersioningBundle\Model\Version;
 /**
  * Published product
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
 class PublishedProduct extends AbstractProduct implements ReferableInterface, PublishedProductInterface

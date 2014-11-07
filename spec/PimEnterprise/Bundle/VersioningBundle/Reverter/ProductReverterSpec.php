@@ -58,8 +58,8 @@ class ProductReverterSpec extends ObjectBehavior
         Version $version,
         ObjectRepository $repository,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationsList)
-    {
+        ConstraintViolationListInterface $violationsList
+    ) {
         $version->getResourceName()->willReturn('foo');
         $version->getSnapshot()->willReturn('bar');
         $version->getResourceId()->willReturn('baz');

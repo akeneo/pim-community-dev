@@ -2,20 +2,20 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProductDraftManagerSpec extends ObjectBehavior
 {
@@ -44,7 +44,12 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $productDraft->getProduct()->willReturn($product);
         $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_APPROVE,
+                Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent')
+            )
+            ->shouldBeCalled();
         $applier->apply($product, $productDraft)->shouldBeCalled();
         $manager->handleMedia($product)->shouldBeCalled();
         $manager->saveProduct($product, ['bypass_product_draft' => true])->shouldBeCalled();
@@ -63,7 +68,12 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
         $productDraft->isInProgress()->willReturn(false);
-        $dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_REFUSE,
+                Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent')
+            )
+            ->shouldBeCalled();
         $productDraft->setStatus(ProductDraft::IN_PROGRESS)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
@@ -119,7 +129,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
     ) {
         $userContext->getUser()->willReturn(null);
 
-        $this->shouldThrow(new \LogicException('Current user cannot be resolved'))->duringFindOrCreate($product, 'fr_FR');
+        $this
+            ->shouldThrow(new \LogicException('Current user cannot be resolved'))
+            ->duringFindOrCreate($product, 'fr_FR');
     }
 
     function it_marks_product_draft_as_ready(
@@ -130,7 +142,12 @@ class ProductDraftManagerSpec extends ObjectBehavior
     ) {
         $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_READY, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_READY,
+                Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent')
+            )
+            ->shouldBeCalled();
         $productDraft->setStatus(ProductDraft::READY)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 

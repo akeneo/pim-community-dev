@@ -15,7 +15,7 @@ class AssociationDenormalizerSpec extends ObjectBehavior
     const ENTITY_CLASS     = 'Pim\Bundle\CatalogBundle\Model\Association';
     const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
     const GROUP_CLASS      = 'Pim\Bundle\CatalogBundle\Entity\Group';
-    const PRODUCT_CLASS    = 'Pim\Bundle\CatalogBundle\Model\Product';
+    const PRODUCT_CLASS    = 'Pim\Bundle\CatalogBundle\Model\ProductInterface';
 
     const FORMAT_CSV    = 'csv';
 
@@ -123,5 +123,4 @@ class AssociationDenormalizerSpec extends ObjectBehavior
             ['part' => 'products', 'entity' => $association]
         );
     }
-
 }

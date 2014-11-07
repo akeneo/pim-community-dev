@@ -1,4 +1,7 @@
 {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
+{% if resource_granted('pim_pdf_generator_product_download') %}
+    {{ elements.link('btn.download_pdf', path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }), { icon: 'download', class: 'no-hash', id: 'download-btn'}) }}
+{% endif %}
 {{ elements.enabledSwitch(form) }}
 {% if resource_granted("pim_enrich_product_remove") %}
      {{ elements.deleteLink(
@@ -26,10 +29,38 @@
     <span href="#" class="btn btn-info disabled">{{ 'btn.sent for approval'|trans }}</span>
 {% endif %}
 
-{{ elements.submitDropdownBtn(
-    is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) ? 'btn.save working copy' : 'btn.save draft',
-    {
-        'Create': { 'text': 'btn.save and create' },
-        'BackGrid': { 'text': 'btn.save and back' }
-    }
-) }}
+{% set saveOptions = {
+    '' : {'text' : is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) ? 'btn.save working copy' : 'btn.save draft'},
+    'Create': { 'text': 'btn.save and create' },
+    'BackGrid': { 'text': 'btn.save and back' }
+} %}
+
+{% if sequentialEdit and sequentialEdit.next is not null %}
+    {% set saveAndNextOption = {'SaveAndNext':  {
+        'text': is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) ? 'btn.save working copy and next' : 'btn.save draft and next' }} %}
+    {% set saveOptions = saveAndNextOption|merge(saveOptions) %}
+{% elseif sequentialEdit and sequentialEdit.next is null %}
+    {% set saveAndNextOption = {'SaveAndFinish': {
+        'text': is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) ? 'btn.save working copy and finish' : 'btn.save draft and finish' }} %}
+    {% set saveOptions = saveAndNextOption|merge(saveOptions) %}
+{% endif %}
+
+{{ elements.submitDropdownBtn(saveOptions) }}
+
+{% if resource_granted('pim_pdf_generator_product_download') %}
+<script type="text/javascript">
+    require(
+            ['jquery', 'oro/mediator'],
+            function ($, mediator) {
+                var initialScope = '{{ product.scope }}',
+                    url = '{{ path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }) }}' + '&dataScope=',
+                    button = $('#download-btn');
+
+                button.attr('href', url + initialScope);
+                mediator.on('scopablefield:changescope', function (scope) {
+                    button.attr('href', url + scope);
+                }, this);
+            }
+    );
+</script>
+{% endif %}

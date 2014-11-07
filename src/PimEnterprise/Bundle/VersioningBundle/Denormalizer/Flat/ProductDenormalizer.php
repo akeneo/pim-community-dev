@@ -13,14 +13,13 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
  * Product flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductDenormalizer extends AbstractEntityDenormalizer
 {
@@ -150,7 +149,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      *
      * @param string           $data
      * @param string           $format
-     * @oaram array            $context
+     * @param array            $context
      * @param ProductInterface $product
      */
     protected function denormalizeCategories($data, $format, array $context, ProductInterface $product)

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 /**
  * Present text data
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class TextPresenter extends AbstractProductValuePresenter
 {

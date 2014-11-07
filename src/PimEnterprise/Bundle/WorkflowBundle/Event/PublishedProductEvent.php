@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Published product event
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PublishedProductEvent extends Event
 {

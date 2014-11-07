@@ -11,20 +11,20 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Oro\Bundle\UserBundle\Entity\Group;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\AbstractQuery;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category access repository
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryAccessRepository extends EntityRepository
 {
@@ -94,8 +94,7 @@ class CategoryAccessRepository extends EntityRepository
         $qb
             ->delete()
             ->where($qb->expr()->in('a.userGroup', ':groups'))
-            ->setParameter('groups', $groups)
-        ;
+            ->setParameter('groups', $groups);
 
         return $qb->getQuery()->execute();
     }
@@ -339,7 +338,7 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get the access field depending of access level sent
      *
-     * @param $accessLevel
+     * @param string $accessLevel
      *
      * @return string
      *

@@ -27,6 +27,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     protected $productBuilder;
 
     /**
+     * @param string[]       $supportedTypes
      * @param ProductBuilder $productBuilder
      */
     public function __construct(array $supportedTypes, ProductBuilder $productBuilder)

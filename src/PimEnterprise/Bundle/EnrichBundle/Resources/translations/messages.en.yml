@@ -38,6 +38,10 @@ pimee_enrich:
 btn:
     save working copy: Save working copy
     save draft: Save draft
+    save working copy and next: Save working copy and next
+    save draft and next: Save draft and next
+    save working copy and finish: Save working copy and finish
+    save draft and finish: Save draft and finish
     send for approval: Send for approval
     sent for approval: Sent for approval
 

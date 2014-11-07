@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Mark a product draft as in progress before updating it
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class MarkInProgressSubscriber implements EventSubscriberInterface
 {

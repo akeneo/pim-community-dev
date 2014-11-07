@@ -3,16 +3,15 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class DatagridViewAccessManagerSpec extends ObjectBehavior
@@ -22,7 +21,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Manager\DatagridViewAccessManager');
     }
 
-    public function let(
+    function let(
         AttributeRepository $attributeRepository,
         CategoryRepository $categoryRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
@@ -46,7 +45,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $user,
         $attributeGroupAccessManager,
         $attributeRepository,
-        Attribute $attribute,
+        AbstractAttribute $attribute,
         AttributeGroup $group
     ) {
         $attribute->getGroup()->willReturn($group);
@@ -61,7 +60,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $user,
         $attributeGroupAccessManager,
         $attributeRepository,
-        Attribute $attribute,
+        AbstractAttribute $attribute,
         AttributeGroup $group
     ) {
         $attribute->getGroup()->willReturn($group);
@@ -97,7 +96,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeRepository,
         $categoryRepository,
         $categoryAccessManager,
-        Attribute $attribute,
+        AbstractAttribute $attribute,
         AttributeGroup $group,
         CategoryInterface $category
     ) {

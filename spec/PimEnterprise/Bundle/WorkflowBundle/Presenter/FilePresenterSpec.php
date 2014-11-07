@@ -3,9 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class FilePresenterSpec extends ObjectBehavior
 {
@@ -38,8 +37,12 @@ class FilePresenterSpec extends ObjectBehavior
         $media->getFilename()->willReturn('uploaded_bar.pdf');
         $media->getOriginalFilename()->willReturn('bar.pdf');
 
-        $generator->generate('pim_enrich_media_show', ['filename' => 'uploaded_bar.pdf'])->willReturn('/media/uploaded_bar.pdf');
-        $generator->generate('pim_enrich_media_show', ['filename' => 'uploaded_foo.pdf'])->willReturn('/media/uploaded_foo.pdf');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_bar.pdf'])
+            ->willReturn('/media/uploaded_bar.pdf');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_foo.pdf'])
+            ->willReturn('/media/uploaded_foo.pdf');
 
         $change = [
             'media' => [
@@ -50,8 +53,14 @@ class FilePresenterSpec extends ObjectBehavior
 
         $this->present($value, $change)->shouldReturn(
             '<ul class="diff">' .
-            '<li class="base file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a></li>' .
-            '<li class="changed file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a></li>' .
+                '<li class="base file">' .
+                    '<i class="icon-file"></i>' .
+                    '<a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a>' .
+                '</li>' .
+                '<li class="changed file">' .
+                    '<i class="icon-file"></i>' .
+                    '<a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a>' .
+                '</li>' .
             '</ul>'
         );
     }
@@ -62,7 +71,9 @@ class FilePresenterSpec extends ObjectBehavior
     ) {
         $value->getMedia()->willReturn(null);
 
-        $generator->generate('pim_enrich_media_show', ['filename' => 'uploaded_foo.pdf'])->willReturn('/media/uploaded_foo.pdf');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_foo.pdf'])
+            ->willReturn('/media/uploaded_foo.pdf');
 
         $change = [
             'media' => [
@@ -73,7 +84,10 @@ class FilePresenterSpec extends ObjectBehavior
 
         $this->present($value, $change)->shouldReturn(
             '<ul class="diff">' .
-            '<li class="changed file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a></li>' .
+                '<li class="changed file">' .
+                    '<i class="icon-file"></i>' .
+                    '<a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a>' .
+                '</li>' .
             '</ul>'
         );
     }
@@ -87,11 +101,16 @@ class FilePresenterSpec extends ObjectBehavior
         $media->getFilename()->willReturn('uploaded_bar.pdf');
         $media->getOriginalFilename()->willReturn('bar.pdf');
 
-        $generator->generate('pim_enrich_media_show', ['filename' => 'uploaded_bar.pdf'])->willReturn('/media/uploaded_bar.pdf');
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_bar.pdf'])
+            ->willReturn('/media/uploaded_bar.pdf');
 
         $this->present($value, ['media' => []])->shouldReturn(
             '<ul class="diff">' .
-            '<li class="base file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a></li>' .
+                '<li class="base file">' .
+                    '<i class="icon-file"></i>' .
+                    '<a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a>' .
+                '</li>' .
             '</ul>'
         );
     }

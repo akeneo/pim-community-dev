@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 /**
  * Association flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AssociationDenormalizer extends AbstractEntityDenormalizer
 {
@@ -93,7 +93,8 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
                 }
             }
         } else {
-            if (strlen($data) > 0) { // TODO: test should be in product denormalizer
+            // TODO: test should be in product denormalizer
+            if (strlen($data) > 0) {
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
                     $product = $this->serializer->denormalize($identifier, $this->productClass, $format);

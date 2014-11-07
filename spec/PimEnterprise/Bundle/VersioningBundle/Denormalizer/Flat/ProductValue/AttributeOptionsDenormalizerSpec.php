@@ -3,18 +3,20 @@
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer;
 
 class AttributeOptionsDenormalizerSpec extends ObjectBehavior
 {
-    function let(AttributeOptionRepository $repository)
+    function let(AttributeOptionDenormalizer $denormalizer)
     {
         $this->beConstructedWith(
             ['pim_catalog_multiselect'],
-            $repository
+            $denormalizer
         );
     }
 

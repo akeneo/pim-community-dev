@@ -3,17 +3,14 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 
 class ChainedComparatorSpec extends ObjectBehavior
 {
-    public function let(
-        ComparatorInterface $comparator1,
-        ComparatorInterface $comparator2
-    ) {
+    function let(ComparatorInterface $comparator1, ComparatorInterface $comparator2)
+    {
         $this->addComparator($comparator1, 0);
         $this->addComparator($comparator2, 100);
     }
@@ -53,7 +50,8 @@ class ChainedComparatorSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_fancy');
 
         $exception = new \LogicException(
-            'Cannot compare value of attribute type "pim_catalog_fancy". Please check that a comparator exists for such attribute type.'
+            'Cannot compare value of attribute type "pim_catalog_fancy". ' .
+            'Please check that a comparator exists for such attribute type.'
         );
         $this->shouldThrow($exception)->duringGetChanges($value, ['foo' => 'bar']);
     }

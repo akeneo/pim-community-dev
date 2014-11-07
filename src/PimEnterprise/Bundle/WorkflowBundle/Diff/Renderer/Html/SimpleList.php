@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html;
 /**
  * HTML list-based diff renderer
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class SimpleList extends \Diff_Renderer_Html_Array
 {

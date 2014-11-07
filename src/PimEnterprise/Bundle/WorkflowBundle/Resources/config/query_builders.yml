@@ -1,0 +1,12 @@
+parameters: ~
+
+services:
+    pimee_workflow.doctrine.query.published_product_query_factory:
+        class: %pim_catalog.doctrine.query.product_query_factory.class%
+        arguments:
+            - '%pim_catalog.doctrine.query.product_query_builder.class%'
+            - '@pim_catalog.object_manager.product'
+            - '%pimee_workflow.entity.published_product.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.doctrine.query.filter_registry'
+            - '@pim_catalog.doctrine.query.sorter_registry'

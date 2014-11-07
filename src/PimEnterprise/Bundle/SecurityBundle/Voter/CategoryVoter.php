@@ -11,17 +11,17 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Category voter, allows to know if products of a category can be edited or consulted by a
  * user depending on his user groups
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryVoter implements VoterInterface
 {
