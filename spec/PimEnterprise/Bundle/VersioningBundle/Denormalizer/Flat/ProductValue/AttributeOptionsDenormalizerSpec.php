@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer;
+use Prophecy\Argument;
 
 class AttributeOptionsDenormalizerSpec extends ObjectBehavior
 {
@@ -24,17 +25,14 @@ class AttributeOptionsDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_attribute_options($repository, ProductValueInterface $productValueInterface, AbstractAttribute $abstractAttribute, AttributeOption $red, AttributeOption $blue, AttributeOption $green)
+    function it_denormalizes_attribute_options($denormalizer, ProductValueInterface $productValueInterface, AbstractAttribute $abstractAttribute, AttributeOption $red, AttributeOption $blue, AttributeOption $green)
     {
         $data = '1,2,3';
         $context['value'] = $productValueInterface;
 
-        $productValueInterface->getAttribute()->shouldBeCalled()->willReturn($abstractAttribute);
-        $abstractAttribute->getCode()->willReturn('color');
-
-        $repository->findByReference('color.1')->shouldBeCalled()->willReturn($red);
-        $repository->findByReference('color.2')->shouldBeCalled()->willReturn($blue);
-        $repository->findByReference('color.3')->shouldBeCalled()->willReturn($green);
+        $denormalizer->denormalize('1', 'pim_catalog_simpleselect', Argument::cetera())->shouldBeCalled()->willReturn($red);
+        $denormalizer->denormalize('2', 'pim_catalog_simpleselect', Argument::cetera())->shouldBeCalled()->willReturn($blue);
+        $denormalizer->denormalize('3', 'pim_catalog_simpleselect', Argument::cetera())->shouldBeCalled()->willReturn($green);
 
         $options = $this->denormalize($data, 'className', null, $context);
 
