@@ -286,16 +286,7 @@ class ProductManager
             ],
             $options
         );
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
-
-        foreach ($products as $product) {
-            $this->saveProduct($product, $itemOptions);
-        }
-
-        if ($allOptions['flush'] === true) {
-            $this->objectManager->flush();
-        }
+        $this->persister->persistAll($products, $allOptions);
     }
 
     /**

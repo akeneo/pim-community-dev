@@ -17,9 +17,6 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
  */
 class BasicPersister implements ProductPersister
 {
-    /** @var ObjectManager */
-    protected $manager;
-
     /** @var CompletenessManager */
     protected $completenessManager;
 
@@ -62,14 +59,22 @@ class BasicPersister implements ProductPersister
             $this->completenessManager->schedule($product);
         }
 
+        if ($options['recalculate'] || $options['flush']) {
+            $manager->flush();
+        }
+
         if ($options['versioning']) {
+            // TODO pb with new versionable ! should be flushed in a second time !
             $changeset = [];
             $versions = $this->versionManager->buildVersion($product, $changeset);
             foreach ($versions as $version) {
-                $manager->persist($version);
+                if ($version->getChangeset()) {
+                    $manager->persist($version);
+                }
             }
         }
 
+        // twice !
         if ($options['recalculate'] || $options['flush']) {
             $manager->flush();
         }
@@ -77,5 +82,47 @@ class BasicPersister implements ProductPersister
         if ($options['recalculate']) {
             $this->completenessManager->generateMissingForProduct($product);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function persistAll($products, array $options)
+    {
+        // TODO to fix
+        $manager = $this->registry->getManagerForClass(get_class($products[0]));
+
+        $versions = [];
+        $itemOptions = $options;
+        $itemOptions['flush'] = false;
+        $itemOptions['versioning'] = false;
+
+        foreach ($products as $product) {
+            $this->persist($product, $itemOptions);
+        }
+
+        if ($options['flush'] === true) {
+            $manager->flush();
+        }
+
+        if ($options['versioning']) {
+            foreach ($products as $product) {
+                // TODO pb with new versionable ! should be flushed in a second time !
+                $changeset = [];
+                $versions = $this->versionManager->buildVersion($product, $changeset);
+                foreach ($versions as $version) {
+                    if ($version->getChangeset()) {
+                        $manager->persist($version);
+                    }
+                }
+            }
+        }
+
+        // twice !
+        if ($options['flush'] === true) {
+            $manager->flush();
+        }
+
+        // TODO : schedule completeness ?
     }
 }

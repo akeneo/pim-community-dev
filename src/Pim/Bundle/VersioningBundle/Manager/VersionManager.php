@@ -124,6 +124,7 @@ class VersionManager
     {
         $createdVersions = [];
 
+        // TODO : we could avoid real time versioning, not a lot of business value
         if ($this->realTimeVersioning) {
             $this->registry->getManagerForClass(ClassUtils::getClass($versionable))->refresh($versionable);
 
