@@ -1,8 +1,13 @@
 parameters:
-    pim_catalog.persister.product.class: Pim\Bundle\CatalogBundle\Persistence\BasicPersister
+    pim_catalog.persister.basic.class:   Pim\Bundle\CatalogBundle\Persistence\BasicPersister
+    pim_catalog.persister.product.class: Pim\Bundle\CatalogBundle\Persistence\ProductPersister
 
 services:
-    # Persister
+    pim_catalog.persister.basic:
+        class: %pim_catalog.persister.basic.class%
+        arguments:
+            - @pim_catalog.doctrine.smart_manager_registry
+
     pim_catalog.persister.product:
         class: %pim_catalog.persister.product.class%
         arguments:

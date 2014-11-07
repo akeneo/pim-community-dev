@@ -39,7 +39,7 @@ Feature: Remove a category
     When I edit the "caterpillar_2" product
     Then the category of "caterpillar_2" should be "2014_collection"
 
-  @skip PIM-3325 : discuss the relevancy of this history update
+  @skip
   Scenario: Remove a category with products linked
     Given I am on the "winter_boots" category page
     When I press the "Delete" button

@@ -19,7 +19,7 @@ Feature: Display the product history
       | version | property | value       |
       | 1       | sku      | sandals-001 |
 
-  @skip PIM-3325 : discuss the relevancy of this history update
+  @skip
   Scenario: Update product history when a linked category is removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -42,7 +42,7 @@ Feature: Display the product history
       | version | property   | value |
       | 2       | categories |       |
 
-  @skip PIM-3325 : discuss the relevancy of this history update
+  @skip
   Scenario: Update product history when multiple linked categories are removed
     Given an "apparel" catalog configuration
     And the following product:
