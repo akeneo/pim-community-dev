@@ -18,12 +18,16 @@ class NumberValueSetter implements SetterInterface
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @va array */
+    protected $types;
+
     /**
      * @param ProductBuilder $builder
      */
-    public function __construct(ProductBuilder $builder)
+    public function __construct(ProductBuilder $builder, array $supportedTypes)
     {
         $this->productBuilder = $builder;
+        $this->types = $supportedTypes;
     }
 
     /**
@@ -52,8 +56,14 @@ class NumberValueSetter implements SetterInterface
      */
     public function supports(AttributeInterface $attribute)
     {
-        $types = ['pim_catalog_number'];
+        return in_array($attribute->getAttributeType(), $this->types);
+    }
 
-        return in_array($attribute->getAttributeType(), $types);
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes()
+    {
+        return $this->types;
     }
 }

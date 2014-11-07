@@ -12,7 +12,7 @@ class TextValueSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder);
+        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea']);
     }
 
     function it_is_a_setter()
@@ -33,6 +33,11 @@ class TextValueSetterSpec extends ObjectBehavior
 
         $numberAttribute->getAttributeType()->willReturn('pim_catalog_number');
         $this->supports($numberAttribute)->shouldReturn(false);
+    }
+
+    function it_returns_supported_attributes_types()
+    {
+        $this->getSupportedTypes()->shouldReturn(['pim_catalog_text', 'pim_catalog_textarea']);
     }
 
     function it_throws_an_error_if_data_is_not_a_string(

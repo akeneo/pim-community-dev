@@ -18,12 +18,16 @@ class DateValueSetter implements SetterInterface
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var array */
+    protected $types;
+
     /**
      * @param ProductBuilder $builder
      */
-    public function __construct(ProductBuilder $builder)
+    public function __construct(ProductBuilder $builder, array $supportedTypes)
     {
         $this->productBuilder = $builder;
+        $this->types = $supportedTypes;
     }
 
     /**
@@ -34,8 +38,17 @@ class DateValueSetter implements SetterInterface
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
-        if (!$data instanceof \DateTime) {
-            throw new \LogicException(sprintf('Attribute "%s" expects a date as data', $attribute->getCode()));
+        if (!is_string($data)) {
+            throw new \InvalidArgumentException(
+                sprintf('Attribute "%s" expects a date as data', $attribute->getCode())
+            );
+        }
+
+        $dateValues = explode('-', $data);
+        if (count($dateValues) !== 3 || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])) {
+            throw new \LogicException(
+                sprintf('Date format "%s" is not correctly formatted, expected format is "%s"', $data, 'yyyy-mm-dd')
+            );
         }
 
         foreach ($products as $product) {
@@ -52,8 +65,14 @@ class DateValueSetter implements SetterInterface
      */
     public function supports(AttributeInterface $attribute)
     {
-        $types = ['pim_catalog_date'];
+        return in_array($attribute->getAttributeType(), $this->types);
+    }
 
-        return in_array($attribute->getAttributeType(), $types);
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes()
+    {
+        return $this->types;
     }
 }

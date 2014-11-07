@@ -13,7 +13,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder);
+        $this->beConstructedWith($builder, ['pim_catalog_simpleselect']);
     }
 
     function it_is_a_setter()
@@ -30,6 +30,11 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
 
         $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $this->supports($textareaAttribute)->shouldReturn(false);
+    }
+
+    function it_returns_supported_attributes_types()
+    {
+        $this->getSupportedTypes()->shouldReturn(['pim_catalog_simpleselect']);
     }
 
     function it_throws_an_error_if_data_is_not_a_simple_select_option(

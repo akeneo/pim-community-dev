@@ -12,7 +12,7 @@ class DateValueSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder);
+        $this->beConstructedWith($builder, ['pim_catalog_date']);
     }
 
     function it_is_a_setter()
@@ -31,7 +31,12 @@ class DateValueSetterSpec extends ObjectBehavior
         $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_throws_an_error_if_data_is_not_a_date(
+    function it_returns_supported_attributes_types()
+    {
+        $this->getSupportedTypes()->shouldReturn(['pim_catalog_date']);
+    }
+
+    function it_throws_an_error_if_data_is_not_a_valid_date_format(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
@@ -39,6 +44,20 @@ class DateValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 'not a date';
+
+        $this->shouldThrow(
+            new \LogicException('Date format "not a date" is not correctly formatted, expected format is "yyyy-mm-dd"')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_data_is_not_a_string(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = 1970;
 
         $this->shouldThrow(
             new \LogicException('Attribute "attributeCode" expects a date as data')
@@ -55,7 +74,7 @@ class DateValueSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = new \DateTime('now');
+        $data = '1970-01-01';
 
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);

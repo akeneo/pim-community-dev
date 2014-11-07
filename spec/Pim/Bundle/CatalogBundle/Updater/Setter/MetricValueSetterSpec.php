@@ -15,7 +15,7 @@ class MetricValueSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder, MetricFactory $factory, MeasureManager $measureManager)
     {
-        $this->beConstructedWith($builder, $factory, $measureManager);
+        $this->beConstructedWith($builder, $factory, $measureManager, ['pim_catalog_metric']);
     }
 
     function it_is_a_setter()
@@ -32,6 +32,11 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $this->supports($textareaAttribute)->shouldReturn(false);
+    }
+
+    function it_returns_supported_attributes_types()
+    {
+        $this->getSupportedTypes()->shouldReturn(['pim_catalog_metric']);
     }
 
     function it_throws_an_error_if_data_is_not_array(

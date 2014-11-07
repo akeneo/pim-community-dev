@@ -19,12 +19,17 @@ class MultiSelectValueSetter implements SetterInterface
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var array */
+    protected $types;
+
     /**
      * @param ProductBuilder $builder
+     * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder)
+    public function __construct(ProductBuilder $builder, array $supportedTypes)
     {
         $this->productBuilder = $builder;
+        $this->types = $supportedTypes;
     }
 
     /**
@@ -61,8 +66,14 @@ class MultiSelectValueSetter implements SetterInterface
      */
     public function supports(AttributeInterface $attribute)
     {
-        $types = ['pim_catalog_multiselect'];
+        return in_array($attribute->getAttributeType(), $this->types);
+    }
 
-        return in_array($attribute->getAttributeType(), $types);
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes()
+    {
+        return $this->types;
     }
 }

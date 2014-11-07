@@ -5,6 +5,7 @@ parameters:
     pim_catalog.updater.setter.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\TextValueSetter
     pim_catalog.updater.setter.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\MetricValueSetter
     pim_catalog.updater.setter.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\BooleanValueSetter
+    pim_catalog.updater.setter.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\DateValueSetter
     pim_catalog.updater.setter.identifier_value.class:       Pim\Bundle\CatalogBundle\Updater\Setter\IdentifierValueSetter
     pim_catalog.updater.setter.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\NumberValueSetter
     pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
@@ -31,6 +32,7 @@ services:
         class: %pim_catalog.updater.setter.text_value.class%
         arguments:
             - @pim_catalog.builder.product
+            - ['pim_catalog_text', 'pim_catalog_textarea']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -40,6 +42,7 @@ services:
             - @pim_catalog.builder.product
             - @pim_catalog.factory.metric
             - @akeneo_measure.manager
+            - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -47,8 +50,15 @@ services:
         class: %pim_catalog.updater.setter.boolean_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.factory.metric
-            - @akeneo_measure.manager
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.date_value:
+        class: %pim_catalog.updater.setter.date_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - ['pim_catalog_date']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -56,8 +66,7 @@ services:
         class: %pim_catalog.updater.setter.number_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.factory.metric
-            - @akeneo_measure.manager
+            - ['pim_catalog_number']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -65,8 +74,7 @@ services:
         class: %pim_catalog.updater.setter.multiselect_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.factory.metric
-            - @akeneo_measure.manager
+            - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -74,8 +82,7 @@ services:
         class: %pim_catalog.updater.setter.price_collection_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.factory.metric
-            - @akeneo_measure.manager
+            - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -83,8 +90,7 @@ services:
         class: %pim_catalog.updater.setter.simpleselect_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.factory.metric
-            - @akeneo_measure.manager
+            - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
@@ -92,8 +98,7 @@ services:
         class: %pim_catalog.updater.setter.identifier_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.factory.metric
-            - @akeneo_measure.manager
+            - ['pim_catalog_identifier']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

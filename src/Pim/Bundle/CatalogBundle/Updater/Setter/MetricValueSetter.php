@@ -26,15 +26,25 @@ class MetricValueSetter implements SetterInterface
     /** @var MeasureManager */
     protected $measureManager;
 
+    /** @var array */
+    protected $types;
+
     /**
      * @param ProductBuilder $builder
      * @param MetricFactory  $factory
+     * @param MeasureManager $measureManager
+     * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, MetricFactory $factory, MeasureManager $measureManager)
-    {
+    public function __construct(
+        ProductBuilder $builder,
+        MetricFactory $factory,
+        MeasureManager $measureManager,
+        array $supportedTypes
+    ) {
         $this->productBuilder = $builder;
         $this->factory = $factory;
         $this->measureManager = $measureManager;
+        $this->types = $supportedTypes;
     }
 
     /**
@@ -95,8 +105,14 @@ class MetricValueSetter implements SetterInterface
      */
     public function supports(AttributeInterface $attribute)
     {
-        $types = ['pim_catalog_metric'];
+        return in_array($attribute->getAttributeType(), $this->types);
+    }
 
-        return in_array($attribute->getAttributeType(), $types);
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedTypes()
+    {
+        return $this->types;
     }
 }
