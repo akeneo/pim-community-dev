@@ -48,6 +48,7 @@ class BasicPersister implements ProductPersister
                 'recalculate' => true,
                 'flush' => true,
                 'schedule' => true,
+                'versioning' => true
             ],
             $options
         );
@@ -64,7 +65,6 @@ class BasicPersister implements ProductPersister
         }
 
         if ($options['versioning']) {
-            // TODO pb with new versionable ! should be flushed in a second time !
             $changeset = [];
             $versions = $this->versionManager->buildVersion($product, $changeset);
             foreach ($versions as $version) {
@@ -72,11 +72,9 @@ class BasicPersister implements ProductPersister
                     $manager->persist($version);
                 }
             }
-        }
-
-        // twice !
-        if ($options['recalculate'] || $options['flush']) {
-            $manager->flush();
+            if ($options['flush']) {
+                $manager->flush();
+            }
         }
 
         if ($options['recalculate']) {
@@ -89,7 +87,10 @@ class BasicPersister implements ProductPersister
      */
     public function persistAll($products, array $options)
     {
-        // TODO to fix
+        if (count($products) === 0) {
+            return;
+        }
+        // TODO : to fix
         $manager = $this->registry->getManagerForClass(get_class($products[0]));
 
         $versions = [];
@@ -107,7 +108,6 @@ class BasicPersister implements ProductPersister
 
         if ($options['versioning']) {
             foreach ($products as $product) {
-                // TODO pb with new versionable ! should be flushed in a second time !
                 $changeset = [];
                 $versions = $this->versionManager->buildVersion($product, $changeset);
                 foreach ($versions as $version) {
@@ -116,13 +116,9 @@ class BasicPersister implements ProductPersister
                     }
                 }
             }
+            if ($options['flush']) {
+                $manager->flush();
+            }
         }
-
-        // twice !
-        if ($options['flush'] === true) {
-            $manager->flush();
-        }
-
-        // TODO : schedule completeness ?
     }
 }

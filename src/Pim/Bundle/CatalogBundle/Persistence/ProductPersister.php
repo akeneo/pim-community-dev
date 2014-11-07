@@ -20,4 +20,12 @@ interface ProductPersister
      * @param array            $options
      */
     public function persist(ProductInterface $product, array $options);
+
+    /**
+     * Save many products in the database
+     *
+     * @param ProductInterface[] $products
+     * @param array              $options
+     */
+    public function persistAll(array $products, array $options);
 }

@@ -202,34 +202,10 @@ class ProductManager
     /**
      * Save a product
      *
-     * @param ProductInterface $product     The product to save
-     * @param boolean          $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean          $flush       Whether or not to flush the entity manager
-     * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     *
-     * @deprecated use saveProduct() instead. Will be removed in 1.3
-     */
-    public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
-    {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-            'versioning' => true
-        ];
-
-        return $this->saveProduct($product, $options);
-    }
-
-    /**
-     * Save a product
-     *
      * @param ProductInterface $product The product to save
      * @param array            $options Saving options
      *
-     * @return null
+     * @deprecated use save() instead. Will be removed in 1.4
      */
     public function saveProduct(ProductInterface $product, array $options = [])
     {
@@ -249,31 +225,10 @@ class ProductManager
     /**
      * Save multiple products
      *
-     * @param ProductInterface[] $products    The products to save
-     * @param boolean            $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean            $flush       Whether or not to flush the entity manager
-     * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     * @deprecated use saveAllProducts() instead. Will be removed in 1.3
-     */
-    public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
-    {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-            'versioning' => true
-        ];
-
-        return $this->saveAllProducts($products, $options);
-    }
-
-    /**
-     * Save multiple products
-     *
      * @param ProductInterface[] $products The products to save
      * @param array              $options  Saving options
+     *
+     * @deprecated use saveAll() instead. Will be removed in 1.4
      */
     public function saveAllProducts(array $products, array $options = [])
     {
@@ -286,6 +241,7 @@ class ProductManager
             ],
             $options
         );
+
         $this->persister->persistAll($products, $allOptions);
     }
 
