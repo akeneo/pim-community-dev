@@ -38,6 +38,18 @@ Feature: Remove a category
     Then I should not see "Winter boots"
     When I edit the "caterpillar_2" product
     Then the category of "caterpillar_2" should be "2014_collection"
+
+  @skip PIM-3325 : discuss the relevancy of this history update
+  Scenario: Remove a category with products linked
+    Given I am on the "winter_boots" category page
+    When I press the "Delete" button
+    And I confirm the deletion
+    Then I should be on the category "winter_collection" edit page
+    And I should see flash message "Category successfully removed"
+    When I expand the "Winter collection" category
+    Then I should not see "Winter boots"
+    When I edit the "caterpillar_2" product
+    Then the category of "caterpillar_2" should be "2014_collection"
     When I visit the "History" tab
     Then I should see history:
       | version | property   | value           |
