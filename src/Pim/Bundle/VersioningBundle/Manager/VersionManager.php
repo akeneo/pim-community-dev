@@ -120,10 +120,11 @@ class VersionManager
      *
      * @return Version[]
      */
-    public function buildVersion($versionable, array $changeset = array())
+    public function buildVersions($versionable, array $changeset = array())
     {
         $createdVersions = [];
 
+        // TODO : we could avoid real time versioning, not a lot of business value
         if ($this->realTimeVersioning) {
             $this->registry->getManagerForClass(ClassUtils::getClass($versionable))->refresh($versionable);
 
@@ -150,6 +151,14 @@ class VersionManager
         }
 
         return $createdVersions;
+    }
+
+    /**
+     * @deprecated will be removed in 1.4, use buildVersions
+     */
+    public function buildVersion($versionable, array $changeset = array())
+    {
+        return $this->buildVersions($versionable, $changeset);
     }
 
     /**

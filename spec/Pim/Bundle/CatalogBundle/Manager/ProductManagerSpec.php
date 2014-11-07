@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
+use Pim\Bundle\CatalogBundle\Manager\ResourceManagerInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,7 +29,7 @@ class ProductManagerSpec extends ObjectBehavior
 
     function let(
         ObjectManager $objectManager,
-        ProductPersister $persister,
+        ResourceManagerInterface $resourceManager,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -49,7 +49,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $entityConfig,
             $objectManager,
-            $persister,
+            $resourceManager,
             $eventDispatcher,
             $mediaManager,
             $builder,
@@ -58,6 +58,11 @@ class ProductManagerSpec extends ObjectBehavior
             $attributeRepository,
             $attributeOptionRepository
         );
+    }
+
+    function it_is_a_resource_manager()
+    {
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Manager\ResourceManagerInterface');
     }
 
     function it_has_a_product_repository(ProductRepositoryInterface $productRepository)
@@ -116,11 +121,10 @@ class ProductManagerSpec extends ObjectBehavior
     }
 
     function it_delegates_database_product_synchronization_to_the_product_persister(
-        ProductPersister $persister,
+        ResourceManagerInterface $resourceManager,
         ProductInterface $product
     ) {
-        $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
-
+        $resourceManager->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true, 'versioning' => true])->shouldBeCalled();
         $this->save($product);
     }
 

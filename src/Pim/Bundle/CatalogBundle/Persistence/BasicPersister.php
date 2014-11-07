@@ -3,59 +3,102 @@
 namespace Pim\Bundle\CatalogBundle\Persistence;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Manager\ResourceManagerInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
- * Synchronize product with the database
+ * Synchronize object with the database
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BasicPersister implements ProductPersister
+class BasicPersister implements ResourceManagerInterface
 {
-    /** @var ObjectManager */
-    protected $manager;
+    /** @var ManagerRegistry */
+    protected $registry;
+
+    /** @var VersionManager */
+    protected $versionManager;
 
     /**
      * @param ManagerRegistry     $registry
-     * @param CompletenessManager $completenessManager
+     * @param VersionManager      $versionManager
      */
-    public function __construct(ManagerRegistry $registry, CompletenessManager $completenessManager)
+    public function __construct(ManagerRegistry $registry, VersionManager $versionManager)
     {
-        $this->registry            = $registry;
-        $this->completenessManager = $completenessManager;
+        $this->registry       = $registry;
+        $this->versionManager = $versionManager;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function persist(ProductInterface $product, array $options)
+    public function save($object, array $options = [])
     {
-        $options = array_merge(
-            [
-                'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
+        $options = array_merge(['flush' => true], $options);
 
-        $manager = $this->registry->getManagerForClass(get_class($product));
-        $manager->persist($product);
+        $manager = $this->registry->getManagerForClass(get_class($object));
+        $manager->persist($object);
 
-        if ($options['schedule'] || $options['recalculate']) {
-            $this->completenessManager->schedule($product);
-        }
-
-        if ($options['recalculate'] || $options['flush']) {
+        if ($options['flush']) {
             $manager->flush();
         }
 
-        if ($options['recalculate']) {
-            $this->completenessManager->generateMissingForProduct($product);
+        if ($options['versioning'] && $object instanceof VersionableInterface) {
+            $changeset = [];
+            $versions = $this->versionManager->buildVersions($object, $changeset);
+            foreach ($versions as $version) {
+                if ($version->getChangeset()) {
+                    $manager->persist($version);
+                }
+            }
+            if ($options['flush']) {
+                $manager->flush();
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $objects, array $options = [])
+    {
+        $options = array_merge(['flush' => true], $options);
+
+        // TODO option resolver + deal with versioning
+
+        if (0 === count($objects)) {
+            return;
+        }
+        // TODO : to fix
+        $firstObject = $objects[0];
+        $manager = $this->registry->getManagerForClass(get_class($firstObject));
+
+        $itemOptions = $options;
+        $itemOptions['flush'] = false;
+        foreach ($objects as $object) {
+            $this->save($object, $itemOptions);
+        }
+
+        if ($options['flush']) {
+            $manager->flush();
+        }
+
+        if ($options['versioning'] && $firstObject instanceof VersionableInterface) {
+            foreach ($objects as $object) {
+                $changeset = [];
+                $versions = $this->versionManager->buildVersions($object, $changeset);
+                foreach ($versions as $version) {
+                    if ($version->getChangeset()) {
+                        $manager->persist($version);
+                    }
+                }
+            }
+            if ($options['flush']) {
+                $manager->flush();
+            }
         }
     }
 }

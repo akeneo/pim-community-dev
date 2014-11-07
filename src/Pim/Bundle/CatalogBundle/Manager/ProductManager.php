@@ -15,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -27,13 +26,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager
+class ProductManager implements ResourceManagerInterface
 {
     /** @var array */
     protected $configuration;
 
-    /** @var ProductPersister */
-    protected $persister;
+    /** @var ResourceManagerInterface */
+    protected $resourceManager;
 
     /** @var ObjectManager */
     protected $objectManager;
@@ -64,7 +63,7 @@ class ProductManager
      *
      * @param array                      $configuration
      * @param ObjectManager              $objectManager
-     * @param ProductPersister           $persister
+     * @param ResourceManagerInterface   $resourceManager
      * @param EventDispatcherInterface   $eventDispatcher
      * @param MediaManager               $mediaManager
      * @param ProductBuilder             $builder
@@ -76,7 +75,7 @@ class ProductManager
     public function __construct(
         $configuration,
         ObjectManager $objectManager,
-        ProductPersister $persister,
+        ResourceManagerInterface $resourceManager,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -86,7 +85,7 @@ class ProductManager
         AttributeOptionRepository $attOptionRepository
     ) {
         $this->configuration = $configuration;
-        $this->persister = $persister;
+        $this->resourceManager = $resourceManager;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaManager = $mediaManager;
@@ -200,26 +199,43 @@ class ProductManager
     }
 
     /**
-     * Save a product
-     *
-     * @param ProductInterface $product     The product to save
-     * @param boolean          $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean          $flush       Whether or not to flush the entity manager
-     * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     *
-     * @deprecated use saveProduct() instead. Will be removed in 1.3
+     * {@inheritdoc}
      */
-    public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
+    public function save($object, array $options = [])
     {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-        ];
+        if (!$object instanceof ProductInterface) {
+            throw new \InvalidArgumentException('Expects an instance of ProductInterface');
+        }
 
-        return $this->saveProduct($product, $options);
+        $options = array_merge(
+            [
+                'recalculate' => true,
+                'flush' => true,
+                'schedule' => true,
+                'versioning' => true
+            ],
+            $options
+        );
+
+        $this->resourceManager->save($object, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $objects, array $options = [])
+    {
+        $options = array_merge(
+            [
+                'recalculate' => false,
+                'flush' => true,
+                'schedule' => true,
+                'versioning' => true
+            ],
+            $options
+        );
+
+        $this->resourceManager->saveAll($objects, $options);
     }
 
     /**
@@ -228,42 +244,11 @@ class ProductManager
      * @param ProductInterface $product The product to save
      * @param array            $options Saving options
      *
-     * @return null
+     * @deprecated use save() instead. Will be removed in 1.4
      */
     public function saveProduct(ProductInterface $product, array $options = [])
     {
-        $options = array_merge(
-            [
-                'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
-
-        return $this->persister->persist($product, $options);
-    }
-
-    /**
-     * Save multiple products
-     *
-     * @param ProductInterface[] $products    The products to save
-     * @param boolean            $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean            $flush       Whether or not to flush the entity manager
-     * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     * @deprecated use saveAllProducts() instead. Will be removed in 1.3
-     */
-    public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
-    {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-        ];
-
-        return $this->saveAllProducts($products, $options);
+        $this->save($product, $options);
     }
 
     /**
@@ -271,27 +256,12 @@ class ProductManager
      *
      * @param ProductInterface[] $products The products to save
      * @param array              $options  Saving options
+     *
+     * @deprecated use saveAll() instead. Will be removed in 1.4
      */
     public function saveAllProducts(array $products, array $options = [])
     {
-        $allOptions = array_merge(
-            [
-                'recalculate' => false,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
-
-        foreach ($products as $product) {
-            $this->saveProduct($product, $itemOptions);
-        }
-
-        if ($allOptions['flush'] === true) {
-            $this->objectManager->flush();
-        }
+        $this->saveAll($products, $options);
     }
 
     /**

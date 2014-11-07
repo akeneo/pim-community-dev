@@ -122,7 +122,7 @@ class AddProductVersionSubscriber implements EventSubscriber
             $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
         }
 
-        return $this->versionManager->buildVersion($versionable, $changeset);
+        return $this->versionManager->buildVersions($versionable, $changeset);
     }
 
     /**
