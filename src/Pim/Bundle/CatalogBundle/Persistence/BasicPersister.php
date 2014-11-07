@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Persistence;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Manager\ResourceManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
@@ -14,9 +15,14 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will not implement ProductPersister anymore in 1.4
  */
-class BasicPersister implements ProductPersister
+class BasicPersister implements ProductPersister, ResourceManagerInterface
 {
+    /** @var ManagerRegistry */
+    protected $registry;
+
     /** @var CompletenessManager */
     protected $completenessManager;
 
@@ -41,7 +47,7 @@ class BasicPersister implements ProductPersister
     /**
      * {@inheritdoc}
      */
-    public function persist(ProductInterface $product, array $options)
+    public function save($object, array $options = [])
     {
         $options = array_merge(
             [
@@ -53,11 +59,11 @@ class BasicPersister implements ProductPersister
             $options
         );
 
-        $manager = $this->registry->getManagerForClass(get_class($product));
-        $manager->persist($product);
+        $manager = $this->registry->getManagerForClass(get_class($object));
+        $manager->persist($object);
 
         if ($options['schedule'] || $options['recalculate']) {
-            $this->completenessManager->schedule($product);
+            $this->completenessManager->schedule($object);
         }
 
         if ($options['recalculate'] || $options['flush']) {
@@ -67,7 +73,7 @@ class BasicPersister implements ProductPersister
         if ($options['versioning']) {
             $changeset = [];
             // TODO : rename the method buildVersion to buildVersions
-            $versions = $this->versionManager->buildVersion($product, $changeset);
+            $versions = $this->versionManager->buildVersion($object, $changeset);
             foreach ($versions as $version) {
                 if ($version->getChangeset()) {
                     $manager->persist($version);
@@ -79,38 +85,38 @@ class BasicPersister implements ProductPersister
         }
 
         if ($options['recalculate']) {
-            $this->completenessManager->generateMissingForProduct($product);
+            $this->completenessManager->generateMissingForProduct($object);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function persistAll(array $products, array $options)
+    public function saveAll(array $objects, array $options = [])
     {
-        if (count($products) === 0) {
+        if (0 === count($objects)) {
             return;
         }
         // TODO : to fix
-        $manager = $this->registry->getManagerForClass(get_class($products[0]));
+        $manager = $this->registry->getManagerForClass(get_class($objects[0]));
 
         $versions = [];
         $itemOptions = $options;
         $itemOptions['flush'] = false;
         $itemOptions['versioning'] = false;
 
-        foreach ($products as $product) {
-            $this->persist($product, $itemOptions);
+        foreach ($objects as $object) {
+            $this->persist($object, $itemOptions);
         }
 
-        if ($options['flush'] === true) {
+        if ($options['flush']) {
             $manager->flush();
         }
 
         if ($options['versioning']) {
-            foreach ($products as $product) {
+            foreach ($objects as $object) {
                 $changeset = [];
-                $versions = $this->versionManager->buildVersion($product, $changeset);
+                $versions = $this->versionManager->buildVersion($object, $changeset);
                 foreach ($versions as $version) {
                     if ($version->getChangeset()) {
                         $manager->persist($version);
@@ -121,5 +127,15 @@ class BasicPersister implements ProductPersister
                 $manager->flush();
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function persist(ProductInterface $product, array $options)
+    {
+        $this->save($product, $options);
     }
 }

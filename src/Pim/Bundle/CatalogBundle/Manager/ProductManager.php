@@ -15,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -27,13 +26,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager implements SaverInterface
+class ProductManager implements ResourceManagerInterface
 {
     /** @var array */
     protected $configuration;
 
-    /** @var ProductPersister */
-    protected $persister;
+    /** @var ResourceManagerInterface */
+    protected $resourceManager;
 
     /** @var ObjectManager */
     protected $objectManager;
@@ -64,7 +63,7 @@ class ProductManager implements SaverInterface
      *
      * @param array                      $configuration
      * @param ObjectManager              $objectManager
-     * @param ProductPersister           $persister
+     * @param ResourceManagerInterface   $resourceManager
      * @param EventDispatcherInterface   $eventDispatcher
      * @param MediaManager               $mediaManager
      * @param ProductBuilder             $builder
@@ -76,7 +75,7 @@ class ProductManager implements SaverInterface
     public function __construct(
         $configuration,
         ObjectManager $objectManager,
-        ProductPersister $persister,
+        ResourceManagerInterface $resourceManager,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -86,7 +85,7 @@ class ProductManager implements SaverInterface
         AttributeOptionRepository $attOptionRepository
     ) {
         $this->configuration = $configuration;
-        $this->persister = $persister;
+        $this->resourceManager = $resourceManager;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaManager = $mediaManager;
@@ -204,7 +203,7 @@ class ProductManager implements SaverInterface
      */
     public function save($object, array $options = [])
     {
-        if (false == ($object instanceof ProductInterface)) {
+        if (!$object instanceof ProductInterface) {
             throw new \InvalidArgumentException('Expects an instance of ProductInterface');
         }
 
@@ -218,7 +217,7 @@ class ProductManager implements SaverInterface
             $options
         );
 
-        return $this->persister->persist($object, $options);
+        return $this->resourceManager->save($object, $options);
     }
 
     /**
@@ -236,7 +235,7 @@ class ProductManager implements SaverInterface
             $options
         );
 
-        $this->persister->persistAll($objects, $options);
+        $this->resourceManager->saveAll($objects, $options);
     }
 
     /**
