@@ -139,7 +139,7 @@ class AddVersionSubscriber implements EventSubscriber
         if (!$this->versionManager->isRealTimeVersioning()) {
             $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
         }
-        $versions = $this->versionManager->buildVersion($versionable, $changeset);
+        $versions = $this->versionManager->buildVersions($versionable, $changeset);
 
         foreach ($versions as $version) {
             $this->computeChangeSet($version);

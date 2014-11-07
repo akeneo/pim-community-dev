@@ -28,7 +28,7 @@ class BasicPersisterSpec extends ObjectBehavior
         $objectManager->persist($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
-        $versionManager->buildVersion($product, [])->willReturn([]);
+        $versionManager->buildVersions($product, [])->willReturn([]);
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
         $this->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
@@ -46,7 +46,7 @@ class BasicPersisterSpec extends ObjectBehavior
         $objectManager->persist($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->schedule($product)->shouldNotBeCalled();
-        $versionManager->buildVersion($product, [])->willReturn([]);
+        $versionManager->buildVersions($product, [])->willReturn([]);
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
 
         $this->persist($product, ['recalculate' => false, 'flush' => true, 'schedule' => false]);
@@ -64,7 +64,7 @@ class BasicPersisterSpec extends ObjectBehavior
         $objectManager->persist($product)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
-        $versionManager->buildVersion($product, [])->willReturn([]);
+        $versionManager->buildVersions($product, [])->willReturn([]);
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
 
         $this->persist($product, ['recalculate' => false, 'flush' => false, 'schedule' => true]);

@@ -72,8 +72,7 @@ class BasicPersister implements ProductPersister, ResourceManagerInterface
 
         if ($options['versioning']) {
             $changeset = [];
-            // TODO : rename the method buildVersion to buildVersions
-            $versions = $this->versionManager->buildVersion($object, $changeset);
+            $versions = $this->versionManager->buildVersions($object, $changeset);
             foreach ($versions as $version) {
                 if ($version->getChangeset()) {
                     $manager->persist($version);
@@ -116,7 +115,7 @@ class BasicPersister implements ProductPersister, ResourceManagerInterface
         if ($options['versioning']) {
             foreach ($objects as $object) {
                 $changeset = [];
-                $versions = $this->versionManager->buildVersion($object, $changeset);
+                $versions = $this->versionManager->buildVersions($object, $changeset);
                 foreach ($versions as $version) {
                     if ($version->getChangeset()) {
                         $manager->persist($version);
