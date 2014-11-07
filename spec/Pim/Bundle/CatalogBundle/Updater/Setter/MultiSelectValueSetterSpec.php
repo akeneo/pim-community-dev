@@ -2,18 +2,22 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Prophecy\Argument;
 
 class MultiSelectValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilder $builder, AttributeOptionRepository $attrOptionRepository)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_multiselect']);
+        $this->beConstructedWith($builder, $attrOptionRepository, ['pim_catalog_multiselect']);
     }
 
     function it_is_a_setter()
@@ -37,7 +41,7 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_multiselect']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_multi_select_option(
+    function it_throws_an_error_if_data_are_not_correctly_normalized(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
@@ -47,7 +51,49 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $data = ['not a multi select option'];
 
         $this->shouldThrow(
-            new \LogicException('Attribute "attributeCode" expects a multi select option as data')
+            new \LogicException('$data should contains arrays')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_data_does_not_contain_attribute_key(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = [['not a multi select option']];
+
+        $this->shouldThrow(
+            new \LogicException('Missing "attribute" key in array')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_data_does_not_contain_code_key(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = [['attribute' => 'attribute value', 'not code key' => 'invalid values']];
+
+        $this->shouldThrow(
+            new \LogicException('Missing "code" key in array')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_data_does_not_contain_label_key(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = [['attribute' => 'attribute value', 'code' => 'values', 'not label' => 'invalid values']];
+
+        $this->shouldThrow(
+            new \LogicException('Missing "label" key in array')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -71,6 +117,7 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         AbstractProduct $product2,
         AbstractProduct $product3,
         $builder,
+        $attrOptionRepository,
         ProductValue $productValue,
         AttributeOption $attributeOption
     ) {
@@ -81,10 +128,15 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
+        $attributeOption->getCode()->willReturn('attributeOptionCode');
 
+        $attrOptionRepository
+            ->findOneBy(['code' => 'attributeOptionCode'])
+            ->shouldBeCalledTimes(1)
+            ->willReturn($attributeOption);
 
-        $data = [$attributeOption];
-        $productValue->setData($data)->shouldBeCalled();
+        $data = [['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []]];
+        $productValue->setOptions(Argument::any())->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)

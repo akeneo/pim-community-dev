@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
@@ -23,21 +24,21 @@ class SimpleSelectValueSetter implements SetterInterface
     /** @var array */
     protected $types;
 
-    /** @var SmartManagerRegistry */
-    protected $smartManagerRegistry;
+    /** @var AttributeOptionRepository */
+    protected $attrOptionRepository;
 
     /**
-     * @param ProductBuilder       $builder
-     * @param SmartManagerRegistry $smartManagerRegistry
-     * @param array                $supportedTypes
+     * @param ProductBuilder            $builder
+     * @param AttributeOptionRepository $attrOptionRepository
+     * @param array                     $supportedTypes
      */
     public function __construct(
         ProductBuilder $builder,
-        SmartManagerRegistry $smartManagerRegistry,
+        AttributeOptionRepository $attrOptionRepository,
         array $supportedTypes
     ) {
         $this->productBuilder = $builder;
-        $this->smartManagerRegistry = $smartManagerRegistry;
+        $this->attributeOptionRepository = $attrOptionRepository;
         $this->types = $supportedTypes;
     }
 
@@ -69,9 +70,7 @@ class SimpleSelectValueSetter implements SetterInterface
             throw new \LogicException('Invalid data type for the "label" key');
         }
 
-        $attributeOption = $this->smartManagerRegistry
-            ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeOption')
-            ->findOneBy(['code' => $data['code']]);
+        $attributeOption = $this->attrOptionRepository->findOneBy(['code' => $data['code']]);
 
         foreach ($products as $product) {
             $value = $product->getValue($attribute->getCode(), $locale, $scope);
