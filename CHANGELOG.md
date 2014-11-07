@@ -1,3 +1,6 @@
+# 0.2.4 (2014-11-07)
+ - Add a method unitExistsInFamily in MeasureManager
+
 # 0.2.3 (2014-08-29)
  - Added MILLIAMPEREHOUR
 
