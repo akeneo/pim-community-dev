@@ -80,6 +80,9 @@ class AddVersionSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $args)
     {
+        // TODO : disable the version subscriber
+        return;
+
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
 

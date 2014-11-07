@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Persistence;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\ResourceManagerInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Synchronize object with the database
@@ -17,12 +19,17 @@ class BasicPersister implements ResourceManagerInterface
     /** @var ManagerRegistry */
     protected $registry;
 
+    /** @var VersionManager */
+    protected $versionManager;
+
     /**
      * @param ManagerRegistry     $registry
+     * @param VersionManager      $versionManager
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, VersionManager $versionManager)
     {
-        $this->registry = $registry;
+        $this->registry       = $registry;
+        $this->versionManager = $versionManager;
     }
 
     /**
@@ -37,6 +44,19 @@ class BasicPersister implements ResourceManagerInterface
 
         if ($options['flush']) {
             $manager->flush();
+        }
+
+        if ($options['versioning'] && $object instanceof VersionableInterface) {
+            $changeset = [];
+            $versions = $this->versionManager->buildVersions($object, $changeset);
+            foreach ($versions as $version) {
+                if ($version->getChangeset()) {
+                    $manager->persist($version);
+                }
+            }
+            if ($options['flush']) {
+                $manager->flush();
+            }
         }
     }
 
@@ -53,7 +73,8 @@ class BasicPersister implements ResourceManagerInterface
             return;
         }
         // TODO : to fix
-        $manager = $this->registry->getManagerForClass(get_class($objects[0]));
+        $firstObject = $objects[0];
+        $manager = $this->registry->getManagerForClass(get_class($firstObject));
 
         $itemOptions = $options;
         $itemOptions['flush'] = false;
@@ -63,6 +84,21 @@ class BasicPersister implements ResourceManagerInterface
 
         if ($options['flush']) {
             $manager->flush();
+        }
+
+        if ($options['versioning'] && $firstObject instanceof VersionableInterface) {
+            foreach ($objects as $object) {
+                $changeset = [];
+                $versions = $this->versionManager->buildVersions($object, $changeset);
+                foreach ($versions as $version) {
+                    if ($version->getChangeset()) {
+                        $manager->persist($version);
+                    }
+                }
+            }
+            if ($options['flush']) {
+                $manager->flush();
+            }
         }
     }
 }

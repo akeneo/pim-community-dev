@@ -68,6 +68,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.factory.attribute_type'
             - '@event_dispatcher'
+            - '@pim_catalog.persister.basic'
 
     pim_catalog.manager.attribute_option:
         class: %pim_catalog.manager.attribute_option.class%

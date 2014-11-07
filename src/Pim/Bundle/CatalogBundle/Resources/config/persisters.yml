@@ -7,6 +7,7 @@ services:
         class: %pim_catalog.persister.basic.class%
         arguments:
             - @pim_catalog.doctrine.smart_manager_registry
+            - @pim_versioning.manager.version
 
     pim_catalog.persister.product:
         class: %pim_catalog.persister.product.class%

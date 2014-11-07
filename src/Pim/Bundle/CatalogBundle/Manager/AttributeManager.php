@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager
+class AttributeManager implements ResourceManagerInterface
 {
     /** @var string */
     protected $attributeClass;
@@ -35,6 +35,9 @@ class AttributeManager
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var ResourceManagerInterface */
+    protected $resourceManager;
+
     /**
      * Constructor
      *
@@ -43,19 +46,22 @@ class AttributeManager
      * @param ObjectManager            $objectManager   Object manager
      * @param AttributeTypeFactory     $factory         Attribute type factory
      * @param EventDispatcherInterface $eventDispatcher Event dispatcher
+     * @param ResourceManagerInterface $resourceManager Resource manager
      */
     public function __construct(
         $attributeClass,
         $productClass,
         ObjectManager $objectManager,
         AttributeTypeFactory $factory,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ResourceManagerInterface $resourceManager
     ) {
-        $this->attributeClass   = $attributeClass;
-        $this->productClass     = $productClass;
-        $this->objectManager    = $objectManager;
-        $this->factory          = $factory;
-        $this->eventDispatcher  = $eventDispatcher;
+        $this->attributeClass  = $attributeClass;
+        $this->productClass    = $productClass;
+        $this->objectManager   = $objectManager;
+        $this->factory         = $factory;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->resourceManager = $resourceManager;
     }
 
     /**

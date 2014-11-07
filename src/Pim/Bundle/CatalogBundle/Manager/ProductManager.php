@@ -217,7 +217,7 @@ class ProductManager implements ResourceManagerInterface
             $options
         );
 
-        return $this->resourceManager->save($object, $options);
+        $this->resourceManager->save($object, $options);
     }
 
     /**
