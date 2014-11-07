@@ -119,7 +119,7 @@ class ProductManagerSpec extends ObjectBehavior
         ProductPersister $persister,
         ProductInterface $product
     ) {
-        $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
+        $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true, 'versioning' => true])->shouldBeCalled();
 
         $this->save($product);
     }

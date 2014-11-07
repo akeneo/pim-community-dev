@@ -66,6 +66,7 @@ class BasicPersister implements ProductPersister
 
         if ($options['versioning']) {
             $changeset = [];
+            // TODO : rename the method buildVersion to buildVersions
             $versions = $this->versionManager->buildVersion($product, $changeset);
             foreach ($versions as $version) {
                 if ($version->getChangeset()) {
@@ -85,7 +86,7 @@ class BasicPersister implements ProductPersister
     /**
      * {@inheritdoc}
      */
-    public function persistAll($products, array $options)
+    public function persistAll(array $products, array $options)
     {
         if (count($products) === 0) {
             return;

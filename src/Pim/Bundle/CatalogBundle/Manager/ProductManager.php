@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager
+class ProductManager implements SaverInterface
 {
     /** @var array */
     protected $configuration;
@@ -200,13 +200,14 @@ class ProductManager
     }
 
     /**
-     * Save a single product
-     *
-     * @param ProductInterface $product The product to save
-     * @param array            $options Saving options
+     * {@inheritdoc}
      */
-    public function save(ProductInterface $product, array $options = [])
+    public function save($object, array $options = [])
     {
+        if (false == ($object instanceof ProductInterface)) {
+            throw new \InvalidArgumentException('Expects an instance of ProductInterface');
+        }
+
         $options = array_merge(
             [
                 'recalculate' => true,
@@ -217,16 +218,13 @@ class ProductManager
             $options
         );
 
-        return $this->persister->persist($product, $options);
+        return $this->persister->persist($object, $options);
     }
 
     /**
-     * Save multiple products
-     *
-     * @param ProductInterface[] $products The products to save
-     * @param array              $options  Saving options
+     * {@inheritdoc}
      */
-    public function saveAll(array $products, array $options = [])
+    public function saveAll(array $objects, array $options = [])
     {
         $options = array_merge(
             [
@@ -238,7 +236,7 @@ class ProductManager
             $options
         );
 
-        $this->persister->persistAll($products, $options);
+        $this->persister->persistAll($objects, $options);
     }
 
     /**
