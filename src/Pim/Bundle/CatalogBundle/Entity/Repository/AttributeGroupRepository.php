@@ -15,13 +15,15 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class AttributeGroupRepository extends ReferableEntityRepository
 {
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return AttributeGroup[]
      */
-    public function buildAllWithTranslations()
+    public function findAllWithTranslations()
     {
-        return $this->createQueryBuilder('attribute_group')
+        $qb = $this->createQueryBuilder('attribute_group')
             ->addSelect('translation')
             ->leftJoin('attribute_group.translations', 'translation');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
