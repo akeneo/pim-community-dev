@@ -19,7 +19,9 @@ class AttributeGroupRepository extends ReferableEntityRepository
      */
     public function buildAllWithTranslations()
     {
-        return $this->build()->addSelect('translation')->leftJoin('attribute_group.translations', 'translation');
+        return $this->createQueryBuilder('attribute_group')
+            ->addSelect('translation')
+            ->leftJoin('attribute_group.translations', 'translation');
     }
 
     /**
@@ -27,7 +29,8 @@ class AttributeGroupRepository extends ReferableEntityRepository
      */
     protected function buildAllOrderedBySortOrder()
     {
-        return $this->build()->orderBy('attribute_group.sortOrder');
+        return $this->createQueryBuilder('attribute_group')
+            ->orderBy('attribute_group.sortOrder');
     }
 
     /**

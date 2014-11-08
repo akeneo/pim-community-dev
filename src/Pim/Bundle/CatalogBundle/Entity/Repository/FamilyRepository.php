@@ -99,7 +99,8 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     protected function buildOneWithAttributes($id)
     {
         return $this
-            ->buildOne($id)
+            ->createQueryBuilder('family')
+            ->where('family.id = '.intval($id))
             ->addSelect('attribute')
             ->leftJoin('family.attributes', 'attribute')
             ->leftJoin('attribute.group', 'group')

@@ -66,6 +66,7 @@
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader`. Now `FieldNameBuilder`, channel, locale and currency entity classes are mandatory.
 - Add getAvailableLocaleCodes in AttributeInterface
 - AttributeTypeRegistry replaces AttributeTypeFactory, changed constructors for AttributeManager, ProductValueFormFactory, AddAttributeTypeRelatedFieldsSubscriber
+- Drop Pim\Bundle\CatalogBundle\Doctrine\EntityRepository, ORM repositories now extends Doctrine\ORM\EntityRepository, no more access to buildAll(), build() and buildOne()
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
