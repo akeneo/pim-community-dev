@@ -60,6 +60,16 @@ class ProductManagerSpec extends ObjectBehavior
         );
     }
 
+    function it_is_a_updater()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
+    }
+
+    function it_is_a_bulk_updater()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\BulkUpdaterInterface');
+    }
+
     function it_has_a_product_repository(ProductRepositoryInterface $productRepository)
     {
         $this->getProductRepository()->shouldReturn($productRepository);
@@ -115,13 +125,28 @@ class ProductManagerSpec extends ObjectBehavior
         $this->valueExists($value)->shouldReturn(false);
     }
 
+    function it_throws_exception_when_save_anything_else_than_a_product()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a ProductInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringUpdate($anythingElse);
+    }
+
     function it_delegates_database_product_synchronization_to_the_product_persister(
         ProductPersister $persister,
         ProductInterface $product
     ) {
         $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
 
-        $this->save($product);
+        $this->update($product);
     }
 
     function it_dispatches_an_event_when_removing_a_product(

@@ -202,7 +202,7 @@ class ProductController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->productManager->save($entity);
+                $this->productManager->update($entity);
                 $this->addFlash('success', 'flash.product.created');
 
                 if ($dataLocale === null) {
@@ -272,7 +272,7 @@ class ProductController extends AbstractDoctrineController
 
         $toggledStatus = !$product->isEnabled();
         $product->setEnabled($toggledStatus);
-        $this->productManager->saveProduct($product);
+        $this->productManager->update($product);
 
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
@@ -312,7 +312,7 @@ class ProductController extends AbstractDoctrineController
         if ($form->isValid()) {
             try {
                 $this->productManager->handleMedia($product);
-                $this->productManager->save($product);
+                $this->productManager->update($product);
 
                 $this->addFlash('success', 'flash.product.updated');
             } catch (MediaManagementException $e) {
@@ -415,7 +415,7 @@ class ProductController extends AbstractDoctrineController
         $attributesForm->submit($request);
 
         $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->productManager->save($product);
+        $this->productManager->update($product);
 
         $this->addFlash('success', 'flash.product.attributes added');
 

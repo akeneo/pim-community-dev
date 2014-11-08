@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Component\Resource\Model\UpdaterInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
@@ -17,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SequentialEditManager
+class SequentialEditManager implements UpdaterInterface, RemoverInterface
 {
     /** @var ObjectManager */
     protected $om;
@@ -52,14 +54,18 @@ class SequentialEditManager
     }
 
     /**
-     * Save a sequential edit entity
-     *
-     * @param SequentialEdit $sequentialEdit
+     * {@inheritdoc}
      */
-    public function save(SequentialEdit $sequentialEdit)
+    public function update($object, array $options = [])
     {
-        $this->om->persist($sequentialEdit);
-        $this->om->flush($sequentialEdit);
+        if (!$object instanceof SequentialEdit) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a SequentialEdit, "%s" provided', get_class($object))
+            );
+        }
+
+        $this->om->persist($object);
+        $this->om->flush($object);
     }
 
     /**
@@ -76,14 +82,18 @@ class SequentialEditManager
     }
 
     /**
-     * Remove a sequential edit entity
-     *
-     * @param SequentialEdit $sequentialEdit
+     * {@inheritdoc}
      */
-    public function remove(SequentialEdit $sequentialEdit)
+    public function remove($object, $options = [])
     {
-        $this->om->remove($sequentialEdit);
-        $this->om->flush($sequentialEdit);
+        if (!$object instanceof SequentialEdit) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a SequentialEdit, "%s" provided', get_class($object))
+            );
+        }
+
+        $this->om->remove($object);
+        $this->om->flush($object);
     }
 
     /**
