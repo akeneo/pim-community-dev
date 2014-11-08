@@ -81,7 +81,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             $groupId = $this->requestParams->get('currentGroup', null);
         }
 
-        $group = $this->groupRepository->findOne($groupId);
+        $group = $this->groupRepository->find($groupId);
 
         return $group;
     }
