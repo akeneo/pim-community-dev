@@ -213,12 +213,13 @@ class AttributeController extends AbstractDoctrineController
         if (!empty($data)) {
             foreach ($data as $id => $sort) {
                 $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
+                $attributes = [];
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $this->persist($attribute, false);
+                    $attributes[] = $attribute;
                 }
             }
-            $this->getManagerForClass($this->attributeManager->getAttributeClass())->flush();
+            $this->attributeManager->updateAll($attributes);
 
             return new Response(1);
         }
@@ -258,7 +259,7 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->persist($option);
+                $this->optionManager->update($option);
                 $response = array(
                     'status' => 1,
                     'option' => array(

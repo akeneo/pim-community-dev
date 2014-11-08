@@ -34,6 +34,11 @@ class AttributeManagerSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
     }
 
+    function it_is_a_bulk_updater()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\BulkUpdaterInterface');
+    }
+
     function it_is_a_remover()
     {
         $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');

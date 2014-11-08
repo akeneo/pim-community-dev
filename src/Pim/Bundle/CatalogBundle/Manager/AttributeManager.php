@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Component\Resource\Model\UpdaterInterface;
+use Pim\Component\Resource\Model\BulkUpdaterInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
@@ -20,7 +21,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager implements UpdaterInterface, RemoverInterface
+class AttributeManager implements UpdaterInterface, RemoverInterface, BulkUpdaterInterface
 {
     /** @var string */
     protected $attributeClass;
@@ -120,8 +121,26 @@ class AttributeManager implements UpdaterInterface, RemoverInterface
             );
         }
 
+        $options = array_merge(['flush' => true], $options);
         $this->objectManager->persist($object);
-        $this->objectManager->flush($object);
+        if ($options['flush']) {
+            $this->objectManager->flush($object);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateAll(array $objects, array $options = [])
+    {
+        $options = array_merge(['flush' => true], $options);
+        foreach ($objects as $object) {
+            $this->update($object, ['flush' => false]);
+        }
+
+        if ($options['flush']) {
+            $this->objectManager->flush();
+        }
     }
 
     /**
