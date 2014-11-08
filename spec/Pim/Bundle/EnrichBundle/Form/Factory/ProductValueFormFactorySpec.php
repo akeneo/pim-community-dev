@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -16,10 +16,10 @@ class ProductValueFormFactorySpec extends ObjectBehavior
 {
     function let(
         FormFactoryInterface $formFactory,
-        AttributeTypeFactory $attributeTypeFactory,
+        AttributeTypeRegistry $attributeTypeRegistry,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith($formFactory, $attributeTypeFactory, $dispatcher);
+        $this->beConstructedWith($formFactory, $attributeTypeRegistry, $dispatcher);
     }
 
     function it_builds_product_value_form(
@@ -27,13 +27,13 @@ class ProductValueFormFactorySpec extends ObjectBehavior
         ProductValueInterface $value,
         AbstractAttribute $sku,
         TextType $textType,
-        $attributeTypeFactory,
+        $attributeTypeRegistry,
         $dispatcher,
         $formFactory
     ) {
         $value->getAttribute()->willReturn($sku);
         $sku->getAttributeType()->willReturn('pim_catalog_text');
-        $attributeTypeFactory->get('pim_catalog_text')->willReturn($textType);
+        $attributeTypeRegistry->get('pim_catalog_text')->willReturn($textType);
 
         $textType->prepareValueFormName($value)->shouldBeCalled();
         $textType->prepareValueFormAlias($value)->shouldBeCalled();

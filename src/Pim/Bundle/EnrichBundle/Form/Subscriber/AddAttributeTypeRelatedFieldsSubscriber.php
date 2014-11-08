@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
@@ -20,26 +20,20 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * Attribute type factory
-     * @var AttributeTypeFactory
-     */
+    /** @var AttributeTypeRegistry */
     protected $attTypeFactory;
 
-    /**
-     * Form factory
-     * @var FormFactoryInterface
-     */
+    /** @var FormFactoryInterface */
     protected $factory;
 
     /**
      * Constructor
      *
-     * @param AttributeTypeFactory $attTypeFactory Attribute type factory
+     * @param AttributeTypeRegistry $attTypeRegistry Registry
      */
-    public function __construct(AttributeTypeFactory $attTypeFactory)
+    public function __construct(AttributeTypeRegistry $attTypeRegistry)
     {
-        $this->attTypeFactory = $attTypeFactory;
+        $this->attTypeRegistry = $attTypeRegistry;
     }
 
     /**
@@ -91,7 +85,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      */
     protected function customizeForm(Form $form, AbstractAttribute $attribute)
     {
-        $attTypeClass = $this->attTypeFactory->get($attribute->getAttributeType());
+        $attTypeClass = $this->attTypeRegistry->get($attribute->getAttributeType());
         $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
         foreach ($fields as $field) {

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -29,8 +29,8 @@ class AttributeManager
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var AttributeTypeFactory */
-    protected $factory;
+    /** @var AttributeTypeRegistry */
+    protected $registry;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -41,20 +41,20 @@ class AttributeManager
      * @param string                   $attributeClass  Attribute class
      * @param string                   $productClass    Product class
      * @param ObjectManager            $objectManager   Object manager
-     * @param AttributeTypeFactory     $factory         Attribute type factory
+     * @param AttributeTypeRegistry    $registry        Attribute type registry
      * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
     public function __construct(
         $attributeClass,
         $productClass,
         ObjectManager $objectManager,
-        AttributeTypeFactory $factory,
+        AttributeTypeRegistry $registry,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->attributeClass   = $attributeClass;
         $this->productClass     = $productClass;
         $this->objectManager    = $objectManager;
-        $this->factory          = $factory;
+        $this->registry          = $registry;
         $this->eventDispatcher  = $eventDispatcher;
     }
 
@@ -72,7 +72,7 @@ class AttributeManager
         $attribute->setEntityType($this->productClass);
 
         if ($type) {
-            $attributeType = $this->factory->get($type);
+            $attributeType = $this->registry->get($type);
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setAttributeType($attributeType->getName());
         }
@@ -97,7 +97,7 @@ class AttributeManager
      */
     public function getAttributeTypes()
     {
-        $types = $this->factory->getAttributeTypes($this->productClass);
+        $types = $this->registry->getAliases();
         $choices = array();
         foreach ($types as $type) {
             $choices[$type] = $type;
