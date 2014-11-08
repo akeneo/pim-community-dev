@@ -51,11 +51,11 @@ class AttributeManager
         AttributeTypeRegistry $registry,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->attributeClass   = $attributeClass;
-        $this->productClass     = $productClass;
-        $this->objectManager    = $objectManager;
-        $this->registry          = $registry;
-        $this->eventDispatcher  = $eventDispatcher;
+        $this->attributeClass  = $attributeClass;
+        $this->productClass    = $productClass;
+        $this->objectManager   = $objectManager;
+        $this->registry        = $registry;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

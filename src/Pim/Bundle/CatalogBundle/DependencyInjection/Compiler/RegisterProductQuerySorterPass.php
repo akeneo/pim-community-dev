@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterProductQuerySortersPass implements CompilerPassInterface
+class RegisterProductQuerySorterPass implements CompilerPassInterface
 {
     /** @staticvar integer */
     const DEFAULT_PRIORITY = 25;
