@@ -76,7 +76,7 @@ class SequentialEditController
                 )
             );
         }
-        $this->seqEditManager->save($sequentialEdit);
+        $this->seqEditManager->update($sequentialEdit);
 
         return new RedirectResponse(
             $this->router->generate(

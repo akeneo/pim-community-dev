@@ -4,22 +4,26 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
+use Pim\Component\Resource\Model\UpdaterInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Attribute manager
+ * Attribute option manager
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionManager
+class AttributeOptionManager implements UpdaterInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var string */
     protected $optionClass;
@@ -30,14 +34,14 @@ class AttributeOptionManager
     /**
      * Constructor
      *
-     * @param ObjectManager   $objectManager
-     * @param EventDispatcher $eventDispatcher
-     * @param string          $optionClass
-     * @param string          $optionValueClass
+     * @param ObjectManager            $objectManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $optionClass
+     * @param string                   $optionValueClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         $optionClass,
         $optionValueClass
     ) {
@@ -92,12 +96,16 @@ class AttributeOptionManager
     }
 
     /**
-     * Update an attribute option
-     *
-     * @param AttributeOption $attributeOption
+     * {@inheritdoc}
      */
-    public function update(AttributeOption $attributeOption)
+    public function update($object, array $options = [])
     {
+        if (!$object instanceof AttributeOption) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a AttributeOption, "%s" provided', get_class($object))
+            );
+        }
+
         $this->objectManager->persist($attributeOption);
         $this->objectManager->flush($attributeOption);
     }

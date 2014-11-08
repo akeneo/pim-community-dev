@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Component\Resource\Model\UpdaterInterface;
+use Pim\Component\Resource\Model\BulkUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
@@ -27,7 +29,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager
+class ProductManager implements UpdaterInterface, BulkUpdaterInterface
 {
     /** @var array */
     protected $configuration;
@@ -200,38 +202,15 @@ class ProductManager
     }
 
     /**
-     * Save a product
-     *
-     * @param ProductInterface $product     The product to save
-     * @param boolean          $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean          $flush       Whether or not to flush the entity manager
-     * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     *
-     * @deprecated use saveProduct() instead. Will be removed in 1.3
+     * {@inheritdoc}
      */
-    public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
+    public function update($object, array $options = [])
     {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-        ];
-
-        return $this->saveProduct($product, $options);
-    }
-
-    /**
-     * Save a product
-     *
-     * @param ProductInterface $product The product to save
-     * @param array            $options Saving options
-     *
-     * @return null
-     */
-    public function saveProduct(ProductInterface $product, array $options = [])
-    {
+        if (!$object instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a ProductInterface, "%s" provided', get_class($object))
+            );
+        }
         $options = array_merge(
             [
                 'recalculate' => true,
@@ -241,38 +220,13 @@ class ProductManager
             $options
         );
 
-        return $this->persister->persist($product, $options);
+        $this->persister->persist($object, $options);
     }
 
     /**
-     * Save multiple products
-     *
-     * @param ProductInterface[] $products    The products to save
-     * @param boolean            $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean            $flush       Whether or not to flush the entity manager
-     * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     * @deprecated use saveAllProducts() instead. Will be removed in 1.3
+     * {@inheritdoc}
      */
-    public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
-    {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-        ];
-
-        return $this->saveAllProducts($products, $options);
-    }
-
-    /**
-     * Save multiple products
-     *
-     * @param ProductInterface[] $products The products to save
-     * @param array              $options  Saving options
-     */
-    public function saveAllProducts(array $products, array $options = [])
+    public function updateAll(array $objects, array $options = [])
     {
         $allOptions = array_merge(
             [
@@ -285,13 +239,39 @@ class ProductManager
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
-        foreach ($products as $product) {
-            $this->saveProduct($product, $itemOptions);
+        foreach ($objects as $object) {
+            $this->update($object, $itemOptions);
         }
 
         if ($allOptions['flush'] === true) {
             $this->objectManager->flush();
         }
+    }
+
+    /**
+     * Save a product
+     *
+     * @param ProductInterface $product The product to save
+     * @param array            $options Saving options
+     *
+     * @deprecated will be removed in 1.4, use update()
+     */
+    public function saveProduct(ProductInterface $product, array $options = [])
+    {
+        $this->update($product, $options);
+    }
+
+    /**
+     * Save multiple products
+     *
+     * @param ProductInterface[] $products The products to save
+     * @param array              $options  Saving options
+     *
+     * @deprecated will be removed in 1.4, use updateAll()
+     */
+    public function saveAllProducts(array $products, array $options = [])
+    {
+        $this->updateAll($products, $options);
     }
 
     /**

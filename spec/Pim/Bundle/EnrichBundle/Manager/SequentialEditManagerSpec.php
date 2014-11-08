@@ -28,7 +28,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $om->persist($sequentialEdit)->shouldBeCalled();
         $om->flush($sequentialEdit)->shouldBeCalled();
 
-        $this->save($sequentialEdit)->shouldReturn(null);
+        $this->update($sequentialEdit)->shouldReturn(null);
     }
 
     function it_creates_an_entity($factory, UserInterface $user, SequentialEdit $sequentialEdit)
@@ -90,5 +90,45 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $sequentialEdit->setNext($next)->shouldBeCalled();
 
         $this->findWrap($sequentialEdit, $product);
+    }
+
+    function it_is_a_updater()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
+    }
+
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
+    function it_throws_exception_when_update_anything_else_than_a_sequential_edit()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a SequentialEdit, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringUpdate($anythingElse);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_a_sequential_edit()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a SequentialEdit, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
     }
 }
