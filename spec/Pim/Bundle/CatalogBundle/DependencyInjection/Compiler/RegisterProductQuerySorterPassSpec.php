@@ -3,30 +3,30 @@
 namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFiltersPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class RegisterProductQueryFiltersPassSpec extends ObjectBehavior
+class RegisterProductQuerySorterPassSpec extends ObjectBehavior
 {
     function it_is_a_compiler_pass()
     {
         $this->shouldHaveType('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
-    function it_adds_tagged_filters_to_the_filter_registry(
+    function it_adds_tagged_sorters_to_the_sorter_registry(
         ContainerBuilder $container,
         Definition $registryDefinition
     ) {
-        $container->hasDefinition(RegisterProductQueryFiltersPass::QUERY_FILTER_REGISTRY)
+        $container->hasDefinition(RegisterProductQuerySorterPass::QUERY_SORTER_REGISTRY)
             ->willReturn(true);
 
-        $container->getDefinition(RegisterProductQueryFiltersPass::QUERY_FILTER_REGISTRY)
+        $container->getDefinition(RegisterProductQuerySorterPass::QUERY_SORTER_REGISTRY)
             ->willReturn($registryDefinition);
 
-        $container->findTaggedServiceIds(RegisterProductQueryFiltersPass::QUERY_FILTER_TAG)
-            ->willReturn(['filterId' => [['priority' => '22']]]);
+        $container->findTaggedServiceIds(RegisterProductQuerySorterPass::QUERY_SORTER_TAG)
+            ->willReturn(['sorterId' => [['priority' => '22']]]);
 
         $registryDefinition->addMethodCall('register', Argument::any())->shouldBeCalled();
 
