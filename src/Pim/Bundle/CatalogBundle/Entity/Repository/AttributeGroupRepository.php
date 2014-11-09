@@ -15,11 +15,15 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class AttributeGroupRepository extends ReferableEntityRepository
 {
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return AttributeGroup[]
      */
-    public function buildAllWithTranslations()
+    public function findAllWithTranslations()
     {
-        return $this->build()->addSelect('translation')->leftJoin('attribute_group.translations', 'translation');
+        $qb = $this->createQueryBuilder('attribute_group')
+            ->addSelect('translation')
+            ->leftJoin('attribute_group.translations', 'translation');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -27,7 +31,8 @@ class AttributeGroupRepository extends ReferableEntityRepository
      */
     protected function buildAllOrderedBySortOrder()
     {
-        return $this->build()->orderBy('attribute_group.sortOrder');
+        return $this->createQueryBuilder('attribute_group')
+            ->orderBy('attribute_group.sortOrder');
     }
 
     /**

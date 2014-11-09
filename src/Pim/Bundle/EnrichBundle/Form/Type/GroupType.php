@@ -76,10 +76,7 @@ class GroupType extends AbstractType
                 array(
                     'class' => 'PimCatalogBundle:GroupType',
                     'query_builder' => function (EntityRepository $repository) {
-                        return $repository
-                            ->buildAll()
-                            ->andWhere('group_type.code != :variant')
-                            ->setParameter('variant', 'VARIANT');
+                        return $repository->getAllGroupsExceptVariantQB();
                     },
                     'multiple' => false,
                     'expanded' => false,

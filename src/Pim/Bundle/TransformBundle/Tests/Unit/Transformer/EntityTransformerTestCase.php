@@ -69,7 +69,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
                 ->method('getReferenceProperties')
                 ->will($this->returnValue(array('code')));
         } else {
-            $this->repository = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Doctrine\EntityRepository')
+            $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
                 ->disableOriginalConstructor()
                 ->getMock();
         }
