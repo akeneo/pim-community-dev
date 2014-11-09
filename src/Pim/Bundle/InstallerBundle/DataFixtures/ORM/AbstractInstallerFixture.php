@@ -38,9 +38,20 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
 
     /**
      * @return string
+     *
+     * @throws \Exception
      */
     public function getFilePath()
     {
+        if (!isset($this->files[$this->getEntity()])) {
+            throw new \Exception(
+                sprintf(
+                    'No fixture path for entity "%s", this data set is erroneous',
+                    $this->getEntity()
+                )
+            );
+        }
+
         return $this->files[$this->getEntity()];
     }
 

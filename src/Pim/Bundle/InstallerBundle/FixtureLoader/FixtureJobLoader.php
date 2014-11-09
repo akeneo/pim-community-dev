@@ -40,6 +40,8 @@ class FixtureJobLoader
     /**
      * @param ContainerInterface $container
      * @param array              $jobsFilePaths
+     *
+     * @throws \Exception
      */
     public function __construct(ContainerInterface $container, array $jobsFilePaths)
     {
@@ -58,9 +60,35 @@ class FixtureJobLoader
     /**
      * Load the fixture jobs in database
      *
-     * @return null
+     * @throws \Exception
      */
     public function load()
+    {
+        $rawJobs = $this->readJobsData();
+        $this->loadJobs($rawJobs);
+    }
+
+    /**
+     * Deletes all the fixtures job
+     */
+    public function deleteJobs()
+    {
+        $jobs = $this->em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
+                ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
+
+        foreach ($jobs as $job) {
+            $this->em->remove($job);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * Reads jobs data
+     *
+     * @return array
+     */
+    protected function readJobsData()
     {
         $rawJobs = array();
         $fileLocator = $this->container->get('file_locator');
@@ -88,30 +116,64 @@ class FixtureJobLoader
             );
         }
 
-        // store the jobs
+        return $rawJobs;
+    }
+
+    /**
+     * Saves jobs
+     *
+     * @param array $rawJobs
+     *
+     * @throws \Exception
+     */
+    protected function loadJobs(array $rawJobs)
+    {
+        $filePaths = [];
         foreach ($rawJobs as $rawJob) {
             unset($rawJob['order']);
             $job = $this->processor->process($rawJob);
             $config = $job->getRawConfiguration();
             $config['filePath'] = sprintf('%s/%s', $this->installerDataPath, $config['filePath']);
+            $filePaths[$rawJob['code']] = $config['filePath'];
             $job->setRawConfiguration($config);
-
             $this->em->persist($job);
         }
 
-        $this->em->flush();
-    }
+        $optionalCodes = [
+            'fixtures_category_csv',
+            'fixtures_category_yml',
+            'fixtures_product_csv',
+            'fixtures_product_yml'
+        ];
+        foreach ($filePaths as $code => $filePath) {
+            if (!in_array($code, $optionalCodes) && !file_exists($filePath)) {
+                throw new \Exception(
+                    sprintf(
+                        'The fixture file "%s" is not found, this data set is not complete',
+                        $filePath
+                    )
+                );
+            }
+        }
 
-    /**
-     * Deletes all the fixtures job
-     */
-    public function deleteJobs()
-    {
-        $jobs = $this->em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
-                ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
+        if (!file_exists($filePaths['fixtures_category_csv']) && !file_exists($filePaths['fixtures_category_yml'])) {
+            throw new \Exception(
+                sprintf(
+                    'A fixture file "%s" or "%s" is expected, this data set is not complete',
+                    $filePaths['fixtures_category_csv'],
+                    $filePaths['fixtures_category_yml']
+                )
+            );
+        }
 
-        foreach ($jobs as $job) {
-            $this->em->remove($job);
+        if (!file_exists($filePaths['fixtures_product_csv']) && !file_exists($filePaths['fixtures_product_yml'])) {
+            throw new \Exception(
+                sprintf(
+                    'A fixture file "%s" or "%s" is expected, this data set is not complete',
+                    $filePaths['fixtures_product_csv'],
+                    $filePaths['fixtures_product_yml']
+                )
+            );
         }
 
         $this->em->flush();
