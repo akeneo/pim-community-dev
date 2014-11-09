@@ -6,16 +6,12 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Comment controller
@@ -33,23 +29,11 @@ class CommentController
     /** @var EngineInterface */
     protected $templating;
 
-    /** @var RouterInterface */
-    protected $router;
-
     /** @var SecurityContextInterface */
     protected $securityContext;
 
     /** @var FormFactoryInterface */
     protected $formFactory;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
 
     /** @var CommentBuilder */
     protected $commentBuilder;
@@ -60,12 +44,8 @@ class CommentController
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
-     * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param CommentBuilder           $commentBuilder
      * @param string                   $commentClassName
@@ -73,26 +53,18 @@ class CommentController
     public function __construct(
         Request $request,
         EngineInterface $templating,
-        RouterInterface $router,
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         CommentBuilder $commentBuilder,
         $commentClassName
     ) {
-        $this->request         = $request;
-        $this->templating      = $templating;
-        $this->router          = $router;
-        $this->securityContext = $securityContext;
-        $this->formFactory     = $formFactory;
-        $this->validator       = $validator;
-        $this->translator      = $translator;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->doctrine = $doctrine;
-        $this->commentBuilder = $commentBuilder;
+        $this->request          = $request;
+        $this->templating       = $templating;
+        $this->securityContext  = $securityContext;
+        $this->formFactory      = $formFactory;
+        $this->doctrine         = $doctrine;
+        $this->commentBuilder   = $commentBuilder;
         $this->commentClassName = $commentClassName;
     }
 
@@ -110,7 +82,7 @@ class CommentController
         }
 
         $comment = $this->commentBuilder->buildCommentWithoutSubject($this->getUser());
-        $createForm = $this->createForm('pim_comment_comment', $comment);
+        $createForm = $this->formFactory->create('pim_comment_comment', $comment);
         $createForm->submit($this->request);
 
         if (true !== $createForm->isValid()) {
@@ -122,9 +94,9 @@ class CommentController
         $manager->flush();
 
         $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
-        $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
+        $replyForm = $this->formFactory->create('pim_comment_comment', $reply, ['is_reply' => true]);
 
-        return $this->render(
+        return $this->templating->renderResponse(
             'PimCommentBundle:Comment:_thread.html.twig',
             [
                 'replyForms' => [$comment->getId() => $replyForm->createView()],
@@ -149,7 +121,7 @@ class CommentController
         }
 
         $reply = $this->commentBuilder->newInstance();
-        $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
+        $replyForm = $this->formFactory->create('pim_comment_comment', $reply, ['is_reply' => true]);
         $replyForm->submit($this->request);
 
         if (true !== $replyForm->isValid()) {
@@ -167,7 +139,7 @@ class CommentController
         $manager->persist($reply);
         $manager->flush();
 
-        return $this->render(
+        return $this->templating->renderResponse(
             'PimCommentBundle:Comment:_thread.html.twig',
             [
                 'replyForms' => [$comment->getId() => $replyForm->createView()],
@@ -204,34 +176,6 @@ class CommentController
         $manager->flush();
 
         return new JsonResponse();
-    }
-
-    /**
-     * Creates and returns a Form instance from the type of the form.
-     *
-     * @param string|FormTypeInterface $type    The built type of the form
-     * @param mixed                    $data    The initial data for the form
-     * @param array                    $options Options for the form
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    public function createForm($type, $data = null, array $options = array())
-    {
-        return $this->formFactory->create($type, $data, $options);
-    }
-
-    /**
-     * Renders a view.
-     *
-     * @param string   $view       The view name
-     * @param array    $parameters An array of parameters to pass to the view
-     * @param Response $response   A response instance
-     *
-     * @return Response A Response instance
-     */
-    public function render($view, array $parameters = array(), Response $response = null)
-    {
-        return $this->templating->renderResponse($view, $parameters, $response);
     }
 
     /**

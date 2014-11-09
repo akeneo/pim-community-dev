@@ -8,12 +8,8 @@ services:
         arguments:
             - '@request'
             - '@templating'
-            - '@router'
             - '@security.context'
             - '@form.factory'
-            - '@validator'
-            - '@translator'
-            - '@event_dispatcher'
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_comment.builder.comment'
             - %pim_comment.entity.comment.class%
