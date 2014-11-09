@@ -23,9 +23,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class CommentController
 {
-    /** @var Request */
-    protected $request;
-
     /** @var EngineInterface */
     protected $templating;
 
@@ -42,7 +39,6 @@ class CommentController
     protected $commentClassName;
 
     /**
-     * @param Request                  $request
      * @param EngineInterface          $templating
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
@@ -51,7 +47,6 @@ class CommentController
      * @param string                   $commentClassName
      */
     public function __construct(
-        Request $request,
         EngineInterface $templating,
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
@@ -59,7 +54,6 @@ class CommentController
         CommentBuilder $commentBuilder,
         $commentClassName
     ) {
-        $this->request          = $request;
         $this->templating       = $templating;
         $this->securityContext  = $securityContext;
         $this->formFactory      = $formFactory;
@@ -83,7 +77,7 @@ class CommentController
 
         $comment = $this->commentBuilder->buildCommentWithoutSubject($this->getUser());
         $createForm = $this->formFactory->create('pim_comment_comment', $comment);
-        $createForm->submit($this->request);
+        $createForm->submit($request);
 
         if (true !== $createForm->isValid()) {
             return new JsonResponse('The form is not valid.', 400);
@@ -122,7 +116,7 @@ class CommentController
 
         $reply = $this->commentBuilder->newInstance();
         $replyForm = $this->formFactory->create('pim_comment_comment', $reply, ['is_reply' => true]);
-        $replyForm->submit($this->request);
+        $replyForm->submit($request);
 
         if (true !== $replyForm->isValid()) {
             return new JsonResponse('The form is not valid.', 400);

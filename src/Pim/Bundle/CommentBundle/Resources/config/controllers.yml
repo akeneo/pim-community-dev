@@ -6,7 +6,6 @@ services:
         scope: request
         class: %pim_comment.controller.comment.class%
         arguments:
-            - '@request'
             - '@templating'
             - '@security.context'
             - '@form.factory'

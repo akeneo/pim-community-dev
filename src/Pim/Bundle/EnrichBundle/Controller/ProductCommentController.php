@@ -71,6 +71,7 @@ class ProductCommentController
      * @param integer|string $id
      *
      * @AclAncestor("pim_enrich_product_comment")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listCommentsAction(Request $request, $id)
