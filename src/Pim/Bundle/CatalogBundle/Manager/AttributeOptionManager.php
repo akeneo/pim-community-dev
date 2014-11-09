@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Component\Resource\Model\UpdaterInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionManager implements UpdaterInterface
+class AttributeOptionManager implements UpdaterInterface, RemoverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -106,21 +107,25 @@ class AttributeOptionManager implements UpdaterInterface
             );
         }
 
-        $this->objectManager->persist($attributeOption);
-        $this->objectManager->flush($attributeOption);
+        $this->objectManager->persist($object);
+        $this->objectManager->flush($object);
     }
 
     /**
-     * Remove an attribute option
-     *
-     * @param AttributeOption $attributeOption
+     * {@inheritdoc}
      */
-    public function remove(AttributeOption $attributeOption)
+    public function remove($object, $options = [])
     {
-        $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($attributeOption));
+        if (!$object instanceof AttributeOption) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a AttributeOption, "%s" provided', get_class($object))
+            );
+        }
 
-        $this->objectManager->remove($attributeOption);
-        $this->objectManager->flush($attributeOption);
+        $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($object));
+
+        $this->objectManager->remove($object);
+        $this->objectManager->flush($object);
     }
 
     /**

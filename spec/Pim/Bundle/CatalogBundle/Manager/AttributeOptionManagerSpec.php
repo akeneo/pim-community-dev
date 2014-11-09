@@ -30,7 +30,12 @@ class AttributeOptionManagerSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
     }
 
-    function it_throws_exception_when_save_anything_else_than_a_attribute_option()
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
+    function it_throws_exception_when_update_anything_else_than_a_attribute_option()
     {
         $anythingElse = new \stdClass();
         $this
@@ -43,5 +48,20 @@ class AttributeOptionManagerSpec extends ObjectBehavior
                 )
             )
             ->duringUpdate($anythingElse);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_a_attribute_option()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a AttributeOption, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
     }
 }

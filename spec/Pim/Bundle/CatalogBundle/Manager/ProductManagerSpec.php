@@ -125,7 +125,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->valueExists($value)->shouldReturn(false);
     }
 
-    function it_throws_exception_when_save_anything_else_than_a_product()
+    function it_throws_exception_when_update_anything_else_than_a_product()
     {
         $anythingElse = new \stdClass();
         $this

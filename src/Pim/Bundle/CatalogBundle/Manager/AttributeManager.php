@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
+use Pim\Component\Resource\Model\UpdaterInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -18,7 +20,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager
+class AttributeManager implements UpdaterInterface, RemoverInterface
 {
     /** @var string */
     protected $attributeClass;
@@ -108,15 +110,34 @@ class AttributeManager
     }
 
     /**
-     * Remove an attribute
-     *
-     * @param AbstractAttribute $attribute
+     * {@inheritdoc}
      */
-    public function remove(AbstractAttribute $attribute)
+    public function update($object, array $options = [])
     {
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($attribute));
+        if (!$object instanceof AttributeInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a AttributeInterface, "%s" provided', get_class($object))
+            );
+        }
 
-        $this->objectManager->remove($attribute);
+        $this->objectManager->persist($object);
+        $this->objectManager->flush($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($object, $options = [])
+    {
+        if (!$object instanceof AttributeInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a AttributeInterface, "%s" provided', get_class($object))
+            );
+        }
+
+        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($object));
+
+        $this->objectManager->remove($object);
         $this->objectManager->flush();
     }
 

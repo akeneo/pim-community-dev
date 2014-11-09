@@ -29,6 +29,16 @@ class AttributeManagerSpec extends ObjectBehavior
         );
     }
 
+    function it_is_a_updater()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
+    }
+
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
     function it_instantiates_an_attribute()
     {
         $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
@@ -60,5 +70,35 @@ class AttributeManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $this->remove($attribute);
+    }
+
+    function it_throws_exception_when_update_anything_else_than_a_attribute()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a AttributeInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringUpdate($anythingElse);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_a_attribute()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a AttributeInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
     }
 }
