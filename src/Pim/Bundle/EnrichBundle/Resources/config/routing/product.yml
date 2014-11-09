@@ -80,7 +80,7 @@ pim_enrich_product_history:
 
 pim_enrich_product_comments:
     path: /{id}/comments.{_format}
-    defaults: { _controller: pim_enrich.controller.product:listCommentsAction, _format: html }
+    defaults: { _controller: pim_enrich.controller.product_comment:listCommentsAction, _format: html }
     requirements:
         id: '[0-9a-f]+'
         _format: html|json

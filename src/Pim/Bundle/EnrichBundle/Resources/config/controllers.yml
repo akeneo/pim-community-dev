@@ -17,6 +17,7 @@ parameters:
     pim_enrich.controller.group_type.class: Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class: Pim\Bundle\EnrichBundle\Controller\CompletenessController
     pim_enrich.controller.sequential_edit.class: Pim\Bundle\EnrichBundle\Controller\SequentialEditController
+    pim_enrich.controller.product_comment.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentController
 
 services:
     pim_enrich.controller.abstract:
@@ -125,8 +126,6 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.manager.product_category'
             - '@pim_enrich.manager.sequential_edit'
-            - '@pim_comment.manager.comment'
-            - '@pim_comment.builder.comment'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -203,3 +202,14 @@ services:
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_user.context.user'
+
+    pim_enrich.controller.product_comment:
+        scope: request
+        class: %pim_enrich.controller.product_comment.class%
+        arguments:
+            - '@templating'
+            - '@security.context'
+            - '@form.factory'
+            - '@pim_catalog.manager.product'
+            - '@pim_comment.manager.comment'
+            - '@pim_comment.builder.comment'
