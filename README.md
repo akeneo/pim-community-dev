@@ -46,7 +46,7 @@ The following installation overview is for contributing to Akeneo PIM, not for p
 
 ````
     $ curl -s https://getcomposer.org/installer | php
-    $ git clone git@github.com:akeneo/pim-community-dev.git
+    $ git clone https://github.com/akeneo/pim-community-dev.git
     $ cd pim-community-dev
     $ php ../composer.phar install
     $ php app/console pim:install --env=dev
