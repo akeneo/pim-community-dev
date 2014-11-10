@@ -28,7 +28,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $om->persist($sequentialEdit)->shouldBeCalled();
         $om->flush($sequentialEdit)->shouldBeCalled();
 
-        $this->update($sequentialEdit)->shouldReturn(null);
+        $this->save($sequentialEdit)->shouldReturn(null);
     }
 
     function it_creates_an_entity($factory, UserInterface $user, SequentialEdit $sequentialEdit)
@@ -92,9 +92,9 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $this->findWrap($sequentialEdit, $product);
     }
 
-    function it_is_a_updater()
+    function it_is_a_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
     }
 
     function it_is_a_remover()
@@ -102,7 +102,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
     }
 
-    function it_throws_exception_when_update_anything_else_than_a_sequential_edit()
+    function it_throws_exception_when_save_anything_else_than_a_sequential_edit()
     {
         $anythingElse = new \stdClass();
         $this
@@ -114,7 +114,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
                     )
                 )
             )
-            ->duringUpdate($anythingElse);
+            ->duringSave($anythingElse);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_sequential_edit()

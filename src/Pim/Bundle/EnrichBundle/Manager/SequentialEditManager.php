@@ -3,7 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\Resource\Model\UpdaterInterface;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SequentialEditManager implements UpdaterInterface, RemoverInterface
+class SequentialEditManager implements SaverInterface, RemoverInterface
 {
     /** @var ObjectManager */
     protected $om;
@@ -56,11 +57,11 @@ class SequentialEditManager implements UpdaterInterface, RemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function update($object, array $options = [])
+    public function save($object, array $options = [])
     {
         if (!$object instanceof SequentialEdit) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a SequentialEdit, "%s" provided', get_class($object))
+                sprintf('Expects a SequentialEdit, "%s" provided', ClassUtils::getClass($object))
             );
         }
 
@@ -88,7 +89,7 @@ class SequentialEditManager implements UpdaterInterface, RemoverInterface
     {
         if (!$object instanceof SequentialEdit) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a SequentialEdit, "%s" provided', get_class($object))
+                sprintf('Expects a SequentialEdit, "%s" provided', ClassUtils::getClass($object))
             );
         }
 

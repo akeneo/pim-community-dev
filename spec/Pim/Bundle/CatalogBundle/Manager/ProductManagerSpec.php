@@ -60,14 +60,14 @@ class ProductManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_updater()
+    function it_is_a_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
     }
 
-    function it_is_a_bulk_updater()
+    function it_is_a_bulk_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\BulkUpdaterInterface');
+        $this->shouldImplement('Pim\Component\Resource\Model\BulkSaverInterface');
     }
 
     function it_has_a_product_repository(ProductRepositoryInterface $productRepository)
@@ -125,7 +125,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->valueExists($value)->shouldReturn(false);
     }
 
-    function it_throws_exception_when_update_anything_else_than_a_product()
+    function it_throws_exception_when_save_anything_else_than_a_product()
     {
         $anythingElse = new \stdClass();
         $this
@@ -137,7 +137,7 @@ class ProductManagerSpec extends ObjectBehavior
                     )
                 )
             )
-            ->duringUpdate($anythingElse);
+            ->duringSave($anythingElse);
     }
 
     function it_delegates_database_product_synchronization_to_the_product_persister(
@@ -146,7 +146,7 @@ class ProductManagerSpec extends ObjectBehavior
     ) {
         $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
 
-        $this->update($product);
+        $this->save($product);
     }
 
     function it_dispatches_an_event_when_removing_a_product(

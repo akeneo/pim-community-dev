@@ -3,8 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\Resource\Model\UpdaterInterface;
-use Pim\Component\Resource\Model\BulkUpdaterInterface;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
@@ -29,7 +30,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager implements UpdaterInterface, BulkUpdaterInterface
+class ProductManager implements SaverInterface, BulkSaverInterface
 {
     /** @var array */
     protected $configuration;
@@ -204,11 +205,11 @@ class ProductManager implements UpdaterInterface, BulkUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($object, array $options = [])
+    public function save($object, array $options = [])
     {
         if (!$object instanceof ProductInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a ProductInterface, "%s" provided', get_class($object))
+                sprintf('Expects a ProductInterface, "%s" provided', ClassUtils::getClass($object))
             );
         }
         $options = array_merge(
@@ -226,7 +227,7 @@ class ProductManager implements UpdaterInterface, BulkUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function updateAll(array $objects, array $options = [])
+    public function saveAll(array $objects, array $options = [])
     {
         $allOptions = array_merge(
             [
@@ -240,7 +241,7 @@ class ProductManager implements UpdaterInterface, BulkUpdaterInterface
         $itemOptions['flush'] = false;
 
         foreach ($objects as $object) {
-            $this->update($object, $itemOptions);
+            $this->save($object, $itemOptions);
         }
 
         if ($allOptions['flush'] === true) {
@@ -254,11 +255,11 @@ class ProductManager implements UpdaterInterface, BulkUpdaterInterface
      * @param ProductInterface $product The product to save
      * @param array            $options Saving options
      *
-     * @deprecated will be removed in 1.4, use update()
+     * @deprecated will be removed in 1.4, use save()
      */
     public function saveProduct(ProductInterface $product, array $options = [])
     {
-        $this->update($product, $options);
+        $this->save($product, $options);
     }
 
     /**
@@ -267,11 +268,11 @@ class ProductManager implements UpdaterInterface, BulkUpdaterInterface
      * @param ProductInterface[] $products The products to save
      * @param array              $options  Saving options
      *
-     * @deprecated will be removed in 1.4, use updateAll()
+     * @deprecated will be removed in 1.4, use saveAll()
      */
     public function saveAllProducts(array $products, array $options = [])
     {
-        $this->updateAll($products, $options);
+        $this->saveAll($products, $options);
     }
 
     /**

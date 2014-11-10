@@ -70,7 +70,7 @@ class AttributeHandler
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $this->attributeManager->update($entity);
+                $this->attributeManager->save($entity);
 
                 return true;
             }

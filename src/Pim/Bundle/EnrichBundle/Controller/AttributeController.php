@@ -219,7 +219,7 @@ class AttributeController extends AbstractDoctrineController
                     $attributes[] = $attribute;
                 }
             }
-            $this->attributeManager->updateAll($attributes);
+            $this->attributeManager->saveAll($attributes);
 
             return new Response(1);
         }
@@ -259,7 +259,7 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->optionManager->update($option);
+                $this->optionManager->save($option);
                 $response = array(
                     'status' => 1,
                     'option' => array(
