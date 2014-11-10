@@ -189,7 +189,7 @@ class AttributeOptionController
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            $this->optionManager->update($attributeOption);
+            $this->optionManager->save($attributeOption);
 
             $option = $this->normalizer->normalize($attributeOption, 'array', ['onlyActivatedLocales' => true]);
 

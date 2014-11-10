@@ -4,8 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
-use Pim\Component\Resource\Model\UpdaterInterface;
-use Pim\Component\Resource\Model\BulkUpdaterInterface;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
@@ -21,7 +22,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager implements UpdaterInterface, RemoverInterface, BulkUpdaterInterface
+class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInterface
 {
     /** @var string */
     protected $attributeClass;
@@ -113,11 +114,11 @@ class AttributeManager implements UpdaterInterface, RemoverInterface, BulkUpdate
     /**
      * {@inheritdoc}
      */
-    public function update($object, array $options = [])
+    public function save($object, array $options = [])
     {
         if (!$object instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a AttributeInterface, "%s" provided', get_class($object))
+                sprintf('Expects an AttributeInterface, "%s" provided', ClassUtils::getClass($object))
             );
         }
 
@@ -131,11 +132,11 @@ class AttributeManager implements UpdaterInterface, RemoverInterface, BulkUpdate
     /**
      * {@inheritdoc}
      */
-    public function updateAll(array $objects, array $options = [])
+    public function saveAll(array $objects, array $options = [])
     {
         $options = array_merge(['flush' => true], $options);
         foreach ($objects as $object) {
-            $this->update($object, ['flush' => false]);
+            $this->save($object, ['flush' => false]);
         }
 
         if ($options['flush']) {
@@ -150,7 +151,7 @@ class AttributeManager implements UpdaterInterface, RemoverInterface, BulkUpdate
     {
         if (!$object instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a AttributeInterface, "%s" provided', get_class($object))
+                sprintf('Expects an AttributeInterface, "%s" provided', ClassUtils::getClass($object))
             );
         }
 

@@ -29,14 +29,14 @@ class AttributeManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_updater()
+    function it_is_a_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\UpdaterInterface');
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
     }
 
-    function it_is_a_bulk_updater()
+    function it_is_a_bulk_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\BulkUpdaterInterface');
+        $this->shouldImplement('Pim\Component\Resource\Model\BulkSaverInterface');
     }
 
     function it_is_a_remover()
@@ -77,19 +77,19 @@ class AttributeManagerSpec extends ObjectBehavior
         $this->remove($attribute);
     }
 
-    function it_throws_exception_when_update_anything_else_than_a_attribute()
+    function it_throws_exception_when_save_anything_else_than_a_attribute()
     {
         $anythingElse = new \stdClass();
         $this
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a AttributeInterface, "%s" provided',
+                        'Expects an AttributeInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
             )
-            ->duringUpdate($anythingElse);
+            ->duringSave($anythingElse);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_attribute()
@@ -99,7 +99,7 @@ class AttributeManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a AttributeInterface, "%s" provided',
+                        'Expects an AttributeInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

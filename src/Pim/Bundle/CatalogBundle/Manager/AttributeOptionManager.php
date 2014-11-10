@@ -4,7 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
-use Pim\Component\Resource\Model\UpdaterInterface;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
@@ -18,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionManager implements UpdaterInterface, RemoverInterface
+class AttributeOptionManager implements SaverInterface, RemoverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -99,11 +100,11 @@ class AttributeOptionManager implements UpdaterInterface, RemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function update($object, array $options = [])
+    public function save($object, array $options = [])
     {
         if (!$object instanceof AttributeOption) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a AttributeOption, "%s" provided', get_class($object))
+                sprintf('Expects an AttributeOption, "%s" provided', ClassUtils::getClass($object))
             );
         }
 
@@ -118,7 +119,7 @@ class AttributeOptionManager implements UpdaterInterface, RemoverInterface
     {
         if (!$object instanceof AttributeOption) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a AttributeOption, "%s" provided', get_class($object))
+                sprintf('Expects an AttributeOption, "%s" provided', ClassUtils::getClass($object))
             );
         }
 
