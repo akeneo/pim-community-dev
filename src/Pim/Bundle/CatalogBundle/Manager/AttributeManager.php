@@ -155,10 +155,13 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
             );
         }
 
+        $options = array_merge(['flush' => true], $options);
         $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($object));
 
         $this->objectManager->remove($object);
-        $this->objectManager->flush();
+        if ($options['flush']) {
+            $this->objectManager->flush();
+        }
     }
 
     /**
