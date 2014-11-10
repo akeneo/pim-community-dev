@@ -20,6 +20,16 @@ class AssociationTypeManagerSpec extends ObjectBehavior
         $this->beConstructedWith($repository, $objectManager, $eventDispatcher);
     }
 
+    function it_is_a_saver()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
+    }
+
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
     function it_provides_all_association_types($repository)
     {
         $repository->findAll()->willReturn(['foo', 'bar']);
@@ -41,5 +51,35 @@ class AssociationTypeManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $this->remove($associationType);
+    }
+
+    function it_throws_exception_when_save_anything_else_than_an_assoccation_type()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects an AssociationType, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringSave($anythingElse);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_an_assocation_type()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects an AssociationType, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
     }
 }
