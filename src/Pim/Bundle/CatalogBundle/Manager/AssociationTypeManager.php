@@ -78,7 +78,7 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($object, $options = [])
+    public function remove($object, array $options = [])
     {
         if (!$object instanceof AssociationType) {
             throw new \InvalidArgumentException(

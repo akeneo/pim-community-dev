@@ -32,7 +32,7 @@ services:
         arguments:
             - '@pim_enrich.form.channel'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
 
     pim_enrich.form.handler.currency:

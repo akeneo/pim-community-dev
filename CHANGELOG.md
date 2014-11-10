@@ -74,6 +74,9 @@
 - In AttributeGroupHandler::_construct, replace ObjectManager argument by AttributeGroupManager
 - Remove unused ProductManager::removeAll() method
 - Add an ObjectManager argument in DatagridViewManager::__construct
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler` to accept `Pim\Bundle\CatalogBundle\Manager\ChannelManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler` to accept `Pim\Bundle\CatalogBundle\Manager\FamilyManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler` to accept `Pim\Bundle\CatalogBundle\Manager\GroupManager` as third argument and `Pim\Bundle\CatalogBundle\Manager\ProductManager` as fourth argument  
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

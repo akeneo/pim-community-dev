@@ -418,7 +418,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /**
      * {@inheritdoc}
      */
-    public function remove($object, $options = [])
+    public function remove($object, array $options = [])
     {
         if (!$object instanceof ProductInterface) {
             throw new \InvalidArgumentException(
