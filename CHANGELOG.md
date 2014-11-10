@@ -70,6 +70,7 @@
 - Replace AssociationTypeRepository::buildMissingAssociationTypes by AssociationTypeRepository::findMissingAssociationTypes
 - Replace AttributeGroupRepository::buildAllWithTranslations by AttributeGroupRepository::findAllWithTranslations
 - Replace GroupTypeRepository::buildAll by GroupTypeRepository::getAllGroupsExceptVariantQB
+- Method `Pim\Bundle\CatalogBundle\Entity\Category::addProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::removeProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::setProducts()` have been removed.
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
