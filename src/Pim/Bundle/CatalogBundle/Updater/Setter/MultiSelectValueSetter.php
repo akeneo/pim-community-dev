@@ -24,9 +24,9 @@ class MultiSelectValueSetter extends AbstractValueSetter
     protected $attrOptionRepository;
 
     /**
-     * @param ProductBuilder             $builder
-     * @param AttributeOptionRepository  $attrOptionRepository
-     * @param array                      $supportedTypes
+     * @param ProductBuilder            $builder
+     * @param AttributeOptionRepository $attrOptionRepository
+     * @param array                     $supportedTypes
      */
     public function __construct(
         ProductBuilder $builder,

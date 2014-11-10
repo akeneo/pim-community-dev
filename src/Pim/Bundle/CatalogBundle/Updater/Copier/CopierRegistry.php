@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Registry of copiers

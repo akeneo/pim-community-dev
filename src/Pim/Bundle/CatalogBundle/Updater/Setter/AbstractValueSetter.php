@@ -3,8 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
  * Sets a boolean value in many products
