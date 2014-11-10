@@ -118,7 +118,10 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
     {
         if (!$object instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AttributeInterface, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -139,7 +142,7 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
             $this->save($object, ['flush' => false]);
         }
 
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }
@@ -151,7 +154,10 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
     {
         if (!$object instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AttributeInterface, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -159,7 +165,7 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
         $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($object));
 
         $this->objectManager->remove($object);
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }

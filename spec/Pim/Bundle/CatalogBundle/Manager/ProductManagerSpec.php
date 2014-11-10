@@ -137,7 +137,7 @@ class ProductManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a ProductInterface, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -153,7 +153,7 @@ class ProductManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a ProductInterface, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -168,7 +168,7 @@ class ProductManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a ProductInterface, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

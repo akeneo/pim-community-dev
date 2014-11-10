@@ -223,13 +223,16 @@ class CategoryManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof CategoryInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a CategoryInterface, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
         $options = array_merge(['flush' => true], $options);
         $this->getObjectManager()->persist($object);
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->getObjectManager()->flush();
         }
     }
@@ -241,7 +244,10 @@ class CategoryManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof CategoryInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a CategoryInterface, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -254,7 +260,7 @@ class CategoryManager implements SaverInterface, RemoverInterface
         }
 
         $this->getObjectManager()->remove($object);
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->getObjectManager()->flush();
         }
     }

@@ -60,7 +60,7 @@ class AssociationTypeManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AssociationType, "%s" provided',
+                        'Expects an Pim\Bundle\CatalogBundle\Entity\AssociationType, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -75,7 +75,7 @@ class AssociationTypeManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AssociationType, "%s" provided',
+                        'Expects an Pim\Bundle\CatalogBundle\Entity\AssociationType, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

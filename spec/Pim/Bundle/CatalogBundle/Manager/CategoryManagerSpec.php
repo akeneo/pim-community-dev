@@ -122,7 +122,7 @@ class CategoryManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a CategoryInterface, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -137,7 +137,7 @@ class CategoryManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a CategoryInterface, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

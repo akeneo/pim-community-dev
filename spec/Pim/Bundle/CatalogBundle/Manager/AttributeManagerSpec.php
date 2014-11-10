@@ -84,7 +84,7 @@ class AttributeManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AttributeInterface, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -99,7 +99,7 @@ class AttributeManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AttributeInterface, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

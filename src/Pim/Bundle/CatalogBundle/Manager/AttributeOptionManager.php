@@ -104,12 +104,18 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof AttributeOption) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AttributeOption, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
+        $options = array_merge(['flush' => true], $options);
         $this->objectManager->persist($object);
-        $this->objectManager->flush($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush($object);
+        }
     }
 
     /**
@@ -119,7 +125,10 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof AttributeOption) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AttributeOption, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -127,7 +136,7 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
         $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($object));
 
         $this->objectManager->remove($object);
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush($object);
         }
     }

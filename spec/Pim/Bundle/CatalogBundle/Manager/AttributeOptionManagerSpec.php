@@ -42,7 +42,7 @@ class AttributeOptionManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AttributeOption, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -57,7 +57,7 @@ class AttributeOptionManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AttributeOption, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

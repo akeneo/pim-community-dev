@@ -210,7 +210,10 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     {
         if (!$object instanceof ProductInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a ProductInterface, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
         $options = array_merge(
@@ -422,7 +425,10 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     {
         if (!$object instanceof ProductInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a ProductInterface, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 

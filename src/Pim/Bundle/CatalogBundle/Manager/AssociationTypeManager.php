@@ -64,7 +64,10 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof AssociationType) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AssociationType, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects an Pim\Bundle\CatalogBundle\Entity\AssociationType, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -82,7 +85,10 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof AssociationType) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AssociationType, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects an Pim\Bundle\CatalogBundle\Entity\AssociationType, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
         $this->eventDispatcher->dispatch(
