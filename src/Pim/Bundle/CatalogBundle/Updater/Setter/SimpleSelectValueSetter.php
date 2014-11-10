@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -38,7 +36,7 @@ class SimpleSelectValueSetter implements SetterInterface
         array $supportedTypes
     ) {
         $this->productBuilder = $builder;
-        $this->attributeOptionRepository = $attrOptionRepository;
+        $this->attrOptionRepository = $attrOptionRepository;
         $this->types = $supportedTypes;
     }
 

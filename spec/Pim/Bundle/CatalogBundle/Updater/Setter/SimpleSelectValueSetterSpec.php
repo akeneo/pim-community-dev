@@ -5,15 +5,19 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Prophecy\Argument;
 
 class SimpleSelectValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
-    {
-        $this->beConstructedWith($builder, ['pim_catalog_simpleselect']);
+    function let(
+        ProductBuilder $builder,
+        AttributeOptionRepository $attrOptionRepository
+    ) {
+        $this->beConstructedWith($builder, $attrOptionRepository, ['pim_catalog_simpleselect']);
     }
 
     function it_is_a_setter()
@@ -37,7 +41,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_simpleselect']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_simple_select_option(
+    function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
@@ -47,7 +51,67 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $data = 'not a simple select option';
 
         $this->shouldThrow(
-            new \LogicException('Attribute "attributeCode" expects a simple select option as data')
+            new \LogicException('$data have to be an array')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_there_is_no_attribute_key(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = ['no attribute key' => 'value'];
+
+
+        $this->shouldThrow(
+            new \LogicException('Missing "attribute" key in array')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_there_is_no_code_key(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = ['attribute' => 'value', 'no code' => 'value'];
+
+
+        $this->shouldThrow(
+            new \LogicException('Missing "code" key in array')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_there_is_no_label_key(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = ['attribute' => 'value', 'code' => 'value', 'no label' => 'value'];
+
+
+        $this->shouldThrow(
+            new \LogicException('Missing "label" key in array')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_label_is_not_an_array(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = ['attribute' => 'value', 'code' => 'value', 'label' => 'not an array'];
+
+
+        $this->shouldThrow(
+            new \LogicException('Invalid data type for the "label" key')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -57,6 +121,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         AbstractProduct $product2,
         AbstractProduct $product3,
         $builder,
+        $attrOptionRepository,
         ProductValue $productValue,
         AttributeOption $attributeOption
     ) {
@@ -67,10 +132,15 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
+        $attributeOption->getCode()->willReturn('attributeOptionCode');
 
+        $attrOptionRepository
+            ->findOneBy(['code' => 'attributeOptionCode'])
+            ->shouldBeCalledTimes(1)
+            ->willReturn($attributeOption);
 
-        $data = $attributeOption;
-        $productValue->setData($data)->shouldBeCalled();
+        $data = ['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []];
+        $productValue->setOption(Argument::any())->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)
