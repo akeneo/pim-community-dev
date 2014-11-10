@@ -5,9 +5,13 @@ Feature: Display product attributes in the grid
   I need to be able to display values for different attributes in the grid
 
   Scenario: Successfully display values for simple and multi select attributes
-    Given a "footwear" catalog configuration
-    And the following "manufacturer" attribute options: adidas and lacoste
-    And the following "weather_conditions" attribute options: cloudy and stormy
+    Given the "default" catalog configuration
+    And the following attributes:
+      | code               | type         | label-en_US        | group | useable as grid column |
+      | manufacturer       | simpleselect | Manufacturer       | other | yes                    |
+      | weather_conditions | multiselect  | Weather conditions | other | yes                    |
+    And the following "manufacturer" attribute options: Converse, adidas and lacoste
+    And the following "weather_conditions" attribute options: dry, hot, cloudy and stormy
     And the following products:
       | sku      | manufacturer | weather_conditions  |
       | sneakers | Converse     | dry, cloudy, stormy |
@@ -17,13 +21,13 @@ Feature: Display product attributes in the grid
     And I am on the products page
     When I display the columns sku, manufacturer and weather_conditions
     Then the row "sneakers" should contain:
-      | column             | value                   |
-      | Manufacturer       | Converse                |
-      | Weather conditions | Dry, [cloudy], [stormy] |
+      | column             | value                     |
+      | Manufacturer       | [Converse]                |
+      | Weather conditions | [dry], [cloudy], [stormy] |
     And the row "sandals" should contain:
-      | column             | value    |
-      | Manufacturer       | [adidas] |
-      | Weather conditions | Dry, Hot |
+      | column             | value        |
+      | Manufacturer       | [adidas]     |
+      | Weather conditions | [dry], [hot] |
     And the row "boots" should contain:
       | column             | value     |
       | Manufacturer       | [lacoste] |
