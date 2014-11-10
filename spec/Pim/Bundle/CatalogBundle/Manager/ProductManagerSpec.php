@@ -70,6 +70,11 @@ class ProductManagerSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Resource\Model\BulkSaverInterface');
     }
 
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
     function it_has_a_product_repository(ProductRepositoryInterface $productRepository)
     {
         $this->getProductRepository()->shouldReturn($productRepository);
@@ -140,6 +145,37 @@ class ProductManagerSpec extends ObjectBehavior
             ->duringSave($anythingElse);
     }
 
+    function it_throws_exception_when_bulk_save_anything_else_than_a_product(ProductInterface $product)
+    {
+        $anythingElse = new \stdClass();
+        $mixed = [$product, $anythingElse];
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a ProductInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringSaveAll($mixed);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_a_product()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a ProductInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
+    }
+
     function it_delegates_database_product_synchronization_to_the_product_persister(
         ProductPersister $persister,
         ProductInterface $product
@@ -194,32 +230,6 @@ class ProductManagerSpec extends ObjectBehavior
         $objectManager->remove($product)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
 
-        $this->remove($product, false);
-    }
-
-    function it_dispatches_an_event_per_product_removed(
-        $eventDispatcher,
-        $objectManager,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $productRepository->findByIds([1, 2])->willReturn([$product1, $product2]);
-
-        $eventDispatcher->dispatch(
-            ProductEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(
-            ProductEvents::POST_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalledTimes(2);
-
-        $objectManager
-            ->remove(Argument::type('Pim\Bundle\CatalogBundle\Model\ProductInterface'))
-            ->shouldBeCalledTimes(2);
-        $objectManager->flush()->shouldBeCalledTimes(1);
-
-        $this->removeAll([1, 2]);
+        $this->remove($product, ['flush' => false]);
     }
 }
