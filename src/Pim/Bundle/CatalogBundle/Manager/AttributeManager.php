@@ -127,7 +127,7 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
 
         $options = array_merge(['flush' => true], $options);
         $this->objectManager->persist($object);
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush($object);
         }
     }

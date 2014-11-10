@@ -248,7 +248,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
             $this->save($object, $itemOptions);
         }
 
-        if ($allOptions['flush'] === true) {
+        if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
     }
