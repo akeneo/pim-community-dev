@@ -13,13 +13,10 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateValueSetter implements SetterInterface
+class DateValueSetter extends AbstractValueSetter
 {
     /** @var ProductBuilder */
     protected $productBuilder;
-
-    /** @var array */
-    protected $types;
 
     /**
      * @param ProductBuilder $builder
@@ -58,21 +55,5 @@ class DateValueSetter implements SetterInterface
             }
             $value->setData($data);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->types);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedTypes()
-    {
-        return $this->types;
     }
 }

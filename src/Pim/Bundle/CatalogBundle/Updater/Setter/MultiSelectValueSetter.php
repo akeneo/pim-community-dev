@@ -15,13 +15,10 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MultiSelectValueSetter implements SetterInterface
+class MultiSelectValueSetter extends AbstractValueSetter
 {
     /** @var ProductBuilder */
     protected $productBuilder;
-
-    /** @var array */
-    protected $types;
 
     /** @var AttributeOptionRepository */
     protected $attrOptionRepository;
@@ -86,21 +83,5 @@ class MultiSelectValueSetter implements SetterInterface
             }
             $value->setOptions(new ArrayCollection($attributeOptions));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(AttributeInterface $attribute)
-    {
-        return in_array($attribute->getAttributeType(), $this->types);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedTypes()
-    {
-        return $this->types;
     }
 }
