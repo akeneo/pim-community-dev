@@ -70,6 +70,7 @@
 - Replace AssociationTypeRepository::buildMissingAssociationTypes by AssociationTypeRepository::findMissingAssociationTypes
 - Replace AttributeGroupRepository::buildAllWithTranslations by AttributeGroupRepository::findAllWithTranslations
 - Replace GroupTypeRepository::buildAll by GroupTypeRepository::getAllGroupsExceptVariantQB
+- In AttributeGroupHandler::_construct, replace ObjectManager argument by AttributeGroupManager
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

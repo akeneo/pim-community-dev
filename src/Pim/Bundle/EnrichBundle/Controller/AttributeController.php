@@ -211,9 +211,9 @@ class AttributeController extends AbstractDoctrineController
         $data = $request->request->all();
 
         if (!empty($data)) {
+            $attributes = [];
             foreach ($data as $id => $sort) {
                 $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
-                $attributes = [];
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
                     $attributes[] = $attribute;

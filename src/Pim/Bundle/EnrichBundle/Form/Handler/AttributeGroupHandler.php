@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,35 +16,30 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AttributeGroupHandler
 {
-    /**
-     * @var FormInterface
-     */
+    /** @var FormInterface */
     protected $form;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var AttributeGroupManager */
     protected $manager;
 
     /**
      * Constructor for handler
-     * @param FormInterface $form    Form called
-     * @param Request       $request Web request
-     * @param ObjectManager $manager Storage manager
+     *
+     * @param FormInterface         $form    Form called
+     * @param Request               $request Web request
+     * @param AttributeGroupManager $manager Attribute group manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager
+        AttributeGroupManager $manager
     ) {
-        $this->form           = $form;
-        $this->request        = $request;
-        $this->manager        = $manager;
+        $this->form    = $form;
+        $this->request = $request;
+        $this->manager = $manager;
     }
 
     /**
@@ -72,11 +67,11 @@ class AttributeGroupHandler
 
     /**
      * Call when form is valid
+     *
      * @param AttributeGroup $group
      */
     protected function onSuccess(AttributeGroup $group)
     {
-        $this->manager->persist($group);
-        $this->manager->flush();
+        $this->manager->save($group);
     }
 }

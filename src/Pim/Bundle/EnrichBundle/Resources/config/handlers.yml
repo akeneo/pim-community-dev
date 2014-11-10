@@ -24,7 +24,7 @@ services:
         arguments:
             - '@pim_enrich.form.attribute_group'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.attribute_group'
 
     pim_enrich.form.handler.channel:
         class: %pim_enrich.form.handler.channel.class%
