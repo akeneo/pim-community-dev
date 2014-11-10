@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryManager implements RemoverInterface
+class CategoryManager implements SaverInterface, RemoverInterface
 {
     /** @var ObjectManager */
     protected $om;
@@ -218,6 +219,24 @@ class CategoryManager implements RemoverInterface
     /**
      * {@inheritdoc}
      */
+    public function save($object, array $options = [])
+    {
+        if (!$object instanceof CategoryInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a CategoryInterface, "%s" provided', ClassUtils::getClass($object))
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->getObjectManager()->persist($object);
+        if ($options['flush']) {
+            $this->getObjectManager()->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function remove($object, $options = [])
     {
         if (!$object instanceof CategoryInterface) {
@@ -267,6 +286,8 @@ class CategoryManager implements RemoverInterface
         } else {
             $repo->persistAsFirstChildOf($category, $parent);
         }
+
+        $this->getObjectManager()->flush();
     }
 
     /**

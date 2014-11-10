@@ -25,6 +25,11 @@ class CategoryManagerSpec extends ObjectBehavior
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }
 
+    function it_is_a_saver()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
+    }
+
     function it_is_a_remover()
     {
         $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
@@ -108,6 +113,21 @@ class CategoryManagerSpec extends ObjectBehavior
         $objectManager->remove($tree)->shouldBeCalled();
 
         $this->remove($tree, ['flush' => false]);
+    }
+
+    function it_throws_exception_when_save_anything_else_than_a_category()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a CategoryInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringSave($anythingElse);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_category()
