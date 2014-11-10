@@ -67,7 +67,7 @@ services:
         arguments:
             - '@pim_enrich.form.association_type'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.association_type'
 
     pim_enrich.form.handler.family:
         class: %pim_enrich.form.handler.family.class%
