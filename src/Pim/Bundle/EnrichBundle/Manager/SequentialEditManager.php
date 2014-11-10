@@ -61,7 +61,10 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof SequentialEdit) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a SequentialEdit, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -89,7 +92,10 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof SequentialEdit) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a SequentialEdit, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 

@@ -71,7 +71,10 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof DatagridView) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a DatagridView, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\DataGridBundle\Entity\DatagridView, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -89,7 +92,10 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     {
         if (!$object instanceof DatagridView) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an DatagridView, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\DataGridBundle\Entity\DatagridView, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 

@@ -95,7 +95,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AttributeGroup, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -111,7 +111,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AttributeGroup, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -126,7 +126,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an AttributeGroup, "%s" provided',
+                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

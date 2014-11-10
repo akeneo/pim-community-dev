@@ -109,7 +109,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a SequentialEdit, "%s" provided',
+                        'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -124,7 +124,7 @@ class SequentialEditManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a SequentialEdit, "%s" provided',
+                        'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
                         get_class($anythingElse)
                     )
                 )

@@ -45,7 +45,10 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
     {
         if (!$object instanceof AttributeGroup) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AttributeGroup, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 
@@ -78,7 +81,10 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
     {
         if (!$object instanceof AttributeGroup) {
             throw new \InvalidArgumentException(
-                sprintf('Expects an AttributeGroup, "%s" provided', ClassUtils::getClass($object))
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
             );
         }
 

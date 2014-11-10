@@ -35,7 +35,7 @@ class DatagridViewManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a DatagridView, "%s" provided',
+                        'Expects a Pim\Bundle\DataGridBundle\Entity\DatagridView, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -50,7 +50,7 @@ class DatagridViewManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects an DatagridView, "%s" provided',
+                        'Expects a Pim\Bundle\DataGridBundle\Entity\DatagridView, "%s" provided',
                         get_class($anythingElse)
                     )
                 )
