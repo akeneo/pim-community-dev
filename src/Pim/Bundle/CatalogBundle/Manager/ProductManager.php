@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
@@ -30,7 +31,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager implements SaverInterface, BulkSaverInterface
+class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInterface
 {
     /** @var array */
     protected $configuration;
@@ -415,32 +416,22 @@ class ProductManager implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * Remove products
-     *
-     * @param integer[] $ids
+     * {@inheritdoc}
      */
-    public function removeAll(array $ids)
+    public function remove($object, $options = [])
     {
-        $products = $this->getProductRepository()->findByIds($ids);
-        foreach ($products as $product) {
-            $this->remove($product, false);
+        if (!$object instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a ProductInterface, "%s" provided', ClassUtils::getClass($object))
+            );
         }
-        $this->objectManager->flush();
-    }
 
-    /**
-     * Remove a product
-     *
-     * @param ProductInterface $product
-     * @param boolean          $flush
-     */
-    public function remove(ProductInterface $product, $flush = true)
-    {
-        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($product));
-        $this->objectManager->remove($product);
-        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($product));
+        $options = array_merge(['flush' => true], $options);
+        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($object));
+        $this->objectManager->remove($object);
+        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($object));
 
-        if (true === $flush) {
+        if ($options['flush']) {
             $this->objectManager->flush();
         }
     }
