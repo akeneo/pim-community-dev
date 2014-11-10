@@ -85,7 +85,7 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($object, $options = [])
+    public function remove($object, array $options = [])
     {
         if (!$object instanceof DatagridView) {
             throw new \InvalidArgumentException(
@@ -95,7 +95,7 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
 
         $options = array_merge(['flush' => true], $options);
         $this->objectManager->remove($object);
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }
