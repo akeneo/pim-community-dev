@@ -21,6 +21,7 @@
 - Add ACL on entity history
 - Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
 - Improve the UI of the datagrid column configuration popin
+- Normalize the managers by introducing 4 interfaces, SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -72,6 +73,7 @@
 - Replace GroupTypeRepository::buildAll by GroupTypeRepository::getAllGroupsExceptVariantQB
 - In AttributeGroupHandler::_construct, replace ObjectManager argument by AttributeGroupManager
 - Remove unused ProductManager::removeAll() method
+- Add an ObjectManager argument in DatagridViewManager::__construct
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

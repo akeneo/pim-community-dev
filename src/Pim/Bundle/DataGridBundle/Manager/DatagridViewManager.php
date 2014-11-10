@@ -2,9 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
@@ -15,7 +19,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DatagridViewManager
+class DatagridViewManager implements SaverInterface, RemoverInterface
 {
     /** @var EntityRepository */
     protected $repository;
@@ -23,16 +27,24 @@ class DatagridViewManager
     /** @var DatagridManager */
     protected $datagridManager;
 
+    /** @var ObjectManager */
+    protected $objectManager;
+
     /**
      * Constructor
      *
      * @param EntityRepository $repository
      * @param DatagridManager  $datagridManager
+     * @param ObjectManager    $objectManager
      */
-    public function __construct(EntityRepository $repository, DatagridManager $datagridManager)
-    {
+    public function __construct(
+        EntityRepository $repository,
+        DatagridManager $datagridManager,
+        ObjectManager $objectManager
+    ) {
         $this->repository      = $repository;
         $this->datagridManager = $datagridManager;
+        $this->objectManager   = $objectManager;
     }
 
     /**
@@ -50,6 +62,42 @@ class DatagridViewManager
                 'type'          => DatagridView::TYPE_PUBLIC
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save($object, array $options = [])
+    {
+        if (!$object instanceof DatagridView) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a DatagridView, "%s" provided', ClassUtils::getClass($object))
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($object);
+        if ($options['flush']) {
+            $this->objectManager->flush($object);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($object, $options = [])
+    {
+        if (!$object instanceof DatagridView) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects an DatagridView, "%s" provided', ClassUtils::getClass($object))
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->remove($object);
+        if ($options['flush']) {
+            $this->objectManager->flush();
+        }
     }
 
     /**
