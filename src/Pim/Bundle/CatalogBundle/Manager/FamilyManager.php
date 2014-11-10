@@ -7,6 +7,8 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Resource\Model\RemoverInterface;
+use Pim\Component\Resource\Model\SaverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -17,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyManager
+class FamilyManager implements SaverInterface, RemoverInterface
 {
     /** @var FamilyRepository */
     protected $repository;
@@ -64,15 +66,40 @@ class FamilyManager
     }
 
     /**
-     * Remove a family
-     *
-     * @param FamilyInterface $family
+     * {@inheritdoc}
      */
-    public function remove(FamilyInterface $family)
+    public function save($family, array $options = [])
     {
+        if (!$family instanceof FamilyInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.', get_class($family))
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($family);
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($family, array $options = [])
+    {
+        if (!$family instanceof FamilyInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.', get_class($family))
+            );
+        }
+
         $this->eventDispatcher->dispatch(FamilyEvents::PRE_REMOVE, new GenericEvent($family));
 
+        $options = array_merge(['flush' => true], $options);
         $this->objectManager->remove($family);
-        $this->objectManager->flush();
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
     }
 }

@@ -19,5 +19,5 @@ interface RemoverInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function remove($object, $options = []);
+    public function remove($object, array $options = []);
 }

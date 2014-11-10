@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ class ChannelHandler
     protected $request;
 
     /**
-     * @var ObjectManager
+     * @var ChannelManager
      */
     protected $manager;
 
@@ -41,13 +41,13 @@ class ChannelHandler
      * Constructor for handler
      * @param FormInterface       $form                Form called
      * @param Request             $request             Web request
-     * @param ObjectManager       $manager             Storage manager
+     * @param ChannelManager      $manager             channel manager
      * @param CompletenessManager $completenessManager Completeness manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager,
+        ChannelManager $manager,
         CompletenessManager $completenessManager
     ) {
         $this->form                = $form;
@@ -85,11 +85,7 @@ class ChannelHandler
      */
     protected function onSuccess(Channel $channel)
     {
-        $this->manager->persist($channel);
         $this->completenessManager->scheduleForChannel($channel);
-        foreach ($channel->getLocales() as $locale) {
-            $this->manager->persist($locale);
-        }
-        $this->manager->flush();
+        $this->manager->save($channel);
     }
 }

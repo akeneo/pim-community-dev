@@ -27,7 +27,7 @@ class LocaleManager
     /**
      * Get active locales
      *
-     * @return Locale[]
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
      */
     public function getActiveLocales()
     {
@@ -37,7 +37,7 @@ class LocaleManager
     /**
      * Get disabled locales
      *
-     * @return Locale[]
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
      */
     public function getDisabledLocales()
     {
@@ -51,7 +51,7 @@ class LocaleManager
      *
      * @param array $criterias
      *
-     * @return Locale[]
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
      */
     public function getLocales($criterias = array())
     {
@@ -63,7 +63,7 @@ class LocaleManager
      *
      * @param string $code
      *
-     * @return Locale
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
      */
     public function getLocaleByCode($code)
     {

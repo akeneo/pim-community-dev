@@ -74,7 +74,7 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
     /**
      * {@inheritdoc}
      */
-    public function remove($object, $options = [])
+    public function remove($object, array $options = [])
     {
         if (!$object instanceof AttributeGroup) {
             throw new \InvalidArgumentException(

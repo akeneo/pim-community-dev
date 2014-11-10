@@ -147,7 +147,7 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
     /**
      * {@inheritdoc}
      */
-    public function remove($object, $options = [])
+    public function remove($object, array $options = [])
     {
         if (!$object instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
