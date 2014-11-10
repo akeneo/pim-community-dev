@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -16,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryManager
+class CategoryManager implements RemoverInterface
 {
     /** @var ObjectManager */
     protected $om;
@@ -214,20 +216,28 @@ class CategoryManager
     }
 
     /**
-     * Remove a category
-     *
-     * @param CategoryInterface $category
+     * {@inheritdoc}
      */
-    public function remove(CategoryInterface $category)
+    public function remove($object, $options = [])
     {
-        $eventName = $category->isRoot() ? CategoryEvents::PRE_REMOVE_TREE : CategoryEvents::PRE_REMOVE_CATEGORY;
-        $this->eventDispatcher->dispatch($eventName, new GenericEvent($category));
-
-        foreach ($category->getProducts() as $product) {
-            $product->removeCategory($category);
+        if (!$object instanceof CategoryInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a CategoryInterface, "%s" provided', ClassUtils::getClass($object))
+            );
         }
 
-        $this->getObjectManager()->remove($category);
+        $options = array_merge(['flush' => true], $options);
+        $eventName = $object->isRoot() ? CategoryEvents::PRE_REMOVE_TREE : CategoryEvents::PRE_REMOVE_CATEGORY;
+        $this->eventDispatcher->dispatch($eventName, new GenericEvent($object));
+
+        foreach ($object->getProducts() as $product) {
+            $product->removeCategory($object);
+        }
+
+        $this->getObjectManager()->remove($object);
+        if ($options['flush']) {
+            $this->getObjectManager()->flush();
+        }
     }
 
     /**

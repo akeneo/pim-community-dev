@@ -123,10 +123,13 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
             );
         }
 
+        $options = array_merge(['flush' => true], $options);
         $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($object));
 
         $this->objectManager->remove($object);
-        $this->objectManager->flush($object);
+        if ($options['flush']) {
+            $this->objectManager->flush($object);
+        }
     }
 
     /**
