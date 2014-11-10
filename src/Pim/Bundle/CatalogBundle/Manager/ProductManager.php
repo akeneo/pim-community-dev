@@ -437,7 +437,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         $this->objectManager->remove($object);
         $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($object));
 
-        if ($options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }

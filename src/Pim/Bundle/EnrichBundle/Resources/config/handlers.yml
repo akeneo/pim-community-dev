@@ -2,7 +2,6 @@ parameters:
     pim_enrich.form.handler.attribute.class:        Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler
     pim_enrich.form.handler.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler
     pim_enrich.form.handler.family.class:           Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler
-    pim_enrich.form.handler.currency.class:         Pim\Bundle\EnrichBundle\Form\Handler\CurrencyHandler
     pim_enrich.form.handler.channel.class:          Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler
     pim_enrich.form.handler.group.class:            Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
     pim_enrich.form.handler.group_type.class:       Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler
@@ -15,7 +14,6 @@ services:
         arguments:
             - '@pim_enrich.form.attribute'
             - '@request'
-            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.manager.attribute'
 
     pim_enrich.form.handler.attribute_group:
@@ -35,23 +33,14 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
 
-    pim_enrich.form.handler.currency:
-        class: %pim_enrich.form.handler.currency.class%
-        scope: request
-        arguments:
-            - '@pim_enrich.form.currency'
-            - '@request'
-            - '@doctrine.orm.entity_manager'
-
     pim_enrich.form.handler.group:
         class: %pim_enrich.form.handler.group.class%
         scope: request
         arguments:
             - '@pim_enrich.form.group'
             - '@request'
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.product.class%
-
+            - '@pim_catalog.manager.group'
+            - '@pim_catalog.manager.product'
 
     pim_enrich.form.handler.group_type:
         class: %pim_enrich.form.handler.group_type.class%
@@ -75,5 +64,5 @@ services:
         arguments:
             - '@pim_enrich.form.family'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.family'
             - '@pim_catalog.manager.completeness'
