@@ -132,12 +132,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
 
-        if ($request->get('copy') == 1) {
-            $this->categoryManager->copy($categoryId, $parentId, $prevSiblingId);
-        } else {
-            $this->categoryManager->move($categoryId, $parentId, $prevSiblingId);
-        }
-        $this->categoryManager->getObjectManager()->flush();
+        $this->categoryManager->move($categoryId, $parentId, $prevSiblingId);
 
         return new JsonResponse(array('status' => 1));
     }
@@ -238,7 +233,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->persist($category, true);
+                $this->categoryManager->save($category);
                 $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_CREATE, new GenericEvent($category));
 
@@ -273,7 +268,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                $this->persist($category, true);
+                $this->categoryManager->save($category);
                 $this->addFlash('success', sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_EDIT, new GenericEvent($category));
             }
