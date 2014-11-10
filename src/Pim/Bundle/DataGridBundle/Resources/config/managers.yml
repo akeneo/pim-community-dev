@@ -7,3 +7,4 @@ services:
         arguments:
             - '@pim_datagrid.repository.datagrid_view'
             - '@oro_datagrid.datagrid.manager'
+            - '@doctrine.orm.entity_manager'
