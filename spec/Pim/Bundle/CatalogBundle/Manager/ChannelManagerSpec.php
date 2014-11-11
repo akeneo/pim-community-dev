@@ -5,17 +5,18 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Symfony\Component\Security\Core\SecurityContext;
 
 class ChannelManagerSpec extends ObjectBehavior
 {
-
-
     function let(
         ObjectManager $objectManager,
-        SecurityContext $securityContext
+        ChannelRepository $repository,
+        CompletenessManager $completenessManager
     ) {
-        $this->beConstructedWith($objectManager, $securityContext);
+        $this->beConstructedWith($objectManager, $repository, $completenessManager);
     }
 
     function it_is_a_saver()
@@ -45,9 +46,26 @@ class ChannelManagerSpec extends ObjectBehavior
 
     function it_provides_channels(ObjectManager $objectManager, ChannelRepository $repository)
     {
-        $objectManager->getRepository('PimCatalogBundle:Channel')->willReturn($repository);
         $repository->findBy(array())->willReturn(array('mobile', 'ecommerce'));
         $this->getChannels()->shouldBeArray();
         $this->getChannels()->shouldHaveCount(2);
+    }
+
+    function it_provides_channel_choices(ObjectManager $objectManager, ChannelRepository $repository, Channel $mobile, Channel $ecommerce)
+    {
+        $repository->findBy(array())->willReturn(array($mobile, $ecommerce));
+        $mobile->getCode()->willReturn('mobile');
+        $mobile->getLabel()->willReturn('Mobile');
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $ecommerce->getLabel()->willReturn('Ecommerce');
+        $this->getChannelChoices()->shouldReturn(['mobile' => 'Mobile', 'ecommerce' => 'Ecommerce']);
+    }
+
+    function it_schedule_completeness_when_save_a_channel(Channel $channel, $completenessManager, $objectManager)
+    {
+        $objectManager->persist($channel)->shouldBeCalled();
+        $completenessManager->scheduleForChannel($channel)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+        $this->save($channel);
     }
 }

@@ -8,12 +8,11 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,10 +43,7 @@ class FamilyController extends AbstractDoctrineController
     /** @var FamilyFactory */
     protected $factory;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
-    /** @var FamilyHandler */
+    /** @var HandlerInterface */
     protected $familyHandler;
 
     /** @var Form */
@@ -71,8 +67,7 @@ class FamilyController extends AbstractDoctrineController
      * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $factory
-     * @param CompletenessManager      $completenessManager
-     * @param FamilyHandler            $familyHandler
+     * @param HandlerInterface         $familyHandler
      * @param Form                     $familyForm
      * @param string                   $attributeClass
      */
@@ -89,8 +84,7 @@ class FamilyController extends AbstractDoctrineController
         FamilyManager $familyManager,
         ChannelManager $channelManager,
         FamilyFactory $factory,
-        CompletenessManager $completenessManager,
-        FamilyHandler $familyHandler,
+        HandlerInterface $familyHandler,
         Form $familyForm,
         $attributeClass
     ) {
@@ -109,7 +103,6 @@ class FamilyController extends AbstractDoctrineController
         $this->familyManager       = $familyManager;
         $this->channelManager      = $channelManager;
         $this->factory             = $factory;
-        $this->completenessManager = $completenessManager;
         $this->familyHandler       = $familyHandler;
         $this->familyForm          = $familyForm;
         $this->attributeClass      = $attributeClass;
@@ -278,7 +271,6 @@ class FamilyController extends AbstractDoctrineController
                 }
             }
 
-            $this->completenessManager->scheduleForFamily($family);
             $this->familyManager->save($family);
         }
         if ($this->getRequest()->isXmlHttpRequest()) {

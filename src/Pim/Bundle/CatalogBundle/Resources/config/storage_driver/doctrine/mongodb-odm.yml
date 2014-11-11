@@ -74,7 +74,7 @@ services:
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - %pim_catalog.entity.product.class%
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.family'
 
     pim_catalog.doctrine.index_creator:

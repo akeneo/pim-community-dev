@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -33,6 +34,9 @@ class FamilyManager implements SaverInterface, RemoverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var CompletenessManager */
+    protected $completenessManager;
+
     /**
      * Constructor
      *
@@ -40,17 +44,20 @@ class FamilyManager implements SaverInterface, RemoverInterface
      * @param UserContext              $userContext
      * @param ObjectManager            $objectManager
      * @param EventDispatcherInterface $eventDispatcher
+     * @param CompletenessManager      $completenessManager
      */
     public function __construct(
         FamilyRepository $repository,
         UserContext $userContext,
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        CompletenessManager $completenessManager
     ) {
         $this->repository      = $repository;
         $this->userContext     = $userContext;
         $this->objectManager   = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->completenessManager = $completenessManager;
     }
 
     /**
@@ -72,14 +79,20 @@ class FamilyManager implements SaverInterface, RemoverInterface
     {
         if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.', get_class($family))
+                sprintf(
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.',
+                    ClassUtils::getClass($family)
+                )
             );
         }
 
-        $options = array_merge(['flush' => true], $options);
+        $options = array_merge(['flush' => true, 'schedule' => true], $options);
         $this->objectManager->persist($family);
         if (true === $options['flush']) {
             $this->objectManager->flush();
+        }
+        if (true === $options['schedule']) {
+            $this->completenessManager->scheduleForFamily($family);
         }
     }
 
@@ -90,7 +103,10 @@ class FamilyManager implements SaverInterface, RemoverInterface
     {
         if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.', get_class($family))
+                sprintf(
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.',
+                    ClassUtils::getClass($family)
+                )
             );
         }
 

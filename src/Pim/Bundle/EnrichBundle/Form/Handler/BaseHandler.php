@@ -2,19 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Component\Resource\Model\SaverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Form handler for attribute
+ * Base handler
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeHandler
+class BaseHandler implements HandlerInterface
 {
     /** @var FormInterface */
     protected $form;
@@ -22,40 +21,36 @@ class AttributeHandler
     /**  @var Request */
     protected $request;
 
-    /** @var AttributeManager */
-    protected $manager;
+    /** @var SaverInterface */
+    protected $saver;
 
     /**
      * Constructor for handler
-     * @param FormInterface    $form    Form called
-     * @param Request          $request Web request
-     * @param AttributeManager $manager Attribute manager
+     *
+     * @param FormInterface  $form    Form called
+     * @param Request        $request Web request
+     * @param SaverInterface $saver   Entity saver
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        AttributeManager $manager
+        SaverInterface $saver
     ) {
         $this->form    = $form;
         $this->request = $request;
-        $this->manager = $manager;
+        $this->saver   = $saver;
     }
 
     /**
-     * Process method for handler
-     * @param AbstractAttribute $entity
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function process(AbstractAttribute $entity)
+    public function process($entity)
     {
         $this->form->setData($entity);
-
         if ($this->request->isMethod('POST')) {
             $this->form->submit($this->request);
-
             if ($this->form->isValid()) {
-                $this->manager->save($entity);
+                $this->saver->save($entity);
 
                 return true;
             }
