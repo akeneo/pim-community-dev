@@ -44,39 +44,25 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductController extends AbstractDoctrineController
 {
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var CategoryManager
-     */
+    /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @var ProductCategoryManager
-     */
+    /** @var ProductCategoryManager */
     protected $productCatManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var SecurityFacade
-     */
+    /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @var SequentialEditManager
-     */
+    /** @var SequentialEditManager */
     protected $seqEditManager;
 
     /**
