@@ -180,15 +180,19 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      *
      * @param ProductInterface    $product
      * @param AvailableAttributes $availableAttributes
-     *
-     * @return null
+     * @param array               $savingOptions
      */
-    public function addAttributesToProduct(ProductInterface $product, AvailableAttributes $availableAttributes)
-    {
+    public function addAttributesToProduct(
+        ProductInterface $product,
+        AvailableAttributes $availableAttributes,
+        array $savingOptions = []
+    ) {
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $this->builder->addAttributeToProduct($product, $attribute);
         }
-        $this->save($product, ['recalculate' => false, 'schedule' => false]);
+
+        $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
+        $this->save($product, $options);
     }
 
     /**
@@ -196,17 +200,21 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      *
      * @param ProductInterface  $product
      * @param AbstractAttribute $attribute
-     *
-     * @return boolean
+     * @param array             $savingOptions
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
-    {
+    public function removeAttributeFromProduct(
+        ProductInterface $product,
+        AbstractAttribute $attribute,
+        array $savingOptions = []
+    ) {
         foreach ($product->getValues() as $value) {
             if ($attribute === $value->getAttribute()) {
                 $product->removeValue($value);
             }
         }
-        $this->save($product, ['recalculate' => false, 'schedule' => false]);
+
+        $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
+        $this->save($product, $options);
     }
 
     /**

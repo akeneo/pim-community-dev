@@ -102,10 +102,9 @@ class ProductManagerSpec extends ObjectBehavior
         $this->getIdentifierAttribute()->shouldReturn($sku);
     }
 
-    function it_adds_attributes_to_product(
-        $entityManager,
+    function it_adds_attributes_to_product_and_save_it(
+        $persister,
         $builder,
-        AttributeRepository $attRepository,
         ProductInterface $product,
         AvailableAttributes $attributes,
         AbstractAttribute $sku,
@@ -118,7 +117,79 @@ class ProductManagerSpec extends ObjectBehavior
         $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
         $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
 
+        $persister->persist($product, ['recalculate' => false, 'flush' => true, 'schedule' => false])
+            ->shouldBeCalled();
+
         $this->addAttributesToProduct($product, $attributes);
+    }
+
+    function it_adds_attributes_to_product_and_save_it_with_saving_options(
+        $persister,
+        $builder,
+        ProductInterface $product,
+        AvailableAttributes $attributes,
+        AbstractAttribute $sku,
+        AbstractAttribute $name,
+        AbstractAttribute $size
+    ) {
+        $attributes->getAttributes()->willReturn([$sku, $name, $size]);
+
+        $builder->addAttributeToProduct($product, $sku)->shouldBeCalled();
+        $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
+        $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
+
+        $persister->persist($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])
+            ->shouldBeCalled();
+
+        $this->addAttributesToProduct($product, $attributes, ['flush' => false]);
+    }
+
+    function it_removes_attribute_from_product_and_save_it(
+        $persister,
+        ProductInterface $product,
+        AvailableAttributes $attributes,
+        AbstractAttribute $skuAttribute,
+        AbstractAttribute $nameAttribute,
+        ProductValueInterface $sku,
+        ProductValueInterface $nameFr,
+        ProductValueInterface $nameEn
+    ) {
+        $product->getValues()->willReturn([$sku, $nameFr, $nameEn]);
+        $sku->getAttribute()->willReturn($skuAttribute);
+        $nameFr->getAttribute()->willReturn($nameAttribute);
+        $nameEn->getAttribute()->willReturn($nameAttribute);
+
+        $product->removeValue($sku)->shouldNotBeCalled();
+        $product->removeValue($nameFr)->shouldBeCalled();
+        $product->removeValue($nameEn)->shouldBeCalled();
+
+        $persister->persist($product, ['recalculate' => false, 'flush' => true, 'schedule' => false])->shouldBeCalled();
+
+        $this->removeAttributeFromProduct($product, $nameAttribute);
+    }
+
+    function it_removes_attribute_from_product_and_save_it_with_saving_options(
+        $persister,
+        ProductInterface $product,
+        AvailableAttributes $attributes,
+        AbstractAttribute $skuAttribute,
+        AbstractAttribute $nameAttribute,
+        ProductValueInterface $sku,
+        ProductValueInterface $nameFr,
+        ProductValueInterface $nameEn
+    ) {
+        $product->getValues()->willReturn([$sku, $nameFr, $nameEn]);
+        $sku->getAttribute()->willReturn($skuAttribute);
+        $nameFr->getAttribute()->willReturn($nameAttribute);
+        $nameEn->getAttribute()->willReturn($nameAttribute);
+
+        $product->removeValue($sku)->shouldNotBeCalled();
+        $product->removeValue($nameFr)->shouldBeCalled();
+        $product->removeValue($nameEn)->shouldBeCalled();
+
+        $persister->persist($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])->shouldBeCalled();
+
+        $this->removeAttributeFromProduct($product, $nameAttribute, ['flush' => false]);
     }
 
     function it_checks_value_existence(ProductRepositoryInterface $productRepository, ProductValueInterface $value)
