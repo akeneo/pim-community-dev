@@ -15,18 +15,21 @@ use Pim\Component\Resource\Model\SaverInterface;
  */
 class ChannelManager implements SaverInterface
 {
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
+    /** @var \Doctrine\Common\Persistence\ObjectManager */
     protected $objectManager;
+
+    /** @var CompletenessManager */
+    protected $completenessManager;
 
     /**
      * Constructor
-     * @param ObjectManager $objectManager the storage manager
+     * @param ObjectManager       $objectManager
+     * @param CompletenessManager $completenessManager
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $objectManager, CompletenessManager $completenessManager)
     {
         $this->objectManager = $objectManager;
+        $this->completenessManager = $completenessManager;
     }
 
     /**
