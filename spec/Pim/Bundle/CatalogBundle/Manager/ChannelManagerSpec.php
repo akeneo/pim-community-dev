@@ -13,9 +13,10 @@ class ChannelManagerSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
+        ChannelRepository $repository,
         CompletenessManager $completenessManager
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager);
+        $this->beConstructedWith($objectManager, $repository, $completenessManager);
     }
 
     function it_is_a_saver()
@@ -45,7 +46,6 @@ class ChannelManagerSpec extends ObjectBehavior
 
     function it_provides_channels(ObjectManager $objectManager, ChannelRepository $repository)
     {
-        $objectManager->getRepository('PimCatalogBundle:Channel')->willReturn($repository);
         $repository->findBy(array())->willReturn(array('mobile', 'ecommerce'));
         $this->getChannels()->shouldBeArray();
         $this->getChannels()->shouldHaveCount(2);
@@ -53,7 +53,6 @@ class ChannelManagerSpec extends ObjectBehavior
 
     function it_provides_channel_choices(ObjectManager $objectManager, ChannelRepository $repository, Channel $mobile, Channel $ecommerce)
     {
-        $objectManager->getRepository('PimCatalogBundle:Channel')->willReturn($repository);
         $repository->findBy(array())->willReturn(array($mobile, $ecommerce));
         $mobile->getCode()->willReturn('mobile');
         $mobile->getLabel()->willReturn('Mobile');

@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -27,24 +27,16 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class CompletenessGenerator implements CompletenessGeneratorInterface
 {
-    /**
-     * @var DocumentManager;
-     */
+    /** @var DocumentManager */
     protected $documentManager;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepository */
+    protected $channelRepository;
 
-    /**
-     * @var FamilyRepository
-     */
+    /** @var FamilyRepository */
     protected $familyRepository;
 
     /**
@@ -52,19 +44,19 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param DocumentManager  $documentManager
      * @param string           $productClass
-     * @param ChannelManager   $channelManager
+     * @param ChannelManager   $channelRepository
      * @param FamilyRepository $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
         $productClass,
-        ChannelManager $channelManager,
+        ChannelRepository $channelRepository,
         FamilyRepository $familyRepository
     ) {
-        $this->documentManager     = $documentManager;
-        $this->productClass        = $productClass;
-        $this->channelManager      = $channelManager;
-        $this->familyRepository    = $familyRepository;
+        $this->documentManager   = $documentManager;
+        $this->productClass      = $productClass;
+        $this->channelRepository = $channelRepository;
+        $this->familyRepository  = $familyRepository;
     }
 
     /**
@@ -387,7 +379,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         if (null !== $channel) {
             $channels = [$channel];
         } else {
-            $channels = $this->channelManager->getFullChannels();
+            $channels = $this->channelRepository->getFullChannels();
         }
 
         foreach ($channels as $channel) {

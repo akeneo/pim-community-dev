@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Component\Resource\Model\SaverInterface;
 
 /**
@@ -15,20 +16,29 @@ use Pim\Component\Resource\Model\SaverInterface;
  */
 class ChannelManager implements SaverInterface
 {
-    /** @var \Doctrine\Common\Persistence\ObjectManager */
+    /** @var ObjectManager */
     protected $objectManager;
+
+    /** @var ChannelRepository */
+    protected $channelRepository;
 
     /** @var CompletenessManager */
     protected $completenessManager;
 
     /**
      * Constructor
+     *
      * @param ObjectManager       $objectManager
+     * @param ChannelRepository   $channelRepository
      * @param CompletenessManager $completenessManager
      */
-    public function __construct(ObjectManager $objectManager, CompletenessManager $completenessManager)
-    {
+    public function __construct(
+        ObjectManager $objectManager,
+        ChannelRepository $channelRepository,
+        CompletenessManager $completenessManager
+    ) {
         $this->objectManager = $objectManager;
+        $this->channelRepository = $channelRepository;
         $this->completenessManager = $completenessManager;
     }
 
@@ -62,10 +72,7 @@ class ChannelManager implements SaverInterface
      */
     public function getChannels($criterias = array())
     {
-        return $this
-            ->objectManager
-            ->getRepository('PimCatalogBundle:Channel')
-            ->findBy($criterias);
+        return $this->channelRepository->findBy($criterias);
     }
 
     /**
@@ -75,15 +82,7 @@ class ChannelManager implements SaverInterface
      */
     public function getFullChannels()
     {
-        return $this
-            ->objectManager
-            ->getRepository('PimCatalogBundle:Channel')
-            ->createQueryBuilder('ch')
-            ->select('ch, lo, cu')
-            ->leftJoin('ch.locales', 'lo')
-            ->leftJoin('ch.currencies', 'cu')
-            ->getQuery()
-            ->getResult();
+        return $this->channelRepository->getFullChannels();
     }
 
     /**
@@ -95,10 +94,7 @@ class ChannelManager implements SaverInterface
      */
     public function getChannelByCode($code)
     {
-        return $this
-            ->objectManager
-            ->getRepository('PimCatalogBundle:Channel')
-            ->findOneBy(array('code' => $code));
+        return $this->channelRepository->findOneBy(array('code' => $code));
     }
 
     /**
