@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -20,58 +19,38 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class ProductBuilder
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productValueClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productPriceClass;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var LocaleManager
-     */
+    /** @var LocaleManager */
     protected $localeManager;
 
-    /**
-     * @var CurrencyManager
-     */
+    /** @var CurrencyManager */
     protected $currencyManager;
 
     /**
      * Constructor
      *
-     * @param ObjectManager   $objectManager   Storage manager
      * @param ChannelManager  $channelManager  Channel Manager
      * @param LocaleManager   $localeManager   Locale Manager
      * @param CurrencyManager $currencyManager Currency manager
      * @param array           $classes         Product, product value and price classes
      */
     public function __construct(
-        ObjectManager $objectManager,
         ChannelManager $channelManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager,
         array $classes
     ) {
-        $this->objectManager     = $objectManager;
         $this->channelManager    = $channelManager;
         $this->localeManager     = $localeManager;
         $this->currencyManager   = $currencyManager;
@@ -125,25 +104,6 @@ class ProductBuilder
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
         }
-    }
-
-    /**
-     * Deletes values that link an attribute to a product
-     *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     *
-     * @return boolean
-     */
-    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($attribute === $value->getAttribute()) {
-                $product->removeValue($value);
-            }
-        }
-
-        $this->objectManager->flush($product);
     }
 
     /**

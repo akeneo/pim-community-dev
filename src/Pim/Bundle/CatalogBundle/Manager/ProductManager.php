@@ -188,6 +188,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $this->builder->addAttributeToProduct($product, $attribute);
         }
+        $this->save($product, ['recalculate' => false, 'schedule' => false]);
     }
 
     /**
@@ -200,7 +201,12 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      */
     public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
     {
-        $this->builder->removeAttributeFromProduct($product, $attribute);
+        foreach ($product->getValues() as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $product->removeValue($value);
+            }
+        }
+        $this->save($product, ['recalculate' => false, 'schedule' => false]);
     }
 
     /**
