@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 /**
- * Handler interface for an entity, use to bind form, validate and save entity
+ * Handler interface for an entity, used to bind the form, validate and save the entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
