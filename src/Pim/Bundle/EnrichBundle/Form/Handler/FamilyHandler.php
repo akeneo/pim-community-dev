@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use PIm\Bundle\CatalogBundle\Manager\CompletenessManager;

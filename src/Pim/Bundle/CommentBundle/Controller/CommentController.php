@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CommentBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;

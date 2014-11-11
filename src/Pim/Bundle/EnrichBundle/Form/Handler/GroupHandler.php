@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
