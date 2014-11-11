@@ -52,7 +52,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->shouldBeCalled();
         $applier->apply($product, $productDraft)->shouldBeCalled();
         $productManager->handleMedia($product)->shouldBeCalled();
-        $productManager->saveProduct($product, ['bypass_product_draft' => true])->shouldBeCalled();
+        $productManager->save($product, ['bypass_product_draft' => true])->shouldBeCalled();
         $manager->remove($productDraft)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 

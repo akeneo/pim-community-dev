@@ -42,7 +42,7 @@ class ProductReverterSpec extends ObjectBehavior
         $repository->find('baz')->willReturn('qux');
 
         $denormalizer->denormalize('bar', 'foo', "csv", ['entity' => 'qux'])->willReturn($product);
-        $manager->saveProduct($product)->shouldBeCalled();
+        $manager->save($product)->shouldBeCalled();
 
         $validator->validate($product)->willReturn($violationsList);
         $violationsList->count()->willReturn(0);
