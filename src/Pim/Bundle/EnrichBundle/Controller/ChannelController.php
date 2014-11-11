@@ -47,7 +47,7 @@ class ChannelController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param HandlerInterface           $channelHandler
+     * @param HandlerInterface         $channelHandler
      * @param Form                     $channelForm
      */
     public function __construct(

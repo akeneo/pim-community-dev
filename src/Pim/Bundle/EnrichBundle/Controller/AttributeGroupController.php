@@ -62,7 +62,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param SecurityFacade           $securityFacade
-     * @param HandlerInterface    $formHandler
+     * @param HandlerInterface         $formHandler
      * @param Form                     $form
      * @param AttributeGroupManager    $manager
      * @param string                   $attributeClass

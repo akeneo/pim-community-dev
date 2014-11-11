@@ -56,7 +56,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param AssociationTypeManager   $assocTypeManager
      * @param AssociationManager       $assocManager
-     * @param HandlerInterface   $assocTypeHandler
+     * @param HandlerInterface         $assocTypeHandler
      * @param Form                     $assocTypeForm
      */
     public function __construct(

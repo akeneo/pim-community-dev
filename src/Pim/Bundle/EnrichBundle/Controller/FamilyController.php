@@ -67,7 +67,7 @@ class FamilyController extends AbstractDoctrineController
      * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $factory
-     * @param HandlerInterface            $familyHandler
+     * @param HandlerInterface         $familyHandler
      * @param Form                     $familyForm
      * @param string                   $attributeClass
      */
