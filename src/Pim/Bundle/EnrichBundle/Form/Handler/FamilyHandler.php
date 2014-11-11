@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use PIm\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Symfony\Component\Form\FormInterface;
@@ -28,7 +28,7 @@ class FamilyHandler
     protected $request;
 
     /**
-     * @var ObjectManager
+     * @var FamilyManager
      */
     protected $manager;
 
@@ -42,18 +42,18 @@ class FamilyHandler
      *
      * @param FormInterface       $form
      * @param Request             $request
-     * @param ObjectManager       $objectManager
+     * @param FamilyManager       $manager
      * @param CompletenessManager $completenessManager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $objectManager,
+        FamilyManager $manager,
         CompletenessManager $completenessManager
     ) {
         $this->form    = $form;
         $this->request = $request;
-        $this->manager = $objectManager;
+        $this->manager = $manager;
 
         $this->completenessManager = $completenessManager;
     }
@@ -89,8 +89,7 @@ class FamilyHandler
      */
     protected function onSuccess(FamilyInterface $family)
     {
-        $this->manager->persist($family);
+        $this->manager->save($family);
         $this->completenessManager->scheduleForFamily($family);
-        $this->manager->flush();
     }
 }

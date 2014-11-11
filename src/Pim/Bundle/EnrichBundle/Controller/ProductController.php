@@ -272,7 +272,7 @@ class ProductController extends AbstractDoctrineController
 
         $toggledStatus = !$product->isEnabled();
         $product->setEnabled($toggledStatus);
-        $this->productManager->saveProduct($product);
+        $this->productManager->save($product);
 
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 

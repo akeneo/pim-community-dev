@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CommentBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
+use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,6 +38,9 @@ class CommentController
     /** @var string */
     protected $commentClassName;
 
+    /** @var CommentManager */
+    protected $commentManager;
+
     /**
      * @param EngineInterface          $templating
      * @param SecurityContextInterface $securityContext
@@ -45,12 +48,14 @@ class CommentController
      * @param ManagerRegistry          $doctrine
      * @param CommentBuilder           $commentBuilder
      * @param string                   $commentClassName
+     * @param CommentManager           $commentManager
      */
     public function __construct(
         EngineInterface $templating,
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ManagerRegistry $doctrine,
+        CommentManager $commentManager,
         CommentBuilder $commentBuilder,
         $commentClassName
     ) {
@@ -60,6 +65,7 @@ class CommentController
         $this->doctrine         = $doctrine;
         $this->commentBuilder   = $commentBuilder;
         $this->commentClassName = $commentClassName;
+        $this->commentManager   = $commentManager;
     }
 
     /**
@@ -83,9 +89,7 @@ class CommentController
             return new JsonResponse('The form is not valid.', 400);
         }
 
-        $manager = $this->getManagerForClass(ClassUtils::getClass($comment));
-        $manager->persist($comment);
-        $manager->flush();
+        $this->commentManager->save($comment);
 
         $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
         $replyForm = $this->formFactory->create('pim_comment_comment', $reply, ['is_reply' => true]);
@@ -129,9 +133,7 @@ class CommentController
         $comment = $reply->getParent();
         $comment->setRepliedAt($now);
 
-        $manager = $this->getManagerForClass($this->commentClassName);
-        $manager->persist($reply);
-        $manager->flush();
+        $this->commentManager->save($reply);
 
         return $this->templating->renderResponse(
             'PimCommentBundle:Comment:_thread.html.twig',
@@ -166,8 +168,7 @@ class CommentController
             throw new AccessDeniedException('You are not allowed to delete this comment.');
         }
 
-        $manager->remove($comment);
-        $manager->flush();
+        $this->commentManager->remove($comment);
 
         return new JsonResponse();
     }

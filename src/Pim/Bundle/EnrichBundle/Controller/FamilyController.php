@@ -240,7 +240,7 @@ class FamilyController extends AbstractDoctrineController
             $family->addAttribute($attribute);
         }
 
-        $this->getManagerForClass('PimCatalogBundle:Family')->flush();
+        $this->familyManager->save($family);
 
         $this->addFlash('success', 'flash.family.attributes added');
 
@@ -279,8 +279,7 @@ class FamilyController extends AbstractDoctrineController
             }
 
             $this->completenessManager->scheduleForFamily($family);
-
-            $this->getManagerForClass('PimCatalogBundle:Family')->flush();
+            $this->familyManager->save($family);
         }
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Component\Resource\Model\SaverInterface;
 
 /**
  * Channel manager
@@ -11,7 +13,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelManager
+class ChannelManager implements SaverInterface
 {
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
@@ -28,11 +30,29 @@ class ChannelManager
     }
 
     /**
+     * '@inheritdoc}
+     */
+    public function save($channel, array $options = [])
+    {
+        if (!$channel instanceof Channel) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Entity\Channel", "%s" provided.', get_class($channel))
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($channel);
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+    }
+
+    /**
      * Get channels with criterias
      *
      * @param array $criterias
      *
-     * @return array
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
      */
     public function getChannels($criterias = array())
     {
@@ -65,7 +85,7 @@ class ChannelManager
      *
      * @param string $code
      *
-     * @return Channel
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     public function getChannelByCode($code)
     {

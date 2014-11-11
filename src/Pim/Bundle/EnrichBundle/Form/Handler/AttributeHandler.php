@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Symfony\Component\Form\FormInterface;
@@ -17,43 +16,29 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AttributeHandler
 {
-    /**
-     * @var FormInterface
-     */
+    /** @var FormInterface */
     protected $form;
 
-    /**
-     * @var Request
-     */
+    /**  @var Request */
     protected $request;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var AttributeManager */
     protected $manager;
 
     /**
-     * @var AttributeManager
-     */
-    protected $attributeManager;
-
-    /**
      * Constructor for handler
-     * @param FormInterface    $form             Form called
-     * @param Request          $request          Web request
-     * @param ObjectManager    $manager          Storage manager
-     * @param AttributeManager $attributeManager Attribute manager
+     * @param FormInterface    $form    Form called
+     * @param Request          $request Web request
+     * @param AttributeManager $manager Attribute manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager,
-        AttributeManager $attributeManager
+        AttributeManager $manager
     ) {
-        $this->form             = $form;
-        $this->request          = $request;
-        $this->manager          = $manager;
-        $this->attributeManager = $attributeManager;
+        $this->form    = $form;
+        $this->request = $request;
+        $this->manager = $manager;
     }
 
     /**
@@ -70,8 +55,7 @@ class AttributeHandler
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $this->manager->persist($entity);
-                $this->manager->flush();
+                $this->manager->save($entity);
 
                 return true;
             }

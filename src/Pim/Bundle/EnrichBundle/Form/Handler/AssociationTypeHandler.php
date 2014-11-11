@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,28 +16,23 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AssociationTypeHandler
 {
-    /**
-     * @var FormInterface
-     */
+    /** @var FormInterface */
     protected $form;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var AssociationTypeManager */
     protected $manager;
 
     /**
      * Constructor for handler
-     * @param FormInterface $form    Form called
-     * @param Request       $request Web request
-     * @param ObjectManager $manager Storage manager
+     *
+     * @param FormInterface          $form    Form called
+     * @param Request                $request Web request
+     * @param AssociationTypeManager $manager Association type manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    public function __construct(FormInterface $form, Request $request, AssociationTypeManager $manager)
     {
         $this->form    = $form;
         $this->request = $request;
@@ -69,11 +64,11 @@ class AssociationTypeHandler
 
     /**
      * Call when form is valid
+     *
      * @param AssociationType $associationType
      */
     protected function onSuccess(AssociationType $associationType)
     {
-        $this->manager->persist($associationType);
-        $this->manager->flush();
+        $this->manager->save($associationType);
     }
 }

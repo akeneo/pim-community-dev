@@ -25,6 +25,16 @@ class CategoryManagerSpec extends ObjectBehavior
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }
 
+    function it_is_a_saver()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
+    }
+
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
     function it_provides_object_manager($objectManager)
     {
         $this->getObjectManager()->shouldReturn($objectManager);
@@ -84,7 +94,7 @@ class CategoryManagerSpec extends ObjectBehavior
 
         $objectManager->remove($category)->shouldBeCalled();
 
-        $this->remove($category);
+        $this->remove($category, ['flush' => false]);
     }
 
     function it_dispatches_an_event_when_removing_a_tree(
@@ -102,6 +112,36 @@ class CategoryManagerSpec extends ObjectBehavior
 
         $objectManager->remove($tree)->shouldBeCalled();
 
-        $this->remove($tree);
+        $this->remove($tree, ['flush' => false]);
+    }
+
+    function it_throws_exception_when_save_anything_else_than_a_category()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringSave($anythingElse);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_a_category()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
     }
 }

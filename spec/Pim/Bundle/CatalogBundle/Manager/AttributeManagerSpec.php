@@ -29,6 +29,21 @@ class AttributeManagerSpec extends ObjectBehavior
         );
     }
 
+    function it_is_a_saver()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
+    }
+
+    function it_is_a_bulk_saver()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\BulkSaverInterface');
+    }
+
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
     function it_instantiates_an_attribute()
     {
         $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
@@ -60,5 +75,35 @@ class AttributeManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $this->remove($attribute);
+    }
+
+    function it_throws_exception_when_save_anything_else_than_a_attribute()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringSave($anythingElse);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_a_attribute()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
     }
 }
