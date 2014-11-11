@@ -81,7 +81,7 @@
 - Change of constructor of `Pim\Bundle\CatalogBundle\Manager\ChannelManager` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as second argument and `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as third argument
 - Use `Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface` in constructors of AssociationTypeController, AttributeController, AttributeGroupController, ChannelController, FamilyController, GroupController, GroupTypeController
 - Change of constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` to remove `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` argument
-- Remove ObjectManager first argument of `Pim\Bundle\EnrichBundle\Builder\ProductBuilder` constructor
+- Remove ObjectManager first argument of `Pim\Bundle\EnrichBundle\Builder\ProductBuilder` constructor and delete method removeAttributeFromProduct
 - Change of constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as third argument to replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` argument
 
 ## Bug fixes

@@ -50,5 +50,4 @@ class BaseHandlerSpec extends ObjectBehavior
 
         $this->process($entity)->shouldReturn(false);
     }
-
 }
