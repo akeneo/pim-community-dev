@@ -40,10 +40,13 @@ class ChannelManager implements SaverInterface
             );
         }
 
-        $options = array_merge(['flush' => true], $options);
+        $options = array_merge(['flush' => true, 'schedule' => true], $options);
         $this->objectManager->persist($channel);
         if (true === $options['flush']) {
             $this->objectManager->flush();
+        }
+        if (true === $options['schedule']) {
+            $this->completenessManager->scheduleForChannel($channel);
         }
     }
 

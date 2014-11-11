@@ -7,7 +7,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,14 +29,10 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ChannelController extends AbstractDoctrineController
 {
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $channelForm;
 
-    /**
-     * @var ChannelHandler
-     */
+    /** @var HandlerInterface */
     protected $channelHandler;
 
     /**
@@ -51,7 +47,7 @@ class ChannelController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param ChannelHandler           $channelHandler
+     * @param HandlerInterface           $channelHandler
      * @param Form                     $channelForm
      */
     public function __construct(
@@ -64,7 +60,7 @@ class ChannelController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        ChannelHandler $channelHandler,
+        HandlerInterface $channelHandler,
         Form $channelForm
     ) {
         parent::__construct(

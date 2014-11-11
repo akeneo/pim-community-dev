@@ -115,6 +115,7 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+            - '@pim_catalog.manager.completeness'
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%

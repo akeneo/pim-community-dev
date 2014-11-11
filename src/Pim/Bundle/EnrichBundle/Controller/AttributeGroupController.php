@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,7 +37,7 @@ class AttributeGroupController extends AbstractDoctrineController
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var AttributeGroupHandler */
+    /** @var HandlerInterface */
     protected $formHandler;
 
     /** @var Form */
@@ -62,7 +62,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param SecurityFacade           $securityFacade
-     * @param AttributeGroupHandler    $formHandler
+     * @param HandlerInterface    $formHandler
      * @param Form                     $form
      * @param AttributeGroupManager    $manager
      * @param string                   $attributeClass
@@ -78,7 +78,7 @@ class AttributeGroupController extends AbstractDoctrineController
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         SecurityFacade $securityFacade,
-        AttributeGroupHandler $formHandler,
+        HandlerInterface $formHandler,
         Form $form,
         AttributeGroupManager $manager,
         $attributeClass
