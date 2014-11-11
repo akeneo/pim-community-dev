@@ -51,6 +51,17 @@ class ChannelManagerSpec extends ObjectBehavior
         $this->getChannels()->shouldHaveCount(2);
     }
 
+    function it_provides_channel_choices(ObjectManager $objectManager, ChannelRepository $repository, Channel $mobile, Channel $ecommerce)
+    {
+        $objectManager->getRepository('PimCatalogBundle:Channel')->willReturn($repository);
+        $repository->findBy(array())->willReturn(array($mobile, $ecommerce));
+        $mobile->getCode()->willReturn('mobile');
+        $mobile->getLabel()->willReturn('Mobile');
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $ecommerce->getLabel()->willReturn('Ecommerce');
+        $this->getChannelChoices()->shouldReturn(['mobile' => 'Mobile', 'ecommerce' => 'Ecommerce']);
+    }
+
     function it_schedule_completeness_when_save_a_channel(Channel $channel, $completenessManager, $objectManager)
     {
         $objectManager->persist($channel)->shouldBeCalled();
