@@ -5,17 +5,17 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Symfony\Component\Security\Core\SecurityContext;
 
 class ChannelManagerSpec extends ObjectBehavior
 {
-
-
     function let(
         ObjectManager $objectManager,
-        SecurityContext $securityContext
+        CompletenessManager $completenessManager
     ) {
-        $this->beConstructedWith($objectManager, $securityContext);
+        $this->beConstructedWith($objectManager, $completenessManager);
     }
 
     function it_is_a_saver()
@@ -49,5 +49,13 @@ class ChannelManagerSpec extends ObjectBehavior
         $repository->findBy(array())->willReturn(array('mobile', 'ecommerce'));
         $this->getChannels()->shouldBeArray();
         $this->getChannels()->shouldHaveCount(2);
+    }
+
+    function it_schedule_completeness_when_save_a_channel(Channel $channel, $completenessManager, $objectManager)
+    {
+        $objectManager->persist($channel)->shouldBeCalled();
+        $completenessManager->scheduleForChannel($channel)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+        $this->save($channel);
     }
 }
