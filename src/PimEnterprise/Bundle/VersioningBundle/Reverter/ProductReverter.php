@@ -77,6 +77,6 @@ class ProductReverter
             throw new RevertException('This version can not be restored. Some errors occured during the validation.');
         }
 
-        $this->productManager->saveProduct($revertedObject);
+        $this->productManager->save($revertedObject);
     }
 }

@@ -99,7 +99,7 @@ class ProductDraftManager
         $manager->remove($productDraft);
         $manager->flush();
 
-        $this->manager->saveProduct($product, ['bypass_product_draft' => true]);
+        $this->manager->save($product, ['bypass_product_draft' => true]);
     }
 
     /**

@@ -21,19 +21,19 @@ class ProductDraftManagerSpec extends ObjectBehavior
 {
     function let(
         ManagerRegistry $registry,
-        ProductManager $manager,
+        ProductManager $productManager,
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
         ProductDraftChangesApplier $applier,
         EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith($registry, $manager, $userContext, $factory, $repository, $applier, $dispatcher);
+        $this->beConstructedWith($registry, $productManager, $userContext, $factory, $repository, $applier, $dispatcher);
     }
 
     function it_applies_changes_to_the_product_when_approving_a_product_draft(
         $registry,
-        $manager,
+        $productManager,
         $applier,
         $dispatcher,
         ProductDraft $productDraft,
@@ -51,8 +51,8 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
         $applier->apply($product, $productDraft)->shouldBeCalled();
-        $manager->handleMedia($product)->shouldBeCalled();
-        $manager->saveProduct($product, ['bypass_product_draft' => true])->shouldBeCalled();
+        $productManager->handleMedia($product)->shouldBeCalled();
+        $productManager->save($product, ['bypass_product_draft' => true])->shouldBeCalled();
         $manager->remove($productDraft)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
