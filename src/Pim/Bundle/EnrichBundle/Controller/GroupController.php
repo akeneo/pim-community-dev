@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -34,7 +34,7 @@ class GroupController extends AbstractController
     /** @var GroupManager */
     protected $groupManager;
 
-    /** @var GroupHandler */
+    /** @var HandlerInterface */
     protected $groupHandler;
 
     /** @var Form */
@@ -52,7 +52,7 @@ class GroupController extends AbstractController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param GroupManager             $groupManager
-     * @param GroupHandler             $groupHandler
+     * @param HandlerInterface         $groupHandler
      * @param Form                     $groupForm
      */
     public function __construct(
@@ -65,7 +65,7 @@ class GroupController extends AbstractController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
-        GroupHandler $groupHandler,
+        HandlerInterface $groupHandler,
         Form $groupForm
     ) {
         parent::__construct(

@@ -14,21 +14,15 @@ use Symfony\Component\HttpFoundation\Request;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupTypeHandler
+class GroupTypeHandler implements HandlerInterface
 {
-    /**
-     * @var FormInterface
-     */
+    /** @var FormInterface */
     protected $form;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $manager;
 
     /**
@@ -46,12 +40,9 @@ class GroupTypeHandler
     }
 
     /**
-     * Process method for handler
-     * @param GroupType $groupType
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function process(GroupType $groupType)
+    public function process($groupType)
     {
         $this->form->setData($groupType);
 
@@ -70,6 +61,7 @@ class GroupTypeHandler
 
     /**
      * Call when form is valid
+     *
      * @param GroupType $groupType
      */
     protected function onSuccess(GroupType $groupType)
