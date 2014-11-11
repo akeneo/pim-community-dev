@@ -90,7 +90,6 @@ class ChoiceFilter extends AjaxChoiceFilter
         $options['field_options']     = isset($options['field_options']) ? $options['field_options'] : [];
         $options['choice_url']        = 'pim_ui_ajaxentity_list';
         $options['choice_url_params'] = $this->getChoiceUrlParams();
-        $options['preload_choices']   = $this->attribute->getMinimumInputLength() < 1;
 
         if (!$this->form) {
             $this->form = $this->formFactory->create($this->getFormType(), [], $options);

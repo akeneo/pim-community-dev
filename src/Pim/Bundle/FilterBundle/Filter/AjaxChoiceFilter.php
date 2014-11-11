@@ -49,6 +49,7 @@ class AjaxChoiceFilter extends ChoiceFilter
         $metadata['populateDefault'] = $formView->vars['populate_default'];
         $metadata['choiceUrl']       = $formView->vars['choice_url'];
         $metadata['choiceUrlParams'] = $formView->vars['choice_url_params'];
+        $metadata['emptyChoice']     = $formView->vars['empty_choice'];
 
         return $metadata;
     }

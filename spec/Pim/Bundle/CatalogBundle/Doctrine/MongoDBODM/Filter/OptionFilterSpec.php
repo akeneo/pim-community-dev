@@ -15,7 +15,7 @@ class OptionFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb)
     {
-        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN']);
+        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -31,7 +31,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }

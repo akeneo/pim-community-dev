@@ -122,7 +122,7 @@ class ChoiceFilterSpec extends ObjectBehavior
                 'dataLocale' => null,
                 'collectionId' => null
             ],
-            'preload_choices' => true
+            'preload_choices' => false
         ])->willReturn($form);
 
         $this->getForm()->shouldReturn($form);
