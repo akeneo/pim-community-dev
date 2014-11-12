@@ -46,11 +46,13 @@ class BaseRemover implements RemoverInterface
             );
         }
 
-        $options = array_merge(['flush' => true], $options);
+        $options = array_merge(['flush' => true, 'only_object' => false], $options);
         $this->objectManager->remove($object);
 
-        if (true === $options['flush']) {
+        if (true === $options['flush'] && true === $options['only_object']) {
             $this->objectManager->flush($object);
+        } elseif (true === $options['flush']) {
+            $this->objectManager->flush();
         }
     }
 }
