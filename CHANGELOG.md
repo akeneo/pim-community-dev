@@ -21,6 +21,7 @@
 - Add ACL on entity history
 - Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
 - Improve the UI of the datagrid column configuration popin
+- Normalize the managers by introducing 4 interfaces, SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -70,6 +71,18 @@
 - Replace AssociationTypeRepository::buildMissingAssociationTypes by AssociationTypeRepository::findMissingAssociationTypes
 - Replace AttributeGroupRepository::buildAllWithTranslations by AttributeGroupRepository::findAllWithTranslations
 - Replace GroupTypeRepository::buildAll by GroupTypeRepository::getAllGroupsExceptVariantQB
+- In AttributeGroupHandler::_construct, replace ObjectManager argument by AttributeGroupManager
+- Remove unused ProductManager::removeAll() method
+- Add an ObjectManager argument in DatagridViewManager::__construct
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler` to accept `Pim\Bundle\CatalogBundle\Manager\ChannelManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler` to accept `Pim\Bundle\CatalogBundle\Manager\FamilyManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler` to accept `Pim\Bundle\CatalogBundle\Manager\GroupManager` as third argument and `Pim\Bundle\CatalogBundle\Manager\ProductManager` as fourth argument
+- Change of constructor of `Pim\Bundle\CatalogBundle\Manager\FamilyManager` to accept `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as sixth argument
+- Change of constructor of `Pim\Bundle\CatalogBundle\Manager\ChannelManager` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as second argument and `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as third argument
+- Use `Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface` in constructors of AssociationTypeController, AttributeController, AttributeGroupController, ChannelController, FamilyController, GroupController, GroupTypeController
+- Change of constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` to remove `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` argument
+- Remove ObjectManager first argument of `Pim\Bundle\EnrichBundle\Builder\ProductBuilder` constructor and delete method removeAttributeFromProduct
+- Change of constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as third argument to replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` argument
 - Method `Pim\Bundle\CatalogBundle\Entity\Category::addProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::removeProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::setProducts()` have been removed.
 
 ## Bug fixes

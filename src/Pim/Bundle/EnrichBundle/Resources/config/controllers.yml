@@ -79,7 +79,6 @@ services:
             - '@pim_catalog.manager.family'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
-            - '@pim_catalog.manager.completeness'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
             - %pim_catalog.entity.attribute.class%

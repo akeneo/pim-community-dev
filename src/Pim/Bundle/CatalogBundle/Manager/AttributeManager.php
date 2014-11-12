@@ -4,6 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\BulkSaverInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -18,7 +22,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager
+class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInterface
 {
     /** @var string */
     protected $attributeClass;
@@ -108,16 +112,62 @@ class AttributeManager
     }
 
     /**
-     * Remove an attribute
-     *
-     * @param AbstractAttribute $attribute
+     * {@inheritdoc}
      */
-    public function remove(AbstractAttribute $attribute)
+    public function save($object, array $options = [])
     {
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($attribute));
+        if (!$object instanceof AttributeInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
 
-        $this->objectManager->remove($attribute);
-        $this->objectManager->flush();
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush($object);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $objects, array $options = [])
+    {
+        $options = array_merge(['flush' => true], $options);
+        foreach ($objects as $object) {
+            $this->save($object, ['flush' => false]);
+        }
+
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($object, array $options = [])
+    {
+        if (!$object instanceof AttributeInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($object));
+
+        $this->objectManager->remove($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
     }
 
     /**

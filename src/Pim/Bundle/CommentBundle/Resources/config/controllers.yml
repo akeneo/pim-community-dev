@@ -10,5 +10,6 @@ services:
             - '@security.context'
             - '@form.factory'
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_comment.manager.comment'
             - '@pim_comment.builder.comment'
             - %pim_comment.entity.comment.class%

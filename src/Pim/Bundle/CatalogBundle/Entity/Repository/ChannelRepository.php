@@ -137,4 +137,20 @@ SQL;
 
         return $codes;
     }
+
+    /**
+     * Get full channels with locales and currencies
+     *
+     * @return array
+     */
+    public function getFullChannels()
+    {
+        return $this
+            ->createQueryBuilder('ch')
+            ->select('ch, lo, cu')
+            ->leftJoin('ch.locales', 'lo')
+            ->leftJoin('ch.currencies', 'cu')
+            ->getQuery()
+            ->getResult();
+    }
 }

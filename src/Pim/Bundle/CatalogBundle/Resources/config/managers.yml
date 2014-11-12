@@ -97,6 +97,8 @@ services:
         class: %pim_catalog.manager.channel.class%
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.manager.completeness'
 
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
@@ -115,6 +117,7 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+            - '@pim_catalog.manager.completeness'
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
@@ -124,7 +127,6 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.doctrine.completeness_generator'
             - '@validator'
-            - '@pim_catalog.manager.channel'
             - %pim_catalog.entity.completeness.class%
 
     pim_catalog.manager.association_type:

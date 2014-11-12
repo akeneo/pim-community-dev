@@ -113,7 +113,7 @@ class DatagridViewController extends AbstractDoctrineController
 
                 return new JsonResponse(['errors' => $messages]);
             } else {
-                $this->persist($view);
+                $this->datagridViewManager->save($view);
 
                 if ($creation) {
                     $this->addFlash('success', 'flash.datagrid view.created');
@@ -163,7 +163,7 @@ class DatagridViewController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
         }
 
-        $this->remove($view);
+        $this->datagridViewManager->remove($view);
         $this->addFlash('success', 'flash.datagrid view.removed');
 
         return new Response('', 204);

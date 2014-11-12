@@ -4,22 +4,28 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Attribute manager
+ * Attribute option manager
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionManager
+class AttributeOptionManager implements SaverInterface, RemoverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var string */
     protected $optionClass;
@@ -30,14 +36,14 @@ class AttributeOptionManager
     /**
      * Constructor
      *
-     * @param ObjectManager   $objectManager
-     * @param EventDispatcher $eventDispatcher
-     * @param string          $optionClass
-     * @param string          $optionValueClass
+     * @param ObjectManager            $objectManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $optionClass
+     * @param string                   $optionValueClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         $optionClass,
         $optionValueClass
     ) {
@@ -92,27 +98,47 @@ class AttributeOptionManager
     }
 
     /**
-     * Update an attribute option
-     *
-     * @param AttributeOption $attributeOption
+     * {@inheritdoc}
      */
-    public function update(AttributeOption $attributeOption)
+    public function save($object, array $options = [])
     {
-        $this->objectManager->persist($attributeOption);
-        $this->objectManager->flush($attributeOption);
+        if (!$object instanceof AttributeOption) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush($object);
+        }
     }
 
     /**
-     * Remove an attribute option
-     *
-     * @param AttributeOption $attributeOption
+     * {@inheritdoc}
      */
-    public function remove(AttributeOption $attributeOption)
+    public function remove($object, array $options = [])
     {
-        $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($attributeOption));
+        if (!$object instanceof AttributeOption) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
 
-        $this->objectManager->remove($attributeOption);
-        $this->objectManager->flush($attributeOption);
+        $options = array_merge(['flush' => true], $options);
+        $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($object));
+
+        $this->objectManager->remove($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush($object);
+        }
     }
 
     /**

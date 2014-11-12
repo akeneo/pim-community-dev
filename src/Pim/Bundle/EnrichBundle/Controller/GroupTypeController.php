@@ -7,7 +7,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,14 +29,10 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class GroupTypeController extends AbstractDoctrineController
 {
-    /**
-     * @var GroupTypeHandler
-     */
+    /** @var HandlerInterface */
     protected $groupTypeHandler;
 
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $groupTypeForm;
 
     /**
@@ -51,7 +47,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param GroupTypeHandler         $groupTypeHandler
+     * @param HandlerInterface         $groupTypeHandler
      * @param Form                     $groupTypeForm
      */
     public function __construct(
@@ -64,7 +60,7 @@ class GroupTypeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        GroupTypeHandler $groupTypeHandler,
+        HandlerInterface $groupTypeHandler,
         Form $groupTypeForm
     ) {
         parent::__construct(

@@ -44,39 +44,25 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductController extends AbstractDoctrineController
 {
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var CategoryManager
-     */
+    /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @var ProductCategoryManager
-     */
+    /** @var ProductCategoryManager */
     protected $productCatManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var SecurityFacade
-     */
+    /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @var SequentialEditManager
-     */
+    /** @var SequentialEditManager */
     protected $seqEditManager;
 
     /**
@@ -197,12 +183,12 @@ class ProductController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $entity = $this->productManager->createProduct();
-        $form = $this->createForm('pim_product_create', $entity, $this->getCreateFormOptions($entity));
+        $product = $this->productManager->createProduct();
+        $form = $this->createForm('pim_product_create', $product, $this->getCreateFormOptions($product));
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->productManager->save($entity);
+                $this->productManager->save($product);
                 $this->addFlash('success', 'flash.product.created');
 
                 if ($dataLocale === null) {
@@ -210,7 +196,7 @@ class ProductController extends AbstractDoctrineController
                 }
                 $url = $this->generateUrl(
                     'pim_enrich_product_edit',
-                    array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
+                    array('id' => $product->getId(), 'dataLocale' => $dataLocale)
                 );
                 $response = array('status' => 1, 'url' => $url);
 
@@ -272,7 +258,7 @@ class ProductController extends AbstractDoctrineController
 
         $toggledStatus = !$product->isEnabled();
         $product->setEnabled($toggledStatus);
-        $this->productManager->saveProduct($product);
+        $this->productManager->save($product);
 
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
@@ -415,8 +401,6 @@ class ProductController extends AbstractDoctrineController
         $attributesForm->submit($request);
 
         $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->productManager->save($product);
-
         $this->addFlash('success', 'flash.product.attributes added');
 
         return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
