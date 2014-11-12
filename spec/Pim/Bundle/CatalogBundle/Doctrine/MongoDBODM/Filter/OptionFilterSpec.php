@@ -15,7 +15,7 @@ class OptionFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb)
     {
-        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN']);
+        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -31,7 +31,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
@@ -72,23 +72,6 @@ class OptionFilterSpec extends ObjectBehavior
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $qb->addOr($expr)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'IN', ['empty']);
-    }
-
-    function it_adds_an_empty_filter_and_another_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
-    {
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->getBackendType()->willReturn('option');
-        $attribute->getCode()->willReturn('option_code');
-
-        $expr->field('normalizedData.option_code.id')->shouldBeCalled()->willReturn($expr);
-        $expr->exists(false)->shouldBeCalled()->willReturn($expr);
-        $expr->in([1 => 118, 2 => 270])->shouldBeCalled()->willReturn($expr);
-
-        $qb->expr()->willReturn($expr);
-        $qb->addOr($expr)->shouldBeCalledTimes(2);
-
-        $this->addAttributeFilter($attribute, 'IN', ['empty', '118', '270']);
+        $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
 }

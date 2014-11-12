@@ -105,14 +105,10 @@ class OptionsFilter implements AttributeFilterInterface
         if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
-            if (in_array('empty', $value)) {
-                unset($value[array_search('empty', $value)]);
-
+            if (Operators::IS_EMPTY === $operator) {
                 $expr = $this->qb->expr()->field($field)->exists(false);
                 $this->qb->addOr($expr);
-            }
-
-            if (count($value) > 0) {
+            } else {
                 $value = array_map('intval', $value);
                 $expr = $this->qb->expr()->field($field .'.id')->in($value);
                 $this->qb->addOr($expr);

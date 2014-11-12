@@ -455,7 +455,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.option.class%
         arguments:
             - ['pim_catalog_simpleselect']
-            - ['IN']
+            - ['IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -463,7 +463,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.options.class%
         arguments:
             - ['pim_catalog_multiselect']
-            - ['IN']
+            - ['IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
