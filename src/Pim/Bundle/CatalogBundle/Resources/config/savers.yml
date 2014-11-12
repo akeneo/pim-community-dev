@@ -1,0 +1,9 @@
+parameters:
+    pim_catalog.saver.base.class: Pim\Bundle\CatalogBundle\Saver\BaseSaver
+
+services:
+    pim_catalog.saver.group_type:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.group_type.class%

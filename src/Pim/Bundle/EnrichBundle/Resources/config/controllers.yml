@@ -183,6 +183,7 @@ services:
         arguments:
             - '@pim_enrich.form.handler.group_type'
             - '@pim_enrich.form.group_type'
+            - '@pim_catalog.remover.group_type'
 
     pim_enrich.controller.completeness:
         class: %pim_enrich.controller.completeness.class%

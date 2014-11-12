@@ -1,7 +1,6 @@
 parameters:
     pim_enrich.form.handler.base.class:             Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
     pim_enrich.form.handler.group.class:            Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
-    pim_enrich.form.handler.group_type.class:       Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler
 
 services:
     pim_enrich.form.handler.attribute:
@@ -38,12 +37,12 @@ services:
             - '@pim_catalog.manager.product'
 
     pim_enrich.form.handler.group_type:
-        class: %pim_enrich.form.handler.group_type.class%
+        class: %pim_enrich.form.handler.base.class%
         scope: request
         arguments:
             - '@pim_enrich.form.group_type'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.group_type'
 
     pim_enrich.form.handler.association_type:
         class: %pim_enrich.form.handler.base.class%

@@ -1,0 +1,9 @@
+parameters:
+    pim_catalog.remover.base.class: Pim\Bundle\CatalogBundle\Remover\BaseRemover
+
+services:
+    pim_catalog.remover.group_type:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.group_type.class%
