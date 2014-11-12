@@ -90,12 +90,12 @@ class CategoryFilter extends BaseCategoryFilter
         if ($tree) {
             // all categories of this tree (without permissions)
             $currentTreeIds = $categoryRepository->getAllChildrenIds($tree);
-            // granted categories
+            $this->util->applyFilter($ds, 'categories', 'NOT IN', $currentTreeIds);
+
+            // we add a filter on granted categories
             $user = $this->securityContext->getToken()->getUser();
             $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-            // granted categories not in this tree
-            $categoryIds = array_values(array_diff($grantedIds, $currentTreeIds));
-            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $categoryIds);
+            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $grantedIds);
 
             return true;
         }

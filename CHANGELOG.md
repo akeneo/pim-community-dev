@@ -33,6 +33,7 @@
 - PIM-3331: Fix draft creation when saving values for newly added attributes for the first time
 - PIM-3351: Test data value in PricesDenormalizer to avoid creating empty ProductPrices
 - PIM-3301: Test data value in DateTimeDenormalizer to avoid reverted date to be set on current day
+- PIM-3354: Fix category filter on multi-positioned product on unclassified
 
 # 1.0.4 (2014-10-31)
 
