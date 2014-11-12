@@ -3,8 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;

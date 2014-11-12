@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
