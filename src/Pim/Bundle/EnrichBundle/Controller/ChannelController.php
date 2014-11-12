@@ -149,7 +149,6 @@ class ChannelController extends AbstractDoctrineController
 
         foreach ($channel->getLocales() as $locale) {
             $channel->removeLocale($locale);
-            $this->persist($locale, false);
         }
         $this->remove($channel);
 
