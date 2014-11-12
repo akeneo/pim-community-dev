@@ -100,7 +100,9 @@ class CategoryFilterSpec extends ObjectBehavior
 
         $repo->getAllChildrenIds($tree)->willReturn([2, 3, 4]);
         $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([2, 3, 4, 5, 6, 7]);
-        $utility->applyFilter($datasource, 'categories', 'IN OR UNCLASSIFIED', [5, 6, 7])->shouldBeCalled();
+
+        $utility->applyFilter($datasource, 'categories', 'NOT IN', [2, 3, 4])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories', 'IN OR UNCLASSIFIED', [2, 3, 4, 5, 6, 7])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => -1, 'treeId' => 1]]);
     }
