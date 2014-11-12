@@ -35,7 +35,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
     ) {
         $this->productBuilder       = $builder;
         $this->attrOptionRepository = $attrOptionRepository;
-        $this->types                = $supportedTypes;
+        $this->supportedTypes       = $supportedTypes;
     }
 
     /**
@@ -46,22 +46,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
-        if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'simple select');
-        }
-
-        if (!array_key_exists('attribute', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
-                $attribute->getCode(),
-                'attribute',
-                'setter',
-                'simple select'
-            );
-        }
-
-        if (!array_key_exists('code', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'code', 'setter', 'simple select');
-        }
+        $this->checkData($attribute, $data);
 
         $attributeOption = $this->attrOptionRepository
             ->findOneBy(['code' => $data['code'], 'attribute' => $attribute]);
@@ -82,6 +67,32 @@ class SimpleSelectValueSetter extends AbstractValueSetter
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
             $value->setOption($attributeOption);
+        }
+    }
+
+    /**
+     * Check if data are valid
+     *
+     * @param AttributeInterface $attribute
+     * @param $data
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'simple select');
+        }
+
+        if (!array_key_exists('attribute', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'attribute',
+                'setter',
+                'simple select'
+            );
+        }
+
+        if (!array_key_exists('code', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'code', 'setter', 'simple select');
         }
     }
 }

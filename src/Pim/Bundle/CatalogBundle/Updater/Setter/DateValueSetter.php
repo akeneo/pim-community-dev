@@ -26,7 +26,7 @@ class DateValueSetter extends AbstractValueSetter
     public function __construct(ProductBuilder $builder, array $supportedTypes)
     {
         $this->productBuilder = $builder;
-        $this->types          = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**
@@ -37,6 +37,23 @@ class DateValueSetter extends AbstractValueSetter
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
+        $this->checkData($attribute, $data);
+
+        foreach ($products as $product) {
+            $value = $product->getValue($attribute->getCode(), $locale, $scope);
+            if (null === $value) {
+                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            }
+            $value->setData(new \DateTime($data));
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
         if (!is_string($data)) {
             throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'date');
         }
@@ -54,14 +71,6 @@ class DateValueSetter extends AbstractValueSetter
                 'setter',
                 'date'
             );
-        }
-
-        foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-            $value->setData(new \DateTime($data));
         }
     }
 }

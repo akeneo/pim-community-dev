@@ -42,7 +42,7 @@ class MetricValueSetter extends AbstractValueSetter
         $this->productBuilder = $builder;
         $this->factory        = $factory;
         $this->measureManager = $measureManager;
-        $this->types          = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**
@@ -53,10 +53,39 @@ class MetricValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        //TODO: pmd is to hight need to split the method
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
+        $this->checkData($attribute, $data);
+
+        $unit = $data['unit'];
+        $data = $data['data'];
+
+        $fullUnitName = $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily());
+        $fullUnitName = array_flip($fullUnitName);
+        $fullUnitName = $fullUnitName[$unit];
+
+        foreach ($products as $product) {
+            $value = $product->getValue($attribute->getCode(), $locale, $scope);
+            if (null === $value) {
+                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            }
+            $metric = $this->factory->createMetric($attribute->getMetricFamily());
+            $metric->setUnit($fullUnitName);
+            $metric->setData($data);
+
+            $value->setMetric($metric);
+        }
+    }
+
+    /**
+     * Check if data is valid
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric');
         }
@@ -85,25 +114,6 @@ class MetricValueSetter extends AbstractValueSetter
                 'setter',
                 'metric'
             );
-        }
-
-        $unit = $data['unit'];
-        $data = $data['data'];
-
-        $fullUnitName = $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily());
-        $fullUnitName = array_flip($fullUnitName);
-        $fullUnitName = $fullUnitName[$unit];
-
-        foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-            $metric = $this->factory->createMetric($attribute->getMetricFamily());
-            $metric->setUnit($fullUnitName);
-            $metric->setData($data);
-
-            $value->setMetric($metric);
         }
     }
 }

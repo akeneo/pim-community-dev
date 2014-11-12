@@ -26,7 +26,7 @@ class TextValueSetter extends AbstractValueSetter
     public function __construct(ProductBuilder $builder, array $supportedTypes)
     {
         $this->productBuilder = $builder;
-        $this->types          = $supportedTypes;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**

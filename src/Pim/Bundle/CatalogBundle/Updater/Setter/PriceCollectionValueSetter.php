@@ -42,7 +42,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
         $this->productBuilder  = $builder;
         $this->currencyManager = $currencyManager;
         $this->productManager  = $productManager;
-        $this->types           = $supportedTypes;
+        $this->supportedTypes  = $supportedTypes;
     }
 
     /**
@@ -53,6 +53,29 @@ class PriceCollectionValueSetter extends AbstractValueSetter
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
+        $this->checkData($attribute, $data);
+
+        foreach ($products as $product) {
+            $value = $product->getValue($attribute->getCode(), $locale, $scope);
+            if (null === $value) {
+                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+            }
+
+            foreach ($data as $price) {
+                $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
+            }
+        }
+    }
+
+    /**
+     * Check if data are valid
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed $data
+     * @return mixed
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'prices collection');
         }
@@ -101,17 +124,6 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     'setter',
                     'prices collection'
                 );
-            }
-        }
-
-        foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-
-            foreach ($data as $price) {
-                $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
             }
         }
     }
