@@ -84,9 +84,11 @@
 - Remove ObjectManager first argument of `Pim\Bundle\EnrichBundle\Builder\ProductBuilder` constructor and delete method removeAttributeFromProduct
 - Change of constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as third argument to replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` argument
 - Method `Pim\Bundle\CatalogBundle\Entity\Category::addProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::removeProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::setProducts()` have been removed.
+- We now use uniqid() to generate filename prefix (on media attributes)
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
+- PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 
 # 1.2.x
 

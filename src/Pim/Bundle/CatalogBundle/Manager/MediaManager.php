@@ -149,7 +149,7 @@ class MediaManager
     {
         return sprintf(
             '%s-%s-%s-%s-%s-%s',
-            $product->getId(),
+            uniqid(),
             Urlizer::urlize($product->getIdentifier(), '_'),
             $value->getAttribute()->getCode(),
             $value->getLocale(),
