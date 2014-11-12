@@ -106,7 +106,7 @@ class JobManager implements SaverInterface, RemoverInterface
         $options = array_merge(['flush' => true], $options);
         $this->objectManager->persist($object);
         if (true === $options['flush']) {
-            $this->objectManager->flush($object);
+            $this->objectManager->flush();
         }
     }
 
