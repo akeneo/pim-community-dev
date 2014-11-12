@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Saver;
 
 use Pim\Component\Resource\Model\SaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
@@ -15,20 +15,20 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class BaseSaver implements SaverInterface
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var string */
     protected $savedClass;
 
     /**
-     * @param ManagerRegistry $registry
-     * @param string          $savedClass
+     * @param ObjectManager $manager
+     * @param string        $savedClass
      */
-    public function __construct(ManagerRegistry $registry, $savedClass)
+    public function __construct(ObjectManager $objectManager, $savedClass)
     {
-        $this->registry   = $registry;
-        $this->savedClass = $savedClass;
+        $this->objectManager = $objectManager;
+        $this->savedClass    = $savedClass;
     }
 
     /**
@@ -47,10 +47,9 @@ class BaseSaver implements SaverInterface
         }
 
         $options = array_merge(['flush' => true], $options);
-        $objectManager = $this->registry->getManagerForClass($this->savedClass);
-        $objectManager->persist($object);
+        $this->objectManager->persist($object);
         if (true === $options['flush']) {
-            $objectManager->flush();
+            $this->objectManager->flush();
         }
     }
 }

@@ -3,13 +3,13 @@
 namespace spec\Pim\Bundle\CatalogBundle\Saver;
 
 use PhpSpec\ObjectBehavior;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class BaseSaverSpec extends ObjectBehavior
 {
-    function let( ManagerRegistry $registry)
+    function let(ObjectManager $manager)
     {
-        $this->beConstructedWith($registry, 'Pim\Bundle\CatalogBundle\Entity\GroupType');
+        $this->beConstructedWith($manager, 'Pim\Bundle\CatalogBundle\Entity\GroupType');
     }
 
     function it_is_a_saver()

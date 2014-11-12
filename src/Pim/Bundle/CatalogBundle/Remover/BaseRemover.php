@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Remover;
 
 use Pim\Component\Resource\Model\RemoverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
@@ -15,20 +15,20 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class BaseRemover implements RemoverInterface
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var string */
-    protected $savedClass;
+    protected $removedClass;
 
     /**
-     * @param ManagerRegistry $registry
-     * @param string          $savedClass
+     * @param ObjectManager $manager
+     * @param string        $removedClass
      */
-    public function __construct(ManagerRegistry $registry, $savedClass)
+    public function __construct(ObjectManager $objectManager, $removedClass)
     {
-        $this->registry   = $registry;
-        $this->savedClass = $savedClass;
+        $this->objectManager = $objectManager;
+        $this->removedClass  = $removedClass;
     }
 
     /**
@@ -36,21 +36,21 @@ class BaseRemover implements RemoverInterface
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof $this->savedClass) {
+        if (!$object instanceof $this->removedClass) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expects a "%s", "%s" provided.',
-                    $this->savedClass,
+                    $this->removedClass,
                     ClassUtils::getClass($object)
                 )
             );
         }
 
         $options = array_merge(['flush' => true], $options);
-        $objectManager = $this->registry->getManagerForClass($this->savedClass);
-        $objectManager->remove($object);
+        $this->objectManager->remove($object);
+
         if (true === $options['flush']) {
-            $objectManager->flush($object);
+            $this->objectManager->flush($object);
         }
     }
 }
