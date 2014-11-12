@@ -76,13 +76,14 @@
 - Add an ObjectManager argument in DatagridViewManager::__construct
 - Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler` to accept `Pim\Bundle\CatalogBundle\Manager\ChannelManager` as third argument
 - Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler` to accept `Pim\Bundle\CatalogBundle\Manager\FamilyManager` as third argument
-- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler` to accept `Pim\Bundle\CatalogBundle\Manager\GroupManager` as third argument and `Pim\Bundle\CatalogBundle\Manager\ProductManager` as fourth argument  
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler` to accept `Pim\Bundle\CatalogBundle\Manager\GroupManager` as third argument and `Pim\Bundle\CatalogBundle\Manager\ProductManager` as fourth argument
 - Change of constructor of `Pim\Bundle\CatalogBundle\Manager\FamilyManager` to accept `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as sixth argument
 - Change of constructor of `Pim\Bundle\CatalogBundle\Manager\ChannelManager` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as second argument and `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as third argument
 - Use `Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface` in constructors of AssociationTypeController, AttributeController, AttributeGroupController, ChannelController, FamilyController, GroupController, GroupTypeController
 - Change of constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` to remove `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` argument
 - Remove ObjectManager first argument of `Pim\Bundle\EnrichBundle\Builder\ProductBuilder` constructor and delete method removeAttributeFromProduct
 - Change of constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as third argument to replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` argument
+- Method `Pim\Bundle\CatalogBundle\Entity\Category::addProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::removeProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::setProducts()` have been removed.
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
@@ -90,9 +91,10 @@
 # 1.2.x
 
 ## Bug fixes
-- PIM-3298 : Fix issue with locale specific property of an attribute when edit and mass edit
-- PIM-3309: Fix check on product value uniqueness
+- PIM-3298: Fix issue with locale specific property of an attribute when edit and mass edit
 - PIM-3229: Fix values for simple and multi select attributes with missing translations not being displayed in the grid
+- PIM-3309: Fix check on product value uniqueness
+- PIM-3288: Fix memory leak on product import (avoid to hydrate all products of a category when we add a category to a product)
 
 # 1.2.11 (2014-10-31)
 
