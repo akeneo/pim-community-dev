@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine;
+namespace Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;

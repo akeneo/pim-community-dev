@@ -1,0 +1,10 @@
+ - déplacer les specs
+ - renommer les services pim_catalog présent dans le bundles
+ - faire en sorte que storage_driver/doctrine mongodb-odm.yml ou orm.yml soit toujours chargé pr tous les bundles (à travers DoctrineHybridSupportExtension)
+ - faire en sorte que le mapping des interfaces Mongo fonctionne => nettoyer le mapping des interfaces pr faire en sorte que :
+    - les entités ORM soient mappées seulement en ORM
+    - les entités Mongo soient mappées seulement en MongoDBODM
+ - nettoyer la constante AkeneoDoctrineHybridSupportExtension::DOCTRINE_MONGODB qui ne sert à rien
+ - ajouter un listener identique à Sylius pr le mapping des relations
+ - faire en sorte de définir le mapping des interfaces/entités par la conf normale de Doctrine
+ - changer le storage doctrine-mongodb par hybrid

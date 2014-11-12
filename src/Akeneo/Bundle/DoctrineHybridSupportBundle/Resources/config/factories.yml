@@ -1,0 +1,8 @@
+parameters:
+    pim_catalog.factory.referenced_collection.class: Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\ReferencedCollectionFactory
+
+services:
+    pim_catalog.factory.referenced_collection:
+        class: %pim_catalog.factory.referenced_collection.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'

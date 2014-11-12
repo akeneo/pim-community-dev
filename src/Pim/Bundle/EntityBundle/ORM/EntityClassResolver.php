@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EntityBundle\ORM;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver as BaseEntityClassResolver;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\SmartManagerRegistry;
 
 /**
  * This class allows to get the real class name of an entity by its name

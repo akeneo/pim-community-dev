@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**

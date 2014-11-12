@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\DependencyInjection;
+namespace Akeneo\Bundle\DoctrineHybridSupportBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pim_catalog');
+        $rootNode = $treeBuilder->root('akeneo_doctrine_hybrid_support');
 
         $rootNode
             ->children()

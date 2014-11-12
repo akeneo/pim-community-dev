@@ -38,7 +38,7 @@ class PimVersioningExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->extension = new PimVersioningExtension();
         $this->containerBuilder = new ContainerBuilder();
-        $this->containerBuilder->setParameter('pim_catalog.storage_driver', 'foo');
+        $this->containerBuilder->setParameter('akeneo_doctrine_hybrid_support.storage_driver', 'foo');
     }
 
     /**

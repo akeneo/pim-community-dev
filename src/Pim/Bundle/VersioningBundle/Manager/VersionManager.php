@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
@@ -41,7 +41,7 @@ class VersionManager
     protected $context;
 
     /**
-     * @var SmartManagerRegistry
+     * @var \Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\SmartManagerRegistry
      */
     protected $registry;
 
@@ -51,7 +51,7 @@ class VersionManager
     protected $versionBuilder;
 
     /**
-     * @param SmartManagerRegistry $registry
+     * @param \Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\SmartManagerRegistry $registry
      * @param VersionBuilder       $versionBuilder
      */
     public function __construct(SmartManagerRegistry $registry, VersionBuilder $versionBuilder)

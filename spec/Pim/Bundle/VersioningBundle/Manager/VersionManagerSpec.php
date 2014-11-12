@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**

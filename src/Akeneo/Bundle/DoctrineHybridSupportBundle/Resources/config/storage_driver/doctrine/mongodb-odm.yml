@@ -1,0 +1,30 @@
+parameters:
+    pim_catalog.event_subscriber.mongodb.entities_type.class: Akeneo\Bundle\DoctrineHybridSupportBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber
+    pim_catalog.event_subscriber.mongodb.entity_type.class:   Akeneo\Bundle\DoctrineHybridSupportBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber
+    pim_catalog.mongodb.mongo_objects_factory.class:        Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\MongoObjectsFactory
+    pim_catalog.doctrine.smart_manager_registry.class:      Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\SmartManagerRegistry
+
+services:
+    pim_catalog.event_subscriber.mongodb.entities_type:
+        class: %pim_catalog.event_subscriber.mongodb.entities_type.class%
+        arguments:
+            - '@pim_catalog.factory.referenced_collection'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_subscriber.mongodb.entity_type:
+        class: %pim_catalog.event_subscriber.mongodb.entity_type.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.mongodb.mongo_objects_factory:
+        class: %pim_catalog.mongodb.mongo_objects_factory.class%
+
+    pim_catalog.doctrine.smart_manager_registry:
+        class: %pim_catalog.doctrine.smart_manager_registry.class%
+        calls:
+            - [addRegistry, ['@doctrine']]
+            - [addRegistry, ['@doctrine_mongodb']]
+

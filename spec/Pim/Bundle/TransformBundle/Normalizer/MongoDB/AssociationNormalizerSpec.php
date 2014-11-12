@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\MongoObjectsFactory;
 
 /**
  * @require \MongoId

@@ -1,14 +1,14 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
+namespace Akeneo\Bundle\DoctrineHybridSupportBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\ReferencedCollection;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\ReferencedCollectionFactory;
 
 /**
  * Convert identifiers collection into lazy entity collection

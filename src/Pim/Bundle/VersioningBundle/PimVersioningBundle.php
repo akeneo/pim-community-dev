@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle;
 
+use Akeneo\Bundle\DoctrineHybridSupportBundle\AkeneoDoctrineHybridSupportBundle;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Pim\Bundle\CatalogBundle\PimCatalogBundle;
 use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
 use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,17 +35,17 @@ class PimVersioningBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $versionMappings,
                 ['doctrine.orm.entity_manager'],
-                'pim_catalog.storage_driver.doctrine/orm'
+                'akeneo_doctrine_hybrid_support.storage_driver.doctrine/orm'
             )
         );
 
-        if (class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {
-            $mongoDBClass = PimCatalogBundle::DOCTRINE_MONGODB;
+        if (class_exists(AkeneoDoctrineHybridSupportBundle::DOCTRINE_MONGODB)) {
+            $mongoDBClass = AkeneoDoctrineHybridSupportBundle::DOCTRINE_MONGODB;
             $container->addCompilerPass(
                 $mongoDBClass::createYamlMappingDriver(
                     $versionMappings,
                     ['doctrine.odm.mongodb.document_manager'],
-                    'pim_catalog.storage_driver.doctrine/mongodb-odm'
+                    'akeneo_doctrine_hybrid_support.storage_driver.doctrine/mongodb-odm'
                 )
             );
         }

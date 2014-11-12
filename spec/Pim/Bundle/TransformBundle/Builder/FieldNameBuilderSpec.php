@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;

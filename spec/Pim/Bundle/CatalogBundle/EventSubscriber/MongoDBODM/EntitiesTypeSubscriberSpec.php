@@ -10,8 +10,8 @@ use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\ReferencedCollection;
+use Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine\ReferencedCollectionFactory;
 use Prophecy\Argument;
 
 /**

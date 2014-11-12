@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
+use Akeneo\Bundle\DoctrineHybridSupportBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass;
+
 /**
  * Resolves doctrine ORM Target entities
  *
