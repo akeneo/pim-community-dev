@@ -91,13 +91,15 @@ class CategoryFilter extends BaseCategoryFilter
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
             // categories of this tree
-            $currentTreeIds = $this->getAllChildrenIds($tree);
+            $categoryIds = $this->getAllChildrenIds($tree);
+            // we add a filter on categories not in this tree
+            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
+
             // granted categories
             $user = $this->securityContext->getToken()->getUser();
-            $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-            // granted categories not in this tree
-            $categoryIds = array_diff($grantedIds, $currentTreeIds);
-            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $categoryIds);
+            $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+            // we filter on all granted and unclassified categories
+            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
 
             return true;
         }
