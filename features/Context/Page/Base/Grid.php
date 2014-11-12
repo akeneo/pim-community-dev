@@ -177,12 +177,18 @@ class Grid extends Index
             }
 
             if (null !== $results && null !== $select2) {
-                $driver->getWebDriverSession()
-                    ->element('xpath', $select2->getXpath())
-                    ->postValue(array('value' => array($value)));
-                sleep(2);
-                $results->find('css', 'li')->click();
-                sleep(2);
+                if (in_array($value, ['empty', 'is empty'])) {
+                    // Allow passing 'empty' as value too (for backwards compability with existing scenarios)
+                    $filter->find('css', 'button.dropdown-toggle')->click();
+                    $filter->find('css', '[data-value="empty"]')->click();
+                } else {
+                    $driver->getWebDriverSession()
+                        ->element('xpath', $select2->getXpath())
+                        ->postValue(array('value' => array($value)));
+                    sleep(2);
+                    $results->find('css', 'li')->click();
+                    sleep(2);
+                }
             } elseif ($value !== false) {
                 $elt->fillField('value', $value);
             }
