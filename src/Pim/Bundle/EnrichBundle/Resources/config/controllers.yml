@@ -71,6 +71,8 @@ services:
         scope: request
         class: %pim_enrich.controller.currency.class%
         parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.saver.currency'
 
     pim_enrich.controller.family:
         scope: request
