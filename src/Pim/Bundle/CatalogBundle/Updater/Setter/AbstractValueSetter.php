@@ -14,14 +14,14 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 abstract class AbstractValueSetter implements SetterInterface
 {
     /** @var array */
-    protected $types = [];
+    protected $supportedTypes = [];
 
     /**
      * {@inheritdoc}
      */
     public function supports(AttributeInterface $attribute)
     {
-        return in_array($attribute->getAttributeType(), $this->types);
+        return in_array($attribute->getAttributeType(), $this->supportedTypes);
     }
 
     /**
@@ -29,6 +29,6 @@ abstract class AbstractValueSetter implements SetterInterface
      */
     public function getSupportedTypes()
     {
-        return $this->types;
+        return $this->supportedTypes;
     }
 }
