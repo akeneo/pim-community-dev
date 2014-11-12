@@ -41,9 +41,11 @@ class ProductUpdaterTestCommand extends ContainerAwareCommand
         // update via another clean API FTW
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
         $updater
-            ->setValue($products, 'name', 'Akeneo T-Shirt (new)')
-            ->setValue($products, 'description', 'Akeneo T-Shirt white with short sleeve (new)', 'en_US', 'ecommerce')
-            ->copyValue($products, 'description', 'description', 'en_US', 'en_US', 'ecommerce', 'mobile');
+//            ->setValue($products, 'name', 'Akeneo T-Shirt (new)')
+//            ->setValue($products, 'description', 'Akeneo T-Shirt white with short sleeve (new)', 'en_US', 'ecommerce')
+//            ->copyValue($products, 'description', 'description', 'en_US', 'en_US', 'ecommerce', 'mobile')
+            ->setValue($products, 'price', [['data' => 101, 'currency' => 'USD', 'fr_FR', 'mobile']])
+        ;
 
         // flush with doctrine
         $om = $this->getContainer()->get('pim_catalog.object_manager.product');

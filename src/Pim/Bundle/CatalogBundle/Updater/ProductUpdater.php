@@ -83,9 +83,9 @@ class ProductUpdater implements ProductUpdaterInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneByCode($code);
+        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
         if ($attribute === null) {
-            throw new \LogicException(sprintf('Unknown attribute "%s"', $code));
+            throw new \LogicException(sprintf('Unknown attribute "%s".', $code));
         }
 
         return $attribute;
