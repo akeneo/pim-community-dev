@@ -3,6 +3,7 @@
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -42,6 +43,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+        $builder->add('type', $options['operator_type'], ['choices' => $this->getOperatorChoices($options)]);
         $builder->add('value', 'text');
     }
 
@@ -67,5 +69,24 @@ class AjaxChoiceFilterType extends ChoiceFilterType
         $view->vars['empty_choice'] = isset($options['field_options']['attr']['empty_choice']) ?
             $options['field_options']['attr']['empty_choice'] :
             false;
+    }
+
+    /**
+     * Returns the available operator choices
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function getOperatorChoices($options)
+    {
+        $operatorChoices = [strtolower(Operators::IN_LIST)];
+
+        if (isset($options['field_options']['attr']['empty_choice']) &&
+            true === $options['field_options']['attr']['empty_choice']) {
+            $operatorChoices[] = strtolower(Operators::IS_EMPTY);
+        }
+
+        return array_combine($operatorChoices, $operatorChoices);
     }
 }

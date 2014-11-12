@@ -56,7 +56,7 @@ define(
 
                 if (_.isUndefined(this.emptyValue)) {
                     this.emptyValue = {
-                        type: 'in_list',
+                        type: 'in',
                         value: ''
                     };
                 }
@@ -84,7 +84,7 @@ define(
             },
 
             _disableInput: function() {
-                this.$(this.criteriaValueSelectors.value).select2('destroy');
+                this.$(this.criteriaValueSelectors.value).val('').select2('destroy');
                 this.$(this.criteriaValueSelectors.value).hide();
             },
 
@@ -142,8 +142,8 @@ define(
 
             _renderCriteria: function(el) {
                 this.operatorChoices = {
-                    'in_list': _.__('pim.grid.choice_filter.label_in_list'),
-                    'empty':   _.__('pim.grid.choice_filter.label_empty')
+                    'in':    _.__('pim.grid.choice_filter.label_in_list'),
+                    'empty': _.__('pim.grid.choice_filter.label_empty')
                 };
 
                 $(el).append(
