@@ -60,7 +60,6 @@ class PriceCollectionValueSetter extends AbstractValueSetter
             );
         }
 
-        $prices = [];
         foreach ($data as $price) {
             if (!is_array($price)) {
                 throw new \LogicException(
@@ -83,21 +82,17 @@ class PriceCollectionValueSetter extends AbstractValueSetter
             if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
                 throw new \LogicException('Invalid currency');
             }
-
-            $prices[] = new ProductPrice($price['data'], $price['currency']);
         }
 
         foreach ($products as $product) {
-//            var_dump($product->getId());
             $value = $product->getValue($attribute->getCode(), $locale, $scope);
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
 
-            $this->productManager->removePriceFromProduct($value->getPrices());
-
-            $value->setData(new ArrayCollection($prices));
-//            var_dump($value->getPrices());
+            foreach ($data as $price) {
+                $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
+            }
         }
     }
 }

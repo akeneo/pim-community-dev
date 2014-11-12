@@ -202,21 +202,6 @@ class ProductManager
     }
 
     /**
-     * Deletes prices from product
-     *
-     * @param Collection $prices
-     *
-     * @return boolean
-     */
-    public function removePriceFromProduct(Collection $prices)
-    {
-        foreach ($prices as $price) {
-            $this->objectManager->remove($price);
-        }
-        $this->objectManager->flush();
-    }
-
-    /**
      * Save a product
      *
      * @param ProductInterface $product     The product to save
