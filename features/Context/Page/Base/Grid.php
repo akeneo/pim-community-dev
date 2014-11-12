@@ -40,7 +40,7 @@ class Grid extends Index
                 'Configure columns' => ['css' => 'a:contains("Columns")'],
                 'View selector'     => ['css' => '#view-selector'],
                 'Views list'        => ['css' => 'div.ui-multiselect-menu.highlight-hover'],
-                'Select2 results'   => ['css' => '.select2-results'],
+                'Select2 results'   => ['css' => '#select2-drop .select2-results'],
             ],
             $this->elements
         );
