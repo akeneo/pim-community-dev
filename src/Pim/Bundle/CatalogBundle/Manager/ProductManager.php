@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
@@ -14,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -197,6 +199,21 @@ class ProductManager
     public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
     {
         $this->builder->removeAttributeFromProduct($product, $attribute);
+    }
+
+    /**
+     * Deletes prices from product
+     *
+     * @param Collection $prices
+     *
+     * @return boolean
+     */
+    public function removePriceFromProduct(Collection $prices)
+    {
+        foreach ($prices as $price) {
+            $this->objectManager->remove($price);
+        }
+        $this->objectManager->flush();
     }
 
     /**

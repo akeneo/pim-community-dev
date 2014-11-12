@@ -42,7 +42,12 @@ class DateValueSetter extends AbstractValueSetter
         }
 
         $dateValues = explode('-', $data);
-        if (count($dateValues) !== 3 || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])) {
+
+        if (
+            count($dateValues) !== 3
+            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
+            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
+        ) {
             throw new \LogicException(
                 sprintf('Date format "%s" is not correctly formatted, expected format is "%s"', $data, 'yyyy-mm-dd')
             );
@@ -53,7 +58,7 @@ class DateValueSetter extends AbstractValueSetter
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            $value->setData($data);
+            $value->setData(new \DateTime($data));
         }
     }
 }

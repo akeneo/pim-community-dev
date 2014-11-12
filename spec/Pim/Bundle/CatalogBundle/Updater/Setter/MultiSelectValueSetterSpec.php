@@ -134,7 +134,7 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
             ->willReturn($attributeOption);
 
         $data = [['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []]];
-        $productValue->setOptions(Argument::any())->shouldBeCalled();
+        $productValue->setOptions(Argument::type('Doctrine\Common\Collections\ArrayCollection'))->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)

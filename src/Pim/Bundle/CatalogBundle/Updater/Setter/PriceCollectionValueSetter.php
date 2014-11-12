@@ -2,13 +2,16 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
- * Sets a multi select value in many products
+ * Sets a price collection value in many products
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -19,14 +22,28 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var CurrencyManager */
+    protected $currencyManager;
+
+    /** @var ProductManager */
+    protected $productManager;
+
     /**
-     * @param ProductBuilder $builder
-     * @param array          $supportedTypes
+     * @param ProductBuilder  $builder
+     * @param CurrencyManager $currencyManager
+     * @param ProductManager  $productManager
+     * @param array           $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, array $supportedTypes)
-    {
-        $this->productBuilder = $builder;
-        $this->types = $supportedTypes;
+    public function __construct(
+        ProductBuilder $builder,
+        CurrencyManager $currencyManager,
+        ProductManager $productManager,
+        array $supportedTypes
+    ) {
+        $this->productBuilder  = $builder;
+        $this->currencyManager = $currencyManager;
+        $this->productManager = $productManager;
+        $this->types           = $supportedTypes;
     }
 
     /**
@@ -37,18 +54,50 @@ class PriceCollectionValueSetter extends AbstractValueSetter
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
-        if (!$data instanceof AbstractProductPrice) {
+        if (!is_array($data)) {
             throw new \LogicException(
-                sprintf('Attribute "%s" expects a price collection option as data', $attribute->getCode())
+                sprintf('Attribute "%s" expects an array as data', $attribute->getCode())
             );
         }
 
+        $prices = [];
+        foreach ($data as $price) {
+            if (!is_array($price)) {
+                throw new \LogicException(
+                    sprintf('$data should contains arrays as value', $attribute->getCode())
+                );
+            }
+
+            if (!array_key_exists('data', $price)) {
+                throw new \LogicException('Missing "data" key in array');
+            }
+
+            if (!array_key_exists('currency', $price)) {
+                throw new \LogicException('Missing "currency" key in array');
+            }
+
+            if (!is_numeric($price['data'])) {
+                throw new \LogicException('"data" should contains a numeric value');
+            }
+
+            if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
+                throw new \LogicException('Invalid currency');
+            }
+
+            $prices[] = new ProductPrice($price['data'], $price['currency']);
+        }
+
         foreach ($products as $product) {
+//            var_dump($product->getId());
             $value = $product->getValue($attribute->getCode(), $locale, $scope);
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            $value->setData($data);
+
+            $this->productManager->removePriceFromProduct($value->getPrices());
+
+            $value->setData(new ArrayCollection($prices));
+//            var_dump($value->getPrices());
         }
     }
 }

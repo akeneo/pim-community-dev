@@ -8,6 +8,8 @@ parameters:
     pim_catalog.updater.setter.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\DateValueSetter
     pim_catalog.updater.setter.identifier_value.class:       Pim\Bundle\CatalogBundle\Updater\Setter\IdentifierValueSetter
     pim_catalog.updater.setter.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\NumberValueSetter
+    pim_catalog.updater.setter.file_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\FileValueSetter
+    pim_catalog.updater.setter.image_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\ImageValueSetter
     pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
     pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectValueSetter
     pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionValueSetter

@@ -86,14 +86,11 @@ class MetricValueSetter extends AbstractValueSetter
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            //Todo: change this cases because there is a case where metric is not setted
-            if (null === $metric = $value->getMetric()) {
-                $metric = $this->factory->createMetric($attribute->getMetricFamily());
-                $metric->setUnit($unit);
-                $metric->setData($data);
+            $metric = $this->factory->createMetric($attribute->getMetricFamily());
+            $metric->setUnit($unit);
+            $metric->setData($data);
 
-                $value->setMetric($metric);
-            }
+            $value->setMetric($metric);
         }
     }
 }

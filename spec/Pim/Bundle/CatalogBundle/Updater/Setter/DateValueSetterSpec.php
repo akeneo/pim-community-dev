@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Prophecy\Argument;
 
 class DateValueSetterSpec extends ObjectBehavior
 {
@@ -50,6 +51,20 @@ class DateValueSetterSpec extends ObjectBehavior
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
+    function it_throws_an_error_if_data_is_not_correctly_formated(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = '1970-mm-01';
+
+        $this->shouldThrow(
+            new \LogicException('Date format "1970-mm-01" is not correctly formatted, expected format is "yyyy-mm-dd"')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
     function it_throws_an_error_if_data_is_not_a_string(
         AttributeInterface $attribute
     ) {
@@ -79,7 +94,7 @@ class DateValueSetterSpec extends ObjectBehavior
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData($data)->shouldBeCalled();
+        $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)
