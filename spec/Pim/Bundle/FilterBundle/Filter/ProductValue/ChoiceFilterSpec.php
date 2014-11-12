@@ -121,8 +121,7 @@ class ChoiceFilterSpec extends ObjectBehavior
                 'class' => 'attributeOptionClass',
                 'dataLocale' => null,
                 'collectionId' => null
-            ],
-            'preload_choices' => false
+            ]
         ])->willReturn($form);
 
         $this->getForm()->shouldReturn($form);
