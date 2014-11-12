@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 
 class TextValueSetterSpec extends ObjectBehavior
 {
@@ -49,7 +50,9 @@ class TextValueSetterSpec extends ObjectBehavior
 
         $data = 42;
 
-        $this->shouldThrow('\LogicException')->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+        $this->shouldThrow(
+            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text value')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
     function it_sets_text_value_to_a_product_value(

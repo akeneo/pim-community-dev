@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -46,19 +47,34 @@ class SimpleSelectValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_array($data)) {
-            throw new \InvalidArgumentException('$data have to be an array');
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'simple select');
         }
 
         if (!array_key_exists('attribute', $data)) {
-            throw new \LogicException('Missing "attribute" key in array');
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'attribute',
+                'setter',
+                'simple select'
+            );
         }
 
         if (!array_key_exists('code', $data)) {
-            throw new \LogicException('Missing "code" key in array');
+            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'code', 'setter', 'simple select');
         }
 
         $attributeOption = $this->attrOptionRepository
             ->findOneBy(['code' => $data['code'], 'attribute' => $attribute]);
+
+        if (null === $attributeOption) {
+            throw InvalidArgumentException::arrayInvalidKey(
+                $attribute->getCode(),
+                'code',
+                sprintf('Option with code "%s" does not exist', $data['code']),
+                'setter',
+                'simple select'
+            );
+        }
 
         foreach ($products as $product) {
             $value = $product->getValue($attribute->getCode(), $locale, $scope);

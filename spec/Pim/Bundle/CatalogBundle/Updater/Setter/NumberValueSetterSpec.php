@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 
 class NumberValueSetterSpec extends ObjectBehavior
 {
@@ -46,7 +47,7 @@ class NumberValueSetterSpec extends ObjectBehavior
         $data = 'not a number';
 
         $this->shouldThrow(
-            new \LogicException('Attribute "attributeCode" expects a number as data')
+            InvalidArgumentException::numericExpected('attributeCode', 'setter', 'number')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 

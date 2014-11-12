@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 
@@ -57,24 +58,32 @@ class MetricValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_array($data)) {
-            throw new \InvalidArgumentException('$data have to be an array');
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric');
         }
 
         if (!array_key_exists('data', $data)) {
-            throw new \LogicException('Missing "data" key in array');
+            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'data', 'setter', 'metric');
         }
 
         if (!array_key_exists('unit', $data)) {
-            throw new \LogicException('Missing "unit" key in array');
+            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'unit', 'setter', 'metric');
         }
 
-        if (!is_numeric($data['data']) || !is_string($data['unit'])) {
-            throw new \LogicException('Invalid data type or invalid unit type');
+        if (!is_numeric($data['data'])) {
+            throw InvalidArgumentException::arrayNumericKeyExpected($attribute->getCode(), 'data', 'setter', 'metric');
+        }
+
+        if (!is_string($data['unit'])) {
+            throw InvalidArgumentException::arrayStringKeyExpected($attribute->getCode(), 'unit', 'setter', 'metric');
         }
 
         if (!$this->measureManager->unitExistsInFamily($data['unit'], $attribute->getMetricFamily())) {
-            throw new \LogicException(
-                sprintf('"%s" does not exist in any attribute\'s families', $data['unit'])
+            throw InvalidArgumentException::arrayInvalidKey(
+                $attribute->getCode(),
+                'unit',
+                sprintf('"%s" does not exist in any attribute\'s families', $data['unit']),
+                'setter',
+                'metric'
             );
         }
 

@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 
 class BooleanValueSetterSpec extends ObjectBehavior
 {
@@ -46,7 +47,7 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $data = 'not a boolean';
 
         $this->shouldThrow(
-            new \LogicException('Attribute "attributeCode" expects a boolean as data')
+            InvalidArgumentException::booleanExpected('attributeCode', 'setter', 'boolean')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 

@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Prophecy\Argument;
 
 class SimpleSelectValueSetterSpec extends ObjectBehavior
@@ -51,7 +52,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $data = 'not a simple select option';
 
         $this->shouldThrow(
-            new \LogicException('$data have to be an array')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'simple select')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -64,9 +65,8 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
 
         $data = ['no attribute key' => 'value'];
 
-
         $this->shouldThrow(
-            new \LogicException('Missing "attribute" key in array')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'attribute', 'setter', 'simple select')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -79,19 +79,43 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
 
         $data = ['attribute' => 'value', 'no code' => 'value'];
 
+        $this->shouldThrow(
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'code', 'setter', 'simple select')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_there_the_option_is_unknown(
+        $attrOptionRepository,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $attrOptionRepository
+            ->findOneBy(['code' => 'unknown code', 'attribute' => $attribute])
+            ->willReturn(null);
+
+        $data = ['attribute' => 'value', 'code' => 'unknown code'];
 
         $this->shouldThrow(
-            new \LogicException('Missing "code" key in array')
+            InvalidArgumentException::arrayInvalidKey(
+                'attributeCode',
+                'code',
+                'Option with code "unknown code" does not exist',
+                'setter',
+                'simple select'
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
     function it_sets_simpleselect_value_to_a_product_value(
+        $builder,
+        $attrOptionRepository,
         AttributeInterface $attribute,
         AbstractProduct $product1,
         AbstractProduct $product2,
         AbstractProduct $product3,
-        $builder,
-        $attrOptionRepository,
         ProductValue $productValue,
         AttributeOption $attributeOption
     ) {

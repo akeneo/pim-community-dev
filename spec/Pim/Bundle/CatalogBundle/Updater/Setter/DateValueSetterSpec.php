@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Prophecy\Argument;
 
 class DateValueSetterSpec extends ObjectBehavior
@@ -47,11 +48,11 @@ class DateValueSetterSpec extends ObjectBehavior
         $data = 'not a date';
 
         $this->shouldThrow(
-            new \LogicException('Date format "not a date" is not correctly formatted, expected format is "yyyy-mm-dd"')
+            InvalidArgumentException::expected('attributeCode', 'a string with the format yyyy-mm-dd', 'setter', 'date')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throws_an_error_if_data_is_not_correctly_formated(
+    function it_throws_an_error_if_data_is_not_correctly_formatted(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
@@ -61,7 +62,7 @@ class DateValueSetterSpec extends ObjectBehavior
         $data = '1970-mm-01';
 
         $this->shouldThrow(
-            new \LogicException('Date format "1970-mm-01" is not correctly formatted, expected format is "yyyy-mm-dd"')
+            InvalidArgumentException::expected('attributeCode', 'a string with the format yyyy-mm-dd', 'setter', 'date')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -72,10 +73,10 @@ class DateValueSetterSpec extends ObjectBehavior
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = 1970;
+        $data = new \Datetime();
 
         $this->shouldThrow(
-            new \LogicException('Attribute "attributeCode" expects a date as data')
+            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'date')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 

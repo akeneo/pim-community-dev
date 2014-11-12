@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -37,9 +38,7 @@ class DateValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_string($data)) {
-            throw new \InvalidArgumentException(
-                sprintf('Attribute "%s" expects a date as data', $attribute->getCode())
-            );
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'date');
         }
 
         $dateValues = explode('-', $data);
@@ -49,8 +48,11 @@ class DateValueSetter extends AbstractValueSetter
             || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
             || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
         ) {
-            throw new \LogicException(
-                sprintf('Date format "%s" is not correctly formatted, expected format is "%s"', $data, 'yyyy-mm-dd')
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                'a string with the format yyyy-mm-dd',
+                'setter',
+                'date'
             );
         }
 

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -37,7 +38,7 @@ class BooleanValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_bool($data)) {
-            throw new \LogicException(sprintf('Attribute "%s" expects a boolean as data', $attribute->getCode()));
+            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean');
         }
 
         foreach ($products as $product) {

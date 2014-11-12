@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 
 class MetricValueSetterSpec extends ObjectBehavior
 {
@@ -49,7 +50,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = 'Not an array';
 
         $this->shouldThrow(
-            new \InvalidArgumentException('$data have to be an array')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'metric')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -63,7 +64,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['unit' => 'kg'];
 
         $this->shouldThrow(
-            new \LogicException('Missing "data" key in array')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -77,7 +78,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 'data value'];
 
         $this->shouldThrow(
-            new \LogicException('Missing "unit" key in array')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -91,7 +92,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 'text', 'unit' => 'kg'];
 
         $this->shouldThrow(
-            new \LogicException('Invalid data type or invalid unit type')
+            InvalidArgumentException::arrayNumericKeyExpected('attributeCode', 'data', 'setter', 'metric')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -104,7 +105,9 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $data = ['data' => 42, 'unit' => 123];
 
-        $this->shouldThrow(new \LogicException('Invalid data type or invalid unit type'))->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+        $this->shouldThrow(
+            InvalidArgumentException::arrayStringKeyExpected('attributeCode', 'unit', 'setter', 'metric')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
     function it_throws_an_error_if_unit_does_not_exist(
@@ -120,7 +123,15 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $measureManager->unitExistsInFamily($data['unit'], 'Weight')->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow(new \LogicException('"incorrect unit" does not exist in any attribute\'s families'))->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+        $this->shouldThrow(
+            InvalidArgumentException::arrayInvalidKey(
+                'attributeCode',
+                'unit',
+                '"incorrect unit" does not exist in any attribute\'s families',
+                'setter',
+                'metric'
+            )
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
     function it_sets_numeric_value_to_a_product_value(

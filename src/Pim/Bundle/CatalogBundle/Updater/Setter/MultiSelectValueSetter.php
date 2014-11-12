@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -46,25 +47,47 @@ class MultiSelectValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_array($data)) {
-            throw new \InvalidArgumentException('$data have to be an array');
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'multi select');
         }
 
         $attributeOptions = [];
         foreach ($data as $attributeOption) {
             if (!is_array($attributeOption)) {
-                throw new \InvalidArgumentException('$data should contains arrays');
+                throw InvalidArgumentException::arrayOfArraysExpected($attribute->getCode(), 'setter', 'multi select');
             }
 
             if (!array_key_exists('attribute', $attributeOption)) {
-                throw new \LogicException('Missing "attribute" key in array');
+                throw InvalidArgumentException::arrayKeyExpected(
+                    $attribute->getCode(),
+                    'attribute',
+                    'setter',
+                    'multi select'
+                );
             }
 
             if (!array_key_exists('code', $attributeOption)) {
-                throw new \LogicException('Missing "code" key in array');
+                throw InvalidArgumentException::arrayKeyExpected(
+                    $attribute->getCode(),
+                    'code',
+                    'setter',
+                    'multi select'
+                );
             }
 
-            $attributeOptions[] = $this->attrOptionRepository
-                ->findOneBy(['code' => $attributeOption['code'], 'attribute' => $attribute]);
+            $option = $this->attrOptionRepository->findOneBy(
+                ['code' => $attributeOption['code'], 'attribute' => $attribute]
+            );
+            if (null === $option) {
+                throw InvalidArgumentException::arrayInvalidKey(
+                    $attribute->getCode(),
+                    'code',
+                    sprintf('Option with code "%s" does not exist', $attributeOption['code']),
+                    'setter',
+                    'multi select'
+                );
+            }
+
+            $attributeOptions[] = $option;
         }
 
         foreach ($products as $product) {

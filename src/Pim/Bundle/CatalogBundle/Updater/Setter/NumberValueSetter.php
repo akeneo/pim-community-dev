@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -37,7 +38,7 @@ class NumberValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_numeric($data)) {
-            throw new \LogicException(sprintf('Attribute "%s" expects a number as data', $attribute->getCode()));
+            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number');
         }
 
         foreach ($products as $product) {

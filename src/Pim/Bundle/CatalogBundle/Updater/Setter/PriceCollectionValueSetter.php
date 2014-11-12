@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -53,32 +54,53 @@ class PriceCollectionValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_array($data)) {
-            throw new \LogicException(
-                sprintf('Attribute "%s" expects an array as data', $attribute->getCode())
-            );
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'prices collection');
         }
 
         foreach ($data as $price) {
             if (!is_array($price)) {
-                throw new \LogicException(
-                    sprintf('$data should contains arrays as value', $attribute->getCode())
+                throw InvalidArgumentException::arrayOfArraysExpected(
+                    $attribute->getCode(),
+                    'setter',
+                    'prices collection'
                 );
             }
 
             if (!array_key_exists('data', $price)) {
-                throw new \LogicException('Missing "data" key in array');
+                throw InvalidArgumentException::arrayKeyExpected(
+                    $attribute->getCode(),
+                    'data',
+                    'setter',
+                    'prices collection'
+                );
             }
 
             if (!array_key_exists('currency', $price)) {
-                throw new \LogicException('Missing "currency" key in array');
+                throw InvalidArgumentException::arrayKeyExpected(
+                    $attribute->getCode(),
+                    'currency',
+                    'setter',
+                    'prices collection'
+                );
             }
 
             if (!is_numeric($price['data'])) {
-                throw new \LogicException('"data" should contains a numeric value');
+                throw InvalidArgumentException::arrayNumericKeyExpected(
+                    $attribute->getCode(),
+                    'data',
+                    'setter',
+                    'prices collection'
+                );
             }
 
             if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
-                throw new \LogicException('Invalid currency');
+                throw InvalidArgumentException::arrayInvalidKey(
+                    $attribute->getCode(),
+                    'currency',
+                    sprintf('Currency "%s" does not exist', $price['currency']),
+                    'setter',
+                    'prices collection'
+                );
             }
         }
 

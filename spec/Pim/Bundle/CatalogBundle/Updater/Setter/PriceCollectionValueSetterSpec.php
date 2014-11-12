@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Prophecy\Argument;
 
 class PriceCollectionValueSetterSpec extends ObjectBehavior
@@ -49,7 +50,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            new \LogicException('Attribute "attributeCode" expects an array as data')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'prices collection')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -63,7 +64,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = ['not an array'];
 
         $this->shouldThrow(
-            new \LogicException('$data should contains arrays as value')
+            InvalidArgumentException::arrayOfArraysExpected('attributeCode', 'setter', 'prices collection')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -77,7 +78,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = [['not the data key' => 123]];
 
         $this->shouldThrow(
-            new \LogicException('Missing "data" key in array')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'prices collection')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -91,7 +92,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = [['data' => 'non numeric value', 'currency' => 'EUR']];
 
         $this->shouldThrow(
-            new \LogicException('"data" should contains a numeric value')
+            InvalidArgumentException::arrayNumericKeyExpected('attributeCode', 'data', 'setter', 'prices collection')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -105,7 +106,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = [['data' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
-            new \LogicException('Missing "currency" key in array')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'currency', 'setter', 'prices collection')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -122,7 +123,13 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = [['data' => 123, 'currency' => 'invalid currency']];
 
         $this->shouldThrow(
-            new \LogicException('Invalid currency')
+            InvalidArgumentException::arrayInvalidKey(
+                'attributeCode',
+                'currency',
+                'Currency "invalid currency" does not exist',
+                'setter',
+                'prices collection'
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
