@@ -140,7 +140,7 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->jobManager->save($jobInstance);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
 
@@ -239,7 +239,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->jobManager->save($jobInstance);
 
                 $this->addFlash(
                     'success',
@@ -287,7 +287,7 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
 
-        $this->remove($jobInstance);
+        $this->jobManager->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
