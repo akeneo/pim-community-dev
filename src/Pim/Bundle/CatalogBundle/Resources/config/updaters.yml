@@ -1,0 +1,23 @@
+parameters:
+    pim_catalog.updater.product.class:           Pim\Bundle\CatalogBundle\Updater\ProductUpdater
+    pim_catalog.updater.setter.registry.class:   Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
+    pim_catalog.updater.setter.text_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\TextValueSetter
+
+services:
+    pim_catalog.updater.product:
+        class: %pim_catalog.updater.product.class%
+        arguments:
+            - @pim_catalog.updater.setter.registry
+
+    pim_catalog.updater.setter.registry:
+        class: %pim_catalog.updater.setter.registry.class%
+        arguments:
+            - @pim_catalog.repository.attribute
+
+    pim_catalog.updater.setter.text_value:
+        class: %pim_catalog.updater.setter.text_value.class%
+        arguments:
+            - @pim_catalog.repository.attribute
+            - @pim_catalog.builder.product
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
