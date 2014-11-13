@@ -41,16 +41,16 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     protected $registry;
 
     /** @var string */
-    protected $productDraftClassName;
+    protected $productDraftClass;
 
     /**
      * @param ManagerRegistry $registry
-     * @param string          $productDraftClassName
+     * @param string          $productDraftClass
      */
-    public function __construct(ManagerRegistry $registry, $productDraftClassName)
+    public function __construct(ManagerRegistry $registry, $productDraftClass)
     {
         $this->registry = $registry;
-        $this->productDraftClassName = $productDraftClassName;
+        $this->productDraftClass = $productDraftClass;
     }
 
     /**
@@ -195,6 +195,6 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      */
     protected function getProductDrafts(ProductInterface $product)
     {
-        return $this->registry->getRepository($this->productDraftClassName)->findByProduct($product);
+        return $this->registry->getRepository($this->productDraftClass)->findByProduct($product);
     }
 }

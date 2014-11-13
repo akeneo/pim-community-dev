@@ -38,8 +38,9 @@
     </div>
 {% endif %}
 
-<div class="tab-pane" id="history" data-url="{{ path('pim_enrich_product_history', { id: product.id }) }}">
-</div>
+{% if resource_granted('pim_enrich_product_history') %}
+    <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_product_history', { id: product.id }) }}"></div>
+{% endif %}
 
 {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
 <div class="tab-pane" id="proposals" data-url="{{ path('pimee_enrich_product_product_drafts', { id: product.id, dataLocale: dataLocale }) }}">

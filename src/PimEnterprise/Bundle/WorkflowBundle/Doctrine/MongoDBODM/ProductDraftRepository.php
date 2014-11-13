@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductDraftRepository extends DocumentRepository implements ProductDraftRepositoryInterface
 {
     /** @var CategoryAccessRepository */
-    protected $categoryAccessRepository;
+    protected $categoryAccessRepo;
 
     /**
      * {@inheritdoc}
@@ -46,7 +46,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      */
     public function createProposalDatagridQueryBuilder(array $parameters = [])
     {
-        if (null === $this->categoryAccessRepository) {
+        if (null === $this->categoryAccessRepo) {
             throw new \LogicException('Category access repository should be set.');
         }
 
@@ -151,7 +151,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      */
     public function setCategoryAccessRepository(CategoryAccessRepository $repository)
     {
-        $this->categoryAccessRepository = $repository;
+        $this->categoryAccessRepo = $repository;
 
         return $this;
     }
@@ -183,7 +183,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      */
     protected function getGrantedCategoryIds(UserInterface $user)
     {
-        $qb = $this->categoryAccessRepository->createQueryBuilder('o');
+        $qb = $this->categoryAccessRepo->createQueryBuilder('o');
 
         $qb
             ->join('o.category', 'category')

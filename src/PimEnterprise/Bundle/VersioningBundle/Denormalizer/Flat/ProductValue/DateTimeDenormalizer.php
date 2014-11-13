@@ -26,6 +26,10 @@ class DateTimeDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        if ($data === null || $data === '') {
+            return null;
+        }
+
         return new \DateTime(trim($data));
     }
 }

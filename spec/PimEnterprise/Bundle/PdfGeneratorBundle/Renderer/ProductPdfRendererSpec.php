@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior

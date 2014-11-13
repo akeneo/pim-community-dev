@@ -4,14 +4,14 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Serializer;
 
 class FamilyDenormalizerSpec extends ObjectBehavior
 {
-    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Family';
+    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Model\FamilyInterface';
     const FORMAT_CSV   = 'csv';
 
     function let(Serializer $serializer, ManagerRegistry $registry, FamilyRepository $repository)
@@ -54,7 +54,7 @@ class FamilyDenormalizerSpec extends ObjectBehavior
         )->shouldBe(false);
     }
 
-    function it_denormalizes_family($repository, Family $family)
+    function it_denormalizes_family($repository, FamilyInterface $family)
     {
         $repository->findByReference('foo')->willReturn($family);
 
