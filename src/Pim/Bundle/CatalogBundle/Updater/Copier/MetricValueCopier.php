@@ -2,19 +2,37 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
- * Copy a text value attribute in other text value attribute
+ * Copy a metric value attribute in other metric value attribute
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextValueCopier extends AbstractValueCopier
+class MetricValueCopier extends AbstractValueCopier
 {
+    /** @var MetricFactory */
+    protected $factory;
+
+    /**
+     * @param ProductBuilder $builder
+     * @param MetricFactory  $factory
+     * @param array          $supportedTypes
+     */
+    public function __construct(ProductBuilder $builder, MetricFactory $factory, array $supportedTypes)
+    {
+        parent::__construct(
+            $builder,
+            $supportedTypes
+        );
+        $this->factory = $factory;
+    }
     /**
      * {@inheritdoc}
      */
@@ -39,7 +57,18 @@ class TextValueCopier extends AbstractValueCopier
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
-            $toValue->setData($fromData);
+            if ($fromData instanceof MetricInterface) {
+                if ($fromData->getFamily() === $toValue->getData()->getFamily()) {
+                    $metric = $this->factory->createMetric($fromData->getFamily());
+
+                    $metric->setUnit($fromData->getUnit());
+                    $metric->setData($fromData->getData());
+
+                    $toValue->setMetric($metric);
+                } else {
+                    throw new \InvalidArgumentException();
+                }
+            }
         }
     }
 }

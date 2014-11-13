@@ -14,6 +14,13 @@ parameters:
 
     pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\TextValueCopier
+    pim_catalog.updater.copier.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Copier\BooleanValueCopier
+    pim_catalog.updater.copier.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\NumberValueCopier
+    pim_catalog.updater.copier.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\DateValueCopier
+    pim_catalog.updater.copier.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\MetricValueCopier
+    pim_catalog.updater.copier.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Copier\SimpleSelectValueCopier
+    pim_catalog.updater.copier.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Copier\MultiSelectValueCopier
+    pim_catalog.updater.copier.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Copier\PriceCollectionValueCopier
 
 services:
     pim_catalog.updater.product:
@@ -115,5 +122,64 @@ services:
         class: %pim_catalog.updater.copier.text_value.class%
         arguments:
             - @pim_catalog.builder.product
+            - ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.boolean_value:
+        class: %pim_catalog.updater.copier.boolean_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.number_value:
+        class: %pim_catalog.updater.copier.number_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.date_value:
+        class: %pim_catalog.updater.copier.date_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.metric_value:
+        class: %pim_catalog.updater.copier.metric_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.factory.metric
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.simpleselect_value:
+        class: %pim_catalog.updater.copier.simpleselect_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.multiselect_value:
+        class: %pim_catalog.updater.copier.multiselect_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - ['pim_catalog_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.price_collection_value:
+        class: %pim_catalog.updater.copier.price_collection_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.manager.product
+            - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.copier' }

@@ -3,17 +3,16 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
- * Copy a text value attribute in other text value attribute
+ * Copy a multi select value attribute in other multi select value attribute
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextValueCopier extends AbstractValueCopier
+class MultiSelectValueCopier extends AbstractValueCopier
 {
     /**
      * {@inheritdoc}
@@ -39,7 +38,17 @@ class TextValueCopier extends AbstractValueCopier
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
-            $toValue->setData($fromData);
+
+
+            if (is_object($fromData)) {
+                foreach ($toValue->getOptions() as $attributeOption) {
+                    $toValue->removeOption($attributeOption);
+                }
+
+                foreach ($fromData as $attributeOption) {
+                    $toValue->addOption($attributeOption);
+                }
+            }
         }
     }
 }
