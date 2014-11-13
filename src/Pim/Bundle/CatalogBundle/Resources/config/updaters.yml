@@ -10,6 +10,7 @@ parameters:
     pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
     pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectValueSetter
     pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionValueSetter
+    pim_catalog.updater.setter.media_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\MediaValueSetter
 
     pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\TextValueCopier
@@ -94,6 +95,16 @@ services:
             - @pim_catalog.builder.product
             - @pim_catalog.repository.attribute_option
             - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.media_value:
+        class: %pim_catalog.updater.setter.media_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.manager.product
+            - @pim_catalog.factory.media
+            - ['pim_catalog_file', 'pim_catalog_image']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
