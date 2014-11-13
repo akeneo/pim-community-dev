@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Engine;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
@@ -22,18 +22,17 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 interface ApplierInterface
 {
     /**
-     * @param RuleInterface           $rule
+     * @param LoadedRuleInterface     $rule
      * @param RuleSubjectSetInterface $subjectSet
      *
      * @return mixed
      */
-    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet);
+    public function apply(LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet);
 
     /**
-     * @param RuleInterface           $rule
-     * @param RuleSubjectSetInterface $subjectSet
+     * @param LoadedRuleInterface $rule
      *
      * @return bool
      */
-    public function supports(RuleInterface $rule, RuleSubjectSetInterface $subjectSet);
+    public function supports(LoadedRuleInterface $rule);
 }
