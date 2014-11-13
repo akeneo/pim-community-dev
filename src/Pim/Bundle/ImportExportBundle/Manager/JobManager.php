@@ -4,7 +4,10 @@ namespace Pim\Bundle\ImportExportBundle\Manager;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -18,37 +21,31 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobManager
+class JobManager implements SaverInterface, RemoverInterface
 {
-    /**
-     * @var SmartManagerRegistry
-     */
-    protected $managerRegistry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $jobExecutionClass;
 
     /**
      * Constructor
      *
+     * @param ObjectManager            $objectManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param SmartManagerRegistry     $managerRegistry
      * @param string                   $jobExecutionClass
      */
     public function __construct(
+        ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        SmartManagerRegistry $managerRegistry,
         $jobExecutionClass
     ) {
+        $this->objectManager     = $objectManager;
         $this->eventDispatcher   = $eventDispatcher;
-        $this->managerRegistry   = $managerRegistry;
         $this->jobExecutionClass = $jobExecutionClass;
     }
 
@@ -93,6 +90,48 @@ class JobManager
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function save($object, array $options = [])
+    {
+        if (!$object instanceof JobInstance) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Akeneo\Bundle\BatchBundle\Entity\JobInstance, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($object, array $options = [])
+    {
+        if (!$object instanceof JobInstance) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Akeneo\Bundle\BatchBundle\Entity\JobInstance, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->remove($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+    }
+
+    /**
      * Instantiate a new job execution
      *
      * @param JobInstance   $jobInstance
@@ -106,9 +145,8 @@ class JobManager
         $jobExecution = new $this->jobExecutionClass();
 
         $jobExecution->setJobInstance($jobInstance)->setUser($user->getUsername());
-        $manager = $this->managerRegistry->getManagerForClass(get_class($jobExecution));
-        $manager->persist($jobExecution);
-        $manager->flush($jobExecution);
+        $this->objectManager->persist($jobExecution);
+        $this->objectManager->flush($jobExecution);
 
         return $jobExecution;
     }

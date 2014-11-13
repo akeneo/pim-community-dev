@@ -1,0 +1,15 @@
+parameters:
+    pim_catalog.saver.base.class: Pim\Bundle\CatalogBundle\Saver\BaseSaver
+
+services:
+    pim_catalog.saver.group_type:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.group_type.class%
+
+    pim_catalog.saver.currency:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.currency.class%

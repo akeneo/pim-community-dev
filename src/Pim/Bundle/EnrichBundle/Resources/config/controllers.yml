@@ -65,11 +65,14 @@ services:
         arguments:
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
+            - '@pim_catalog.remover.channel'
 
     pim_enrich.controller.currency:
         scope: request
         class: %pim_enrich.controller.currency.class%
         parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.saver.currency'
 
     pim_enrich.controller.family:
         scope: request
@@ -183,6 +186,7 @@ services:
         arguments:
             - '@pim_enrich.form.handler.group_type'
             - '@pim_enrich.form.group_type'
+            - '@pim_catalog.remover.group_type'
 
     pim_enrich.controller.completeness:
         class: %pim_enrich.controller.completeness.class%
