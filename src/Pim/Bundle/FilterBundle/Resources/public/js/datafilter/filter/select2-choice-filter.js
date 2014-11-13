@@ -132,7 +132,7 @@ define(
             },
 
             _readDOMValue: function() {
-                var operator = this.$('li.active .operator_choice').data('value');
+                var operator = this.emptyChoice ? this.$('li.active .operator_choice').data('value') : 'in';
 
                 return {
                     value: operator === 'empty' ? {} : this._getInputValue(this.criteriaValueSelectors.value),
@@ -249,7 +249,8 @@ define(
                     return this.operatorChoices[operator];
                 }
 
-                return TextFilter.prototype._getCriteriaHint.apply(this, arguments);
+                var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+                return !_.isEmpty(value.value) ? '"' + value.value + '"': this.placeholder;
             }
         });
     }
