@@ -1,4 +1,4 @@
-# 1.2.x
+# 1.2.12 (2014-11-13)
 
 ## Bug fixes
 - PIM-3298: Fix issue with locale specific property of an attribute when edit and mass edit
