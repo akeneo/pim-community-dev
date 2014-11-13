@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
+use Pim\Bundle\CatalogBundle\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,7 +29,7 @@ class ProductManagerSpec extends ObjectBehavior
 
     function let(
         ObjectManager $objectManager,
-        ProductPersister $persister,
+        ProductSaver $productSaver,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -49,7 +49,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $entityConfig,
             $objectManager,
-            $persister,
+            $productSaver,
             $eventDispatcher,
             $mediaManager,
             $builder,
@@ -103,7 +103,7 @@ class ProductManagerSpec extends ObjectBehavior
     }
 
     function it_adds_attributes_to_product_and_save_it(
-        $persister,
+        $productSaver,
         $builder,
         ProductInterface $product,
         AvailableAttributes $attributes,
@@ -117,14 +117,14 @@ class ProductManagerSpec extends ObjectBehavior
         $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
         $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
 
-        $persister->persist($product, ['recalculate' => false, 'flush' => true, 'schedule' => false])
+        $productSaver->save($product, ['recalculate' => false, 'schedule' => false])
             ->shouldBeCalled();
 
         $this->addAttributesToProduct($product, $attributes);
     }
 
     function it_adds_attributes_to_product_and_save_it_with_saving_options(
-        $persister,
+        $productSaver,
         $builder,
         ProductInterface $product,
         AvailableAttributes $attributes,
@@ -138,14 +138,14 @@ class ProductManagerSpec extends ObjectBehavior
         $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
         $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
 
-        $persister->persist($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])
+        $productSaver->save($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])
             ->shouldBeCalled();
 
         $this->addAttributesToProduct($product, $attributes, ['flush' => false]);
     }
 
     function it_removes_attribute_from_product_and_save_it(
-        $persister,
+        $productSaver,
         ProductInterface $product,
         AvailableAttributes $attributes,
         AbstractAttribute $skuAttribute,
@@ -163,13 +163,13 @@ class ProductManagerSpec extends ObjectBehavior
         $product->removeValue($nameFr)->shouldBeCalled();
         $product->removeValue($nameEn)->shouldBeCalled();
 
-        $persister->persist($product, ['recalculate' => false, 'flush' => true, 'schedule' => false])->shouldBeCalled();
+        $productSaver->save($product, ['recalculate' => false, 'schedule' => false])->shouldBeCalled();
 
         $this->removeAttributeFromProduct($product, $nameAttribute);
     }
 
     function it_removes_attribute_from_product_and_save_it_with_saving_options(
-        $persister,
+        $productSaver,
         ProductInterface $product,
         AvailableAttributes $attributes,
         AbstractAttribute $skuAttribute,
@@ -187,7 +187,7 @@ class ProductManagerSpec extends ObjectBehavior
         $product->removeValue($nameFr)->shouldBeCalled();
         $product->removeValue($nameEn)->shouldBeCalled();
 
-        $persister->persist($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])->shouldBeCalled();
+        $productSaver->save($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])->shouldBeCalled();
 
         $this->removeAttributeFromProduct($product, $nameAttribute, ['flush' => false]);
     }
@@ -199,37 +199,6 @@ class ProductManagerSpec extends ObjectBehavior
 
         $productRepository->valueExists($value)->willReturn(false);
         $this->valueExists($value)->shouldReturn(false);
-    }
-
-    function it_throws_exception_when_save_anything_else_than_a_product()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringSave($anythingElse);
-    }
-
-    function it_throws_exception_when_bulk_save_anything_else_than_a_product(ProductInterface $product)
-    {
-        $anythingElse = new \stdClass();
-        $mixed = [$product, $anythingElse];
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringSaveAll($mixed);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_product()
@@ -247,11 +216,11 @@ class ProductManagerSpec extends ObjectBehavior
             ->duringRemove($anythingElse);
     }
 
-    function it_delegates_database_product_synchronization_to_the_product_persister(
-        ProductPersister $persister,
+    function it_delegates_database_product_synchronization_to_the_product_saver(
+        ProductSaver $productSaver,
         ProductInterface $product
     ) {
-        $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
+        $productSaver->save($product, [])->shouldBeCalled();
 
         $this->save($product);
     }
