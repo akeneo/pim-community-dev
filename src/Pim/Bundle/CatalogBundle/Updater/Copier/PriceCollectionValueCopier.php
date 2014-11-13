@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -20,14 +21,14 @@ class PriceCollectionValueCopier extends AbstractValueCopier
     protected $productManager;
 
     /**
-     * @param ProductBuilder $builder
+     * @param ProductBuilder $productBuilder
      * @param ProductManager $productManager
      * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, ProductManager $productManager, array $supportedTypes)
+    public function __construct(ProductBuilder $productBuilder, ProductManager $productManager, array $supportedTypes)
     {
         parent::__construct(
-            $builder,
+            $productBuilder,
             $supportedTypes
         );
         $this->productManager = $productManager;
@@ -52,19 +53,59 @@ class PriceCollectionValueCopier extends AbstractValueCopier
         AttributeUtility::validateScope($toAttribute, $toScope);
 
         foreach ($products as $product) {
-            $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-            $fromData = (null === $fromValue) ? '' : $fromValue->getData();
+            $this->copySingleValue(
+                $fromAttribute,
+                $toAttribute,
+                $fromLocale,
+                $toLocale,
+                $fromScope,
+                $toScope,
+                $product
+            );
+        }
+    }
+
+    /**
+     * Copy single value
+     *
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
+     * @param string             $fromLocale
+     * @param string             $toLocale
+     * @param string             $fromScope
+     * @param string             $toScope
+     * @param string             $product
+     */
+    protected function copySingleValue(
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $fromLocale,
+        $toLocale,
+        $fromScope,
+        $toScope,
+        $product
+    ) {
+        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        if (null !== $fromValue) {
             $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
+            $this->copyOptions($fromValue, $toValue);
+        }
+    }
 
-            if (is_object($fromData)) {
-                foreach ($fromData as $price) {
-                    $this->productBuilder
-                        ->addPriceForCurrencyWithData($toValue, $price->getCurrency(), $price->getData());
-                }
-            }
+    /**
+     * Copy attribute price into a price collection attribute
+     *
+     * @param ProductValueInterface $fromValue
+     * @param ProductValueInterface $toValue
+     */
+    protected function copyOptions(ProductValueInterface $fromValue, ProductValueInterface $toValue)
+    {
+        foreach ($fromValue->getData() as $price) {
+            $this->productBuilder
+                ->addPriceForCurrencyWithData($toValue, $price->getCurrency(), $price->getData());
         }
     }
 }

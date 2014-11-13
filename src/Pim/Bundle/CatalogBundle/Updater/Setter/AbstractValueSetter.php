@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Sets a boolean value in many products
+ * Abstract setter
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

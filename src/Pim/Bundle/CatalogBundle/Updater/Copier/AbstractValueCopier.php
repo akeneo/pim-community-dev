@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
- * Sets a boolean value in many products
+ * Abstract copier
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -18,16 +18,16 @@ abstract class AbstractValueCopier implements CopierInterface
     protected $productBuilder;
 
     /** @var array */
-    protected $types = [];
+    protected $supportedTypes = [];
 
     /**
-     * @param ProductBuilder $builder
-     * @param array $supportedTypes
+     * @param ProductBuilder $productBuilder
+     * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, array $supportedTypes)
+    public function __construct(ProductBuilder $productBuilder, array $supportedTypes)
     {
-        $this->productBuilder = $builder;
-        $this->types          = $supportedTypes;
+        $this->productBuilder = $productBuilder;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**
@@ -35,8 +35,8 @@ abstract class AbstractValueCopier implements CopierInterface
      */
     public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->types);
-        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->types);
+        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedTypes);
+        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedTypes);
 
         return $supportsFrom && $supportsTo;
     }
@@ -46,6 +46,6 @@ abstract class AbstractValueCopier implements CopierInterface
      */
     public function getSupportedTypes()
     {
-        return $this->types;
+        return $this->supportedTypes;
     }
 }

@@ -20,12 +20,12 @@ class BooleanValueSetter extends AbstractValueSetter
     protected $productBuilder;
 
     /**
-     * @param ProductBuilder $builder
+     * @param ProductBuilder $productBuilder
      * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, array $supportedTypes)
+    public function __construct(ProductBuilder $productBuilder, array $supportedTypes)
     {
-        $this->productBuilder = $builder;
+        $this->productBuilder = $productBuilder;
         $this->supportedTypes = $supportedTypes;
     }
 

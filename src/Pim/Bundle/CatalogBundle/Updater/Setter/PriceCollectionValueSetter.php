@@ -28,18 +28,18 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     protected $productManager;
 
     /**
-     * @param ProductBuilder  $builder
+     * @param ProductBuilder  $productBuilder
      * @param CurrencyManager $currencyManager
      * @param ProductManager  $productManager
      * @param array           $supportedTypes
      */
     public function __construct(
-        ProductBuilder $builder,
+        ProductBuilder $productBuilder,
         CurrencyManager $currencyManager,
         ProductManager $productManager,
         array $supportedTypes
     ) {
-        $this->productBuilder  = $builder;
+        $this->productBuilder  = $productBuilder;
         $this->currencyManager = $currencyManager;
         $this->productManager  = $productManager;
         $this->supportedTypes  = $supportedTypes;

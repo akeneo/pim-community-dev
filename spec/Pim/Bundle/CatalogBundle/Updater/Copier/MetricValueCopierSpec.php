@@ -12,9 +12,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
 class MetricValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, MetricFactory $factory)
+    function let(ProductBuilder $builder, MetricFactory $metricFactory)
     {
-        $this->beConstructedWith($builder, $factory, ['pim_catalog_metric']);
+        $this->beConstructedWith($builder, $metricFactory, ['pim_catalog_metric']);
     }
 
     function it_is_a_copier()
@@ -43,7 +43,7 @@ class MetricValueCopierSpec extends ObjectBehavior
 
     function it_copies_a_metric_value_to_a_product_value(
         $builder,
-        $factory,
+        $metricFactory,
         MetricInterface $metric,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
@@ -52,7 +52,8 @@ class MetricValueCopierSpec extends ObjectBehavior
         AbstractProduct $product3,
         AbstractProduct $product4,
         ProductValue $fromProductValue,
-        ProductValue $toProductValue
+        ProductValue $toProductValue,
+        ProductValue $toProductValue2
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -62,14 +63,21 @@ class MetricValueCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
+        $fromAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Weight');
 
         $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+        $toAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Weight');
 
         $fromProductValue->getData()->willReturn($metric);
-        $toProductValue->setMetric($metric)->shouldBeCalledTimes(3);
+        $toProductValue->setMetric($metric)->shouldBeCalledTimes(2);
         $toProductValue->getData()->willReturn($metric);
+        $toProductValue->getMetric()->willReturn($metric);
+
+        $toProductValue2->setMetric($metric)->shouldBeCalledTimes(1);
+        $toProductValue2->getData()->willReturn($metric);
+        $toProductValue2->getMetric()->willReturn(null);
 
         $metric->getFamily()->shouldBeCalled()->willReturn('Weight');
         $metric->getData()->shouldBeCalled()->willReturn(123);
@@ -88,9 +96,9 @@ class MetricValueCopierSpec extends ObjectBehavior
         $product3->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
 
         $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue2);
 
-        $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
+        $metricFactory->createMetric('Weight')->shouldBeCalledTimes(1)->willReturn($metric);
 
         $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
@@ -100,17 +108,12 @@ class MetricValueCopierSpec extends ObjectBehavior
     }
 
     function it_does_not_copy_a_metric_value_to_a_product_value_if_its_not_the_same_familly(
-        $builder,
-        MetricInterface $metric1,
-        MetricInterface $metric2,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         AbstractProduct $product1,
         AbstractProduct $product2,
         AbstractProduct $product3,
-        AbstractProduct $product4,
-        ProductValue $fromProductValue,
-        ProductValue $toProductValue
+        AbstractProduct $product4
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -120,42 +123,16 @@ class MetricValueCopierSpec extends ObjectBehavior
         $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
+        $fromAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Weight');
 
         $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
-
-        $fromProductValue->getData()->willReturn($metric1);
-        $toProductValue->getData()->willReturn($metric2);
-        $toProductValue->setMetric($metric1)->shouldNotBeCalled();
-
-        $metric1->getFamily()->shouldBeCalled()->willReturn('Weight');
-        $metric1->getData()->shouldNotBeCalled()->willReturn(123);
-        $metric1->getUnit()->shouldNotBeCalled()->willReturn('kg');
-
-        $metric1->getFamily()->shouldBeCalled()->willReturn('Time');
-        $metric1->getData()->shouldNotBeCalled()->willReturn(123);
-        $metric1->getUnit()->shouldNotBeCalled()->willReturn('kg');
-
-        $metric1->setData(123)->shouldNotBeCalled();
-        $metric1->setUnit('kg')->shouldNotBeCalled();
-
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
-
-        $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $toAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Time');
 
         $products = [$product1, $product2, $product3, $product4];
 
-        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        $this->shouldThrow(new \LogicException('Metric families are not the same for attributes: "fromAttributeCode and toAttributeCode"'))
+            ->during('copyValue', [$products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope]);
     }
 }

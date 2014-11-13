@@ -6,13 +6,13 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
- * Copy a date value attribute in other date value attribute
+ * Copy a simple select value attribute in other simple select value attribute
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateValueCopier extends AbstractValueCopier
+class BaseValueCopier extends AbstractValueCopier
 {
     /**
      * {@inheritdoc}
@@ -32,16 +32,46 @@ class DateValueCopier extends AbstractValueCopier
         AttributeUtility::validateScope($toAttribute, $toScope);
 
         foreach ($products as $product) {
-            $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-            $fromData = (null === $fromValue) ? '' : $fromValue->getData();
+            $this->copySingleValue(
+                $fromAttribute,
+                $toAttribute,
+                $fromLocale,
+                $toLocale,
+                $fromScope,
+                $toScope,
+                $product
+            );
+        }
+    }
+
+    /**
+     * Copy single value
+     *
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
+     * @param string             $fromLocale
+     * @param string             $toLocale
+     * @param string             $fromScope
+     * @param string             $toScope
+     * @param string             $product
+     */
+    protected function copySingleValue(
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $fromLocale,
+        $toLocale,
+        $fromScope,
+        $toScope,
+        $product
+    ) {
+        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        if (null !== $fromValue) {
             $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
-            if (!$fromData instanceof \DateTime) {
-                throw new \InvalidArgumentException();
-            }
-            $toValue->setData($fromData);
+
+            $toValue->setData($fromValue->getData());
         }
     }
 }

@@ -74,7 +74,7 @@ class MultiSelectValueCopierSpec extends ObjectBehavior
         $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $fromProductValue->getData()->willReturn([$attributeOption])->shouldBeCalled(3);
+        $fromProductValue->getOptions()->willReturn([$attributeOption])->shouldBeCalled(3);
 
         $toProductValue->getOptions()->willReturn([$attributeOption]);
         $toProductValue->removeOption($attributeOption)->shouldBeCalled();

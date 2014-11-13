@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -32,23 +33,72 @@ class MultiSelectValueCopier extends AbstractValueCopier
         AttributeUtility::validateScope($toAttribute, $toScope);
 
         foreach ($products as $product) {
-            $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-            $fromData = (null === $fromValue) ? '' : $fromValue->getData();
+            $this->copySingleValue(
+                $fromAttribute,
+                $toAttribute,
+                $fromLocale,
+                $toLocale,
+                $fromScope,
+                $toScope,
+                $product
+            );
+        }
+    }
+
+    /**
+     * Copy single value
+     *
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
+     * @param string             $fromLocale
+     * @param string             $toLocale
+     * @param string             $fromScope
+     * @param string             $toScope
+     * @param string             $product
+     */
+    protected function copySingleValue(
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $fromLocale,
+        $toLocale,
+        $fromScope,
+        $toScope,
+        $product
+    ) {
+        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        if (null !== $fromValue) {
             $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
 
+            $this->removeOptions($toValue);
+            $this->copyOptions($fromValue, $toValue);
+        }
+    }
 
-            if (is_object($fromData)) {
-                foreach ($toValue->getOptions() as $attributeOption) {
-                    $toValue->removeOption($attributeOption);
-                }
+    /**
+     * Remove options from attribute
+     *
+     * @param ProductValueInterface $toValue
+     */
+    protected function removeOptions(ProductValueInterface $toValue)
+    {
+        foreach ($toValue->getOptions() as $attributeOption) {
+            $toValue->removeOption($attributeOption);
+        }
+    }
 
-                foreach ($fromData as $attributeOption) {
-                    $toValue->addOption($attributeOption);
-                }
-            }
+    /**
+     * Copy attribute options into a multi select attribute
+     *
+     * @param ProductValueInterface $fromValue
+     * @param ProductValueInterface $toValue
+     */
+    protected function copyOptions(ProductValueInterface $fromValue, ProductValueInterface $toValue)
+    {
+        foreach ($fromValue->getOptions() as $attributeOption) {
+            $toValue->addOption($attributeOption);
         }
     }
 }

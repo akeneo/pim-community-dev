@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
@@ -33,16 +32,44 @@ class SimpleSelectValueCopier extends AbstractValueCopier
         AttributeUtility::validateScope($toAttribute, $toScope);
 
         foreach ($products as $product) {
-            $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-            $fromData = (null === $fromValue) ? '' : $fromValue->getData();
+            $this->copySingleValue(
+                $fromAttribute,
+                $toAttribute,
+                $fromLocale,
+                $toLocale,
+                $fromScope,
+                $toScope,
+                $product
+            );
+        }
+    }
+
+    /**
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
+     * @param $fromLocale
+     * @param $toLocale
+     * @param $fromScope
+     * @param $toScope
+     * @param $product
+     */
+    protected function copySingleValue(
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $fromLocale,
+        $toLocale,
+        $fromScope,
+        $toScope,
+        $product
+    ) {
+        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        if (null !== $fromValue) {
             $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
 
-            if ($fromData instanceof AttributeOption) {
-                $toValue->setOption($fromData);
-            }
+            $toValue->setOption($fromValue->getData());
         }
     }
 }

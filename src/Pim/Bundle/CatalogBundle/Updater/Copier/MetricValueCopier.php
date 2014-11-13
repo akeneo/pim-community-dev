@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
 /**
@@ -18,21 +17,22 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 class MetricValueCopier extends AbstractValueCopier
 {
     /** @var MetricFactory */
-    protected $factory;
+    protected $metricFactory;
 
     /**
-     * @param ProductBuilder $builder
-     * @param MetricFactory  $factory
+     * @param ProductBuilder $productBuilder
+     * @param MetricFactory  $metricFactory
      * @param array          $supportedTypes
      */
-    public function __construct(ProductBuilder $builder, MetricFactory $factory, array $supportedTypes)
+    public function __construct(ProductBuilder $productBuilder, MetricFactory $metricFactory, array $supportedTypes)
     {
         parent::__construct(
-            $builder,
+            $productBuilder,
             $supportedTypes
         );
-        $this->factory = $factory;
+        $this->metricFactory = $metricFactory;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -49,26 +49,55 @@ class MetricValueCopier extends AbstractValueCopier
         AttributeUtility::validateScope($fromAttribute, $fromScope);
         AttributeUtility::validateLocale($toAttribute, $toLocale);
         AttributeUtility::validateScope($toAttribute, $toScope);
+        AttributeUtility::validateUnitFamilyFromAttribute($fromAttribute, $toAttribute);
 
         foreach ($products as $product) {
-            $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-            $fromData = (null === $fromValue) ? '' : $fromValue->getData();
+            $this->copySingleValue(
+                $fromAttribute,
+                $toAttribute,
+                $fromLocale,
+                $toLocale,
+                $fromScope,
+                $toScope,
+                $product
+            );
+        }
+    }
+
+    /**
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
+     * @param string             $fromLocale
+     * @param string             $toLocale
+     * @param string             $fromScope
+     * @param string             $toScope
+     * @param string             $product
+     */
+    protected function copySingleValue(
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $fromLocale,
+        $toLocale,
+        $fromScope,
+        $toScope,
+        $product
+    ) {
+        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        if (null !== $fromValue) {
+            $fromData = $fromValue->getData();
             $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
             }
-            if ($fromData instanceof MetricInterface) {
-                if ($fromData->getFamily() === $toValue->getData()->getFamily()) {
-                    $metric = $this->factory->createMetric($fromData->getFamily());
 
-                    $metric->setUnit($fromData->getUnit());
-                    $metric->setData($fromData->getData());
-
-                    $toValue->setMetric($metric);
-                } else {
-                    throw new \InvalidArgumentException();
-                }
+            if (null === $metric = $toValue->getMetric()) {
+                $metric = $this->metricFactory->createMetric($fromData->getFamily());
             }
+
+            $metric->setUnit($fromData->getUnit());
+            $metric->setData($fromData->getData());
+
+            $toValue->setMetric($metric);
         }
     }
 }
