@@ -88,6 +88,7 @@
 - We now use uniqid() to generate filename prefix (on media attributes)
 - Change of constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to add a `RemoverInterface` as last argument
 - Change of constructor of `Pim\Bundle\EnrichBundle\Controller\GroupTypeController.php` to add a `RemoverInterface` as last argument
+- `ProductPersister` and `BasePersister` has been replaced by `ProductSaver` in CatalogBundle
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

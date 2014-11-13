@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Persistence;
+namespace spec\Pim\Bundle\CatalogBundle\Saver;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
-class BasicPersisterSpec extends ObjectBehavior
+class ProductSaverSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, CompletenessManager $completenessManager)
     {
@@ -28,7 +28,7 @@ class BasicPersisterSpec extends ObjectBehavior
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
-        $this->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
 
     function it_does_not_schedule_neither_recalculate_completeness_when_persisting(
@@ -44,7 +44,7 @@ class BasicPersisterSpec extends ObjectBehavior
         $completenessManager->schedule($product)->shouldNotBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
 
-        $this->persist($product, ['recalculate' => false, 'flush' => true, 'schedule' => false]);
+        $this->save($product, ['recalculate' => false, 'flush' => true, 'schedule' => false]);
     }
 
     function it_does_not_flush_object_manager_when_persisting(
@@ -60,6 +60,6 @@ class BasicPersisterSpec extends ObjectBehavior
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
 
-        $this->persist($product, ['recalculate' => false, 'flush' => false, 'schedule' => true]);
+        $this->save($product, ['recalculate' => false, 'flush' => false, 'schedule' => true]);
     }
 }

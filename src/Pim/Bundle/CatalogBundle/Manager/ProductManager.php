@@ -19,7 +19,6 @@ use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -36,8 +35,8 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /** @var array */
     protected $configuration;
 
-    /** @var ProductPersister */
-    protected $persister;
+    /** @var SaverInterface */
+    protected $productSaver;
 
     /** @var ObjectManager */
     protected $objectManager;
@@ -68,7 +67,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      *
      * @param array                      $configuration
      * @param ObjectManager              $objectManager
-     * @param ProductPersister           $persister
+     * @param SaverInterface             $productSaver
      * @param EventDispatcherInterface   $eventDispatcher
      * @param MediaManager               $mediaManager
      * @param ProductBuilder             $builder
@@ -80,7 +79,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     public function __construct(
         $configuration,
         ObjectManager $objectManager,
-        ProductPersister $persister,
+        SaverInterface $productSaver,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -90,7 +89,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         AttributeOptionRepository $attOptionRepository
     ) {
         $this->configuration = $configuration;
-        $this->persister = $persister;
+        $this->productSaver = $productSaver;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaManager = $mediaManager;
@@ -222,24 +221,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-        $options = array_merge(
-            [
-                'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
-
-        $this->persister->persist($object, $options);
+        $this->productSaver->save($object, $options);
     }
 
     /**

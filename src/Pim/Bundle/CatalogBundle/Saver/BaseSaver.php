@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Saver;
 
-use Pim\Component\Resource\Model\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
 
 /**
  * Base saver, declared as different services for different classes
