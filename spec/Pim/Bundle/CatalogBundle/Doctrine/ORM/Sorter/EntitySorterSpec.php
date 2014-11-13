@@ -72,7 +72,7 @@ class EntitySorterSpec extends ObjectBehavior
         $qb->addOrderBy('sorterOVentity_code.value', 'DESC')->shouldBeCalled();
         $qb->addOrderBy('r.id')->shouldBeCalled();
 
-        $this->addAttributeSorter($attribute, 'DESC', ['locale' => 'en_US']);
+        $this->addAttributeSorter($attribute, 'DESC','en_US');
     }
 
     function it_throws_an_exception_when_the_locale_is_not_provided($qb, AttributeInterface $attribute)
@@ -82,9 +82,6 @@ class EntitySorterSpec extends ObjectBehavior
         $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringAddAttributeSorter($attribute, 'desc', []);
-        $this
-            ->shouldThrow('\InvalidArgumentException')
-            ->duringAddAttributeSorter($attribute, 'desc', ['locale' => null]);
+            ->duringAddAttributeSorter($attribute, 'desc', null, 'ecommerce');
     }
 }

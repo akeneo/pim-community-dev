@@ -18,11 +18,12 @@ interface AttributeSorterInterface extends SorterInterface
      *
      * @param AttributeInterface $attribute the attribute to sort on
      * @param string             $direction the direction to use
-     * @param array              $context   the sorter context, used for locale and scope
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      *
      * @return AttributeSorterInterface
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = []);
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $scope = null);
 
     /**
      * This filter supports the attribute

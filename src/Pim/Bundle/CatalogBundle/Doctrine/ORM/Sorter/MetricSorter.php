@@ -40,14 +40,14 @@ class MetricSorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = [])
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $scope = null)
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
         // join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->leftJoin(
             $this->qb->getRootAlias().'.values',
             $joinAlias,
@@ -71,16 +71,17 @@ class MetricSorter implements AttributeSorterInterface
      *
      * @param AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
-     * @param array              $context   the context
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      *
-     * @throws ProductQueryException
+     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $locale = null, $scope = null)
     {
         $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $locale, $scope);
     }
 }
