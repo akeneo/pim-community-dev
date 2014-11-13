@@ -57,7 +57,8 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterAttributeTypePass())
             ->addCompilerPass(new Compiler\RegisterQueryGeneratorsPass())
             ->addCompilerPass(new Compiler\RegisterProductQueryFilterPass())
-            ->addCompilerPass(new Compiler\RegisterProductQuerySorterPass());
+            ->addCompilerPass(new Compiler\RegisterProductQuerySorterPass())
+            ->addCompilerPass(new Compiler\RegisterProductUpdaterPass());
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
