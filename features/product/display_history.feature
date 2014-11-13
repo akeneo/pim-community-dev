@@ -19,6 +19,29 @@ Feature: Display the product history
       | version | property | value       |
       | 1       | sku      | sandals-001 |
 
+  Scenario: Update product history when a linked attribute option is removed
+    Given a "footwear" catalog configuration
+    And the following product:
+      | sku   | weather_conditions |
+      | boots | cold,snowy         |
+    And I am logged in as "Julia"
+    When I edit the "boots" product
+    And I visit the "History" tab
+    Then there should be 1 update
+    And I should see history:
+      | version | property           | value      |
+      | 1       | weather_conditions | cold,snowy |
+    When I edit the "weather_conditions" attribute
+    And I visit the "Values" tab
+    And I remove the "snowy" option
+    And I save the attribute
+    And I edit the "boots" product
+    And I visit the "History" tab
+    Then there should be 2 updates
+    And I should see history:
+      | version | property           | value |
+      | 2       | weather_conditions | cold  |
+
   Scenario: Update product history when a linked category is removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -111,26 +134,3 @@ Feature: Display the product history
       | version | property           | value |
       | 2       | weather_conditions |       |
       | 3       | comment            |       |
-
-  Scenario: Update product history when a linked attribute option is removed
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku   | weather_conditions |
-      | boots | cold,snowy         |
-    And I am logged in as "Julia"
-    When I edit the "boots" product
-    And I visit the "History" tab
-    Then there should be 1 update
-    And I should see history:
-      | version | property           | value      |
-      | 1       | weather_conditions | cold,snowy |
-    When I edit the "weather_conditions" attribute
-    And I visit the "Values" tab
-    And I remove the "snowy" option
-    And I save the attribute
-    And I edit the "boots" product
-    And I visit the "History" tab
-    Then there should be 2 updates
-    And I should see history:
-      | version | property           | value |
-      | 2       | weather_conditions | cold  |
