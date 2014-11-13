@@ -19,11 +19,12 @@ interface AttributeFilterInterface extends FilterInterface
      * @param AttributeInterface $attribute the attribute
      * @param string             $operator  the used operator
      * @param string|array       $value     the value(s) to filter
-     * @param array              $context   the filter context, used for locale and scope
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      *
      * @return AttributeFilterInterface
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = []);
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null);
 
     /**
      * This filter supports the attribute

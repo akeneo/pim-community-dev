@@ -63,7 +63,7 @@ class StringFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
@@ -73,11 +73,11 @@ class StringFilter implements AttributeFilterInterface
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
             $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
 
             $this->qb->innerJoin(
@@ -178,16 +178,17 @@ class StringFilter implements AttributeFilterInterface
      *
      * @param AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
-     * @param array              $context   the context
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      *
      * @throws ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $locale = null, $scope = null)
     {
         $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $locale, $scope);
     }
 }

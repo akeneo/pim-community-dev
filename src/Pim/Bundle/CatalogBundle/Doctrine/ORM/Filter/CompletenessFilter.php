@@ -41,14 +41,14 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
         $alias = 'filterCompleteness';
         $field = $alias.'.ratio';
         $util = new CompletenessJoin($this->qb);
         $util->addJoins($alias);
 
-        if ($operator === '=') {
+        if ('=' === $operator) {
             $this->qb->andWhere($this->qb->expr()->eq($field, '100'));
         } else {
             $this->qb->andWhere($this->qb->expr()->lt($field, '100'));

@@ -95,7 +95,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
@@ -105,7 +105,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
 
@@ -114,7 +114,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
@@ -124,7 +124,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
             );
 
         } else {
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
                 $this->qb->getRootAlias().'.values',
@@ -140,7 +140,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
 
@@ -194,7 +194,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
      * @param string  $data
      * @param boolean $endOfDay
      *
-     * @return Literal
+     * @return \Doctrine\ORM\Query\Expr\Literal
      */
     protected function getDateLiteralExpr($data, $endOfDay = false)
     {
@@ -228,7 +228,7 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
      * @param string|array $value    the value(s) to filter
      *
      * @return string
-     * @throws ProductQueryException
+     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
      */
     protected function prepareCriteriaCondition($field, $operator, $value)
     {
@@ -242,16 +242,17 @@ class DateFilter implements FieldFilterInterface, AttributeFilterInterface
      *
      * @param AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
-     * @param array              $context   the context
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      *
-     * @throws ProductQueryException
+     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $locale = null, $scope = null)
     {
         $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $locale, $scope);
     }
 }

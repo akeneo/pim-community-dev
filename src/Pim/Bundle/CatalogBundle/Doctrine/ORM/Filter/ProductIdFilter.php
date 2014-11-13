@@ -54,7 +54,7 @@ class ProductIdFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
         $condition = $this->prepareCriteriaCondition($field, $operator, $value);
