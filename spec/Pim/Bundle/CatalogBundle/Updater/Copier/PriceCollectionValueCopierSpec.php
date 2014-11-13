@@ -4,15 +4,17 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
-class TextValueCopierSpec extends ObjectBehavior
+class PriceCollectionValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilder $builder, ProductManager $productManager)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']);
+        $this->beConstructedWith($builder, $productManager, ['pim_catalog_price_collection']);
     }
 
     function it_is_a_copier()
@@ -20,39 +22,27 @@ class TextValueCopierSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface');
     }
 
-    function it_supports_text_attributes(
-        AttributeInterface $fromTextAttribute,
-        AttributeInterface $toTextAttribute,
-        AttributeInterface $fromTextareaAttribute,
+    function it_supports_metric_attributes(
+        AttributeInterface $fromPriceCollectionAttribute,
+        AttributeInterface $toPriceCollectionAttribute,
         AttributeInterface $toTextareaAttribute,
         AttributeInterface $fromNumberAttribute,
         AttributeInterface $toNumberAttribute
     ) {
-        $fromTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $toTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($fromTextAttribute, $toTextAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
+        $fromPriceCollectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $toPriceCollectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $this->supports($fromPriceCollectionAttribute, $toPriceCollectionAttribute)->shouldReturn(true);
 
         $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
+        $toPriceCollectionAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
         $this->supports($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
 
-        $this->supports($fromTextAttribute, $toNumberAttribute)->shouldReturn(false);
+        $this->supports($fromPriceCollectionAttribute, $toNumberAttribute)->shouldReturn(false);
         $this->supports($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
-    function it_copies_text_value_to_a_product_value(
+    function it_copies_a_price_collection_value_to_a_product_value(
+        $builder,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         AbstractProduct $product1,
@@ -61,7 +51,7 @@ class TextValueCopierSpec extends ObjectBehavior
         AbstractProduct $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
-        $builder
+        ProductPriceInterface $price
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -76,8 +66,11 @@ class TextValueCopierSpec extends ObjectBehavior
         $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $fromProductValue->getData()->willReturn('data');
-        $toProductValue->setData('data')->shouldBeCalledTimes(3);
+        $fromProductValue->getData()->willReturn([$price]);
+
+        $price->getCurrency()->willReturn('USD');
+        $price->getData()->willReturn(123);
+
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
@@ -92,6 +85,8 @@ class TextValueCopierSpec extends ObjectBehavior
         $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
         $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+
+        $builder->addPriceForCurrencyWithData($toProductValue, 'USD', 123)->shouldBeCalled();
 
         $products = [$product1, $product2, $product3, $product4];
 

@@ -6,13 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
-class TextValueCopierSpec extends ObjectBehavior
+class DateValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']);
+        $this->beConstructedWith($builder, ['pim_catalog_date']);
     }
 
     function it_is_a_copier()
@@ -20,39 +21,26 @@ class TextValueCopierSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface');
     }
 
-    function it_supports_text_attributes(
-        AttributeInterface $fromTextAttribute,
-        AttributeInterface $toTextAttribute,
-        AttributeInterface $fromTextareaAttribute,
+    function it_supports_date_attributes(
+        AttributeInterface $fromDateAttribute,
+        AttributeInterface $toDateAttribute,
         AttributeInterface $toTextareaAttribute,
         AttributeInterface $fromNumberAttribute,
         AttributeInterface $toNumberAttribute
     ) {
-        $fromTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $toTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($fromTextAttribute, $toTextAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
+        $fromDateAttribute->getAttributeType()->willReturn('pim_catalog_date');
+        $toDateAttribute->getAttributeType()->willReturn('pim_catalog_date');
+        $this->supports($fromDateAttribute, $toDateAttribute)->shouldReturn(true);
 
         $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
         $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
         $this->supports($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
 
-        $this->supports($fromTextAttribute, $toNumberAttribute)->shouldReturn(false);
+        $this->supports($fromDateAttribute, $toNumberAttribute)->shouldReturn(false);
         $this->supports($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
-    function it_copies_text_value_to_a_product_value(
+    function it_copies__a_date_value_to_a_product_value(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         AbstractProduct $product1,
@@ -76,8 +64,8 @@ class TextValueCopierSpec extends ObjectBehavior
         $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $fromProductValue->getData()->willReturn('data');
-        $toProductValue->setData('data')->shouldBeCalledTimes(3);
+        $fromProductValue->getData()->willReturn('1970-01-01');
+        $toProductValue->setData('1970-01-01')->shouldBeCalledTimes(3);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);

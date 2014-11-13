@@ -6,13 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
-class TextValueCopierSpec extends ObjectBehavior
+class BooleanValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']);
+        $this->beConstructedWith($builder, ['pim_catalog_boolean']);
     }
 
     function it_is_a_copier()
@@ -23,26 +24,13 @@ class TextValueCopierSpec extends ObjectBehavior
     function it_supports_text_attributes(
         AttributeInterface $fromTextAttribute,
         AttributeInterface $toTextAttribute,
-        AttributeInterface $fromTextareaAttribute,
         AttributeInterface $toTextareaAttribute,
         AttributeInterface $fromNumberAttribute,
         AttributeInterface $toNumberAttribute
     ) {
-        $fromTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $toTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
+        $fromTextAttribute->getAttributeType()->willReturn('pim_catalog_boolean');
+        $toTextAttribute->getAttributeType()->willReturn('pim_catalog_boolean');
         $this->supports($fromTextAttribute, $toTextAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
-
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
-        $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
 
         $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
         $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
@@ -52,7 +40,7 @@ class TextValueCopierSpec extends ObjectBehavior
         $this->supports($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
-    function it_copies_text_value_to_a_product_value(
+    function it_copies_a_boolean_value_to_a_product_value(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         AbstractProduct $product1,
@@ -76,8 +64,8 @@ class TextValueCopierSpec extends ObjectBehavior
         $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $fromProductValue->getData()->willReturn('data');
-        $toProductValue->setData('data')->shouldBeCalledTimes(3);
+        $fromProductValue->getData()->willReturn(true);
+        $toProductValue->setData(true)->shouldBeCalledTimes(3);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);

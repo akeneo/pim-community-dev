@@ -4,15 +4,16 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
-class TextValueCopierSpec extends ObjectBehavior
+class MultiSelectValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']);
+        $this->beConstructedWith($builder, ['pim_catalog_multiselect']);
     }
 
     function it_is_a_copier()
@@ -20,39 +21,36 @@ class TextValueCopierSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface');
     }
 
-    function it_supports_text_attributes(
+    function it_supports_multi_select_attributes(
         AttributeInterface $fromTextAttribute,
-        AttributeInterface $toTextAttribute,
         AttributeInterface $fromTextareaAttribute,
+        AttributeInterface $fromIdentifierAttribute,
         AttributeInterface $toTextareaAttribute,
-        AttributeInterface $fromNumberAttribute,
-        AttributeInterface $toNumberAttribute
+        AttributeInterface $fromMultiSelectAttribute,
+        AttributeInterface $toMultiSelectAttribute
     ) {
-        $fromTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $toTextAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($fromTextAttribute, $toTextAttribute)->shouldReturn(true);
+        $fromMultiSelectAttribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $toMultiSelectAttribute->getAttributeType()->willReturn('pim_catalog_multiselect');
+        $this->supports($fromMultiSelectAttribute, $toMultiSelectAttribute)->shouldReturn(true);
 
         $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
+        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $fromIdentifierAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
         $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
+        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
-        $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $fromMultiSelectAttribute->getAttributeType()->willReturn('pim_catalog_number');
         $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(true);
+        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
-        $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $this->supports($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
-
-        $this->supports($fromTextAttribute, $toNumberAttribute)->shouldReturn(false);
-        $this->supports($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
+        $this->supports($fromTextAttribute, $toMultiSelectAttribute)->shouldReturn(false);
+        $this->supports($fromMultiSelectAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
-    function it_copies_text_value_to_a_product_value(
+    function it_copies_multi_select_value_to_a_product_value(
+        $builder,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         AbstractProduct $product1,
@@ -61,7 +59,7 @@ class TextValueCopierSpec extends ObjectBehavior
         AbstractProduct $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
-        $builder
+        AttributeOption $attributeOption
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -76,8 +74,11 @@ class TextValueCopierSpec extends ObjectBehavior
         $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $fromProductValue->getData()->willReturn('data');
-        $toProductValue->setData('data')->shouldBeCalledTimes(3);
+        $fromProductValue->getData()->willReturn([$attributeOption])->shouldBeCalled(3);
+
+        $toProductValue->getOptions()->willReturn([$attributeOption]);
+        $toProductValue->removeOption($attributeOption)->shouldBeCalled();
+        $toProductValue->addOption($attributeOption)->shouldBeCalled();
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
