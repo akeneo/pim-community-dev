@@ -72,6 +72,7 @@ define(
             events: {
                 'input input[type="search"]':      'search',
                 'click .nav-list li':              'filter',
+                'click button.reset':              'reset',
                 'click #column-selection .action': 'remove'
             },
 
