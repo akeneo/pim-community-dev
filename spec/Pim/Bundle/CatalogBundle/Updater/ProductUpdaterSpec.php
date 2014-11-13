@@ -80,6 +80,4 @@ class ProductUpdaterSpec extends ObjectBehavior
             'copyValue', [[$product], 'unknown_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope']
         );
     }
-
-
 }

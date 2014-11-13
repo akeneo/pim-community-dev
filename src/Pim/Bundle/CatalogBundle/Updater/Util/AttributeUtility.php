@@ -26,7 +26,7 @@ class AttributeUtility
     public static function validateLocale(AttributeInterface $attribute, $locale)
     {
         // TODO : check the existence of locale in DB
-        if ($attribute->isLocalizable() && $locale === null) {
+        if ($attribute->isLocalizable() && null === $locale) {
             throw new \LogicException(
                 sprintf(
                     'Locale is expected for the attribute "%s"',
@@ -34,7 +34,7 @@ class AttributeUtility
                 )
             );
         }
-        if (!$attribute->isLocalizable() && $locale !== null) {
+        if (!$attribute->isLocalizable() && null !== $locale) {
             throw new \LogicException(
                 sprintf(
                     'Locale is not expected for the attribute "%s"',
@@ -55,7 +55,7 @@ class AttributeUtility
     public static function validateScope(AttributeInterface $attribute, $scope)
     {
         // TODO : check the existence of scope in DB
-        if ($attribute->isScopable() && $scope === null) {
+        if ($attribute->isScopable() && null === $scope) {
             throw new \LogicException(
                 sprintf(
                     'Scope is expected for the attribute "%s"',
@@ -63,7 +63,7 @@ class AttributeUtility
                 )
             );
         }
-        if (!$attribute->isScopable() && $scope !== null) {
+        if (!$attribute->isScopable() && null !== $scope) {
             throw new \LogicException(
                 sprintf(
                     'Scope is not expected for the attribute "%s"',

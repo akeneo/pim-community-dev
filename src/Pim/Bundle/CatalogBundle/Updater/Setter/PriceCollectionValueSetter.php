@@ -70,8 +70,8 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     /**
      * Check if data are valid
      *
-     * @param AttributeInterface $attribute
-     * @param mixed $data
+     * @param  AttributeInterface $attribute
+     * @param  mixed              $data
      * @return mixed
      */
     protected function checkData(AttributeInterface $attribute, $data)
