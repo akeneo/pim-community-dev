@@ -17,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 class PriceCollectionValueCopier extends AbstractValueCopier
 {
     /**
-    /**
      * {@inheritdoc}
      */
     public function copyValue(
