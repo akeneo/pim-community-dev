@@ -135,7 +135,13 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function arrayKeyExpected($attribute, $key, $action, $type)
     {
         return new self(
-            sprintf('Attribute "%s" expects an array with the key "%s" as data (for %s %s).', $attribute, $key, $action, $type)
+            sprintf(
+                'Attribute "%s" expects an array with the key "%s" as data (for %s %s).',
+                $attribute,
+                $key,
+                $action,
+                $type
+            )
         );
     }
 
@@ -151,7 +157,14 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function arrayInvalidKey($attribute, $key, $because, $action, $type)
     {
         return new self(
-            sprintf('Attribute "%s" expects an array with valid data for the key "%s". %s (for %s %s).', $attribute, $key, $because, $action, $type)
+            sprintf(
+                'Attribute "%s" expects an array with valid data for the key "%s". %s (for %s %s).',
+                $attribute,
+                $key,
+                $because,
+                $action,
+                $type
+            )
         );
     }
 
@@ -166,7 +179,13 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function arrayNumericKeyExpected($attribute, $key, $action, $type)
     {
         return new self(
-            sprintf('Attribute "%s" expects an array with numeric data for the key "%s" (for %s %s).', $attribute, $key, $action, $type)
+            sprintf(
+                'Attribute "%s" expects an array with numeric data for the key "%s" (for %s %s).',
+                $attribute,
+                $key,
+                $action,
+                $type
+            )
         );
     }
 
@@ -181,7 +200,13 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function arrayStringKeyExpected($attribute, $key, $action, $type)
     {
         return new self(
-            sprintf('Attribute "%s" expects an array with string data for the key "%s" (for %s %s).', $attribute, $key, $action, $type)
+            sprintf(
+                'Attribute "%s" expects an array with string data for the key "%s" (for %s %s).',
+                $attribute,
+                $key,
+                $action,
+                $type
+            )
         );
     }
 }

@@ -22,25 +22,25 @@ class MetricValueSetter extends AbstractValueSetter
     protected $productBuilder;
 
     /** @var MetricFactory */
-    protected $factory;
+    protected $metricFactory;
 
     /** @var MeasureManager */
     protected $measureManager;
 
     /**
-     * @param ProductBuilder $builder
-     * @param MetricFactory  $factory
+     * @param ProductBuilder $productBuilder
+     * @param MetricFactory  $metricFactory
      * @param MeasureManager $measureManager
      * @param array          $supportedTypes
      */
     public function __construct(
-        ProductBuilder $builder,
-        MetricFactory $factory,
+        ProductBuilder $productBuilder,
+        MetricFactory $metricFactory,
         MeasureManager $measureManager,
         array $supportedTypes
     ) {
-        $this->productBuilder = $builder;
-        $this->factory        = $factory;
+        $this->productBuilder = $productBuilder;
+        $this->metricFactory  = $metricFactory;
         $this->measureManager = $measureManager;
         $this->supportedTypes = $supportedTypes;
     }
@@ -70,11 +70,14 @@ class MetricValueSetter extends AbstractValueSetter
             if (null === $value) {
                 $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
             }
-            $metric = $this->factory->createMetric($attribute->getMetricFamily());
-            $metric->setUnit($fullUnitName);
-            $metric->setData($data);
+
+            if (null === $metric = $value->getMetric()) {
+                $metric = $this->metricFactory->createMetric($attribute->getMetricFamily());
+            }
 
             $value->setMetric($metric);
+            $metric->setUnit($fullUnitName);
+            $metric->setData($data);
         }
     }
 
