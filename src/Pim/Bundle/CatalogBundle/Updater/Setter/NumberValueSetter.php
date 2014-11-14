@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
@@ -42,11 +43,25 @@ class NumberValueSetter extends AbstractValueSetter
         }
 
         foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-            $value->setData($data);
+            $this->setData($attribute, $product, $data, $locale, $scope);
         }
+    }
+
+    /**
+     * Set data into product value
+     *
+     * @param AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param mixed              $data
+     * @param string             $locale
+     * @param string             $scope
+     */
+    protected function setData(AttributeInterface $attribute, ProductInterface $product, $data, $locale, $scope)
+    {
+        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        }
+        $value->setData($data);
     }
 }

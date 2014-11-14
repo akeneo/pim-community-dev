@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
@@ -62,11 +63,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
         }
 
         foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-            $value->setOption($attributeOption);
+            $this->setOption($attribute, $product, $attributeOption, $locale, $scope);
         }
     }
 
@@ -74,7 +71,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
      * Check if data are valid
      *
      * @param AttributeInterface $attribute
-     * @param $data
+     * @param mixed              $data
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
@@ -94,5 +91,28 @@ class SimpleSelectValueSetter extends AbstractValueSetter
         if (!array_key_exists('code', $data)) {
             throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'code', 'setter', 'simple select');
         }
+    }
+
+    /**
+     * Set option into the product value
+     *
+     * @param AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param array              $attributeOption
+     * @param string             $locale
+     * @param string             $scope
+     */
+    protected function setOption(
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        $attributeOption,
+        $locale,
+        $scope
+    ) {
+        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        }
+        $value->setOption($attributeOption);
     }
 }
