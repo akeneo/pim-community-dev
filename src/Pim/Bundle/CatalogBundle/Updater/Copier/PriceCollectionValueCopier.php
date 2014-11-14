@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
@@ -17,23 +16,6 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
  */
 class PriceCollectionValueCopier extends AbstractValueCopier
 {
-    /** @var ProductManager */
-    protected $productManager;
-
-    /**
-     * @param ProductBuilder $productBuilder
-     * @param ProductManager $productManager
-     * @param array          $supportedTypes
-     */
-    public function __construct(ProductBuilder $productBuilder, ProductManager $productManager, array $supportedTypes)
-    {
-        parent::__construct(
-            $productBuilder,
-            $supportedTypes
-        );
-        $this->productManager = $productManager;
-    }
-
     /**
     /**
      * {@inheritdoc}

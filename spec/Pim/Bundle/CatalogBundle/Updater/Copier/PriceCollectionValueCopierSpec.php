@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
@@ -12,9 +11,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
 class PriceCollectionValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, ProductManager $productManager)
+    function let(ProductBuilder $builder)
     {
-        $this->beConstructedWith($builder, $productManager, ['pim_catalog_price_collection']);
+        $this->beConstructedWith($builder, ['pim_catalog_price_collection']);
     }
 
     function it_is_a_copier()

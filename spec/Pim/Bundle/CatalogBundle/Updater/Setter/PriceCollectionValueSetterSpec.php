@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
@@ -14,9 +13,9 @@ use Prophecy\Argument;
 
 class PriceCollectionValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, CurrencyManager $currencyManager, ProductManager $productManager)
+    function let(ProductBuilder $builder, CurrencyManager $currencyManager)
     {
-        $this->beConstructedWith($builder, $currencyManager, $productManager, ['pim_catalog_price_collection']);
+        $this->beConstructedWith($builder, $currencyManager, ['pim_catalog_price_collection']);
     }
 
     function it_is_a_setter()
