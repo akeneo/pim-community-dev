@@ -487,7 +487,7 @@ pim_enrich.mass_edit_action:
         success_flash: Product(s) status have been changed
 
     edit-common-attributes:
-        label:         Edit attributes
+        label:         Edit common attributes
         description:   The selected product's attributes will be edited with following data for the chosen locale.
         empty:         Please select the attribute(s) you want to edit
         success_flash: Product(s) attribute(s) have been updated
