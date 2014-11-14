@@ -5,14 +5,18 @@ function(StringCell) {
 
     return StringCell.extend({
         render: function() {
-            StringCell.prototype.render.apply(this, arguments);
+            this.$el.empty();
+            this.$el.html('<span id="' + this.model.get("sku") + '">' + this.formatter.fromRaw(this.model.get(this.column.get("name"))).text.substring(0, 40) + ' ... </span>');
+            this.delegateEvents();
 
             this.$el.popover({
-                content: this.formatter.fromRaw(this.model.get(this.column.get('name'))),
+                title: this.formatter.fromRaw(this.column.get('label')),
+                content: this.formatter.fromRaw(this.model.get(this.column.get('name'))).text,
                 delay: {
                     show: 500,
                     hide: 100
                 },
+                selector: '#' + this.model.get("sku"),
                 trigger: 'hover'
             });
 
