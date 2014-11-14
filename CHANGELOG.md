@@ -23,6 +23,7 @@
 - Improve the UI of the datagrid column configuration popin
 - Normalize the managers by introducing 4 interfaces, SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface
 - Load the grid filter choices for simple and multi select attributes asynchronously
+- Modify the display of permissions in the role permissions edition
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
