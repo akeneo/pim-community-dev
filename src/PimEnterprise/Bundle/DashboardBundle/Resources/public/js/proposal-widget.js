@@ -57,7 +57,7 @@ define(
 
             viewAllLinkTemplate: _.template(
                 [
-                    '<a href="javascript:void(0);" class="btn btn-mini pull-right" style="margin-right:5px;">',
+                    '<a href="javascript:void(0);" class="btn btn-mini btn-transparent pull-right" style="margin-right:5px;">',
                         '<%= _.__("pimee_dashboard.widget.product_drafts.view_all") %>',
                     '</a>'
                 ].join('')

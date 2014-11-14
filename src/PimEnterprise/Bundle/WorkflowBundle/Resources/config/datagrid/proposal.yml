@@ -11,8 +11,9 @@ datagrid:
         columns:
             product:
                 label: pimee_workflow.product_draft.product.label
-                type: field
-                frontend_type: string
+                type: twig
+                template: PimEnterpriseWorkflowBundle:Datagrid/Property:product_link.html.twig
+                frontend_type: html
             author:
                 label: pimee_workflow.product_draft.author
                 type: field
