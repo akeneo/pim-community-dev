@@ -1,36 +1,37 @@
 define(
-    ['jquery', 'oro/translator', 'oro/datagrid/html-cell'],
-    function($, __, HtmlCell) {
+    ['jquery', 'underscore', 'oro/translator', 'oro/datagrid/html-cell'],
+    function($, _, __, HtmlCell) {
         'use strict';
 
         return HtmlCell.extend({
+            template: _.template(
+                '<div class="proposal-changes" data-collapsed="<%= collapsed ? "true" : "false" %>">' +
+                    '<div class="details"><%= changes %></div>' +
+                    '<button class="btn btn-mini btn-more pull-right toggle">...</button>' +
+                    '<div class="mask"></div>' +
+                '</div>'
+            ),
             events: {
-                'click a.toggle': 'toggle'
+                'click button.toggle': 'toggle',
+                'click .mask': 'toggle'
             },
-
+            collapsed: true,
             expandText: __('pimee_datagrid.cell.expand.expandText'),
             collapseText: __('pimee_datagrid.cell.expand.collapseText'),
-
-            toggle: function() {
-                if (this.$link.hasClass('collapsed')) {
-                    this.$link.removeClass('collapsed').text(this.collapseText);
-                    this.$el.html(this.formatter.fromRaw(this.model.get(this.column.get("name")))).append(this.$link);
-                } else {
-                    this.$link.addClass('collapsed').text(this.expandText);
-                    this.$el.html(this.$link);
-                }
-            },
-
-            initialize: function() {
-                this.$link = $('<a href="javascript:void(0)" class="toggle collapsed">' + this.expandText + '</a>');
-
-                return HtmlCell.prototype.initialize.apply(this, arguments);
-            },
-
-            render: function () {
-                this.$el.html(this.$link);
+            render: function() {
+                this.$el.html(this.template({
+                    'changes': this.model.get(this.column.get("name")),
+                    'collapsed': this.collapsed
+                }));
 
                 return this;
+            },
+            toggle: function() {
+                this.collapsed = !this.collapsed;
+                this.$el.children().attr('data-collapsed', this.collapsed ? 'true' : 'false');
+            },
+            initialize: function() {
+                return HtmlCell.prototype.initialize.apply(this, arguments);
             }
         });
     }
