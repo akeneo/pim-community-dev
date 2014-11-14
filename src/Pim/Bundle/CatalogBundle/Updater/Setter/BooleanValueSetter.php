@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
@@ -37,16 +38,41 @@ class BooleanValueSetter extends AbstractValueSetter
         AttributeUtility::validateLocale($attribute, $locale);
         AttributeUtility::validateScope($attribute, $scope);
 
+        $this->checkData($attribute, $data);
+
+        foreach ($products as $product) {
+            $this->setData($attribute, $product, $data, $locale, $scope);
+        }
+    }
+
+    /**
+     * Check if data are valid
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
         if (!is_bool($data)) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean');
         }
+    }
 
-        foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-            $value->setData($data);
+    /**
+     * Set the data into the product value
+     *
+     * @param AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param mixed              $data
+     * @param string             $locale
+     * @param string             $scope
+     */
+    protected function setData(AttributeInterface $attribute, ProductInterface $product, $data, $locale, $scope)
+    {
+        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
+        $value->setData($data);
     }
 }

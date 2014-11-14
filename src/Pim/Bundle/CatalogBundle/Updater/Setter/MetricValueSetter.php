@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
@@ -66,18 +67,7 @@ class MetricValueSetter extends AbstractValueSetter
         $fullUnitName = $fullUnitName[$unit];
 
         foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-
-            if (null === $metric = $value->getMetric()) {
-                $metric = $this->metricFactory->createMetric($attribute->getMetricFamily());
-            }
-
-            $value->setMetric($metric);
-            $metric->setUnit($fullUnitName);
-            $metric->setData($data);
+            $this->setData($attribute, $product, $data, $locale, $scope, $fullUnitName);
         }
     }
 
@@ -118,5 +108,37 @@ class MetricValueSetter extends AbstractValueSetter
                 'metric'
             );
         }
+    }
+
+    /**
+     * Set the data into the product value
+     *
+     * @param AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param mixed              $data
+     * @param string             $locale
+     * @param string             $scope
+     * @param string             $fullUnitName
+     */
+    protected function setData(
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        $data,
+        $locale,
+        $scope,
+        $fullUnitName
+    ) {
+        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        }
+
+        if (null === $metric = $value->getMetric()) {
+            $metric = $this->metricFactory->createMetric($attribute->getMetricFamily());
+        }
+
+        $value->setMetric($metric);
+        $metric->setUnit($fullUnitName);
+        $metric->setData($data);
     }
 }

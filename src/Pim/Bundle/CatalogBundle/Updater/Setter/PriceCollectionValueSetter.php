@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
@@ -56,14 +57,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
         $this->checkData($attribute, $data);
 
         foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-
-            foreach ($data as $price) {
-                $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
-            }
+            $this->setPrices($attribute, $product, $data, $locale, $scope);
         }
     }
 
@@ -72,6 +66,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
      *
      * @param  AttributeInterface $attribute
      * @param  mixed              $data
+     *
      * @return mixed
      */
     protected function checkData(AttributeInterface $attribute, $data)
@@ -125,6 +120,27 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     'prices collection'
                 );
             }
+        }
+    }
+
+    /**
+     * Set prices into the product value
+     *
+     * @param AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param mixed              $data
+     * @param string             $locale
+     * @param string             $scope
+     */
+    protected function setPrices(AttributeInterface $attribute, ProductInterface $product, $data, $locale, $scope)
+    {
+        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        }
+
+        foreach ($data as $price) {
+            $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
         }
     }
 }

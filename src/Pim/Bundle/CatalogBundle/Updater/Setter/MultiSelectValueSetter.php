@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 
@@ -71,18 +73,7 @@ class MultiSelectValueSetter extends AbstractValueSetter
         }
 
         foreach ($products as $product) {
-            $value = $product->getValue($attribute->getCode(), $locale, $scope);
-            if (null === $value) {
-                $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-            }
-
-            foreach ($value->getOptions() as $option) {
-                $value->removeOption($option);
-            }
-
-            foreach ($attributeOptions as $attributeOption) {
-                $value->addOption($attributeOption);
-            }
+            $this->setOptions($attribute, $product, $attributeOptions, $locale, $scope);
         }
     }
 
@@ -90,7 +81,7 @@ class MultiSelectValueSetter extends AbstractValueSetter
      * Check if data are valid
      *
      * @param AttributeInterface $attribute
-     * @param $attributeOption
+     * @param mixed              $attributeOption
      */
     protected function checkData(AttributeInterface $attribute, $attributeOption)
     {
@@ -114,6 +105,36 @@ class MultiSelectValueSetter extends AbstractValueSetter
                 'setter',
                 'multi select'
             );
+        }
+    }
+
+    /**
+     * Set options into the product value
+     *
+     * @param AttributeInterface $attribute
+     * @param ProductInterface   $product
+     * @param array              $attributeOptions
+     * @param string             $locale
+     * @param string             $scope
+     */
+    protected function setOptions(
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        $attributeOptions,
+        $locale,
+        $scope
+    ) {
+        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        }
+
+        foreach ($value->getOptions() as $option) {
+            $value->removeOption($option);
+        }
+
+        foreach ($attributeOptions as $attributeOption) {
+            $value->addOption($attributeOption);
         }
     }
 }
