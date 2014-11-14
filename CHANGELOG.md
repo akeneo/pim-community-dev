@@ -30,6 +30,12 @@
 # 1.0.x
 
 ## Bug fixes
+
+- PIM-3302: Published product page is not well displayed with project via the standard edition. To fix this bug, add `bundles/pimenterpriseui/css/pimee.less` to your stylesheets in `app/Resources/views/base.html.twig`
+
+# 1.0.5 (2014-11-13)
+
+## Bug fixes
 - PIM-3331: Fix draft creation when saving values for newly added attributes for the first time
 - PIM-3351: Test data value in PricesDenormalizer to avoid creating empty ProductPrices
 - PIM-3301: Test data value in DateTimeDenormalizer to avoid reverted date to be set on current day
