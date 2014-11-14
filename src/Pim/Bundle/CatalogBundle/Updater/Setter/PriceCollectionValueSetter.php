@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
@@ -24,24 +23,18 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     /** @var CurrencyManager */
     protected $currencyManager;
 
-    /** @var ProductManager */
-    protected $productManager;
-
     /**
      * @param ProductBuilder  $productBuilder
      * @param CurrencyManager $currencyManager
-     * @param ProductManager  $productManager
      * @param array           $supportedTypes
      */
     public function __construct(
         ProductBuilder $productBuilder,
         CurrencyManager $currencyManager,
-        ProductManager $productManager,
         array $supportedTypes
     ) {
         $this->productBuilder  = $productBuilder;
         $this->currencyManager = $currencyManager;
-        $this->productManager  = $productManager;
         $this->supportedTypes  = $supportedTypes;
     }
 

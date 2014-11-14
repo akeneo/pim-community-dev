@@ -92,7 +92,6 @@ services:
         arguments:
             - @pim_catalog.builder.product
             - @pim_catalog.manager.currency
-            - @pim_catalog.manager.product
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -188,7 +187,6 @@ services:
         class: %pim_catalog.updater.copier.price_collection_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.manager.product
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.copier' }
