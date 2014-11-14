@@ -19,5 +19,5 @@ Feature: Quick export many products from datagrid
   Scenario: Successfully quick export products
     Given I am on the products page
     And I select rows boots, sneakers
-    Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
+    Then I press "CSV (All attributes)" on the "quick-export-button" dropdown button
 

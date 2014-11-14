@@ -305,6 +305,10 @@ class Base extends Page
         $dropdown = $this
             ->find('css', sprintf('div.btn-group:contains("%s")', $button));
 
+        if (!$dropdown)
+            $dropdown = $this
+                ->find('css', sprintf('div.btn-group#%s', $button));
+
         if (!$dropdown || !$dropdown->find('css', 'button.dropdown-toggle')) {
             throw new \InvalidArgumentException(sprintf('Dropdown button "%s" not found', $button));
         }
