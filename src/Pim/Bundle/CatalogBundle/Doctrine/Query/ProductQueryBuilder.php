@@ -56,24 +56,25 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * Get query builder
-     *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
-     *
-     * @return ProductQueryBuilderInterface
+     * {@inheritdoc}
      */
-    public function setQueryBuilder($qb)
+    public function execute()
     {
-        $this->qb = $qb;
+        return $this->getQueryBuilder()->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
 
         return $this;
     }
 
     /**
-     * Get query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
-     * @throws \LogicException
+     * {@inheritdoc}
      */
     public function getQueryBuilder()
     {
