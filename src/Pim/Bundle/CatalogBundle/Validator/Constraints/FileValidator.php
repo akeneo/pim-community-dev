@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraint;
@@ -22,7 +22,7 @@ class FileValidator extends BaseFileValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof AbstractProductMedia) {
+        if ($value instanceof ProductMediaInterface) {
             $value = $value->getFile();
         }
 

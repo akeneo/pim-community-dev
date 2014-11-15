@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
@@ -20,8 +20,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Channel $channel,
         $channelManager,
         AbstractProduct $item,
-        AbstractProductMedia $media1,
-        AbstractProductMedia $media2,
+        ProductMediaInterface $media1,
+        ProductMediaInterface $media2,
         $serializer
     ) {
         $media1->getFilename()->willReturn('media_name');
