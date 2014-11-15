@@ -188,7 +188,7 @@ class MediaManager
                 $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
             );
             $media->setFilename($filename);
-            $media->setFilepath($this->getFilePath($media));
+            $media->setFilePath($this->getFilePath($media));
             $media->setMimeType($file->getMimeType());
             $media->resetFile();
         }
