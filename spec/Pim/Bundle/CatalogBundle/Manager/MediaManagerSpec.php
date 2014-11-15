@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -34,7 +35,7 @@ class MediaManagerSpec extends ObjectBehavior
         $fs->write('tmp-phpspec', '', true);
 
         $filesystem->write('prefix-my-new-file.jpg', '', false)->shouldBeCalled();
-        $media->setOriginalFilename( 'my-new-file.jpg')->shouldBeCalled();
+        $media->setOriginalFilename('my-new-file.jpg')->shouldBeCalled();
         $media->setFilename('prefix-my-new-file.jpg')->shouldBeCalled();
         $media->setFilePath(null)->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
@@ -69,7 +70,7 @@ class MediaManagerSpec extends ObjectBehavior
         $fs->write('tmp-phpspec', '', true);
 
         $filesystem->write('prefix-my-new-file.jpg', '', false)->shouldBeCalled();
-        $media->setOriginalFilename( 'my-new-file.jpg')->shouldBeCalled();
+        $media->setOriginalFilename('my-new-file.jpg')->shouldBeCalled();
         $media->setFilename('prefix-my-new-file.jpg')->shouldBeCalled();
         $media->setFilePath('/tmp/pim-ce/my-new-file.jpg')->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
@@ -77,6 +78,40 @@ class MediaManagerSpec extends ObjectBehavior
         $media->resetFile()->shouldBeCalled();
 
         $this->handle($media, 'prefix');
+    }
+
+    function it_duplicates_product_media($filesystem, ProductMediaInterface $source, ProductMediaInterface $target, File $newFile)
+    {
+        $source->getFilePath()->willReturn('/tmp/tmp-phpspec');
+        $target->setFile(Argument::any())->shouldBeCalled();
+        $source->getOriginalFilename()->willReturn('my-source-file.jpg');
+
+        // upload
+        $target->getFile()->willReturn($newFile);
+        $newFile->getPathname()->willReturn('/tmp/tmp-phpspec');
+
+        // write a fake file in tmp
+        $adapter = new LocalAdapter('/tmp');
+        $fs = new Filesystem($adapter);
+        $fs->write('tmp-phpspec', '', true);
+
+        $filesystem->write('prefix-my-source-file.jpg', '', false)->shouldBeCalled();
+
+        $newFile->getFilename()->willReturn('my-source-file.jpg');
+        $target->setOriginalFilename('my-source-file.jpg')->shouldBeCalled();
+        $target->setFilename('prefix-my-source-file.jpg')->shouldBeCalled();
+        $filesystem->has('prefix-my-source-file.jpg')->willReturn(true);
+        $target->getFilename()->willReturn('prefix-my-source-file.jpg');
+        $target->setFilePath('/tmp/pim-ce/prefix-my-source-file.jpg')->shouldBeCalled();
+        $newFile->getMimeType()->willReturn('jpg');
+        $target->setMimeType('jpg')->shouldBeCalled();
+        $target->resetFile()->shouldBeCalled();
+
+        // update original file name
+        $source->getOriginalFilename()->willReturn('my-source-file.jpg');
+        $target->setOriginalFilename('my-source-file.jpg')->shouldBeCalled();
+
+        $this->duplicate($source, $target, 'prefix');
     }
 
     function it_provides_export_path(ProductMediaInterface $media, ProductValueInterface $value, AttributeInterface $attribute, ProductInterface $product)

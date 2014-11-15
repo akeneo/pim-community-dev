@@ -71,13 +71,8 @@ class MediaManager
     public function duplicate(ProductMediaInterface $source, ProductMediaInterface $target, $filenamePrefix)
     {
         $target->setFile(new File($source->getFilePath()));
-        $this->upload(
-            $target,
-            $this->generateFilename(
-                $source->getOriginalFilename(),
-                $filenamePrefix
-            )
-        );
+        $filename = $this->generateFilename($source->getOriginalFilename(), $filenamePrefix);
+        $this->upload($target, $filename);
         $target->setOriginalFilename($source->getOriginalFilename());
     }
 
@@ -182,11 +177,12 @@ class MediaManager
                 return;
             }
 
-            $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
+            $pathname = $file->getPathname();
+            $this->write($filename, file_get_contents($pathname), $overwrite);
 
-            $media->setOriginalFilename(
-                $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
-            );
+            $originalFilename = $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename();
+
+            $media->setOriginalFilename($originalFilename);
             $media->setFilename($filename);
             $media->setFilePath($this->getFilePath($media));
             $media->setMimeType($file->getMimeType());
