@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Media Manager actually implements with Gaufrette Bundle and Local adapter
+ * Media Manager uses Gaufrette to manage medias
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -154,6 +154,18 @@ class MediaManager
     }
 
     /**
+     * Get the media, base64 encoded
+     *
+     * @param ProductMediaInterface $media
+     *
+     * @return string
+     */
+    public function getBase64(ProductMediaInterface $media)
+    {
+        return base64_encode(file_get_contents($this->getFilePath($media)));
+    }
+
+    /**
      * @param File   $filename
      * @param string $filenamePrefix
      *
@@ -165,7 +177,8 @@ class MediaManager
     }
 
     /**
-     * Upload file
+     * Upload a file
+     *
      * @param ProductMediaInterface $media     ProductMediaInterface entity
      * @param string                $filename  Filename
      * @param boolean               $overwrite Overwrite file or not
@@ -217,6 +230,7 @@ class MediaManager
 
     /**
      * Delete a file
+     *
      * @param ProductMediaInterface $media
      */
     protected function delete(ProductMediaInterface $media)
@@ -241,16 +255,5 @@ class MediaManager
     protected function fileExists(ProductMediaInterface $media)
     {
         return $this->filesystem->has($media->getFilename());
-    }
-
-    /**
-     * Get the media, base64 encoded
-     * @param ProductMediaInterface $media
-     *
-     * @return string
-     */
-    public function getBase64(ProductMediaInterface $media)
-    {
-        return base64_encode(file_get_contents($this->getFilePath($media)));
     }
 }
