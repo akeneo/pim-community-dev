@@ -67,7 +67,6 @@ abstract class AbstractResolveDoctrineTargetModelsPass implements CompilerPassIn
                 )
             );
         }
-
     }
 
     /**
