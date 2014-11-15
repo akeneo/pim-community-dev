@@ -6,6 +6,9 @@ use PhpSpec\ObjectBehavior;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -76,25 +79,31 @@ class MediaManagerSpec extends ObjectBehavior
         $this->handle($media, 'prefix');
     }
 
-    /*
-    function it_handles_product_media_deletion()
+    function it_provides_export_path(ProductMediaInterface $media, ProductValueInterface $value, AttributeInterface $attribute, ProductInterface $product)
     {
+        $media->getFilePath()->willReturn('my-path');
+        $media->getValue()->willReturn($value);
+        $value->getAttribute()->willReturn($attribute);
+        $value->getEntity()->willReturn($product);
+        $product->getIdentifier()->willReturn('my-sku');
+        $attribute->getCode()->willReturn('thumbnail');
+        $attribute->isLocalizable()->willReturn(true);
+        $value->getLocale()->willReturn('en_US');
+        $attribute->isScopable()->willReturn(true);
+        $value->getScope()->willReturn('mobile');
+        $media->getOriginalFilename()->willReturn('my-file.jpg');
 
+        $this->getExportPath($media)->shouldReturn('files/my-sku/thumbnail/en_US/mobile/my-file.jpg');
     }
 
-    function it_duplicates_product_media()
+    function it_generates_filename_prefix(ProductInterface $product, ProductValueInterface $value, AttributeInterface $attribute)
     {
-    }
+        $product->getIdentifier()->shouldBeCalled();
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->shouldBeCalled();
+        $value->getLocale()->shouldBeCalled();
+        $value->getScope()->shouldBeCalled();
 
-    function it_copies_product_media()
-    {
+        $this->generateFilenamePrefix($product, $value);
     }
-
-    function it_provides_export_path()
-    {
-    }
-
-    function it_generates_filename_prefix()
-    {
-    }*/
 }

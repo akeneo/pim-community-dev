@@ -40,7 +40,7 @@ class MediaManager
 
     /**
      * @param ProductMediaInterface $media
-     * @param string               $filenamePrefix
+     * @param string                $filenamePrefix
      *
      * @throws MediaManagementException
      */
@@ -66,7 +66,7 @@ class MediaManager
      *
      * @param ProductMediaInterface $source
      * @param ProductMediaInterface $target
-     * @param string               $filenamePrefix
+     * @param string                $filenamePrefix
      */
     public function duplicate(ProductMediaInterface $source, ProductMediaInterface $target, $filenamePrefix)
     {
@@ -83,7 +83,7 @@ class MediaManager
 
     /**
      * @param ProductMediaInterface $media
-     * @param string               $targetDir
+     * @param string                $targetDir
      *
      * @return boolean true on success, false on failure
      */
@@ -172,8 +172,8 @@ class MediaManager
     /**
      * Upload file
      * @param ProductMediaInterface $media     ProductMediaInterface entity
-     * @param string               $filename  Filename
-     * @param boolean              $overwrite Overwrite file or not
+     * @param string                $filename  Filename
+     * @param boolean               $overwrite Overwrite file or not
      */
     protected function upload(ProductMediaInterface $media, $filename, $overwrite = false)
     {
