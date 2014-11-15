@@ -103,7 +103,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Close handler when desctructing the current instance
+     * Close handler when destructing the current instance
      */
     public function __destruct()
     {
