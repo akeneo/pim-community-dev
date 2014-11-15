@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 use Gaufrette\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 
 class MediaManagerSpec extends ObjectBehavior
 {
@@ -14,7 +14,7 @@ class MediaManagerSpec extends ObjectBehavior
         $this->beConstructedWith($fs, '/tmp/pim-ee', $factory);
     }
 
-    function it_loads_file_into_a_media($fs, $factory, AbstractProductMedia $media)
+    function it_loads_file_into_a_media($fs, $factory, ProductMediaInterface $media)
     {
         $fs->has('preview.jpg')->willReturn(true);
         $fs->mimeType('preview.jpg')->willReturn('image/jpeg');
@@ -28,7 +28,7 @@ class MediaManagerSpec extends ObjectBehavior
         $this->createFromFilename('preview.jpg')->shouldReturn($media);
     }
 
-    function its_load_method_throw_exception_when_file_does_not_exist($fs, AbstractProductMedia $media)
+    function its_load_method_throw_exception_when_file_does_not_exist($fs, ProductMediaInterface $media)
     {
         $fs->has('readme.md')->willReturn(false);
 

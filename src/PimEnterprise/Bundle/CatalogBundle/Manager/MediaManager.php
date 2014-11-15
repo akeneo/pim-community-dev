@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 use Gaufrette\Filesystem;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager as BaseMediaManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 
 /**
  * Enterprise edition media manager
@@ -74,7 +74,7 @@ class MediaManager extends BaseMediaManager
      * Media are never automatically removed from file system in community edition.
      * That way we are able to restore them.
      */
-    protected function delete(AbstractProductMedia $media)
+    protected function delete(ProductMediaInterface $media)
     {
         $media->setOriginalFilename(null);
         $media->setFilename(null);
