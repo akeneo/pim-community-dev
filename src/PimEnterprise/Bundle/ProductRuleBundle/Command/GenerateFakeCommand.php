@@ -44,7 +44,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:rule-dev:generate-fake')
-            ->addArgument('count', InputArgument::OPTIONAL, 'Number of rules to generate', 100)
+            ->addArgument('count', InputArgument::OPTIONAL, 'Number of rules to generate', 1)
         ;
     }
 
@@ -68,15 +68,27 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rule = new Rule();
             $rule->setCode('rule_' . $cpt);
             $rule->setContent(json_encode([
-                'conditions' => $this->getConditions($filters, 2),
-                'actions'    => [
-                    ['type' => 'set_value', 'field' => 'name', 'value' => 'toto'],
+                'conditions' => [
                     [
-                        'type'       => 'copy_value',
-                        'from_field' => 'name',
-                        'to_field'   => 'description',
-                        'to_scope'   => 'mobile',
-                        'to_locale'  => 'fr_FR'
+                        'field' => 'sku',
+                        'operator' => '=',
+                        'value' => '18383104'
+                    ]
+                ],
+                'actions'    => [
+                    [
+                        'type' => 'set_value',
+                        'field' => 'name',
+                        'value' => 'Emilie'
+                    ],
+                    [
+                        'type'        => 'copy_value',
+                        'from_field'  => 'description',
+                        'from_scope'  => 'ecommerce',
+                        'from_locale' => 'en_US',
+                        'to_field'    => 'description',
+                        'to_scope'    => 'mobile',
+                        'to_locale'   => 'en_US'
                     ],
                 ]
             ]));

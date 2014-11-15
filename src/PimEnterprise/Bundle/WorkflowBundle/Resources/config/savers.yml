@@ -14,3 +14,5 @@ services:
             - '@pimee_workflow.collector.product_submitted_changes'
             - '@pimee_workflow.change_set_computer'
             - %pim_catalog.storage_driver%
+            - '@pimee_rule_engine.repository.rule'
+            - '@pimee_product_rule.runner.product'

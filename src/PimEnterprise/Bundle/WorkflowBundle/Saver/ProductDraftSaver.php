@@ -24,12 +24,16 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Store product through product drafts
+ *
+ * TODO : inject product saver and product draft saver here to split this class
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
@@ -62,6 +66,12 @@ class ProductDraftSaver implements SaverInterface
     /** @var string */
     protected $storageDriver;
 
+    /** @var RuleRepositoryInterface */
+    protected $ruleRepository;
+
+    /** @var RunnerInterface */
+    protected $ruleRunner;
+
     /**
      * @param ManagerRegistry                 $registry
      * @param CompletenessManager             $completenessManager
@@ -72,6 +82,8 @@ class ProductDraftSaver implements SaverInterface
      * @param ChangesCollector                $collector
      * @param ChangeSetComputerInterface      $changeSet
      * @param string                          $storageDriver
+     * @param RuleRepositoryInterface         $ruleRepository
+     * @param RunnerInterface                 $ruleRunner
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -82,7 +94,9 @@ class ProductDraftSaver implements SaverInterface
         EventDispatcherInterface $dispatcher,
         ChangesCollector $collector,
         ChangeSetComputerInterface $changeSet,
-        $storageDriver
+        $storageDriver,
+        RuleRepositoryInterface $ruleRepository,
+        RunnerInterface $ruleRunner
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
@@ -93,6 +107,8 @@ class ProductDraftSaver implements SaverInterface
         $this->collector = $collector;
         $this->changeSet = $changeSet;
         $this->storageDriver = $storageDriver;
+        $this->ruleRepository = $ruleRepository;
+        $this->ruleRunner = $ruleRunner;
     }
 
     /**
@@ -148,23 +164,42 @@ class ProductDraftSaver implements SaverInterface
                 'recalculate' => true,
                 'flush' => true,
                 'schedule' => true,
+                'execute_rules' => true
             ],
             $options
         );
 
         $manager->persist($product);
 
-        if ($options['schedule'] || $options['recalculate']) {
+        if (true === $options['schedule'] || true === $options['recalculate']) {
             $this->completenessManager->schedule($product);
         }
 
-        if ($options['recalculate'] || $options['flush']) {
+        if (true === $options['recalculate'] || true === $options['flush']) {
             $manager->flush();
         }
 
-        if ($options['recalculate']) {
+        if (true === $options['execute_rules']) {
+            $this->applyAllRules($manager, $product, $options);
+        }
+
+        if (true === $options['recalculate']) {
             $this->completenessManager->generateMissingForProduct($product);
         }
+    }
+
+    protected function applyAllRules(ObjectManager $manager, ProductInterface $product, $options)
+    {
+        if (false === $options['flush']) {
+            return; // TODO : if no flush we cant apply the rule
+        }
+        $rules = $this->ruleRepository->findAll(); // TODO by type and priority
+
+        foreach ($rules as $rule) {
+            $this->ruleRunner->run($rule); // TODO use the chained runner, apply on a single product
+        }
+
+        $manager->flush();
     }
 
     /**
