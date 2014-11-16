@@ -1,4 +1,4 @@
-<div class="tab-pane {{ first_tab ? 'active' : ''}}" id="{{ tab_id }}">
+<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
     {% if form.vars.data.products|length == 0 %}
         <div class="alert alert-info">
             <button data-dismiss="alert" class="close" type="button">×</button>
