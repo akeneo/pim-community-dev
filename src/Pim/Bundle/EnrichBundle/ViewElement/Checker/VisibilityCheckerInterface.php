@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
 /**
- * Interface to determine if a tab is visible or not.
+ * Interface to determine if a view element is visible or not.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -12,17 +12,12 @@ namespace Pim\Bundle\EnrichBundle\ViewElement\Checker;
 interface VisibilityCheckerInterface
 {
     /**
-     * Return whether or not the tab should be displayed
+     * Return whether or not the view element should be displayed in the given context
      *
-     * @param array $context Ths twig context
+     * @param array $config  The visibility checker configuration
+     * @param array $context The twig context
      *
      * @return boolean
      */
-    public function isVisible(array $context = []);
-
-    /**
-     * Set the checker context
-     * @param array $context
-     */
-    public function setContext(array $context = []);
+    public function isVisible(array $config = [], array $context = []);
 }
