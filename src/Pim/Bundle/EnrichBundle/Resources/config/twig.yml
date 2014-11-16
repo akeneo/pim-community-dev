@@ -2,7 +2,7 @@ parameters:
     pim_enrich.twig.locale_extension.class:       Pim\Bundle\EnrichBundle\Twig\LocaleExtension
     pim_enrich.twig.category_extension.class:     Pim\Bundle\EnrichBundle\Twig\CategoryExtension
     pim_enrich.twig.channel_extension.class:      Pim\Bundle\EnrichBundle\Twig\ChannelExtension
-    pim_enrich.twig.tab_extension.class:          Pim\Bundle\EnrichBundle\Twig\ViewTabExtension
+    pim_enrich.twig.view_element_extension.class: Pim\Bundle\EnrichBundle\Twig\ViewElementExtension
     pim_enrich.twig.attribute_extension.class:    Pim\Bundle\EnrichBundle\Twig\AttributeExtension
     pim_enrich.twig.object_class_extension.class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
     pim_enrich.twig.version_extension.class:      Pim\Bundle\EnrichBundle\Twig\VersionExtension
@@ -31,10 +31,11 @@ services:
         tags:
             - { name: twig.extension }
 
-    pim_enrich.twig.tab_extension:
-        class: %pim_enrich.twig.tab_extension.class%
+    pim_enrich.twig.view_element_extension:
+        class: %pim_enrich.twig.view_element_extension.class%
         arguments:
-            - @pim_enrich.view_element.registry
+            - '@pim_enrich.view_element.registry'
+            - '@templating'
         tags:
             - { name: twig.extension }
 

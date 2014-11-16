@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\ViewElement;
 
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
+
 /**
  * View element interface
  *
@@ -12,11 +14,53 @@ namespace Pim\Bundle\EnrichBundle\ViewElement;
 interface ViewElementInterface
 {
     /**
-     * Get the content
-     *
-     * @param array $context the twig context
+     * Get the view element alias
      *
      * @return string
      */
-    public function getContent(array $context = []);
+    public function getAlias();
+
+    /**
+     * Get the template
+     *
+     * @return string
+     */
+    public function getTemplate();
+
+    /**
+     * Get additional template parameters
+     *
+     * @param array $context The twig context
+     *
+     * @return array
+     */
+    public function getParameters(array $context = []);
+
+    /**
+     * Indicates whether the view element should be displayed in the given context
+     *
+     * @param array $context The twig context
+     *
+     * @return boolean
+     */
+    public function isVisible(array $context = []);
+
+    /**
+     * Add a new visibility checker to the view element
+     *
+     * @param VisibilityCheckerInterface $checker
+     * @param array                      $config
+     *
+     * @return ViewElementInterface
+     */
+    public function addVisibilityChecker(VisibilityCheckerInterface $checker, array $config = []);
+
+    /**
+     * Set the visibility checkers to the view element
+     *
+     * @param VisibilityCheckerInterface[] $checkers
+     *
+     * @return ViewElementInterface
+     */
+    public function setVisibilityCheckers(array $checkers);
 }
