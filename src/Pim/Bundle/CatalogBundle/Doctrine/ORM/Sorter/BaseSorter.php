@@ -30,12 +30,12 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * Instanciate a sorter
      *
-     * @param array $extraSupportedAttributes
-     * @param array $extraSupportedFields
+     * @param array $supportedAttributes
+     * @param array $supportedFields
      */
     public function __construct(
-        array $extraSupportedAttributes = [],
-        array $extraSupportedFields = []
+        array $supportedAttributes = [],
+        array $supportedFields = []
     ) {
         $this->supportedAttributes = array_merge(
             [
@@ -46,11 +46,11 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
                 'pim_catalog_boolean',
                 'pim_catalog_date'
             ],
-            $extraSupportedAttributes
+            $supportedAttributes
         );
         $this->supportedFields = array_merge(
             ['enabled', 'created', 'updated'],
-            $extraSupportedFields
+            $supportedFields
         );
     }
 
