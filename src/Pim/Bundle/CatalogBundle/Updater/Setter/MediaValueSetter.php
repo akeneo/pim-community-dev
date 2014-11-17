@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
@@ -24,26 +24,26 @@ class MediaValueSetter extends AbstractValueSetter
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var MediaManager */
+    protected $mediaManager;
 
     /** @var MediaFactory */
     protected $mediaFactory;
 
     /**
      * @param ProductBuilderInterface $builder
-     * @param ProductManager          $manager
+     * @param MediaManager            $manager
      * @param MediaFactory            $mediaFactory
      * @param array                   $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $builder,
-        ProductManager $manager,
+        MediaManager $manager,
         MediaFactory $mediaFactory,
         array $supportedTypes
     ) {
         $this->productBuilder = $builder;
-        $this->productManager = $manager;
+        $this->mediaManager   = $manager;
         $this->mediaFactory   = $mediaFactory;
         $this->supportedTypes = $supportedTypes;
     }
@@ -73,7 +73,7 @@ class MediaValueSetter extends AbstractValueSetter
             $this->setMedia($attribute, $product, $file, $locale, $scope);
         }
 
-        $this->productManager->handleAllMedia($products);
+        $this->mediaManager->handleAllProductsMedias($products);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Gaufrette\Filesystem;
 use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
@@ -28,8 +28,8 @@ class MediaManager
     /** @var string */
     protected $uploadDirectory;
 
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var ManagerRegistry */
+    protected $registry;
 
     /** @var MediaFactory */
     protected $factory;
@@ -37,21 +37,21 @@ class MediaManager
     /**
      * Constructor
      *
-     * @param Filesystem    $filesystem
-     * @param string        $uploadDirectory
-     * @param MediaFactory  $factory
-     * @param ObjectManager $objectManager
+     * @param Filesystem      $filesystem
+     * @param string          $uploadDirectory
+     * @param MediaFactory    $factory
+     * @param ManagerRegistry $registry
      */
     public function __construct(
         Filesystem $filesystem,
         $uploadDirectory,
         MediaFactory $factory,
-        ObjectManager $objectManager
+        ManagerRegistry $registry
     )  {
         $this->filesystem      = $filesystem;
         $this->uploadDirectory = $uploadDirectory;
         $this->factory         = $factory;
-        $this->objectManager   = $objectManager;
+        $this->registry        = $registry;
     }
 
     /**
@@ -64,11 +64,8 @@ class MediaManager
         foreach ($product->getValues() as $value) {
             if ($media = $value->getMedia()) {
                 if ($id = $media->getCopyFrom()) {
-                    $source = $this
-                        ->objectManager
-                        ->getRepository('Pim\Bundle\CatalogBundle\Model\ProductMedia')
-                        ->find($id);
-
+                    $repository = $this->doctrine->getRepository('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+                    $source = $repository->find($id);
                     if (!$source) {
                         throw new \Exception(
                             sprintf('Could not find media with id %d', $id)

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
@@ -15,7 +15,7 @@ use Prophecy\Argument;
 
 class MediaValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, ProductManager $manager, MediaFactory $mediaFactory)
+    function let(ProductBuilderInterface $builder, MediaManager $manager, MediaFactory $mediaFactory)
     {
         $this->beConstructedWith($builder, $manager, $mediaFactory, ['pim_catalog_file', 'pim_catalog_image']);
     }
@@ -100,7 +100,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $value->setMedia($media)->shouldBeCalled();
         $media->setFile(Argument::any())->shouldBeCalled();
-        $manager->handleAllMedia([$product])->shouldBeCalled();
+        $manager->handleAllProductsMedias([$product])->shouldBeCalled();
 
         $this->setValue([$product], $attribute, $data, 'fr_FR', 'mobile');
     }
@@ -123,7 +123,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $data = realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg');
 
         $value->setMedia($media)->shouldBeCalled();
-        $manager->handleAllMedia([$product])->shouldBeCalled();
+        $manager->handleAllProductsMedias([$product])->shouldBeCalled();
 
         $this->setValue([$product], $attribute, $data, 'fr_FR', 'mobile');
     }
@@ -148,7 +148,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
         $mediaFactory->createMedia(Argument::any())->shouldBeCalled()->willReturn($media);
         $value->setMedia($media)->shouldBeCalled($value);
-        $manager->handleAllMedia([$product])->shouldBeCalled();
+        $manager->handleAllProductsMedias([$product])->shouldBeCalled();
 
         $this->setValue([$product], $attribute, $data, 'fr_FR', 'mobile');
     }
