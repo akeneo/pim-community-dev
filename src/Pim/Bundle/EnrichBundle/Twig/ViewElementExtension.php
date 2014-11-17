@@ -64,19 +64,21 @@ class ViewElementExtension extends \Twig_Extension
         $elementCount = count($elements);
         for ($i = 0; $i < $elementCount; $i++) {
             $element = $elements[$i];
-            $context['viewElement'] = [
-                'alias' => $element->getAlias(),
-                'loop'  => [
-                    'index'  => $i + 1,
-                    'first'  => 0 === $i,
-                    'last'   => $elementCount === $i + 1,
-                    'length' => $elementCount
+            $elementContext = [
+                'viewElement' => [
+                    'alias' => $element->getAlias(),
+                    'loop'  => [
+                        'index'  => $i + 1,
+                        'first'  => 0 === $i,
+                        'last'   => $elementCount === $i + 1,
+                        'length' => $elementCount
+                    ]
                 ]
-            ];
+            ] + $context;
 
             $content .= $this->templating->render(
                 $element->getTemplate(),
-                array_replace_recursive($context, $element->getParameters())
+                array_replace_recursive($elementContext, $element->getParameters($context))
             );
         }
 

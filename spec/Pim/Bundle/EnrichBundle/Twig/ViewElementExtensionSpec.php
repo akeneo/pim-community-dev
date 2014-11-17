@@ -33,9 +33,9 @@ class ViewElementExtensionSpec extends ObjectBehavior
         $buttonTwo->getTemplate()->willReturn('button_two.html.twig');
         $buttonThree->getTemplate()->willReturn('button_three.html.twig');
 
-        $buttonOne->getParameters()->willReturn([]);
-        $buttonTwo->getParameters()->willReturn([]);
-        $buttonThree->getParameters()->willReturn([]);
+        $buttonOne->getParameters(Argument::type('array'))->willReturn([]);
+        $buttonTwo->getParameters(Argument::type('array'))->willReturn([]);
+        $buttonThree->getParameters(Argument::type('array'))->willReturn([]);
     }
 
     function it_is_initializable()
@@ -133,8 +133,8 @@ class ViewElementExtensionSpec extends ObjectBehavior
 
         $buttonOne->isVisible(Argument::any())->willReturn(false);
 
-        $buttonTwo->getParameters()->willReturn(['color' => 'green', 'textColor' => 'black']);
-        $buttonThree->getParameters()->willReturn(['color' => ['text' => 'white', 'shadow' => 'grey']]);
+        $buttonTwo->getParameters($originalContext)->willReturn(['color' => 'green', 'textColor' => 'black']);
+        $buttonThree->getParameters($originalContext)->willReturn(['color' => ['text' => 'white', 'shadow' => 'grey']]);
 
         $templating
             ->render(
