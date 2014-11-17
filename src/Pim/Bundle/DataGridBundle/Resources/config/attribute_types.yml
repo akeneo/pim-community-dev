@@ -25,7 +25,16 @@ parameters:
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_textarea:
         column:
+            type:          product_value_field
             frontend_type: textarea
+            selector:      product_value_base
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_simpleselect:
         column:
