@@ -1,6 +1,11 @@
 <div class="tab-pane tab-property {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    {{ elements.accordion({
-        'pane.accordion.general_properties': form_row(form.code),
-        'pane.accordion.node_values': form_row(form.label)
-    }) }}
+    {% set generalProperties %}
+        {{ form_row(form.code) }}
+    {% endset %}
+
+    {% set nodeValues %}
+        {{ form_row(form.label) }}
+    {% endset %}
+
+    {{ elements.accordion({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.node_values': nodeValues }) }}
 </div>

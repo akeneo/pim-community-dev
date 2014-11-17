@@ -20,14 +20,19 @@ class ViewElementExtension extends \Twig_Extension
     /** @var EngineInterface */
     protected $templating;
 
+    /** @var boolean */
+    protected $debug;
+
     /**
      * @param ViewElementRegistry $registry
      * @param EngineInterface     $templating
+     * @param boolean             $debug
      */
-    public function __construct(ViewElementRegistry $registry, EngineInterface $templating)
+    public function __construct(ViewElementRegistry $registry, EngineInterface $templating, $debug = false)
     {
         $this->registry   = $registry;
         $this->templating = $templating;
+        $this->debug      = $debug;
     }
 
     /**
@@ -76,10 +81,18 @@ class ViewElementExtension extends \Twig_Extension
                 ]
             ] + $context;
 
+            if (true === $this->debug) {
+                $content .= sprintf("<!-- Start view element template: %s -->\n", $element->getTemplate());
+            }
+
             $content .= $this->templating->render(
                 $element->getTemplate(),
                 array_replace_recursive($elementContext, $element->getParameters($context))
             );
+
+            if (true === $this->debug) {
+                $content .= sprintf("<!-- End view element template: %s -->\n", $element->getTemplate());
+            }
         }
 
         return $content;
