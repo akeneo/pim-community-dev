@@ -27,16 +27,20 @@ class ProductQueryUtility
      * Normalize the field name from attribute and catalog context
      *
      * @param AttributeInterface $attribute
-     * @param array              $context
+     * @param string             $locale
+     * @param string             $scope
      *
      * @return string
      */
-    public static function getNormalizedValueFieldFromAttribute(AttributeInterface $attribute, array $context)
-    {
-        if ($attribute->isLocalizable() && !isset($context['locale'])) {
+    public static function getNormalizedValueFieldFromAttribute(
+        AttributeInterface $attribute,
+        $locale = null,
+        $scope = null
+    ) {
+        if ($attribute->isLocalizable() && null === $locale) {
             throw new \LogicException('Locale is not configured');
         }
-        if ($attribute->isScopable() && !isset($context['scope'])) {
+        if ($attribute->isScopable() && null === $scope) {
             throw new \LogicException('Scope is not configured');
         }
 
@@ -44,8 +48,8 @@ class ProductQueryUtility
             $attribute->getCode(),
             $attribute->isLocalizable(),
             $attribute->isScopable(),
-            ($attribute->isLocalizable() ? $context['locale'] : null),
-            ($attribute->isScopable() ? $context['scope'] : null)
+            ($attribute->isLocalizable() ? $locale : null),
+            ($attribute->isScopable() ? $scope : null)
         );
     }
 
@@ -74,8 +78,13 @@ class ProductQueryUtility
      *
      * @throws \LogicException
      */
-    public static function getNormalizedValueField($attributeCode, $localizable, $scopable, $locale, $scope)
-    {
+    public static function getNormalizedValueField(
+        $attributeCode,
+        $localizable,
+        $scopable,
+        $locale = null,
+        $scope = null
+    ) {
         $suffix = '';
 
         if ($localizable) {

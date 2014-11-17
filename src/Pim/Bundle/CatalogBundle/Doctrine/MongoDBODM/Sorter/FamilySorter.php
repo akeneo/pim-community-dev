@@ -37,9 +37,9 @@ class FamilySorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, array $context = [])
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
     {
-        if (!isset($context['locale'])) {
+        if (null === $locale) {
             throw new \InvalidArgumentException(
                 'Cannot prepare condition on family sorter without locale'
             );
@@ -49,7 +49,7 @@ class FamilySorter implements FieldSorterInterface
             "%s.%s.label.%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
-            $context['locale']
+            $locale
         );
         $fieldCode = sprintf(
             "%s.%s.code",
