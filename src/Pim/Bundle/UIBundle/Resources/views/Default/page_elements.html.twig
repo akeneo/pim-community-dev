@@ -112,7 +112,7 @@
     </div>
 {% endmacro %}
 
-{% macro form_navbar(tabs) %}
+{% macro form_navbar(tabs, translationSuffix = '.title') %}
     <div id="form-navbar" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
             <div class="row-fluid">
@@ -120,10 +120,10 @@
                     <ul class="nav">
                         {% if tabs is iterable %}
                             {% for tab in tabs %}
-                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tab ~ '.title')|trans }}</a></li>
+                                <li{% if loop.first %} class="active"{% endif %}><a href="#{{ tab|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tab ~ translationSuffix)|trans }}</a></li>
                             {% endfor %}
                         {% else %}
-                            <li class="active"><a href="#{{ tabs|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tabs ~ '.title')|trans }}</a></li>
+                            <li class="active"><a href="#{{ tabs|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ (tabs ~ translationSuffix)|trans }}</a></li>
                         {% endif %}
                     </ul>
                 {% endif %}
