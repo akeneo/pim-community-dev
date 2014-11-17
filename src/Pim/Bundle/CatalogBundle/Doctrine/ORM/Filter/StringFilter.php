@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
@@ -18,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StringFilter implements AttributeFilterInterface, FieldFilterInterface
+class StringFilter implements AttributeFilterInterface
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -88,18 +87,6 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
                 $condition
             );
         }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
-    {
-        $field = current($this->qb->getRootAliases()).'.'.$field;
-        $condition = $this->prepareCondition($backendField, $operator, $value);
-        $this->qb->andWhere($condition);
 
         return $this;
     }

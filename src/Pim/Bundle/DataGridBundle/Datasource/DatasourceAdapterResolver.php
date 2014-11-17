@@ -19,33 +19,33 @@ class DatasourceAdapterResolver
     protected $supportResolver;
 
     /** @var string */
-    protected $ormAdapterClass;
+    protected $ormAdapter;
 
     /** @var string */
-    protected $mongodbAdapterClass;
+    protected $mongoAdapter;
 
     /** @var string */
-    protected $productOrmAdapterClass;
+    protected $productOrmAdapter;
 
     /** @var string */
-    protected $productMongodbAdapterClass;
+    protected $productMongoAdapter;
 
     /** @var array */
     protected $productDatasources = [];
 
     /**
      * @param DatasourceSupportResolver $supportResolver
-     * @param string                    $ormAdapterClass
-     * @param string                    $productOrmAdapterClass
+     * @param string                    $ormAdapter
+     * @param string                    $productOrmAdapter
      */
     public function __construct(
         DatasourceSupportResolver $supportResolver,
-        $ormAdapterClass,
-        $productOrmAdapterClass
+        $ormAdapter,
+        $productOrmAdapter
     ) {
         $this->supportResolver = $supportResolver;
-        $this->ormAdapterClass = $ormAdapterClass;
-        $this->productOrmAdapterClass = $productOrmAdapterClass;
+        $this->ormAdapter = $ormAdapter;
+        $this->productOrmAdapter = $productOrmAdapter;
     }
 
     /**
@@ -61,40 +61,40 @@ class DatasourceAdapterResolver
             $this->supportResolver->getSupport($datasourceType)
         ) {
             if (in_array($datasourceType, $this->productDatasources)) {
-                return $this->productOrmAdapterClass;
+                return $this->productOrmAdapter;
             } else {
-                return $this->ormAdapterClass;
+                return $this->ormAdapter;
             }
-        } elseif (null === $this->mongodbAdapterClass) {
+        } elseif (null === $this->mongoAdapter) {
             throw new InvalidConfigurationException('The MongoDB adapter class should be registered.');
         }
 
         if (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
             $this->supportResolver->getSupport($datasourceType)) {
             if (in_array($datasourceType, $this->productDatasources)) {
-                return $this->productMongodbAdapterClass;
+                return $this->productMongoAdapter;
             } else {
-                return $this->mongodbAdapterClass;
+                return $this->mongoAdapter;
             }
         }
 
-        return $this->ormAdapterClass;
+        return $this->ormAdapter;
     }
 
     /**
-     * @param string $mongodbAdapterClass
+     * @param string $mongoAdapter
      */
-    public function setMongodbAdapterClass($mongodbAdapterClass)
+    public function setMongodbAdapterClass($mongoAdapter)
     {
-        $this->mongodbAdapterClass = $mongodbAdapterClass;
+        $this->mongoAdapter = $mongoAdapter;
     }
 
     /**
-     * @param string $productMongodbAdapterClass
+     * @param string $productMongoAdapter
      */
-    public function setProductMongodbAdapterClass($productMongodbAdapterClass)
+    public function setProductMongodbAdapterClass($productMongoAdapter)
     {
-        $this->productMongodbAdapterClass = $productMongodbAdapterClass;
+        $this->productMongoAdapter = $productMongoAdapter;
     }
 
     /**

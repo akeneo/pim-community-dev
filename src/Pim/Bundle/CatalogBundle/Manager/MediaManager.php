@@ -47,7 +47,7 @@ class MediaManager
         $uploadDirectory,
         MediaFactory $factory,
         ManagerRegistry $registry
-    )  {
+    ) {
         $this->filesystem      = $filesystem;
         $this->uploadDirectory = $uploadDirectory;
         $this->factory         = $factory;
