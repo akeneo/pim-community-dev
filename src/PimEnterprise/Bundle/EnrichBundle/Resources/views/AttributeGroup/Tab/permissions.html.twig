@@ -24,6 +24,6 @@
         });
 </script>
 
-<div class="tab-pane tab-permission {{ first_tab ? 'active' : '' }}" id="{{ tab_id }}">
+<div class="tab-pane tab-permission {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
     {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
 </div>
