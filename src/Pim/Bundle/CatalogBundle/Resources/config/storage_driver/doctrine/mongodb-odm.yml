@@ -389,7 +389,7 @@ services:
         arguments:
             - ['pim_catalog_text', 'pim_catalog_textarea']
             - []
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', '=', 'EMPTY']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

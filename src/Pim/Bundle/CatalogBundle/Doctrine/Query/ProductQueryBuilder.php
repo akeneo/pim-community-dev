@@ -164,7 +164,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addFieldFilter($field, $operator, $value, $context);
+        $filter->addFieldFilter($field, $operator, $value, $context['locale'], $context['scope']);
 
         return $this;
     }
@@ -189,7 +189,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     ) {
         $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addAttributeFilter($attribute, $operator, $value, $context);
+        $filter->addAttributeFilter($attribute, $operator, $value, $context['locale'], $context['scope']);
 
         return $this;
     }
@@ -208,7 +208,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addFieldSorter($field, $direction, $context);
+        $sorter->addFieldSorter($field, $direction, $context['locale'], $context['scope']);
 
         return $this;
     }
@@ -231,7 +231,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     ) {
         $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addAttributeSorter($attribute, $direction, $context);
+        $sorter->addAttributeSorter($attribute, $direction, $context['locale'], $context['scope']);
 
         return $this;
     }
