@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
+use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -16,9 +17,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaManagerSpec extends ObjectBehavior
 {
-    function let(Filesystem $filesystem, ObjectManager $objectManager)
+    function let(Filesystem $filesystem, MediaFactory $factory, ObjectManager $objectManager)
     {
-        $this->beConstructedWith($filesystem, '/tmp/pim-ce', $objectManager);
+        $this->beConstructedWith($filesystem, '/tmp/pim-ce', $factory, $objectManager);
     }
 
     function it_handles_new_product_media_upload($filesystem, ProductMediaInterface $media, File $newFile)
@@ -56,7 +57,6 @@ class MediaManagerSpec extends ObjectBehavior
 
         // delete the existing file
         $filesystem->has('my-new-file.jpg')->willReturn(true);
-        $filesystem->delete('my-new-file.jpg')->shouldBeCalled();
         $media->setOriginalFilename(null)->shouldBeCalled();
         $media->setFilename(null)->shouldBeCalled();
         $media->setFilePath(null)->shouldBeCalled();
@@ -141,5 +141,28 @@ class MediaManagerSpec extends ObjectBehavior
         $value->getScope()->shouldBeCalled();
 
         $this->generateFilenamePrefix($product, $value);
+    }
+
+    function it_loads_file_into_a_media($filesystem, $factory, ProductMediaInterface $media)
+    {
+        $filesystem->has('preview.jpg')->willReturn(true);
+        $filesystem->mimeType('preview.jpg')->willReturn('image/jpeg');
+
+        $factory->createMedia()->willReturn($media);
+        $media->setOriginalFilename('preview.jpg')->shouldBeCalled();
+        $media->setFilename('preview.jpg')->shouldBeCalled();
+        $media->setFilePath('/tmp/pim-ce/preview.jpg')->shouldBeCalled();
+        $media->setMimeType('image/jpeg')->shouldBeCalled();
+
+        $this->createFromFilename('preview.jpg')->shouldReturn($media);
+    }
+
+    function its_load_method_throw_exception_when_file_does_not_exist($filesystem, ProductMediaInterface $media)
+    {
+        $filesystem->has('readme.md')->willReturn(false);
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException('File "/tmp/pim-ce/readme.md" does not exist'))
+            ->duringCreateFromFilename('readme.md');
     }
 }

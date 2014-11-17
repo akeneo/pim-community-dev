@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -30,17 +31,26 @@ class MediaManager
     /** @var ObjectManager */
     protected $objectManager;
 
+    /** @var MediaFactory */
+    protected $factory;
+
     /**
      * Constructor
      *
      * @param Filesystem    $filesystem
      * @param string        $uploadDirectory
+     * @param MediaFactory  $factory
      * @param ObjectManager $objectManager
      */
-    public function __construct(Filesystem $filesystem, $uploadDirectory, ObjectManager $objectManager)
-    {
+    public function __construct(
+        Filesystem $filesystem,
+        $uploadDirectory,
+        MediaFactory $factory,
+        ObjectManager $objectManager
+    )  {
         $this->filesystem      = $filesystem;
         $this->uploadDirectory = $uploadDirectory;
+        $this->factory         = $factory;
         $this->objectManager   = $objectManager;
     }
 
@@ -156,6 +166,30 @@ class MediaManager
         }
 
         return copy($media->getFilePath(), $targetDir);
+    }
+
+    /**
+     * Create a media and load file information
+     *
+     * @param string $filename
+     *
+     * @return ProductMediaInterface
+     *
+     * @throws \InvalidArgumentException When file does not exist
+     */
+    public function createFromFilename($filename)
+    {
+        $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $filename;
+        if (!$this->filesystem->has($filename)) {
+            throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $filePath));
+        }
+        $media = $this->factory->createMedia();
+        $media->setOriginalFilename($filename);
+        $media->setFilename($filename);
+        $media->setFilePath($filePath);
+        $media->setMimeType($this->filesystem->mimeType($filename));
+
+        return $media;
     }
 
     /**
@@ -296,10 +330,6 @@ class MediaManager
      */
     protected function delete(ProductMediaInterface $media)
     {
-        if (($media->getFilename() !== "") && $this->fileExists($media)) {
-            $this->filesystem->delete($media->getFilename());
-        }
-
         $media->setOriginalFilename(null);
         $media->setFilename(null);
         $media->setFilepath(null);
