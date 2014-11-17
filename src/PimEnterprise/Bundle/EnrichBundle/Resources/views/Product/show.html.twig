@@ -50,11 +50,11 @@
 
     <form class="form-horizontal product-edit product-view">
         <div class="layout-content">
-            {{ elements.form_navbar(tab_titles('pim_enrich_product_show')) }}
+            {{ elements.form_navbar(view_element_aliases('pim_product_show.form_tab')) }}
 
             <div class="row-fluid tab-content">
 
-                {{ tab_contents('pim_enrich_product_show')}}
+                {{ view_elements('pim_product_show.form_tab') }}
 
                 <div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id, dataLocale: dataLocale }) }}">
                 </div>
