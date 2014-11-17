@@ -109,7 +109,7 @@ services:
         class: %pim_catalog.updater.setter.media_value.class%
         arguments:
             - @pim_catalog.builder.product
-            - @pim_catalog.manager.product
+            - @pim_catalog.manager.media
             - @pim_catalog.factory.media
             - ['pim_catalog_file', 'pim_catalog_image']
         tags:

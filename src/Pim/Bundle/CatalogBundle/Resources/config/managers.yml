@@ -59,6 +59,8 @@ services:
         arguments:
             - '@pim_filesystem'
             - %upload_dir%
+            - '@pim_catalog.factory.media'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_catalog.manager.attribute:
         class: %pim_catalog.manager.attribute.class%

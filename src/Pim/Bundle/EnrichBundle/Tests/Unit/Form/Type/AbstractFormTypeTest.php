@@ -154,19 +154,6 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     }
 
     /**
-     * Get a mock of MediaManager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
-     */
-    protected function getMediaManagerMock()
-    {
-        return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\MediaManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
      * Assert field name and type
      * @param string $name Field name
      * @param string $type Field type alias
