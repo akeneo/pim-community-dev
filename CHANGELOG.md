@@ -26,6 +26,7 @@
 
 ## BC breaks
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
+- Remove the override of MediaManager
 
 # 1.0.x
 
