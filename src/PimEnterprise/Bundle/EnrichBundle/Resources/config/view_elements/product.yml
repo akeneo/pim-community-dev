@@ -1,5 +1,5 @@
 parameters:
-    pimee_enrich.view_element.product.tab.category.template: 'PimEnterpriseEnrichBundle:Product:Tab/attribute_edit.html.twig'
+    pimee_enrich.view_element.product.tab.attribute.template: 'PimEnterpriseEnrichBundle:Product:Tab/attribute_edit.html.twig'
     pimee_enrich.view_element.product.tab.proposal.template: 'PimEnterpriseEnrichBundle:Product:Tab/proposal.html.twig'
 
 services:
@@ -7,7 +7,7 @@ services:
     pim_enrich.view_element.product.tab.category:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.category'
+            - 'pimee_enrich.attribute_group.tab.category'
             - %pimee_enrich.view_element.product.tab.category.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_categories_view'}] ]
@@ -19,7 +19,7 @@ services:
     pim_enrich.view_element.product.tab.association:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.association'
+            - 'pimee_enrich.attribute_group.tab.association'
             - %pim_enrich.view_element.product.tab.association.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
@@ -31,7 +31,7 @@ services:
     pim_enrich.view_element.product.tab.proposal:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.proposal'
+            - 'pimee_enrich.attribute_group.tab.proposal'
             - %pimee_enrich.view_element.product.tab.proposal.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
