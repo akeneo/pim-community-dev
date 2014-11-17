@@ -81,25 +81,10 @@ class OptionsFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $this->addFieldFilter($field, $operator, $value);
-
-        return $this;
-    }
-
-    /**
-     * @param string|array $field
-     * @param string       $operator
-     * @param string|array $value
-     * @param array        $context
-     *
-     * @return OptionsFilter
-     */
-    protected function addFieldFilter($field, $operator, $value, array $context = [])
-    {
         $value = is_array($value) ? $value : [$value];
 
         if ($operator === Operators::NOT_IN_LIST) {

@@ -17,11 +17,12 @@ interface FieldFilterInterface extends FilterInterface
      * @param string       $field    the field
      * @param string|array $operator the used operator
      * @param string|array $value    the value(s) to filter
-     * @param array        $context  the filter context, used for locale and scope
+     * @param string       $locale   the locale
+     * @param string       $scope    the scope
      *
      * @return FieldFilterInterface
      */
-    public function addFieldFilter($field, $operator, $value, array $context = []);
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null);
 
     /**
      * This filter supports the field

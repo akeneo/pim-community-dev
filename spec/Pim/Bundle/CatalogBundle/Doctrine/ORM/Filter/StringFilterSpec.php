@@ -27,7 +27,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_starts_with_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_starts_with_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
@@ -44,7 +44,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku');
     }
 
-    function it_adds_a_ends_with_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_ends_with_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
@@ -61,7 +61,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku');
     }
 
-    function it_adds_a_contains_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_contains_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
@@ -78,7 +78,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku');
     }
 
-    function it_adds_a_does_not_contain_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_does_not_contain_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
@@ -95,7 +95,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku');
     }
 
-    function it_adds_a_equal_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_equal_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
@@ -112,7 +112,7 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, '=', 'My Sku');
     }
 
-    function it_adds_an_empty_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_an_empty_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');

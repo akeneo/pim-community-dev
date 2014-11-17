@@ -33,30 +33,31 @@ class ValueJoin
      *
      * @param AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
-     * @param array              $context   the join context used for locale and scope
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      *
      * @return string
      */
-    public function prepareCondition(AttributeInterface $attribute, $joinAlias, $context)
+    public function prepareCondition(AttributeInterface $attribute, $joinAlias, $locale = null, $scope = null)
     {
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
-        if ($attribute->isLocalizable() && !isset($context['locale'])) {
+        if ($attribute->isLocalizable() && null === $locale) {
             throw new \InvalidArgumentException(
                 sprintf('Cannot prepare condition on localizable attribute "%s" without locale', $attribute->getCode())
             );
         }
         if ($attribute->isLocalizable()) {
-            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($context['locale']);
+            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($locale);
         }
 
-        if ($attribute->isScopable() && !isset($context['scope'])) {
+        if ($attribute->isScopable() && null === $scope) {
             throw new \InvalidArgumentException(
                 sprintf('Cannot prepare condition on scopable attribute "%s" without scope', $attribute->getCode())
             );
         }
         if ($attribute->isScopable()) {
-            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($context['scope']);
+            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($scope);
         }
 
         return $condition;

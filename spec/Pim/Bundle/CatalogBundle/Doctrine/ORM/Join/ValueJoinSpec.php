@@ -26,7 +26,7 @@ class ValueJoinSpec extends ObjectBehavior
         $name->isScopable()->willReturn(false);
         $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $this->prepareCondition($name, 'alias', ['locale' => 'en_US']);
+        $this->prepareCondition($name, 'alias', 'en_US');
     }
 
     function it_throws_an_exception_when_the_locale_is_not_provided(AttributeInterface $name)
@@ -37,10 +37,10 @@ class ValueJoinSpec extends ObjectBehavior
         $name->getCode()->willReturn('name');
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringPrepareCondition($name, 'alias', []);
+            ->duringPrepareCondition($name, 'alias');
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringPrepareCondition($name, 'alias', ['locale' => null]);
+            ->duringPrepareCondition($name, 'alias', null);
     }
 
     function it_throws_an_exception_when_the_scope_is_not_provided(AttributeInterface $price)
@@ -51,9 +51,6 @@ class ValueJoinSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringPrepareCondition($price, 'alias', []);
-        $this
-            ->shouldThrow('\InvalidArgumentException')
-            ->duringPrepareCondition($price, 'alias', ['scope' => null]);
+            ->duringPrepareCondition($price, 'alias', 'en_US', null);
     }
 }

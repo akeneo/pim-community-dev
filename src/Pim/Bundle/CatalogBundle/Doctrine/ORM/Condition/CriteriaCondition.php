@@ -106,8 +106,9 @@ class CriteriaCondition
                 );
             }
             $method = $operators[$operator];
+            $condition = $this->qb->expr()->$method($field, $this->qb->expr()->literal($value));
 
-            return $this->qb->expr()->$method($field, $this->qb->expr()->literal($value))->__toString();
+            return is_object($condition) ? $condition->__toString() : $condition;
         }
 
         $operators = array('NULL' => 'isNull', 'NOT NULL' => 'isNotNull');

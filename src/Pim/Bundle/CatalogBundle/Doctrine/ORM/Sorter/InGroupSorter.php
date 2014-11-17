@@ -36,7 +36,7 @@ class InGroupSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, array $context = [])
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
     {
         $alias = 'inGroupSorter';
         $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';

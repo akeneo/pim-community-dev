@@ -43,20 +43,20 @@ class EntitySorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, array $context = [])
+    public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $scope = null)
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
         $backendType = $attribute->getBackendType();
 
-        if (!isset($context['locale'])) {
+        if (null === $locale) {
             throw new \InvalidArgumentException(
                 sprintf('Cannot prepare condition on type "%s" without locale', $attribute->getAttributeType())
             );
         }
 
         // join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);
+        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->leftJoin(
             $this->qb->getRootAlias().'.values',
             $joinAlias,
@@ -70,7 +70,7 @@ class EntitySorter implements AttributeSorterInterface
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
 
         $joinAliasOptVal = $aliasPrefix.'OV'.$attribute->getCode();
-        $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($context['locale']);
+        $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($locale);
         $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
 
         $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
@@ -87,16 +87,17 @@ class EntitySorter implements AttributeSorterInterface
      *
      * @param AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
-     * @param array              $context   the context
+     * @param string             $locale    the locale
+     * @param string             $scope     the scope
      *
-     * @throws ProductQueryException
+     * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, array $context)
+    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $locale = null, $scope = null)
     {
         $joinHelper = new ValueJoin($this->qb);
 
-        return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
+        return $joinHelper->prepareCondition($attribute, $joinAlias, $locale, $scope);
     }
 }

@@ -37,9 +37,9 @@ class CompletenessSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, array $context = [])
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
     {
-        if (!isset($context['locale']) || !isset($context['scope'])) {
+        if (null === $locale || null === $scope) {
             throw new \InvalidArgumentException(
                 'Cannot prepare condition on completenesses without locale and scope'
             );
@@ -49,8 +49,8 @@ class CompletenessSorter implements FieldSorterInterface
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             'completenesses',
-            $context['scope'],
-            $context['locale']
+            $scope,
+            $locale
         );
         $this->qb->sort($field, $direction);
         $this->qb->sort('_id');
