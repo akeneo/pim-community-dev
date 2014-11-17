@@ -3,10 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Filtering by multi option backend type
@@ -61,8 +62,7 @@ class OptionsFilter implements AttributeFilterInterface
         $joinAliasOpt = 'filterO'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
 
-        //TODO: the value should not contain empty (comes from the frontend) => it should be in the operator
-        if (in_array('empty', $value)) {
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
@@ -70,10 +70,9 @@ class OptionsFilter implements AttributeFilterInterface
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
 
-            $condition = $this->prepareEmptyCondition($backendField, $operator, $value);
             $this->qb
                 ->leftJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasOpt)
-                ->andWhere($condition);
+                ->andWhere($this->qb->expr()->isNull($backendField));
         } else {
             $this->qb
                 ->innerJoin(
@@ -133,27 +132,5 @@ class OptionsFilter implements AttributeFilterInterface
         $joinHelper = new ValueJoin($this->qb);
 
         return $joinHelper->prepareCondition($attribute, $joinAlias, $context);
-    }
-
-    /**
-     * Prepare empty condition for options
-     *
-     * @param string $backendField
-     * @param string $operator
-     * @param string $value
-     *
-     * @return \Doctrine\ORM\Query\Expr
-     */
-    protected function prepareEmptyCondition($backendField, $operator, $value)
-    {
-        unset($value[array_search('empty', $value)]);
-        $expr = $this->qb->expr()->isNull($backendField);
-
-        if (count($value) > 0) {
-            $exprIn = $this->qb->expr()->in($backendField, $value);
-            $expr   = $this->qb->expr()->orX($expr, $exprIn);
-        }
-
-        return $expr;
     }
 }

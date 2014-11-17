@@ -74,7 +74,7 @@ services:
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - %pim_catalog.entity.product.class%
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.family'
 
     pim_catalog.doctrine.index_creator:
@@ -455,7 +455,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.option.class%
         arguments:
             - ['pim_catalog_simpleselect']
-            - ['IN']
+            - ['IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
@@ -463,7 +463,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.options.class%
         arguments:
             - ['pim_catalog_multiselect']
-            - ['IN']
+            - ['IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

@@ -4,10 +4,11 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,15 +30,14 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ChannelController extends AbstractDoctrineController
 {
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $channelForm;
 
-    /**
-     * @var ChannelHandler
-     */
+    /** @var HandlerInterface */
     protected $channelHandler;
+
+    /** @var RemoverInterface */
+    protected $channelRemover;
 
     /**
      * Constructor
@@ -51,8 +51,9 @@ class ChannelController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param ChannelHandler           $channelHandler
+     * @param HandlerInterface         $channelHandler
      * @param Form                     $channelForm
+     * @param RemoverInterface         $channelRemover
      */
     public function __construct(
         Request $request,
@@ -64,8 +65,9 @@ class ChannelController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        ChannelHandler $channelHandler,
-        Form $channelForm
+        HandlerInterface $channelHandler,
+        Form $channelForm,
+        RemoverInterface $channelRemover
     ) {
         parent::__construct(
             $request,
@@ -81,6 +83,7 @@ class ChannelController extends AbstractDoctrineController
 
         $this->channelForm    = $channelForm;
         $this->channelHandler = $channelHandler;
+        $this->channelRemover = $channelRemover;
     }
 
     /**
@@ -152,10 +155,10 @@ class ChannelController extends AbstractDoctrineController
         }
 
         foreach ($channel->getLocales() as $locale) {
-            $channel->removeLocale($locale);
-            $this->persist($locale, false);
+            $locale->removeChannel($channel);
         }
-        $this->remove($channel);
+
+        $this->channelRemover->remove($channel);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

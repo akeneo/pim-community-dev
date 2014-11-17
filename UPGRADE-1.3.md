@@ -34,3 +34,5 @@ It's now instanciated from the ProductQueryFactory and it's not anymore a servic
 The ProductDatasource has been re-worked to create its own instance of product query builder (PQB).
 
 Product filters and Sorters have been updated to rely on the PQB and avoid to directly manipulate Doctrine QB.
+
+The ProductPersister has been replaced by ProductSaver.

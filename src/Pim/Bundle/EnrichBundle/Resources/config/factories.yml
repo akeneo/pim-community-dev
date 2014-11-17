@@ -7,7 +7,7 @@ services:
         class: %pim_enrich.form.factory.product_value_form_factory%
         arguments:
             - '@form.factory'
-            - '@pim_catalog.factory.attribute_type'
+            - '@pim_catalog.registry.attribute_type'
             - '@event_dispatcher'
 
     pim_enrich.factory.sequential_edit:

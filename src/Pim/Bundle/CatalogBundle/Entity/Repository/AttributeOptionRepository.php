@@ -62,6 +62,13 @@ class AttributeOptionRepository extends EntityRepository implements
                 ->setParameter('ids', $options['ids']);
         }
 
+        if (isset($options['limit'])) {
+            $qb->setMaxResults((int) $options['limit']);
+            if (isset($options['page'])) {
+                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] -1));
+            }
+        }
+
         $results = array();
         $autoSorting = null;
         foreach ($qb->getQuery()->getArrayResult() as $row) {

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Sequential edit repository

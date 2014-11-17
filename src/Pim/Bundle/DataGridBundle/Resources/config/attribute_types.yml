@@ -45,6 +45,8 @@ parameters:
             options:
                 field_options:
                     multiple: true
+                    attr:
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_multiselect:
         column:
@@ -56,6 +58,8 @@ parameters:
             options:
                 field_options:
                     multiple: true
+                    attr:
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:

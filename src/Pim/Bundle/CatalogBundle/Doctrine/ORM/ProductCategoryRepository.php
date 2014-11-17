@@ -186,10 +186,10 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         $qb->leftJoin($rootAlias.'.categories', $alias);
         $qb->andWhere(
             $qb->expr()->orX(
-                $qb->expr()->in($alias.'.id', ':filterCatIds'),
+                $qb->expr()->in($alias.'.id', ':filterCatIdsOrUnclassified'),
                 $qb->expr()->isNull($alias.'.id')
             )
         );
-        $qb->setParameter('filterCatIds', $categoryIds);
+        $qb->setParameter('filterCatIdsOrUnclassified', $categoryIds);
     }
 }

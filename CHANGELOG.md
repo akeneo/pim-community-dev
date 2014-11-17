@@ -6,6 +6,7 @@
 - Add the sequential edit for a selected list of products
 - Add comments on a product
 - Load dashboard widgets asynchronously and allow to refresh the data
+- Add copiers and setters
 
 ## Improvements
 - Remove the fixed mysql socket location
@@ -20,6 +21,10 @@
 - JobProfileController refactoring
 - Add ACL on entity history
 - Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
+- Improve the UI of the datagrid column configuration popin
+- Normalize the managers by introducing 4 interfaces, SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface
+- Load the grid filter choices for simple and multi select attributes asynchronously
+- Modify the display of permissions in the role permissions edition
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -61,12 +66,53 @@
 - Remove the 'defaultValue' property of attributes and `Pim/Bundle/CatalogBundle/Model/AttributeInterface::setDefaultValue()` and `getDefaultValue()`
 - Refactor `Pim\Bundle\EnrichBundle\Controller\SequentialEditController`
 - Remove the `Pim\Bundle\CatalogBundle\Doctrine\(ORM|MongoDBODM)\Filter\BaseFilter` to use proper dedicated filters
+- The parameter `category_id` for the route `pim_enrich_product_listcategories` has been renamed to `categoryId`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader`. Now `FieldNameBuilder`, channel, locale and currency entity classes are mandatory.
+- Add getAvailableLocaleCodes in AttributeInterface
+- AttributeTypeRegistry replaces AttributeTypeFactory, changed constructors for AttributeManager, ProductValueFormFactory, AddAttributeTypeRelatedFieldsSubscriber
+- Drop Pim\Bundle\CatalogBundle\Doctrine\EntityRepository, ORM repositories now extends Doctrine\ORM\EntityRepository, no more access to buildAll(), build() and buildOne()
+- Replace AssociationTypeRepository::buildMissingAssociationTypes by AssociationTypeRepository::findMissingAssociationTypes
+- Replace AttributeGroupRepository::buildAllWithTranslations by AttributeGroupRepository::findAllWithTranslations
+- Replace GroupTypeRepository::buildAll by GroupTypeRepository::getAllGroupsExceptVariantQB
+- In AttributeGroupHandler::_construct, replace ObjectManager argument by AttributeGroupManager
+- Remove unused ProductManager::removeAll() method
+- Add an ObjectManager argument in DatagridViewManager::__construct
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler` to accept `Pim\Bundle\CatalogBundle\Manager\ChannelManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler` to accept `Pim\Bundle\CatalogBundle\Manager\FamilyManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler` to accept `Pim\Bundle\CatalogBundle\Manager\GroupManager` as third argument and `Pim\Bundle\CatalogBundle\Manager\ProductManager` as fourth argument
+- Change of constructor of `Pim\Bundle\CatalogBundle\Manager\FamilyManager` to accept `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as sixth argument
+- Change of constructor of `Pim\Bundle\CatalogBundle\Manager\ChannelManager` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as second argument and `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as third argument
+- Use `Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface` in constructors of AssociationTypeController, AttributeController, AttributeGroupController, ChannelController, FamilyController, GroupController, GroupTypeController
+- Change of constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` to remove `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` argument
+- Remove ObjectManager first argument of `Pim\Bundle\EnrichBundle\Builder\ProductBuilder` constructor and delete method removeAttributeFromProduct
+- Change of constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as third argument to replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` argument
+- Method `Pim\Bundle\CatalogBundle\Entity\Category::addProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::removeProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::setProducts()` have been removed.
+- We now use uniqid() to generate filename prefix (on media attributes)
+- Change of constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to add a `RemoverInterface` as last argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Controller\GroupTypeController.php` to add a `RemoverInterface` as last argument
+- `ProductPersister` and `BasePersister` has been replaced by `ProductSaver` in CatalogBundle
+- Add methods `execute()`, `getQueryBuilder()`, `setQueryBuilder()` in `ProductQueryBuilderInterface`
+- Add `MediaFactory` and `ObjectManager` arguments in MediaManager contructor
+
+## Bug fixes
+- PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
+- PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 
 # 1.2.x
 
 ## Bug fixes
+- PIM-3298: Fix issue with locale specific property of an attribute when edit and mass edit
+- PIM-3229: Fix values for simple and multi select attributes with missing translations not being displayed in the grid
+- PIM-3309: Fix check on product value uniqueness
+- PIM-3288: Fix memory leak on product import (avoid to hydrate all products of a category when we add a category to a product)
+- PIM-3354: Fix parameter alias in ORM ProductCategoryRepository
+
+# 1.2.11 (2014-10-31)
+
+## Bug fixes
 - PIM-3308: Fix regression on unclassified filter
-- PIM-3311: fix creation of products with missing identifier during imports
+- PIM-3311: Fix creation of products with missing identifier during imports
+- PIM-3312: Fix CSV import of product values with invalid channel, locale or currency
 
 # 1.2.10 (2014-10-24)
 

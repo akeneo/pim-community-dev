@@ -116,6 +116,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getFormOptions()->shouldReturn([
             'locales' => [$en, $de],
             'common_attributes' => ['foo', 'bar', 'baz'],
+            'current_locale' => 'en_US'
         ]);
     }
 
@@ -138,6 +139,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
         $name->getGroup()->willReturn(new AttributeGroup());
+        $name->getAvailableLocaleCodes()->willReturn(null);
 
         $massActionManager->findCommonAttributes([1, 2])->willReturn([$name]);
 

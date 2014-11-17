@@ -17,6 +17,7 @@ parameters:
     pim_enrich.controller.group_type.class: Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class: Pim\Bundle\EnrichBundle\Controller\CompletenessController
     pim_enrich.controller.sequential_edit.class: Pim\Bundle\EnrichBundle\Controller\SequentialEditController
+    pim_enrich.controller.product_comment.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentController
 
 services:
     pim_enrich.controller.abstract:
@@ -64,11 +65,14 @@ services:
         arguments:
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
+            - '@pim_catalog.remover.channel'
 
     pim_enrich.controller.currency:
         scope: request
         class: %pim_enrich.controller.currency.class%
         parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.saver.currency'
 
     pim_enrich.controller.family:
         scope: request
@@ -78,7 +82,6 @@ services:
             - '@pim_catalog.manager.family'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
-            - '@pim_catalog.manager.completeness'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
             - %pim_catalog.entity.attribute.class%
@@ -125,8 +128,6 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.manager.product_category'
             - '@pim_enrich.manager.sequential_edit'
-            - '@pim_comment.manager.comment'
-            - '@pim_comment.builder.comment'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -185,6 +186,7 @@ services:
         arguments:
             - '@pim_enrich.form.handler.group_type'
             - '@pim_enrich.form.group_type'
+            - '@pim_catalog.remover.group_type'
 
     pim_enrich.controller.completeness:
         class: %pim_enrich.controller.completeness.class%
@@ -203,3 +205,14 @@ services:
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_user.context.user'
+
+    pim_enrich.controller.product_comment:
+        scope: request
+        class: %pim_enrich.controller.product_comment.class%
+        arguments:
+            - '@templating'
+            - '@security.context'
+            - '@form.factory'
+            - '@pim_catalog.manager.product'
+            - '@pim_comment.manager.comment'
+            - '@pim_comment.builder.comment'

@@ -138,7 +138,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
 
     /**
      * Prepare conditions of the filter
-     * @param string|array  $operator
+     * @param string|array $operator
      * @param string|array $value
      *
      * @return string

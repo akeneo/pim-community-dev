@@ -12,7 +12,7 @@ class OptionsFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb)
     {
-        $this->beConstructedWith(['pim_catalog_multiselect'], ['IN']);
+        $this->beConstructedWith(['pim_catalog_multiselect'], ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -23,8 +23,9 @@ class OptionsFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
+        $this->supportsOperator('EMPTY')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
@@ -84,11 +85,11 @@ class OptionsFilterSpec extends ObjectBehavior
         $qb->leftJoin('filteroptions_code.options', 'filterOoptions_code')->shouldBeCalled()->willReturn($qb);
         $qb
             ->andWhere(
-                'filterOoptions_code.id IS NULL OR filterOoptions_code.id IN(\'my_value2\', \'my_value3\')'
+                'filterOoptions_code.id IS NULL'
             )
             ->shouldBeCalled()
         ;
 
-        $this->addAttributeFilter($attribute, 'IN', ['empty', 'my_value2', 'my_value3']);
+        $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
 }

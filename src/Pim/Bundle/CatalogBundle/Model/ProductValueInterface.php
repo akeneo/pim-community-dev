@@ -107,7 +107,7 @@ interface ProductValueInterface
     public function getBoolean();
 
     /**
-     * Set options, used for multi select to retrieve many options
+     * Set options, used for multi select to set many options
      *
      * @param ArrayCollection $options
      *
@@ -116,7 +116,7 @@ interface ProductValueInterface
     public function setOptions($options);
 
     /**
-     * Set prices, used for multi select to retrieve many options
+     * Set prices, used for multi select to set many prices
      *
      * @param ArrayCollection $prices
      *

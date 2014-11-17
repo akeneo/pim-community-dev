@@ -4,8 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Simple option filter for MongoDB implementation
@@ -87,15 +88,10 @@ class OptionFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.id', $field);
 
-        // TODO: empty should not be present in the value, it comes from the front
-        if (in_array('empty', $value)) {
-            unset($value[array_search('empty', $value)]);
-
+        if (Operators::IS_EMPTY === $operator) {
             $expr = $this->qb->expr()->field($field)->exists(false);
             $this->qb->addOr($expr);
-        }
-
-        if (count($value) > 0) {
+        } else {
             $value = array_map('intval', $value);
             $expr = $this->qb->expr()->field($field)->in($value);
             $this->qb->addOr($expr);

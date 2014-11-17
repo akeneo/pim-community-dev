@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -22,7 +21,6 @@ class ProductBuilderSpec extends ObjectBehavior
     const PRICE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
 
     function let(
-        ObjectManager $objectManager,
         ChannelManager $channelManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager
@@ -34,7 +32,6 @@ class ProductBuilderSpec extends ObjectBehavior
         );
 
         $this->beConstructedWith(
-            $objectManager,
             $channelManager,
             $localeManager,
             $currencyManager,

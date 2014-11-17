@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -34,29 +34,19 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class AttributeGroupController extends AbstractDoctrineController
 {
-    /**
-     * @var SecurityFacade
-     */
+    /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @var AttributeGroupHandler
-     */
+    /** @var HandlerInterface */
     protected $formHandler;
 
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $form;
 
-    /**
-     * @var AttributeGroupManager
-     */
+    /** @var AttributeGroupManager */
     protected $manager;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
     /**
@@ -72,7 +62,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param SecurityFacade           $securityFacade
-     * @param AttributeGroupHandler    $formHandler
+     * @param HandlerInterface         $formHandler
      * @param Form                     $form
      * @param AttributeGroupManager    $manager
      * @param string                   $attributeClass
@@ -88,7 +78,7 @@ class AttributeGroupController extends AbstractDoctrineController
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         SecurityFacade $securityFacade,
-        AttributeGroupHandler $formHandler,
+        HandlerInterface $formHandler,
         Form $form,
         AttributeGroupManager $manager,
         $attributeClass
@@ -211,14 +201,15 @@ class AttributeGroupController extends AbstractDoctrineController
         $data = $request->request->all();
 
         if (!empty($data)) {
+            $groups = [];
             foreach ($data as $id => $sort) {
                 $group = $this->getRepository('PimCatalogBundle:AttributeGroup')->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
-                    $this->persist($group, false);
+                    $groups[] = $group;
                 }
             }
-            $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
+            $this->manager->saveAll($groups);
 
             return new Response(1);
         }
@@ -248,7 +239,7 @@ class AttributeGroupController extends AbstractDoctrineController
             throw new DeleteException($this->translator->trans('flash.attribute group.not removed attributes'));
         }
 
-        $this->remove($group);
+        $this->manager->remove($group);
 
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');
@@ -295,22 +286,15 @@ class AttributeGroupController extends AbstractDoctrineController
     public function addAttributesAction(Request $request, $id)
     {
         $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
-        $maxOrder            = $group->getMaxAttributeSortOrder();
         $availableAttributes = new AvailableAttributes();
 
         $attributesForm      = $this->getAvailableAttributesForm(
             $this->getGroupedAttributes(),
             $availableAttributes
         );
-
         $attributesForm->bind($request);
-        foreach ($availableAttributes->getAttributes() as $attribute) {
-            $attribute->setSortOrder(++$maxOrder);
-            $group->addAttribute($attribute);
-        }
 
-        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
-
+        $this->manager->addAttributes($group, $availableAttributes->getAttributes());
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
         return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));

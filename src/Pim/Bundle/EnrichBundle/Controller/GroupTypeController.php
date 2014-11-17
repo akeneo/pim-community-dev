@@ -4,10 +4,11 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,15 +30,14 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class GroupTypeController extends AbstractDoctrineController
 {
-    /**
-     * @var GroupTypeHandler
-     */
+    /** @var HandlerInterface */
     protected $groupTypeHandler;
 
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $groupTypeForm;
+
+    /** @var RemoverInterface */
+    protected $groupTypeRemover;
 
     /**
      * Constructor
@@ -51,8 +51,9 @@ class GroupTypeController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param GroupTypeHandler         $groupTypeHandler
+     * @param HandlerInterface         $groupTypeHandler
      * @param Form                     $groupTypeForm
+     * @param RemoverInterface         $groupTypeRemover
      */
     public function __construct(
         Request $request,
@@ -64,8 +65,9 @@ class GroupTypeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        GroupTypeHandler $groupTypeHandler,
-        Form $groupTypeForm
+        HandlerInterface $groupTypeHandler,
+        Form $groupTypeForm,
+        RemoverInterface $groupTypeRemover
     ) {
         parent::__construct(
             $request,
@@ -81,6 +83,7 @@ class GroupTypeController extends AbstractDoctrineController
 
         $this->groupTypeHandler = $groupTypeHandler;
         $this->groupTypeForm    = $groupTypeForm;
+        $this->groupTypeRemover = $groupTypeRemover;
     }
 
     /**
@@ -164,7 +167,7 @@ class GroupTypeController extends AbstractDoctrineController
         } elseif (count($groupType->getGroups()) > 0) {
             throw new DeleteException($this->getTranslator()->trans('flash.group type.cant remove used'));
         } else {
-            $this->remove($groupType);
+            $this->groupTypeRemover->remove($groupType);
         }
 
         if ($this->getRequest()->isXmlHttpRequest()) {

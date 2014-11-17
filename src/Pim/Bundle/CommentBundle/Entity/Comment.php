@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CommentBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,7 +25,7 @@ class Comment implements CommentInterface
     /** @var string */
     protected $resourceId;
 
-    /** @var User */
+    /** @var UserInterface */
     protected $author;
 
     /** @var string */

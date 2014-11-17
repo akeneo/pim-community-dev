@@ -1455,6 +1455,22 @@ table#progress-table {
     }
     &.connected-sortable li {
       background-color: #f6f8f8;
+      .action i {
+        margin: 0 2px;
+        padding: 3px 8px;
+        color: #666;
+        border: 1px solid #ccc;
+        .border-radius(3px);
+      }
+      &:hover .action i {
+        background-color: @backgroundColor-white;
+        &:hover {
+          background-color: @color-light_grey;
+        }
+      }
+    }
+    &#column-list li .action {
+      display: none;
     }
   }
   .nav-list {
@@ -1495,9 +1511,10 @@ button.view-button {
 
 /** Role form ********************************************************************************************************/
 div.acl-permission {
-  display: inline-block;
+  display: list-item;
   margin-left: 20px;
   line-height: 40px;
+  list-style: none;
   &>div[id] {
     display: inline-block;
   }

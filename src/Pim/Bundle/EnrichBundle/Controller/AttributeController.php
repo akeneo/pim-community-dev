@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -33,7 +33,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class AttributeController extends AbstractDoctrineController
 {
-    /** @var AttributeHandler */
+    /** @var HandlerInterface */
     protected $attributeHandler;
 
     /** @var Form */
@@ -72,7 +72,7 @@ class AttributeController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param AttributeHandler         $attributeHandler
+     * @param HandlerInterface         $attributeHandler
      * @param Form                     $attributeForm
      * @param AttributeManager         $attributeManager
      * @param AttributeOptionManager   $optionManager
@@ -90,7 +90,7 @@ class AttributeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        AttributeHandler $attributeHandler,
+        HandlerInterface $attributeHandler,
         Form $attributeForm,
         AttributeManager $attributeManager,
         AttributeOptionManager $optionManager,
@@ -211,14 +211,15 @@ class AttributeController extends AbstractDoctrineController
         $data = $request->request->all();
 
         if (!empty($data)) {
+            $attributes = [];
             foreach ($data as $id => $sort) {
                 $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $this->persist($attribute, false);
+                    $attributes[] = $attribute;
                 }
             }
-            $this->getManagerForClass($this->attributeManager->getAttributeClass())->flush();
+            $this->attributeManager->saveAll($attributes);
 
             return new Response(1);
         }
@@ -258,7 +259,7 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->persist($option);
+                $this->optionManager->save($option);
                 $response = array(
                     'status' => 1,
                     'option' => array(

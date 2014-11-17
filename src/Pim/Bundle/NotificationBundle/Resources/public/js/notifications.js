@@ -15,10 +15,15 @@ define(
                 noNotificationsMessage: null,
                 markAsReadMessage:      null,
                 indicatorBaseClass:     'badge badge-square',
-                indicatorEmptyClass:    'hide'
+                indicatorEmptyClass:    'hide',
+                refreshInterval:        30000
             },
 
             freezeCount: false,
+
+            refreshTimeout: null,
+
+            refreshLocked: false,
 
             template: _.template(
                 [
@@ -78,6 +83,7 @@ define(
                 });
 
                 this.collection.on('load:unreadCount', function(count, reset) {
+                    this.scheduleRefresh();
                     if (this.freezeCount) {
                         this.freezeCount = false;
                         return;
@@ -106,6 +112,26 @@ define(
                 this.collection.on('loading:start loading:finish remove', this.renderFooter, this);
 
                 this.render();
+
+                this.scheduleRefresh();
+            },
+
+            scheduleRefresh: function() {
+                if (this.refreshLocked) {
+                    return;
+                }
+                if (null !== this.refreshTimeout) {
+                    clearTimeout(this.refreshTimeout);
+                }
+
+                this.refreshTimeout = setTimeout(_.bind(function() {
+                    this.refreshLocked = true;
+                    $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
+                        .then(_.bind(function(count) {
+                            this.refreshLocked = false;
+                            this.collection.trigger('load:unreadCount', count, true);
+                        }, this));
+                }, this), this.options.refreshInterval);
             },
 
             onOpen: function() {

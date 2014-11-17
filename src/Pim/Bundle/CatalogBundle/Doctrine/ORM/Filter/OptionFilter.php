@@ -3,10 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Filtering by simple option backend type
@@ -61,23 +62,16 @@ class OptionFilter implements AttributeFilterInterface
 
         // prepare join value condition
         $optionAlias = $joinAlias .'.option';
-        //TODO: the value should not contain empty  (comes from the frontend) => it should be in the operator
-        if (in_array('empty', $value)) {
-            unset($value[array_search('empty', $value)]);
-            $expr = $this->qb->expr()->isNull($optionAlias);
 
-            if (count($value) > 0) {
-                $exprIn = $this->qb->expr()->in($optionAlias, $value);
-                $expr = $this->qb->expr()->orX($expr, $exprIn);
-            }
-
+        if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context)
             );
-            $this->qb->andWhere($expr);
+
+            $this->qb->andWhere($this->qb->expr()->isNull($optionAlias));
         } else {
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $context);

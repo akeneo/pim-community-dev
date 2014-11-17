@@ -4,6 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
@@ -15,10 +17,10 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {
-    function let(CustomAttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry)
+    function let(CustomAttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, QueryBuilder $qb)
     {
         $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry, ['locale' => 'en_US', 'scope' => 'print']);
-        $this->setQueryBuilder('qb');
+        $this->setQueryBuilder($qb);
     }
 
     function it_is_a_product_query_builder()
@@ -84,6 +86,24 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->addSorter('sku', 'DESC', []);
+    }
+
+    function it_provides_a_query_builder_once_configured($qb)
+    {
+        $this->getQueryBuilder()->shouldReturn($qb);
+    }
+
+    function it_configures_the_query_builder($qb)
+    {
+        $this->setQueryBuilder($qb)->shouldReturn($this);
+    }
+
+    function it_executes_the_query($qb, AbstractQuery $query)
+    {
+        $qb->getQuery()->willReturn($query);
+        $query->execute()->shouldBeCalled();
+
+        $this->execute();
     }
 }
 

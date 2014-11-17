@@ -44,6 +44,26 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
+     * Return an array of activated locales codes
+     *
+     * @return array
+     */
+    public function getActivatedLocaleCodes()
+    {
+        $qb = $this->getActivatedLocalesQB();
+        $qb->select('l.code');
+
+        $res = $qb->getQuery()->getScalarResult();
+
+        $codes = [];
+        foreach ($res as $row) {
+            $codes[] = $row['code'];
+        }
+
+        return $codes;
+    }
+
+    /**
      * Return a query builder for activated locales
      *
      * @return \Doctrine\ORM\QueryBuilder

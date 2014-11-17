@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CommentBundle\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Comment repository

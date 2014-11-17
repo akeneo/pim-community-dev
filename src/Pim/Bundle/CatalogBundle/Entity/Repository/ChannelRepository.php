@@ -35,7 +35,7 @@ class ChannelRepository extends ReferableEntityRepository
     /**
      * Return the number of existing channels
      *
-     * @return interger
+     * @return int
      */
     public function countAll()
     {
@@ -48,7 +48,7 @@ class ChannelRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function createDatagridQueryBuilder()
     {
@@ -116,5 +116,41 @@ SQL;
         );
 
         return $locales;
+    }
+
+    /**
+     * Return an array of channel codes
+     *
+     * @return array
+     */
+    public function getChannelCodes()
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->select('c.code')->orderBy('c.code');
+
+        $res = $qb->getQuery()->getScalarResult();
+
+        $codes = [];
+        foreach ($res as $row) {
+            $codes[] = $row['code'];
+        }
+
+        return $codes;
+    }
+
+    /**
+     * Get full channels with locales and currencies
+     *
+     * @return array
+     */
+    public function getFullChannels()
+    {
+        return $this
+            ->createQueryBuilder('ch')
+            ->select('ch, lo, cu')
+            ->leftJoin('ch.locales', 'lo')
+            ->leftJoin('ch.currencies', 'cu')
+            ->getQuery()
+            ->getResult();
     }
 }

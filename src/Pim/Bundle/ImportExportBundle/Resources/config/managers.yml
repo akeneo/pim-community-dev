@@ -12,6 +12,6 @@ services:
     pim_import_export.manager.job:
         class: %pim_import_export.manager.job.class%
         arguments:
+            - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_catalog.doctrine.smart_manager_registry'
             - '%akeneo_batch.entity.job_execution.class%'

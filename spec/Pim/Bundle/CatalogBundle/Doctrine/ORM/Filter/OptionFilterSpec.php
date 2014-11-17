@@ -12,7 +12,7 @@ class OptionFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $qb)
     {
-        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN']);
+        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -23,7 +23,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_supports_operators()
     {
-        $this->getOperators()->shouldReturn(['IN']);
+        $this->getOperators()->shouldReturn(['IN', 'EMPTY']);
         $this->supportsOperator('IN')->shouldReturn(true);
         $this->supportsOperator(Argument::any())->shouldReturn(false);
     }
@@ -77,36 +77,6 @@ class OptionFilterSpec extends ObjectBehavior
         )->shouldBeCalled();
         $qb->andWhere('filteroption_code.option IS NULL')->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'IN', ['empty']);
-    }
-
-    function it_adds_an_empty_filter_and_another_filter_to_the_query($qb, AttributeInterface $attribute)
-    {
-        $attribute->getId()->willReturn(42);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isScopable()->willReturn(false);
-        $attribute->getBackendType()->willReturn('option');
-        $attribute->getCode()->willReturn('option_code');
-
-        $qb->getRootAlias()->willReturn('r');
-        $qb->expr()->willReturn(new Expr());
-
-        $qb
-            ->leftJoin(
-                'r.values',
-                'filteroption_code',
-                'WITH',
-                'filteroption_code.attribute = 42'
-            )
-            ->shouldBeCalled()
-        ;
-        $qb
-            ->andWhere(
-                'filteroption_code.option IS NULL OR filteroption_code.option IN(\'my_value2\', \'my_value3\')'
-            )
-            ->shouldBeCalled()
-        ;
-
-        $this->addAttributeFilter($attribute, 'IN', ['empty', 'my_value2', 'my_value3']);
+        $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
 }

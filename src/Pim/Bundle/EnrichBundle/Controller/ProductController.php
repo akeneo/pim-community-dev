@@ -13,15 +13,12 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
-use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -47,50 +44,26 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductController extends AbstractDoctrineController
 {
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var CategoryManager
-     */
+    /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @var ProductCategoryManager
-     */
+    /** @var ProductCategoryManager */
     protected $productCatManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var SecurityFacade
-     */
+    /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @var SequentialEditManager
-     */
+    /** @var SequentialEditManager */
     protected $seqEditManager;
-
-    /**
-     * @var CommentManager
-     */
-    protected $commentManager;
-
-    /**
-     * @var CommentBuilder
-     */
-    protected $commentBuilder;
 
     /**
      * Constant used to redirect to the datagrid when save edit form
@@ -135,8 +108,6 @@ class ProductController extends AbstractDoctrineController
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
      * @param SequentialEditManager    $seqEditManager
-     * @param CommentManager           $commentManager
-     * @param CommentBuilder           $commentBuilder
      */
     public function __construct(
         Request $request,
@@ -154,9 +125,7 @@ class ProductController extends AbstractDoctrineController
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
         ProductCategoryManager $prodCatManager,
-        SequentialEditManager $seqEditManager,
-        CommentManager $commentManager,
-        CommentBuilder $commentBuilder
+        SequentialEditManager $seqEditManager
     ) {
         parent::__construct(
             $request,
@@ -177,8 +146,6 @@ class ProductController extends AbstractDoctrineController
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
         $this->seqEditManager    = $seqEditManager;
-        $this->commentManager    = $commentManager;
-        $this->commentBuilder    = $commentBuilder;
     }
 
     /**
@@ -216,12 +183,12 @@ class ProductController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $entity = $this->productManager->createProduct();
-        $form = $this->createForm('pim_product_create', $entity, $this->getCreateFormOptions($entity));
+        $product = $this->productManager->createProduct();
+        $form = $this->createForm('pim_product_create', $product, $this->getCreateFormOptions($product));
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->productManager->save($entity);
+                $this->productManager->save($product);
                 $this->addFlash('success', 'flash.product.created');
 
                 if ($dataLocale === null) {
@@ -229,7 +196,7 @@ class ProductController extends AbstractDoctrineController
                 }
                 $url = $this->generateUrl(
                     'pim_enrich_product_edit',
-                    array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
+                    array('id' => $product->getId(), 'dataLocale' => $dataLocale)
                 );
                 $response = array('status' => 1, 'url' => $url);
 
@@ -291,7 +258,7 @@ class ProductController extends AbstractDoctrineController
 
         $toggledStatus = !$product->isEnabled();
         $product->setEnabled($toggledStatus);
-        $this->productManager->saveProduct($product);
+        $this->productManager->save($product);
 
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
@@ -434,8 +401,6 @@ class ProductController extends AbstractDoctrineController
         $attributesForm->submit($request);
 
         $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->productManager->save($product);
-
         $this->addFlash('success', 'flash.product.attributes added');
 
         return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
@@ -493,20 +458,20 @@ class ProductController extends AbstractDoctrineController
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Request           $request The request object
-     * @param integer           $id      Product id
-     * @param CategoryInterface $parent  The parent category
+     * @param Request        $request    The request object
+     * @param integer|string $id         Product id
+     * @param integer        $categoryId The parent category id
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
-     * @ParamConverter("parent", class="PimCatalogBundle:Category", options={"id" = "category_id"})
      * @Template
      * @AclAncestor("pim_enrich_product_categories_view")
      * @return array
      */
-    public function listCategoriesAction(Request $request, $id, CategoryInterface $parent)
+    public function listCategoriesAction(Request $request, $id, $categoryId)
     {
         $product = $this->findProductOr404($id);
+        $parent = $this->findOr404($this->categoryManager->getCategoryClass(), $categoryId);
         $categories = null;
 
         $includeParent = $request->get('include_parent', false);
@@ -518,40 +483,6 @@ class ProductController extends AbstractDoctrineController
         $trees = $this->getFilledTree($parent, $categories);
 
         return array('trees' => $trees, 'categories' => $categories);
-    }
-
-    /**
-     * List comments made on a product
-     *
-     * @param Request        $request
-     * @param integer|string $id
-     *
-     * @AclAncestor("pim_enrich_product_comment")
-     * @return Response
-     */
-    public function listCommentsAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-        $comment = $this->commentBuilder->buildComment($product, $this->getUser());
-        $createForm = $this->createForm('pim_comment_comment', $comment);
-
-        $comments = $this->commentManager->getComments($product);
-        $replyForms = [];
-
-        foreach ($comments as $comment) {
-            $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
-            $replyForm = $this->createForm('pim_comment_comment', $reply, ['is_reply' => true]);
-            $replyForms[$comment->getId()] = $replyForm->createView();
-        }
-
-        return $this->render(
-            'PimCommentBundle:Comment:_commentList.html.twig',
-            [
-                'createForm' => $createForm->createView(),
-                'replyForms' => $replyForms,
-                'comments' => $comments,
-            ]
-        );
     }
 
     /**

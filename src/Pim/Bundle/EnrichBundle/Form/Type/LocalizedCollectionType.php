@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\AbstractType;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber;
 
 /**
  * Localized collection type
@@ -25,6 +26,11 @@ class LocalizedCollectionType extends AbstractType
             new FilterLocaleValueSubscriber(
                 $options['currentLocale'],
                 $options['comparisonLocale']
+            )
+        );
+        $builder->addEventSubscriber(
+            new FilterLocaleSpecificValueSubscriber(
+                $options['currentLocale']
             )
         );
     }

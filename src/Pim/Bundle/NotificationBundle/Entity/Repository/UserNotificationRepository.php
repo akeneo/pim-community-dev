@@ -25,7 +25,7 @@ class UserNotificationRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('n');
 
-        return $qb
+        return (int) $qb
             ->select(
                 $qb->expr()->countDistinct('n.id')
             )

@@ -38,4 +38,28 @@ interface ProductQueryBuilderInterface
      * @return ProductQueryBuilderInterface
      */
     public function addSorter($field, $direction, array $context = []);
+
+    /**
+     * Get query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     * @throws \LogicException in case the query builder has not been configured
+     */
+    public function getQueryBuilder();
+
+    /**
+     * Set query builder
+     *
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
+     *
+     * @return ProductQueryBuilderInterface
+     */
+    public function setQueryBuilder($queryBuilder);
+
+    /**
+     * Executes a query
+     *
+     * @return mixed
+     */
+    public function execute();
 }

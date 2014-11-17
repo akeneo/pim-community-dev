@@ -36,7 +36,8 @@ class PimCatalogExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('managers.yml');
-        $loader->load('persisters.yml');
+        $loader->load('savers.yml');
+        $loader->load('removers.yml');
         $loader->load('builders.yml');
         $loader->load('helpers.yml');
         $loader->load('attribute_types.yml');
@@ -44,6 +45,7 @@ class PimCatalogExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('repositories.yml');
         $loader->load('query_builders.yml');
+        $loader->load('updaters.yml');
 
         $this->loadStorageDriver($config, $container);
         $this->loadValidationFiles($container);

@@ -3,6 +3,11 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
  * Product csv reader
@@ -21,16 +26,45 @@ class CsvProductReader extends CsvReader
     /** @var array Media attribute codes */
     protected $mediaAttributes = array();
 
+    /** @var FieldNameBuilder */
+    protected $fieldNameBuilder;
+
+    /** @var ChannelRepository */
+    protected $channelRepository;
+
+    /** @var LocaleRepository */
+    protected $localeRepository;
+
+    /** @var CurrencyRepository */
+    protected $currencyRepository;
+
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
-     * @param string        $attributeClass
+     * @param EntityManager    $entityManager
+     * @param FieldNameBuilder $fieldNameBuilder,
+     * @param string           $attributeClass
+     * @param string           $channelClass
+     * @param string           $localeClass
+     * @param string           $currencyClass
      */
-    public function __construct(EntityManager $entityManager, $attributeClass)
-    {
-        $repository = $entityManager->getRepository($attributeClass);
-        $this->mediaAttributes = $repository->findMediaAttributeCodes();
+    public function __construct(
+        EntityManager $entityManager,
+        FieldNameBuilder $fieldNameBuilder,
+        $attributeClass,
+        $channelClass,
+        $localeClass,
+        $currencyClass
+    ) {
+        $this->fieldNameBuilder = $fieldNameBuilder;
+
+        /** @var AttributeRepository $attributeRepository */
+        $attributeRepository = $entityManager->getRepository($attributeClass);
+        $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
+
+        $this->channelRepository = $entityManager->getRepository($channelClass);
+        $this->localeRepository = $entityManager->getRepository($localeClass);
+        $this->currencyRepository = $entityManager->getRepository($currencyClass);
     }
 
     /**
@@ -103,5 +137,45 @@ class CsvProductReader extends CsvReader
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initializeRead()
+    {
+        parent::initializeRead();
+
+        $this->checkAttributesInHeader();
+    }
+
+    /**
+     * Checks that attributes in the header have existing locale, scope and currency.
+     *
+     * @throws \LogicException
+     */
+    protected function checkAttributesInHeader()
+    {
+        $channels = $this->channelRepository->getChannelCodes();
+        $locales = $this->localeRepository->getActivatedLocaleCodes();
+        $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+
+        foreach ($this->fieldNames as $fieldName) {
+            if (null !== $info = $this->fieldNameBuilder->extractAttributeFieldNameInfos($fieldName)) {
+                $locale = $info['locale_code'];
+                $channel = $info['scope_code'];
+                $currency = isset($info['price_currency']) ? $info['price_currency'] : null;
+
+                if (null !== $locale && !in_array($locale, $locales)) {
+                    throw new \LogicException(sprintf('Locale %s does not exist.', $locale));
+                }
+                if (null !== $channel && !in_array($channel, $channels)) {
+                    throw new \LogicException(sprintf('Channel %s does not exist.', $channel));
+                }
+                if (null !== $currency && !in_array($currency, $currencies)) {
+                    throw new \LogicException(sprintf('Currency %s does not exist.', $currency));
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 
 class MediaNormalizerSpec extends ObjectBehavior
 {
@@ -12,14 +12,14 @@ class MediaNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_media(AbstractProductMedia $media)
+    function it_supports_normalization_in_mongodb_json_of_media(ProductMediaInterface $media)
     {
         $this->supportsNormalization($media, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($media, 'json')->shouldBe(false);
         $this->supportsNormalization($media, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_media(AbstractProductMedia $media)
+    function it_normalizes_media(ProductMediaInterface $media)
     {
         $media->getFilename()->willReturn('myfile.pdf');
         $media->getOriginalFilename()->willReturn('myfile.pdf');
