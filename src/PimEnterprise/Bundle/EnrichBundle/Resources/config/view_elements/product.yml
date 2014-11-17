@@ -1,61 +1,40 @@
 parameters:
-    pim_enrich.view_element.tab.product_attribute.template:  'PimEnterpriseEnrichBundle:Product:Tab/attribute_edit.html.twig'
-    pimee_enrich.view_element.tab.product_proposal.template: 'PimEnterpriseEnrichBundle:Product:Tab/proposal.html.twig'
+    pimee_enrich.view_element.product.tab.category:  'PimEnterpriseEnrichBundle:Product:Tab/attribute_edit.html.twig'
+    pimee_enrich.view_element.product.tab.proposal: 'PimEnterpriseEnrichBundle:Product:Tab/proposal.html.twig'
 
 services:
     # Category
-    pimee_enrich.view_element.tab.product_category_base:
-        parent: pim_enrich.view_element.tab.base
+    pim_enrich.view_element.product.tab.category:
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pim_enrich.view_element.tab.product_category.template%
-            - 'tab.pim_enrich_product_edit.category'
-
-    pimee_enrich.view_element.tab.product_category_granted:
-        parent: pim_enrich.view_element.tab.granted
-        arguments:
-            - @pimee_enrich.view_element.tab.product_category_base
-            - 'pim_enrich_product_categories_view'
-
-    pim_enrich.view_element.tab.product_category:
-        parent: pimee_enrich.view_element.tab.voter
-        arguments:
-            - @pimee_enrich.view_element.tab.product_category_granted
-            - {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'entity': 'product'}
+            - 'product.tab.category'
+            - %pimee_enrich.view_element.product.tab.category.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_categories_view'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_categories_view'}] ] //TODO
         tags:
-            - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_product_edit}
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 100 }
 
     # Association
-    pimee_enrich.view_element.tab.product_association_base:
-        parent: pim_enrich.view_element.tab.base
+    pim_enrich.view_element.product.tab.association:
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pim_enrich.view_element.tab.product_association.template%
-            - 'tab.pim_enrich_product_edit.association'
-
-    pimee_enrich.view_element.tab.product_association_granted:
-        parent: pim_enrich.view_element.tab.granted
-        arguments:
-            - @pimee_enrich.view_element.tab.product_association_base
-            - 'pim_enrich_associations_view'
-
-    pim_enrich.view_element.tab.product_association:
-        parent: pimee_enrich.view_element.tab.voter
-        arguments:
-            - @pimee_enrich.view_element.tab.product_association_granted
-            - {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'entity': 'product'}
+            - 'product.tab.association'
+            - %pim_enrich.view_element.product.tab.association.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ] //TODO
         tags:
-            - { name: pim_enrich_view_element.tab, position: 110, identifier: pim_enrich_product_edit}
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 110 }
 
     # Proposal
-    pim_enrich.view_element.tab.product_proposal_base:
-        parent: pim_enrich.view_element.tab.base
+    pim_enrich.view_element.product.tab.proposal:
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pimee_enrich.view_element.tab.product_proposal.template%
-            - 'tab.pimee_enrich_product_edit.proposals'
+            - 'product.tab.proposal'
+            - %pimee_enrich.view_element.product.tab.proposal%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ] //TODO
         tags:
-            - { name: pim_enrich_view_element.tab, position: 140, identifier: pim_enrich_product_edit}
-
-    pimee_enrich.view_element.tab.product_proposal:
-        parent: pimee_enrich.view_element.tab.voter
-        arguments:
-            - @pim_enrich.view_element.tab.product_proposal_base
-            - {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'entity': 'product'}
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 140 }
