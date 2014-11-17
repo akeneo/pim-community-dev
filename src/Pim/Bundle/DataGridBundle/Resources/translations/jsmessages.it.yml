@@ -43,5 +43,6 @@ pim.grid.ajax_choice_filter.label_empty: è vuoto
 Available Columns: Colonne disponibili
 Displayed Columns: Colonne visualizzate
 datagrid_view.columns.min_message: È necessario selezionare almeno una colonna di dati da visualizzare
+pim.grid.mass_action.quick_export.title: Esportazione rapida
 pim.grid.action.launch.title: Lancia
 pim.grid.action.show.title: Visualizza
