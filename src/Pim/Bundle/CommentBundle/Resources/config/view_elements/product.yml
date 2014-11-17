@@ -1,13 +1,13 @@
 parameters:
-    pim_enrich.view_element.tab.product_comment.template: 'PimCommentBundle:Product:Tab/comment.html.twig'
+    pim_enrich.view_element.product.tab.comment.template: 'PimCommentBundle:Product:Tab/comment.html.twig'
 
 services:
-    pim_enrich.view_element.tab.product_comment:
-        parent: pim_enrich.view_element.tab.base
+    pim_enrich.view_element.product.tab.comment:
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pim_enrich.view_element.tab.product_comment.template%
-            - 'tab.pim_enrich_product_edit.comment'
+            - 'product.tab.comment'
+            - %pim_enrich.view_element.product.tab.comment.template%
         calls:
-            - [addVisibilityChecker, [@pim_enrich.view_element.visibility_checker.acl, {acl: 'pim_enrich_product_comment'}]]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_comment'}] ]
         tags:
-            - { name: pim_enrich_view_element.tab, position: 125, identifier: pim_enrich_product_edit}
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 125 }

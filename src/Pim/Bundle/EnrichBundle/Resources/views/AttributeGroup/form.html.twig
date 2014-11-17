@@ -30,12 +30,12 @@
 
     {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-    {{ elements.form_navbar(tab_titles('pim_enrich_attributegroup_edit')) }}
+    {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
     <div class="tab-content">
         {{ elements.form_errors(form) }}
         {{ form_row(form.sort_order) }}
 
-        {{ tab_contents('pim_enrich_attributegroup_edit') }}
+        {{ view_elements(form.vars.id ~ '.form_tab') }}
     </div>
 {{ form_end(form) }}

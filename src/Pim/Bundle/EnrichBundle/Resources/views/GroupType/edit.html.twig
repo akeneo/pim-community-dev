@@ -31,12 +31,12 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_navbar(tab_titles('pim_enrich_grouptype_edit')) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
         <div class="row-fluid tab-content">
             {{ elements.form_errors(form) }}
 
-            {{ tab_contents('pim_enrich_grouptype_edit') }}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
     {{ form_end(form) }}
 {% endblock %}
