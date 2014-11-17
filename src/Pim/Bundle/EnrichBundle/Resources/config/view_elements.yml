@@ -4,6 +4,7 @@ parameters:
     pim_enrich.view_element.visibility_checker.acl.class:       Pim\Bundle\EnrichBundle\ViewElement\Checker\AclVisibilityChecker
     pim_enrich.view_element.visibility_checker.voter.class:     Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityChecker
     pim_enrich.view_element.visibility_checker.edit_form.class: Pim\Bundle\EnrichBundle\ViewElement\Checker\EditFormVisibilityChecker
+    pim_enrich.view_element.visibility_checker.non_empty_property.class: Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker
 
 services:
     pim_enrich.view_element.registry:
@@ -24,3 +25,6 @@ services:
 
     pim_enrich.view_element.visibility_checker.edit_form:
         class: %pim_enrich.view_element.visibility_checker.edit_form.class%
+
+    pim_enrich.view_element.visibility_checker.non_empty_property:
+        class: %pim_enrich.view_element.visibility_checker.non_empty_property.class%

@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
 /**
  * Displays a view element only in an edit form context
  *
@@ -12,7 +9,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditFormVisibilityChecker implements VisibilityCheckerInterface
+class EditFormVisibilityChecker extends NonEmptyPropertyVisibilityChecker
 {
     /** @staticvar string */
     const PATH = '[form].vars[value].id';
@@ -22,15 +19,8 @@ class EditFormVisibilityChecker implements VisibilityCheckerInterface
      */
     public function isVisible(array $config = [], array $context = [])
     {
-        $accessor = PropertyAccess::createPropertyAccessor();
-        $path = isset($config['path']) ? $config['path'] : static::PATH;
+        $config['property'] = isset($config['path']) ? $config['path'] : static::PATH;
 
-        try {
-            $value = $accessor->getValue($context, $path);
-        } catch (NoSuchPropertyException $e) {
-            $value = null;
-        }
-
-        return null !== $value;
+        return parent::isVisible($config, $context);
     }
 }
