@@ -14,9 +14,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class VoterVisibilityChecker implements VisibilityCheckerInterface
 {
-    /** @staticvar string */
-    const CONTEXT_KEY = '__context';
-
     /** @var SecurityFacade */
     protected $securityFacade;
 
@@ -45,8 +42,8 @@ class VoterVisibilityChecker implements VisibilityCheckerInterface
     }
 
     /**
-     * If a string is provided as the object and it is prefixed with '__context',
-     * extracts the object from the context, otherwise returns the original object
+     * If a string is provided as the object, extracts the object from the context,
+     * otherwise returns the original object
      *
      * @param mixed $object
      * @param array $context
@@ -55,9 +52,9 @@ class VoterVisibilityChecker implements VisibilityCheckerInterface
      */
     protected function getObject($object, array $context)
     {
-        if (is_string($object) && 0 === strpos($object, static::CONTEXT_KEY)) {
+        if (is_string($object)) {
             $accessor = PropertyAccess::createPropertyAccessor();
-            $object = $accessor->getValue($context, substr($object, strlen(static::CONTEXT_KEY)));
+            $object = $accessor->getValue($context, $object);
         }
 
         return $object;

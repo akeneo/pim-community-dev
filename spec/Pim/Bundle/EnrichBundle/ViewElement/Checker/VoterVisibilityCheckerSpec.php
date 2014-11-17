@@ -50,6 +50,6 @@ class VoterVisibilityCheckerSpec extends ObjectBehavior
 
         $securityFacade->isGranted('foo', $object)->shouldBeCalled();
 
-        $this->isVisible(['attribute' => 'foo', 'object' => '__context[foo][bar]'], ['foo' => ['bar' => $object]]);
+        $this->isVisible(['attribute' => 'foo', 'object' => '[foo][bar]'], ['foo' => ['bar' => $object]]);
     }
 }
