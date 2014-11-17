@@ -1,22 +1,14 @@
 parameters:
-    pimee_enrich.view_element.tab.category_permissions.template: 'PimEnterpriseEnrichBundle:CategoryTree:Tab/permissions.html.twig'
+    pimee_enrich.view_element.tab.category_permission.template: 'PimEnterpriseEnrichBundle:CategoryTree:Tab/permissions.html.twig'
 
 services:
-    pimee_enrich.view_element.tab.category_permission_base:
-        parent: pim_enrich.view_element.tab.base
+    pim_enrich.view_element.category.tab.category_permission:
+        parent: pim_enrich.view_element.base
         arguments:
-            - %pimee_enrich.view_element.tab.category_permissions.template%
-            - 'tab.pimee_enrich_category_edit.permissions'
-
-    pimee_enrich.view_element.tab.category_permission_on_form_edit:
-        parent: pim_enrich.view_element.tab.on_form_edit
-        arguments:
-            - @pimee_enrich.view_element.tab.category_permission_base
-
-    pimee_enrich.view_element.tab.category_permission:
-        parent: pim_enrich.view_element.tab.granted
-        arguments:
-            - @pimee_enrich.view_element.tab.category_permission_on_form_edit
-            - 'pimee_enrich_category_edit_permissions'
+            - 'pimee_enrich.category.tab.permission.title'
+            - %pimee_enrich.view_element.tab.category_permission.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_enrich_category_edit_permissions'}] ]
         tags:
-            - { name: pim_enrich_view_element.tab, position: 100, identifier: pim_enrich_category_edit }
+            - { name: pim_enrich.view_element, type: pim_category.form_tab, position: 100 }

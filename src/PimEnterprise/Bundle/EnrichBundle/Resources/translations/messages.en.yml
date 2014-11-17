@@ -103,10 +103,14 @@ flash.product.updated: Product working copy has been updated
 flash.product_draft.updated: Draft has been successfully saved
 flash.locale.updated: The locale and permissions have been updated
 
-tab:
-    pimee_enrich_product_edit:
-        proposals: Proposals
-    pimee_enrich_attributegroup_edit:
-        permissions: Permissions
-    pimee_enrich_category_edit:
-        permissions: Permissions
+
+pimee_enrich:
+    attribute_group:
+        tab:
+            permission.title: Permissions
+    product:
+        tab:
+            proposal.title: Proposals
+    category:
+        tab:
+            permission.title: Permissions
