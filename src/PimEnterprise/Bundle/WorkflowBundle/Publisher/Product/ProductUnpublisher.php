@@ -24,23 +24,23 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositor
 class ProductUnpublisher implements UnpublisherInterface
 {
     /** @var PublishedAssociationRepositoryInterface */
-    protected $publishedAssociationRepository;
+    protected $publishedAssocRepo;
 
     /** @var AssociationTypeRepository */
-    protected $associationTypeRepository;
+    protected $associationTypeRepo;
 
     /**
      * The constructor
      *
-     * @param PublishedAssociationRepositoryInterface $publishedAssociationRepository
-     * @param AssociationTypeRepository               $associationTypeRepository
+     * @param PublishedAssociationRepositoryInterface $publishedAssocRepo
+     * @param AssociationTypeRepository               $associationTypeRepo
      */
     public function __construct(
-        PublishedAssociationRepositoryInterface $publishedAssociationRepository,
-        AssociationTypeRepository $associationTypeRepository
+        PublishedAssociationRepositoryInterface $publishedAssocRepo,
+        AssociationTypeRepository $associationTypeRepo
     ) {
-        $this->publishedAssociationRepository = $publishedAssociationRepository;
-        $this->associationTypeRepository = $associationTypeRepository;
+        $this->publishedAssocRepo = $publishedAssocRepo;
+        $this->associationTypeRepo = $associationTypeRepo;
     }
 
     /**
@@ -66,7 +66,7 @@ class ProductUnpublisher implements UnpublisherInterface
      */
     protected function updateRelatedAssociations(PublishedProductInterface $published)
     {
-        $nbAssociationsTypes = $this->associationTypeRepository->countAll();
-        $this->publishedAssociationRepository->removePublishedProduct($published, $nbAssociationsTypes);
+        $nbAssociationTypes = $this->associationTypeRepo->countAll();
+        $this->publishedAssocRepo->removePublishedProduct($published, $nbAssociationTypes);
     }
 }

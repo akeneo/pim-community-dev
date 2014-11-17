@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager as BaseDatagridViewManager;
@@ -32,14 +33,16 @@ class DatagridViewManager extends BaseDatagridViewManager
      *
      * @param EntityRepository         $repository
      * @param DatagridManager          $datagridManager
+     * @param ObjectManager            $objectManager
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
         EntityRepository $repository,
         DatagridManager $datagridManager,
+        ObjectManager $objectManager,
         SecurityContextInterface $securityContext
     ) {
-        parent::__construct($repository, $datagridManager);
+        parent::__construct($repository, $datagridManager, $objectManager);
         $this->securityContext = $securityContext;
     }
 

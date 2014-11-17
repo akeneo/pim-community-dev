@@ -28,6 +28,6 @@ class BaseValueDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        return $data;
+        return $data === '' ? null : $data;
     }
 }

@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProd
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Event;
@@ -65,7 +65,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_the_family_is_linked_to_a_published_product(
         $publishedRepository,
-        Family $family,
+        FamilyInterface $family,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($family);
@@ -76,7 +76,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_family_is_linked_to_a_published_product(
         $publishedRepository,
-        Family $family,
+        FamilyInterface $family,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($family);

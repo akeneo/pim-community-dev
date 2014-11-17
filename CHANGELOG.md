@@ -5,6 +5,11 @@
 - Move method `findApprovableByUser` from `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface` to `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`.
 - Remove interface `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface`
 - Rename `PimEnterprise\Bundle\DashboardBundle\Widget\ProductDraftWidget` to `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget`, replace the first constructor argument with `Symfony\Component\Security\Core\SecurityContextInterface` and remove the third argument
+- Refactored `PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer.php`, replaced the inheritance of `AttributeOptionDenormalizer` by `AbstractValueDenormalizer`
+- Add `Doctrine\Common\Persistence\ObjectManager` as third argument of `PimEnterprise\Bundle\DataGridBundle\Manager` constructor
+
+## Bug fixes
+- PIM-3300: Fixed bug on revert of a multiselect attribute options
 
 # 1.1.0 (based on CE 1.2.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/1.2/CHANGELOG.md))
 
@@ -13,6 +18,7 @@
 - remove the fixed mysql socket location
 - switch to minimum-stability:stable in composer.json
 - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+- remove BaseFilter usage
 
 ## Bug fixes
 
@@ -20,11 +26,32 @@
 
 ## BC breaks
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
+- Remove the override of MediaManager
 
 # 1.0.x
 
 ## Bug fixes
-- Removing the group "ALL" from categories' permissions after a clean installation.
+
+- PIM-3302: Published product page is not well displayed with project via the standard edition. To fix this bug, add `bundles/pimenterpriseui/css/pimee.less` to your stylesheets in `app/Resources/views/base.html.twig`
+
+# 1.0.5 (2014-11-13)
+
+## Bug fixes
+- PIM-3331: Fix draft creation when saving values for newly added attributes for the first time
+- PIM-3351: Test data value in PricesDenormalizer to avoid creating empty ProductPrices
+- PIM-3301: Test data value in DateTimeDenormalizer to avoid reverted date to be set on current day
+- PIM-3354: Fix category filter on multi-positioned product on unclassified
+
+# 1.0.4 (2014-10-31)
+
+## Bug fixes
+- PIM-3300: Fixed bug on revert of a multi-select attribute options
+
+# 1.0.3 (2014-10-24)
+
+## Bug fixes
+- PIM-3206: Removing the group "ALL" from categories' permissions after a clean installation.
+- PIM-3234: Fix performance issue on granted category filter
 
 # 1.0.2 (2014-10-10)
 

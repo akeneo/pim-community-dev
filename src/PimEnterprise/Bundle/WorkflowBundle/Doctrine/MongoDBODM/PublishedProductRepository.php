@@ -14,9 +14,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
@@ -182,7 +182,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForFamily(Family $family)
+    public function countPublishedProductsForFamily(FamilyInterface $family)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->field('family')->equals($family->getId());

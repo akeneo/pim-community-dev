@@ -98,25 +98,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
     }
 
     /**
-     * {@inheritdoc}
-     * @see getProductIdsInCategory same logic with applying permissions
-     */
-    public function getProductIdsInGrantedCategory(CategoryInterface $category, $inChildren = false)
-    {
-        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
-            return [];
-        }
-
-        $grantedQb = null;
-        if ($inChildren) {
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $grantedQb = $this->getAllGrantedChildrenQueryBuilder($categoryQb);
-        }
-
-        return $this->productRepository->getProductIdsInCategory($category, $grantedQb);
-    }
-
-    /**
      * Count only product with a full accessible path
      *
      * @param ProductInterface $product

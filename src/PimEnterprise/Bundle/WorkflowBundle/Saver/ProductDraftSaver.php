@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
+namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftPersister implements ProductPersister
+class ProductDraftSaver implements SaverInterface
 {
     /** @var ManagerRegistry */
     protected $registry;
@@ -96,12 +96,21 @@ class ProductDraftPersister implements ProductPersister
     }
 
     /**
-     * TODO: do not check the context here. ProductDraftPersister should only persist propostions.
+     * TODO: do not check the context here. ProductDraftSaver should only persist propostions.
      *
      * {@inheritdoc}
      */
-    public function persist(ProductInterface $product, array $options)
+    public function save($product, array $options = [])
     {
+        if (!$product instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
+                    ClassUtils::getClass($product)
+                )
+            );
+        }
+
         $options = array_merge(['bypass_product_draft' => false], $options);
 
         $manager = $this->registry->getManagerForClass(get_class($product));
@@ -238,6 +247,8 @@ class ProductDraftPersister implements ProductPersister
                             $manager->refresh($price);
                         }
                     }
+                } else {
+                    $value->setData(null);
                 }
             }
         } else {

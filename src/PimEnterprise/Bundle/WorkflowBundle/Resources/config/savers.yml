@@ -1,9 +1,9 @@
 parameters:
-    pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductDraftPersister
+    pim_catalog.saver.product.class: PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver
 
 services:
-    pim_catalog.persister.product:
-        class: %pim_catalog.persister.product.class%
+    pim_catalog.saver.product:
+        class: %pim_catalog.saver.product.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_catalog.manager.completeness'

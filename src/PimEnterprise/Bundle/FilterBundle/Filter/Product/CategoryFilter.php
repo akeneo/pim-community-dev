@@ -66,40 +66,62 @@ class CategoryFilter extends BaseCategoryFilter
         $qb = $ds->getQueryBuilder();
         $user = $this->securityContext->getToken()->getUser();
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-        $productRepository = $this->manager->getProductCategoryRepository();
-
         if (count($grantedCategoryIds) > 0) {
-            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
+            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
+
         } else {
-            $productRepository->applyFilterByUnclassified($qb);
+            $this->util->applyFilter($ds, 'categories', 'UNCLASSIFIED', []);
         }
 
         return true;
     }
 
     /**
+     * Override to apply category permissions
+     *
      * {@inheritdoc}
      */
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $this->applyFilterByAll($ds, $data);
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $qb                 = $ds->getQueryBuilder();
 
-        return parent::applyFilterByUnclassified($ds, $data);
+        $tree = $categoryRepository->find($data['treeId']);
+        if ($tree) {
+            // all categories of this tree (without permissions)
+            $currentTreeIds = $categoryRepository->getAllChildrenIds($tree);
+            $this->util->applyFilter($ds, 'categories', 'NOT IN', $currentTreeIds);
+
+            // we add a filter on granted categories
+            $user = $this->securityContext->getToken()->getUser();
+            $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $grantedIds);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Override to apply category permissions (not for unclassified)
+     * Override to apply category permissions
      *
      * {@inheritdoc}
      */
-    protected function getProductIdsInCategory(CategoryInterface $category, $data)
+    protected function getAllChildrenIds(CategoryInterface $category)
     {
-        if ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
-            $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
-        } else {
-            $productIds = $this->manager->getProductIdsInGrantedCategory($category, $data['includeSub']);
+        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            return [];
         }
 
-        return (empty($productIds)) ? [0] : $productIds;
+        $childrenIds = parent::getAllChildrenIds($category);
+
+        $user = $this->securityContext->getToken()->getUser();
+        $grantedIds = $this->accessRepository->getCategoryIdsWithExistingAccess(
+            $user->getGroups()->toArray(),
+            $childrenIds
+        );
+
+        return $grantedIds;
     }
 }

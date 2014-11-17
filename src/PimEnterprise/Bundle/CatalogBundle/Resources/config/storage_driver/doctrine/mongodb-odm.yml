@@ -11,10 +11,8 @@ services:
             - '@pimee_workflow.repository.published_product'
 
     pim_catalog.doctrine.query.filter.original_product_id:
-        class: %pim_catalog.doctrine.query.filter.base.class%
+        class: %pim_catalog.doctrine.query.filter.product_id.class%
         arguments:
-            - @pim_catalog.context.catalog
-            - []
             - ['originalProduct']
             - ['=', 'IN']
         tags:

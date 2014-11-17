@@ -78,7 +78,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
+            $product = $this->productRepository->findOneById($record->getValue('id'));
             $locale = $this->localeRepository->findOneBy(['code' => $record->getValue('dataLocale')]);
 
             $editGranted = $this->securityContext->isGranted(Attributes::EDIT, $product);

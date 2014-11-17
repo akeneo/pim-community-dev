@@ -94,8 +94,7 @@ class CategoryAccessRepository extends EntityRepository
         $qb
             ->delete()
             ->where($qb->expr()->in('a.userGroup', ':groups'))
-            ->setParameter('groups', $groups)
-        ;
+            ->setParameter('groups', $groups);
 
         return $qb->getQuery()->execute();
     }

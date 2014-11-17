@@ -31,9 +31,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProductController extends BaseProductController
 {
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
     /**
@@ -192,9 +190,11 @@ class ProductController extends BaseProductController
         );
         $attributesForm->submit($request);
 
-        $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->productManager->saveProduct($product, ['bypass_product_draft' => true]);
-
+        $this->productManager->addAttributesToProduct(
+            $product,
+            $availableAttributes,
+            ['bypass_product_draft' => true]
+        );
         $this->addFlash('success', 'flash.product.attributes added');
 
         return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
