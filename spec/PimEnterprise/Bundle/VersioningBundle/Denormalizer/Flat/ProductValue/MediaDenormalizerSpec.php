@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductVa
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 class MediaDenormalizerSpec extends ObjectBehavior
 {

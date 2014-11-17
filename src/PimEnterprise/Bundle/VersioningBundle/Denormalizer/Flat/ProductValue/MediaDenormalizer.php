@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
-use PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
  * Denormalize a product media
