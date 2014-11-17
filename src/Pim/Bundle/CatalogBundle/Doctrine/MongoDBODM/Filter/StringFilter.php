@@ -96,10 +96,10 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
-        $this->addFieldFilter($field, $operator, $value);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
+        $this->addFieldFilter($field, $operator, $value, $locale, $scope);
 
         return $this;
     }
@@ -107,7 +107,7 @@ class StringFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 

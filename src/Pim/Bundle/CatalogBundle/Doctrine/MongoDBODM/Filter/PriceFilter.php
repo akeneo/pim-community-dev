@@ -81,12 +81,12 @@ class PriceFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
         list($data, $currency) = explode(' ', $value);
         $data = (float) $data;
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.%s', $field, $currency);
         $fieldData = sprintf('%s.data', $field);

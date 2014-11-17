@@ -33,7 +33,7 @@ class CompletenessFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->willReturn($queryBuilder);
         $queryBuilder->equals('100')->willReturn($queryBuilder);
 
-        $this->addFieldFilter('completenesses', '=', '100', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addFieldFilter('completenesses', '=', '100', 'en_US', 'mobile');
     }
 
     function it_adds_a_less_than_filter_on_completeness_in_the_query(Builder $queryBuilder)
@@ -41,19 +41,19 @@ class CompletenessFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.completenesses.mobile-en_US')->willReturn($queryBuilder);
         $queryBuilder->lt('100')->willReturn($queryBuilder);
 
-        $this->addFieldFilter('completenesses', '<', '100', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addFieldFilter('completenesses', '<', '100', 'en_US', 'mobile');
     }
 
-    function it_throws_an_exception_when_the_locale_and_scope_are_not_provided(Builder $queryBuilder)
+    function it_throws_an_exception_when_the_locale_and_scope_are_not_provided()
     {
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringAddFieldFilter('completenesses', '=', 100, []);
+            ->duringAddFieldFilter('completenesses', '=', 100);
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringAddFieldFilter('completenesses', '=', 100, ['locale' => null, 'scope' => 'ecommerce']);
+            ->duringAddFieldFilter('completenesses', '=', 100, null, 'ecommerce');
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringAddFieldFilter('completenesses', '=', 100, ['locale' => 'fr_FR', 'scope' => null]);
+            ->duringAddFieldFilter('completenesses', '=', 100, 'fr_FR', null);
     }
 }

@@ -79,9 +79,9 @@ class CompletenessFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, array $context = [])
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        if (!isset($context['locale']) || !isset($context['scope'])) {
+        if (null === $locale || null === $scope) {
             throw new \InvalidArgumentException(
                 'Cannot prepare condition on completenesses without locale and scope'
             );
@@ -91,8 +91,8 @@ class CompletenessFilter implements FieldFilterInterface
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             'completenesses',
-            $context['scope'],
-            $context['locale']
+            $scope,
+            $locale
         );
         $value = intval($value);
 

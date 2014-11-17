@@ -38,6 +38,6 @@ class NumberFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.price-en_US-mobile')->willReturn($queryBuilder);
         $queryBuilder->equals('22.5')->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($metric, '=', '22.5', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addAttributeFilter($metric, '=', '22.5', 'en_US', 'mobile');
     }
 }

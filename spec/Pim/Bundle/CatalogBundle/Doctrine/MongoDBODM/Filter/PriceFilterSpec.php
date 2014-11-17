@@ -37,7 +37,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
         $queryBuilder->equals(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($price, '=', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addAttributeFilter($price, '=', '22.5 EUR', 'en_US', 'mobile');
     }
 
     function it_adds_a_greater_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
@@ -48,7 +48,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
         $queryBuilder->gt(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($price, '>', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addAttributeFilter($price, '>', '22.5 EUR', 'en_US', 'mobile');
     }
 
     function it_adds_a_greater_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
@@ -59,7 +59,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
         $queryBuilder->gte(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($price, '>=', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addAttributeFilter($price, '>=', '22.5 EUR', 'en_US', 'mobile');
     }
 
     function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
@@ -70,7 +70,7 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
         $queryBuilder->lt(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($price, '<', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addAttributeFilter($price, '<', '22.5 EUR', 'en_US', 'mobile');
     }
 
     function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $price)
@@ -81,6 +81,6 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.price-en_US-mobile.EUR.data')->willReturn($queryBuilder);
         $queryBuilder->lte(22.5)->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($price, '<=', '22.5 EUR', ['locale' => 'en_US', 'scope' => 'mobile']);
+        $this->addAttributeFilter($price, '<=', '22.5 EUR', 'en_US', 'mobile');
     }
 }

@@ -81,11 +81,11 @@ class MetricFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, array $context = [])
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
         $data = (float) $value;
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $context);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $fieldData = sprintf('%s.baseData', $field);
 
