@@ -9,7 +9,7 @@ services:
     pim_enrich.view_element.product.tab.attribute:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.attribute'
+            - 'pim_enrich.product.tab.attribute'
             - %pim_enrich.view_element.product.tab.attribute.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_edit_attributes'}] ]
@@ -19,7 +19,7 @@ services:
     pim_enrich.view_element.product.tab.category:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.category'
+            - 'pim_enrich.product.tab.category'
             - %pim_enrich.view_element.product.tab.category.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_categories_view'}] ]
@@ -29,7 +29,7 @@ services:
     pim_enrich.view_element.product.tab.association:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.association'
+            - 'pim_enrich.product.tab.association'
             - %pim_enrich.view_element.product.tab.association.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
@@ -39,7 +39,7 @@ services:
     pim_enrich.view_element.product.tab.completeness:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.completeness'
+            - 'pim_enrich.product.tab.completeness'
             - %pim_enrich.view_element.product.tab.completeness.template%
         tags:
             - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 120 }
@@ -47,7 +47,7 @@ services:
     pim_enrich.view_element.product.tab.history:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'product.tab.history'
+            - 'pim_enrich.product.tab.history'
             - %pim_enrich.view_element.product.tab.history.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_history'}] ]
