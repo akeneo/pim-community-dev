@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,7 +25,19 @@ class MediaNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        return $object->getOriginalFilename();
+        $file = $object->getFile();
+        if (null !== $file && $file instanceof UploadedFile) {
+            // happens in case of mass edition
+            return [
+                'originalFilename' => $file->getClientOriginalName(),
+                'filePath' => $file->getPathname(),
+            ];
+        }
+
+        return [
+            'originalFilename' => $object->getOriginalFilename(),
+            'filePath' => $object->getFilePath(),
+        ];
     }
 
     /**

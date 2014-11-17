@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Sets a media value in many products
@@ -59,11 +59,11 @@ class MediaValueSetter extends AbstractValueSetter
         $this->checkData($attribute, $data);
 
         try {
-            $file = new File($data);
+            $file = new UploadedFile($data['filePath'], $data['originalFilename']);
         } catch (FileNotFoundException $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
-                sprintf('a valid filename ("%s" given)', $data),
+                sprintf('a valid file path ("%s" given)', $data['filePath']),
                 'setter',
                 'media'
             );
@@ -77,28 +77,15 @@ class MediaValueSetter extends AbstractValueSetter
     }
 
     /**
-     * Check if data are valid
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
-        if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'media');
-        }
-    }
-
-    /**
      * Set media in the product value
      *
      * @param AttributeInterface $attribute
      * @param ProductInterface   $product
-     * @param File               $file
+     * @param UploadedFile       $file
      * @param string             $locale
      * @param string             $scope
      */
-    protected function setMedia(AttributeInterface $attribute, ProductInterface $product, File $file, $locale, $scope)
+    protected function setMedia(AttributeInterface $attribute, ProductInterface $product, UploadedFile $file, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
@@ -111,5 +98,29 @@ class MediaValueSetter extends AbstractValueSetter
             $media->setFile($file);
         }
         $value->setMedia($media);
+    }
+    
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'media');
+        }
+
+        if (!array_key_exists('originalFilename', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'originalFilename',
+                'setter',
+                'media'
+            );
+        }
+
+        if (!array_key_exists('filePath', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'filePath', 'setter', 'media');
+        }
     }
 }

@@ -50,7 +50,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_file', 'pim_catalog_image']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_string(
+    function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
@@ -60,23 +60,58 @@ class MediaValueSetterSpec extends ObjectBehavior
         $data = new \stdClass();
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'media')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'media')
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throws_an_error_if_data_is_a_valid_path(
+    function it_throws_an_error_if_filepath_is_missing(
         AttributeInterface $attribute
     ) {
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = 'path/to/unknown/file';
+        $data = [
+            'originalFilename' => 'image.jpg',
+        ];
+
+        $this->shouldThrow(
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_original_filename_is_missing(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = [
+            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+        ];
+
+        $this->shouldThrow(
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'originalFilename', 'setter', 'media')
+        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_throws_an_error_if_data_is_not_a_valid_path(
+        AttributeInterface $attribute
+    ) {
+        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
+        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $data = [
+            'filePath' => 'path/to/unknown/file',
+            'originalFilename' => 'image.jpg',
+        ];
 
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'attributeCode',
-                'a valid filename ("path/to/unknown/file" given)',
+                'a valid file path ("path/to/unknown/file" given)',
                 'setter',
                 'media'
             )
@@ -96,7 +131,10 @@ class MediaValueSetterSpec extends ObjectBehavior
         $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
         $value->getMedia()->willReturn($media);
 
-        $data = realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg');
+        $data = [
+            'originalFilename' => 'image.jpg',
+            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+        ];
 
         $value->setMedia($media)->shouldBeCalled();
         $media->setFile(Argument::any())->shouldBeCalled();
@@ -120,7 +158,10 @@ class MediaValueSetterSpec extends ObjectBehavior
         $value->getMedia()->willReturn(null);
         $mediaFactory->createMedia(Argument::any())->shouldBeCalled()->willReturn($media);
 
-        $data = realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg');
+        $data = [
+            'originalFilename' => 'image.jpg',
+            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+        ];
 
         $value->setMedia($media)->shouldBeCalled();
         $manager->handleAllProductsMedias([$product])->shouldBeCalled();
@@ -143,7 +184,10 @@ class MediaValueSetterSpec extends ObjectBehavior
         $product->getValue('attributeCode', Argument::cetera())->willReturn(null);
         $value->getMedia()->willReturn(null);
 
-        $data = realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg');
+        $data = [
+            'originalFilename' => 'image.jpg',
+            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+        ];
 
         $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
         $mediaFactory->createMedia(Argument::any())->shouldBeCalled()->willReturn($media);
