@@ -349,53 +349,22 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
 
     /**
      * @param ProductInterface $product
+     *
+     * @deprecated will be removed in 1.4, replaced by MediaManager::handleProductMedias
      */
     public function handleMedia(ProductInterface $product)
     {
-        foreach ($product->getValues() as $value) {
-            if ($media = $value->getMedia()) {
-                if ($id = $media->getCopyFrom()) {
-                    $source = $this
-                        ->objectManager
-                        ->getRepository('Pim\Bundle\CatalogBundle\Model\ProductMedia')
-                        ->find($id);
-
-                    if (!$source) {
-                        throw new \Exception(
-                            sprintf('Could not find media with id %d', $id)
-                        );
-                    }
-
-                    $this->mediaManager->duplicate(
-                        $source,
-                        $media,
-                        $this->mediaManager->generateFilenamePrefix($product, $value)
-                    );
-                } else {
-                    $filenamePrefix =  $media->getFile() ?
-                        $this->mediaManager->generateFilenamePrefix($product, $value) : null;
-                    $this->mediaManager->handle($media, $filenamePrefix);
-                }
-            }
-        }
+        return $this->mediaManager->handleProductMedias($product);
     }
 
     /**
      * @param ProductInterface[] $products
+     *
+     * @deprecated will be removed in 1.4, replaced by MediaManager::handleAllProductsMedias
      */
     public function handleAllMedia(array $products)
     {
-        foreach ($products as $product) {
-            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
-                        get_class($product)
-                    )
-                );
-            }
-            $this->handleMedia($product);
-        }
+        return $this->mediaManager->handleAllProductsMedias($products);
     }
 
     /**

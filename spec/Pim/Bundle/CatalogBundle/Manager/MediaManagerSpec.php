@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
@@ -15,9 +16,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaManagerSpec extends ObjectBehavior
 {
-    function let(Filesystem $filesystem)
+    function let(Filesystem $filesystem, ObjectManager $objectManager)
     {
-        $this->beConstructedWith($filesystem, '/tmp/pim-ce');
+        $this->beConstructedWith($filesystem, '/tmp/pim-ce', $objectManager);
     }
 
     function it_handles_new_product_media_upload($filesystem, ProductMediaInterface $media, File $newFile)

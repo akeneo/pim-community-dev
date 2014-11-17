@@ -59,6 +59,7 @@ services:
         arguments:
             - '@pim_filesystem'
             - %upload_dir%
+            - '@pim_catalog.object_manager.product'
 
     pim_catalog.manager.attribute:
         class: %pim_catalog.manager.attribute.class%

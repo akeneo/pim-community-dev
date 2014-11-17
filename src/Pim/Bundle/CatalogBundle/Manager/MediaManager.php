@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Gaufrette\Filesystem;
 use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
@@ -26,16 +27,76 @@ class MediaManager
     /** @var string */
     protected $uploadDirectory;
 
+    /** @var ObjectManager */
+    protected $objectManager;
+
     /**
      * Constructor
      *
-     * @param Filesystem $filesystem
-     * @param string     $uploadDirectory
+     * @param Filesystem    $filesystem
+     * @param string        $uploadDirectory
+     * @param ObjectManager $objectManager
      */
-    public function __construct(Filesystem $filesystem, $uploadDirectory)
+    public function __construct(Filesystem $filesystem, $uploadDirectory, ObjectManager $objectManager)
     {
         $this->filesystem      = $filesystem;
         $this->uploadDirectory = $uploadDirectory;
+        $this->objectManager   = $objectManager;
+    }
+
+    /**
+     * Handle the medias of a product
+     *
+     * @param ProductInterface $product
+     */
+    public function handleProductMedias(ProductInterface $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($media = $value->getMedia()) {
+                if ($id = $media->getCopyFrom()) {
+                    $source = $this
+                        ->objectManager
+                        ->getRepository('Pim\Bundle\CatalogBundle\Model\ProductMedia')
+                        ->find($id);
+
+                    if (!$source) {
+                        throw new \Exception(
+                            sprintf('Could not find media with id %d', $id)
+                        );
+                    }
+
+                    $this->duplicate(
+                        $source,
+                        $media,
+                        $this->generateFilenamePrefix($product, $value)
+                    );
+                } else {
+                    $filenamePrefix =  $media->getFile() ?
+                        $this->generateFilenamePrefix($product, $value) : null;
+                    $this->handle($media, $filenamePrefix);
+                }
+            }
+        }
+    }
+
+    /**
+     * Handles the medias of all products
+     *
+     * @param ProductInterface[] $products
+     */
+    public function handleAllProductsMedias(array $products)
+    {
+        foreach ($products as $product) {
+            if (!$product instanceof ProductInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
+                        get_class($product)
+                    )
+                );
+            }
+            $this->handleProductMedias($product);
+        }
     }
 
     /**
