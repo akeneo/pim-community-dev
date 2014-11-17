@@ -38,7 +38,7 @@ class VoterVisibilityChecker implements VisibilityCheckerInterface
         }
         $object = $this->getObject($config['object'], $context);
 
-        return $this->securityFacade->isGranted($config['attribute'], $object);
+        return $this->securityFacade->isGranted(constant($config['attribute']), $object);
     }
 
     /**
