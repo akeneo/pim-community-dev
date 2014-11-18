@@ -156,4 +156,22 @@ class LoadedRule implements LoadedRuleInterface
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return $this->rule->getPriority();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPriority($priority)
+    {
+        $this->rule->setPriority($priority);
+
+        return $this;
+    }
 }

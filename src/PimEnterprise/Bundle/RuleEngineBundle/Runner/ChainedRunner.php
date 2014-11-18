@@ -46,7 +46,7 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule)
+    public function run(RuleInterface $rule, array $options = [])
     {
         foreach ($this->runners as $runner) {
             if ($runner->supports($rule)) {
@@ -60,7 +60,7 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function dryRun(RuleInterface $rule)
+    public function dryRun(RuleInterface $rule, array $options = [])
     {
         foreach ($this->runners as $runner) {
             if ($runner instanceof DryRunnerInterface && $runner->supports($rule)) {

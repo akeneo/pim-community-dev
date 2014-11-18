@@ -22,10 +22,11 @@ interface RunnerInterface
 {
     /**
      * @param RuleInterface $rule
+     * @param array         $options
      *
      * @return mixed
      */
-    public function run(RuleInterface $rule);
+    public function run(RuleInterface $rule, array $options = []);
 
     /**
      * @param RuleInterface $rule

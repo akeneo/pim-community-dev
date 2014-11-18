@@ -51,4 +51,20 @@ class ProductRuleRunnerSpec extends ObjectBehavior
 
         $this->run($rule);
     }
+
+    function it_runs_a_rule_on_a_subset_of_products(
+        $loader,
+        $selector,
+        $applier,
+        RuleInterface $rule,
+        LoadedRuleInterface $loadedRule,
+        RuleSubjectSetInterface $subjectSet
+    ) {
+        $loader->load($rule)->shouldBeCalled()->willReturn($loadedRule);
+        $loadedRule->addCondition(['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3]])->shouldBeCalled();
+        $selector->select($loadedRule)->shouldBeCalled()->willReturn($subjectSet);
+        $applier->apply($loadedRule, $subjectSet)->shouldBeCalled();
+
+        $this->run($rule, ['selected_products' => [1, 2, 3]]);
+    }
 }

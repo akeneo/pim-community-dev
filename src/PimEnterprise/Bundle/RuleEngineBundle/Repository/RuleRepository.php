@@ -20,5 +20,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class RuleRepository extends EntityRepository implements RuleRepositoryInterface
 {
-
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllOrderedByPriority()
+    {
+        return $this->findBy([], ['priority' => 'DESC']);
+    }
 }

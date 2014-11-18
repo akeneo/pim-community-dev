@@ -24,9 +24,12 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Store product through product drafts
@@ -62,6 +65,12 @@ class ProductDraftSaver implements SaverInterface
     /** @var string */
     protected $storageDriver;
 
+    /** @var RuleRepositoryInterface */
+    protected $ruleRepository;
+
+    /** @var RunnerInterface */
+    protected $ruleRunner;
+
     /**
      * @param ManagerRegistry                 $registry
      * @param CompletenessManager             $completenessManager
@@ -72,6 +81,8 @@ class ProductDraftSaver implements SaverInterface
      * @param ChangesCollector                $collector
      * @param ChangeSetComputerInterface      $changeSet
      * @param string                          $storageDriver
+     * @param RuleRepositoryInterface         $ruleRepository
+     * @param RunnerInterface                 $ruleRunner
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -82,7 +93,9 @@ class ProductDraftSaver implements SaverInterface
         EventDispatcherInterface $dispatcher,
         ChangesCollector $collector,
         ChangeSetComputerInterface $changeSet,
-        $storageDriver
+        $storageDriver,
+        RuleRepositoryInterface $ruleRepository,
+        RunnerInterface $ruleRunner
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
@@ -93,6 +106,8 @@ class ProductDraftSaver implements SaverInterface
         $this->collector = $collector;
         $this->changeSet = $changeSet;
         $this->storageDriver = $storageDriver;
+        $this->ruleRepository = $ruleRepository;
+        $this->ruleRunner = $ruleRunner;
     }
 
     /**
@@ -111,8 +126,7 @@ class ProductDraftSaver implements SaverInterface
             );
         }
 
-        $options = array_merge(['bypass_product_draft' => false], $options);
-
+        $options = $this->resolveOptions($options);
         $manager = $this->registry->getManagerForClass(get_class($product));
 
         if (null === $product->getId()) {
@@ -143,27 +157,69 @@ class ProductDraftSaver implements SaverInterface
      */
     protected function persistProduct(ObjectManager $manager, ProductInterface $product, array $options)
     {
-        $options = array_merge(
+        // TODO : remove the flush case, once the saveAll will be implemented
+        $manager->persist($product);
+
+        if (true === $options['schedule'] || true === $options['recalculate']) {
+            $this->completenessManager->schedule($product);
+        }
+
+        if (true === $options['recalculate'] || true === $options['flush']) {
+            $manager->flush();
+        }
+
+        if (true === $options['recalculate']) {
+            $this->completenessManager->generateMissingForProduct($product);
+        }
+
+        if (true === $options['execute_rules']) {
+            $this->applyAllRules($manager, $product);
+        }
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
             [
                 'recalculate' => true,
                 'flush' => true,
                 'schedule' => true,
-            ],
-            $options
+                'execute_rules' => true,
+                'bypass_product_draft' => false
+            ]
         );
+        $resolver->setAllowedTypes(
+            [
+                'recalculate' => 'bool',
+                'flush' => 'bool',
+                'schedule' => 'bool',
+                'execute_rules' => 'bool',
+                'bypass_product_draft' => 'bool'
+            ]
+        );
+        $options = $resolver->resolve($options);
 
-        $manager->persist($product);
+        return $options;
+    }
 
-        if ($options['schedule'] || $options['recalculate']) {
-            $this->completenessManager->schedule($product);
-        }
-
-        if ($options['recalculate'] || $options['flush']) {
+    /**
+     * Apply the rules on the product
+     *
+     * @param ObjectManager    $manager
+     * @param ProductInterface $product
+     */
+    protected function applyAllRules(ObjectManager $manager, ProductInterface $product)
+    {
+        $rules = $this->ruleRepository->findAllOrderedByPriority();
+        foreach ($rules as $rule) {
+            $this->ruleRunner->run($rule, ['selected_products' => [$product->getId()]]);
             $manager->flush();
-        }
-
-        if ($options['recalculate']) {
-            $this->completenessManager->generateMissingForProduct($product);
         }
     }
 

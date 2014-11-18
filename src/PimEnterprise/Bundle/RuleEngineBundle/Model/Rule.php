@@ -30,6 +30,9 @@ class Rule implements RuleInterface
     /** @var string */
     protected $content;
 
+    /** @var int */
+    protected $priority;
+
     /**
      * {@inheritdoc}
      */
@@ -90,5 +93,23 @@ class Rule implements RuleInterface
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
     }
 }
