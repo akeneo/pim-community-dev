@@ -93,6 +93,7 @@
 - `ProductPersister` and `BasePersister` has been replaced by `ProductSaver` in CatalogBundle
 - Add methods `execute()`, `getQueryBuilder()`, `setQueryBuilder()` in `ProductQueryBuilderInterface`
 - Add `MediaFactory` and `ObjectManager` arguments in MediaManager contructor
+- Add getConfigurableFields method in `Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
