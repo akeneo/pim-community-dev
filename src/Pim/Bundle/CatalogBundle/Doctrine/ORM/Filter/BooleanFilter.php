@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -47,6 +48,10 @@ class BooleanFilter extends AbstractFilter implements AttributeFilterInterface, 
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_bool($value)) {
+            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
+        }
+
         $joinAlias = 'filter'.$attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
@@ -67,6 +72,10 @@ class BooleanFilter extends AbstractFilter implements AttributeFilterInterface, 
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_bool($value)) {
+            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean');
+        }
+
         $field = current($this->qb->getRootAliases()).'.'.$field;
         $condition = $this->prepareCriteriaCondition($field, $operator, $value);
         $this->qb->andWhere($condition);

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
@@ -36,6 +37,16 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_array($value)) {
+            throw InvalidArgumentException::arrayExpected($field, 'entity', 'array');
+        }
+
+        foreach ($value as $entity) {
+            if (!is_numeric($entity) && 'empty' !== $entity) {
+                throw InvalidArgumentException::integerExpected($field, 'entity', 'integer');
+            }
+        }
+
         $rootAlias  = $this->qb->getRootAlias();
         $entityAlias = 'filter'.$field;
         $this->qb->leftJoin($rootAlias.'.'.$field, $entityAlias);

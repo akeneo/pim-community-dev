@@ -78,7 +78,7 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->apply($datasource, array('value' => 'foo'))->shouldReturn(false);
         $this->apply($datasource, array('value' => null))->shouldReturn(false);
         $this->apply($datasource, array())->shouldReturn(false);
-        $this->apply($datasource, 0)->shouldReturn(false);
+        $this->apply($datasource, false)->shouldReturn(false);
     }
 
     function it_uses_the_boolean_filter_form_type(FormInterface $form, $factory)
@@ -110,9 +110,9 @@ class BooleanFilterSpec extends ObjectBehavior
         $typeView->vars     = array('choices' => array($maybeChoice));
 
         $yesChoice->label = 'Yes';
-        $yesChoice->value = 1;
+        $yesChoice->value = true;
         $noChoice->label  = 'No';
-        $noChoice->value  = 0;
+        $noChoice->value  = false;
 
         $this->getMetadata()->shouldReturn(
             [
@@ -121,11 +121,11 @@ class BooleanFilterSpec extends ObjectBehavior
                 'choices'              => [
                     [
                         'label' => 'Yes',
-                        'value' => 1,
+                        'value' => true,
                     ],
                     [
                         'label' => 'No',
-                        'value' => 0,
+                        'value' => false,
                     ]
                 ],
                 'enabled'              => true,

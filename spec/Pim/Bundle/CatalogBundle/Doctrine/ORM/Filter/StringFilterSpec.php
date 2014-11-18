@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class StringFilterSpec extends ObjectBehavior
@@ -127,6 +128,12 @@ class StringFilterSpec extends ObjectBehavior
         $queryBuilder->leftJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
         $queryBuilder->andWhere('filtersku.varchar IS NULL')->shouldBeCalled();
 
-        $this->addAttributeFilter($sku, 'EMPTY', ['My Sku']);
+        $this->addAttributeFilter($sku, 'EMPTY', 'My Sku');
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_string(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('attributeCode');
+        $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string'))->during('addAttributeFilter', [$attribute, '=', 123]);
     }
 }

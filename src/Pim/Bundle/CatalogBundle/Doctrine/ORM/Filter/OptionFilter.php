@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -37,6 +38,18 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_array($value) && 'EMPTY' !== $operator) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'entity', 'array');
+        }
+
+        if ('EMPTY' !== $operator) {
+            foreach ($value as $option) {
+                if (!is_numeric($option)) {
+                    throw InvalidArgumentException::numericExpected($attribute->getCode(), 'entity', 'numeric');
+                }
+            }
+        }
+
         $joinAlias = 'filter'.$attribute->getCode();
 
         // prepare join value condition

@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -54,12 +55,12 @@ class MetricFilterSpec extends ObjectBehavior
                 'filtermetric_code.metric',
                 'filterMmetric_code',
                 'WITH',
-                'filterMmetric_code.baseData = \'my_value\''
+                'filterMmetric_code.baseData = 16'
             )
             ->shouldBeCalled()
         ;
 
-        $this->addAttributeFilter($attribute, '=', 'my_value');
+        $this->addAttributeFilter($attribute, '=', 16);
     }
 
     function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute)
@@ -78,5 +79,11 @@ class MetricFilterSpec extends ObjectBehavior
         $qb->andWhere('filterMmetric_code.baseData IS NULL')->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', '');
+    }
+
+    function it_throws_an_exception_if_value_is_not_an_numeric(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('metric_code');
+        $this->shouldThrow(InvalidArgumentException::numericExpected('metric_code', 'filter', 'metric'))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

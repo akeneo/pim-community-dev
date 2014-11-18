@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 
 class EntityFilterSpec extends ObjectBehavior
 {
@@ -88,5 +89,15 @@ class EntityFilterSpec extends ObjectBehavior
         $this->supportsField('family')->shouldReturn(true);
         $this->supportsField('groups')->shouldReturn(true);
         $this->supportsField('other')->shouldReturn(false);
+    }
+
+    function it_throws_an_exception_if_value_is_not_an_array()
+    {
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'entity', 'array'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+    }
+
+    function it_throws_an_exception_if_values_in_array_are_not_integers()
+    {
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'entity', 'array'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 }
