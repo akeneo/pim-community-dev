@@ -33,8 +33,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Store product through product drafts
  *
- * TODO : inject product saver and product draft saver here to split this class
- *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftSaver implements SaverInterface
@@ -159,6 +157,7 @@ class ProductDraftSaver implements SaverInterface
      */
     protected function persistProduct(ObjectManager $manager, ProductInterface $product, array $options)
     {
+        // TODO : remove the flush case, once the saveAll will be implemented
         $options = array_merge(
             [
                 'recalculate' => true,
@@ -180,7 +179,7 @@ class ProductDraftSaver implements SaverInterface
         }
 
         if (true === $options['execute_rules']) {
-            $this->applyAllRules($manager, $product, $options);
+            $this->applyAllRules($manager, $product);
         }
 
         if (true === $options['recalculate']) {
@@ -188,18 +187,19 @@ class ProductDraftSaver implements SaverInterface
         }
     }
 
-    protected function applyAllRules(ObjectManager $manager, ProductInterface $product, $options)
+    /**
+     * Apply the rules on the product
+     *
+     * @param ObjectManager    $manager
+     * @param ProductInterface $product
+     */
+    protected function applyAllRules(ObjectManager $manager, ProductInterface $product)
     {
-        if (false === $options['flush']) {
-            return; // TODO : if no flush we cant apply the rule
-        }
-        $rules = $this->ruleRepository->findAll(); // TODO by type and priority
-
+        $rules = $this->ruleRepository->findAllOrderedByPriority();
         foreach ($rules as $rule) {
-            $this->ruleRunner->run($rule); // TODO use the chained runner, apply on a single product
+            $this->ruleRunner->run($rule, ['selected_products' => [$product->getId()]]);
+            $manager->flush();
         }
-
-        $manager->flush();
     }
 
     /**

@@ -22,8 +22,9 @@ interface DryRunnerInterface extends RunnerInterface
 {
     /**
      * @param RuleInterface $rule
+     * @param array         $context
      *
      * @return mixed
      */
-    public function dryRun(RuleInterface $rule);
+    public function dryRun(RuleInterface $rule, array $context = []);
 }

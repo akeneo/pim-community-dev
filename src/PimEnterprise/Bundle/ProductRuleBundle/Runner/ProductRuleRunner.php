@@ -24,6 +24,30 @@ class ProductRuleRunner extends AbstractRunner
     /**
      * {@inheritdoc}
      */
+    public function run(RuleInterface $rule, array $context = [])
+    {
+        $loadedRule = $this->loader->load($rule);
+
+        // TODO option resolver
+        if (isset($context['selected_products'])) {
+            $loadedRule->addCondition(
+                [
+                    'field' => 'id',
+                    'operator' => 'IN',
+                    'value' => $context['selected_products']
+                ]
+            );
+        }
+
+        $subjects = $this->selector->select($loadedRule);
+        if (!empty($subjects)) {
+            $this->applier->apply($loadedRule, $subjects);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();

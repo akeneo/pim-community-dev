@@ -42,15 +42,15 @@ abstract class AbstractRunner implements RunnerInterface
         SelectorInterface $selector,
         ApplierInterface $applier
     ) {
-        $this->loader              = $loader;
-        $this->selector            = $selector;
-        $this->applier             = $applier;
+        $this->loader   = $loader;
+        $this->selector = $selector;
+        $this->applier  = $applier;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule)
+    public function run(RuleInterface $rule, array $context = [])
     {
         $loadedRule = $this->loader->load($rule);
         $subjects = $this->selector->select($loadedRule);
