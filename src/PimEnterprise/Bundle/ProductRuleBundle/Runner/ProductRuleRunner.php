@@ -25,10 +25,10 @@ class ProductRuleRunner extends AbstractRunner
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule, array $context = [])
+    public function run(RuleInterface $rule, array $options = [])
     {
-        $context = $this->resolveContext($context);
-        $loadedRule = $this->loadRule($rule, $context);
+        $options = $this->resolveOptions($options);
+        $loadedRule = $this->loadRule($rule, $options);
 
         $subjects = $this->selector->select($loadedRule);
         if (!empty($subjects)) {
@@ -45,35 +45,35 @@ class ProductRuleRunner extends AbstractRunner
     }
 
     /**
-     * @param array $context
+     * @param array $options
      *
      * @return array
      */
-    protected function resolveContext(array $context)
+    protected function resolveOptions(array $options)
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(['selected_products' => []]);
         $resolver->setAllowedTypes(['selected_products' => 'array']);
-        $context = $resolver->resolve($context);
+        $options = $resolver->resolve($options);
 
-        return $context;
+        return $options;
     }
 
     /**
      * @param RuleInterface $rule
-     * @param array         $context
+     * @param array         $options
      *
      * @return LoadedRuleInterface
      */
-    protected function loadRule(RuleInterface $rule, array $context)
+    protected function loadRule(RuleInterface $rule, array $options)
     {
         $loadedRule = $this->loader->load($rule);
-        if (!empty($context['selected_products'])) {
+        if (!empty($options['selected_products'])) {
             $loadedRule->addCondition(
                 [
                     'field' => 'id',
                     'operator' => 'IN',
-                    'value' => $context['selected_products']
+                    'value' => $options['selected_products']
                 ]
             );
         }

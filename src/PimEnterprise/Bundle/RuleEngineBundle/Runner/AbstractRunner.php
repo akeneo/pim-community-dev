@@ -50,7 +50,7 @@ abstract class AbstractRunner implements RunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule, array $context = [])
+    public function run(RuleInterface $rule, array $options = [])
     {
         $loadedRule = $this->loader->load($rule);
         $subjects = $this->selector->select($loadedRule);

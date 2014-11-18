@@ -29,6 +29,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Store product through product drafts
@@ -125,8 +126,7 @@ class ProductDraftSaver implements SaverInterface
             );
         }
 
-        $options = array_merge(['bypass_product_draft' => false], $options);
-
+        $options = $this->resolveOptions($options);
         $manager = $this->registry->getManagerForClass(get_class($product));
 
         if (null === $product->getId()) {
@@ -158,16 +158,6 @@ class ProductDraftSaver implements SaverInterface
     protected function persistProduct(ObjectManager $manager, ProductInterface $product, array $options)
     {
         // TODO : remove the flush case, once the saveAll will be implemented
-        $options = array_merge(
-            [
-                'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
-                'execute_rules' => true
-            ],
-            $options
-        );
-
         $manager->persist($product);
 
         if (true === $options['schedule'] || true === $options['recalculate']) {
@@ -185,6 +175,37 @@ class ProductDraftSaver implements SaverInterface
         if (true === $options['execute_rules']) {
             $this->applyAllRules($manager, $product);
         }
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+            [
+                'recalculate' => true,
+                'flush' => true,
+                'schedule' => true,
+                'execute_rules' => true,
+                'bypass_product_draft' => false
+            ]
+        );
+        $resolver->setAllowedTypes(
+            [
+                'recalculate' => 'bool',
+                'flush' => 'bool',
+                'schedule' => 'bool',
+                'execute_rules' => 'bool',
+                'bypass_product_draft' => 'bool'
+            ]
+        );
+        $options = $resolver->resolve($options);
+
+        return $options;
     }
 
     /**
