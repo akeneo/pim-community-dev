@@ -13,10 +13,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -156,11 +157,24 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
      */
     public function applyFilter($qb, $field, $operator, $value)
     {
-        if ('IN' === $operator) {
-            if (!empty($value)) {
-                $fieldName = $this->getRootFieldName($qb, $field);
-                $qb->andWhere($qb->expr()->in($fieldName, $value));
-            }
+        $field = $this->getRootFieldName($qb, $field);
+
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->applyFilterInList($qb, $field, $value);
+                break;
+            case Operators::BETWEEN:
+                $this->applyFilterBetween($qb, $field, $value);
+                break;
+            case Operators::NOT_BETWEEN:
+                $this->applyFilterNotBetween($qb, $field, $value);
+                break;
+            case Operators::GREATER_THAN:
+                $this->applyFilterGreaterThan($qb, $field, $value);
+                break;
+            case Operators::LOWER_THAN:
+                $this->applyFilterLowerThan($qb, $field, $value);
+                break;
         }
     }
 
@@ -186,5 +200,96 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     protected function getRootFieldName(QueryBuilder $qb, $field)
     {
         return sprintf("%s.%s", current($qb->getRootAliases()), $field);
+    }
+
+    /**
+     * Apply an in list filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param mixed        $value
+     */
+    protected function applyFilterInList(QueryBuilder $qb, $field, $value)
+    {
+        if (!empty($value)) {
+            $qb->andWhere($qb->expr()->in($field, $value));
+        }
+    }
+
+    /**
+     * Apply a between filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param array        $value
+     */
+    protected function applyFilterBetween(QueryBuilder $qb, $field, array $value)
+    {
+        $qb->andWhere(
+            $qb->expr()->andX(
+                $qb->expr()->gt($field, $qb->expr()->literal($this->getDateValue($value[0]))),
+                $qb->expr()->lt($field, $qb->expr()->literal($this->getDateValue($value[1], true)))
+            )
+        );
+    }
+
+    /**
+     * Apply a not between filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param array        $value
+     */
+    protected function applyFilterNotBetween(QueryBuilder $qb, $field, array $value)
+    {
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->lt($field, $qb->expr()->literal($this->getDateValue($value[0]))),
+                $qb->expr()->gt($field, $qb->expr()->literal($this->getDateValue($value[1], true)))
+            )
+        );
+    }
+
+    /**
+     * Apply a greater than filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param mixed        $value
+     */
+    protected function applyFilterGreaterThan(QueryBuilder $qb, $field, $value)
+    {
+        $qb->andWhere($qb->expr()->gt($field, $qb->expr()->literal($this->getDateValue($value, true))));
+    }
+
+    /**
+     * Apply a lower than filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param mixed        $value
+     */
+    protected function applyFilterLowerThan(QueryBuilder $qb, $field, $value)
+    {
+        $qb->andWhere($qb->expr()->lt($field, $qb->expr()->literal($this->getDateValue($value))));
+    }
+
+    /**
+     * Get the date formatted from data
+     *
+     * @param \DateTime|string $data
+     * @param boolean          $endOfDay
+     *
+     * @return string
+     */
+    protected function getDateValue($data, $endOfDay = false)
+    {
+        if ($data instanceof \DateTime && true === $endOfDay) {
+            $data->setTime(23, 59, 59);
+        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
+            $data = sprintf('%s 23:59:59', $data);
+        }
+
+        return $data instanceof \DateTime ? $data->format('Y-m-d H:i:s') : $data;
     }
 }

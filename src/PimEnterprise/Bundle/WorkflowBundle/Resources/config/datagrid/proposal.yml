@@ -63,6 +63,11 @@ datagrid:
                         field_options:
                             multiple: true
                             choices: '@pimee_datagrid.datagrid.proposal.grid_helper->getAuthorChoices'
+                createdAt:
+                    type:      product_draft_date
+                    ftype:     date
+                    data_name: createdAt
+                    label:     pimee_workflow.product_draft.created
         sorters:
             columns:
                 author:
