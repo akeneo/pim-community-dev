@@ -178,12 +178,12 @@ class ProductDraftSaver implements SaverInterface
             $manager->flush();
         }
 
-        if (true === $options['execute_rules']) {
-            $this->applyAllRules($manager, $product);
-        }
-
         if (true === $options['recalculate']) {
             $this->completenessManager->generateMissingForProduct($product);
+        }
+
+        if (true === $options['execute_rules']) {
+            $this->applyAllRules($manager, $product);
         }
     }
 
