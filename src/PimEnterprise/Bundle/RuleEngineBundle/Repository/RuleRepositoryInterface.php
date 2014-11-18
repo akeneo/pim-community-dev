@@ -20,5 +20,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface RuleRepositoryInterface extends ObjectRepository
 {
-
+    /**
+     * Retrieve all rule ordered by priority
+     *
+     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface[]
+     */
+    public function findAllOrderedByPriority();
 }

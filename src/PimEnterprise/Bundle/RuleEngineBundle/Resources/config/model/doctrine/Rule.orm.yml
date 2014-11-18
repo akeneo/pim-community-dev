@@ -21,3 +21,8 @@ PimEnterprise\Bundle\RuleEngineBundle\Model\Rule:
             type: text      # json_array ?
             nullable: true
             column: content
+        priority:
+            type: integer
+            nullable: false
+            options:
+                default: 0

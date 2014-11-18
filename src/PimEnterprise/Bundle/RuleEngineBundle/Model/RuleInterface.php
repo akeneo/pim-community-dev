@@ -57,9 +57,21 @@ interface RuleInterface
     public function getContent();
 
     /**
-     * @param $content
+     * @param mixed $content
      *
-     * @return mixed
+     * @return RuleInterface
      */
     public function setContent($content);
+
+    /**
+     * @return int
+     */
+    public function getPriority();
+
+    /**
+     * @param int $priority
+     *
+     * @return RuleInterface
+     */
+    public function setPriority($priority);
 }
