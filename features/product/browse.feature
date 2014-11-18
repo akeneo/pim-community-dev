@@ -18,18 +18,16 @@ Feature: Browse products I have access to
       | classy       | Classy        | shoes     |
       | boots        | Boots         |           |
       | slippers     | Slippers      |           |
-
+    #TODO:
     And the following category accesses:
       | category | user group | access |
-      | shoes    | Redactor   | edit   |
-      | slippers | Redactor   | view   |
+      | shoes    | User       | view   |
+      | slippers | User       | view   |
     And I am logged in as "Mary"
 
   @skip
   Scenario: Browse products
     When I am on the products page
-    #TODO: Correct shoes tree selection
     And I select the "Shoes" tree
     Then I should see products rangers and loafer
     And I select the "Slippers" tree
-
