@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -20,12 +20,12 @@ class MediaPublisherSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
 
-    function it_supports_media(AbstractProductMedia $value)
+    function it_supports_media(ProductMediaInterface $value)
     {
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_publishes_media(AbstractProductMedia $media, ProductInterface $product, AbstractProductValue $value)
+    function it_publishes_media(ProductMediaInterface $media, ProductInterface $product, AbstractProductValue $value)
     {
         $options = ['product' => $product, 'value' => $value];
         $this
