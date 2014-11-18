@@ -5,7 +5,7 @@ services:
     pimee_enrich.view_element.tab.attributegroup_permission:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'pimee_enrich.attribute_group.tab.permission.title'
+            - 'pimee_enrich.attribute_group.tab.permission'
             - %pimee_enrich.view_element.tab.attributegroup_permission.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
