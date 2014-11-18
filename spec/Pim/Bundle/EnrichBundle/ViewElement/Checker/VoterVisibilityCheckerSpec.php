@@ -7,6 +7,9 @@ use PhpSpec\ObjectBehavior;
 
 class VoterVisibilityCheckerSpec extends ObjectBehavior
 {
+    const OWN  = 'OWN';
+    const VIEW = 'VIEW';
+
     function let(SecurityFacade $securityFacade)
     {
         $this->beConstructedWith($securityFacade);
@@ -37,19 +40,19 @@ class VoterVisibilityCheckerSpec extends ObjectBehavior
         $securityFacade
     ) {
         $object = new \stdClass();
-        $securityFacade->isGranted('foo', $object)->willReturn(true);
-        $securityFacade->isGranted('bar', $object)->willReturn(false);
+        $securityFacade->isGranted(self::OWN, $object)->willReturn(true);
+        $securityFacade->isGranted(self::VIEW, $object)->willReturn(false);
 
-        $this->isVisible(['attribute' => 'foo', 'object' => $object])->shouldReturn(true);
-        $this->isVisible(['attribute' => 'bar', 'object' => $object])->shouldReturn(false);
+        $this->isVisible(['attribute' => 'spec\Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::OWN', 'object' => $object])->shouldReturn(true);
+        $this->isVisible(['attribute' => 'spec\Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::VIEW', 'object' => $object])->shouldReturn(false);
     }
 
     function it_can_extract_the_object_from_the_context($securityFacade)
     {
         $object = new \stdClass();
 
-        $securityFacade->isGranted('foo', $object)->shouldBeCalled();
+        $securityFacade->isGranted(self::OWN, $object)->shouldBeCalled();
 
-        $this->isVisible(['attribute' => 'foo', 'object' => '[foo][bar]'], ['foo' => ['bar' => $object]]);
+        $this->isVisible(['attribute' => 'spec\Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::OWN', 'object' => '[foo][bar]'], ['foo' => ['bar' => $object]]);
     }
 }
