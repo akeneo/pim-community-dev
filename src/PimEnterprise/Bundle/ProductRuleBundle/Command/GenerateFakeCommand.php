@@ -44,7 +44,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:rule-dev:generate-fake')
-            ->addArgument('count', InputArgument::OPTIONAL, 'Number of rules to generate', 1)
+            ->addArgument('count', InputArgument::OPTIONAL, 'Number of rules to generate', 100)
         ;
     }
 
@@ -58,15 +58,43 @@ class GenerateFakeCommand extends ContainerAwareCommand
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        $attributes = $em->getRepository('PimCatalogBundle:Attribute')->findAll();
 
-        $filters = $this->getFilters($attributes);
+        $fakeRules = false;
+        if ($fakeRules) {
 
-        $rules = [];
-        $cpt = 0;
-        while ($cpt < $count) {
+            $attributes = $em->getRepository('PimCatalogBundle:Attribute')->findAll();
+
+            $filters = $this->getFilters($attributes);
+
+            $rules = [];
+            $cpt = 0;
+            while ($cpt < $count) {
+                $rule = new Rule();
+                $rule->setCode('rule_' . $cpt);
+                $rule->setContent(json_encode([
+                    'conditions' => $this->getConditions($filters, 2),
+                        'actions'    => [
+                            ['type' => 'set_value', 'field' => 'name', 'value' => 'toto'],
+                            [
+                                'type'       => 'copy_value',
+                                'from_field' => 'name',
+                                'to_field'   => 'description',
+                                'to_scope'   => 'mobile',
+                                'to_locale'  => 'fr_FR'
+                            ],
+                        ]
+                    ]));
+                $rule->setType('product');
+                $rule->setPriority(1);
+
+                $em->persist($rule);
+
+                $cpt++;
+            }
+
+        } else {
             $rule = new Rule();
-            $rule->setCode('rule_' . $cpt);
+            $rule->setCode('rule_one');
             $rule->setContent(json_encode([
                 'conditions' => [
                     [
@@ -79,7 +107,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
                     [
                         'type' => 'set_value',
                         'field' => 'name',
-                        'value' => 'Emilie'
+                        'value' => 'My name'
                     ],
                     [
                         'type'        => 'copy_value',
@@ -93,10 +121,79 @@ class GenerateFakeCommand extends ContainerAwareCommand
                 ]
             ]));
             $rule->setType('product');
-
+            $rule->setPriority(10);
             $em->persist($rule);
 
-            $cpt++;
+            $rule = new Rule();
+            $rule->setCode('rule_two');
+            $rule->setContent(json_encode([
+                'conditions' => [
+                    [
+                        'field' => 'name',
+                        'operator' => '=',
+                        'value' => 'My name'
+                    ]
+                ],
+                'actions'    => [
+                    [
+                        'type' => 'set_value',
+                        'field' => 'price',
+                        'value' => [
+                            ['data' => 44, 'currency' => 'EUR'],
+                            ['data' => 72, 'currency' => 'USD'],
+                        ]
+                    ]
+                ]
+            ]));
+            $rule->setType('product');
+            $rule->setPriority(9);
+            $em->persist($rule);
+
+            $rule = new Rule();
+            $rule->setCode('rule_four');
+            $rule->setContent(json_encode([
+                'conditions' => [
+                    [
+                        'field' => 'name',
+                        'operator' => '=',
+                        'value' => 'My name'
+                    ]
+                ],
+                'actions'    => [
+                    [
+                        'type' => 'set_value',
+                        'field' => 'optical_zoom',
+                        'value' => 122.56,
+                    ]
+                ]
+            ]));
+            $rule->setType('product');
+            $rule->setPriority(3);
+            $em->persist($rule);
+
+            $rule = new Rule();
+            $rule->setCode('rule_five');
+            $rule->setContent(json_encode([
+                'conditions' => [
+                    [
+                        'field' => 'name',
+                        'operator' => '=',
+                        'value' => 'My name'
+                    ]
+                ],
+                'actions'    => [
+                    [
+                        'type' => 'set_value',
+                        'field' => 'image_stabilizer',
+                        'value' => true,
+                    ]
+                ]
+            ]));
+            $rule->setType('product');
+            $rule->setPriority(3);
+            $em->persist($rule);
+
+            // TODO image, option, options, metric
         }
 
         $connection = $em->getConnection();
