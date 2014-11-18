@@ -27,4 +27,11 @@ interface ProductReaderInterface extends ItemReaderInterface, StepExecutionAware
      * @return string
      */
     public function getChannel();
+
+    /**
+     * Return an array of fields for the configuration form
+     *
+     * @return array[]
+     */
+    public function getConfigurationFields();
 }
