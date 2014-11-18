@@ -6,6 +6,7 @@ use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Compiler pass to register tagged view elements in the view element registry
@@ -45,23 +46,35 @@ class RegisterViewElementsPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->getDefinition(static::REGISTRY_ID);
+        $registryDefinition = $container->getDefinition(static::REGISTRY_ID);
 
         foreach ($container->findTaggedServiceIds(static::VIEW_ELEMENT_TAG) as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                if (!isset($tag['type'])) {
-                    throw new \LogicException(sprintf('No type provided for the "%s" view element', $serviceId));
-                }
-                $position = isset($tag['position']) ? $tag['position'] : static::DEFAULT_POSITION;
-                $definition->addMethodCall(
-                    'add',
-                    [
-                        $this->factory->createReference($serviceId),
-                        $tag['type'],
-                        $position
-                    ]
-                );
+                $this->registerViewElement($registryDefinition, $serviceId, $tag);
             }
         }
+    }
+
+    /**
+     * Register a a view element to the view element registry
+     *
+     * @param  Definition $registryDefinition
+     * @param  string     $serviceId
+     * @param  array      $tag
+     */
+    protected function registerViewElement($registryDefinition, $serviceId, $tag)
+    {
+        if (!isset($tag['type'])) {
+            throw new \LogicException(sprintf('No type provided for the "%s" view element', $serviceId));
+        }
+        $position = isset($tag['position']) ? $tag['position'] : static::DEFAULT_POSITION;
+        $registryDefinition->addMethodCall(
+            'add',
+            [
+                $this->factory->createReference($serviceId),
+                $tag['type'],
+                $position
+            ]
+        );
     }
 }
