@@ -144,8 +144,12 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      *
      * @return string
      */
-    protected function prepareAttributeJoinCondition(AttributeInterface $attribute, $joinAlias, $locale = null, $scope = null)
-    {
+    protected function prepareAttributeJoinCondition(
+        AttributeInterface $attribute,
+        $joinAlias,
+        $locale = null,
+        $scope = null
+    ) {
         $joinHelper = new ValueJoin($this->qb);
 
         return $joinHelper->prepareCondition($attribute, $joinAlias, $locale, $scope);
