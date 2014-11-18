@@ -7,6 +7,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class StringFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb)
