@@ -11,6 +11,8 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
 use Behat\Behat\Context\Step;
 
 /**
@@ -452,5 +454,132 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $registry = $this->getSmartRegistry()
             ->getManagerForClass(sprintf('PimEnterprise\Bundle\SecurityBundle\Entity\%sAccess', $accessClass));
         $registry->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product rules:$/
+     */
+    public function theFollowingProductRules(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $rule = new Rule();
+            $rule->setCode($data['code']);
+            $rule->setPriority($data['priority']);
+            $rule->setType('product');
+            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
+            $manager->persist($rule);
+        }
+        $manager->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product rule conditions:$/
+     */
+    public function theFollowingProductRuleConditions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                [
+                    'locale' => null,
+                    'scope' => null
+                ],
+                $data
+            );
+
+            $rule = $this->getRule($data['rule']);
+            $content = $rule->getContent();
+            $content = json_decode($content, true);
+            if (!isset($content['conditions'])) {
+                $content['conditions'] = [];
+            }
+            $condition = [
+                'field' => $data['field'],
+                'operator' => $data['operator'],
+                'value' => $data['value'],
+            ];
+            if ($data['locale'] !== null) {
+                $condition['locale'] = $data['locale'];
+            }
+            if ($data['scope'] !== null) {
+                $condition['scope'] = $data['scope'];
+            }
+            $content['conditions'][] = $condition;
+
+            $rule->setContent(json_encode($content));
+            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
+            $manager->persist($rule);
+        }
+        $manager->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product rule setter actions:$/
+     */
+    public function theFollowingProductRuleSetterActions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                [
+                    'locale' => null,
+                    'scope' => null
+                ],
+                $data
+            );
+
+            $rule = $this->getRule($data['rule']);
+            $content = $rule->getContent();
+            $content = json_decode($content, true);
+            if (!isset($content['actions'])) {
+                $content['actions'] = [];
+            }
+            $action = [
+                'type' => 'set_value',
+                'field' => $data['field'],
+                'value' => $data['value'],
+            ];
+            if ($data['locale'] !== null) {
+                $action['locale'] = $data['locale'];
+            }
+            if ($data['scope'] !== null) {
+                $action['scope'] = $data['scope'];
+            }
+            $content['actions'][] = $action;
+
+            $rule->setContent(json_encode($content));
+            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
+            $manager->persist($rule);
+        }
+        $manager->flush();
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\RuleEngineBundle\Model\RuleInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getRule($code)
+    {
+        $rule = $this->getRuleRepository()->findOneByCode($code);
+        if (!$rule) {
+            throw new \InvalidArgumentException(sprintf('Could not find a rule with code "%s"', $code));
+        }
+
+        return $rule;
+    }
+
+    /**
+     * @return RuleRepositoryInterface
+     */
+    protected function getRuleRepository()
+    {
+        return $this->getContainer()->get('pimee_rule_engine.repository.rule');
     }
 }

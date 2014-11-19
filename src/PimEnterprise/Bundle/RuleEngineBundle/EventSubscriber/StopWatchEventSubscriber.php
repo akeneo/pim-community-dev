@@ -94,10 +94,12 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
      */
     public function preSelect(RuleEvent $event)
     {
-        $this->stopWatch->start(
-            sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'select'),
-            'rule_selecting'
-        );
+        if ($this->stopWatch) {
+            $this->stopWatch->start(
+                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'select'),
+                'rule_selecting'
+            );
+        }
     }
 
     /**
