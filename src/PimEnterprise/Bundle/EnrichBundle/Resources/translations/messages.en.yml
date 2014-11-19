@@ -103,7 +103,6 @@ flash.product.updated: Product working copy has been updated
 flash.product_draft.updated: Draft has been successfully saved
 flash.locale.updated: The locale and permissions have been updated
 
-
 pimee_enrich:
     attribute_group:
         tab:
