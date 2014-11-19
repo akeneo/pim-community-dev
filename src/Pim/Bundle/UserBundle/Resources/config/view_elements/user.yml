@@ -39,7 +39,7 @@ services:
             - 'pim_user.user.tab.password'
             - %pim_user.view_element.user.tab.password.template%
         calls:
-            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form][change_password]'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[change_password]'}] ]
         tags:
             - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 120 }
 
