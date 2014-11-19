@@ -1,5 +1,8 @@
 # 1.1.x
 
+## Improvements
+- Add a date filter in the proposal grid
+
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
 - Move method `findApprovableByUser` from `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface` to `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`.
@@ -19,6 +22,7 @@
 - switch to minimum-stability:stable in composer.json
 - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - remove BaseFilter usage
+- add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
 
 ## Bug fixes
 

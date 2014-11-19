@@ -102,3 +102,14 @@ pim_enrich.mass_edit_action:
 flash.product.updated: Product working copy has been updated
 flash.product_draft.updated: Draft has been successfully saved
 flash.locale.updated: The locale and permissions have been updated
+
+pimee_enrich:
+    attribute_group:
+        tab:
+            permission.title: Permissions
+    product:
+        tab:
+            proposal.title: Proposals
+    category:
+        tab:
+            permission.title: Permissions

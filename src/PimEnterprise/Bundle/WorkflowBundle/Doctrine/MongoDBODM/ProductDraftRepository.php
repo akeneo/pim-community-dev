@@ -12,11 +12,13 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -127,10 +129,22 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      */
     public function applyFilter($qb, $field, $operator, $value)
     {
-        if ('IN' === $operator) {
-            if (!empty($value)) {
-                $qb->field($field)->in($value);
-            }
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->applyFilterInList($qb, $field, $value);
+                break;
+            case Operators::BETWEEN:
+                $this->applyFilterBetween($qb, $field, $value);
+                break;
+            case Operators::NOT_BETWEEN:
+                $this->applyFilterNotBetween($qb, $field, $value);
+                break;
+            case Operators::GREATER_THAN:
+                $this->applyFilterGreaterThan($qb, $field, $value);
+                break;
+            case Operators::LOWER_THAN:
+                $this->applyFilterLowerThan($qb, $field, $value);
+                break;
         }
     }
 
@@ -200,5 +214,91 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
         }
 
         return $grantedCategoryIds;
+    }
+
+    /**
+     * Apply an in list filter
+     *
+     * @param Builder $qb
+     * @param string  $field
+     * @param mixed   $value
+     */
+    protected function applyFilterInList(Builder $qb, $field, $value)
+    {
+        if (!empty($value)) {
+            $qb->field($field)->in($value);
+        }
+    }
+
+    /**
+     * Apply a between filter
+     *
+     * @param Builder $qb
+     * @param string  $field
+     * @param array   $value
+     */
+    protected function applyFilterBetween(Builder $qb, $field, array $value)
+    {
+        $qb->field($field)->gte($this->getDateValue($value[0]));
+        $qb->field($field)->lte($this->getDateValue($value[1], true));
+    }
+
+    /**
+     * Apply a not between filter
+     *
+     * @param Builder $qb
+     * @param string  $field
+     * @param array   $value
+     */
+    protected function applyFilterNotBetween(Builder $qb, $field, array $value)
+    {
+        $qb->addAnd(
+            $qb->expr()
+                ->addOr($qb->expr()->field($field)->lte($this->getDateValue($value[0])))
+                ->addOr($qb->expr()->field($field)->gte($this->getDateValue($value[1], true)))
+        );
+    }
+
+    /**
+     * Apply a greater than filter
+     *
+     * @param Builder $qb
+     * @param string  $field
+     * @param mixed   $value
+     */
+    protected function applyFilterGreaterThan(Builder $qb, $field, $value)
+    {
+        $qb->field($field)->gt($this->getDateValue($value, true));
+    }
+
+    /**
+     * Apply a lower than filter
+     *
+     * @param Builder $qb
+     * @param string  $field
+     * @param mixed   $value
+     */
+    protected function applyFilterLowerThan(Builder $qb, $field, $value)
+    {
+        $qb->field($field)->lt($this->getDateValue($value));
+    }
+
+    /**
+     * Get the date formatted from data
+     *
+     * @param \DateTime|string $data
+     * @param boolean          $endOfDay
+     *
+     * @return \DateTime
+     */
+    protected function getDateValue($data, $endOfDay = false)
+    {
+        if ($data instanceof \DateTime && true === $endOfDay) {
+            $data->setTime(23, 59, 59);
+        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
+            $data = sprintf('%s 23:59:59', $data);
+        }
+
+        return $data instanceof \DateTime ? $data : new \DateTime($data);
     }
 }
