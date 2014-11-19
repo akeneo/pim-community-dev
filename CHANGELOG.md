@@ -19,6 +19,7 @@
 - switch to minimum-stability:stable in composer.json
 - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - remove BaseFilter usage
+- add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
 
 ## Bug fixes
 
