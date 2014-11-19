@@ -47,20 +47,6 @@ class InvalidArgumentException extends \InvalidArgumentException
      *
      * @return InvalidArgumentException
      */
-    public static function floatExpected($name, $action, $type)
-    {
-        return new self(
-            sprintf('Attribute or field "%s" expects a float as data (for %s %s).', $name, $action, $type)
-        );
-    }
-
-    /**
-     * @param string $name
-     * @param string $action
-     * @param string $type
-     *
-     * @return InvalidArgumentException
-     */
     public static function integerExpected($name, $action, $type)
     {
         return new self(
@@ -107,111 +93,6 @@ class InvalidArgumentException extends \InvalidArgumentException
     {
         return new self(
             sprintf('Attribute or field "%s" expects an array as data (for %s %s).', $name, $action, $type)
-        );
-    }
-
-    /**
-     * @param string $name
-     * @param string $action
-     * @param string $type
-     *
-     * @return InvalidArgumentException
-     */
-    public static function arrayOfArraysExpected($name, $action, $type)
-    {
-        return new self(
-            sprintf(
-                'Attribute or field "%s" expects an array of arrays as data (for %s %s).',
-                $name,
-                $action,
-                $type
-            )
-        );
-    }
-
-    /**
-     * @param string $name
-     * @param string $key
-     * @param string $action
-     * @param string $type
-     *
-     * @return InvalidArgumentException
-     */
-    public static function arrayKeyExpected($name, $key, $action, $type)
-    {
-        return new self(
-            sprintf(
-                'Attribute or field "%s" expects an array with the key "%s" as data (for %s %s).',
-                $name,
-                $key,
-                $action,
-                $type
-            )
-        );
-    }
-
-    /**
-     * @param string $name
-     * @param string $key
-     * @param string $because
-     * @param string $action
-     * @param string $type
-     *
-     * @return InvalidArgumentException
-     */
-    public static function arrayInvalidKey($name, $key, $because, $action, $type)
-    {
-        return new self(
-            sprintf(
-                'Attribute or field "%s" expects an array with valid data for the key "%s". %s (for %s %s).',
-                $name,
-                $key,
-                $because,
-                $action,
-                $type
-            )
-        );
-    }
-
-    /**
-     * @param string $name
-     * @param string $key
-     * @param string $action
-     * @param string $type
-     *
-     * @return InvalidArgumentException
-     */
-    public static function arrayNumericKeyExpected($name, $key, $action, $type)
-    {
-        return new self(
-            sprintf(
-                'Attribute or field "%s" expects an array with numeric data for the key "%s" (for %s %s).',
-                $name,
-                $key,
-                $action,
-                $type
-            )
-        );
-    }
-
-    /**
-     * @param string $name
-     * @param string $key
-     * @param string $action
-     * @param string $type
-     *
-     * @return InvalidArgumentException
-     */
-    public static function arrayStringKeyExpected($name, $key, $action, $type)
-    {
-        return new self(
-            sprintf(
-                'Attribute or field "%s" expects an array with string data for the key "%s" (for %s %s).',
-                $name,
-                $key,
-                $action,
-                $type
-            )
         );
     }
 }
