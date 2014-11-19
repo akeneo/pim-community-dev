@@ -34,7 +34,6 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_option'
 
     pim_catalog.manager.product_mass_action:
         class: %pim_catalog.manager.product_mass_action.class%
