@@ -47,17 +47,27 @@ class MediaFilter extends AbstractFilter implements AttributeFilterInterface
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
+
+            // TODO : join on media table
+
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
-            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
 
+            // join on values
+            $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
             $this->qb->innerJoin(
-                $this->qb->getRootAlias() . '.values',
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
-                $condition
+                $valueCondition
             );
+
+            // join on media
+            $joinAliasMedia = 'filterMedia'.$attribute->getCode();
+            $backendType = $attribute->getBackendType();
+            $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
+            $mediaCondition = $this->prepareCondition($backendField, $operator, $value);
+            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasMedia, 'WITH', $mediaCondition);
         }
 
         return $this;

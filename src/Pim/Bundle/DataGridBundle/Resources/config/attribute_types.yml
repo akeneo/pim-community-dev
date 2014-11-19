@@ -107,7 +107,7 @@ parameters:
             options:
                 field_options:
                     attr:
-                        choice_list: true
+                        empty_choice: true
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_image:
         column:
@@ -121,7 +121,7 @@ parameters:
             options:
                 field_options:
                     attr:
-                        choice_list: true
+                        empty_choice: true
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_price_collection:
         column:
