@@ -121,7 +121,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_string()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'completeness', 'string'))
+        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness'))
             ->during('addFieldFilter', ['completeness', '=', 123]);
     }
 }

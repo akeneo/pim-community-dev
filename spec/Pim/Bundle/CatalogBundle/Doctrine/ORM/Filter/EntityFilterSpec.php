@@ -93,11 +93,11 @@ class EntityFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'entity', 'array'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'entity'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 
     function it_throws_an_exception_if_values_in_array_are_not_integers()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'entity', 'array'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'entity'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 }

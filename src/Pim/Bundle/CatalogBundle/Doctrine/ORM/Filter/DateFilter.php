@@ -193,17 +193,14 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
      *
      * @param string $type
      * @param mixed  $value
-     *
-     * todo: find a better way to check this
      */
     protected function checkValues($type, $value)
     {
         if (is_array($value)) {
             if (count($value) !== 2 || (!is_string($value[0]) && !is_string($value[1]))) {
-                throw InvalidArgumentException::stringExpected($type, 'date filter', 'date');
+                throw InvalidArgumentException::stringExpected($type, 'filter', 'date');
             }
 
-            //TODO: maybe find another way to do this ?
             $this->checkDateFormat($type, $value[0]);
             $this->checkDateFormat($type, $value[1]);
         } elseif (is_string($value)) {
@@ -214,7 +211,7 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
             throw InvalidArgumentException::expected(
                 $type,
                 'array or string',
-                'date filter',
+                'filter',
                 'date'
             );
         }
@@ -238,7 +235,7 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
             throw InvalidArgumentException::expected(
                 $type,
                 'a string with the format yyyy-mm-dd',
-                'setter',
+                'filter',
                 'date'
             );
         }

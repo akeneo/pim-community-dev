@@ -63,7 +63,7 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($number, 'EMPTY', 12);
     }
 
-    function it_throws_an_exception_if_value_is_not_an_numeric(AttributeInterface $attribute)
+    function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('number_code');
         $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number'))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);

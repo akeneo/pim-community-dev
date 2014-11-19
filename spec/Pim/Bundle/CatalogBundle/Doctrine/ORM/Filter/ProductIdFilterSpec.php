@@ -38,8 +38,8 @@ ProductIdFilterSpec extends ObjectBehavior
         $this->addFieldFilter('id', '=', '12');
     }
 
-    function it_throws_an_exception_if_value_is_not_a_numeric()
+    function it_throws_an_exception_if_value_is_not_a_numeric_an_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::numericExpected('id', 'filter', 'numeric'))->during('addFieldFilter', ['id', '=', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::expected('id', 'array or numeric value', 'filter', 'productId'))->during('addFieldFilter', ['id', '=', 'WRONG']);
     }
 }

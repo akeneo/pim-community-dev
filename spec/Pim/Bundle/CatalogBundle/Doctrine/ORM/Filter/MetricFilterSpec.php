@@ -81,7 +81,7 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'EMPTY', '');
     }
 
-    function it_throws_an_exception_if_value_is_not_an_numeric(AttributeInterface $attribute)
+    function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('metric_code');
         $this->shouldThrow(InvalidArgumentException::numericExpected('metric_code', 'filter', 'metric'))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);

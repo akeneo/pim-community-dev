@@ -166,6 +166,6 @@ class PriceFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_string(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attributeCode');
-        $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string'))->during('addAttributeFilter', [$attribute, '=', 123]);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'price'))->during('addAttributeFilter', [$attribute, '=', 123]);
     }
 }

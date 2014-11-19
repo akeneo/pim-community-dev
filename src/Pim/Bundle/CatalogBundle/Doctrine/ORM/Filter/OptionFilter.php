@@ -38,17 +38,7 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
-        if (!is_array($value) && 'EMPTY' !== $operator) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'entity', 'array');
-        }
-
-        if ('EMPTY' !== $operator) {
-            foreach ($value as $option) {
-                if (!is_numeric($option)) {
-                    throw InvalidArgumentException::numericExpected($attribute->getCode(), 'entity', 'numeric');
-                }
-            }
-        }
+        $this->checkValue($attribute, $operator, $value);
 
         $joinAlias = 'filter'.$attribute->getCode();
 
@@ -86,5 +76,27 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $operator
+     * @param mixed              $value
+     */
+    protected function checkValue(AttributeInterface $attribute, $operator, $value)
+    {
+        if (!is_array($value) && Operators::IS_EMPTY !== $operator) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'option');
+        }
+
+        if (Operators::IS_EMPTY !== $operator) {
+            foreach ($value as $option) {
+                if (!is_numeric($option)) {
+                    throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'option');
+                }
+            }
+        }
     }
 }

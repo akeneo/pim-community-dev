@@ -37,15 +37,7 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        if (!is_array($value)) {
-            throw InvalidArgumentException::arrayExpected($field, 'entity', 'array');
-        }
-
-        foreach ($value as $entity) {
-            if (!is_numeric($entity) && 'empty' !== $entity) {
-                throw InvalidArgumentException::integerExpected($field, 'entity', 'integer');
-            }
-        }
+        $this->checkValue($field, $value);
 
         $rootAlias  = $this->qb->getRootAlias();
         $entityAlias = 'filter'.$field;
@@ -86,5 +78,24 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
     public function supportsField($field)
     {
         return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param string $field
+     * @param mixed  $value
+     */
+    protected function checkValue($field, $value)
+    {
+        if (!is_array($value)) {
+            throw InvalidArgumentException::arrayExpected($field, 'filter', 'entity');
+        }
+
+        foreach ($value as $entity) {
+            if (!is_numeric($entity) && 'empty' !== $entity) {
+                throw InvalidArgumentException::integerExpected($field, 'filter', 'entity');
+            }
+        }
     }
 }
