@@ -3,7 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Saver;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
@@ -15,21 +17,21 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductSaver implements SaverInterface
+class ProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var ObjectManager */
+    protected $om;
 
     /** @var CompletenessManager */
     protected $completenessManager;
 
     /**
-     * @param ManagerRegistry     $registry
+     * @param ObjectManager       $om
      * @param CompletenessManager $completenessManager
      */
-    public function __construct(ManagerRegistry $registry, CompletenessManager $completenessManager)
+    public function __construct(ObjectManager $om, CompletenessManager $completenessManager)
     {
-        $this->managerRegistry     = $registry;
+        $this->om                  = $om;
         $this->completenessManager = $completenessManager;
     }
 
@@ -56,19 +58,47 @@ class ProductSaver implements SaverInterface
             $options
         );
 
-        $objectManager = $this->managerRegistry->getManagerForClass(ClassUtils::getClass($product));
-        $objectManager->persist($product);
+        $this->om->persist($product);
 
         if (true === $options['schedule'] || true === $options['recalculate']) {
             $this->completenessManager->schedule($product);
         }
 
         if (true === $options['recalculate'] || true === $options['flush']) {
-            $objectManager->flush();
+            $this->om->flush();
         }
 
         if (true === $options['recalculate']) {
             $this->completenessManager->generateMissingForProduct($product);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $objects, array $options = [])
+    {
+        if (empty($objects)) {
+            return;
+        }
+
+        $allOptions = array_merge(
+            [
+                'recalculate' => false,
+                'flush' => true,
+                'schedule' => true,
+            ],
+            $options
+        );
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
+
+        foreach ($objects as $object) {
+            $this->save($object, $itemOptions);
+        }
+
+        if (true === $allOptions['flush']) {
+            $this->om->flush();
         }
     }
 }
