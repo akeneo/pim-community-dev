@@ -10,21 +10,18 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class ProductSaverSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry, CompletenessManager $completenessManager)
+    function let(ObjectManager $om, CompletenessManager $completenessManager)
     {
-        $this->beConstructedWith($registry, $completenessManager);
+        $this->beConstructedWith($om, $completenessManager);
     }
 
     function it_persists_flushes_schedule_and_recalculate_completeness_of_products_in_database(
-        ManagerRegistry $registry,
-        ObjectManager $objectManager,
+        $om,
         CompletenessManager $completenessManager,
         ProductInterface $product
     ) {
-        $registry->getManagerForClass(get_class($product->getWrappedObject()))->willReturn($objectManager);
-
-        $objectManager->persist($product)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $om->persist($product)->shouldBeCalled();
+        $om->flush()->shouldBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
@@ -32,15 +29,12 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_does_not_schedule_neither_recalculate_completeness_when_persisting(
-        ManagerRegistry $registry,
-        ObjectManager $objectManager,
+        $om,
         CompletenessManager $completenessManager,
         ProductInterface $product
     ) {
-        $registry->getManagerForClass(get_class($product->getWrappedObject()))->willReturn($objectManager);
-
-        $objectManager->persist($product)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $om->persist($product)->shouldBeCalled();
+        $om->flush()->shouldBeCalled();
         $completenessManager->schedule($product)->shouldNotBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
 
@@ -48,15 +42,12 @@ class ProductSaverSpec extends ObjectBehavior
     }
 
     function it_does_not_flush_object_manager_when_persisting(
-        ManagerRegistry $registry,
-        ObjectManager $objectManager,
+        $om,
         CompletenessManager $completenessManager,
         ProductInterface $product
     ) {
-        $registry->getManagerForClass(get_class($product->getWrappedObject()))->willReturn($objectManager);
-
-        $objectManager->persist($product)->shouldBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
+        $om->persist($product)->shouldBeCalled();
+        $om->flush()->shouldNotBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
 

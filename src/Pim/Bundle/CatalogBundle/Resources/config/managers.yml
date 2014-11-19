@@ -27,6 +27,7 @@ services:
                   attribute_class:              %pim_catalog.entity.attribute.class%
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product'
             - '@event_dispatcher'
             - '@pim_catalog.manager.media'
             - '@pim_catalog.builder.product'

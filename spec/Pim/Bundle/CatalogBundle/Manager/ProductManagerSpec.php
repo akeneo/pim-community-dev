@@ -30,6 +30,7 @@ class ProductManagerSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         ProductSaver $productSaver,
+        ProductSaver $productBulkSaver,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -50,6 +51,7 @@ class ProductManagerSpec extends ObjectBehavior
             $entityConfig,
             $objectManager,
             $productSaver,
+            $productBulkSaver,
             $eventDispatcher,
             $mediaManager,
             $builder,
@@ -271,5 +273,19 @@ class ProductManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldNotBeCalled();
 
         $this->remove($product, ['flush' => false]);
+    }
+
+    function it_saves_a_product($productSaver, ProductInterface $product)
+    {
+        $productSaver->save($product, ['option1'])->shouldBeCalled();
+
+        $this->save($product, ['option1']);
+    }
+
+    function it_saves_products($productBulkSaver, ProductInterface $product1, ProductInterface $product2)
+    {
+        $productBulkSaver->saveAll([$product1, $product2], ['option1'])->shouldBeCalled();
+
+        $this->saveAll([$product1, $product2], ['option1']);
     }
 }
