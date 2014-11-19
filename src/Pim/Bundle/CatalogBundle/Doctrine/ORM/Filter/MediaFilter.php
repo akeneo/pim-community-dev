@@ -40,7 +40,7 @@ class MediaFilter extends AbstractFilter implements AttributeFilterInterface
         if ($operator === Operators::IS_EMPTY) {
             $this->addIsEmptyFilter($attribute, $operator, $value, $locale, $scope);
         } else {
-             $this->addLikeFilter($attribute, $operator, $value, $locale, $scope);
+            $this->addLikeFilter($attribute, $operator, $value, $locale, $scope);
         }
 
         return $this;
@@ -111,6 +111,7 @@ class MediaFilter extends AbstractFilter implements AttributeFilterInterface
 
     /**
      * Prepare conditions of the filter
+     * @param string       $backendField
      * @param string|array $operator
      * @param string|array $value
      *
