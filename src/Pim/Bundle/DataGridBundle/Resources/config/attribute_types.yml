@@ -101,6 +101,13 @@ parameters:
             type:          product_value_file
             selector:      product_value_media
             frontend_type: string
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        choice_list: true
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_image:
         column:
@@ -108,6 +115,13 @@ parameters:
             selector:      product_value_media
             frontend_type: html
             template:      PimDataGridBundle:Property:image.html.twig
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        choice_list: true
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_price_collection:
         column:
