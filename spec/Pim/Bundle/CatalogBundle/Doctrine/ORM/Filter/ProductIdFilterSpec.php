@@ -8,8 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
-class
-ProductIdFilterSpec extends ObjectBehavior
+class ProductIdFilterSpec extends ObjectBehavior
 {
     function let(QueryBuilder $queryBuilder)
     {
@@ -38,7 +37,7 @@ ProductIdFilterSpec extends ObjectBehavior
         $this->addFieldFilter('id', '=', '12');
     }
 
-    function it_throws_an_exception_if_value_is_not_a_numeric_an_not_an_array()
+    function it_throws_an_exception_if_value_is_not_a_numeric_or_an_array()
     {
         $this->shouldThrow(InvalidArgumentException::expected('id', 'array or numeric value', 'filter', 'productId'))->during('addFieldFilter', ['id', '=', 'WRONG']);
     }
