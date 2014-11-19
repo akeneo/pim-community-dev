@@ -18,23 +18,17 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var array */
     protected $supportedAttributes;
 
-    /** @var array */
-    protected $supportedFields;
-
     /**
      * Instanciate the base filter
      *
      * @param array $supportedAttributes
-     * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
         array $supportedAttributes = [],
-        array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
     }
 

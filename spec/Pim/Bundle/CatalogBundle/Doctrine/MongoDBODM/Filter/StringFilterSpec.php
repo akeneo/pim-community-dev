@@ -14,7 +14,7 @@ class StringFilterSpec extends ObjectBehavior
 {
     function let(Builder $qb)
     {
-        $this->beConstructedWith(['pim_catalog_identifier'], [], ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']);
+        $this->beConstructedWith(['pim_catalog_identifier'], ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']);
         $this->setQueryBuilder($qb);
     }
 
