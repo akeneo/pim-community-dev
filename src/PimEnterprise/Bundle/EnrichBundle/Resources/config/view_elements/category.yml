@@ -1,0 +1,15 @@
+parameters:
+    pimee_enrich.view_element.tab.category_permission.template: 'PimEnterpriseEnrichBundle:CategoryTree:Tab/permission.html.twig'
+
+services:
+    pim_enrich.view_element.category.tab.category_permission:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_enrich.category.tab.permission'
+            - %pimee_enrich.view_element.tab.category_permission.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_enrich_category_edit_permissions'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[permissions]'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_category.form_tab, position: 100 }

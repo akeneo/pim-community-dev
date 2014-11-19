@@ -15,8 +15,8 @@
 
     {% if resource_granted('pim_enrich_product_add_attribute') %}
         {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
-        'form': attributesForm,
-        'action': path('pim_enrich_product_addattributes', {'id': product.id, 'dataLocale': dataLocale})
+            'form': attributesForm,
+            'action': path('pim_enrich_product_addattributes', {'id': product.id, 'dataLocale': dataLocale})
         } %}
     {% endif %}
 
@@ -33,49 +33,48 @@
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-    'action': formAction,
-    'attr': {
-    'class': 'product-edit',
-    'data-updated-title': 'confirmation.leave'|trans,
-    'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product.title'|trans })
-    }
+        'action': formAction,
+        'attr': {
+            'class': 'product-edit',
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product.title'|trans })
+        }
     }) }}
+        {% set title = 'product.title'|trans %}
 
-    {% set title = 'product.title'|trans %}
-
-    {% set buttons %}
-    {% include 'PimEnrichBundle:Product:_buttons.html.twig' %}
-    {% endset %}
-
-    {% if subtitle is not defined %}
-        {% set subtitle %}
-        {% include 'PimEnterpriseEnrichBundle:Product:_locale-switcher.html.twig' %}
-        {{ elements.enabledLabel(form) }}
+        {% set buttons %}
+            {% include 'PimEnrichBundle:Product:_buttons.html.twig' %}
         {% endset %}
-    {% endif %}
 
-    {% set left %}
-    <ul class="inline">
-        {% include 'PimEnrichBundle:Product:_left-details.html.twig' %}
-    </ul>
-    {% endset %}
+        {% if subtitle is not defined %}
+            {% set subtitle %}
+                {% include 'PimEnterpriseEnrichBundle:Product:_locale-switcher.html.twig' %}
+                {{ elements.enabledLabel(form) }}
+            {% endset %}
+        {% endif %}
 
-    {{ elements.page_header(title, buttons, subtitle, left, elements.updated(form.vars.id)) }}
+        {% set left %}
+            <ul class="inline">
+                {% include 'PimEnrichBundle:Product:_left-details.html.twig' %}
+            </ul>
+        {% endset %}
 
-    <div class="layout-content">
-        {% include 'PimEnrichBundle:Product:_navbar.html.twig' %}
+        {{ elements.page_header(title, buttons, subtitle, left, elements.updated(form.vars.id)) }}
 
-        <div class="row-fluid tab-content">
-            {{ elements.form_errors(form) }}
+        <div class="layout-content">
+            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
-            {% include 'PimEnrichBundle:Product:_tab-panes.html.twig' %}
+            <div class="row-fluid tab-content">
+                {{ elements.form_errors(form) }}
 
-            {{ form_row(form.id) }}
+                {{ view_elements(form.vars.id ~ '.form_tab') }}
+
+                {{ form_row(form.id) }}
+            </div>
         </div>
-    </div>
     {{ form_end(form) }}
 
     <a href="javascript:void(0);"
-       id="create-product"
-       data-form-url="{{ path('pim_enrich_product_create', { 'dataLocale': dataLocale }) }}"></a>
+        id="create-product"
+        data-form-url="{{ path('pim_enrich_product_create', { 'dataLocale': dataLocale }) }}"></a>
 {% endblock %}
