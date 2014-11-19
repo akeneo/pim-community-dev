@@ -1,10 +1,10 @@
 {% set removalGranted =
-        resource_granted('pim_enrich_attribute_group_remove_attribute') and
-        not group.code is constant('DEFAULT_GROUP_CODE', group)
+    resource_granted('pim_enrich_attribute_group_remove_attribute') and
+    not group.code is constant('DEFAULT_GROUP_CODE', group)
 %}
 {% set sortGranted = resource_granted('pim_enrich_attribute_sort') %}
 
-<div class="tab-pane" id="attributes">
+<div class="tab-pane tab-attribute {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
     <div id="attribute-buttons"></div>
     <div class="clearfix"></div>
     <table class="table groups">

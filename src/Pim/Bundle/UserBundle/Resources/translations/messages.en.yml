@@ -1,3 +1,13 @@
+pim_user:
+    user:
+        tab:
+            general.title:               General
+            additional.title:            Additional
+            group_and_role.title:        Groups and Roles
+            password.title:              Password
+            business_unit.title:         Business Units
+            email_synchronization.title: Email synchronization settings
+
 # user grids
 oro.user.controller:
     group.message.saved: "Group saved"

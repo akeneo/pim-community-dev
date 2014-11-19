@@ -63,14 +63,14 @@ datagrid:
             edit:
                 type:      tab-redirect
                 label:     Edit attributes of the product
-                tab:       attributes
+                tab:       pim_enrich-product-tab-attribute
                 icon:      edit
                 link:      edit_link
                 rowAction: true
             edit_categories:
                 type:  tab-redirect
                 label: Classify the product
-                tab:   categories
+                tab:   pim_enrich-product-tab-category
                 icon:  folder-close
                 link:  edit_link
             delete:

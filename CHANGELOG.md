@@ -25,6 +25,7 @@
 - Normalize the managers by introducing 4 interfaces, SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface
 - Load the grid filter choices for simple and multi select attributes asynchronously
 - Modify the display of permissions in the role permissions edition
+- Add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`

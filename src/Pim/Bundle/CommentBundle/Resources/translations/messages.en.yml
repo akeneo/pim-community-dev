@@ -24,3 +24,6 @@ comment:
     placeholder:
         new: Write a new comment...
         reply: Reply to this comment...
+
+pim_comment:
+    product.tab.comment.title: Comments

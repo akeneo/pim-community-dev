@@ -40,7 +40,6 @@
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product.title'|trans })
         }
     }) }}
-
         {% set title = 'product.title'|trans %}
 
         {% set buttons %}
@@ -63,17 +62,16 @@
         {{ elements.page_header(title, buttons, subtitle, left, elements.updated(form.vars.id)) }}
 
         <div class="layout-content">
-            {% include 'PimEnrichBundle:Product:_navbar.html.twig' %}
+            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
             <div class="row-fluid tab-content">
                 {{ elements.form_errors(form) }}
 
-                {% include 'PimEnrichBundle:Product:_tab-panes.html.twig' %}
+                {{ view_elements(form.vars.id ~ '.form_tab') }}
 
                 {{ form_row(form.id) }}
             </div>
         </div>
-
     {{ form_end(form) }}
 
     <a href="javascript:void(0);"
