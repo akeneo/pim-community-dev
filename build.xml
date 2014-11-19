@@ -345,6 +345,16 @@
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
           <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
+        <exec executable="app/console" failonerror="true">
+          <arg value="cache:warmup" />
+          <arg value="--env=behat" />
+          <arg value="--no-debug" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+        </exec>
     </target>
 
     <target name="fixtures" description="Load fixtures">
