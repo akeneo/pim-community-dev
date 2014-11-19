@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
@@ -17,9 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class BooleanFilter extends AbstractFilter implements AttributeFilterInterface, FieldFilterInterface
 {
-    /** @var QueryBuilder */
-    protected $qb;
-
     /** @var array */
     protected $supportedAttributes;
 

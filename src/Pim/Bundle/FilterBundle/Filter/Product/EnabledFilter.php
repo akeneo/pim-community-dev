@@ -25,6 +25,8 @@ class EnabledFilter extends ChoiceFilter
             return false;
         }
 
+        $data['value'] = [(bool) $data['value'][0]];
+
         $value = current($data['value']);
         $this->util->applyFilter($ds, 'enabled', '=', $value);
 

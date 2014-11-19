@@ -78,12 +78,13 @@ class MetricFilterSpec extends ObjectBehavior
         $qb->leftJoin('filtermetric_code.metric', 'filterMmetric_code')->shouldBeCalled();
         $qb->andWhere('filterMmetric_code.baseData IS NULL')->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'EMPTY', '');
+        $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('metric_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('metric_code', 'filter', 'metric'))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::numericExpected('metric_code', 'filter', 'metric'))
+            ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

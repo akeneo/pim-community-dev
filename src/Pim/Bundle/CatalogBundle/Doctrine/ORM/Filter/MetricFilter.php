@@ -38,7 +38,7 @@ class MetricFilter extends AbstractFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
-        if (!is_numeric($value) && $value !== '') {
+        if (!is_numeric($value) && null !== $value) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'metric');
         }
 
