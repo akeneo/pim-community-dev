@@ -26,6 +26,7 @@
 - Load the grid filter choices for simple and multi select attributes asynchronously
 - Modify the display of permissions in the role permissions edition
 - Add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
+- Add a check on passed values in ORM filters
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
