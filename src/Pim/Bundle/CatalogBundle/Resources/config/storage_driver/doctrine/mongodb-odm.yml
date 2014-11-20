@@ -56,6 +56,7 @@ parameters:
     pim_catalog.doctrine.query.filter.options.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionsFilter
     pim_catalog.doctrine.query.filter.metric.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter
     pim_catalog.doctrine.query.filter.price.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter
+    pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter
 
     pim_catalog.doctrine.query.sorter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
     pim_catalog.doctrine.query.sorter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter
