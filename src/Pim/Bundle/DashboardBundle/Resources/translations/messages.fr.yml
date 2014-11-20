@@ -15,3 +15,11 @@ pim_dashboard:
       title: Complétude par canaux et locales
     last_operations:
       title: Dernières opérations
+      empty: Aucune opération trouvée
+      status: Statut
+      date: Date
+      type: Type
+      details: Détails
+      job_type:
+        import: Import
+        export: Export
