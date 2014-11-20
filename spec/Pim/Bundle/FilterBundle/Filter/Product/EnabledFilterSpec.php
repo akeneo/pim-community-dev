@@ -23,8 +23,8 @@ class EnabledFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilter($datasource, 'enabled', '=', 1)->shouldBeCalled();
+        $utility->applyFilter($datasource, 'enabled', '=', true)->shouldBeCalled();
 
-        $this->apply($datasource, ['type' => null, 'value' => [0 => 1]]);
+        $this->apply($datasource, ['type' => null, 'value' => [0 => true]]);
     }
 }

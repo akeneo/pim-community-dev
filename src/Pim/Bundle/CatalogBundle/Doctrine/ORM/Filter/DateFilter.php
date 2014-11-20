@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
@@ -23,7 +24,7 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
     protected $supportedFields;
 
     /**
-     * Instanciate the base filter
+     * Instantiate the base filter
      *
      * @param array $supportedAttributes
      * @param array $supportedFields
@@ -60,7 +61,9 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
-        $joinAlias = 'filter'.$attribute->getCode();
+        $this->checkValues($attribute->getCode(), $value);
+
+        $joinAlias = 'filter' . $attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {
@@ -105,6 +108,8 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        $this->checkValues($field, $value);
+
         $field = current($this->qb->getRootAliases()).'.'.$field;
 
         switch ($operator) {
@@ -181,5 +186,58 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
         }
 
         return $data instanceof \DateTime ? $data->format('Y-m-d H:i:s') : $data;
+    }
+
+    /**
+     * Check if values are valid
+     *
+     * @param string $type
+     * @param mixed  $value
+     */
+    protected function checkValues($type, $value)
+    {
+        if (is_array($value)) {
+            if (count($value) !== 2 || (!is_string($value[0]) && !is_string($value[1]))) {
+                throw InvalidArgumentException::stringExpected($type, 'filter', 'date');
+            }
+
+            $this->checkDateFormat($type, $value[0]);
+            $this->checkDateFormat($type, $value[1]);
+        } elseif (is_string($value)) {
+            if ('' !== $value) {
+                $this->checkDateFormat($type, $value);
+            }
+        } elseif (null !== $value) {
+            throw InvalidArgumentException::expected(
+                $type,
+                'array or string',
+                'filter',
+                'date'
+            );
+        }
+    }
+
+    /**
+     * Check if the date format is valid
+     *
+     * @param string $type
+     * @param string $value
+     */
+    protected function checkDateFormat($type, $value)
+    {
+        $dateValues = explode('-', $value);
+
+        if (
+            count($dateValues) !== 3
+            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
+            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
+        ) {
+            throw InvalidArgumentException::expected(
+                $type,
+                'a string with the format yyyy-mm-dd',
+                'filter',
+                'date'
+            );
+        }
     }
 }

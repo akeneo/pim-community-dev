@@ -7,6 +7,7 @@ use \Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 
 class CompletenessFilterSpec extends ObjectBehavior
 {
@@ -116,5 +117,11 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this->supportsField('completeness')->shouldReturn(true);
         $this->supportsField('groups')->shouldReturn(false);
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_string()
+    {
+        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness'))
+            ->during('addFieldFilter', ['completeness', '=', 123]);
     }
 }

@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\Comparison;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class PriceFilterSpec extends ObjectBehavior
@@ -160,5 +161,11 @@ class PriceFilterSpec extends ObjectBehavior
         $queryBuilder->andWhere(null)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'EMPTY', ' ');
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_string(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('attributeCode');
+        $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'price'))->during('addAttributeFilter', [$attribute, '=', 123]);
     }
 }

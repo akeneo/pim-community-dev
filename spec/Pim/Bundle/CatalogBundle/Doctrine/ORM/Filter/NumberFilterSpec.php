@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class NumberFilterSpec extends ObjectBehavior
@@ -37,11 +38,11 @@ class NumberFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filternumber.attribute = 42 AND filternumber.varchar = 'My Sku'";
+        $condition = "filternumber.attribute = 42 AND filternumber.varchar = 12";
 
         $queryBuilder->innerJoin('p.values', 'filternumber', 'WITH', $condition)->shouldBeCalled();
 
-        $this->addAttributeFilter($number, '=', 'My Sku');
+        $this->addAttributeFilter($number, '=', 12);
     }
 
     function it_adds_empty_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $number)
@@ -59,6 +60,12 @@ class NumberFilterSpec extends ObjectBehavior
         $queryBuilder->leftJoin('p.values', 'filternumber', 'WITH', $condition)->shouldBeCalled();
         $queryBuilder->andWhere('filternumber.varchar IS NULL')->shouldBeCalled();
 
-        $this->addAttributeFilter($number, 'EMPTY', 'My Sku');
+        $this->addAttributeFilter($number, 'EMPTY', 12);
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('number_code');
+        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number'))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }

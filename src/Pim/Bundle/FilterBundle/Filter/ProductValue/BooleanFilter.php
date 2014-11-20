@@ -40,13 +40,15 @@ class BooleanFilter extends OroBooleanFilter
      */
     public function parseData($data)
     {
-        $allowedValues = array(BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO);
+        $allowedValues = [BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO];
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !in_array($data['value'], $allowedValues, true)
         ) {
             return false;
         }
+
+        $data['value'] = (bool) $data['value'];
 
         return $data;
     }
