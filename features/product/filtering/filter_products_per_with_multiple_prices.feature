@@ -37,9 +37,9 @@ Feature: Filter products
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products page
     And I show the filter "Transport"
-    And I filter by "Transport" with value "15 EUR"
+    And I filter by "Transport" with value "= 15 EUR"
     And I show the filter "Margin"
-    And I filter by "Margin" with value "7 EUR"
+    And I filter by "Margin" with value "= 7 EUR"
     Then the grid should contain 3 elements
     And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
     And I hide the filter "Transport"
@@ -48,9 +48,9 @@ Feature: Filter products
   Scenario: Successfully filter product without commons attributes
     Given I am on the products page
     And I show the filter "Transport"
-    And I filter by "Transport" with value "30 EUR"
+    And I filter by "Transport" with value "= 30 EUR"
     And I show the filter "Margin"
-    And I filter by "Margin" with value "7 EUR"
+    And I filter by "Margin" with value "= 7 EUR"
     Then the grid should contain 0 elements
     And I hide the filter "Transport"
     And I hide the filter "Margin"
@@ -58,9 +58,9 @@ Feature: Filter products
   Scenario: Successfully filter only one product
     Given I am on the products page
     And I show the filter "Transport"
-    And I filter by "Transport" with value "2 EUR"
+    And I filter by "Transport" with value "= 2 EUR"
     And I show the filter "Margin"
-    And I filter by "Margin" with value "7 EUR"
+    And I filter by "Margin" with value "= 7 EUR"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"
     And I hide the filter "Transport"
