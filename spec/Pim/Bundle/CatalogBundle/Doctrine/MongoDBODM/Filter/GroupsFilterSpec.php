@@ -38,7 +38,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_content_of_array_is_not_integer_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::integerExpected('groups', 'filter', 'groups'))
+        $this->shouldThrow(InvalidArgumentException::numericExpected('groups', 'filter', 'groups'))
             ->during('addFieldFilter', ['groups', 'IN', [1, 2, 'WRONG']]);
     }
 }
