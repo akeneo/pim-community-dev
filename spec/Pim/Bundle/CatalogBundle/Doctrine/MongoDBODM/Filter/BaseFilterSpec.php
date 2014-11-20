@@ -35,6 +35,7 @@ class BaseFilterSpec extends ObjectBehavior
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
+        $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $queryBuilder->field('normalizedData.sku')->willReturn($queryBuilder);
         $queryBuilder->equals('my-sku')->willReturn($queryBuilder);
 

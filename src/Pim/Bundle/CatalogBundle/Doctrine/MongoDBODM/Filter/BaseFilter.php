@@ -40,6 +40,9 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+
+        $value = 'pim_catalog_boolean' === $attribute->getAttributeType() ? (bool) $value : $value;
+
         $this->addFieldFilter($field, $operator, $value);
 
         return $this;
