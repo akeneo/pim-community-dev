@@ -18,10 +18,12 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Edit common attributes of given products
@@ -35,34 +37,34 @@ class EditCommonAttributes extends BaseEditCommonAttributes
 
     /**
      * @param ProductManager           $productManager
+     * @param ProductUpdaterInterface  $productUpdater,
      * @param UserContext              $userContext
      * @param CurrencyManager          $currencyManager
      * @param CatalogContext           $catalogContext
-     * @param ProductBuilder           $productBuilder
      * @param ProductMassActionManager $massActionManager
-     * @param MetricFactory            $metricFactory
+     * @param NormalizerInterface      $normalizer
      * @param array                    $classes
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
         ProductManager $productManager,
+        ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
         CurrencyManager $currencyManager,
         CatalogContext $catalogContext,
-        ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
-        MetricFactory $metricFactory,
+        NormalizerInterface $normalizer,
         array $classes,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
             $productManager,
+            $productUpdater,
             $userContext,
             $currencyManager,
             $catalogContext,
-            $productBuilder,
             $massActionManager,
-            $metricFactory,
+            $normalizer,
             $classes
         );
 
