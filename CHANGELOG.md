@@ -104,6 +104,11 @@
 # 1.2.x
 
 ## Bug fixes
+- PIM-3406: Fix boolean filter on Mongo implementation
+
+# 1.2.12 (2014-11-13)
+
+## Bug fixes
 - PIM-3298: Fix issue with locale specific property of an attribute when edit and mass edit
 - PIM-3229: Fix values for simple and multi select attributes with missing translations not being displayed in the grid
 - PIM-3309: Fix check on product value uniqueness
