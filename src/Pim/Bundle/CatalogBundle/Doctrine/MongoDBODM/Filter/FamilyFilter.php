@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
@@ -45,6 +46,16 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_array($value)) {
+            throw InvalidArgumentException::arrayExpected($field, 'filter', 'family');
+        }
+
+        foreach ($value as $family) {
+            if ('empty' !== $family && !is_integer($family)) {
+                throw InvalidArgumentException::integerExpected($field, 'filter', 'family');
+            }
+        }
+
         $value = is_array($value) ? $value : [$value];
 
         if ($operator === Operators::NOT_IN_LIST) {
