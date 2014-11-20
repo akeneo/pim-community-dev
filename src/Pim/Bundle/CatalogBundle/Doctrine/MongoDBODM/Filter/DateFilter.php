@@ -136,6 +136,12 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
      */
     protected function checkValues($type, $value)
     {
+        //todo: dirty fix to merge this PR have ot be fixed in next PR
+        //see product manager unique value
+        if ($value instanceof \DateTime) {
+            $value = $value->format('Y-m-d');
+        }
+
         if (is_array($value)) {
             if (count($value) !== 2 || (!is_string($value[0]) && !is_string($value[1]))) {
                 throw InvalidArgumentException::stringExpected($type, 'filter', 'date');
