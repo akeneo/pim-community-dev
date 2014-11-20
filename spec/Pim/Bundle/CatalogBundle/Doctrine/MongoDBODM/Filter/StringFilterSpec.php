@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -114,4 +115,11 @@ class StringFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter('field', 'DOES NOT CONTAIN', 'My Sku');
     }
+
+    function it_throws_an_exception_if_value_is_not_a_string(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('attributeCode');
+        $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string'))
+            ->during('addAttributeFilter', [$attribute, '=', 123]);
+     }
 }

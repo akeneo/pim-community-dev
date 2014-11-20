@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
@@ -46,6 +47,8 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
+        $this->checkValue($attribute, $operator, $value);
+
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $value = is_array($value) ? $value : [$value];
@@ -64,5 +67,27 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $operator
+     * @param mixed              $value
+     */
+    protected function checkValue(AttributeInterface $attribute, $operator, $value)
+    {
+        if (!is_array($value) && Operators::IS_EMPTY !== $operator) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'options');
+        }
+
+        if (Operators::IS_EMPTY !== $operator) {
+            foreach ($value as $option) {
+                if (!is_numeric($option)) {
+                    throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'options');
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -73,5 +74,19 @@ class OptionFilterSpec extends ObjectBehavior
         $qb->addOr($expr)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null);
+    }
+
+    function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('option_code');
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('option_code', 'filter', 'option'))
+            ->during('addAttributeFilter', [$attribute, 'IN', 'WRONG']);
+    }
+
+    function it_throws_an_exception_if_the_content_of_value_are_not_numeric(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('option_code');
+        $this->shouldThrow(InvalidArgumentException::numericExpected('option_code', 'filter', 'option'))
+            ->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric']]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
@@ -44,6 +45,16 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_array($value)) {
+            throw InvalidArgumentException::arrayExpected($field, 'filter', 'groups');
+        }
+
+        foreach ($value as $group) {
+            if ('empty' !== $group && !is_numeric($group)) {
+                throw InvalidArgumentException::numericExpected($field, 'filter', 'groups');
+            }
+        }
+
         $value = is_array($value) ? $value : [$value];
         $value = array_map('intval', $value);
         $field = 'groupIds';

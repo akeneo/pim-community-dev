@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -81,7 +82,7 @@ class DateFilterSpec extends ObjectBehavior
         $queryBuilder->lte(strtotime('2014-03-15'))->willReturn($queryBuilder);
         $queryBuilder->gte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
 
-        $this->addAttributeFilter($date, ['from' => '<', 'to' => '>'], ['from' => '2014-03-15', 'to' => '2014-03-20']);
+        $this->addAttributeFilter($date, ['from' => '<', 'to' => '>'], ['2014-03-15', '2014-03-20']);
     }
 
     function it_adds_a_between_filter_on_a_field_in_the_query($queryBuilder)
@@ -90,5 +91,32 @@ class DateFilterSpec extends ObjectBehavior
         $queryBuilder->lte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
 
         $this->addFieldFilter('created', 'BETWEEN', ['2014-03-15', '2014-03-20']);
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_string_or_an_array()
+    {
+        $this->shouldThrow(
+            InvalidArgumentException::expected('release_date', 'array or string', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', 123]);
+    }
+
+    function it_throws_an_error_if_data_is_not_a_valid_date_format() {
+        $this->shouldThrow(
+            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', ['not a valid date format', 'WRONG']]);
+    }
+
+    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings()
+    {
+        $this->shouldThrow(
+            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', [123, 123]]);
+    }
+
+    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_two_values()
+    {
+        $this->shouldThrow(
+            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', [123, 123, 'three']]);
     }
 }

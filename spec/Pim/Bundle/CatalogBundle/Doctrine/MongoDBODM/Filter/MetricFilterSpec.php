@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -92,5 +93,12 @@ class MetricFilterSpec extends ObjectBehavior
         $queryBuilder->lte(22.5)->willReturn($queryBuilder);
 
         $this->addAttributeFilter($metric, '<=', '22.5', 'en_US', 'mobile');
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('metric_code');
+        $this->shouldThrow(InvalidArgumentException::numericExpected('metric_code', 'filter', 'metric'))
+            ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }
