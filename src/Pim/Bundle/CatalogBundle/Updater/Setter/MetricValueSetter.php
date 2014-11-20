@@ -49,8 +49,8 @@ class MetricValueSetter extends AbstractValueSetter
     /**
      * {@inheritdoc}
      *
-     * setValue( '12 KILOGRAM'
-     *           ['data' => 12, 'unit' => 'kg']
+     * setValue( [$products], $weightAttribute,
+     *           ['data' => 12, 'unit' => 'KILOGRAM']
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
@@ -62,12 +62,8 @@ class MetricValueSetter extends AbstractValueSetter
         $unit = $data['unit'];
         $data = $data['data'];
 
-        $fullUnitName = $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily());
-        $fullUnitName = array_flip($fullUnitName);
-        $fullUnitName = $fullUnitName[$unit];
-
         foreach ($products as $product) {
-            $this->setData($attribute, $product, $data, $locale, $scope, $fullUnitName);
+            $this->setData($attribute, $product, $data, $unit, $locale, $scope);
         }
     }
 
@@ -99,7 +95,10 @@ class MetricValueSetter extends AbstractValueSetter
             throw InvalidArgumentException::arrayStringKeyExpected($attribute->getCode(), 'unit', 'setter', 'metric');
         }
 
-        if (!$this->measureManager->unitExistsInFamily($data['unit'], $attribute->getMetricFamily())) {
+        if (!array_key_exists(
+            $data['unit'],
+            $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily()))
+        ) {
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'unit',
@@ -116,17 +115,17 @@ class MetricValueSetter extends AbstractValueSetter
      * @param AttributeInterface $attribute
      * @param ProductInterface   $product
      * @param mixed              $data
+     * @param string             $unit
      * @param string             $locale
      * @param string             $scope
-     * @param string             $fullUnitName
      */
     protected function setData(
         AttributeInterface $attribute,
         ProductInterface $product,
         $data,
+        $unit,
         $locale,
-        $scope,
-        $fullUnitName
+        $scope
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
@@ -138,7 +137,7 @@ class MetricValueSetter extends AbstractValueSetter
         }
 
         $value->setMetric($metric);
-        $metric->setUnit($fullUnitName);
+        $metric->setUnit($unit);
         $metric->setData($data);
     }
 }

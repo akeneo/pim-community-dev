@@ -921,7 +921,18 @@ class WebUser extends RawMinkContext
         }
 
         $this->getCurrentPage()->attachFileToField($field, $file);
-        $this->getMainContext()->executeScript('$("[disabled]").removeAttr("disabled");');
+
+        if (null !== $field = $this->getCurrentPage()->findField($field)) {
+            if ($field->getAttribute('type') !== 'file') {
+                $field = $field->getParent()->find('css', 'input[type="file"]');
+            }
+            $id = $field->getAttribute('id');
+            $script = "$('{$id}').closest('div.control-group').find('[disabled]').removeAttr('disabled');";
+        } else {
+            $script = '$("[disabled]").removeAttr("disabled");';
+        }
+
+        $this->getMainContext()->executeScript($script);
     }
 
     /**

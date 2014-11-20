@@ -61,7 +61,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['unit' => 'kg'];
+        $data = ['unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric')
@@ -89,7 +89,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['data' => 'text', 'unit' => 'kg'];
+        $data = ['data' => 'text', 'unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
             InvalidArgumentException::arrayNumericKeyExpected('attributeCode', 'data', 'setter', 'metric')
@@ -121,7 +121,10 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $data = ['data' => 42, 'unit' => 'incorrect unit'];
 
-        $measureManager->unitExistsInFamily($data['unit'], 'Weight')->shouldBeCalled()->willReturn(false);
+        $measureManager->getUnitSymbolsForFamily('Weight')
+            ->shouldBeCalled()
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
+        ;
 
         $this->shouldThrow(
             InvalidArgumentException::arrayInvalidKey(
@@ -147,15 +150,17 @@ class MetricValueSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = ['data' => 107, 'unit' => 'kg'];
+        $data = ['data' => 107, 'unit' => 'KILOGRAM'];
 
         $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
         $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
 
-        $measureManager->unitExistsInFamily($data['unit'], 'Weight')->shouldBeCalled()->willReturn(true);
-        $measureManager->getUnitSymbolsForFamily('Weight')->shouldBeCalled()->willReturn(['KILOGRAM' => 'kg']);
+        $measureManager->getUnitSymbolsForFamily('Weight')
+            ->shouldBeCalled()
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
+        ;
 
         $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();
