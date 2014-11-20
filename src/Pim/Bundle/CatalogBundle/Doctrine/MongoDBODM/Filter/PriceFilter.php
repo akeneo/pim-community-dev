@@ -48,7 +48,7 @@ class PriceFilter extends AbstractFilter implements AttributeFilterInterface
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'string');
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'price');
         }
 
         list($data, $currency) = explode(' ', $value);

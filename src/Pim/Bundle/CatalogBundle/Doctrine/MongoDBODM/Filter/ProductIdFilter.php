@@ -45,8 +45,8 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        if (!is_numeric($value)) {
-            throw InvalidArgumentException::numericExpected($field, 'filter', 'numeric');
+        if (!is_numeric($value) && !is_array($value)) {
+            throw InvalidArgumentException::expected($field, 'array or numeric value', 'filter', 'productId');
         }
 
         $field = '_id';
