@@ -64,13 +64,13 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
 
                 $expr = new Expr();
                 $expr = $expr->field($field)->exists(false);
-                $this->qb->addOr($expr);
+                $this->qb->addAnd($expr);
             }
 
             if (count($value) > 0) {
                 $expr = new Expr();
                 $expr->field($field)->in($value);
-                $this->qb->addOr($expr);
+                $this->qb->addAnd($expr);
             }
         }
 
