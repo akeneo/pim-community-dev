@@ -122,7 +122,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
             new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
             new PimEnterprise\Bundle\RuleEngineBundle\PimEnterpriseRuleEngineBundle(),
-            new PimEnterprise\Bundle\ProductRuleBundle\PimEnterpriseProductRuleBundle(),
+            new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
         ];
     }
 

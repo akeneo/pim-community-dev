@@ -9,5 +9,5 @@ connector:
                     class: PimEnterprise\Bundle\RuleEngineBundle\Batch\RuleStep
                     title: Rule runner
                     services:
-                        reader: pimee_product_rule.reader.product
-                        runner: pimee_product_rule.runner.product
+                        reader: pimee_catalog_rule.reader.product
+                        runner: pimee_catalog_rule.runner.product

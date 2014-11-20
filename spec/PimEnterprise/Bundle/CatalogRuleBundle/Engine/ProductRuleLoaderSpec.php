@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductRuleBundle\Engine;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -20,7 +20,7 @@ class ProductRuleLoaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleLoader');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader');
     }
 
     function it_is_a_rule_loader()

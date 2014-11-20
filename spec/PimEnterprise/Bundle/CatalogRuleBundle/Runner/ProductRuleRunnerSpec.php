@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductRuleBundle\Runner;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
@@ -20,7 +20,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductRuleBundle\Runner\ProductRuleRunner');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Runner\ProductRuleRunner');
     }
 
     function it_is_a_runner()
