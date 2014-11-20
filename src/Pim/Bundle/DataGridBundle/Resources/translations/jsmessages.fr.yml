@@ -29,7 +29,6 @@ Please, select item to perform action.: "Veuillez sélectionner des éléments a
 View per page: Par page
 oro.datagrid.entityHint: Entité
 oro.datagrid.noentities: Aucun enregistrement trouvé
-oro.datagrid.noresults: 'Aucun {{ entityHint }} ne correspond à votre recherche. Essayez de modifier vos critères de recherche...'
 oro.datagrid.nocolumns: Aucune colonne configurée pour cette grille
 oro.datagrid.pagination.label: Page
 oro.datagrid.pagination.totalPages: 'de {{ totalPages }}'
