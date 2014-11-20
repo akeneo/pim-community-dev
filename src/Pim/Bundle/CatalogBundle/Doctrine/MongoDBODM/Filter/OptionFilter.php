@@ -24,21 +24,36 @@ class OptionFilter extends EntityFilter
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.id', $field);
 
-        if (in_array('empty', $value)) {
+        // Case filter with value(s) and empty
+        if (in_array('empty', $value) && count($value) > 1) {
             unset($value[array_search('empty', $value)]);
 
-            $expr = new Expr();
-            $expr = $expr->field($field)->exists(false);
-            $this->qb->addAnd($expr);
-        }
-
-        if (count($value) > 0) {
+            $exprValues = new Expr();
             $value = array_map('intval', $value);
-            $expr = new Expr();
-            $expr->field($field)->in($value);
+            $exprValues->field($field)->in($value);
 
-            $this->qb->addAnd($expr);
+            $exprEmpty = new Expr();
+            $exprEmpty = $exprEmpty->field($field)->exists(false);
 
+            $exprAnd = new Expr();
+            $exprAnd->addOr($exprValues);
+            $exprAnd->addOr($exprEmpty);
+
+            $this->qb->addAnd($exprAnd);
+        } else {
+            if (in_array('empty', $value)) {
+                unset($value[array_search('empty', $value)]);
+
+                $expr = new Expr();
+                $expr = $expr->field($field)->exists(false);
+                $this->qb->addAnd($expr);
+            } elseif (count($value) > 0) {
+                $value = array_map('intval', $value);
+                $expr = new Expr();
+                $expr->field($field)->in($value);
+
+                $this->qb->addAnd($expr);
+            }
         }
 
         return $this;

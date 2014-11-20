@@ -45,21 +45,21 @@ class EntityFilterSpec extends ObjectBehavior
 
     function it_adds_a_in_filter_on_a_field_in_the_query($qb)
     {
-        $qb->addOr(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
+        $qb->addAnd(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
 
         $this->addFieldFilter('family', 'IN', [1, 2]);
     }
 
     function it_adds_an_empty_filter_on_a_field_in_the_query($qb)
     {
-        $qb->addOr(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
+        $qb->addAnd(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
 
         $this->addFieldFilter('family', 'IN', ['empty']);
     }
 
     function it_adds_empty_and_in_filters_on_a_field_in_the_query($qb)
     {
-        $qb->addOr(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
+        $qb->addAnd(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
 
         $this->addFieldFilter('family', 'IN', ['empty', 1, 2]);
     }
