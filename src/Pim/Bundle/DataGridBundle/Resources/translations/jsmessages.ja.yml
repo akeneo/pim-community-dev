@@ -29,7 +29,6 @@ Please, select item to perform action.: アクションを実行する項目を�
 View per page: 1ページあたりの表示
 oro.datagrid.entityHint: エンティティ
 oro.datagrid.noentities: レコードが見つかりません
-oro.datagrid.noresults: '検索条件に一致する {{ entityHint }} が見つかりませんでした。検索条件を変更してみてください.'
 oro.datagrid.nocolumns: このグリッドを構成する列がありません。
 oro.datagrid.pagination.label: ページ
 oro.datagrid.pagination.totalPages: '/ {{ totalPages }}'
