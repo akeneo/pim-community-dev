@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductRuleBundle\Runner;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;

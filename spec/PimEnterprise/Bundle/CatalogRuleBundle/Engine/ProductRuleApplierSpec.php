@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductRuleBundle\Engine;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleApplier;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
@@ -21,7 +21,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleApplier');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier');
     }
 
     function it_is_a_rule_applier()

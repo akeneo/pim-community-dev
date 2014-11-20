@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductRuleBundle\Engine;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
@@ -31,7 +31,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductRuleBundle\Engine\ProductRuleSelector');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector');
     }
 
     function it_should_be_a_selector()

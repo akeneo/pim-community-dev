@@ -1,0 +1,25 @@
+parameters:
+    pimee_catalog_rule.applier.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier
+    pimee_catalog_rule.loader.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader
+    pimee_catalog_rule.selector.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
+
+services:
+    pimee_catalog_rule.loader.product:
+        class: %pimee_catalog_rule.loader.product.class%
+        arguments:
+            - @event_dispatcher
+            - %pimee_rule_engine.entity.loaded_rule.class%
+
+    pimee_catalog_rule.selector.product:
+        class: %pimee_catalog_rule.selector.product.class%
+        arguments:
+            - @pim_catalog.doctrine.query.product_query_factory
+            - @pim_catalog.repository.product
+            - @event_dispatcher
+            - %pimee_rule_engine.entity.rule_subject_set.class%
+
+    pimee_catalog_rule.applier.product:
+        class: %pimee_catalog_rule.applier.product.class%
+        arguments:
+            - @pim_catalog.updater.product
+            - @event_dispatcher

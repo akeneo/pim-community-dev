@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductRuleBundle;
+namespace PimEnterprise\Bundle\CatalogRuleBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class PimEnterpriseProductRuleBundle extends Bundle
+class PimEnterpriseCatalogRuleBundle extends Bundle
 {
 
 }

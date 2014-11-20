@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductRuleBundle\Engine;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;

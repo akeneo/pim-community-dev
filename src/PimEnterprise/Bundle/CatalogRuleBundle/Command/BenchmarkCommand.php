@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductRuleBundle\Command;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Command;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

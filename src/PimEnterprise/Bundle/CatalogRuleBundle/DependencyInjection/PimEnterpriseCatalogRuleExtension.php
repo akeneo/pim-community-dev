@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductRuleBundle\DependencyInjection;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class PimEnterpriseProductRuleExtension extends Extension
+class PimEnterpriseCatalogRuleExtension extends Extension
 {
     /**
      * {@inheritdoc}
