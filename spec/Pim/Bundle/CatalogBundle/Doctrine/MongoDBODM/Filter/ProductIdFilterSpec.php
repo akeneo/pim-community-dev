@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -26,5 +27,11 @@ class ProductIdFilterSpec extends ObjectBehavior
         $queryBuilder->in([1, 2])->willReturn($queryBuilder);
 
         $this->addFieldFilter('id', 'IN', [1, 2]);
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_numeric_or_an_array()
+    {
+        $this->shouldThrow(InvalidArgumentException::expected('id', 'array or numeric value', 'filter', 'productId'))
+            ->during('addFieldFilter', ['id', '=', 'WRONG']);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
@@ -61,6 +61,10 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_bool($value)) {
+            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
+        }
+
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $this->addFieldFilter($field, $operator, $value, $locale, $scope);
 
@@ -72,6 +76,10 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_bool($value)) {
+            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean');
+        }
+
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         $this->qb->field($field)->equals($value);

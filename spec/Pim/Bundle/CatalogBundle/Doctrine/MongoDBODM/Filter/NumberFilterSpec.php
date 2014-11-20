@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -40,4 +41,11 @@ class NumberFilterSpec extends ObjectBehavior
 
         $this->addAttributeFilter($metric, '=', '22.5', 'en_US', 'mobile');
     }
+
+    function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
+    {
+        $attribute->getCode()->willReturn('number_code');
+        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number'))
+            ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
+     }
 }

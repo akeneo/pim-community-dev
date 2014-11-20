@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -90,5 +91,15 @@ class DateFilterSpec extends ObjectBehavior
         $queryBuilder->lte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
 
         $this->addFieldFilter('created', 'BETWEEN', ['2014-03-15', '2014-03-20']);
+    }
+
+    function it_throws_an_exception_if_value_is_not_an_array()
+    {
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'entity'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+    }
+
+    function it_throws_an_exception_if_values_in_array_are_not_integers()
+    {
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'entity'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 }

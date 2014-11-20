@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
@@ -46,6 +47,10 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
      */
     public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_string($value)) {
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'string');
+        }
+
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $this->addFieldFilter($field, $operator, $value, $locale, $scope);
 
@@ -57,6 +62,10 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        if (!is_string($value)) {
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
+        }
+
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         if (Operators::IS_EMPTY === $operator) {
@@ -74,6 +83,7 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
 
     /**
      * Prepare value of the filter
+     *
      * @param string|array $operator
      * @param string|array $value
      *

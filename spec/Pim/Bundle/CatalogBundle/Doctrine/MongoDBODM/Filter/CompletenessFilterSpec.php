@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -55,5 +56,39 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this
             ->shouldThrow('\InvalidArgumentException')
             ->duringAddFieldFilter('completenesses', '=', 100, 'fr_FR', null);
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_string()
+    {
+        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness'))
+            ->during('addFieldFilter', ['completeness', '=', 123]);
+    }
+
+    function it_throws_an_exception_if_value_is_not_a_string_or_an_array()
+    {
+        $this->shouldThrow(
+            InvalidArgumentException::expected('release_date', 'array or string', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', 123]);
+    }
+
+    function it_throws_an_error_if_data_is_not_a_valid_date_format()
+    {
+        $this->shouldThrow(
+            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', ['not a valid date format', 'WRONG']]);
+    }
+
+    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings()
+    {
+        $this->shouldThrow(
+            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', [123, 123]]);
+    }
+
+    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_two_values()
+    {
+        $this->shouldThrow(
+            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+        )->during('addFieldFilter', ['release_date', '>', [123, 123, 'three']]);
     }
 }
