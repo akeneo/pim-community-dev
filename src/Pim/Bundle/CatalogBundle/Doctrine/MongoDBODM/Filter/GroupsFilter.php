@@ -50,8 +50,8 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         foreach ($value as $group) {
-            if ('empty' !== $group && !is_integer($group)) {
-                throw InvalidArgumentException::integerExpected($field, 'filter', 'groups');
+            if ('empty' !== $group && !is_numeric($group)) {
+                throw InvalidArgumentException::numericExpected($field, 'filter', 'groups');
             }
         }
 

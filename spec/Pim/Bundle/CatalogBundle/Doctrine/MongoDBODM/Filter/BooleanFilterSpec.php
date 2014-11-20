@@ -68,6 +68,6 @@ class BooleanFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_boolean()
     {
         $this->shouldThrow(InvalidArgumentException::booleanExpected('enabled', 'filter', 'boolean'))
-            ->during('addFieldFilter', ['enabled', '=', 'fuu']);
+            ->during('addFieldFilter', ['enabled', '=', 'not a boolean']);
     }
 }

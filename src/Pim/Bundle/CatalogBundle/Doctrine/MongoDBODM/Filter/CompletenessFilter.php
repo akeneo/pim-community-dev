@@ -49,7 +49,6 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
             throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness');
         }
 
-        //todo: move this in dedicated class
         if (null === $locale || null === $scope) {
             throw new \InvalidArgumentException(
                 'Cannot prepare condition on completenesses without locale and scope'
