@@ -60,14 +60,14 @@ class OptionsFilter extends EntityFilter
 
                 $expr = new Expr();
                 $expr = $expr->field($field)->exists(false);
-                $this->qb->addOr($expr);
+                $this->qb->addAnd($expr);
             }
 
             if (count($value) > 0) {
                 $expr = new Expr();
                 $value = array_map('intval', $value);
                 $expr->field($field .'.id')->in($value);
-                $this->qb->addOr($expr);
+                $this->qb->addAnd($expr);
             }
         }
 
