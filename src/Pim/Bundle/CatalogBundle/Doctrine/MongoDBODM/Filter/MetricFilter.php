@@ -57,6 +57,20 @@ class MetricFilter extends AbstractFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $fieldData = sprintf('%s.baseData', $field);
 
+        $this->prepareOperator($operator, $fieldData, $data);
+
+        return $this;
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param string $operator
+     * @param string $fieldData
+     * @param float  $data
+     */
+    protected function prepareOperator($operator, $fieldData, $data)
+    {
         switch ($operator) {
             case Operators::LOWER_THAN:
                 $this->qb->field($fieldData)->lt($data);
@@ -76,7 +90,5 @@ class MetricFilter extends AbstractFilter implements AttributeFilterInterface
             default:
                 $this->qb->field($fieldData)->equals($data);
         }
-
-        return $this;
     }
 }

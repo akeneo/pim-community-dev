@@ -85,8 +85,13 @@ class MediaValueSetter extends AbstractValueSetter
      * @param string             $locale
      * @param string             $scope
      */
-    protected function setMedia(AttributeInterface $attribute, ProductInterface $product, UploadedFile $file, $locale, $scope)
-    {
+    protected function setMedia(
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        UploadedFile $file,
+        $locale,
+        $scope
+    ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);

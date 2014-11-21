@@ -46,15 +46,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        if (!is_array($value)) {
-            throw InvalidArgumentException::arrayExpected($field, 'filter', 'family');
-        }
-
-        foreach ($value as $family) {
-            if ('empty' !== $family && !is_integer($family)) {
-                throw InvalidArgumentException::integerExpected($field, 'filter', 'family');
-            }
-        }
+        $this->checkValue($field, $value);
 
         $value = is_array($value) ? $value : [$value];
 
@@ -78,5 +70,24 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param string $field
+     * @param mixed  $value
+     */
+    protected function checkValue($field, $value)
+    {
+        if (!is_array($value)) {
+            throw InvalidArgumentException::arrayExpected($field, 'filter', 'family');
+        }
+
+        foreach ($value as $family) {
+            if ('empty' !== $family && !is_integer($family)) {
+                throw InvalidArgumentException::integerExpected($field, 'filter', 'family');
+            }
+        }
     }
 }

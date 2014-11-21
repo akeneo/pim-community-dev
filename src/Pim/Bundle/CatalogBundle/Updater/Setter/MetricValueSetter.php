@@ -97,8 +97,8 @@ class MetricValueSetter extends AbstractValueSetter
 
         if (!array_key_exists(
             $data['unit'],
-            $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily()))
-        ) {
+            $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())
+        )) {
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'unit',
