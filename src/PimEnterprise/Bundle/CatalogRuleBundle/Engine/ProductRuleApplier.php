@@ -38,6 +38,12 @@ class ProductRuleApplier implements ApplierInterface
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
 
+    /** @var OptionsResolver */
+    protected $setActionOptionsResolver;
+
+    /** @var OptionsResolver */
+    protected $copyActionOptionsResolver;
+
     /**
      * @param ProductUpdaterInterface  $productUpdater
      * @param EventDispatcherInterface $eventDispatcher
@@ -46,6 +52,12 @@ class ProductRuleApplier implements ApplierInterface
     {
         $this->productUpdater  = $productUpdater;
         $this->eventDispatcher = $eventDispatcher;
+
+        $this->setActionOptionsResolver = new OptionsResolver();
+        $this->configureSetValueAction($this->setActionOptionsResolver);
+
+        $this->copyActionOptionsResolver = new OptionsResolver();
+        $this->configureCopyValueAction($this->copyActionOptionsResolver);
     }
 
     /**
@@ -57,38 +69,18 @@ class ProductRuleApplier implements ApplierInterface
 
         $actions = $rule->getActions();
         foreach ($actions as $action) {
+            //TODO: remove this check if we have a real Action object
             if (isset($action['type'])) {
-                //TODO: clean all this by doing smaller methods
                 //TODO: should we dispatch an event APPLY_CANCELED when an error occurs ?
                 switch ($action['type']) {
                     case static::SET_ACTION:
-                        $resolver = new OptionsResolver();
-                        $this->configureSetValueAction($resolver);
-                        $action = $resolver->resolve($action);
-
-                        $this->productUpdater->setValue(
-                            $subjectSet->getSubjects(),
-                            $action['field'],
-                            $action['value'],
-                            $action['locale'],
-                            $action['scope']
-                        );
+                        $this->applySetAction($subjectSet, $action);
                         break;
+
                     case static::COPY_ACTION:
-                        $resolver = new OptionsResolver();
-                        $this->configureCopyValueAction($resolver);
-                        $action = $resolver->resolve($action);
-
-                        $this->productUpdater->copyValue(
-                            $subjectSet->getSubjects(),
-                            $action['from_field'],
-                            $action['to_field'],
-                            $action['from_locale'],
-                            $action['to_locale'],
-                            $action['from_scope'],
-                            $action['to_scope']
-                        );
+                        $this->applyCopyAction($subjectSet, $action);
                         break;
+
                     default:
                         throw new \LogicException(
                             sprintf('The action "%s" is not supported yet.', $action['type'])
@@ -107,6 +99,54 @@ class ProductRuleApplier implements ApplierInterface
     public function supports(LoadedRuleInterface $rule)
     {
         return 'product' === $rule->getType();
+    }
+
+    /**
+     * Apply a copy action on a subhect set.
+     *
+     * @param RuleSubjectSetInterface $subjectSet
+     * @param                         $action
+     *
+     * @return ProductRuleApplier
+     */
+    protected function applyCopyAction(RuleSubjectSetInterface $subjectSet, $action)
+    {
+        $action = $this->copyActionOptionsResolver->resolve($action);
+
+        $this->productUpdater->copyValue(
+            $subjectSet->getSubjects(),
+            $action['from_field'],
+            $action['to_field'],
+            $action['from_locale'],
+            $action['to_locale'],
+            $action['from_scope'],
+            $action['to_scope']
+        );
+
+        return $this;
+    }
+
+    /**
+     * Applies a set action on a subject set.
+     *
+     * @param RuleSubjectSetInterface $subjectSet
+     * @param                         $action
+     *
+     * @return ProductRuleApplier
+     */
+    protected function applySetAction(RuleSubjectSetInterface $subjectSet, $action)
+    {
+        $action = $this->setActionOptionsResolver->resolve($action);
+
+        $this->productUpdater->setValue(
+            $subjectSet->getSubjects(),
+            $action['field'],
+            $action['value'],
+            $action['locale'],
+            $action['scope']
+        );
+
+        return $this;
     }
 
     /**
