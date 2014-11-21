@@ -59,6 +59,20 @@ class PriceFilter extends AbstractFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', $field, $currency);
         $fieldData = sprintf('%s.data', $field);
 
+        $this->applyFilter($operator, $fieldData, $data);
+
+        return $this;
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param string $operator
+     * @param string $fieldData
+     * @param float  $data
+     */
+    protected function applyFilter($operator, $fieldData, $data)
+    {
         switch ($operator) {
             case Operators::LOWER_THAN:
                 $this->qb->field($fieldData)->lt($data);
@@ -78,7 +92,5 @@ class PriceFilter extends AbstractFilter implements AttributeFilterInterface
             default:
                 $this->qb->field($fieldData)->equals($data);
         }
-
-        return $this;
     }
 }

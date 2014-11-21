@@ -79,32 +79,7 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        switch ($operator) {
-            case Operators::BETWEEN:
-                $this->qb->field($field)->gte($this->getTimestamp($value[0]));
-                $this->qb->field($field)->lte($this->getTimestamp($value[1], true));
-                break;
-            case Operators::NOT_BETWEEN:
-                $this->qb->addAnd(
-                    $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value[0])))
-                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value[1], true)))
-                );
-                break;
-            case Operators::GREATER_THAN:
-                $this->qb->field($field)->gt($this->getTimestamp($value, true));
-                break;
-            case Operators::LOWER_THAN:
-                $this->qb->field($field)->lt($this->getTimestamp($value));
-                break;
-            case Operators::EQUALS:
-                $this->qb->field($field)->gte($this->getTimestamp($value));
-                $this->qb->field($field)->lte($this->getTimestamp($value, true));
-                break;
-            case Operators::IS_EMPTY:
-                $this->qb->field($field)->exists(false);
-                break;
-        }
+        $this->applyFilter($value, $field, $operator);
 
         return $this;
     }
@@ -184,6 +159,43 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
                 'filter',
                 'date'
             );
+        }
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param mixed  $value
+     * @param string $field
+     * @param string $operator
+     */
+    protected function applyFilter($value, $field, $operator)
+    {
+        switch ($operator) {
+            case Operators::BETWEEN:
+                $this->qb->field($field)->gte($this->getTimestamp($value[0]));
+                $this->qb->field($field)->lte($this->getTimestamp($value[1], true));
+                break;
+            case Operators::NOT_BETWEEN:
+                $this->qb->addAnd(
+                    $this->qb->expr()
+                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value[0])))
+                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value[1], true)))
+                );
+                break;
+            case Operators::GREATER_THAN:
+                $this->qb->field($field)->gt($this->getTimestamp($value, true));
+                break;
+            case Operators::LOWER_THAN:
+                $this->qb->field($field)->lt($this->getTimestamp($value));
+                break;
+            case Operators::EQUALS:
+                $this->qb->field($field)->gte($this->getTimestamp($value));
+                $this->qb->field($field)->lte($this->getTimestamp($value, true));
+                break;
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
         }
     }
 }

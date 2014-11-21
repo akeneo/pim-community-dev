@@ -45,15 +45,7 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness');
-        }
-
-        if (null === $locale || null === $scope) {
-            throw new \InvalidArgumentException(
-                'Cannot prepare condition on completenesses without locale and scope'
-            );
-        }
+        $this->checkValue($field, $value, $locale, $scope);
 
         $field = sprintf(
             "%s.%s.%s-%s",
@@ -64,12 +56,45 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
         );
         $value = intval($value);
 
+        $this->applyFilter($value, $field, $operator);
+
+        return $this;
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param string      $field
+     * @param mixed       $value
+     * @param string|null $locale
+     * @param string|null $scope
+     */
+    protected function checkValue($field, $value, $locale, $scope)
+    {
+        if (!is_string($value)) {
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness');
+        }
+
+        if (null === $locale || null === $scope) {
+            throw new \InvalidArgumentException(
+                'Cannot prepare condition on completenesses without locale and scope'
+            );
+        }
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param integer $value
+     * @param string  $field
+     * @param string  $operator
+     */
+    protected function applyFilter($value, $field, $operator)
+    {
         if ($operator === '=') {
             $this->qb->field($field)->equals($value);
         } else {
             $this->qb->field($field)->lt($value);
         }
-
-        return $this;
     }
 }

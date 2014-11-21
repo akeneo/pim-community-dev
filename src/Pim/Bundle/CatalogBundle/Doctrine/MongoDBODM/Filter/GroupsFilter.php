@@ -45,6 +45,25 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        $this->checkValue($field, $value);
+
+        $value = is_array($value) ? $value : [$value];
+        $value = array_map('intval', $value);
+        $field = 'groupIds';
+
+        $this->applyFilter($value, $field, $operator);
+
+        return $this;
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param string $field
+     * @param mixed  $value
+     */
+    protected function checkValue($field, $value)
+    {
         if (!is_array($value)) {
             throw InvalidArgumentException::arrayExpected($field, 'filter', 'groups');
         }
@@ -54,17 +73,21 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
                 throw InvalidArgumentException::numericExpected($field, 'filter', 'groups');
             }
         }
+    }
 
-        $value = is_array($value) ? $value : [$value];
-        $value = array_map('intval', $value);
-        $field = 'groupIds';
-
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param array  $value
+     * @param string $field
+     * @param string $operator
+     */
+    protected function applyFilter(array $value, $field, $operator)
+    {
         if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             $this->qb->field($field)->in($value);
         }
-
-        return $this;
     }
 }

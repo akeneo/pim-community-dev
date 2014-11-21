@@ -53,18 +53,7 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $value = is_array($value) ? $value : [$value];
 
-        if ($operator === Operators::NOT_IN_LIST) {
-            $this->qb->field($field)->notIn($value);
-        } else {
-            if (Operators::IS_EMPTY === $operator) {
-                $expr = $this->qb->expr()->field($field)->exists(false);
-                $this->qb->addOr($expr);
-            } else {
-                $value = array_map('intval', $value);
-                $expr = $this->qb->expr()->field($field .'.id')->in($value);
-                $this->qb->addOr($expr);
-            }
-        }
+        $this->applyFilter($value, $operator, $field);
 
         return $this;
     }
@@ -87,6 +76,29 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
                 if (!is_numeric($option)) {
                     throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'options');
                 }
+            }
+        }
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param array  $value
+     * @param string $operator
+     * @param string $field
+     */
+    protected function applyFilter(array $value, $operator, $field)
+    {
+        if ($operator === Operators::NOT_IN_LIST) {
+            $this->qb->field($field)->notIn($value);
+        } else {
+            if (Operators::IS_EMPTY === $operator) {
+                $expr = $this->qb->expr()->field($field)->exists(false);
+                $this->qb->addOr($expr);
+            } else {
+                $value = array_map('intval', $value);
+                $expr = $this->qb->expr()->field($field . '.id')->in($value);
+                $this->qb->addOr($expr);
             }
         }
     }

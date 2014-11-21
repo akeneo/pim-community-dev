@@ -52,12 +52,24 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
         $field = '_id';
         $value = is_array($value) ? $value : [$value];
 
+        $this->applyFilter($value, $field, $operator);
+
+        return $this;
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param array  $value
+     * @param string $field
+     * @param string $operator
+     */
+    protected function applyFilter(array $value, $field, $operator)
+    {
         if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
             $this->qb->field($field)->in($value);
         }
-
-        return $this;
     }
 }
