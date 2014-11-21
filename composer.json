@@ -39,8 +39,6 @@
         "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
         "knplabs/knp-menu":"v2.0.0-alpha2",
         "gedmo/doctrine-extensions":"2.3.x-dev@dev",
-        "doctrine/mongodb-odm": "v1.0.0-beta10@dev",
-        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
