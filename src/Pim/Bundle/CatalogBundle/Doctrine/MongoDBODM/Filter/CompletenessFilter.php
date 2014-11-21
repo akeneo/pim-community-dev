@@ -56,7 +56,7 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
         );
         $value = intval($value);
 
-        $this->prepareOperator($value, $field, $operator);
+        $this->applyFilter($value, $field, $operator);
 
         return $this;
     }
@@ -89,7 +89,7 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
      * @param string  $field
      * @param string  $operator
      */
-    protected function prepareOperator($value, $field, $operator)
+    protected function applyFilter($value, $field, $operator)
     {
         if ($operator === '=') {
             $this->qb->field($field)->equals($value);

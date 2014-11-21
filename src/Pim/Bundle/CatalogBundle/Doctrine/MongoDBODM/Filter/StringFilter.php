@@ -68,7 +68,7 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        $this->prepareOperator($field, $operator, $value);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
@@ -110,7 +110,7 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
      * @param string       $operator
      * @param string|array $value
      */
-    protected function prepareOperator($field, $operator, $value)
+    protected function applyFilter($field, $operator, $value)
     {
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->field($field)->exists(false);

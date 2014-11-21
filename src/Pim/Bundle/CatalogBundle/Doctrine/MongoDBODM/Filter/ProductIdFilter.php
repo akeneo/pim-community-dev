@@ -52,7 +52,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
         $field = '_id';
         $value = is_array($value) ? $value : [$value];
 
-        $this->prepareOperator($value, $field, $operator);
+        $this->applyFilter($value, $field, $operator);
 
         return $this;
     }
@@ -64,7 +64,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
      * @param string $field
      * @param string $operator
      */
-    protected function prepareOperator(array $value, $field, $operator)
+    protected function applyFilter(array $value, $field, $operator)
     {
         if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);

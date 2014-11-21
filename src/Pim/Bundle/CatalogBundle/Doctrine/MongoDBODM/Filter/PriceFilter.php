@@ -59,7 +59,7 @@ class PriceFilter extends AbstractFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', $field, $currency);
         $fieldData = sprintf('%s.data', $field);
 
-        $this->prepareOperator($operator, $fieldData, $data);
+        $this->applyFilter($operator, $fieldData, $data);
 
         return $this;
     }
@@ -71,7 +71,7 @@ class PriceFilter extends AbstractFilter implements AttributeFilterInterface
      * @param string $fieldData
      * @param float  $data
      */
-    protected function prepareOperator($operator, $fieldData, $data)
+    protected function applyFilter($operator, $fieldData, $data)
     {
         switch ($operator) {
             case Operators::LOWER_THAN:

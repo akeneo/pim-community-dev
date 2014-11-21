@@ -79,7 +79,7 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        $this->prepareOperator($value, $field, $operator);
+        $this->applyFilter($value, $field, $operator);
 
         return $this;
     }
@@ -169,7 +169,7 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
      * @param string $field
      * @param string $operator
      */
-    protected function prepareOperator($value, $field, $operator)
+    protected function applyFilter($value, $field, $operator)
     {
         switch ($operator) {
             case Operators::BETWEEN:

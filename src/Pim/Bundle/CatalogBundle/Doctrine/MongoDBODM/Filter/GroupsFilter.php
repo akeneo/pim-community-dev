@@ -51,7 +51,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         $value = array_map('intval', $value);
         $field = 'groupIds';
 
-        $this->prepareOperator($value, $field, $operator);
+        $this->applyFilter($value, $field, $operator);
 
         return $this;
     }
@@ -82,7 +82,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      * @param string $field
      * @param string $operator
      */
-    protected function prepareOperator(array $value, $field, $operator)
+    protected function applyFilter(array $value, $field, $operator)
     {
         if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);

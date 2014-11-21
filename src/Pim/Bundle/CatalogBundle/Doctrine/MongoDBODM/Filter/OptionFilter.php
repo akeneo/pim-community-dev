@@ -54,7 +54,7 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.id', $field);
 
-        $this->prepareOperator($operator, $value, $field);
+        $this->applyFilter($operator, $value, $field);
 
         return $this;
     }
@@ -88,7 +88,7 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
      * @param string|array $value
      * @param string       $field
      */
-    protected function prepareOperator($operator, $value, $field)
+    protected function applyFilter($operator, $value, $field)
     {
         if (Operators::IS_EMPTY === $operator) {
             $expr = $this->qb->expr()->field($field)->exists(false);

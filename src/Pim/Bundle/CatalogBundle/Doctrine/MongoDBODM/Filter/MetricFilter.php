@@ -57,7 +57,7 @@ class MetricFilter extends AbstractFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $fieldData = sprintf('%s.baseData', $field);
 
-        $this->prepareOperator($operator, $fieldData, $data);
+        $this->applyFilter($operator, $fieldData, $data);
 
         return $this;
     }
@@ -69,7 +69,7 @@ class MetricFilter extends AbstractFilter implements AttributeFilterInterface
      * @param string $fieldData
      * @param float  $data
      */
-    protected function prepareOperator($operator, $fieldData, $data)
+    protected function applyFilter($operator, $fieldData, $data)
     {
         switch ($operator) {
             case Operators::LOWER_THAN:

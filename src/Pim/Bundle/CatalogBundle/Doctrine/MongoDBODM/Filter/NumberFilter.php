@@ -55,7 +55,7 @@ class NumberFilter extends AbstractFilter implements AttributeFilterInterface
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        $this->prepareOperator($operator, $value, $field);
+        $this->applyFilter($operator, $value, $field);
 
         return $this;
     }
@@ -67,7 +67,7 @@ class NumberFilter extends AbstractFilter implements AttributeFilterInterface
      * @param null|integer $value
      * @param string       $field
      */
-    protected function prepareOperator($operator, $value, $field)
+    protected function applyFilter($operator, $value, $field)
     {
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->field($field)->exists(false);
