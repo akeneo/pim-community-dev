@@ -19,6 +19,7 @@
 - Add a requirement regarding the need of the exec() function (for job executions)
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
 - Remove the override of MediaManager
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver`. `Doctrine\Common\Persistence\ObjectManager` is now expected as first argument.
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
