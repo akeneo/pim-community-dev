@@ -74,7 +74,7 @@ class StringFilter extends OroStringFilter
         }
 
         if ('empty' === $data['type']) {
-            $data['value'] = null;
+            $data['value'] = '';
         }
 
         return $data;
