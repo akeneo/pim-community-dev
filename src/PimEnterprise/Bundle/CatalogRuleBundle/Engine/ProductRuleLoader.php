@@ -11,9 +11,11 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -67,7 +69,7 @@ class ProductRuleLoader implements LoaderInterface
             throw new \LogicException(sprintf('Rule "%s" should have a "actions" key in its content.', $rule->getCode()));
         }
 
-        $loaded->setConditions($content['conditions']);
+        $this->loadConditions($rule, $content['conditions']);
         $loaded->setActions($content['actions']);
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($rule));
@@ -81,5 +83,26 @@ class ProductRuleLoader implements LoaderInterface
     public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();
+    }
+
+    /**
+     * Loads conditions into a rule.
+     *
+     * @param LoadedRuleInterface $rule
+     * @param array               $rawConditions
+     *
+     * @return ProductRuleLoader
+     */
+    protected function loadConditions(LoadedRuleInterface $rule, array $rawConditions)
+    {
+        $conditions = [];
+        foreach ($rawConditions as $rawCondition) {
+            //TODO: catch exception and log it ? or do not catch and totally fail ?
+            $conditions[] = new ProductCondition($rawCondition);
+        }
+
+        $rule->setConditions($conditions);
+
+        return $this;
     }
 }

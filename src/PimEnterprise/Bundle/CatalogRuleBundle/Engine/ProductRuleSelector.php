@@ -109,14 +109,4 @@ class ProductRuleSelector implements SelectorInterface
     {
         return 'product' === $rule->getType();
     }
-
-    /**
-     * Configure the condition's optionResolver
-     *
-     * @param OptionsResolver $optionsResolver
-     */
-    protected function configureCondition(OptionsResolver $optionsResolver)
-    {
-        $optionsResolver->setRequired(['field', 'operator', 'value']);
-    }
 }
