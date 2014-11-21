@@ -55,15 +55,13 @@ class OptionsFilter extends EntityFilter
         if ($operator === 'NOT IN') {
             $this->qb->field($field)->notIn($value);
         } else {
-
             // Case filter with value(s) and empty
             if (in_array('empty', $value) && count($value) > 1) {
-
                 unset($value[array_search('empty', $value)]);
 
                 $exprValues = new Expr();
                 $value = array_map('intval', $value);
-                $exprValues->field($field .'.id')->in($value);
+                $exprValues->field($field.'.id')->in($value);
 
                 $exprEmpty = new Expr();
                 $exprEmpty = $exprEmpty->field($field)->exists(false);
@@ -74,9 +72,10 @@ class OptionsFilter extends EntityFilter
 
                 $this->qb->addAnd($exprAnd);
 
-            }
-            else {
+                $a = array();
 
+
+            } else {
                 if (in_array('empty', $value)) {
                     unset($value[array_search('empty', $value)]);
 
@@ -88,13 +87,10 @@ class OptionsFilter extends EntityFilter
                 if (count($value) > 0) {
                     $expr = new Expr();
                     $value = array_map('intval', $value);
-                    $expr->field($field .'.id')->in($value);
+                    $expr->field($field.'.id')->in($value);
                     $this->qb->addAnd($expr);
                 }
             }
-
-
-
         }
 
         return $this;

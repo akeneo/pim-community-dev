@@ -26,7 +26,6 @@ class OptionFilter extends EntityFilter
 
         // Case filter with value(s) and empty
         if (in_array('empty', $value) && count($value) > 1) {
-
             unset($value[array_search('empty', $value)]);
 
             $exprValues = new Expr();
@@ -41,10 +40,7 @@ class OptionFilter extends EntityFilter
             $exprAnd->addOr($exprEmpty);
 
             $this->qb->addAnd($exprAnd);
-
-        }
-        else {
-
+        } else {
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
 
@@ -59,7 +55,6 @@ class OptionFilter extends EntityFilter
                 $expr->field($field)->in($value);
 
                 $this->qb->addAnd($expr);
-
             }
         }
 
