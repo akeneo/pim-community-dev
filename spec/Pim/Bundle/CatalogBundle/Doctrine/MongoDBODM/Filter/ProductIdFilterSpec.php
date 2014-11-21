@@ -24,14 +24,14 @@ class ProductIdFilterSpec extends ObjectBehavior
     function it_adds_a_in_filter_on_product_ids_in_the_query(Builder $queryBuilder)
     {
         $queryBuilder->field('_id')->willReturn($queryBuilder);
-        $queryBuilder->in([1, 2])->willReturn($queryBuilder);
+        $queryBuilder->in(['hash1', 'hash2'])->willReturn($queryBuilder);
 
-        $this->addFieldFilter('id', 'IN', [1, 2]);
+        $this->addFieldFilter('id', 'IN', ['hash1', 'hash2']);
     }
 
     function it_throws_an_exception_if_value_is_not_a_numeric_or_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::expected('id', 'array or numeric value', 'filter', 'productId'))
-            ->during('addFieldFilter', ['id', '=', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::expected('id', 'array or string value', 'filter', 'productId'))
+            ->during('addFieldFilter', ['id', '=', 1234]);
     }
 }
