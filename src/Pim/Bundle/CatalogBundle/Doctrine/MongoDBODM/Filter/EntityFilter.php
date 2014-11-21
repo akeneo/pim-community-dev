@@ -83,8 +83,7 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
                     $expr = $expr->field($field)->exists(false);
                     $this->qb->addAnd($expr);
                 }
-
-                if (count($value) > 0) {
+                else if (count($value) > 0) {
                     $expr = new Expr();
                     $expr->field($field)->in($value);
                     $this->qb->addAnd($expr);
