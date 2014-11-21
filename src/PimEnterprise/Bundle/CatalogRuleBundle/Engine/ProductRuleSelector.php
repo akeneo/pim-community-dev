@@ -87,6 +87,7 @@ class ProductRuleSelector implements SelectorInterface
 
         foreach ($conditions as $condition) {
             $condition = $resolver->resolve($condition);
+            // TODO : we need to pass the locale and scope as a context here !
             $pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
         }
 
