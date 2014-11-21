@@ -7,6 +7,7 @@
 - Add comments on a product
 - Load dashboard widgets asynchronously and allow to refresh the data
 - Add copiers and setters
+- Add filters for image and file attributes
 
 ## Improvements
 - Remove the fixed mysql socket location

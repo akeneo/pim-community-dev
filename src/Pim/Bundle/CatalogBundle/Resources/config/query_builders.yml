@@ -147,6 +147,14 @@ services:
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
+    pim_catalog.doctrine.query.filter.media:
+        class: %pim_catalog.doctrine.query.filter.media.class%
+        arguments:
+            - ['pim_catalog_image', 'pim_catalog_file']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
     # PQB common sorter definitions (implement either in ORM or MongoDB ODM)
     pim_catalog.doctrine.query.sorter.base:
         class: %pim_catalog.doctrine.query.sorter.base.class%

@@ -73,6 +73,10 @@ class StringFilter extends OroStringFilter
             $data['value'] = explode(',', $data['value']);
         }
 
+        if ('empty' === $data['type']) {
+            $data['value'] = '';
+        }
+
         return $data;
     }
 
