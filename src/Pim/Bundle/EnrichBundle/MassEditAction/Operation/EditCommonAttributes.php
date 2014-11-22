@@ -476,11 +476,7 @@ class EditCommonAttributes extends ProductMassEditOperation
      */
     protected function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
-        foreach ($productValue->getOptions() as $option) {
-            if (!$value->getOptions()->contains($option)) {
-                $productValue->removeOption($option);
-            }
-        }
+        $productValue->getOptions()->clear();
 
         // TODO: Clean this code removing flush for ORM
         if (!class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {

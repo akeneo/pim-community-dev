@@ -6,6 +6,7 @@
 - PIM-3358: Fix sprintf issue in an exception which prevents doctrine writer to deal with anything else than an object
 - PIM-3326: Fix multi-value filter on Mongo implementation
 - PIM-3326: Fix mongo filters with multiples values and empty on MongoDB
+- PIM-3426: Fix common attributes edition on multi selects
 
 # 1.2.12 (2014-11-13)
 
