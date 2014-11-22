@@ -54,7 +54,7 @@ class ValidMetricValidator extends ConstraintValidator
         } elseif ($entity instanceof MetricInterface) {
             $familyProperty = 'family';
             $unitProperty   = 'unit';
-        } elseif ($entity instanceof ProductValueInterface) {
+        } elseif ($entity instanceof ProductValueInterface && null !== $entity->getData()) {
             $entity = $entity->getData();
             $familyProperty = 'family';
             $unitProperty   = 'unit';

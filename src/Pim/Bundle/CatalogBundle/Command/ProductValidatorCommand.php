@@ -51,7 +51,7 @@ class ProductValidatorCommand extends ContainerAwareCommand
             ->setValue($products, 'name', 'tooo long name')
             ->setValue($products, 'response_time', 101)
             ->setValue($products, 'reference', 'myref')
-            ->setValue($products, 'weight', ['data' => 1202, 'unit' => 'kg'])
+            ->setValue($products, 'weight', ['data' => -2, 'unit' => 'KILOGRAM'])
         ;
 
         // validate the product and values
