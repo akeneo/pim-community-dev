@@ -29,6 +29,7 @@
 - Add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
 - Add a check on passed values in ORM filters
 - Add a requirement regarding the need of the exec() function (for job executions)
+- Introduce the 'pim_validator' service to be able to validate products and cascade on values with dynamic constraints
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`

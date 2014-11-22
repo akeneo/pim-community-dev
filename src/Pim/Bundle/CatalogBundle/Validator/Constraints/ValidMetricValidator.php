@@ -18,14 +18,10 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ValidMetricValidator extends ConstraintValidator
 {
-    /**
-     * @var array $measures
-     */
+    /** @var array $measures */
     protected $measures;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
+    /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
     /**

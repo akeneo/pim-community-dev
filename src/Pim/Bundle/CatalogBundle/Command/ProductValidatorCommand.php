@@ -41,20 +41,10 @@ class ProductValidatorCommand extends ContainerAwareCommand
         $product = $this->getProduct($identifier);
         if (!$product) {
             $output->writeln(sprintf('<error>Product with identifier "%s" not found<error>', $identifier));
+
             return;
         }
 
-        // update to force errors
-        $products = [$product];
-        $updater = $this->getContainer()->get('pim_catalog.updater.product');
-        $updater
-            ->setValue($products, 'name', 'tooo long name')
-            ->setValue($products, 'response_time', 101)
-            ->setValue($products, 'reference', 'myref')
-            ->setValue($products, 'weight', ['data' => -2, 'unit' => 'KILOGRAM'])
-        ;
-
-        // validate the product and values
         $violations = $this->validate($product);
         if (0 === $violations->count()) {
             $output->writeln('<info>Product is valid<info>');
