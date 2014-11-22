@@ -2,15 +2,16 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Mapping;
 
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\MetadataFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\Validator\Constraint;
 
 /**
- * Create a ClassMetadata instance for an AbstractProductValue instance
+ * Create a ClassMetadata instance for an ProductValueInterface instance
  * Constraints are guessed from the value's attribute
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
@@ -42,7 +43,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
      */
     public function getMetadataFor($value)
     {
-        if (!$value instanceof AbstractProductValue) {
+        if (!$value instanceof ProductValueInterface) {
             throw new NoSuchMetadataException();
         }
 
@@ -52,7 +53,21 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
 
         $attribute = $value->getAttribute();
         foreach ($this->guesser->guessConstraints($attribute) as $constraint) {
-            $metadata->addPropertyConstraint($attribute->getBackendType(), $constraint);
+
+            $target = $constraint->getTargets();
+            if (is_array($target)) {
+                throw new \LogicException('No support provided for constraint on many targets');
+            }
+
+            if (Constraint::PROPERTY_CONSTRAINT === $target) {
+                $metadata->addPropertyConstraint($attribute->getBackendType(), $constraint);
+            } elseif (Constraint::CLASS_CONSTRAINT === $target) {
+                $metadata->addConstraint($constraint);
+            } else {
+                throw new \LogicException(
+                    sprintf('Dont know how to add this constraint on target "%s"', $target)
+                );
+            }
         }
 
         return $metadata;
@@ -63,7 +78,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
      */
     public function hasMetadataFor($value)
     {
-        if ($value instanceof AbstractProductValue) {
+        if ($value instanceof ProductValueInterface) {
             return true;
         }
 

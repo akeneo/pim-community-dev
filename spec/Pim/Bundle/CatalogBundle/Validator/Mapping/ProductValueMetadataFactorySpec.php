@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Mapping\ClassMetadataFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class ProductValueMetadataFactorySpec extends ObjectBehavior
 {
@@ -26,35 +26,14 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $this->beConstructedWith($guesser, $factory);
     }
 
-    function it_provides_metadata_for_product_value(
-        $guesser,
-        $factory,
-        ClassMetadata $metadata,
-        AbstractProductValue $value,
-        AbstractAttribute $attribute,
-        Constraint $foo,
-        Constraint $bar
-    ) {
-        $factory->createMetadata(Argument::any())->willReturn($metadata);
-
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('varchar');
-        $guesser->guessConstraints($attribute)->willReturn([$foo, $bar]);
-
-        $metadata->addPropertyConstraint('varchar', $foo)->shouldBeCalled();
-        $metadata->addPropertyConstraint('varchar', $bar)->shouldBeCalled();
-
-        $this->getMetadataFor($value);
-    }
-
-    function its_getMetadataFor_method_throws_exception_when_argument_is_not_an_AbstractProductValue($object)
+    function its_getMetadataFor_method_throws_exception_when_argument_if_not_a_product_value($object)
     {
         $this
             ->shouldThrow(new NoSuchMetadataException())
             ->duringGetMetadataFor($object);
     }
 
-    function it_has_metadata_for_AbstractProductValue(AbstractProductValue $value)
+    function it_has_metadata_for_product_value(ProductValueInterface $value)
     {
         $this->hasMetadataFor($value)->shouldBe(true);
     }
@@ -62,5 +41,91 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
     function it_does_not_have_metadata_for_something_else($object)
     {
         $this->hasMetadataFor($object)->shouldBe(false);
+    }
+
+    function it_provides_metadata_for_product_value(
+        $guesser,
+        $factory,
+        ClassMetadata $metadata,
+        ProductValueInterface $value,
+        AbstractAttribute $attribute,
+        Constraint $unique,
+        Constraint $validNumber
+    ) {
+        $factory->createMetadata(Argument::any())->willReturn($metadata);
+
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getBackendType()->willReturn('varchar');
+        $guesser->guessConstraints($attribute)->willReturn([$unique, $validNumber]);
+
+        $unique->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
+        $validNumber->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
+
+        $metadata->addPropertyConstraint('varchar', $unique)->shouldBeCalled();
+        $metadata->addPropertyConstraint('varchar', $validNumber)->shouldBeCalled();
+
+        $this->getMetadataFor($value);
+    }
+
+    function it_supports_property_constraint(
+        $guesser,
+        $factory,
+        ClassMetadata $metadata,
+        ProductValueInterface $value,
+        AbstractAttribute $attribute,
+        Constraint $property,
+        Constraint $validNumber
+    ) {
+        $factory->createMetadata(Argument::any())->willReturn($metadata);
+
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getBackendType()->willReturn('varchar');
+        $guesser->guessConstraints($attribute)->willReturn([$property]);
+
+        $property->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
+
+        $this->getMetadataFor($value);
+    }
+
+    function it_supports_class_constraint(
+        $guesser,
+        $factory,
+        ClassMetadata $metadata,
+        ProductValueInterface $value,
+        AbstractAttribute $attribute,
+        Constraint $class,
+        Constraint $validNumber
+    ) {
+        $factory->createMetadata(Argument::any())->willReturn($metadata);
+
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getBackendType()->willReturn('varchar');
+        $guesser->guessConstraints($attribute)->willReturn([$class]);
+
+        $class->getTargets()->willReturn(Constraint::CLASS_CONSTRAINT);
+
+        $this->getMetadataFor($value);
+    }
+
+    function it_doesnt_support_multi_targets_constraint(
+        $guesser,
+        $factory,
+        ClassMetadata $metadata,
+        ProductValueInterface $value,
+        AbstractAttribute $attribute,
+        Constraint $multiTargets,
+        Constraint $validNumber
+    ) {
+        $factory->createMetadata(Argument::any())->willReturn($metadata);
+
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getBackendType()->willReturn('varchar');
+        $guesser->guessConstraints($attribute)->willReturn([$multiTargets]);
+
+        $multiTargets->getTargets()->willReturn([Constraint::PROPERTY_CONSTRAINT, Constraint::CLASS_CONSTRAINT]);
+
+        $this
+            ->shouldThrow(new \LogicException('No support provided for constraint on many targets'))
+            ->duringGetMetadataFor($value);
     }
 }
