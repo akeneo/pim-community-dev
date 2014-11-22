@@ -45,14 +45,13 @@ class ProductValidatorCommand extends ContainerAwareCommand
         }
 
         // update to force errors
-        // TODO : test different constraint on different attribute type
-        // TODO : list missing constraints
-        // TODO : re-work violation message on product value (cause not clear when validate the whole product)
         $products = [$product];
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
         $updater
             ->setValue($products, 'name', 'tooo long name')
             ->setValue($products, 'response_time', 101)
+            ->setValue($products, 'reference', 'myref')
+            ->setValue($products, 'weight', ['data' => 1202, 'unit' => 'kg'])
         ;
 
         // validate the product and values

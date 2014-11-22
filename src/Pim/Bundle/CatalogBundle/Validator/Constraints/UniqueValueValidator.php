@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Form\Form;
 
 /**
  * Validator for unique value constraint
@@ -47,20 +48,26 @@ class UniqueValueValidator extends ConstraintValidator
             return;
         }
 
-        $value = $this->getProductValue();
-
-        if ($value instanceof ProductValueInterface && $this->productManager->valueExists($value)) {
-            $this->context->addViolation($constraint->message);
+        $productValue = null;
+        $root = $this->context->getRoot();
+        if ($root instanceof Form) {
+            $productValue = $this->getProductValueFromForm();
+        } else {
+            // TODO not supported through direct validation, how to get the value ?
+            return;
         }
 
+        if ($productValue instanceof ProductValueInterface && $this->productManager->valueExists($productValue)) {
+            $this->context->addViolation($constraint->message);
+        }
     }
 
     /**
-     * Get productValue
+     * Get product value from form
      *
      * @return ProductValueInterface|null
      */
-    protected function getProductValue()
+    protected function getProductValueFromForm()
     {
         preg_match(
             '/children\[values\].children\[(\w+)\].children\[\w+\].data/',

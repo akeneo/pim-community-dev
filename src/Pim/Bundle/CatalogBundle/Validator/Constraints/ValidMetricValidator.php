@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -41,20 +43,23 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Validate metric type and default metric unit
      *
-     * @param AbstractAttribute $entity
-     * @param Constraint        $constraint
+     * @param AttributeInterface|MetricInterface|ProductValueInterface $entity
+     * @param Constraint                                               $constraint
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof AbstractAttribute) {
+        if ($entity instanceof AttributeInterface) {
             $familyProperty = 'metricFamily';
             $unitProperty   = 'defaultMetricUnit';
-        } else {
-            if (null === $entity || (null !== $entity && !$entity->getData())) {
-                return;
-            }
+        } elseif ($entity instanceof MetricInterface) {
             $familyProperty = 'family';
             $unitProperty   = 'unit';
+        } elseif ($entity instanceof ProductValueInterface) {
+            $entity = $entity->getData();
+            $familyProperty = 'family';
+            $unitProperty   = 'unit';
+        } else {
+            return;
         }
 
         $family = $this->propertyAccessor->getValue($entity, $familyProperty);
