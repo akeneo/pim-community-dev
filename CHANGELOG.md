@@ -107,6 +107,7 @@
 
 ## Bug fixes
 - PIM-3406: Fix boolean filter on Mongo implementation
+- PIM-3430: Fix doctrine issue on prices when skip item during product import
 
 # 1.2.12 (2014-11-13)
 
