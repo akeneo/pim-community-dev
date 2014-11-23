@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Doctrine\MongoDB\Query\Expr;
-use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Multi options filter for MongoDB
@@ -15,62 +15,91 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionsFilter extends EntityFilter
+class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
 {
-    /** @var QueryBuilder */
-    protected $qb;
-
-    /** @var CatalogContext */
-    protected $context;
+    /** @var array */
+    protected $supportedAttributes;
 
     /**
-     * @param QueryBuilder   $qb      the query builder
-     * @param CatalogContext $context the catalog context
+     * Instanciate the filter
+     *
+     * @param array $supportedAttributes
+     * @param array $supportedOperators
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
-    {
-        $this->qb      = $qb;
-        $this->context = $context;
+    public function __construct(
+        array $supportedAttributes = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedAttributes = $supportedAttributes;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
+        return in_array($attribute->getAttributeType(), $this->supportedAttributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
+    {
+        $this->checkValue($attribute, $operator, $value);
+
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $this->addFieldFilter($field, $operator, $value);
+        $value = is_array($value) ? $value : [$value];
+
+        $this->applyFilter($value, $operator, $field);
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Check if value is valid
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $operator
+     * @param mixed              $value
      */
-    public function addFieldFilter($field, $operator, $value)
+    protected function checkValue(AttributeInterface $attribute, $operator, $value)
     {
-        $value = is_array($value) ? $value : [$value];
+        if (!is_array($value) && Operators::IS_EMPTY !== $operator) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'options');
+        }
 
-        if ($operator === 'NOT IN') {
+        if (Operators::IS_EMPTY !== $operator) {
+            foreach ($value as $option) {
+                if (!is_numeric($option)) {
+                    throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'options');
+                }
+            }
+        }
+    }
+
+    /**
+     * Apply the filter to the query with the given operator
+     *
+     * @param array  $value
+     * @param string $operator
+     * @param string $field
+     */
+    protected function applyFilter(array $value, $operator, $field)
+    {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
         } else {
-            if (in_array('empty', $value)) {
-                unset($value[array_search('empty', $value)]);
-
-                $expr = new Expr();
-                $expr = $expr->field($field)->exists(false);
+            if (Operators::IS_EMPTY === $operator) {
+                $expr = $this->qb->expr()->field($field)->exists(false);
                 $this->qb->addOr($expr);
-            }
-
-            if (count($value) > 0) {
-                $expr = new Expr();
+            } else {
                 $value = array_map('intval', $value);
-                $expr->field($field .'.id')->in($value);
+                $expr = $this->qb->expr()->field($field . '.id')->in($value);
                 $this->qb->addOr($expr);
             }
         }
-
-        return $this;
     }
 }

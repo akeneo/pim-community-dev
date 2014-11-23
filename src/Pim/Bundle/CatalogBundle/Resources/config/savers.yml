@@ -1,0 +1,22 @@
+parameters:
+    pim_catalog.saver.base.class: Pim\Bundle\CatalogBundle\Saver\BaseSaver
+    pim_catalog.saver.product.class: Pim\Bundle\CatalogBundle\Saver\ProductSaver
+
+services:
+    pim_catalog.saver.group_type:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.group_type.class%
+
+    pim_catalog.saver.currency:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.currency.class%
+
+    pim_catalog.saver.product:
+        class: %pim_catalog.saver.product.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.manager.completeness'

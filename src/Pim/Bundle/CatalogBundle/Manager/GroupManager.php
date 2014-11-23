@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Event\GroupEvents;
+use Pim\Component\Resource\Model\RemoverInterface;
+use Pim\Component\Resource\Model\SaverInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Group manager
@@ -15,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupManager
+class GroupManager implements SaverInterface, RemoverInterface
 {
     /** @var RegistryInterface */
     protected $doctrine;
@@ -143,17 +145,42 @@ class GroupManager
     }
 
     /**
-     * Removes a group
-     *
-     * @param Group $group
+     * {@inheritdoc}
      */
-    public function remove(Group $group)
+    public function save($group, array $options = [])
     {
+        if (!$group instanceof Group) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Entity\Group", "%s" provided.', get_class($group))
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->doctrine->getManager()->persist($group);
+        if (true === $options['flush']) {
+            $this->doctrine->getManager()->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($group, array $options = [])
+    {
+        if (!$group instanceof Group) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Entity\Group", "%s" provided.', get_class($group))
+            );
+        }
+
         $this->eventDispatcher->dispatch(GroupEvents::PRE_REMOVE, new GenericEvent($group));
 
+        $options = array_merge(['flush' => true], $options);
         $em = $this->doctrine->getManager();
         $em->remove($group);
-        $em->flush();
+        if (true === $options['flush']) {
+            $em->flush();
+        }
     }
 
     /**

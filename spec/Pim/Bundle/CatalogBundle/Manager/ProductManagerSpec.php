@@ -2,25 +2,22 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Saver\ProductSaver;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductManagerSpec extends ObjectBehavior
 {
@@ -32,7 +29,7 @@ class ProductManagerSpec extends ObjectBehavior
 
     function let(
         ObjectManager $objectManager,
-        ProductPersister $persister,
+        ProductSaver $productSaver,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -52,7 +49,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $entityConfig,
             $objectManager,
-            $persister,
+            $productSaver,
             $eventDispatcher,
             $mediaManager,
             $builder,
@@ -61,6 +58,21 @@ class ProductManagerSpec extends ObjectBehavior
             $attributeRepository,
             $attributeOptionRepository
         );
+    }
+
+    function it_is_a_saver()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
+    }
+
+    function it_is_a_bulk_saver()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\BulkSaverInterface');
+    }
+
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
     }
 
     function it_has_a_product_repository(ProductRepositoryInterface $productRepository)
@@ -90,10 +102,9 @@ class ProductManagerSpec extends ObjectBehavior
         $this->getIdentifierAttribute()->shouldReturn($sku);
     }
 
-    function it_adds_attributes_to_product(
-        $entityManager,
+    function it_adds_attributes_to_product_and_save_it(
+        $productSaver,
         $builder,
-        AttributeRepository $attRepository,
         ProductInterface $product,
         AvailableAttributes $attributes,
         AbstractAttribute $sku,
@@ -106,7 +117,79 @@ class ProductManagerSpec extends ObjectBehavior
         $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
         $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
 
+        $productSaver->save($product, ['recalculate' => false, 'schedule' => false])
+            ->shouldBeCalled();
+
         $this->addAttributesToProduct($product, $attributes);
+    }
+
+    function it_adds_attributes_to_product_and_save_it_with_saving_options(
+        $productSaver,
+        $builder,
+        ProductInterface $product,
+        AvailableAttributes $attributes,
+        AbstractAttribute $sku,
+        AbstractAttribute $name,
+        AbstractAttribute $size
+    ) {
+        $attributes->getAttributes()->willReturn([$sku, $name, $size]);
+
+        $builder->addAttributeToProduct($product, $sku)->shouldBeCalled();
+        $builder->addAttributeToProduct($product, $name)->shouldBeCalled();
+        $builder->addAttributeToProduct($product, $size)->shouldBeCalled();
+
+        $productSaver->save($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])
+            ->shouldBeCalled();
+
+        $this->addAttributesToProduct($product, $attributes, ['flush' => false]);
+    }
+
+    function it_removes_attribute_from_product_and_save_it(
+        $productSaver,
+        ProductInterface $product,
+        AvailableAttributes $attributes,
+        AbstractAttribute $skuAttribute,
+        AbstractAttribute $nameAttribute,
+        ProductValueInterface $sku,
+        ProductValueInterface $nameFr,
+        ProductValueInterface $nameEn
+    ) {
+        $product->getValues()->willReturn([$sku, $nameFr, $nameEn]);
+        $sku->getAttribute()->willReturn($skuAttribute);
+        $nameFr->getAttribute()->willReturn($nameAttribute);
+        $nameEn->getAttribute()->willReturn($nameAttribute);
+
+        $product->removeValue($sku)->shouldNotBeCalled();
+        $product->removeValue($nameFr)->shouldBeCalled();
+        $product->removeValue($nameEn)->shouldBeCalled();
+
+        $productSaver->save($product, ['recalculate' => false, 'schedule' => false])->shouldBeCalled();
+
+        $this->removeAttributeFromProduct($product, $nameAttribute);
+    }
+
+    function it_removes_attribute_from_product_and_save_it_with_saving_options(
+        $productSaver,
+        ProductInterface $product,
+        AvailableAttributes $attributes,
+        AbstractAttribute $skuAttribute,
+        AbstractAttribute $nameAttribute,
+        ProductValueInterface $sku,
+        ProductValueInterface $nameFr,
+        ProductValueInterface $nameEn
+    ) {
+        $product->getValues()->willReturn([$sku, $nameFr, $nameEn]);
+        $sku->getAttribute()->willReturn($skuAttribute);
+        $nameFr->getAttribute()->willReturn($nameAttribute);
+        $nameEn->getAttribute()->willReturn($nameAttribute);
+
+        $product->removeValue($sku)->shouldNotBeCalled();
+        $product->removeValue($nameFr)->shouldBeCalled();
+        $product->removeValue($nameEn)->shouldBeCalled();
+
+        $productSaver->save($product, ['recalculate' => false, 'flush' => false, 'schedule' => false])->shouldBeCalled();
+
+        $this->removeAttributeFromProduct($product, $nameAttribute, ['flush' => false]);
     }
 
     function it_checks_value_existence(ProductRepositoryInterface $productRepository, ProductValueInterface $value)
@@ -118,11 +201,26 @@ class ProductManagerSpec extends ObjectBehavior
         $this->valueExists($value)->shouldReturn(false);
     }
 
-    function it_delegates_database_product_synchronization_to_the_product_persister(
-        ProductPersister $persister,
+    function it_throws_exception_when_remove_anything_else_than_a_product()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
+    }
+
+    function it_delegates_database_product_synchronization_to_the_product_saver(
+        ProductSaver $productSaver,
         ProductInterface $product
     ) {
-        $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
+        $productSaver->save($product, [])->shouldBeCalled();
 
         $this->save($product);
     }
@@ -172,32 +270,6 @@ class ProductManagerSpec extends ObjectBehavior
         $objectManager->remove($product)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
 
-        $this->remove($product, false);
-    }
-
-    function it_dispatches_an_event_per_product_removed(
-        $eventDispatcher,
-        $objectManager,
-        $productRepository,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $productRepository->findByIds([1, 2])->willReturn([$product1, $product2]);
-
-        $eventDispatcher->dispatch(
-            ProductEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(
-            ProductEvents::POST_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalledTimes(2);
-
-        $objectManager
-            ->remove(Argument::type('Pim\Bundle\CatalogBundle\Model\ProductInterface'))
-            ->shouldBeCalledTimes(2);
-        $objectManager->flush()->shouldBeCalledTimes(1);
-
-        $this->removeAll([1, 2]);
+        $this->remove($product, ['flush' => false]);
     }
 }

@@ -20,6 +20,8 @@ class TranslationNormalizer extends Structured\TranslationNormalizer
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function normalize($object, $format = null, array $context = array())
     {
@@ -44,9 +46,10 @@ class TranslationNormalizer extends Structured\TranslationNormalizer
 
         $method = sprintf('get%s', ucfirst($property));
         foreach ($object->getTranslations() as $translation) {
-            // TODO : throw an exception on master, not in 1.2 to avoid BC break
             if (method_exists($translation, $method) === false) {
-                break;
+                throw new \LogicException(
+                    sprintf("Class %s doesn't provide method %s", get_class($translation), $method)
+                );
             }
             if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
                 $key = sprintf('%s-%s', $property, $translation->getLocale());

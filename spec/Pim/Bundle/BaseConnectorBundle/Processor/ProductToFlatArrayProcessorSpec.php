@@ -4,29 +4,25 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Symfony\Component\Serializer\Serializer;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(
-        Serializer $serializer,
-        ChannelManager $channelManager
-    ) {
+    function let(Serializer $serializer, ChannelManager $channelManager)
+    {
         $this->beConstructedWith($serializer, $channelManager);
     }
 
     function it_returns_flat_data_with_media(
         Channel $channel,
-        ChannelManager $channelManager,
-        Product $item,
-        ProductMedia $media1,
-        ProductMedia $media2,
-        Serializer $serializer
+        $channelManager,
+        AbstractProduct $item,
+        ProductMediaInterface $media1,
+        ProductMediaInterface $media2,
+        $serializer
     ) {
         $media1->getFilename()->willReturn('media_name');
         $media1->getFilePath()->willReturn('media_file_path');
@@ -55,7 +51,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_without_media(
         Channel $channel,
         ChannelManager $channelManager,
-        Product $item,
+        AbstractProduct $item,
         Serializer $serializer
     ) {
         $item->getMedia()->willReturn([]);

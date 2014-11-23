@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\UserBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -31,5 +31,8 @@ class PimUserExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('twig.yml');
         $loader->load('form.yml');
+        $loader->load('datagrid_listeners.yml');
+        $loader->load('view_elements.yml');
+        $loader->load('view_elements/user.yml');
     }
 }

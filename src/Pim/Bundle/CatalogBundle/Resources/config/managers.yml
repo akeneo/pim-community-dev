@@ -2,6 +2,7 @@ parameters:
     pim_catalog.manager.association.class:         Pim\Bundle\CatalogBundle\Manager\AssociationManager
     pim_catalog.manager.association_type.class:    Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager
     pim_catalog.manager.attribute.class:           Pim\Bundle\CatalogBundle\Manager\AttributeManager
+    pim_catalog.manager.attribute_option.class:    Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager
     pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
     pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.manager.channel.class:             Pim\Bundle\CatalogBundle\Manager\ChannelManager
@@ -25,7 +26,7 @@ services:
                   product_value_class:          %pim_catalog.entity.product_value.class%
                   attribute_class:              %pim_catalog.entity.attribute.class%
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.persister.product'
+            - '@pim_catalog.saver.product'
             - '@event_dispatcher'
             - '@pim_catalog.manager.media'
             - '@pim_catalog.builder.product'
@@ -58,17 +59,25 @@ services:
         arguments:
             - '@pim_filesystem'
             - %upload_dir%
+            - '@pim_catalog.factory.media'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_catalog.manager.attribute:
         class: %pim_catalog.manager.attribute.class%
         arguments:
             - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.attribute_option.class%
-            - %pim_catalog.entity.attribute_option_value.class%
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.factory.attribute_type'
+            - '@pim_catalog.registry.attribute_type'
             - '@event_dispatcher'
+
+    pim_catalog.manager.attribute_option:
+        class: %pim_catalog.manager.attribute_option.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - %pim_catalog.entity.attribute_option.class%
+            - %pim_catalog.entity.attribute_option_value.class%
 
     pim_catalog.manager.attribute_group:
         class: %pim_catalog.manager.attribute_group.class%
@@ -90,6 +99,8 @@ services:
         class: %pim_catalog.manager.channel.class%
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.manager.completeness'
 
     pim_catalog.manager.group:
         class: %pim_catalog.manager.group.class%
@@ -108,6 +119,7 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+            - '@pim_catalog.manager.completeness'
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
@@ -117,7 +129,6 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.doctrine.completeness_generator'
             - '@validator'
-            - '@pim_catalog.manager.channel'
             - %pim_catalog.entity.completeness.class%
 
     pim_catalog.manager.association_type:

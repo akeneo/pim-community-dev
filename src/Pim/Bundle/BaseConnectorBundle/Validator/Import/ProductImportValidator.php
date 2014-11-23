@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
+use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -9,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
-use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -53,7 +53,7 @@ class ProductImportValidator extends ImportValidator
     public function __construct(
         ValidatorInterface $validator,
         ConstraintGuesserInterface $constraintGuesser,
-        ProductManager $productManager = null
+        ProductManager $productManager
     ) {
         parent::__construct($validator);
         $this->constraintGuesser = $constraintGuesser;
@@ -123,7 +123,7 @@ class ProductImportValidator extends ImportValidator
                     $code      = $value->getAttribute()->getCode();
                     $valueData = (string) $value;
                     if ($valueData !== '') {
-                        if ($this->productManager !== null && $this->productManager->valueExists($value)) {
+                        if ($this->productManager->valueExists($value)) {
                             throw new DuplicateProductValueException($code, $valueData, $data);
                         }
                         $this->uniqueValues[$code] =

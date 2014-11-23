@@ -60,6 +60,7 @@ services:
         arguments:
             - '@pim_transform.transformer.registry'
             - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.manager.attribute_option'
             - '@pim_transform.cache.doctrine_cache'
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.attribute.class% }

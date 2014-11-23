@@ -1,0 +1,13 @@
+parameters:
+    pim_comment.view_element.product.tab.comment.template: 'PimCommentBundle:Product:Tab/comment.html.twig'
+
+services:
+    pim_comment.view_element.product.tab.comment:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_comment.product.tab.comment'
+            - %pim_comment.view_element.product.tab.comment.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_comment'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 125 }

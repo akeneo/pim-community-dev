@@ -2,10 +2,20 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,20 +24,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler;
 
 /**
  * Family controller
@@ -47,10 +43,7 @@ class FamilyController extends AbstractDoctrineController
     /** @var FamilyFactory */
     protected $factory;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
-    /** @var FamilyHandler */
+    /** @var HandlerInterface */
     protected $familyHandler;
 
     /** @var Form */
@@ -74,8 +67,7 @@ class FamilyController extends AbstractDoctrineController
      * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $factory
-     * @param CompletenessManager      $completenessManager
-     * @param FamilyHandler            $familyHandler
+     * @param HandlerInterface         $familyHandler
      * @param Form                     $familyForm
      * @param string                   $attributeClass
      */
@@ -92,8 +84,7 @@ class FamilyController extends AbstractDoctrineController
         FamilyManager $familyManager,
         ChannelManager $channelManager,
         FamilyFactory $factory,
-        CompletenessManager $completenessManager,
-        FamilyHandler $familyHandler,
+        HandlerInterface $familyHandler,
         Form $familyForm,
         $attributeClass
     ) {
@@ -112,7 +103,6 @@ class FamilyController extends AbstractDoctrineController
         $this->familyManager       = $familyManager;
         $this->channelManager      = $channelManager;
         $this->factory             = $factory;
-        $this->completenessManager = $completenessManager;
         $this->familyHandler       = $familyHandler;
         $this->familyForm          = $familyForm;
         $this->attributeClass      = $attributeClass;
@@ -190,7 +180,8 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $family
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @AclAncestor("pim_enrich_family_history")
+     * @return Response
      */
     public function historyAction(Family $family)
     {
@@ -242,7 +233,7 @@ class FamilyController extends AbstractDoctrineController
             $family->addAttribute($attribute);
         }
 
-        $this->getManagerForClass('PimCatalogBundle:Family')->flush();
+        $this->familyManager->save($family);
 
         $this->addFlash('success', 'flash.family.attributes added');
 
@@ -280,9 +271,7 @@ class FamilyController extends AbstractDoctrineController
                 }
             }
 
-            $this->completenessManager->scheduleForFamily($family);
-
-            $this->getManagerForClass('PimCatalogBundle:Family')->flush();
+            $this->familyManager->save($family);
         }
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

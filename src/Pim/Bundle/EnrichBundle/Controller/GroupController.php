@@ -2,25 +2,22 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Group controller
@@ -37,7 +34,7 @@ class GroupController extends AbstractController
     /** @var GroupManager */
     protected $groupManager;
 
-    /** @var GroupHandler */
+    /** @var HandlerInterface */
     protected $groupHandler;
 
     /** @var Form */
@@ -55,7 +52,7 @@ class GroupController extends AbstractController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param GroupManager             $groupManager
-     * @param GroupHandler             $groupHandler
+     * @param HandlerInterface         $groupHandler
      * @param Form                     $groupForm
      */
     public function __construct(
@@ -68,7 +65,7 @@ class GroupController extends AbstractController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
-        GroupHandler $groupHandler,
+        HandlerInterface $groupHandler,
         Form $groupForm
     ) {
         parent::__construct(
@@ -195,7 +192,8 @@ class GroupController extends AbstractController
      *
      * @param Group $group
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @AclAncestor("pim_enrich_group_history")
+     * @return Response
      */
     public function historyAction(Group $group)
     {

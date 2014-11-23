@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 
 /**
  * Entity filter
@@ -12,44 +13,37 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityFilter extends BaseFilter
+class EntityFilter extends AbstractFilter implements FieldFilterInterface
 {
+    /** @var array */
+    protected $supportedFields;
+
     /**
-     * {@inheritdoc}
+     * Instanciate the base filter
+     *
+     * @param array $supportedFields
+     * @param array $supportedOperators
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
-    {
-        $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.values',
-            $joinAlias,
-            'WITH',
-            $condition
-        );
-
-        $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
-        $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-
-        $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
-
-        return $this;
+    public function __construct(
+        array $supportedFields = [],
+        array $supportedOperators = []
+    ) {
+        $this->supportedFields    = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
+        $this->checkValue($field, $value);
+
         $rootAlias  = $this->qb->getRootAlias();
         $entityAlias = 'filter'.$field;
         $this->qb->leftJoin($rootAlias.'.'.$field, $entityAlias);
 
-        if ($operator === 'NOT IN') {
+        if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
                     $this->qb->expr()->notIn($entityAlias.'.id', $value),
@@ -57,6 +51,7 @@ class EntityFilter extends BaseFilter
                 )
             );
         } else {
+            // TODO: fix this weird support of EMPTY operator
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
                 $exprNull = $this->qb->expr()->isNull($entityAlias.'.id');
@@ -75,5 +70,32 @@ class EntityFilter extends BaseFilter
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param string $field
+     * @param mixed  $value
+     */
+    protected function checkValue($field, $value)
+    {
+        if (!is_array($value)) {
+            throw InvalidArgumentException::arrayExpected($field, 'filter', 'entity');
+        }
+
+        foreach ($value as $entity) {
+            if (!is_numeric($entity) && 'empty' !== $entity) {
+                throw InvalidArgumentException::integerExpected($field, 'filter', 'entity');
+            }
+        }
     }
 }

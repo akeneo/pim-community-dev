@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Write data into a file on the filesystem
@@ -103,7 +103,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Close handler when desctructing the current instance
+     * Close handler when destructing the current instance
      */
     public function __destruct()
     {

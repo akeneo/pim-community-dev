@@ -1,0 +1,1 @@
+<div class="tab-pane tab-history {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" data-url="{{ path('pim_enrich_group_history', {id: form.vars.value.id}) }}"></div>
