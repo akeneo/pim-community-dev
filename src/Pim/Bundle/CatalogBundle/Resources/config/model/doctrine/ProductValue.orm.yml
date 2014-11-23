@@ -132,4 +132,5 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 - remove
                 - persist
                 - refresh
+                - detach
             mappedBy: value
