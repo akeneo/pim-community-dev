@@ -140,7 +140,7 @@ class Config
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml')) {
                 $requirejs = Yaml::parse(realpath($file));
-                $config = array_merge_recursive($config, $requirejs);
+                $config = array_replace_recursive($config, $requirejs);
             }
         }
         return $config;
