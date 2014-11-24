@@ -55,19 +55,36 @@ class OptionsFilter extends EntityFilter
         if ($operator === 'NOT IN') {
             $this->qb->field($field)->notIn($value);
         } else {
-            if (in_array('empty', $value)) {
+            // Case filter with value(s) and empty
+            if (in_array('empty', $value) && count($value) > 1) {
                 unset($value[array_search('empty', $value)]);
 
-                $expr = new Expr();
-                $expr = $expr->field($field)->exists(false);
-                $this->qb->addOr($expr);
-            }
-
-            if (count($value) > 0) {
-                $expr = new Expr();
+                $exprValues = new Expr();
                 $value = array_map('intval', $value);
-                $expr->field($field .'.id')->in($value);
-                $this->qb->addOr($expr);
+                $exprValues->field($field.'.id')->in($value);
+
+                $exprEmpty = new Expr();
+                $exprEmpty = $exprEmpty->field($field)->exists(false);
+
+                $exprAnd = new Expr();
+                $exprAnd->addOr($exprValues);
+                $exprAnd->addOr($exprEmpty);
+
+                $this->qb->addAnd($exprAnd);
+            }
+            else {
+                if (in_array('empty', $value)) {
+                    unset($value[array_search('empty', $value)]);
+
+                    $expr = new Expr();
+                    $expr = $expr->field($field)->exists(false);
+                    $this->qb->addAnd($expr);
+                } elseif (count($value) > 0) {
+                    $expr = new Expr();
+                    $value = array_map('intval', $value);
+                    $expr->field($field.'.id')->in($value);
+                    $this->qb->addAnd($expr);
+                }
             }
         }
 
