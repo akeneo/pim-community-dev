@@ -139,7 +139,7 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
                         $choice[$property] = $meta[$property];
                     }
                 }
-                $choices[] = $choice;
+                $choices[$code] = $choice;
             }
         }
 
