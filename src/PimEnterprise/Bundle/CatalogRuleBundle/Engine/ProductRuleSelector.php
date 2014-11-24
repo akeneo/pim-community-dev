@@ -22,7 +22,6 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Selects subjects impacted by a rule.
@@ -67,7 +66,6 @@ class ProductRuleSelector implements SelectorInterface
                 sprintf('The provided class name "%s" must implement interface "%s".', $subjectSetClass, $interface)
             );
         }
-
     }
 
     /**
@@ -75,20 +73,16 @@ class ProductRuleSelector implements SelectorInterface
      */
     public function select(LoadedRuleInterface $rule)
     {
-        $resolver = new OptionsResolver();
-        $this->configureCondition($resolver);
-
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
         /** @var RuleSubjectSetInterface $subjectSet */
         $subjectSet = new $this->subjectSetClass();
-        $conditions = $rule->getConditions();
         $pqb = $this->productQueryFactory->create();
 
-        foreach ($conditions as $condition) {
-            $condition = $resolver->resolve($condition);
+        /** @var \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface $condition */
+        foreach ($rule->getConditions() as $condition) {
             // TODO : we need to pass the locale and scope as a context here !
-            $pqb->addFilter($condition['field'], $condition['operator'], $condition['value']);
+            $pqb->addFilter($condition->getField(), $condition->getOperator(), $condition->getValue());
         }
 
         $products = $pqb->execute();

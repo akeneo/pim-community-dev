@@ -61,7 +61,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         RuleSubjectSetInterface $subjectSet
     ) {
         $loader->load($rule)->shouldBeCalled()->willReturn($loadedRule);
-        $loadedRule->addCondition(['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3]])->shouldBeCalled();
+        $loadedRule->addCondition(Argument::any())->shouldBeCalled();
         $selector->select($loadedRule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply($loadedRule, $subjectSet)->shouldBeCalled();
 

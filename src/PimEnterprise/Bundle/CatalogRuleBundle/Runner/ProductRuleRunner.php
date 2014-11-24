@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -63,19 +64,19 @@ class ProductRuleRunner extends AbstractRunner
      * @param RuleInterface $rule
      * @param array         $options
      *
-     * @return LoadedRuleInterface
+     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface
      */
     protected function loadRule(RuleInterface $rule, array $options)
     {
         $loadedRule = $this->loader->load($rule);
         if (!empty($options['selected_products'])) {
-            $loadedRule->addCondition(
-                [
+            //TODO: do not hardcode this
+            $condition = new ProductCondition([
                     'field' => 'id',
                     'operator' => 'IN',
                     'value' => $options['selected_products']
-                ]
-            );
+                ]);
+            $loadedRule->addCondition($condition);
         }
 
         return $loadedRule;
