@@ -47,3 +47,30 @@ Feature: Sort products per fields
     Given I am on the products page
     And the grid should contain 7 elements
     And I should be able to sort the rows by updated at
+
+  Scenario: Successfully sort products by status
+    Given I am on the "PC" product page
+    When I enable the product
+    And I press the "Save" button
+    And I am on the "Laptop" product page
+    And I disable the product
+    And I press the "Save" button
+    And I am on the "Amplifier" product page
+    And I disable the product
+    And I press the "Save" button
+    And I am on the "CD changer" product page
+    And I enable the product
+    And I press the "Save" button
+    And I am on the "Whirlpool" product page
+    And I enable the product
+    And I press the "Save" button
+    And I am on the "Electrolux" product page
+    And I disable the product
+    And I press the "Save" button
+    And I am on the products page
+    And I am on the "Mug" product page
+    And I enable the product
+    And I press the "Save" button
+    When I am on the products page
+    And the grid should contain 7 elements
+    And I should be able to sort the rows by status

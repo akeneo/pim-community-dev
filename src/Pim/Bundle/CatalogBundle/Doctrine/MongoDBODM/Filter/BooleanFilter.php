@@ -82,7 +82,7 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        $this->qb->field($field)->equals((int) $value);
+        $this->qb->field($field)->equals($value);
 
         return $this;
     }

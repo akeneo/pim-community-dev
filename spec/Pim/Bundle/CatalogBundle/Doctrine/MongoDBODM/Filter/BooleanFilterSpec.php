@@ -44,7 +44,7 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_adds_an_equal_filter_on_a_field_in_the_query($qb) {
         $qb->field('normalizedData.enabled')->willReturn($qb);
-        $qb->equals(1)->willReturn($qb);
+        $qb->equals(true)->willReturn($qb);
 
         $this->addFieldFilter('enabled', '=', true, 'en_US', 'mobile');
     }
@@ -60,7 +60,7 @@ class BooleanFilterSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
 
         $qb->field('normalizedData.enabled-en_US-mobile')->willReturn($qb);
-        $qb->equals(1)->willReturn($qb);
+        $qb->equals(true)->willReturn($qb);
 
         $this->addAttributeFilter($attribute, '=', true, 'en_US', 'mobile');
     }
