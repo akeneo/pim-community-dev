@@ -429,7 +429,7 @@ pim_enrich.mass_edit_action:
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
-    label: Attribute bearbeiten
+    label: Gemeinsame Attribute bearbeiten
     description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
@@ -499,6 +499,7 @@ pim_enrich:
       mass_edit: Aktionen zur Massenbearbeitung von Produkten
       comment: Produkte kommentieren
       download: Produkt als PDF herunterladen
+      history: Produkthistorie ansehen
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen
@@ -507,17 +508,20 @@ pim_enrich:
       move: Kategorie verschieben
       children: Kategorie-Kindelemente sehen
       products: Produkte von Kategorien sehen
+      history: Kategoriehistorie ansehen
     channel:
       index: Ausgabekanäle auflisten
       create: Einen Ausgabekanal anlegen
       edit: Einen Ausgabekanal bearbeiten
       remove: Einen Ausgabekanal löschen
+      history: Ausgabekanal-Historie ansehen
     family:
       index: Produktfamilien auflisten
       create: Eine Produktfamilie anlegen
       edit_properties: Die Eigenschaften einer Produktfamilie bearbeiten
       edit_attributes: Die Attribute einer Produktfamilie bearbeiten
       remove: Eine Produktfamilie löschen
+      history: Produktfamilien-Historie ansehen
     attribute_group:
       index: Attributgruppen auflisten
       create: Eine Attributgruppe anlegen
@@ -526,17 +530,20 @@ pim_enrich:
       sort: Attributgruppen sortieren
       add_attribute: Attribut zu einer Gruppe hinzufügen
       remove_attribute: Attribut aus einer Gruppe löschen
+      history: Attributgruppen-Historie ansehen
     attribute:
       index: Attribute auflisten
       create: Ein Attribut anlegen
       edit: Ein Attribut bearbeiten
       remove: Ein Attribut löschen
       sort: Attribute innerhalb von Attributgruppen sortieren
+      history: Attributhistorie ansehen
     group:
       index: Gruppen auflisten
       create: Eine Gruppe anlegen
       edit: Eine Gruppe bearbeiten
       remove: Eine Gruppe entfernen
+      history: Gruppenhistorie ansehen
     group_type:
       index: Gruppentypen auflisten
       create: Einen Gruppentyp anlegen
@@ -547,6 +554,7 @@ pim_enrich:
       create: Einen Verbindungstyp anlegen
       edit: Einen Verbindungstyp bearbeiten
       remove: Einen Verbindungstyp löschen
+      history: Verbindungstypen-Historie ansehen
   acl_group:
     association_type: Verbindungstypen
     attribute: Attribute

@@ -352,7 +352,6 @@ pim_enrich.mass_edit_action:
     description: Os produtos selecionados serão habilitados ou desabilitados.
     success_flash: O status do(s) produto(s) foi alterado
   edit-common-attributes:
-    label: Editar atributos
     description: Os atributos selecionados do produto serão editados com os seguintes dados para a localidade escolhida.
     empty: Por favor, selecione o(s) atributo(s) que deseja editar
     success_flash: O(s) atributo(s) do(s) produto(s) foi(ram) atualizado(s)

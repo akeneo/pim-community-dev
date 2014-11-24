@@ -8,11 +8,17 @@ attribute group:
   overview: 属性グループの概要
   create: 属性グループを作成
   edit: 属性グループを編集
+  suggest creation: 左側の属性グループから選択してください
+  or: または
+  create new: 新しい属性グループを作成
 category:
   title: カテゴリ
   overview: カテゴリの概要
   create: カテゴリを作成
   edit: カテゴリを編集
+  suggest selection: 左側のカテゴリから選択してください
+  or: または
+  create new: 新しいカテゴリを作成
 tree:
   title: ツリー
   create: ツリーを作成
@@ -273,6 +279,7 @@ Attribute type: 属性タイプ
 Defaultvalue: 標準の値
 Variant: バリアント
 Smart: スマート
+Useable as grid column: グリッド列として使用可能
 Useable as grid filter: グリッドフィルターとして使用可能
 Family: ファミリー
 Available locales: 使用可能なロケール
@@ -291,6 +298,7 @@ Choose the attribute group: 属性グループを選択
 Drop a file or click here: ファイルをドロップまたはここをクリックしてください
 Drop an image or click here: イメージをドロップまたはここをクリックしてください
 Automatic option sorting: オプションの自動並べ替え
+save_attribute_before_manage_option: オプションを管理するには、先に属性を保存してください
 Create: 作成
 Cancel: キャンセル
 Choose a family: ファミリーを選択してください
@@ -333,9 +341,11 @@ Default: デフォルト
 Attributes: 属性
 Title: タイトル
 pim_title.attribute_group:
+  index: 属性グループ
   create: 属性グループ |作成
   edit: '属性グループ %group.label% |編集'
 pim_title.category:
+  index: カテゴリツリー
   create: カテゴリ ツリー |作成
   edit: 'カテゴリツリー %category.label% |編集'
 pim_title.attribute:
@@ -419,10 +429,12 @@ pim_enrich.mass_edit_action:
     description: 選択した製品は有効または無効になります。
     success_flash: 製品の状態を変更しました
   edit-common-attributes:
-    label: 属性を編集
+    label: 共通の属性を編集
     description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
     empty: 編集する属性を選択してください
     success_flash: 製品属性が更新されました
+    message:
+      warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
   classify:
     label: 製品をカテゴリに分類
     description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
@@ -487,6 +499,7 @@ pim_enrich:
       mass_edit: 製品一括編集操作
       comment: 製品のコメント
       download: 製品情報をPDFでダウンロード
+      history: 製品の履歴を表示
     category:
       list: カテゴリリスト
       create: カテゴリ作成
@@ -495,17 +508,20 @@ pim_enrich:
       move: カテゴリを移動
       children: サブカテゴリを見る
       products: カテゴリの商品を見る
+      history: カテゴリの履歴を表示
     channel:
       index: チャンネル一覧
       create: チャンネル作成
       edit: チャンネル編集
       remove: チャンネル削除
+      history: チャネルの履歴の表示
     family:
       index: ファミリーのリスト
       create: ファミリーを作成
       edit_properties: ファミリーのプロパティを編集
       edit_attributes: ファミリーの属性を編集
       remove: ファミリー削除
+      history: ファミリーの履歴を表示
     attribute_group:
       index: 属性グループの一覧
       create: 属性グループを作成
@@ -514,17 +530,20 @@ pim_enrich:
       sort: 属性グループをソート
       add_attribute: 属性をグループに追加
       remove_attribute: グループから属性を削除
+      history: 属性グループの履歴を表示
     attribute:
       index: 属性リスト
       create: 属性を作成
       edit: 属性を編集
       remove: 属性を削除
       sort: 属性グループ内での属性ソート順
+      history: 属性の履歴を表示
     group:
       index: グループ一覧
       create: グループ作成
       edit: グループ編集
       remove: グループ削除
+      history: グループの履歴を表示
     group_type:
       index: グループタイプ一覧
       create: グループタイプ作成
@@ -535,6 +554,7 @@ pim_enrich:
       create: 関連タイプ作成
       edit: 関連タイプ編集
       remove: 関連タイプ削除
+      history: 関連タイプの履歴を表示
   acl_group:
     association_type: 関連タイプ
     attribute: 属性

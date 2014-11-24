@@ -347,7 +347,6 @@ pim_enrich.mass_edit_action:
     description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
     success_flash: De status van één of meerdere producten is gewijzigd
   edit-common-attributes:
-    label: Kenmerken bewerken
     description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
     empty: Selecteer de attributen die u wilt bewerken
     success_flash: Productattributen zijn bijgewerkt
