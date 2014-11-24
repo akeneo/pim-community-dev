@@ -7,6 +7,7 @@
 - PIM-3326: Fix mongo filters with multiples values and empty on MongoDB
 - PIM-3426: Fix common attributes edition on multi selects
 - PIM-3434: Fix bug in product media manager when file does not exist on the filesystem
+- PIM-3436: Fix WYSIWYG field on product edit form (load them asynchronously)
 
 # 1.2.12 (2014-11-13)
 
