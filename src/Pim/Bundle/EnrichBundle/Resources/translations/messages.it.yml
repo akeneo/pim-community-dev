@@ -412,7 +412,6 @@ pim_enrich.mass_edit_action:
     description: Gli articoli selezionati saranno attivati o disattivati.
     success_flash: "Lo stato dell'articolo/degli articoli è stato modificato"
   edit-common-attributes:
-    label: Modificare gli attributi
     description: "Gli attributi dell'articolo selezionato verranno modificati con i seguenti dati per le impostazioni locali selezionate."
     empty: "Si prega di selezionare l'attributo/gli attributi che si desidera modificare"
     success_flash: "L'attributo (/gli attributi) dell'articolo (/degli articoli) è stato caricato"
@@ -456,7 +455,7 @@ Copy: Copia
 Current tab: Scheda corrente
 pim_enrich.channel.pick_conversion_unit: |
   Scegliere un'unità di conversione per ogni attributo metrico che verrà utilizzato durante l'esportazione dell'articolo
-
+  
 Group: Gruppo
 View group: Visualizzazione gruppo
 Products: Articoli
