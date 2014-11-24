@@ -47,8 +47,7 @@ class OptionFilter extends EntityFilter
                 $expr = new Expr();
                 $expr = $expr->field($field)->exists(false);
                 $this->qb->addAnd($expr);
-            }
-            else if (count($value) > 0) {
+            } elseif (count($value) > 0) {
                 $value = array_map('intval', $value);
                 $expr = new Expr();
                 $expr->field($field)->in($value);
