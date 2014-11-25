@@ -296,28 +296,37 @@ MISSING_SQL;
                     COUNT(distinct v.id)
                     / (
                         SELECT count(*)
-                            FROM pim_catalog_attribute_requirement
-                            WHERE family_id = p.family_id
-                                AND channel_id = c.id
-                                AND required = true
+                        FROM pim_catalog_attribute_requirement r
+                        JOIN pim_catalog_attribute a ON a.id = r.attribute_id
+                        LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = a.id
+                        WHERE family_id = p.family_id
+                            AND channel_id = c.id
+                            AND r.required = true
+                            AND (al.locale_id = l.id OR al.locale_id IS NULL)
                     )
                     * 100
                 ) AS ratio,
                 (
                     (
                         SELECT count(*)
-                            FROM pim_catalog_attribute_requirement
-                            WHERE family_id = p.family_id
-                                AND channel_id = c.id
-                                AND required = true
+                        FROM pim_catalog_attribute_requirement r
+                        JOIN pim_catalog_attribute a ON a.id = r.attribute_id
+                        LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = a.id
+                        WHERE family_id = p.family_id
+                            AND channel_id = c.id
+                            AND r.required = true
+                            AND (al.locale_id = l.id OR al.locale_id IS NULL)
                     ) - COUNT(distinct v.id)
                 ) AS missing_count,
                 (
                     SELECT count(*)
-                        FROM pim_catalog_attribute_requirement
-                        WHERE family_id = p.family_id
-                            AND channel_id = c.id
-                            AND required = true
+                    FROM pim_catalog_attribute_requirement r
+                    JOIN pim_catalog_attribute a ON a.id = r.attribute_id
+                    LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = a.id
+                    WHERE family_id = p.family_id
+                        AND channel_id = c.id
+                        AND r.required = true
+                        AND (al.locale_id = l.id OR al.locale_id IS NULL)
                 ) AS required_count
             FROM missing_completeness m
                 JOIN pim_catalog_channel c ON c.id = m.channel_id
@@ -333,7 +342,9 @@ MISSING_SQL;
                     AND complete_price.channel_id = c.id
                     AND complete_price.locale_id = l.id
                 %product_value_joins%
-            WHERE (%product_value_conditions% OR complete_price.value_id IS NOT NULL) AND r.required = true
+                LEFT JOIN pim_catalog_attribute_locale al ON al.attribute_id = v.attribute_id
+            WHERE r.required = true AND
+                ((al.locale_id = l.id OR al.locale_id IS NULL) AND %product_value_conditions% OR complete_price.value_id IS NOT NULL)
             GROUP BY p.id, c.id, l.id
 MAIN_SQL;
     }

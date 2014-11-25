@@ -183,19 +183,36 @@ class CompletenessManager
     ) {
         $attribute = $requirement->getAttribute();
         $channel = $requirement->getChannel();
+        $localeSpecificCodes = $attribute->getLocaleSpecificCodes();
         foreach ($localeCodes as $localeCode) {
             $constraint = new ProductValueComplete(array('channel' => $channel));
             $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
-            $missing = false;
-            if (!isset($productValues[$valueCode])) {
-                $missing = true;
-            } elseif ($this->validator->validateValue($productValues[$valueCode], $constraint)->count()) {
-                $missing = true;
-            }
-            if ($missing) {
+
+            if (true === $this->isMissingAttribute($localeSpecificCodes, $localeCode, $productValues[$valueCode], $constraint)) {
                 $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
             }
         }
+    }
+
+    /**
+     * Is missing value for an attribute ?
+     *
+     * @param array                $localeSpecificCodes specific locales for attribute
+     * @param string               $localeCode          locale code
+     * @param mixed                $value               attribute value
+     * @param ProductValueComplete $constraint
+     */
+    protected function isMissingAttribute(array $localeSpecificCodes = [], $localeCode, $value, $constraint)
+    {
+        if (!empty($localeSpecificCodes) && !in_array($localeCode, $localeSpecificCodes)) {
+            return false;
+        }
+
+        if (!isset($value) || $this->validator->validateValue($value, $constraint)->count()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

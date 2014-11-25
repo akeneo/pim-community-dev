@@ -815,6 +815,25 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
+     * Get available locale codes
+     *
+     * @return array
+     */
+    public function getLocaleSpecificCodes()
+    {
+        if (null === $this->getAvailableLocales()) {
+            return [];
+        }
+
+        $codes = [];
+        foreach ($this->getAvailableLocales() as $locale) {
+            $codes[] = $locale->getCode();
+        }
+
+        return $codes;
+    }
+
+    /**
      * Set available locales
      *
      * @param ArrayCollection $availableLocales

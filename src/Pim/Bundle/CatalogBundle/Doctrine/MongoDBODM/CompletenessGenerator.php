@@ -122,14 +122,13 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($stats as $channelStats) {
             $channel = $channelStats['object'];
             $channelData = $channelStats['data'];
-            $channelRequiredCount = $channelData['required_count'];
 
             foreach ($channelData['locales'] as $localeStats) {
                 $completeness = $this->completenessFactory->build(
                     $channel,
                     $localeStats['object'],
                     $localeStats['missing_count'],
-                    $channelRequiredCount
+                    $localeStats['required_count']
                 );
 
                 $completenesses[] = $completeness;
@@ -180,7 +179,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $stats = array();
         $locales = $channel->getLocales();
         $completeConstraint = new ProductValueComplete(array('channel' => $channel));
-        $stats['required_count'] = 0;
         $stats['locales'] = array();
         $requirements = $product->getFamily()->getAttributeRequirements();
 
@@ -188,7 +186,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             if (!$req->isRequired() || $req->getChannel() != $channel) {
                 continue;
             }
-            $stats['required_count']++;
 
             foreach ($locales as $locale) {
                 $localeCode = $locale->getCode();
@@ -197,14 +194,22 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats['locales'][$localeCode] = array();
                     $stats['locales'][$localeCode]['object'] = $locale;
                     $stats['locales'][$localeCode]['missing_count'] = 0;
+                    $stats['locales'][$localeCode]['required_count'] = 0;
                 }
 
                 $attribute = $req->getAttribute();
-                $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
 
+                $localeSpecificCodes = $attribute->getLocaleSpecificCodes();
+                if (!empty($localeSpecificCodes) && !in_array($localeCode, $localeSpecificCodes)) {
+                    continue;
+                }
+
+                $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
                 if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
                     $stats['locales'][$localeCode]['missing_count'] ++;
                 }
+
+                $stats['locales'][$localeCode]['required_count']++;
             }
         }
 
