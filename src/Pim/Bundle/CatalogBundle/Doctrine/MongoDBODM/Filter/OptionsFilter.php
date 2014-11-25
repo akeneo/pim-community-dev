@@ -97,9 +97,8 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
                 $this->qb->addAnd($expr);
             } else {
                 $value = array_map('intval', $value);
-                $expr = $this->qb->expr()->field($field . '.id')->in($value);
+                $expr = $this->qb->expr()->field($field.'.id')->in($value);
                 $this->qb->addAnd($expr);
-
             }
         }
     }
