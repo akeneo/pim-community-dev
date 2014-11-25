@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Gaufrette\Filesystem;
@@ -207,16 +208,26 @@ class MediaManager
     }
 
     /**
-     * Read a file
+     * Get the file path of a media
+     *
      * @param AbstractProductMedia $media
      *
-     * @return content
+     * @return string|null the path of the media or null if the media has no file attached
+     *
+     * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
     protected function getFilePath(AbstractProductMedia $media)
     {
         if ($this->fileExists($media)) {
-            return $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
+            $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
+            if (!is_readable($path)) {
+                throw new FileNotFoundException($path);
+            }
+
+            return $path;
         }
+
+        return null;
     }
 
     /**
@@ -251,10 +262,14 @@ class MediaManager
      * Get the media, base64 encoded
      * @param AbstractProductMedia $media
      *
-     * @return string
+     * @return string|null the base 64 representation of the file media or null if the media has no file attached
+     *
+     * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
     public function getBase64(AbstractProductMedia $media)
     {
-        return base64_encode(file_get_contents($this->getFilePath($media)));
+        $path = $this->getFilePath($media);
+
+        return $path !== null ? base64_encode(file_get_contents($this->getFilePath($media))) : null;
     }
 }
