@@ -74,8 +74,8 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
                 $exprAnd->addOr($exprEmpty);
 
                 $this->qb->addAnd($exprAnd);
-            } // Simple Case
-            else {
+            } else {
+                // Simple Case
                 if (in_array('empty', $value)) {
                     unset($value[array_search('empty', $value)]);
 
