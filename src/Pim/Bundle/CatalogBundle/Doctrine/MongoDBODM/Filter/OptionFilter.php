@@ -92,11 +92,11 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     {
         if (Operators::IS_EMPTY === $operator) {
             $expr = $this->qb->expr()->field($field)->exists(false);
-            $this->qb->addOr($expr);
+            $this->qb->addAnd($expr);
         } else {
             $value = array_map('intval', $value);
             $expr = $this->qb->expr()->field($field)->in($value);
-            $this->qb->addOr($expr);
+            $this->qb->addAnd($expr);
         }
     }
 }

@@ -52,20 +52,36 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
 
         if ($operator === Operators::NOT_IN_LIST) {
             $this->qb->field($field)->notIn($value);
-        } else {
+        } else if (in_array('empty', $value) && count($value) > 1) {
+
+            unset($value[array_search('empty', $value)]);
+
+            $exprValues = new Expr();
+            $exprValues = $exprValues->field($field)->in($value);
+
+            $exprEmpty = new Expr();
+            $exprEmpty = $exprEmpty->field($field)->exists(false);
+
+            $exprAnd = new Expr();
+            $exprAnd->addOr($exprValues);
+            $exprAnd->addOr($exprEmpty);
+
+            $this->qb->addAnd($exprAnd);
+
+        }
+        else {
             // TODO: fix this weird support of EMPTY operator
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
 
                 $expr = new Expr();
                 $expr = $expr->field($field)->exists(false);
-                $this->qb->addOr($expr);
+                $this->qb->addAnd($expr);
             }
-
-            if (count($value) > 0) {
+            else if (count($value) > 0) {
                 $expr = new Expr();
-                $expr->field($field)->in($value);
-                $this->qb->addOr($expr);
+                $expr = $expr->field($field)->in($value);
+                $this->qb->addAnd($expr);
             }
         }
 

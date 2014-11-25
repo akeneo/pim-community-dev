@@ -56,7 +56,7 @@ class OptionFilterSpec extends ObjectBehavior
         $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.option_code.id')->shouldBeCalled()->willReturn($expr);
         $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
-        $qb->addOr($expr)->shouldBeCalled();
+        $qb->addAnd($expr)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'IN', ['118', '270']);
     }
@@ -71,7 +71,7 @@ class OptionFilterSpec extends ObjectBehavior
         $qb->expr()->willReturn($expr);
         $expr->field('normalizedData.option_code.id')->shouldBeCalled()->willReturn($expr);
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
-        $qb->addOr($expr)->shouldBeCalled();
+        $qb->addAnd($expr)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
