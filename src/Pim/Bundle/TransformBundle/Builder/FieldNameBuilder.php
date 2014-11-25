@@ -146,6 +146,8 @@ class FieldNameBuilder
     }
 
     /**
+     * Check th consistency of the field with the attribute and it properties locale, scope, currency
+     *
      * @param AbstractAttribute $attribute
      * @param string            $fieldName
      * @param array             $explodedFieldName
@@ -154,33 +156,36 @@ class FieldNameBuilder
      */
     protected function checkFieldNameTokens(AbstractAttribute $attribute, $fieldName, array $explodedFieldName)
     {
-        $expectedSize = 0;
+        // with the current price import, the currency can be present or not in the header,
+        // so the expected size may vary, the CE-1.3 will contain only the support of currency code in the header
+        $expectedSize = [0];
         $isLocalizable = $attribute->isLocalizable();
         $isScopable = $attribute->isScopable();
         $isPrice = 'prices' === $attribute->getBackendType();
         if ($isLocalizable && $isScopable && $isPrice) {
-            $expectedSize = 4;
+            $expectedSize = [3, 4];
         } elseif ($isLocalizable && $isScopable) {
-            $expectedSize = 3;
+            $expectedSize = [3];
         } elseif ($isLocalizable && $isPrice) {
-            $expectedSize = 3;
+            $expectedSize = [2, 3];
         } elseif ($isScopable && $isPrice) {
-            $expectedSize = 3;
+            $expectedSize = [3];
         } elseif ($isLocalizable) {
-            $expectedSize = 2;
+            $expectedSize = [2];
         } elseif ($isScopable) {
-            $expectedSize = 2;
+            $expectedSize = [2];
         } elseif ($isPrice) {
-            $expectedSize = 2;
+            $expectedSize = [1, 2];
         } else {
-            $expectedSize = 1;
+            $expectedSize = [1];
         }
 
-        if ($expectedSize !== count($explodedFieldName)) {
+        $nbTokens = count($explodedFieldName);
+        if (!in_array($nbTokens, $expectedSize)) {
             $expected = [
                 $isLocalizable ? 'a locale' : 'no locale',
                 $isScopable ? 'a scope' : 'no scope',
-                $isPrice ? 'a currency' : 'no currency',
+                $isPrice ? 'an optional currency' : 'no currency',
             ];
             $expected = implode($expected, ', ');
 

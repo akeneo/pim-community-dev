@@ -236,7 +236,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $repository->findByReference('cost')->willReturn($attribute);
 
-        $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formated, attribute "cost" expects a locale, a scope, a currency'))
+        $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formated, attribute "cost" expects a locale, a scope, an optional currency'))
             ->duringExtractAttributeFieldNameInfos('cost');
     }
 }
