@@ -202,4 +202,41 @@ class FieldNameBuilderSpec extends ObjectBehavior
             ->extractAssociationFieldNameInfos('bar')
             ->shouldBe(null);
     }
+
+    function it_throws_exception_when_the_field_name_is_not_consistent_with_the_attribute_property(
+        $managerRegistry,
+        AttributeRepository $repository,
+        Attribute $attribute
+    ) {
+        // global with extra locale
+        $attribute->getCode()->willReturn('sku');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('text');
+        $repository->findByReference('sku')->willReturn($attribute);
+        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+
+        $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formated, attribute "sku" expects no locale, no scope, no currency'))
+            ->duringExtractAttributeFieldNameInfos('sku-fr_FR');
+
+        // localizable without any locale
+        $attribute->getCode()->willReturn('name');
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('text');
+        $repository->findByReference('name')->willReturn($attribute);
+
+        $this->shouldThrow(new \InvalidArgumentException('The field "name" is not well-formated, attribute "name" expects a locale, no scope, no currency'))
+            ->duringExtractAttributeFieldNameInfos('name');
+
+        // localizable, scopable and price without any currency
+        $attribute->getCode()->willReturn('cost');
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isScopable()->willReturn(true);
+        $attribute->getBackendType()->willReturn('prices');
+        $repository->findByReference('cost')->willReturn($attribute);
+
+        $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formated, attribute "cost" expects a locale, a scope, a currency'))
+            ->duringExtractAttributeFieldNameInfos('cost');
+    }
 }

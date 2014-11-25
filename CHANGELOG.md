@@ -8,6 +8,11 @@
 - PIM-3426: Fix common attributes edition on multi selects
 - PIM-3434: Fix bug in product media manager when file does not exist on the filesystem
 - PIM-3436: Fix WYSIWYG field on product edit form (load them asynchronously)
+- PIM-3369: Add an error message when the channel and a locale of a field doesnt exist during product import
+- PIM-3370: Add an error message when the channel doesnt exist during product import
+- PIM-3374: Add an error message when a channel is provided for a global attribute
+- PIM-3375: Add an error message when a locale is provided for a global attribute
+- PIM-3376: Add an error message when a channel and a locale are provided for a global attribute
 
 # 1.2.12 (2014-11-13)
 

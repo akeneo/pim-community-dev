@@ -74,10 +74,11 @@ class FieldNameBuilder
     {
         $explodedFieldName = explode("-", $fieldName);
         $attributeCode = $explodedFieldName[0];
-
         $attribute = $this->getRepository($this->attributeClass)->findByReference($attributeCode);
 
         if (null !== $attribute) {
+            $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
+
             return $this->extractAttributeInfos($attribute, $explodedFieldName);
         }
 
@@ -141,6 +142,56 @@ class FieldNameBuilder
         $regex = '/^([a-zA-Z0-9_]+)-(groups|products)$/';
         if (preg_match($regex, $fieldName, $matches)) {
             return ['assoc_type_code' => $matches[1], 'part' => $matches[2]];
+        }
+    }
+
+    /**
+     * @param AbstractAttribute $attribute
+     * @param string            $fieldName
+     * @param array             $explodedFieldName
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function checkFieldNameTokens(AbstractAttribute $attribute, $fieldName, array $explodedFieldName)
+    {
+        $expectedSize = 0;
+        $isLocalizable = $attribute->isLocalizable();
+        $isScopable = $attribute->isScopable();
+        $isPrice = 'prices' === $attribute->getBackendType();
+        if ($isLocalizable && $isScopable && $isPrice) {
+            $expectedSize = 4;
+        } elseif ($isLocalizable && $isScopable) {
+            $expectedSize = 3;
+        } elseif ($isLocalizable && $isPrice) {
+            $expectedSize = 3;
+        } elseif ($isScopable && $isPrice) {
+            $expectedSize = 3;
+        } elseif ($isLocalizable) {
+            $expectedSize = 2;
+        } elseif ($isScopable) {
+            $expectedSize = 2;
+        } elseif ($isPrice) {
+            $expectedSize = 2;
+        } else {
+            $expectedSize = 1;
+        }
+
+        if ($expectedSize !== count($explodedFieldName)) {
+            $expected = [
+                $isLocalizable ? 'a locale' : 'no locale',
+                $isScopable ? 'a scope' : 'no scope',
+                $isPrice ? 'a currency' : 'no currency',
+            ];
+            $expected = implode($expected, ', ');
+
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The field "%s" is not well-formated, attribute "%s" expects %s',
+                    $fieldName,
+                    $attribute->getCode(),
+                    $expected
+                )
+            );
         }
     }
 
