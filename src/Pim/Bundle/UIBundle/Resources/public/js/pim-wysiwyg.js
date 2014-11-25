@@ -31,19 +31,35 @@ define(
                 tinymce.execCommand('mceRemoveControl', true, id);
             }
         };
+
+        var isAllreadyRendered = function(id) {
+            for (var i = tinymce.editors.length - 1; i >= 0; i--) {
+                if (tinymce.editors[i].id === id) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         Backbone.Router.prototype.on('route', function () {
             for (var i = tinymce.editors.length - 1; i >= 0; i--) {
                 destroyEditor(tinymce.editors[i].id);
             }
         });
+
         return {
+            settings: [],
             init: function($el, options) {
-                var settings = _.extend(
+                this.settings[$el.attr('id')] = _.extend(
                     _.clone(config),
                     { selector: '#' + $el.attr('id'), readonly: $el.is('[disabled]') },
                     options
                 );
-                tinymce.init(settings);
+
+                setTimeout(_.bind(function() {
+                    tinymce.init(this);
+                }, this.settings[$el.attr('id')]), 0);
 
                 return this;
             },
@@ -54,9 +70,9 @@ define(
             },
             reinit: function($el) {
                 var id = $el.attr('id');
-                var settings = tinymce.editors[id] ? tinymce.editors[id].settings : {};
+                this.settings = tinymce.editors[id] ? tinymce.editors[id].settings : {};
 
-                return this.destroy($el).init($el, settings);
+                return this.destroy($el).init($el, this.settings);
             },
             readonly: function($el, state) {
                 this.destroy($el).init($el, { readonly: state });
