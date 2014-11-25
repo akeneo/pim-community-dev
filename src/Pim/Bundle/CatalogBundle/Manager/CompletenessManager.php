@@ -162,6 +162,8 @@ class CompletenessManager
      */
     public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode)
     {
+        //TODO: change this part to not take into account locale specific attributes
+
         $family = $product->getFamily();
 
         $getCodes = function ($entities) {

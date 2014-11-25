@@ -288,6 +288,8 @@ MISSING_SQL;
      */
     protected function getMainSqlPart()
     {
+        //TODO: change this sql to not take into account locale specific attributes
+
         return <<<MAIN_SQL
             INSERT INTO pim_catalog_completeness (
                 locale_id, channel_id, product_id, ratio, missing_count, required_count
