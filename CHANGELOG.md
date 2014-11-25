@@ -13,6 +13,7 @@
 - PIM-3374: Add an error message when a channel is provided for a global attribute
 - PIM-3375: Add an error message when a locale is provided for a global attribute
 - PIM-3376: Add an error message when a channel and a locale are provided for a global attribute
+- PIM-3393: Don't show the update view button for non-owners
 
 # 1.2.12 (2014-11-13)
 

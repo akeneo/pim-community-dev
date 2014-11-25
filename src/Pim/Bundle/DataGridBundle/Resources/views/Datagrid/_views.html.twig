@@ -3,7 +3,7 @@
         {{- 'datagrid_view.default'|trans -}}
     </option>
 {% for view in views %}
-    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}"{{ view.owner.id == app.user.id ? ' data-removable="1"' : '' }}>
+    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}" data-default="0" data-removable="{{ view.owner.id == app.user.id ? 1 : 0 }}">
         {{- view.label -}}
     </option>
 {% endfor %}
@@ -214,8 +214,10 @@ require(
 
             } else {
                 setTitle(activeViewLabel, ' *');
-                if (!!$activeView.data('removable') || !$activeView.data('default')) {
+                if (!$activeView.data('default') && $activeView.data('removable')) {
                     $updateLink.removeClass('hide');
+                } else {
+                    $updateLink.addClass('hide');
                 }
             }
         };
