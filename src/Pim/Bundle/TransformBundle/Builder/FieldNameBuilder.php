@@ -156,25 +156,38 @@ class FieldNameBuilder
      */
     protected function checkFieldNameTokens(AbstractAttribute $attribute, $fieldName, array $explodedFieldName)
     {
-        // with the current price import, the currency can be present or not in the header,
-        // so the expected size may vary, the CE-1.3 will contain only the support of currency code in the header
+        // the expected number of tokens in a field may vary,
+        //  - with the current price import, the currency can be optionaly present in the header,
+        //  - with the current metric import, a "-unit" field can be added in the header,
+        //
+        // To avoid BC break, we keep the support in this fix, the CE-1.3 will contain only the
+        // support of currency code in the header and metric in a single field
         $expectedSize = [0];
         $isLocalizable = $attribute->isLocalizable();
         $isScopable = $attribute->isScopable();
         $isPrice = 'prices' === $attribute->getBackendType();
+        $isMetric = 'metric' === $attribute->getBackendType();
         if ($isLocalizable && $isScopable && $isPrice) {
+            $expectedSize = [3, 4];
+        } elseif ($isLocalizable && $isScopable && $isMetric) {
             $expectedSize = [3, 4];
         } elseif ($isLocalizable && $isScopable) {
             $expectedSize = [3];
         } elseif ($isLocalizable && $isPrice) {
             $expectedSize = [2, 3];
         } elseif ($isScopable && $isPrice) {
-            $expectedSize = [3];
+            $expectedSize = [2, 3];
+        } elseif ($isLocalizable && $isMetric) {
+            $expectedSize = [2, 3];
+        } elseif ($isScopable && $isMetric) {
+            $expectedSize = [2, 3];
         } elseif ($isLocalizable) {
             $expectedSize = [2];
         } elseif ($isScopable) {
             $expectedSize = [2];
         } elseif ($isPrice) {
+            $expectedSize = [1, 2];
+        } elseif ($isMetric) {
             $expectedSize = [1, 2];
         } else {
             $expectedSize = [1];
