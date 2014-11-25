@@ -69,7 +69,7 @@ class ProductRuleLoader implements LoaderInterface
             throw new \LogicException(sprintf('Rule "%s" should have a "actions" key in its content.', $rule->getCode()));
         }
 
-        $this->loadConditions($rule, $content['conditions']);
+        $this->loadConditions($loaded, $content['conditions']);
         $loaded->setActions($content['actions']);
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($rule));
@@ -102,6 +102,27 @@ class ProductRuleLoader implements LoaderInterface
         }
 
         $rule->setConditions($conditions);
+
+        return $this;
+    }
+
+    /**
+     * Loads actions into a rule.
+     *
+     * @param LoadedRuleInterface $rule
+     * @param array               $rawActions
+     *
+     * @return ProductRuleLoader
+     */
+    protected function loadActions(LoadedRuleInterface $rule, array $rawActions)
+    {
+        $actions = [];
+        foreach ($rawActions as $rawAction) {
+            //TODO: catch exception and log it ? or do not catch and totally fail ?
+            $actions[] = new ProductCondition($rawAction);
+        }
+
+        $rule->setConditions($actions);
 
         return $this;
     }
