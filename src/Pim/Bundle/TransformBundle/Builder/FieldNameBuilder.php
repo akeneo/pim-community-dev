@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Builder;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Create field names for associations and product values
@@ -58,7 +58,7 @@ class FieldNameBuilder
      *
      * Returned array like:
      * [
-     *     "attribute"   => AbstractAttribute,
+     *     "attribute"   => AttributeInterface,
      *     "locale_code" => <locale_code>|null,
      *     "scope_code"  => <scope_code>|null,
      *     "price_currency" => <currency_code> // this key is optional
@@ -89,12 +89,12 @@ class FieldNameBuilder
      * Extract informations from an attribute and exploded field name
      * This method is used from extractAttributeFieldNameInfos and can be redefine to add new rules
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $explodedFieldName
+     * @param AttributeInterface $attribute
+     * @param array              $explodedFieldName
      *
      * @return array
      */
-    protected function extractAttributeInfos(AbstractAttribute $attribute, array $explodedFieldName)
+    protected function extractAttributeInfos(AttributeInterface $attribute, array $explodedFieldName)
     {
         array_shift($explodedFieldName);
 
@@ -134,15 +134,15 @@ class FieldNameBuilder
     }
 
     /**
-     * Check th consistency of the field with the attribute and it properties locale, scope, currency
+     * Check the consistency of the field with the attribute and it properties locale, scope, currency
      *
-     * @param AbstractAttribute $attribute
-     * @param string            $fieldName
-     * @param array             $explodedFieldName
+     * @param AttributeInterface $attribute
+     * @param string             $fieldName
+     * @param array              $explodedFieldName
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameTokens(AbstractAttribute $attribute, $fieldName, array $explodedFieldName)
+    protected function checkFieldNameTokens(AttributeInterface $attribute, $fieldName, array $explodedFieldName)
     {
         // the expected number of tokens in a field may vary,
         //  - with the current price import, the currency can be optionaly present in the header,
