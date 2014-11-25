@@ -248,13 +248,14 @@ class MediaManager
 
     /**
      * Get the media, base64 encoded
-     * @param AbstractProductMedia $media
+     *
+     * @param ProductMediaInterface $media
      *
      * @return string|null the base 64 representation of the file media or null if the media has no file attached
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
-    public function getBase64(AbstractProductMedia $media)
+    public function getBase64(ProductMediaInterface $media)
     {
         $path = $this->getFilePath($media);
 
@@ -314,13 +315,13 @@ class MediaManager
     /**
      * Get the file path of a media
      *
-     * @param AbstractProductMedia $media
+     * @param ProductMediaInterface $media
      *
      * @return string|null the path of the media or null if the media has no file attached
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
-    protected function getFilePath(AbstractProductMedia $media)
+    protected function getFilePath(ProductMediaInterface $media)
     {
         if ($this->fileExists($media)) {
             $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();

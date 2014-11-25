@@ -20,7 +20,8 @@ class MediaManagerSpec extends ObjectBehavior
 {
     function let(Filesystem $filesystem, MediaFactory $factory, ManagerRegistry $registry)
     {
-        $this->beConstructedWith($filesystem, '/tmp/pim-ce', $factory, $registry);
+        $path = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
+        $this->beConstructedWith($filesystem, $path, $factory, $registry);
     }
 
     function it_handles_new_product_media_upload($filesystem, ProductMediaInterface $media, File $newFile)
@@ -30,14 +31,16 @@ class MediaManagerSpec extends ObjectBehavior
 
         $filesystem->has('my-new-file.jpg')->willReturn(false);
         $newFile->getFilename()->willReturn('my-new-file.jpg');
-        $newFile->getPathname()->willReturn('/tmp/tmp-phpspec');
+
+        $pathname = realpath(__DIR__.'/../../../../../features/Context/fixtures/akeneo.jpg');
+        $newFile->getPathname()->willReturn($pathname);
 
         // write a fake file in tmp
         $adapter = new LocalAdapter('/tmp');
         $fs = new Filesystem($adapter);
         $fs->write('tmp-phpspec', '', true);
 
-        $filesystem->write('prefix-my-new-file.jpg', '', false)->shouldBeCalled();
+        $filesystem->write('prefix-my-new-file.jpg', Argument::any(), false)->shouldBeCalled();
         $media->setOriginalFilename('my-new-file.jpg')->shouldBeCalled();
         $media->setFilename('prefix-my-new-file.jpg')->shouldBeCalled();
         $media->setFilePath(null)->shouldBeCalled();
@@ -51,13 +54,13 @@ class MediaManagerSpec extends ObjectBehavior
     function it_handles_existing_product_media_upload($filesystem, ProductMediaInterface $media, File $newFile)
     {
         $media->getFile()->willReturn($newFile);
-        $media->getFilename()->willReturn('my-new-file.jpg');
+        $media->getFilename()->willReturn('akeneo.jpg');
 
-        $filesystem->has('my-new-file.jpg')->willReturn(true);
-        $newFile->getFilename()->willReturn('my-new-file.jpg');
+        $filesystem->has('akeneo.jpg')->willReturn(true);
+        $newFile->getFilename()->willReturn('akeneo.jpg');
 
         // delete the existing file
-        $filesystem->has('my-new-file.jpg')->willReturn(true);
+        $filesystem->has('akeneo.jpg')->willReturn(true);
         $media->setOriginalFilename(null)->shouldBeCalled();
         $media->setFilename(null)->shouldBeCalled();
         $media->setFilePath(null)->shouldBeCalled();
@@ -71,10 +74,10 @@ class MediaManagerSpec extends ObjectBehavior
         $fs = new Filesystem($adapter);
         $fs->write('tmp-phpspec', '', true);
 
-        $filesystem->write('prefix-my-new-file.jpg', '', false)->shouldBeCalled();
-        $media->setOriginalFilename('my-new-file.jpg')->shouldBeCalled();
-        $media->setFilename('prefix-my-new-file.jpg')->shouldBeCalled();
-        $media->setFilePath('/tmp/pim-ce/my-new-file.jpg')->shouldBeCalled();
+        $filesystem->write('prefix-akeneo.jpg', '', false)->shouldBeCalled();
+        $media->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
+        $media->setFilename('prefix-akeneo.jpg')->shouldBeCalled();
+        $media->setFilePath(Argument::any()/* '/tmp/pim-ce/my-new-file.jpg'*/)->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $media->setMimeType('jpg')->shouldBeCalled();
         $media->resetFile()->shouldBeCalled();
@@ -86,7 +89,7 @@ class MediaManagerSpec extends ObjectBehavior
     {
         $source->getFilePath()->willReturn('/tmp/tmp-phpspec');
         $target->setFile(Argument::any())->shouldBeCalled();
-        $source->getOriginalFilename()->willReturn('my-source-file.jpg');
+        $source->getOriginalFilename()->willReturn('akeneo.jpg');
 
         // upload
         $target->getFile()->willReturn($newFile);
@@ -97,21 +100,20 @@ class MediaManagerSpec extends ObjectBehavior
         $fs = new Filesystem($adapter);
         $fs->write('tmp-phpspec', '', true);
 
-        $filesystem->write('prefix-my-source-file.jpg', '', false)->shouldBeCalled();
-
-        $newFile->getFilename()->willReturn('my-source-file.jpg');
-        $target->setOriginalFilename('my-source-file.jpg')->shouldBeCalled();
-        $target->setFilename('prefix-my-source-file.jpg')->shouldBeCalled();
-        $filesystem->has('prefix-my-source-file.jpg')->willReturn(true);
-        $target->getFilename()->willReturn('prefix-my-source-file.jpg');
-        $target->setFilePath('/tmp/pim-ce/prefix-my-source-file.jpg')->shouldBeCalled();
+        $newFile->getFilename()->willReturn('akeneo.jpg');
+        $filesystem->write('prefix-akeneo.jpg', '', false)->shouldBeCalled();
+        $target->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
+        $target->setFilename('prefix-akeneo.jpg')->shouldBeCalled();
+        $filesystem->has('akeneo.jpg')->willReturn(true);
+        $target->getFilename()->willReturn('akeneo.jpg');
+        $target->setFilePath(Argument::any())->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $target->setMimeType('jpg')->shouldBeCalled();
         $target->resetFile()->shouldBeCalled();
 
         // update original file name
-        $source->getOriginalFilename()->willReturn('my-source-file.jpg');
-        $target->setOriginalFilename('my-source-file.jpg')->shouldBeCalled();
+        $source->getOriginalFilename()->willReturn('akeneo.jpg');
+        $target->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
 
         $this->duplicate($source, $target, 'prefix');
     }
@@ -152,7 +154,7 @@ class MediaManagerSpec extends ObjectBehavior
         $factory->createMedia()->willReturn($media);
         $media->setOriginalFilename('preview.jpg')->shouldBeCalled();
         $media->setFilename('preview.jpg')->shouldBeCalled();
-        $media->setFilePath('/tmp/pim-ce/preview.jpg')->shouldBeCalled();
+        $media->setFilePath(Argument::any())->shouldBeCalled();
         $media->setMimeType('image/jpeg')->shouldBeCalled();
 
         $this->createFromFilename('preview.jpg')->shouldReturn($media);
@@ -163,7 +165,7 @@ class MediaManagerSpec extends ObjectBehavior
         $filesystem->has('readme.md')->willReturn(false);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('File "/tmp/pim-ce/readme.md" does not exist'))
+            ->shouldThrow('\InvalidArgumentException')
             ->duringCreateFromFilename('readme.md');
     }
 }
