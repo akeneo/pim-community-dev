@@ -244,3 +244,18 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
     Then the metric "Weight" of products boots and sneakers should be "600"
     And the metric "Weight" of products sandals, pump and highheels should be "500"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3426
+  Scenario: Successfully update multi-valued value at once where the product have already one of the value
+    Given the following product values:
+      | product   | attribute                | value   |
+      | boots     | weather_conditions       | dry,hot |
+    Given I mass-edit products boots and sneakers
+    And I choose the "Edit attributes" operation
+    And I display the Weather conditions attribute
+    And I change the "Weather conditions" to "Dry, Hot"
+    And I move on to the next step
+    Then the options "weather_conditions" of products boots and sneakers should be:
+      | value |
+      | dry   |
+      | hot   |
