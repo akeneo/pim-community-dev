@@ -160,7 +160,7 @@ class FieldNameBuilder
         //  - with the current price import, the currency can be optionaly present in the header,
         //  - with the current metric import, a "-unit" field can be added in the header,
         //
-        // To avoid BC break, we keep the support in this fix, the CE-1.3 will contain only the
+        // To avoid BC break, we keep the support in this fix, a next minor version could contain only the
         // support of currency code in the header and metric in a single field
         $expectedSize = [0];
         $isLocalizable = $attribute->isLocalizable();
