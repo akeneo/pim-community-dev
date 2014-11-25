@@ -29,7 +29,7 @@ Please, select item to perform action.: アクションを実行する項目を�
 View per page: 1ページあたりの表示
 oro.datagrid.entityHint: エンティティ
 oro.datagrid.noentities: レコードが見つかりません
-oro.datagrid.noresults: '検索条件に一致する {{ entityHint }} が見つかりませんでした。検索条件を変更してみてください.'
+oro.datagrid.noresults: 結果は見つかりませんでした。検索条件を変更してお試しください。
 oro.datagrid.nocolumns: このグリッドを構成する列がありません。
 oro.datagrid.pagination.label: ページ
 oro.datagrid.pagination.totalPages: '/ {{ totalPages }}'
@@ -40,9 +40,23 @@ oro_datagrid.select.all: すべて
 oro_datagrid.select.visible: すべて表示
 oro_datagrid.select.none: なし
 pim.grid.ajax_choice_filter.label_empty: 空
+pim.grid.choice_filter:
+  label_empty: 空値
+  label_in_list: リストに存在する
 Available Columns: 利用可能な列
 Displayed Columns: 表示する列
 datagrid_view.columns.min_message: 最低でも1つの表示する列を選択してください
+pim_datagrid:
+  column_configurator:
+    label: 列
+    title: 列の選択
+    all_groups: すべてのグループ
+    search: 検索
+    clear: クリア
+    displayed_columns: 表示する列
+    apply: 適用
+    cancel: キャンセル
+    remove_column: 削除
 pim.grid.mass_action.quick_export.title: クイック エクスポート
 pim.grid.action.launch.title: 起動
 pim.grid.action.show.title: 表示

@@ -59,6 +59,7 @@ pim_importexport:
       edit: "Modifier un profil d'export"
       remove: "Supprimer un profil d'export"
       launch: "Lancer un profil d'export"
+      history: "Afficher l'historique du profil d'export"
     import_profile:
       index: "Visualiser la liste des profils d'import"
       create: "Créer un profil d'import"
@@ -66,6 +67,7 @@ pim_importexport:
       edit: "Modifier un profil d'import"
       remove: "Supprimer un profil d'import"
       launch: "Lancer un profil d'import"
+      history: "Afficher l'historique du profil d'import"
     export_execution:
       index: "Visualiser la liste des rapports d'export"
       show: "Visualiser les détails du rapport d'export"
