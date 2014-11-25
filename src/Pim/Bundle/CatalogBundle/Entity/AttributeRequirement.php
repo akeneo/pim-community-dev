@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 
 /**
  * The attribute requirement for a channel and a family
@@ -44,11 +45,11 @@ class AttributeRequirement
     /**
      * Setter family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return AttributeRequirement
      */
-    public function setFamily(Family $family)
+    public function setFamily(FamilyInterface $family)
     {
         $this->family = $family;
 

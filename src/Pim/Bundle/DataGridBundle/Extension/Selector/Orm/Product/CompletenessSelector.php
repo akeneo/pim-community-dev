@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 
 /**
  * Product completeness selector

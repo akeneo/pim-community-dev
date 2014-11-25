@@ -5,10 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
@@ -69,7 +68,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     protected $products;
 
     /**
-     * @var datetime
+     * @var \DateTime
      */
     protected $created;
 
@@ -284,19 +283,6 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     /**
      * {@inheritdoc}
      */
-    public function addProduct(ProductInterface $product)
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasProducts()
     {
         return $this->products->count() !== 0;
@@ -305,40 +291,9 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     /**
      * {@inheritdoc}
      */
-    public function removeProduct(ProductInterface $product)
-    {
-        $this->products->removeElement($product);
-        $product->removeCategory($this);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getProducts()
     {
         return $this->products;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProducts($products)
-    {
-        if (null !== $this->getProducts()) {
-            foreach ($this->getProducts() as $product) {
-                $product->removeCategory($this);
-            }
-        }
-
-        if (null !== $products) {
-            foreach ($products as $product) {
-                $product->addCategory($this);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -354,7 +309,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     /**
      * Get created date
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreated()
     {

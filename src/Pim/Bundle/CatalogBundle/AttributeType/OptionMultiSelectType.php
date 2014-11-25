@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Multi options (select) attribute type
@@ -35,10 +35,6 @@ class OptionMultiSelectType extends AbstractAttributeType
      */
     public function prepareValueFormData(ProductValueInterface $value)
     {
-        if ($value->getData() && $value->getData()->isEmpty()) {
-            return $value->getAttribute()->getDefaultValue();
-        }
-
         $iterator = $value->getData()->getIterator();
 
         if (true === $value->getAttribute()->getProperty('autoOptionSorting')) {

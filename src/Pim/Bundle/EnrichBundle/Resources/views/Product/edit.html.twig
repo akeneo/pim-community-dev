@@ -20,26 +20,38 @@
         } %}
     {% endif %}
 
+    {% block sequentialEdit %}
+        {% include 'PimEnrichBundle:Product:_sequentialEdit.html.twig' %}
+    {% endblock %}
+
+    {% set formAction = path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }) %}
+    {% if sequentialEdit and sequentialEdit.next is not null %}
+        {% set formAction = formAction ~ '&action=SaveAndNext' %}
+    {% elseif sequentialEdit and sequentialEdit.next is null %}
+        {% set formAction = formAction ~ '&action=SaveAndFinish' %}
+    {% endif %}
+
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
+        'action': formAction,
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product.title'|trans })
         }
     }) }}
-
         {% set title = 'product.title'|trans %}
 
         {% set buttons %}
             {% include 'PimEnrichBundle:Product:_buttons.html.twig' %}
         {% endset %}
 
-        {% set subtitle %}
-            {% include 'PimEnrichBundle:Product:_locale-switcher.html.twig' %}
-            {{ elements.enabledLabel(form) }}
-        {% endset %}
+        {% if subtitle is not defined %}
+            {% set subtitle %}
+                {% include 'PimEnrichBundle:Product:_locale-switcher.html.twig' %}
+                {{ elements.enabledLabel(form) }}
+            {% endset %}
+        {% endif %}
 
         {% set left %}
             <ul class="inline">
@@ -50,17 +62,16 @@
         {{ elements.page_header(title, buttons, subtitle, left, elements.updated(form.vars.id)) }}
 
         <div class="layout-content">
-            {% include 'PimEnrichBundle:Product:_navbar.html.twig' %}
+            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
             <div class="row-fluid tab-content">
                 {{ elements.form_errors(form) }}
 
-                {% include 'PimEnrichBundle:Product:_tab-panes.html.twig' %}
+                {{ view_elements(form.vars.id ~ '.form_tab') }}
 
                 {{ form_row(form.id) }}
             </div>
         </div>
-
     {{ form_end(form) }}
 
     <a href="javascript:void(0);"

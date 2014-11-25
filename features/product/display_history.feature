@@ -134,4 +134,3 @@ Feature: Display the product history
       | version | property           | value |
       | 2       | weather_conditions |       |
       | 3       | comment            |       |
-

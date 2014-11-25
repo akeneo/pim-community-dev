@@ -9,11 +9,9 @@ namespace Pim\Bundle\CatalogBundle\Model;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractMetric
+abstract class AbstractMetric implements MetricInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var int|string */
     protected $id;
 
     /**
@@ -52,9 +50,7 @@ abstract class AbstractMetric
     protected $family;
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -62,11 +58,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AbstractMetric
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -76,9 +68,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Get data
-     *
-     * @return double
+     * {@inheritdoc}
      */
     public function getData()
     {
@@ -86,11 +76,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Set data
-     *
-     * @param double $data
-     *
-     * @return AbstractMetric
+     * {@inheritdoc}
      */
     public function setData($data)
     {
@@ -100,9 +86,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Get used unit
-     *
-     * @return string $unit
+     * {@inheritdoc}
      */
     public function getUnit()
     {
@@ -110,11 +94,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Set used unit
-     *
-     * @param string $unit
-     *
-     * @return AbstractMetric
+     * {@inheritdoc}
      */
     public function setUnit($unit)
     {
@@ -124,9 +104,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Get base data
-     *
-     * @return double
+     * {@inheritdoc}
      */
     public function getBaseData()
     {
@@ -134,11 +112,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Set base data
-     *
-     * @param double $baseData
-     *
-     * @return AbstractMetric
+     * {@inheritdoc}
      */
     public function setBaseData($baseData)
     {
@@ -148,9 +122,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Get base unit
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBaseUnit()
     {
@@ -158,11 +130,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Set base unit
-     *
-     * @param string $baseUnit
-     *
-     * @return AbstractMetric
+     * {@inheritdoc}
      */
     public function setBaseUnit($baseUnit)
     {
@@ -172,9 +140,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Get family
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getFamily()
     {
@@ -182,11 +148,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * Set family
-     *
-     * @param string $family
-     *
-     * @return AbstractMetric
+     * {@inheritdoc}
      */
     public function setFamily($family)
     {
@@ -196,9 +158,7 @@ abstract class AbstractMetric
     }
 
     /**
-     * To string
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {

@@ -406,6 +406,72 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param integer $count
+     *
+     * @Then /^I should have (\d+) new notification$/
+     */
+    public function iShouldHaveNewNotification($count)
+    {
+        $actualCount = $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+        assertEquals(
+            $actualCount,
+            $count,
+            sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+        );
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^I should see notifications?:$/
+     */
+    public function iShouldSeeNotifications(TableNode $table)
+    {
+        $element = $this->getCurrentPage()->find('css', '#header-notification-widget');
+        $element->find('css', '.dropdown-toggle')->click();
+        $this->getMainContext()->wait();
+
+        $icons = [
+            'success' => 'icon-ok',
+            'warning' => 'icon-warning-sign',
+            'error'   => 'icon-remove',
+        ];
+
+        foreach ($table->getHash() as $data) {
+            $notification = $element->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
+
+            if (!$notification) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to see notification "%s", not found.',
+                        $data['message']
+                    )
+                );
+            }
+
+            if (!isset($icons[$data['type']])) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Unknown notification type "%s". Known types are %s.',
+                        $data['type'],
+                        join(', ', array_keys($icons))
+                    )
+                );
+            }
+
+            if (!$notification->find('css', sprintf('i.%s', $icons[$data['type']]))) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting the type of notification "%s" to be "%s"',
+                        $data['message'],
+                        $data['type']
+                    )
+                );
+            }
+        }
+    }
+
+    /**
      * @return Page
      */
     protected function getCurrentPage()

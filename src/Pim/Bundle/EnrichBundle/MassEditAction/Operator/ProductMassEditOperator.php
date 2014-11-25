@@ -57,7 +57,7 @@ class ProductMassEditOperator extends AbstractMassEditOperator
         $products = $this->operation->getObjectsToMassEdit();
 
         if ($this->operation instanceof ProductMassEditOperation) {
-            $this->manager->saveAllProducts($products, $this->operation->getSavingOptions());
+            $this->manager->saveAll($products, $this->operation->getSavingOptions());
         }
     }
 }

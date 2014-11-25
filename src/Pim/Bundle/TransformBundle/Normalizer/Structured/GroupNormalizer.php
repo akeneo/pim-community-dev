@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * A normalizer to transform a group entity into an array

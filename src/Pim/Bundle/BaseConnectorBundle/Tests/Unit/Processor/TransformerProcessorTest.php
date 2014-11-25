@@ -157,8 +157,8 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             $this->validator,
             $this->translator,
             $this->transformer,
+            $this->managerRegistry,
             'class',
-            null,
             $skipEmpty
         );
 

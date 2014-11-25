@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 
 /**
@@ -49,7 +50,22 @@ class AjaxChoiceFilter extends ChoiceFilter
         $metadata['populateDefault'] = $formView->vars['populate_default'];
         $metadata['choiceUrl']       = $formView->vars['choice_url'];
         $metadata['choiceUrlParams'] = $formView->vars['choice_url_params'];
+        $metadata['emptyChoice']     = $formView->vars['empty_choice'];
 
         return $metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function parseData($data)
+    {
+        if (isset($data['type']) && Operators::IS_EMPTY === strtoupper($data['type'])) {
+            $data['value'] = isset($data['value']) ? $data['value'] : null;
+
+            return $data;
+        }
+
+        return parent::parseData($data);
     }
 }

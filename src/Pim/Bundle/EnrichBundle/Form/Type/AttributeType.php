@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 
 /**
  * Type for attribute form
@@ -68,8 +67,6 @@ class AttributeType extends AbstractType
         $this->addFieldUnique($builder);
 
         $this->addFieldLabel($builder);
-
-        $this->addFieldUseableAsGridColumn($builder);
 
         $this->addFieldUseableAsGridFilter($builder);
 
@@ -168,15 +165,6 @@ class AttributeType extends AbstractType
                 'select2'     => true
             )
         );
-    }
-
-    /**
-     * Add a field for useableAsGridColumn
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
-    {
-        $builder->add('useableAsGridColumn', 'switch');
     }
 
     /**

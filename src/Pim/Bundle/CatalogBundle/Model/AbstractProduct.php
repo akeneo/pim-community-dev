@@ -3,12 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
 /**
@@ -18,19 +16,18 @@ use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
- TimestampableInterface, VersionableInterface
+abstract class AbstractProduct implements ProductInterface
 {
     /** @staticvar string */
     const IDENTIFIER_TYPE = 'pim_catalog_identifier';
 
-    /** @var mixed $id */
+    /** @var int|string */
     protected $id;
 
-    /** @var datetime $created */
+    /** @var \Datetime $created */
     protected $created;
 
-    /** @var datetime $updated */
+    /** @var \Datetime $updated */
     protected $updated;
 
     /**
@@ -51,48 +48,37 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /** @var array */
     protected $indexedValues;
 
-    /** @var boolean */
+    /** @var bool */
     protected $indexedValuesOutdated = true;
 
-    /**
-     * @var Pim\Bundle\CatalogBundle\Entity\Family $family
-     */
+    /** @var FamilyInterface $family */
     protected $family;
 
-    /**
-     * @var integer
-     */
+    /** @var int */
     protected $familyId;
 
-    /**
-     * @var ArrayCollection $categories
-     */
+    /** @var ArrayCollection $categories */
     protected $categories;
 
+    /** @var array */
     public $categoryIds = [];
 
-    /**
-     * @var boolean $enabled
-     */
+    /** @var bool $enabled */
     protected $enabled = true;
 
-    /**
-     * @var ArrayCollection $groups
-     */
+    /** @var ArrayCollection $groups */
     protected $groups;
 
+    /** @var array */
     protected $groupIds = [];
 
-    /**
-     * @var ArrayCollection $associations
-     */
+    /** @var ArrayCollection $associations */
     protected $associations;
 
-    /**
-     * @var ArrayCollection $completenesses
-     */
+    /** @var ArrayCollection $completenesses */
     protected $completenesses;
 
+    /** @var array */
     protected $normalizedData;
 
     /**
@@ -108,9 +94,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -118,11 +102,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -132,9 +112,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get created datetime
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getCreated()
     {
@@ -142,11 +120,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set created datetime
-     *
-     * @param datetime $created
-     *
-     * @return TimestampableInterface
+     * {@inheritdoc}
      */
     public function setCreated($created)
     {
@@ -156,9 +130,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get updated datetime
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getUpdated()
     {
@@ -166,11 +138,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set updated datetime
-     *
-     * @param datetime $updated
-     *
-     * @return TimestampableInterface
+     * {@inheritdoc}
      */
     public function setUpdated($updated)
     {
@@ -180,8 +148,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get used locale
-     * @return string $locale
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -189,11 +156,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set used locale
-     *
-     * @param string $locale
-     *
-     * @return LocalizableInterface
+     * {@inheritdoc}
      */
     public function setLocale($locale)
     {
@@ -203,8 +166,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get used scope
-     * @return string $scope
+     * {@inheritdoc}
      */
     public function getScope()
     {
@@ -212,11 +174,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set used scope
-     *
-     * @param string $scope
-     *
-     * @return ScopableInterface
+     * {@inheritdoc}
      */
     public function setScope($scope)
     {
@@ -226,11 +184,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Add value, override to deal with relation owner side
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function addValue(ProductValueInterface $value)
     {
@@ -242,11 +196,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Remove value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function removeValue(ProductValueInterface $value)
     {
@@ -283,9 +233,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the list of used attribute code from the indexed values
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getUsedAttributeCodes()
     {
@@ -305,9 +253,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Mark the indexed as outdated
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function markIndexedValuesOutdated()
     {
@@ -337,13 +283,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get value related to attribute code
-     *
-     * @param string $attributeCode
-     * @param string $localeCode
-     * @param string $scopeCode
-     *
-     * @return ProductValueInterface
+     * {@inheritdoc}
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
@@ -378,13 +318,9 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get whether or not an attribute is part of a product
-     *
-     * @param AbstractEntityAttribute $attribute
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function hasAttribute(AbstractAttribute $attribute)
+    public function hasAttribute(AttributeInterface $attribute)
     {
         $indexedValues = $this->getIndexedValues();
 
@@ -418,9 +354,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get family
-     *
-     * @return Family
+     * {@inheritdoc}
      */
     public function getFamily()
     {
@@ -428,13 +362,9 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set family
-     *
-     * @param Family $family
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
-    public function setFamily(Family $family = null)
+    public function setFamily(FamilyInterface $family = null)
     {
         if (null !== $family) {
             $this->familyId = $family->getId();
@@ -445,11 +375,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set family id
-     *
-     * @param integer $familyId
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function setFamilyId($familyId)
     {
@@ -459,9 +385,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get family id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getFamilyId()
     {
@@ -470,11 +394,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the identifier of the product
-     *
-     * @return ProductValueInterface the identifier of the product
-     *
-     * @throws MissingIdentifierException if no identifier could be found
+     * {@inheritdoc}
      */
     public function getIdentifier()
     {
@@ -488,9 +408,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the attributes of the product
-     *
-     * @return array the attributes of the current product
+     * {@inheritdoc}
      */
     public function getAttributes()
     {
@@ -504,9 +422,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get values
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getValues()
     {
@@ -520,9 +436,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get ordered group
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getOrderedGroups()
     {
@@ -543,11 +457,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get product label
-     *
-     * @param string $locale
-     *
-     * @return mixed|string
+     * {@inheritdoc}
      */
     public function getLabel($locale = null)
     {
@@ -569,9 +479,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the product categories
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getCategories()
     {
@@ -579,10 +487,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Add a category
-     * @param CategoryInterface $category
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function addCategory(CategoryInterface $category)
     {
@@ -594,10 +499,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Remove a category
-     * @param CategoryInterface $category
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function removeCategory(CategoryInterface $category)
     {
@@ -607,9 +509,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get a string with categories linked to product
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCategoryCodes()
     {
@@ -622,9 +522,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get a string with groups
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getGroupCodes()
     {
@@ -638,9 +536,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Predicate to know if product is enabled or not
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isEnabled()
     {
@@ -648,11 +544,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Setter for predicate enabled
-     *
-     * @param boolean $enabled
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function setEnabled($enabled)
     {
@@ -662,13 +554,9 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Check if an attribute can be removed from the product
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function isAttributeRemovable(AbstractAttribute $attribute)
+    public function isAttributeRemovable(AttributeInterface $attribute)
     {
         if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             return false;
@@ -690,9 +578,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the product groups
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getGroups()
     {
@@ -700,10 +586,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Add a group
-     * @param Group $group
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function addGroup(Group $group)
     {
@@ -716,10 +599,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Remove a group
-     * @param Group $group
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function removeGroup(Group $group)
     {
@@ -737,9 +617,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get all the media of the product
-     *
-     * @return Media[]
+     * {@inheritdoc}
      */
     public function getMedia()
     {
@@ -757,14 +635,9 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Add product association
-     *
-     * @param AbstractAssociation $association
-     *
-     * @return AbstractProduct
-     * @throws \LogicException
+     * {@inheritdoc}
      */
-    public function addAssociation(AbstractAssociation $association)
+    public function addAssociation(AssociationInterface $association)
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
@@ -785,13 +658,9 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Remove product association
-     *
-     * @param AbstractAssociation $association
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
-    public function removeAssociation(AbstractAssociation $association)
+    public function removeAssociation(AssociationInterface $association)
     {
         $this->associations->removeElement($association);
 
@@ -799,9 +668,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the product associations
-     *
-     * @return AbstractAssociation[]|null
+     * {@inheritdoc}
      */
     public function getAssociations()
     {
@@ -809,11 +676,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the product association for an Association type
-     *
-     * @param AssociationType $type
-     *
-     * @return AbstractAssociation|null
+     * {@inheritdoc}
      */
     public function getAssociationForType(AssociationType $type)
     {
@@ -821,11 +684,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get the product association for an association type code
-     *
-     * @param string $typeCode
-     *
-     * @return AbstractAssociation|null
+     * {@inheritdoc}
      */
     public function getAssociationForTypeCode($typeCode)
     {
@@ -839,11 +698,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set product associations
-     *
-     * @param AbstractAssociation[] $associations
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function setAssociations(array $associations = array())
     {
@@ -853,11 +708,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Set product completenesses
-     *
-     * @param ArrayCollection $completenesses
-     *
-     * @return AbstractProduct
+     * {@inheritdoc}
      */
     public function setCompletenesses(ArrayCollection $completenesses)
     {
@@ -867,9 +718,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Get product completenesses
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getCompletenesses()
     {
@@ -885,7 +734,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * @param mixed $normalizedData
+     * {@inheritdoc}
      */
     public function setNormalizedData($normalizedData)
     {

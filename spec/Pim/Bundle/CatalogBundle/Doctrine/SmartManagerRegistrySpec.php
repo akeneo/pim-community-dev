@@ -2,12 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\ORMException;
 use Doctrine\ODM\MongoDB\MongoDBException;
+use Doctrine\ORM\ORMException;
 use PhpSpec\Exception\Example\SkippingException;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @require Doctrine\ODM\MongoDB\MongoDBException
@@ -71,7 +70,9 @@ class SmartManagerRegistrySpec extends ObjectBehavior
         $customRegistry->getAliasNamespace('foo')->willThrow(new ORMException());
 
         $this
-            ->shouldThrow(new \LogicException('No registered doctrine registry was able to get the alias namespace "foo"'))
+            ->shouldThrow(
+                new \LogicException('No registered doctrine registry was able to get the alias namespace "foo"')
+            )
             ->duringGetAliasNamespace('foo');
     }
 

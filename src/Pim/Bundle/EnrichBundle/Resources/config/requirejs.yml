@@ -24,3 +24,4 @@ config:
         pim/tree/associate:                 pimenrich/js/tree-associate.jstree
         pim/tree/mass-associate:            pimenrich/js/tree-mass-associate.jstree
         pim/tree/manage:                    pimenrich/js/tree-manage.jstree
+        pim/attributeoptionview:            pimenrich/js/pim-attributeoptionview

@@ -52,47 +52,12 @@
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_navbar(['Products', 'Properties', 'History']) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
         <div class="row-fluid tab-content group-edit">
-
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="products">
-
-                {% if form.vars.data.products|length == 0 %}
-                    <div class="alert alert-info">
-                        <button data-dismiss="alert" class="close" type="button">×</button>
-                        {{ 'info.group.select products'|trans }}
-                    {% if form.vars.data.type.isVariant %}
-                        <br />{{ 'info.group.selectable products'|trans }}
-                    {% endif %}
-                    </div>
-                {% endif %}
-
-                {{ dataGrid.renderGrid(gridName, { dataLocale: locale_code(), currentGroup: currentGroup }) }}
-
-                {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
-                {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
-            </div>
-
-            <div class="tab-pane" id="properties">
-                {% set generalProperties %}
-                    {{ form_row(form.code) }}
-                    {{ form_row(form.type) }}
-                    {% if form.vars.data.type.isVariant %}
-                        {{ form_row(form.attributes) }}
-                    {% endif %}
-                {% endset %}
-                {{ elements.accordion({
-                    'pane.accordion.general_properties': generalProperties,
-                    'pane.accordion.label': form_row(form.label)
-                }) }}
-            </div>
-
-            <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_group_history', {id: form.vars.value.id}) }}">
-            </div>
-
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
         {{ form_end(form) }}
 

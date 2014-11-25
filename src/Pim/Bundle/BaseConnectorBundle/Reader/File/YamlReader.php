@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Symfony\Component\Yaml\Yaml;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Yaml reader

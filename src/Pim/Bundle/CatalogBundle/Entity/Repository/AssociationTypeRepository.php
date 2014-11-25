@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Association repository
@@ -19,9 +19,9 @@ class AssociationTypeRepository extends ReferableEntityRepository
      *
      * @param ProductInterface $product
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return AssociationType[]
      */
-    public function buildMissingAssociationTypes(ProductInterface $product)
+    public function findMissingAssociationTypes(ProductInterface $product)
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -39,7 +39,7 @@ class AssociationTypeRepository extends ReferableEntityRepository
             }
         }
 
-        return $qb;
+        return $qb->getQuery()->getResult();
     }
 
     /**

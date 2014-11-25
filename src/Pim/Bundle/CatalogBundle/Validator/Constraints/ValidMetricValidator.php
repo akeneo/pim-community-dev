@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Metric attribute validator

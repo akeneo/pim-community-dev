@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -190,9 +190,9 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalizes a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      */
-    protected function normalizeFamily(Family $family = null)
+    protected function normalizeFamily(FamilyInterface $family = null)
     {
         $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
     }

@@ -106,15 +106,53 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
         return $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
             ->setMethods(
-                array(
+                [
+                    'setText',
+                    'setDatetime',
+                    'setInteger',
+                    'setId',
+                    'getOption',
+                    'getMedia',
+                    'getDecimal',
+                    'setDecimal',
+                    'setAttribute',
+                    'addOption',
+                    'getBoolean',
+                    'setOptions',
                     'setPrices',
-                    'addPriceForCurrency',
-                    '__toString',
-                    'setData',
+                    'getId',
+                    'setVarchar',
+                    'setBoolean',
                     'getData',
+                    'getMetric',
+                    'getDate',
                     'getAttribute',
-                    'getEntity'
-                )
+                    'getEntity',
+                    'setMedia',
+                    'getPrices',
+                    'getOptions',
+                    'getLocale',
+                    'setMetric',
+                    'addPrice',
+                    'getVarchar',
+                    'removePrice',
+                    'hasData',
+                    'setScope',
+                    'removeOption',
+                    'getText',
+                    'setData',
+                    'setOption',
+                    'getPrice',
+                    'setDate',
+                    'addData',
+                    'setLocale',
+                    'isRemovable',
+                    'getScope',
+                    'getDatetime',
+                    'setEntity',
+                    'getInteger',
+                    '__toString'
+                ]
             )
             ->getMock();
     }

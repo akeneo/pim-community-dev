@@ -25,12 +25,10 @@ class EnabledFilter extends ChoiceFilter
             return false;
         }
 
-        $qb = $ds->getQueryBuilder();
-        $value = current($data['value']);
+        $data['value'] = [(bool) $data['value'][0]];
 
-        $repository = $this->util->getProductRepository();
-        $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('enabled', '=', $value);
+        $value = current($data['value']);
+        $this->util->applyFilter($ds, 'enabled', '=', $value);
 
         return true;
     }

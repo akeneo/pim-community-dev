@@ -20,10 +20,6 @@ class NumberType extends AbstractAttributeType
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
         $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name'      => 'defaultValue',
-                'fieldType' => 'pim_number'
-            ],
             'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'pim_number'

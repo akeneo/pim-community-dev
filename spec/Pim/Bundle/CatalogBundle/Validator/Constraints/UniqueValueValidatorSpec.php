@@ -2,14 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValue;
-
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ExecutionContextInterface;

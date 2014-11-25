@@ -1,0 +1,15 @@
+parameters:
+    pim_catalog.remover.base.class: Pim\Bundle\CatalogBundle\Remover\BaseRemover
+
+services:
+    pim_catalog.remover.group_type:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.group_type.class%
+
+    pim_catalog.remover.channel:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.channel.class%
