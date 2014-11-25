@@ -71,8 +71,7 @@ class OptionsFilter extends EntityFilter
                 $exprAnd->addOr($exprEmpty);
 
                 $this->qb->addAnd($exprAnd);
-            }
-            else {
+            } else {
                 if (in_array('empty', $value)) {
                     unset($value[array_search('empty', $value)]);
 
