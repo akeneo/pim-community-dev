@@ -17,6 +17,7 @@
 
 ## Bug fixes
 - PIM-3302: Published product page is not well displayed with project via the standard edition. To fix this bug, add `bundles/pimenterpriseui/css/pimee.less` to your stylesheets in `app/Resources/views/base.html.twig`
+- PIM-3385: Fix deleting attributes not linked to published products
 
 # 1.0.5 (2014-11-13)
 
