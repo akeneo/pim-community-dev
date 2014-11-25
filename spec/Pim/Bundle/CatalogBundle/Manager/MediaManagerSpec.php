@@ -77,7 +77,7 @@ class MediaManagerSpec extends ObjectBehavior
         $filesystem->write('prefix-akeneo.jpg', '', false)->shouldBeCalled();
         $media->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
         $media->setFilename('prefix-akeneo.jpg')->shouldBeCalled();
-        $media->setFilePath(Argument::any()/* '/tmp/pim-ce/my-new-file.jpg'*/)->shouldBeCalled();
+        $media->setFilePath(Argument::any())->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $media->setMimeType('jpg')->shouldBeCalled();
         $media->resetFile()->shouldBeCalled();
