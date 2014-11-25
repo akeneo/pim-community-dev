@@ -68,7 +68,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
                 $this->qb->addAnd($exprAnd);
             } elseif (in_array('empty', $value)) {
                 // TODO: fix this weird support of EMPTY operator
-                    unset($value[array_search('empty', $value)]);
+                unset($value[array_search('empty', $value)]);
 
                 $expr = new Expr();
                 $expr = $expr->field($field)->exists(false);
