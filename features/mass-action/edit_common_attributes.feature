@@ -251,7 +251,7 @@ Feature: Edit common attributes of many products at once
       | product   | attribute                | value   |
       | boots     | weather_conditions       | dry,hot |
     Given I mass-edit products boots and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
