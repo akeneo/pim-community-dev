@@ -200,7 +200,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         $this->families            = new ArrayCollection();
         $this->translations        = new ArrayCollection();
         $this->validationRule      = null;
-        $this->properties          = array();
+        $this->properties          = [];
     }
 
     /**
@@ -549,7 +549,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
      */
     public function getGroupSequence()
     {
-        $groups = array('Default', $this->getAttributeType());
+        $groups = ['Default', $this->getAttributeType()];
 
         if ($this->isUnique()) {
             $groups[] = 'unique';
@@ -1356,5 +1356,19 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         }
 
         return $this;
+    }
+
+    /**
+     * Check if attribute is locale specific
+     *
+     * TODO: don't forget to add this method declaration in AttributeInterface for the 1.3
+     *
+     * @return bool
+     */
+    public function isLocaleSpecific()
+    {
+        $availableLocale = $this->getAvailableLocales();
+
+        return !empty($availableLocale);
     }
 }

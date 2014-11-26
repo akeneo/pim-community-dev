@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -23,7 +25,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * @var string[] $supportedFormats
      */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = ['csv', 'flat'];
 
     /** @var integer */
     protected $precision;
@@ -51,6 +53,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     {
         $data = $entity->getData();
         $fieldName = $this->getFieldValue($entity);
+        if ($this->filterLocaleSpecific($entity)) {
+            return [];
+        }
+
         $result = null;
 
         if (is_array($data)) {
@@ -112,5 +118,33 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         return $value->getAttribute()->getCode() . $suffix;
+    }
+
+    /**
+     * Check if the attribute is locale specific and check if the given local exist in available locales
+     *
+     * @param AbstractProductValue $entity
+     *
+     * @return bool
+     */
+    protected function filterLocaleSpecific(AbstractProductValue $entity)
+    {
+        $actualLocale = $entity->getLocale();
+
+        /** @var AbstractAttribute $attribute */
+        $attribute = $entity->getAttribute();
+        if ($attribute->isLocaleSpecific()) {
+            $availableLocales = [];
+            foreach ($attribute->getAvailableLocales() as $locale) {
+                $availableLocales[] = $locale->getCode();
+            }
+
+            if (!in_array($actualLocale, $availableLocales)) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

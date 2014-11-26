@@ -82,7 +82,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         AttributeRepository $attributeRepository,
         ReferableEntityRepositoryInterface $channelRepository,
         ReferableEntityRepositoryInterface $localeRepository,
-        Attribute $attribute,
+        AbstractAttribute $attribute,
         Locale $locale,
         Channel $channel
     ) {
@@ -90,6 +90,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('bar');
+        $attribute->isLocaleSpecific()->willReturn(false);
 
         $managerRegistry->getRepository(self::CHANNEL_CLASS)->shouldBeCalled()->willReturn($channelRepository);
         $channelRepository->findByReference('ecommerce')->shouldBeCalled()->willReturn($channel);
@@ -235,7 +236,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $repository->findByReference('sku')->willReturn($attribute);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
 
-        $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formated, attribute "sku" expects no locale, no scope, no currency'))
+        $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formatted, attribute "sku" expects no locale, no scope, no currency'))
             ->duringExtractAttributeFieldNameInfos('sku-fr_FR');
 
         // localizable without any locale
@@ -245,7 +246,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $repository->findByReference('name')->willReturn($attribute);
 
-        $this->shouldThrow(new \InvalidArgumentException('The field "name" is not well-formated, attribute "name" expects a locale, no scope, no currency'))
+        $this->shouldThrow(new \InvalidArgumentException('The field "name" is not well-formatted, attribute "name" expects a locale, no scope, no currency'))
             ->duringExtractAttributeFieldNameInfos('name');
 
         // localizable, scopable and price without any currency
@@ -255,7 +256,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $repository->findByReference('cost')->willReturn($attribute);
 
-        $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formated, attribute "cost" expects a locale, a scope, an optional currency'))
+        $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formatted, attribute "cost" expects a locale, a scope, an optional currency'))
             ->duringExtractAttributeFieldNameInfos('cost');
     }
 
@@ -273,6 +274,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()->willReturn('text');
+        $attribute->isLocaleSpecific()->willReturn(false);
 
         $attributeInfos =
             [
