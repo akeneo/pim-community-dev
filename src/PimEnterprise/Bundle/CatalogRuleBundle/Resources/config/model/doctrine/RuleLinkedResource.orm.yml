@@ -1,0 +1,27 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource:
+    type: entity
+    table: pimee_catalog_rule_rule_linked_resource
+    indexes:
+        resource_name_resource_id_idx:
+            columns:
+                - resource_name
+                - resource_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        resourceName:
+            type: string
+            column: resource_name
+        resourceId:
+            type: string
+            column: resource_id
+            length: 24
+    manyToOne:
+        rule:
+            targetEntity: PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+            joinColumn:
+                name: rule_id
+                referencedColumnName: id
