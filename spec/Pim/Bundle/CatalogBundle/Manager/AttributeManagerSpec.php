@@ -61,7 +61,7 @@ class AttributeManagerSpec extends ObjectBehavior
         $this->getAttributeTypes()->shouldReturn(['bar' => 'bar', 'foo' => 'foo']);
     }
 
-    function it_dispatches_an_event_when_removing_an_attribute(
+    function it_dispatches_events_when_removing_an_attribute(
         $eventDispatcher,
         $objectManager,
         AbstractAttribute $attribute
@@ -73,6 +73,11 @@ class AttributeManagerSpec extends ObjectBehavior
 
         $objectManager->remove($attribute)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            AttributeEvents::POST_REMOVE,
+            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+        )->shouldBeCalled();
 
         $this->remove($attribute);
     }
