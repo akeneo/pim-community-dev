@@ -38,16 +38,21 @@ class ProductSetValueAction implements ProductSetValueActionInterface
     /** @var string */
     protected $scope;
 
+    /** @var OptionsResolver */
+    private static $optionsResolver;
+
     /**
      * @param array $data
      */
     public function __construct(array $data)
     {
-        $optionsResolver = new OptionsResolver();
-        $this->configureOptionsResolver($optionsResolver);
+        if (null === self::$optionsResolver) {
+            self::$optionsResolver = new OptionsResolver();
+            $this->configureOptionsResolver(self::$optionsResolver);
+        }
 
         //TODO: catch exception here and throw a real business exception ?
-        $optionsResolver->resolve($data);
+        $data = self::$optionsResolver->resolve($data);
 
         $this->field = $data['field'];
         $this->value = $data['value'];
@@ -100,8 +105,8 @@ class ProductSetValueAction implements ProductSetValueActionInterface
         $optionsResolver->setAllowedTypes([
                 'type' => 'string',
                 'field' => 'string',
-                'locale' => 'string',
-                'scope' => 'string',
+                'locale' => ['string', 'null'],
+                'scope' => ['string', 'null'],
             ]);
     }
 }

@@ -43,16 +43,21 @@ class ProductCopyValueAction implements ProductCopyValueActionInterface
     /** @var string */
     protected $toScope;
 
+    /** @var OptionsResolver */
+    private static $optionsResolver;
+
     /**
      * @param array $data
      */
     public function __construct(array $data)
     {
-        $optionsResolver = new OptionsResolver();
-        $this->configureOptionsResolver($optionsResolver);
+        if (null === self::$optionsResolver) {
+            self::$optionsResolver = new OptionsResolver();
+            $this->configureOptionsResolver(self::$optionsResolver);
+        }
 
         //TODO: catch exception here and throw a real business exception ?
-        $optionsResolver->resolve($data);
+        $data = self::$optionsResolver->resolve($data);
 
         $this->fromField = $data['from_field'];
         $this->fromLocale = $data['from_locale'];
@@ -128,11 +133,11 @@ class ProductCopyValueAction implements ProductCopyValueActionInterface
         $optionsResolver->setAllowedTypes([
                 'type' => 'string',
                 'from_field' => 'string',
-                'from_locale' => 'string',
+                'from_locale' => ['string', 'null'],
+                'from_scope' => ['string', 'null'],
                 'to_field' => 'string',
-                'to_locale' => 'string',
-                'from_scope' => 'string',
-                'to_scope' => 'string'
+                'to_locale' => ['string', 'null'],
+                'to_scope' => ['string', 'null']
             ]);
     }
 }

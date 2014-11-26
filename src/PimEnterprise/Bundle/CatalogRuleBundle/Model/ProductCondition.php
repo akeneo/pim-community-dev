@@ -33,16 +33,21 @@ class ProductCondition implements ProductConditionInterface
     /** @var mixed */
     protected $value;
 
+    /** @var OptionsResolver */
+    private static $optionsResolver;
+
     /**
      * @param array $data
      */
     public function __construct(array $data)
     {
-        $optionsResolver = new OptionsResolver();
-        $this->configureOptionsResolver($optionsResolver);
+        if (null === self::$optionsResolver) {
+            self::$optionsResolver = new OptionsResolver();
+            $this->configureOptionsResolver(self::$optionsResolver);
+        }
 
         //TODO: catch exception here and throw a real business exception ?
-        $optionsResolver->resolve($data);
+        $data = self::$optionsResolver->resolve($data);
 
         $this->field = $data['field'];
         $this->operator = $data['operator'];

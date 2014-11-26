@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -70,7 +72,7 @@ class ProductRuleLoader implements LoaderInterface
         }
 
         $this->loadConditions($loaded, $content['conditions']);
-        $loaded->setActions($content['actions']);
+        $this->loadActions($loaded, $content['actions']);
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($rule));
 
@@ -118,11 +120,18 @@ class ProductRuleLoader implements LoaderInterface
     {
         $actions = [];
         foreach ($rawActions as $rawAction) {
-            //TODO: catch exception and log it ? or do not catch and totally fail ?
-            $actions[] = new ProductCondition($rawAction);
+            if (!isset($rawAction['type'])) {
+                // TODO: throw exception ? that should not happen? or simply log?
+            } elseif (ProductSetValueAction::TYPE === $rawAction['type']) {
+                //TODO: do not hardcode this
+                $actions[] = new ProductSetValueAction($rawAction);
+            } elseif (ProductCopyValueAction::TYPE === $rawAction['type']) {
+                //TODO: do not hardcode this
+                $actions[] = new ProductCopyValueAction($rawAction);
+            }
         }
 
-        $rule->setConditions($actions);
+        $rule->setActions($actions);
 
         return $this;
     }
