@@ -103,7 +103,7 @@
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 
-# 1.2.x
+# 1.2.13 (2014-11-26)
 
 ## Bug fixes
 - PIM-3406: Fix boolean filter on Mongo implementation
@@ -113,7 +113,7 @@
 - PIM-3426: Fix common attributes edition on multi selects
 - PIM-3434: Fix bug in product media manager when file does not exist on the filesystem
 - PIM-3436: Fix WYSIWYG field on product edit form (load them asynchronously)
-- PIM-3369: Add an error message when the channel and a locale of a field doesnt exist during product import
+- PIM-3372: Add an error message when the locale is disabled during product import
 - PIM-3370: Add an error message when the channel doesnt exist during product import
 - PIM-3374: Add an error message when a channel is provided for a global attribute
 - PIM-3375: Add an error message when a locale is provided for a global attribute

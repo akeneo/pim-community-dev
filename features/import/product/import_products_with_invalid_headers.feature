@@ -53,7 +53,7 @@ Feature: Execute a job
     Then I should see "Status: FAILED"
     And I should see "The field \"comment-fr_FR\" is not well-formated, attribute \"comment\" expects no locale, no scope, no currency"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3369
+  @jira https://akeneo.atlassian.net/browse/PIM-3372
   Scenario: Skip import with a not available locale for a localizable attribute
     Given the following file to import:
       """
