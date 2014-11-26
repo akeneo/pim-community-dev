@@ -1,4 +1,4 @@
-# 1.2.*
+# 1.2.13 (2014-11-26)
 
 ## Bug fixes
 - PIM-3406: Fix boolean filter on Mongo implementation
