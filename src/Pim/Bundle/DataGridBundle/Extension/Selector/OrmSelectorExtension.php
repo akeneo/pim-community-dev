@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Selector;
 
-use Akeneo\Bundle\DoctrineHybridSupportBundle\DependencyInjection\AkeneoDoctrineHybridSupportExtension;
+use Akeneo\Bundle\DoctrineExtensionsBundle\DependencyInjection\AkeneoDoctrineExtensionsExtension;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\From;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
@@ -63,7 +63,7 @@ class OrmSelectorExtension extends AbstractExtension
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
         if (in_array($datasourceType, $this->eligibleDatasource) &&
-            AkeneoDoctrineHybridSupportExtension::DOCTRINE_ORM === $this->storageDriver) {
+            AkeneoDoctrineExtensionsExtension::DOCTRINE_ORM === $this->storageDriver) {
             return true;
         }
 

@@ -5,7 +5,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Model\Metric;
-use Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

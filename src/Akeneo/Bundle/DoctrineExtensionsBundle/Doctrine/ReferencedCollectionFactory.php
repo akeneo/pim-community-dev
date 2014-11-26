@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine;
+namespace Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;

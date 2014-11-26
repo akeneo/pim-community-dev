@@ -9,6 +9,7 @@
  
 # NICE TO HAVE
  - déplacer les specs
+ - faire en sorte qu'un fichier orm.yml ou mongodb.yml ne fasse pas planter l'appli
  - nettoyer les classes AkeneoDoctrineHybridSupportExtension et AkeneoDoctrineHybridSupportBundle afin de faciliter l'intégration
  - faire en sorte que storage_driver/doctrine mongodb-odm.yml ou orm.yml soit toujours chargé pr tous les bundles (à travers DoctrineHybridSupportExtension)
  - nettoyer la constante AkeneoDoctrineHybridSupportExtension::DOCTRINE_MONGODB qui ne sert à rien

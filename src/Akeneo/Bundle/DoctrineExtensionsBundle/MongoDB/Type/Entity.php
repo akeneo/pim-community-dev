@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\Type;
+namespace Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\Type;
 
 use Doctrine\ODM\MongoDB\Types\Type;
 

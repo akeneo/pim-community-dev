@@ -236,7 +236,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getStorageDriver()
     {
-        return $this->getContainer()->getParameter('akeneo_doctrine_hybrid_support.storage_driver');
+        return $this->getContainer()->getParameter('akeneo_doctrine_extensions.storage_driver');
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\DoctrineHybridSupportBundle\DependencyInjection;
+namespace Akeneo\Bundle\DoctrineExtensionsBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AkeneoDoctrineHybridSupportExtension extends Extension
+class AkeneoDoctrineExtensionsExtension extends Extension
 {
     /** @staticvar string */
     const DOCTRINE_ORM = 'doctrine/orm';

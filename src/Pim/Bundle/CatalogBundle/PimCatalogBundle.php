@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Akeneo\Bundle\DoctrineHybridSupportBundle\AkeneoDoctrineHybridSupportBundle;
+use Akeneo\Bundle\DoctrineExtensionsBundle\AkeneoDoctrineExtensionsBundle;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogBundle extends AkeneoDoctrineHybridSupportBundle
+class PimCatalogBundle extends AkeneoDoctrineExtensionsBundle
 {
     /**
      * {@inheritdoc}

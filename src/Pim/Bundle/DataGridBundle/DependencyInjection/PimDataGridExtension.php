@@ -39,7 +39,7 @@ class PimDataGridExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('configurators.yml');
 
-        $storageDriver = $container->getParameter('akeneo_doctrine_hybrid_support.storage_driver');
+        $storageDriver = $container->getParameter('akeneo_doctrine_extensions.storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load(sprintf('storage_driver/%s.yml', $storageDriver));
     }

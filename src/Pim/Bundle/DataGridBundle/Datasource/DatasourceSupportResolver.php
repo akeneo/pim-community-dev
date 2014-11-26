@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
-use Akeneo\Bundle\DoctrineHybridSupportBundle\DependencyInjection\AkeneoDoctrineHybridSupportExtension;
+use Akeneo\Bundle\DoctrineExtensionsBundle\DependencyInjection\AkeneoDoctrineExtensionsExtension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
@@ -43,7 +43,7 @@ class DatasourceSupportResolver
      */
     public function getSupport($datasourceType)
     {
-        if (AkeneoDoctrineHybridSupportExtension::DOCTRINE_ORM === $this->storageDriver) {
+        if (AkeneoDoctrineExtensionsExtension::DOCTRINE_ORM === $this->storageDriver) {
             return self::DATASOURCE_SUPPORT_ORM;
         }
 

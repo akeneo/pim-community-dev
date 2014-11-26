@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\DoctrineHybridSupportBundle\Doctrine;
+namespace Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;

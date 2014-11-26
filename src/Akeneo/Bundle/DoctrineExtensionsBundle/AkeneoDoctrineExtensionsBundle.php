@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\DoctrineHybridSupportBundle;
+namespace Akeneo\Bundle\DoctrineExtensionsBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AkeneoDoctrineHybridSupportBundle extends Bundle
+class AkeneoDoctrineExtensionsBundle extends Bundle
 {
     /** @staticvar string */
     const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
@@ -33,12 +33,12 @@ class AkeneoDoctrineHybridSupportBundle extends Bundle
 
             \Doctrine\ODM\MongoDB\Types\Type::registerType(
                 self::ODM_ENTITIES_TYPE,
-                'Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\Type\Entities'
+                'Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\Type\Entities'
             );
 
             \Doctrine\ODM\MongoDB\Types\Type::registerType(
                 self::ODM_ENTITY_TYPE,
-                'Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB\Type\Entity'
+                'Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\Type\Entity'
             );
         }
     }
@@ -65,7 +65,7 @@ class AkeneoDoctrineHybridSupportBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,
                 array('doctrine.orm.entity_manager'),
-                'akeneo_doctrine_hybrid_support.storage_driver.doctrine/orm'
+                'akeneo_doctrine_extensions.storage_driver.doctrine/orm'
             )
         );
 
@@ -75,7 +75,7 @@ class AkeneoDoctrineHybridSupportBundle extends Bundle
                 $mongoDBClass::createYamlMappingDriver(
                     $mappings,
                     array('doctrine.odm.mongodb.document_manager'),
-                    'akeneo_doctrine_hybrid_support.storage_driver.doctrine/mongodb-odm'
+                    'akeneo_doctrine_extensions.storage_driver.doctrine/mongodb-odm'
                 )
             );
         }

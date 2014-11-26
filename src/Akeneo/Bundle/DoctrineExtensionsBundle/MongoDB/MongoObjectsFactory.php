@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\DoctrineHybridSupportBundle\MongoDB;
+namespace Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB;
 
 use MongoDate;
 use MongoDBRef;

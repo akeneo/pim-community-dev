@@ -29,7 +29,7 @@ class PimBaseConnectorExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('steps.yml');
 
-        $storageDriver = $container->getParameter('akeneo_doctrine_hybrid_support.storage_driver');
+        $storageDriver = $container->getParameter('akeneo_doctrine_extensions.storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
         if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
             $loader->load($storageConfig);

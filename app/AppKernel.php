@@ -100,7 +100,7 @@ class AppKernel extends Kernel
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
             new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
-            new Akeneo\Bundle\DoctrineHybridSupportBundle\AkeneoDoctrineHybridSupportBundle(),
+            new Akeneo\Bundle\DoctrineExtensionsBundle\AkeneoDoctrineExtensionsBundle(),
         ];
     }
 

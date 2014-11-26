@@ -1,0 +1,17 @@
+parameters:
+    doctrine.entity_repository.class:   Doctrine\ORM\EntityRepository
+    doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
+    akeneo_doctrine_extensions.doctrine.smart_manager_registry.class: Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\SmartManagerRegistry
+    akeneo_doctrine_extensions.doctrine.table_name_builder.class:     Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\TableNameBuilder
+
+services:
+    akeneo_doctrine_extensions.doctrine.smart_manager_registry:
+        class: %akeneo_doctrine_extensions.doctrine.smart_manager_registry.class%
+        calls:
+            - [addRegistry, ['@doctrine']]
+
+    akeneo_doctrine_extensions.doctrine.table_name_builder:
+        class: %akeneo_doctrine_extensions.doctrine.table_name_builder.class%
+        arguments:
+            - '@service_container'
+            - '@akeneo_doctrine_extensions.doctrine.smart_manager_registry'

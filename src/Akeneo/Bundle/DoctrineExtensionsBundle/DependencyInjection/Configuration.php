@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\DoctrineHybridSupportBundle\DependencyInjection;
+namespace Akeneo\Bundle\DoctrineExtensionsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('akeneo_doctrine_hybrid_support');
+        $rootNode = $treeBuilder->root('akeneo_doctrine_extensions');
 
         $rootNode
             ->children()

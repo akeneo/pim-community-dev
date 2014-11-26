@@ -1,0 +1,8 @@
+parameters:
+    akeneo_doctrine_extensions.factory.referenced_collection.class: Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\ReferencedCollectionFactory
+
+services:
+    akeneo_doctrine_extensions.factory.referenced_collection:
+        class: %akeneo_doctrine_extensions.factory.referenced_collection.class%
+        arguments:
+            - '@akeneo_doctrine_extensions.doctrine.smart_manager_registry'
