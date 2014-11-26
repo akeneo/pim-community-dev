@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Text area attribute type
@@ -32,10 +32,6 @@ class TextAreaType extends AbstractAttributeType
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name'      => 'defaultValue',
-                'fieldType' => 'textarea'
-            ],
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'text'

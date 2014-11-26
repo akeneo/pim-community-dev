@@ -2,18 +2,20 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Gaufrette\Filesystem;
 use Gedmo\Sluggable\Util\Urlizer;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
- * Media Manager actually implements with Gaufrette Bundle and Local adapter
+ * Media Manager uses Gaufrette to manage medias
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -27,25 +29,91 @@ class MediaManager
     /** @var string */
     protected $uploadDirectory;
 
+    /** @var ManagerRegistry */
+    protected $registry;
+
+    /** @var MediaFactory */
+    protected $factory;
+
     /**
      * Constructor
      *
-     * @param Filesystem $filesystem
-     * @param string     $uploadDirectory
+     * @param Filesystem      $filesystem
+     * @param string          $uploadDirectory
+     * @param MediaFactory    $factory
+     * @param ManagerRegistry $registry
      */
-    public function __construct(Filesystem $filesystem, $uploadDirectory)
-    {
+    public function __construct(
+        Filesystem $filesystem,
+        $uploadDirectory,
+        MediaFactory $factory,
+        ManagerRegistry $registry
+    ) {
         $this->filesystem      = $filesystem;
         $this->uploadDirectory = $uploadDirectory;
+        $this->factory         = $factory;
+        $this->registry        = $registry;
     }
 
     /**
-     * @param AbstractProductMedia $media
-     * @param string               $filenamePrefix
+     * Handle the medias of a product
+     *
+     * @param ProductInterface $product
+     */
+    public function handleProductMedias(ProductInterface $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($media = $value->getMedia()) {
+                if ($id = $media->getCopyFrom()) {
+                    $repository = $this->doctrine->getRepository('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+                    $source = $repository->find($id);
+                    if (!$source) {
+                        throw new \Exception(
+                            sprintf('Could not find media with id %d', $id)
+                        );
+                    }
+
+                    $this->duplicate(
+                        $source,
+                        $media,
+                        $this->generateFilenamePrefix($product, $value)
+                    );
+                } else {
+                    $filenamePrefix =  $media->getFile() ?
+                        $this->generateFilenamePrefix($product, $value) : null;
+                    $this->handle($media, $filenamePrefix);
+                }
+            }
+        }
+    }
+
+    /**
+     * Handles the medias of all products
+     *
+     * @param ProductInterface[] $products
+     */
+    public function handleAllProductsMedias(array $products)
+    {
+        foreach ($products as $product) {
+            if (!$product instanceof ProductInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
+                        get_class($product)
+                    )
+                );
+            }
+            $this->handleProductMedias($product);
+        }
+    }
+
+    /**
+     * @param ProductMediaInterface $media
+     * @param string                $filenamePrefix
      *
      * @throws MediaManagementException
      */
-    public function handle(AbstractProductMedia $media, $filenamePrefix)
+    public function handle(ProductMediaInterface $media, $filenamePrefix)
     {
         try {
             if ($file = $media->getFile()) {
@@ -65,30 +133,25 @@ class MediaManager
     /**
      * Duplicate a media information into another one
      *
-     * @param AbstractProductMedia $source
-     * @param AbstractProductMedia $target
-     * @param string               $filenamePrefix
+     * @param ProductMediaInterface $source
+     * @param ProductMediaInterface $target
+     * @param string                $filenamePrefix
      */
-    public function duplicate(AbstractProductMedia $source, AbstractProductMedia $target, $filenamePrefix)
+    public function duplicate(ProductMediaInterface $source, ProductMediaInterface $target, $filenamePrefix)
     {
         $target->setFile(new File($source->getFilePath()));
-        $this->upload(
-            $target,
-            $this->generateFilename(
-                $source->getOriginalFilename(),
-                $filenamePrefix
-            )
-        );
+        $filename = $this->generateFilename($source->getOriginalFilename(), $filenamePrefix);
+        $this->upload($target, $filename);
         $target->setOriginalFilename($source->getOriginalFilename());
     }
 
     /**
-     * @param AbstractProductMedia $media
-     * @param string               $targetDir
+     * @param ProductMediaInterface $media
+     * @param string                $targetDir
      *
      * @return boolean true on success, false on failure
      */
-    public function copy(AbstractProductMedia $media, $targetDir)
+    public function copy(ProductMediaInterface $media, $targetDir)
     {
         if ($media->getFilePath() === null) {
             return false;
@@ -104,6 +167,30 @@ class MediaManager
     }
 
     /**
+     * Create a media and load file information
+     *
+     * @param string $filename
+     *
+     * @return ProductMediaInterface
+     *
+     * @throws \InvalidArgumentException When file does not exist
+     */
+    public function createFromFilename($filename)
+    {
+        $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $filename;
+        if (!$this->filesystem->has($filename)) {
+            throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $filePath));
+        }
+        $media = $this->factory->createMedia();
+        $media->setOriginalFilename($filename);
+        $media->setFilename($filename);
+        $media->setFilePath($filePath);
+        $media->setMimeType($this->filesystem->mimeType($filename));
+
+        return $media;
+    }
+
+    /**
      * Get the export path of the media
      *
      * Examples:
@@ -112,11 +199,11 @@ class MediaManager
      *   - files/sku-003/back_view/en_US
      *   - files/sku-004/insurance
      *
-     * @param AbstractProductMedia $media
+     * @param ProductMediaInterface $media
      *
      * @return string
      */
-    public function getExportPath(AbstractProductMedia $media)
+    public function getExportPath(ProductMediaInterface $media)
     {
         if ($media->getFilePath() === null) {
             return '';
@@ -150,13 +237,29 @@ class MediaManager
     {
         return sprintf(
             '%s-%s-%s-%s-%s-%s',
-            $product->getId(),
+            uniqid(),
             Urlizer::urlize($product->getIdentifier(), '_'),
             $value->getAttribute()->getCode(),
             $value->getLocale(),
             $value->getScope(),
             time()
         );
+    }
+
+    /**
+     * Get the media, base64 encoded
+     *
+     * @param ProductMediaInterface $media
+     *
+     * @return string|null the base 64 representation of the file media or null if the media has no file attached
+     *
+     * @throws FileNotFoundException in case the file of the media does not exist or is not readable
+     */
+    public function getBase64(ProductMediaInterface $media)
+    {
+        $path = $this->getFilePath($media);
+
+        return $path !== null ? base64_encode(file_get_contents($this->getFilePath($media))) : null;
     }
 
     /**
@@ -171,25 +274,27 @@ class MediaManager
     }
 
     /**
-     * Upload file
-     * @param AbstractProductMedia $media     AbstractProductMedia entity
-     * @param string               $filename  Filename
-     * @param boolean              $overwrite Overwrite file or not
+     * Upload a file
+     *
+     * @param ProductMediaInterface $media     ProductMediaInterface entity
+     * @param string                $filename  Filename
+     * @param boolean               $overwrite Overwrite file or not
      */
-    protected function upload(AbstractProductMedia $media, $filename, $overwrite = false)
+    protected function upload(ProductMediaInterface $media, $filename, $overwrite = false)
     {
         if (($file = $media->getFile())) {
             if ($file instanceof UploadedFile && UPLOAD_ERR_OK !== $file->getError()) {
                 return;
             }
 
-            $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
+            $pathname = $file->getPathname();
+            $this->write($filename, file_get_contents($pathname), $overwrite);
 
-            $media->setOriginalFilename(
-                $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
-            );
+            $originalFilename = $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename();
+
+            $media->setOriginalFilename($originalFilename);
             $media->setFilename($filename);
-            $media->setFilepath($this->getFilePath($media));
+            $media->setFilePath($this->getFilePath($media));
             $media->setMimeType($file->getMimeType());
             $media->resetFile();
         }
@@ -210,13 +315,13 @@ class MediaManager
     /**
      * Get the file path of a media
      *
-     * @param AbstractProductMedia $media
+     * @param ProductMediaInterface $media
      *
      * @return string|null the path of the media or null if the media has no file attached
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
-    protected function getFilePath(AbstractProductMedia $media)
+    protected function getFilePath(ProductMediaInterface $media)
     {
         if ($this->fileExists($media)) {
             $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
@@ -232,14 +337,11 @@ class MediaManager
 
     /**
      * Delete a file
-     * @param AbstractProductMedia $media
+     *
+     * @param ProductMediaInterface $media
      */
-    protected function delete(AbstractProductMedia $media)
+    protected function delete(ProductMediaInterface $media)
     {
-        if (($media->getFilename() !== "") && $this->fileExists($media)) {
-            $this->filesystem->delete($media->getFilename());
-        }
-
         $media->setOriginalFilename(null);
         $media->setFilename(null);
         $media->setFilepath(null);
@@ -249,27 +351,12 @@ class MediaManager
     /**
      * Predicate to know if file exists physically
      *
-     * @param AbstractProductMedia $media
+     * @param ProductMediaInterface $media
      *
      * @return boolean
      */
-    protected function fileExists(AbstractProductMedia $media)
+    protected function fileExists(ProductMediaInterface $media)
     {
         return $this->filesystem->has($media->getFilename());
-    }
-
-    /**
-     * Get the media, base64 encoded
-     * @param AbstractProductMedia $media
-     *
-     * @return string|null the base 64 representation of the file media or null if the media has no file attached
-     *
-     * @throws FileNotFoundException in case the file of the media does not exist or is not readable
-     */
-    public function getBase64(AbstractProductMedia $media)
-    {
-        $path = $this->getFilePath($media);
-
-        return $path !== null ? base64_encode(file_get_contents($this->getFilePath($media))) : null;
     }
 }

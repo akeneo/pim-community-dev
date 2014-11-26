@@ -41,28 +41,12 @@
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
 
-        {% set tabs = form.vars.value.id ? ['Parameters', 'Values', 'History'] : ['Parameters', 'Values'] %}
-
-        {{ elements.form_navbar(tabs) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
         <div class="row-fluid tab-content">
-
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="parameters">
-                {% include 'PimEnrichBundle:Attribute:_form_parameters.html.twig' with {'form': form} %}
-            </div>
-
-            <div class="tab-pane" id="values">
-                {% include 'PimEnrichBundle:Attribute:_form_values.html.twig' with {'form': form} %}
-            </div>
-
-            {% if form.vars.value.id %}
-                <div class="tab-pane" id="history">
-                    {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-                </div>
-            {% endif %}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
 
             {{ form_row(form.id) }}
         </div>

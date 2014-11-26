@@ -1,3 +1,108 @@
+# 1.3.x
+
+## Features
+- Export a product as PDF
+- Add a widget in the navigation bar to display notifications when import/export jobs finish
+- Add the sequential edit for a selected list of products
+- Add comments on a product
+- Load dashboard widgets asynchronously and allow to refresh the data
+- Add copiers and setters
+- Add filters for image and file attributes
+
+## Improvements
+- Remove the fixed mysql socket location
+- Switch to stability stable
+- Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+- Remove deprecated attribute property *Usable as a grid column*
+- Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
+- Refactor of the attribute option screen to manage more than 100 options
+- Redesign of the loading box
+- Add an information message when there is no common attribute in mass-edit
+- Move filter transformation to CatalogBundle
+- JobProfileController refactoring
+- Add ACL on entity history
+- Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
+- Improve the UI of the datagrid column configuration popin
+- Normalize the managers by introducing 4 interfaces, SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface
+- Load the grid filter choices for simple and multi select attributes asynchronously
+- Modify the display of permissions in the role permissions edition
+- Add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
+- Add a check on passed values in ORM filters
+- Add a requirement regarding the need of the exec() function (for job executions)
+
+## BC breaks
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
+- Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass`
+- Rename `Pim\Bundle\UIBundle\Form\Transformer\IntegerTransformer` to `Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer`
+- Remove useless applySorterByAttribute, applySorterByField from Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
+- Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
+- Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
+- Remove ProductManager from ProductFilterUtility::__construct argument
+- Remove ProductFilterUtility::getAttribute()
+- Two new methods have been added to `Pim\Bundle\DashboardBundle\Widget\WidgetInterface`: `getAlias` and `getData`
+- Constructor of `Pim\Bundle\DashboardBundle\Controller\WidgetController` has been changed (most dependencies have been removed)
+- Method `Pim\Bundle\DashboardBundle\Controller\WidgetController::showAction()` has been removed in favor of `listAction` to render all widgets and `dataAction` to provide widget data
+- Constructors of `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` and `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` have been changed
+- `Pim\Bundle\DashboardBundle\Widget\Registry:add()` now accepts the widget (`WidgetInterface`) as the first argument and position as the second
+- Remove CatalogContext argument from ProductQueryBuilder::__construct
+- Remove ProductRepository from Datagrid Sorters __construct
+- Remove deprecated ProductRepositoryInterface::getProductQueryBuilder
+- Replace setProductQueryBuilder by setProductQueryFactory and add a getObjectManager in ProductRepositoryInterface
+- Add a ProductQueryFactoryInterface argument in ProductDatasource::__construct
+- Add a $productOrmAdapterClass argument in DatasourceAdapterResolver::__construct
+- Remove is_default, translatable from attributeOption mapping
+- Remove AttributeOption::setDefault, AttributeOption::isDefault
+- Remove AttributeInterface::getDefaultOptions
+- Remove $optionClass and $optionValueClass arguments from the AttributeManager::__construct
+- Remove createAttributeOption, createAttributeOptionValue, getAttributeOptionClass from the attributeManager (now in the attributeOptionManager)
+- Add a $attributeOptionManager argument in AttributeController::__construct
+- Remove MediaManager argument from CsvProductWriter::__construct
+- Update CsvProductWriter::copyMedia argument to replace AbstractProductMedia by an array
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor`. `Doctrine\Common\Persistence\ManagerRegistry` is used as fourth argument and is mandatory now. The data class is the fifth argument.
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\*` and `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\*` to remove the CatalogContext
+- Remove ProductRepositoryInterface::findOneBy (still a native support for ORM)
+- Add ProductRepositoryInterface::findOneByIdentifier and findOneById
+- Remove ProductRepositoryInterface::buildByScope
+- Remove ProductRepositoryInterface::findByExistingFamily
+- Remove ProductRepositoryInterface::findAllByAttributes
+- Move CatalogBundle/Doctrine/ORM/CompletenessJoin and CatalogBundle/Doctrine/ORM/ValueJoin to CatalogBundle/Doctrine/ORM/Join
+- Move CatalogBundle/Doctrine/ORM/CriteriaCondition to CatalogBundle/Doctrine/ORM/Condition
+- Remove the 'defaultValue' property of attributes and `Pim/Bundle/CatalogBundle/Model/AttributeInterface::setDefaultValue()` and `getDefaultValue()`
+- Refactor `Pim\Bundle\EnrichBundle\Controller\SequentialEditController`
+- Remove the `Pim\Bundle\CatalogBundle\Doctrine\(ORM|MongoDBODM)\Filter\BaseFilter` to use proper dedicated filters
+- The parameter `category_id` for the route `pim_enrich_product_listcategories` has been renamed to `categoryId`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader`. Now `FieldNameBuilder`, channel, locale and currency entity classes are mandatory.
+- Add getAvailableLocaleCodes in AttributeInterface
+- AttributeTypeRegistry replaces AttributeTypeFactory, changed constructors for AttributeManager, ProductValueFormFactory, AddAttributeTypeRelatedFieldsSubscriber
+- Drop Pim\Bundle\CatalogBundle\Doctrine\EntityRepository, ORM repositories now extends Doctrine\ORM\EntityRepository, no more access to buildAll(), build() and buildOne()
+- Replace AssociationTypeRepository::buildMissingAssociationTypes by AssociationTypeRepository::findMissingAssociationTypes
+- Replace AttributeGroupRepository::buildAllWithTranslations by AttributeGroupRepository::findAllWithTranslations
+- Replace GroupTypeRepository::buildAll by GroupTypeRepository::getAllGroupsExceptVariantQB
+- In AttributeGroupHandler::_construct, replace ObjectManager argument by AttributeGroupManager
+- Remove unused ProductManager::removeAll() method
+- Add an ObjectManager argument in DatagridViewManager::__construct
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler` to accept `Pim\Bundle\CatalogBundle\Manager\ChannelManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler` to accept `Pim\Bundle\CatalogBundle\Manager\FamilyManager` as third argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler` to accept `Pim\Bundle\CatalogBundle\Manager\GroupManager` as third argument and `Pim\Bundle\CatalogBundle\Manager\ProductManager` as fourth argument
+- Change of constructor of `Pim\Bundle\CatalogBundle\Manager\FamilyManager` to accept `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as sixth argument
+- Change of constructor of `Pim\Bundle\CatalogBundle\Manager\ChannelManager` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as second argument and `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` as third argument
+- Use `Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface` in constructors of AssociationTypeController, AttributeController, AttributeGroupController, ChannelController, FamilyController, GroupController, GroupTypeController
+- Change of constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController` to remove `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` argument
+- Remove ObjectManager first argument of `Pim\Bundle\EnrichBundle\Builder\ProductBuilder` constructor and delete method removeAttributeFromProduct
+- Change of constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator` to accept `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository` as third argument to replace `Pim\Bundle\CatalogBundle\Manager\ChannelManager` argument
+- Method `Pim\Bundle\CatalogBundle\Entity\Category::addProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::removeProduct()`, `Pim\Bundle\CatalogBundle\Entity\Category::setProducts()` have been removed.
+- We now use uniqid() to generate filename prefix (on media attributes)
+- Change of constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` to add a `RemoverInterface` as last argument
+- Change of constructor of `Pim\Bundle\EnrichBundle\Controller\GroupTypeController.php` to add a `RemoverInterface` as last argument
+- `ProductPersister` and `BasePersister` has been replaced by `ProductSaver` in CatalogBundle
+- Add methods `execute()`, `getQueryBuilder()`, `setQueryBuilder()` in `ProductQueryBuilderInterface`
+- Add `MediaFactory` and `ObjectManager` arguments in MediaManager contructor
+- Change of constructor `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove arguments `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` and  `Pim\Bundle\CatalogBundle\Factory\MetricFactory`. `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface` is expected as second argument and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` is expected as last but one.
+
+## Bug fixes
+- PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
+- PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
+
 # 1.2.13 (2014-11-26)
 
 ## Bug fixes

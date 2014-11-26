@@ -1,0 +1,19 @@
+Pim\Bundle\EnrichBundle\Entity\SequentialEdit:
+    type: entity
+    table: pim_enrich_sequential_edit
+    repositoryClass: Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        objectSet:
+            type: array
+            column: object_set
+    oneToOne:
+        user:
+            targetEntity: Symfony\Component\Security\Core\User\UserInterface
+            joinColumn:
+                name: user_id
+                referencedColumnName: id

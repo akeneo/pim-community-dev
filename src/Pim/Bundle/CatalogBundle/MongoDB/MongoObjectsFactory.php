@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB;
 
-use \MongoId;
-use \MongoDate;
-use \MongoDBRef;
+use MongoDate;
+use MongoDBRef;
+use MongoId;
 
 /**
  * Provides factory method to create common MongoDB objects
@@ -20,7 +20,7 @@ class MongoObjectsFactory
      *
      * @param string $id
      *
-     * @return MongoID
+     * @return MongoId
      */
     public function createMongoId($id = null)
     {

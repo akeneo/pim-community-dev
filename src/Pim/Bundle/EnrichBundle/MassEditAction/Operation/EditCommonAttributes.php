@@ -4,21 +4,18 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\PimCatalogBundle;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Edit common attributes of given products
@@ -29,7 +26,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class EditCommonAttributes extends ProductMassEditOperation
 {
-    /** @var ArrayCollection */
+    /** @var ArrayCollection|ProductValueInterface[] */
     protected $values;
 
     /** @var ArrayCollection */
@@ -56,51 +53,51 @@ class EditCommonAttributes extends ProductMassEditOperation
     /** @var array */
     protected $commonAttributes = array();
 
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
-    /** @var MetricFactory */
-    protected $metricFactory;
-
     /** @var string */
     protected $productPriceClass;
 
     /** @var string */
     protected $productMediaClass;
 
+    /** @var ProductUpdaterInterface */
+    protected $productUpdater;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * Constructor
      *
      * @param ProductManager           $productManager
+     * @param ProductUpdaterInterface  $productUpdater
      * @param UserContext              $userContext
      * @param CurrencyManager          $currencyManager
      * @param CatalogContext           $catalogContext
-     * @param ProductBuilder           $productBuilder
      * @param ProductMassActionManager $massActionManager
-     * @param MetricFactory            $metricFactory
+     * @param NormalizerInterface      $normalizer
      * @param array                    $classes
      */
     public function __construct(
         ProductManager $productManager,
+        ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
         CurrencyManager $currencyManager,
         CatalogContext $catalogContext,
-        ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
-        MetricFactory $metricFactory,
+        NormalizerInterface $normalizer,
         array $classes
     ) {
         $this->productManager = $productManager;
+        $this->productUpdater = $productUpdater;
         $this->userContext = $userContext;
         $this->currencyManager = $currencyManager;
         $this->catalogContext = $catalogContext;
-        $this->productBuilder = $productBuilder;
         $this->massActionManager = $massActionManager;
         $this->displayedAttributes = new ArrayCollection();
         $this->values = new ArrayCollection();
         $this->productPriceClass = $classes['product_price'];
         $this->productMediaClass = $classes['product_media'];
-        $this->metricFactory = $metricFactory;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -288,12 +285,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function filterLocaleSpecificAttributes(array $attributes, $currentLocaleCode)
     {
         foreach ($attributes as $indAttribute => $attribute) {
-            if ($attribute->getAvailableLocales()) {
-                $availableCodes = $attribute->getAvailableLocales()->map(
-                    function ($locale) {
-                        return $locale->getCode();
-                    }
-                )->toArray();
+            if ($attribute->getAvailableLocaleCodes()) {
+                $availableCodes = $attribute->getAvailableLocaleCodes();
                 if (!in_array($currentLocaleCode, $availableCodes)) {
                     unset($attributes[$indAttribute]);
                 }
@@ -309,8 +302,6 @@ class EditCommonAttributes extends ProductMassEditOperation
     public function perform()
     {
         parent::perform();
-
-        $this->productManager->handleAllMedia($this->objects);
     }
 
     /**
@@ -329,69 +320,19 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
-            $this->setProductValue($product, $value);
-        }
-    }
 
-    /**
-     * Set a product value
-     *
-     * @param ProductInterface      $product
-     * @param ProductValueInterface $value
-     */
-    protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
-    {
-        if (null === $productValue = $this->getProductValue($product, $value)) {
-            $attribute = $value->getAttribute();
-            $localeCode = ($attribute->isLocalizable()) ? $this->getLocale()->getCode() : null;
-            $scopeCode = ($attribute->isScopable()) ? $value->getScope() : null;
-            // TODO : should be checked in product builder itself (not in 1.2 to avoid issue ?)
-            $productValue = $this->productBuilder->addProductValue(
-                $product,
-                $attribute,
-                $localeCode,
-                $scopeCode
+            $rawData = $this->normalizer->normalize($value->getData(), 'json');
+            // if the value is localizable, let's use the locale the user has chosen in the form
+            $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
+
+            $this->productUpdater->setValue(
+                [$product],
+                $value->getAttribute()->getCode(),
+                $rawData,
+                $locale,
+                $value->getScope()
             );
         }
-
-        switch ($value->getAttribute()->getAttributeType()) {
-            case 'pim_catalog_price_collection':
-                $this->setProductPrice($productValue, $value);
-
-                break;
-            case 'pim_catalog_multiselect':
-                $this->setProductOption($productValue, $value);
-
-                break;
-            case 'pim_catalog_file':
-            case 'pim_catalog_image':
-                $this->setProductFile($productValue, $value);
-
-                break;
-            case 'pim_catalog_metric':
-                $this->setProductMetric($productValue, $value);
-
-                break;
-            default:
-                $productValue->setData($value->getData());
-        }
-    }
-
-    /**
-     * Get product value
-     *
-     * @param ProductInterface      $product
-     * @param ProductValueInterface $value
-     *
-     * @return ProductValueInterface
-     */
-    protected function getProductValue(ProductInterface $product, ProductValueInterface $value)
-    {
-        return $product->getValue(
-            $value->getAttribute()->getCode(),
-            $value->getAttribute()->isLocalizable() ? $this->getLocale()->getCode() : null,
-            $value->getAttribute()->isScopable() ? $value->getScope() : null
-        );
     }
 
     /**
@@ -454,69 +395,5 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function createProductPrice($currency)
     {
         return new $this->productPriceClass(null, $currency);
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    protected function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        foreach ($value->getPrices() as $price) {
-            if (null === $productPrice = $productValue->getPrice($price->getCurrency())) {
-                $productPrice = $this->productBuilder->addPriceForCurrency($productValue, $price->getCurrency());
-            }
-            $productPrice->setData($price->getData());
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    protected function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        $productValue->getOptions()->clear();
-
-        // TODO: Clean this code removing flush for ORM
-        if (!class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {
-            $this->productManager->getObjectManager()->flush();
-        }
-
-        foreach ($value->getOptions() as $option) {
-            $productValue->addOption($option);
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    protected function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        if (null === $media = $productValue->getMedia()) {
-            $media = new $this->productMediaClass();
-            $productValue->setMedia($media);
-        }
-        $file = $value->getMedia()->getFile();
-        if ($file) {
-            $media->setFile($file);
-        } else {
-            $media->setRemoved(true);
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $productValue
-     * @param ProductValueInterface $value
-     */
-    protected function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
-    {
-        if (null === $metric = $productValue->getMetric()) {
-            $metric = $this->metricFactory->createMetric($value->getAttribute()->getMetricFamily());
-            $productValue->setMetric($metric);
-        }
-        $metric->setUnit($value->getMetric()->getUnit());
-        $metric->setData($value->getMetric()->getData());
     }
 }

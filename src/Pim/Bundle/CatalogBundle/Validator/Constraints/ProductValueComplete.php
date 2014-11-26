@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * Complete constraint for ProductValue

@@ -3,13 +3,17 @@
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class LinksWidgetSpec extends ObjectBehavior
 {
     function it_is_a_widget()
     {
         $this->shouldImplement('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
+    }
+
+    function it_has_an_alias()
+    {
+        $this->getAlias()->shouldReturn('links');
     }
 
     function it_exposes_the_links_widget_template()
@@ -38,7 +42,7 @@ class LinksWidgetSpec extends ObjectBehavior
                         'icon' => 'list-ul',
                     ),
                     array(
-                        'route' => 'pim_enrich_categorytree_create',
+                        'route' => 'pim_enrich_categorytree_index',
                         'label' => 'pim_dashboard.link.label.category',
                         'icon' => 'sitemap',
                     ),

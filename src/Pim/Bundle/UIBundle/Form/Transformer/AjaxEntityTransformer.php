@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UIBundle\Form\Transformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * Ajax choice transformer

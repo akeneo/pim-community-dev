@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -46,7 +45,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $option->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('color');
         $option->getCode()->willReturn('red');
-        $option->isDefault()->willReturn(true);
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
             'fr_FR' => $valueFr,
@@ -59,7 +57,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => ['en_US', 'fr_FR', 'de_DE']])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
-            'default' => '1',
             'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => '']
         ]);
     }
@@ -72,7 +69,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
-        $option->isDefault()->willReturn(true);
         $attribute->getCode()->willReturn('color');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
@@ -86,7 +82,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => ['en_US', 'de_DE']])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
-            'default' => '1',
             'label' => ['en_US' => 'Red', 'de_DE' => '']
         ]);
     }
@@ -100,7 +95,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
-        $option->isDefault()->willReturn(true);
         $attribute->getCode()->willReturn('color');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
@@ -117,7 +111,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => []])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
-            'default' => '1',
             'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => '']
         ]);
     }

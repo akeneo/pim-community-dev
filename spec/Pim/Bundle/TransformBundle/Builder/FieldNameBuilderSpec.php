@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\TransformBundle\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class FieldNameBuilderSpec extends ObjectBehavior
 {
@@ -43,7 +43,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -74,7 +74,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(true);
@@ -128,7 +128,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_scopable_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -161,7 +161,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_price_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -206,7 +206,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_attribute_property(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         // global with extra locale
         $attribute->getCode()->willReturn('sku');

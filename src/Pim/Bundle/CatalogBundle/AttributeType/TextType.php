@@ -19,9 +19,6 @@ class TextType extends AbstractAttributeType
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
         $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name' => 'defaultValue'
-            ],
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'text'

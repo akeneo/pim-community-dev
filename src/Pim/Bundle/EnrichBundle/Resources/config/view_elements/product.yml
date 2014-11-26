@@ -1,0 +1,55 @@
+parameters:
+    pim_enrich.view_element.product.tab.attribute.template:    'PimEnrichBundle:Product:Tab/attribute.html.twig'
+    pim_enrich.view_element.product.tab.category.template:     'PimEnrichBundle:Product:Tab/category.html.twig'
+    pim_enrich.view_element.product.tab.association.template:  'PimEnrichBundle:Product:Tab/association.html.twig'
+    pim_enrich.view_element.product.tab.completeness.template: 'PimEnrichBundle:Product:Tab/completeness.html.twig'
+    pim_enrich.view_element.product.tab.history.template:      'PimEnrichBundle:Product:Tab/history.html.twig'
+
+services:
+    pim_enrich.view_element.product.tab.attribute:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.attribute'
+            - %pim_enrich.view_element.product.tab.attribute.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_edit_attributes'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 90 }
+
+    pim_enrich.view_element.product.tab.category:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.category'
+            - %pim_enrich.view_element.product.tab.category.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_categories_view'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 100 }
+
+    pim_enrich.view_element.product.tab.association:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.association'
+            - %pim_enrich.view_element.product.tab.association.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 110 }
+
+    pim_enrich.view_element.product.tab.completeness:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.completeness'
+            - %pim_enrich.view_element.product.tab.completeness.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 120 }
+
+    pim_enrich.view_element.product.tab.history:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.history'
+            - %pim_enrich.view_element.product.tab.history.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_history'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 130 }

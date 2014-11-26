@@ -1,0 +1,178 @@
+parameters:
+    pim_catalog.doctrine.query.product_query_factory.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory
+    pim_catalog.doctrine.query.product_query_builder.class: Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder
+    pim_catalog.doctrine.query.filter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistry
+    pim_catalog.doctrine.query.sorter_registry.class: Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistry
+    pim_catalog.doctrine.query.field_filter_dumper.class:     Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterDumper
+    pim_catalog.doctrine.query.attribute_filter_dumper.class: Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterDumper
+    pim_catalog.doctrine.query.filter.category.class:         Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
+
+services:
+    pim_catalog.doctrine.query.product_query_factory:
+        class: %pim_catalog.doctrine.query.product_query_factory.class%
+        arguments:
+            - '%pim_catalog.doctrine.query.product_query_builder.class%'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.doctrine.query.filter_registry'
+            - '@pim_catalog.doctrine.query.sorter_registry'
+
+    # deprecated : will be removed in 1.4
+    pim_catalog.doctrine.product_query_builder:
+        class: %pim_catalog.doctrine.query.product_query_builder.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.doctrine.query.filter_registry'
+            - '@pim_catalog.doctrine.query.sorter_registry'
+
+    pim_catalog.doctrine.query.filter_registry:
+        class: %pim_catalog.doctrine.query.filter_registry.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.doctrine.query.sorter_registry:
+        class: %pim_catalog.doctrine.query.sorter_registry.class%
+
+    pim_catalog.doctrine.query.field_filter_dumper:
+        class: %pim_catalog.doctrine.query.field_filter_dumper.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter_registry'
+
+    pim_catalog.doctrine.query.attribute_filter_dumper:
+        class: %pim_catalog.doctrine.query.attribute_filter_dumper.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter_registry'
+            - '@pim_catalog.repository.attribute'
+
+    # PQB common filter
+    pim_catalog.doctrine.query.filter.category:
+        class: %pim_catalog.doctrine.query.filter.category.class%
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.product_category'
+            - ['categories']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    # PQB common filter definitions (implement either in ORM or MongoDB ODM)
+    pim_catalog.doctrine.query.filter.boolean:
+        class: %pim_catalog.doctrine.query.filter.boolean.class%
+        arguments:
+            - ['pim_catalog_boolean']
+            - ['enabled']
+            - ['=']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.completeness:
+        class: %pim_catalog.doctrine.query.filter.completeness.class%
+        arguments:
+            - ['completeness']
+            - ['=', '<']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.date:
+        class: %pim_catalog.doctrine.query.filter.date.class%
+        arguments:
+            - ['pim_catalog_date']
+            - ['created', 'updated']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.metric:
+        class: %pim_catalog.doctrine.query.filter.metric.class%
+        arguments:
+            - ['pim_catalog_metric']
+            - ['<', '<=', '=', '>=', '>', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.number:
+        class: %pim_catalog.doctrine.query.filter.number.class%
+        arguments:
+            - ['pim_catalog_number']
+            - ['<', '<=', '=', '>=', '>', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.option:
+        class: %pim_catalog.doctrine.query.filter.option.class%
+        arguments:
+            - ['pim_catalog_simpleselect']
+            - ['IN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.options:
+        class: %pim_catalog.doctrine.query.filter.options.class%
+        arguments:
+            - ['pim_catalog_multiselect']
+            - ['IN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.price:
+        class: %pim_catalog.doctrine.query.filter.price.class%
+        arguments:
+            - ['pim_catalog_price_collection']
+            - ['<', '<=', '=', '>=', '>', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.product_id:
+        class: %pim_catalog.doctrine.query.filter.product_id.class%
+        arguments:
+            - ['id']
+            - ['=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.string:
+        class: %pim_catalog.doctrine.query.filter.string.class%
+        arguments:
+            - ['pim_catalog_text', 'pim_catalog_textarea']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.identifier:
+        class: %pim_catalog.doctrine.query.filter.string.class%
+        arguments:
+            - ['pim_catalog_identifier']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.media:
+        class: %pim_catalog.doctrine.query.filter.media.class%
+        arguments:
+            - ['pim_catalog_image', 'pim_catalog_file']
+            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    # PQB common sorter definitions (implement either in ORM or MongoDB ODM)
+    pim_catalog.doctrine.query.sorter.base:
+        class: %pim_catalog.doctrine.query.sorter.base.class%
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 20 }
+
+    pim_catalog.doctrine.query.sorter.completeness:
+        class: %pim_catalog.doctrine.query.sorter.completeness.class%
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.family:
+        class: %pim_catalog.doctrine.query.sorter.family.class%
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.in_group:
+        class: %pim_catalog.doctrine.query.sorter.in_group.class%
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+

@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\UnitOfWork;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
  * An ArrayCollection decorator of entity identifiers that are lazy loaded

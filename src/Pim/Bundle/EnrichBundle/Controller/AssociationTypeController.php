@@ -2,8 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
+use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,17 +20,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
-use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
 
 /**
  * Association type controller
@@ -33,7 +30,7 @@ use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
  */
 class AssociationTypeController extends AbstractDoctrineController
 {
-    /** @var AssociationTypeHandler */
+    /** @var HandlerInterface */
     protected $assocTypeHandler;
 
     /** @var Form */
@@ -59,7 +56,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param AssociationTypeManager   $assocTypeManager
      * @param AssociationManager       $assocManager
-     * @param AssociationTypeHandler   $assocTypeHandler
+     * @param HandlerInterface         $assocTypeHandler
      * @param Form                     $assocTypeForm
      */
     public function __construct(
@@ -74,7 +71,7 @@ class AssociationTypeController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         AssociationTypeManager $assocTypeManager,
         AssociationManager $assocManager,
-        AssociationTypeHandler $assocTypeHandler,
+        HandlerInterface $assocTypeHandler,
         Form $assocTypeForm
     ) {
         parent::__construct(

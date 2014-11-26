@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Completeness generator interface. Will be implemented differently
@@ -48,9 +48,9 @@ interface CompletenessGeneratorInterface
      * Schedule recalculation of completenesses for all product
      * of a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      */
-    public function scheduleForFamily(Family $family);
+    public function scheduleForFamily(FamilyInterface $family);
 
     /**
      * Schedule recalculation of completenesses for all products
