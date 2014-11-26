@@ -18,17 +18,17 @@ class ProductRuleLoaderSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader');
     }
 
-    function it_is_a_rule_loader()
+    public function it_is_a_rule_loader()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface');
     }
 
-    function it_supports_a_product_rule(
+    public function it_supports_a_product_rule(
         RuleInterface $ruleOK,
         RuleInterface $ruleKO
     ) {
@@ -39,7 +39,7 @@ class ProductRuleLoaderSpec extends ObjectBehavior
         $this->supports($ruleKO)->shouldReturn(false);
     }
 
-    function it_loads_a_rule($eventDispatcher, RuleInterface $rule)
+    public function it_loads_a_rule($eventDispatcher, RuleInterface $rule)
     {
         $content =
             <<<CONTENT
@@ -54,7 +54,7 @@ CONTENT;
         $this->load($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface');
     }
 
-    function it_does_not_load_a_rule_with_bad_content($eventDispatcher, RuleInterface $rule1, RuleInterface $rule2)
+    public function it_does_not_load_a_rule_with_bad_content($eventDispatcher, RuleInterface $rule1, RuleInterface $rule2)
     {
         $rule1->getContent()->willReturn(json_encode(['actions' => []]));
         $rule2->getContent()->willReturn(json_encode(['conditions' => []]));

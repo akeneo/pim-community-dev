@@ -58,7 +58,6 @@ class GenerateFakeCommand extends ContainerAwareCommand
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-
         $fakeRules = false;
         if ($fakeRules) {
 

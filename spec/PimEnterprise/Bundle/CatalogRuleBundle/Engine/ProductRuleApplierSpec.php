@@ -14,22 +14,22 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
-    function let(EventDispatcherInterface $eventDispatcher, ProductUpdaterInterface $productUpdater)
+    public function let(EventDispatcherInterface $eventDispatcher, ProductUpdaterInterface $productUpdater)
     {
         $this->beConstructedWith($productUpdater, $eventDispatcher);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier');
     }
 
-    function it_is_a_rule_applier()
+    public function it_is_a_rule_applier()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
-    function it_supports_a_product_rule(
+    public function it_supports_a_product_rule(
         LoadedRuleInterface $ruleOK,
         LoadedRuleInterface $ruleKO
     ) {
@@ -40,7 +40,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->supports($ruleKO)->shouldReturn(false);
     }
 
-    function it_applies_a_rule($eventDispatcher, LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet)
+    public function it_applies_a_rule($eventDispatcher, LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
@@ -49,7 +49,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->apply($rule, $subjectSet);
     }
 
-    function it_applies_a_rule_which_has_a_set_action(
+    public function it_applies_a_rule_which_has_a_set_action(
         $eventDispatcher,
         $productUpdater,
         LoadedRuleInterface $rule,
@@ -70,7 +70,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->apply($rule, $subjectSet);
     }
 
-    function it_applies_a_rule_which_has_a_copy_action(
+    public function it_applies_a_rule_which_has_a_copy_action(
         $eventDispatcher,
         $productUpdater,
         LoadedRuleInterface $rule,
@@ -95,7 +95,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->apply($rule, $subjectSet);
     }
 
-    function it_applies_a_rule_which_has_an_unknown_action(
+    public function it_applies_a_rule_which_has_an_unknown_action(
         $eventDispatcher,
         LoadedRuleInterface $rule,
         RuleSubjectSetInterface $subjectSet

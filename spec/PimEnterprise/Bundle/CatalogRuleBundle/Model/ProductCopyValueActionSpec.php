@@ -4,11 +4,10 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
-use Prophecy\Argument;
 
 class ProductCopyValueActionSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith(
             [
@@ -23,22 +22,22 @@ class ProductCopyValueActionSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction');
     }
 
-    function it_is_an_action()
+    public function it_is_an_action()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface');
     }
 
-    function it_is_a_product_copy_value_action()
+    public function it_is_a_product_copy_value_action()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface');
     }
 
-    function it_constructs_a_product_action()
+    public function it_constructs_a_product_action()
     {
         $this->getFromField()->shouldReturn('sku');
         $this->getToField()->shouldReturn('description');
@@ -48,7 +47,7 @@ class ProductCopyValueActionSpec extends ObjectBehavior
         $this->getToScope()->shouldReturn('tablet');
     }
 
-    function it_throws_an_exception_when_trying_to_construct_an_action_with_invalid_data()
+    public function it_throws_an_exception_when_trying_to_construct_an_action_with_invalid_data()
     {
         $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
             ->during(
@@ -67,7 +66,7 @@ class ProductCopyValueActionSpec extends ObjectBehavior
             );
     }
 
-    function it_throws_an_exception_when_trying_to_construct_an_action_with_missing_data()
+    public function it_throws_an_exception_when_trying_to_construct_an_action_with_missing_data()
     {
         $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')
             ->during('__construct', [['type' => ProductCopyValueAction::TYPE]]);

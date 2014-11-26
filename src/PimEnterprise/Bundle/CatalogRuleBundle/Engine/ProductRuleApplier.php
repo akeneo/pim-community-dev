@@ -21,7 +21,6 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Applies product rules via a batch.
@@ -61,7 +60,7 @@ class ProductRuleApplier implements ApplierInterface
         foreach ($actions as $action) {
             if ($action instanceof ProductSetValueActionInterface) {
                 $this->applySetAction($subjectSet, $action);
-            } elseif($action instanceof ProductCopyValueActionInterface) {
+            } elseif ($action instanceof ProductCopyValueActionInterface) {
                 $this->applyCopyAction($subjectSet, $action);
             } else {
                 throw new \LogicException(
@@ -83,13 +82,11 @@ class ProductRuleApplier implements ApplierInterface
 
     /**
      * Apply a copy action on a subhect set.
-
      *
-*@param RuleSubjectSetInterface    $subjectSet
+     * @param RuleSubjectSetInterface         $subjectSet
      * @param ProductCopyValueActionInterface $action
-
      *
-*@return ProductRuleApplier
+     * @return ProductRuleApplier
      */
     protected function applyCopyAction(RuleSubjectSetInterface $subjectSet, ProductCopyValueActionInterface $action)
     {
@@ -108,15 +105,11 @@ class ProductRuleApplier implements ApplierInterface
 
     /**
      * Applies a set action on a subject set.
-
-
-*
-*@param RuleSubjectSetInterface   $subjectSet
+     *
+     * @param RuleSubjectSetInterface        $subjectSet
      * @param ProductSetValueActionInterface $action
-
-
-*
-*@return ProductRuleApplier
+     *
+     * @return ProductRuleApplier
      */
     protected function applySetAction(RuleSubjectSetInterface $subjectSet, ProductSetValueActionInterface $action)
     {

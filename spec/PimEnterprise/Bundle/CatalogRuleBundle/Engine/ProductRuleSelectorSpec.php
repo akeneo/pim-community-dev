@@ -2,9 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
@@ -17,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductRuleSelectorSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ProductQueryFactoryInterface $productQueryFactory,
         ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher
@@ -30,17 +28,17 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector');
     }
 
-    function it_should_be_a_selector()
+    public function it_should_be_a_selector()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface');
     }
 
-    function it_supports_a_product_rule(
+    public function it_supports_a_product_rule(
         LoadedRuleInterface $ruleOK,
         LoadedRuleInterface $ruleKO
     ) {
@@ -51,7 +49,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $this->supports($ruleKO)->shouldReturn(false);
     }
 
-    function it_selects_subjects_of_a_rule(
+    public function it_selects_subjects_of_a_rule(
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
@@ -73,7 +71,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $this->select($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }
 
-    function it_selects_subject_of_a_rule_that_has_conditions(
+    public function it_selects_subject_of_a_rule_that_has_conditions(
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
