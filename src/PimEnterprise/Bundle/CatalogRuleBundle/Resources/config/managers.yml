@@ -1,0 +1,10 @@
+parameters:
+    pimee_catalog_rule.manager.rule_linked_resource.class: PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager
+
+services:
+    # Managers
+    pimee_catalog_rule.manager.rule_linked_resource:
+        class: %pimee_catalog_rule.manager.rule_linked_resource.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
