@@ -10,9 +10,6 @@ define(
             }
         });
 
-        var AttributeOptionValueCollection = Backbone.Model.extend();
-
-
         var ItemCollection = Backbone.Collection.extend({
             model: AttributeOptionItem,
             initialize: function(options) {
@@ -64,7 +61,7 @@ define(
                 'click .edit-row':   'startEditItem',
                 'click .delete-row': 'deleteItem',
                 'click .update-row': 'updateItem',
-                'keydown input':     'soil',
+                'keyup input':       'soil',
                 'keydown':           'cancelSubmit'
             },
             editable: false,
@@ -125,7 +122,9 @@ define(
                             __('confirm.attribute_option.cancel_edition_on_new_option_title'),
                             _.bind(function() {
                                 this.showReadableItem(this);
-                                this.deleteItem(this);
+                                if (!this.model.id) {
+                                    this.deleteItem();
+                                }
                             }, this));
                     } else {
                         if (!this.model.id) {
@@ -150,7 +149,7 @@ define(
                     {},
                     {
                         url: this.model.url(),
-                        success: _.bind(function(data) {
+                        success: _.bind(function() {
                             this.inLoading(false);
                             this.model.set(editedModel.attributes);
                             this.clean();
@@ -208,7 +207,7 @@ define(
                     };
                 }, this);
 
-                editedModel.set('code', this.$el.find('.attribute_option_code').val())
+                editedModel.set('code', this.$el.find('.attribute_option_code').val());
                 editedModel.set('optionValues', attributeOptions);
 
                 return editedModel;
@@ -340,14 +339,15 @@ define(
                         }, this)
                     });
             },
-            addItem: function(options) {
-                var options = options || {};
+            addItem: function(opts) {
+                var options = opts || {};
 
                 //If no item model provided we create one
+                var itemToAdd;
                 if (!options.item) {
-                    var itemToAdd = new AttributeOptionItem();
+                    itemToAdd = new AttributeOptionItem();
                 } else {
-                    var itemToAdd = options.item;
+                    itemToAdd = options.item;
                 }
 
                 var newItemView = this.createItemView(itemToAdd);
