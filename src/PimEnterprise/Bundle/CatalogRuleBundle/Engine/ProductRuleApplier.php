@@ -29,10 +29,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
-    //TODO: Move those actions to a dedicated class
-    const SET_ACTION  = 'set_value';
-    const COPY_ACTION = 'copy_value';
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 

@@ -15,7 +15,12 @@ class ProductRuleRunnerSpec extends ObjectBehavior
 {
     public function let(LoaderInterface $loader, SelectorInterface $selector, ApplierInterface $applier)
     {
-        $this->beConstructedWith($loader, $selector, $applier);
+        $this->beConstructedWith(
+            $loader,
+            $selector,
+            $applier,
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition'
+        );
     }
 
     public function it_is_initializable()

@@ -14,7 +14,9 @@ class ProductRuleLoaderSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $eventDispatcher,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule'
+            'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule',
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction',
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction'
         );
     }
 

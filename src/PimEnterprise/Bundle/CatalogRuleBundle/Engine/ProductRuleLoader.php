@@ -19,7 +19,6 @@ use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -35,14 +34,28 @@ class ProductRuleLoader implements LoaderInterface
     /** @var string */
     protected $loadedRuleClass;
 
+    /** @var string */
+    protected $setValueActionClass;
+
+    /** @var string */
+    protected $copyValueActionClass;
+
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param                          $loadedRuleClass
+     * @param string                   $loadedRuleClass
+     * @param string                   $setValueActionClass
+     * @param string                   $copyValueActionClass
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, $loadedRuleClass)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        $loadedRuleClass,
+        $setValueActionClass,
+        $copyValueActionClass
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->loadedRuleClass = $loadedRuleClass;
+        $this->setValueActionClass = $setValueActionClass;
+        $this->copyValueActionClass = $copyValueActionClass;
 
         $refClass = new \ReflectionClass($loadedRuleClass);
         $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface';
@@ -123,11 +136,9 @@ class ProductRuleLoader implements LoaderInterface
             if (!isset($rawAction['type'])) {
                 // TODO: throw exception ? that should not happen? or simply log?
             } elseif (ProductSetValueAction::TYPE === $rawAction['type']) {
-                //TODO: do not hardcode this
-                $actions[] = new ProductSetValueAction($rawAction);
+                $actions[] = new $this->setValueActionClass($rawAction);
             } elseif (ProductCopyValueAction::TYPE === $rawAction['type']) {
-                //TODO: do not hardcode this
-                $actions[] = new ProductCopyValueAction($rawAction);
+                $actions[] = new $this->copyValueActionClass($rawAction);
             }
         }
 

@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,6 +26,34 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductRuleRunner extends AbstractRunner
 {
+    /** @var string */
+    protected $productConditionClass;
+
+    /**
+     * @param LoaderInterface   $loader
+     * @param SelectorInterface $selector
+     * @param ApplierInterface  $applier
+     * @param string            $productConditionClass
+     */
+    public function __construct(
+        LoaderInterface $loader,
+        SelectorInterface $selector,
+        ApplierInterface $applier,
+        $productConditionClass
+    ) {
+        parent::__construct($loader, $selector, $applier);
+
+        $refClass = new \ReflectionClass($productConditionClass);
+        $interface = 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface';
+        if (!$refClass->implementsInterface($interface)) {
+            throw new \InvalidArgumentException(
+                sprintf('The provided class name "%s" must implement interface "%s".', $productConditionClass, $interface)
+            );
+        }
+
+        $this->productConditionClass = $productConditionClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -70,8 +101,8 @@ class ProductRuleRunner extends AbstractRunner
     {
         $loadedRule = $this->loader->load($rule);
         if (!empty($options['selected_products'])) {
-            //TODO: do not hardcode this
-            $condition = new ProductCondition([
+            /** @var ProductConditionInterface $condition */
+            $condition = new $this->productConditionClass([
                     'field' => 'id',
                     'operator' => 'IN',
                     'value' => $options['selected_products']
