@@ -6,6 +6,6 @@ services:
     pimee_rule_engine.manager.rule:
         class: %pimee_rule_engine.manager.rule.class%
         arguments:
-            - '@pimee_rule_engine.repository.rule'
-            - '@doctrine'
+            - '@pimee_catalog_rule.repository.rule_linked_resource'
+            - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'

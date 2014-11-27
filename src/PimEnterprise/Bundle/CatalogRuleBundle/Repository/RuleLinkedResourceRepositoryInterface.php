@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
 
 /**
  * Rule linked resource repository interface

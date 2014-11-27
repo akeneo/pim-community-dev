@@ -55,7 +55,6 @@ class RuleManager implements SaverInterface, RemoverInterface
      */
     public function remove($rule, array $options = [])
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_REMOVE, new RuleEvent($rule));
 
         if (!$rule instanceof RuleInterface) {
             throw new \InvalidArgumentException(
@@ -65,6 +64,8 @@ class RuleManager implements SaverInterface, RemoverInterface
                 )
             );
         }
+
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_REMOVE, new RuleEvent($rule));
 
         $options = array_merge(['flush' => true], $options);
         $this->objectManager->remove($rule);
@@ -81,8 +82,6 @@ class RuleManager implements SaverInterface, RemoverInterface
     public function save($rule, array $options = [])
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($rule));
-
-
 
         //todo: get object we want to apply the rule
         //todo: save it into the table with the link between the resource and the object

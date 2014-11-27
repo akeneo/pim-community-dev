@@ -11,11 +11,10 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class RuleLinkedResourceManager
@@ -24,19 +23,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
 {
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var EntityManager */
+    protected $entityManager;
 
     /**
      * Constructor
      *
-     * @param ManagerRegistry          $managerRegistry
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param EntityManager $entityManager
      */
-    public function __construct(ManagerRegistry $managerRegistry, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->managerRegistry = $managerRegistry;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -62,11 +59,10 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
         }
 
         $options = array_merge(['flush' => true], $options);
-        $em = $this->managerRegistry->getManagerForClass(get_class($object));
-        $em->remove($object);
+        $this->entityManager->remove($object);
 
         if (true === $options['flush']) {
-            $em->flush();
+            $this->entityManager->flush();
         }
     }
 }
