@@ -1,6 +1,11 @@
 # 1.2.*
 
 ## Bug fixes
+- PIM-3443: Fix prices not exported in quick export 
+
+# 1.2.13 (2014-11-26)
+
+## Bug fixes
 - PIM-3406: Fix boolean filter on Mongo implementation
 - PIM-3430: Fix doctrine issue on prices when skip an item during the product import
 - PIM-3358: Fix sprintf issue in an exception which prevents doctrine writer to deal with anything else than an object
