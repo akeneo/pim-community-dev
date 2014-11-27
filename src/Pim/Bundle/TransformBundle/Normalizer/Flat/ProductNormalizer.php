@@ -133,11 +133,11 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
 
             foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
-                if (isset($this->fields[$fieldValue])) {
+                if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection'
+                    || isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
                     $this->results = array_merge($this->results, $normalizedValue);
                 }
-
             }
         }
     }

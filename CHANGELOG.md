@@ -1,3 +1,8 @@
+# 1.2.*
+
+## Bug fixes
+- PIM-3443: Fix prices not exported in quick export 
+
 # 1.2.13 (2014-11-26)
 
 ## Bug fixes
