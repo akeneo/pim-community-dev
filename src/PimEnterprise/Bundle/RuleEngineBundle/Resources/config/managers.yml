@@ -7,5 +7,5 @@ services:
         class: %pimee_rule_engine.manager.rule.class%
         arguments:
             - '@pimee_rule_engine.repository.rule'
-            - '@doctrine.orm.entity_manager'
+            - '@doctrine'
             - '@event_dispatcher'

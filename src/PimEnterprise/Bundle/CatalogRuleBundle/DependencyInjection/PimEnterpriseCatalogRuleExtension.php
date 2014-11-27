@@ -34,5 +34,7 @@ class PimEnterpriseCatalogRuleExtension extends Extension
         $loader->load('runners.yml');
         $loader->load('readers.yml');
         $loader->load('managers.yml');
+        $loader->load('event_subscribers.yml');
+        $loader->load('repositories.yml');
     }
 }

@@ -1,0 +1,20 @@
+parameters:
+    pimee_catalog_rule.event_subscriber.attribute.class: PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\AttributeSubscriber
+    pimee_catalog_rule.event_subscriber.rule.class:      PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleSubscriber
+
+services:
+    pimee_catalog_rule.event_subscriber.attribute:
+        class: %pimee_catalog_rule.event_subscriber.attribute.class%
+        arguments:
+            - '@pimee_catalog_rule.manager.rule_linked_resource'
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pimee_catalog_rule.event_subscriber.rule:
+        class: %pimee_catalog_rule.event_subscriber.rule.class%
+        arguments:
+            - '@pimee_rule_engine.manager.rule'
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }

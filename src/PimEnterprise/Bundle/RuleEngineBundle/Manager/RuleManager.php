@@ -82,6 +82,8 @@ class RuleManager implements SaverInterface, RemoverInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($rule));
 
+
+
         //todo: get object we want to apply the rule
         //todo: save it into the table with the link between the resource and the object
 

@@ -12,15 +12,15 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
- * Rule Subscriber
+ * Attribute Subscriber
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleSubscriber implements EventSubscriber
+class AttributeSubscriber implements EventSubscriber
 {
     /**
      * @var RuleLinkedResourceManager
@@ -35,7 +35,7 @@ class RuleSubscriber implements EventSubscriber
     public function __construct(
         RuleLinkedResourceManager $linkedResManager
     ) {
-        $this->linkedResManager = $linkedResManager;
+        $this->linkedResManager  = $linkedResManager;
     }
 
     /**
@@ -55,15 +55,15 @@ class RuleSubscriber implements EventSubscriber
      */
     public function preRemove(LifecycleEventArgs $args)
     {
-        $rule = $args->getEntity();
+        $attribute = $args->getEntity();
 
-        if ($rule instanceof RuleInterface) {
+        if ($attribute instanceof AttributeInterface) {
             $entityManager = $args->getEntityManager();
             $repository = $entityManager
                 ->getRepository('PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource');
 
             $ruleLinkedResources = $repository
-                ->findBy(['rule' => $rule]);
+                ->findBy(['resourceId' => $attribute->getId(), 'resourceName' => get_class($attribute)]);
 
             if (!is_array($ruleLinkedResources)) {
                 $ruleLinkedResources = [$ruleLinkedResources];

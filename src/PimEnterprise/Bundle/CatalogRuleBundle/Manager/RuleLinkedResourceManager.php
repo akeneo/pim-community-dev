@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Event;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -24,18 +24,18 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
 
     /**
      * Constructor
      *
-     * @param ObjectManager            $objectManager
+     * @param ManagerRegistry          $managerRegistry
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ManagerRegistry $managerRegistry, EventDispatcherInterface $eventDispatcher)
     {
-        $this->objectManager   = $objectManager;
+        $this->managerRegistry = $managerRegistry;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -49,22 +49,24 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($ruleLinkedResource, array $options = [])
+    public function remove($object, array $options = [])
     {
-        if (!$ruleLinkedResource instanceof RuleLinkedResourceInterface) {
+        if (!$object instanceof RuleLinkedResourceInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a use  PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface,
+                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface,
                     "%s" provided',
-                    ClassUtils::getClass($ruleLinkedResource)
+                    ClassUtils::getClass($object)
                 )
             );
         }
 
         $options = array_merge(['flush' => true], $options);
-        $this->objectManager->remove($ruleLinkedResource);
+        $em = $this->managerRegistry->getManagerForClass(get_class($object));
+        $em->remove($object);
+
         if (true === $options['flush']) {
-            $this->objectManager->flush();
+            $em->flush();
         }
     }
 }
