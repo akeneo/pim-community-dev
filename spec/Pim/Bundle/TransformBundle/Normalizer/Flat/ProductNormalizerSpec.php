@@ -261,5 +261,4 @@ class ProductNormalizerSpec extends ObjectBehavior
             ]
         );
     }
-
 }
