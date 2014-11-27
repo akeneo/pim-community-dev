@@ -10,12 +10,12 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\Collection;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -194,7 +194,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
         $filter->filter($values, ['identifier' => $sku, 'scopeCode' => null, 'localeCodes' => []])->willReturn([$sku, $colors]);
-        $context =  ["scopeCode" => null, "localeCodes" => [], "field_name" => "colors", "metric_format" => "multiple_fields"];
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
         $serializer->normalize($colors, 'flat', Argument::any())->willReturn(['colors' => 'red, blue']);
@@ -206,6 +205,58 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'groups'     => '',
                 'categories' => '',
                 'colors'     => 'red, blue',
+                'enabled'    => 1
+            ]
+        );
+    }
+
+    function it_normalizes_product_with_price(
+        $filter,
+        ProductInterface $product,
+        Attribute $priceAttribute,
+        AbstractProductValue $price,
+        Collection $prices,
+        Collection $values,
+        ProductPrice $productPrice,
+        Family $family,
+        SerializerInterface $serializer
+    ) {
+        $family->getCode()->willReturn('shoes');
+        $priceAttribute->getCode()->willReturn('price');
+        $priceAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $priceAttribute->isLocalizable()->willReturn(false);
+        $priceAttribute->isScopable()->willReturn(false);
+
+        $price->getAttribute()->willReturn($priceAttribute);
+        $price->getData()->willReturn(null);
+
+        $productPrice->getData()->willReturn("356.00");
+        $productPrice->getCurrency()->willReturn("EUR");
+
+        $prices->add($productPrice);
+
+        $price->getPrices()->willReturn($prices);
+
+        $product->getIdentifier()->willReturn($price);
+        $product->getFamily()->willReturn($family);
+        $product->isEnabled()->willReturn(true);
+        $product->getGroupCodes()->willReturn('group1, group2, variant_group_1');
+        $product->getCategoryCodes()->willReturn('nice shoes, converse');
+        $product->getAssociations()->willReturn([]);
+
+        $values->add($price);
+
+        $product->getValues()->willReturn($values);
+        $filter->filter(Argument::cetera())->willReturn([$price]);
+
+        $serializer->normalize($price, 'flat', Argument::any())->willReturn(['price-EUR' => '356.00']);
+
+        $this->normalize($product, 'flat', ['price-EUR' => ''])->shouldReturn(
+            [
+                'price-EUR'        => '356.00',
+                'family'     => 'shoes',
+                'groups'     => 'group1, group2, variant_group_1',
+                'categories' => 'nice shoes, converse',
                 'enabled'    => 1
             ]
         );
