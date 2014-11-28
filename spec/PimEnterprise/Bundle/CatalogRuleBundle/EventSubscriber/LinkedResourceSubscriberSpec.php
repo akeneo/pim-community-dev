@@ -2,7 +2,6 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;

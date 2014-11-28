@@ -96,4 +96,37 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
             $this->linkedResManager->remove($ruleLinkedResource);
         }
     }
+
+    /**
+     * @param RuleEvent|GenericEvent $event
+     */
+    public function saveRuleLinkedResource(RuleEvent $event)
+    {
+        $entity = $event->getRule();
+
+        $loadedRule = $this->productRuleLoader->load($entity);
+
+        var_dump($loadedRule->getActions());
+
+        $subjects = $this->productRuleSelector->select($loadedRule);
+
+        foreach ($subjects->getSubjects() as $subject) {
+            foreach ($subject->getAttributes() as $attribute) {
+                foreach ($conditions as $condition) {
+                    if ($attribute->getCode() === $condition['field']) {
+                        $impactedAttributes[] = $attribute;
+                    }
+                }
+            }
+        }
+
+        foreach ($impactedAttributes as $impactedAttribute) {
+            $ruleLinkedResource = new RuleLinkedResource();
+            $ruleLinkedResource->setRule($entity);
+            $ruleLinkedResource->setResourceName(ClassUtils::getClass($impactedAttribute));
+            $ruleLinkedResource->setResourceId($impactedAttribute->getId());
+            $this->linkedResManager->save($ruleLinkedResource);
+        }
+
+    }
 }
