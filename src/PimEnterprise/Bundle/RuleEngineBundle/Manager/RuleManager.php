@@ -53,9 +53,35 @@ class RuleManager implements SaverInterface, RemoverInterface
     /**
      * @{@inheritdoc}
      */
+    public function save($object, array $options = [])
+    {
+        if (!$object instanceof RuleInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a use  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
+
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($object));
+
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+
+
+
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($object));
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
     public function remove($rule, array $options = [])
     {
-
         if (!$rule instanceof RuleInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -74,18 +100,5 @@ class RuleManager implements SaverInterface, RemoverInterface
         }
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_REMOVE, new RuleEvent($rule));
-    }
-
-    /**
-     * @{@inheritdoc}
-     */
-    public function save($rule, array $options = [])
-    {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($rule));
-
-        //todo: get object we want to apply the rule
-        //todo: save it into the table with the link between the resource and the object
-
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($rule));
     }
 }

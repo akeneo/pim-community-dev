@@ -10,40 +10,58 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
+
 use Pim\Bundle\CatalogBundle\Event;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleLinkedResourceRepositoryInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
+use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Attribute Subscriber
+ * Linked resource subscriber
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RemoveLinkedResourceSubscriber implements EventSubscriberInterface
+class LinkedResourceSubscriber implements EventSubscriberInterface
 {
     /** @var RuleLinkedResourceManager */
     protected $linkedResManager;
 
-    /** @var RuleLinkedResourceRepositoryInterface */
+    /** @var EntityRepository */
     protected $ruleLinkedResRepo;
+
+    /** @var ProductRuleSelector */
+    protected $productRuleSelector;
+
+    /** @var ProductRuleLoader */
+    private $productRuleLoader;
 
     /**
      * Constructor
      *
-     * @param RuleLinkedResourceManager             $linkedResManager
-     * @param RuleLinkedResourceRepositoryInterface $ruleLinkedResRepo
+     * @param RuleLinkedResourceManager $linkedResManager
+     * @param EntityRepository          $ruleLinkedResRepo
+     * @param ProductRuleSelector       $productRuleSelector
+     * @param ProductRuleLoader         $productRuleLoader
      */
     public function __construct(
-        RuleLinkedResourceManager             $linkedResManager,
-        RuleLinkedResourceRepositoryInterface $ruleLinkedResRepo
+        RuleLinkedResourceManager $linkedResManager,
+        EntityRepository $ruleLinkedResRepo,
+        ProductRuleSelector $productRuleSelector,
+        ProductRuleLoader $productRuleLoader
     ) {
-        $this->linkedResManager  = $linkedResManager;
-        $this->ruleLinkedResRepo = $ruleLinkedResRepo;
+        $this->linkedResManager    = $linkedResManager;
+        $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
+        $this->productRuleSelector = $productRuleSelector;
+        $this->productRuleLoader   = $productRuleLoader;
     }
 
     /**
@@ -53,6 +71,7 @@ class RemoveLinkedResourceSubscriber implements EventSubscriberInterface
     {
         return [
             Event\AttributeEvents::PRE_REMOVE => 'deleteRuleLinkedResource',
+            RuleEvents::POST_SAVE             => 'saveRuleLinkedResource',
         ];
     }
 
@@ -68,7 +87,6 @@ class RemoveLinkedResourceSubscriber implements EventSubscriberInterface
         if ($entity instanceof AttributeInterface) {
             $ruleLinkedResources = $this->ruleLinkedResRepo
                 ->findBy(['resourceId' => $entity->getId(), 'resourceName' => ClassUtils::getClass($entity)]);
-
         }
         if ($entity instanceof RuleInterface) {
             $ruleLinkedResources = $this->ruleLinkedResRepo

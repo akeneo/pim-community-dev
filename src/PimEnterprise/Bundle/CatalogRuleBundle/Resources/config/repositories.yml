@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.repository.rule_linked_resource.class: PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleLinkedResourceRepository
+    pimee_catalog_rule.repository.rule_linked_resource.class: Doctrine\ORM\EntityRepository
 
 services:
     pimee_catalog_rule.repository.rule_linked_resource:

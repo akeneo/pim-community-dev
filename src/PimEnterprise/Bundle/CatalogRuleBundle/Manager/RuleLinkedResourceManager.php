@@ -41,6 +41,17 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      */
     public function save($object, array $options = [])
     {
+        if (!$object instanceof RuleLinkedResourceInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface,
+                    "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
+
+        $this->entityManager->persist($object);
     }
 
     /**
