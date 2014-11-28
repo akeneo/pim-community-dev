@@ -20,7 +20,6 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -88,10 +87,6 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
         if ($entity instanceof AttributeInterface) {
             $ruleLinkedResources = $this->ruleLinkedResRepo
                 ->findBy(['resourceId' => $entity->getId(), 'resourceName' => ClassUtils::getClass($entity)]);
-        }
-        if ($entity instanceof RuleInterface) {
-            $ruleLinkedResources = $this->ruleLinkedResRepo
-                ->findBy(['rule' => $entity]);
         }
 
         foreach ($ruleLinkedResources as $ruleLinkedResource) {

@@ -89,14 +89,10 @@ class RuleManager implements SaverInterface, RemoverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_REMOVE, new RuleEvent($rule));
-
         $options = array_merge(['flush' => true], $options);
         $this->objectManager->remove($rule);
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
-
-        $this->eventDispatcher->dispatch(RuleEvents::POST_REMOVE, new RuleEvent($rule));
     }
 }
