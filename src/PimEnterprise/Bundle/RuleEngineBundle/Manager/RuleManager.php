@@ -72,8 +72,6 @@ class RuleManager implements SaverInterface, RemoverInterface
             $this->objectManager->flush();
         }
 
-
-
         $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($object));
     }
 
