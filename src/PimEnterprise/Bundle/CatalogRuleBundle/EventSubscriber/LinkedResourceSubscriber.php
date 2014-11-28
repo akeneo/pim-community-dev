@@ -116,7 +116,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     /**
      * Execute the save of the rule linked resource
      *
-     * todo: move this function in a repo and remove the O(N2) complexity
+     * todo: move this function in a repo
      *
      * @param $actions
      * @param $subjects
