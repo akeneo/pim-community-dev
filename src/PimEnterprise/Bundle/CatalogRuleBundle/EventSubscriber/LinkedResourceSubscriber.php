@@ -75,6 +75,8 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Deletes a rule linked resource
+     *
      * @param GenericEvent $event
      */
     public function deleteRuleLinkedResource(GenericEvent $event)
@@ -98,6 +100,8 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Saves a rule linked resource
+     *
      * @param RuleEvent|GenericEvent $event
      */
     public function saveRuleLinkedResource(RuleEvent $event)
@@ -110,14 +114,31 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
 
         $actions = $loadedRule->getActions();
 
-        $setField  = $actions[0]['field'];
+        $this->executeSave($actions, $subjects, $entity);
+
+    }
+
+    /**
+     * Execute the save of the rule linked resource
+     *
+     * todo: move this function in a repo and remove the O(N2) complexity
+     *
+     * @param $actions
+     * @param $subjects
+     * @param $entity
+     */
+    protected function executeSave($actions, $subjects, $entity)
+    {
+        $setField = $actions[0]['field'];
         $copyField = $actions[1]['to_field'];
 
         $products = $subjects->getSubjects();
 
         foreach ($products as $product) {
             foreach ($product->getValues() as $productValue) {
-                if ($productValue->getAttribute()->getCode() === $setField || $productValue->getAttribute()->getCode() === $copyField) {
+                if ($productValue->getAttribute()->getCode() === $setField
+                    || $productValue->getAttribute()->getCode() === $copyField
+                ) {
                     var_dump($productValue->getAttribute()->getCode());
                     $ruleLinkedResource = new RuleLinkedResource();
                     $ruleLinkedResource->setRule($entity);
@@ -127,6 +148,5 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
                 }
             }
         }
-
     }
 }
