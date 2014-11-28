@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 use Prophecy\Argument;
 
-class RuleLinkedResourceManagerSpec extends ObjectBehavior
+class RuleManagerSpec extends ObjectBehavior
 {
     function let(
         RuleRepositoryInterface $repository,
@@ -27,6 +27,7 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
     function it_saves_a_rule_object($entityManager, Rule $rule)
     {
         $entityManager->persist($rule)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
 
         $this->save($rule);
     }
@@ -36,6 +37,7 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
         ProductInterface $productInterface
     ) {
         $entityManager->persist($productInterface)->shouldNotBeCalled();
+        $entityManager->flush()->shouldNotBeCalled();
 
         $this->shouldThrow('\InvalidArgumentException')->during('save', [$productInterface]);
     }

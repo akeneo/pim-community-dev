@@ -51,7 +51,12 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
             );
         }
 
+        $options = array_merge(['flush' => true], $options);
         $this->entityManager->persist($object);
+
+        if (true === $options['flush']) {
+            $this->entityManager->flush();
+        }
     }
 
     /**

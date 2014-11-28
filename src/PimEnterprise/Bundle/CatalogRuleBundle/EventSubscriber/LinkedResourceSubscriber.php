@@ -106,26 +106,26 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
 
         $loadedRule = $this->productRuleLoader->load($entity);
 
-        var_dump($loadedRule->getActions());
-
         $subjects = $this->productRuleSelector->select($loadedRule);
 
-        foreach ($subjects->getSubjects() as $subject) {
-            foreach ($subject->getAttributes() as $attribute) {
-                foreach ($conditions as $condition) {
-                    if ($attribute->getCode() === $condition['field']) {
-                        $impactedAttributes[] = $attribute;
-                    }
+        $actions = $loadedRule->getActions();
+
+        $setField  = $actions[0]['field'];
+        $copyField = $actions[1]['to_field'];
+
+        $products = $subjects->getSubjects();
+
+        foreach ($products as $product) {
+            foreach ($product->getValues() as $productValue) {
+                if ($productValue->getAttribute()->getCode() === $setField || $productValue->getAttribute()->getCode() === $copyField) {
+                    var_dump($productValue->getAttribute()->getCode());
+                    $ruleLinkedResource = new RuleLinkedResource();
+                    $ruleLinkedResource->setRule($entity);
+                    $ruleLinkedResource->setResourceName(ClassUtils::getClass($productValue->getAttribute()));
+                    $ruleLinkedResource->setResourceId($productValue->getAttribute()->getId());
+                    $this->linkedResManager->save($ruleLinkedResource);
                 }
             }
-        }
-
-        foreach ($impactedAttributes as $impactedAttribute) {
-            $ruleLinkedResource = new RuleLinkedResource();
-            $ruleLinkedResource->setRule($entity);
-            $ruleLinkedResource->setResourceName(ClassUtils::getClass($impactedAttribute));
-            $ruleLinkedResource->setResourceId($impactedAttribute->getId());
-            $this->linkedResManager->save($ruleLinkedResource);
         }
 
     }

@@ -25,6 +25,7 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
     function it_saves_a_rule_linked_resource_object($entityManager, RuleLinkedResource $ruleLinkedResource)
     {
         $entityManager->persist($ruleLinkedResource)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
 
         $this->save($ruleLinkedResource);
     }
@@ -34,6 +35,7 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
         ProductInterface $productInterface
     ) {
         $entityManager->persist($productInterface)->shouldNotBeCalled();
+        $entityManager->flush()->shouldNotBeCalled();
 
         $this->shouldThrow('\InvalidArgumentException')->during('save', [$productInterface]);
     }
