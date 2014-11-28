@@ -124,8 +124,16 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      */
     protected function executeSave($actions, $subjects, $entity)
     {
-        $setField = $actions[0]['field'];
-        $copyField = $actions[1]['to_field'];
+        $setField = null;
+        $copyField = null;
+        foreach ($actions as $action) {
+            if (array_key_exists('field', $action)) {
+                $setField = $action['field'];
+            }
+            if (array_key_exists('to_field', $action)) {
+                $copyField = $action['to_field'];
+            }
+        }
 
         $products = $subjects->getSubjects();
 
@@ -134,7 +142,6 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
                 if ($productValue->getAttribute()->getCode() === $setField
                     || $productValue->getAttribute()->getCode() === $copyField
                 ) {
-                    var_dump($productValue->getAttribute()->getCode());
                     $ruleLinkedResource = new RuleLinkedResource();
                     $ruleLinkedResource->setRule($entity);
                     $ruleLinkedResource->setResourceName(ClassUtils::getClass($productValue->getAttribute()));
