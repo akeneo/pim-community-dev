@@ -43,6 +43,7 @@ interface ProductQueryBuilderInterface
      * Get query builder
      *
      * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     *
      * @throws \LogicException in case the query builder has not been configured
      */
     public function getQueryBuilder();

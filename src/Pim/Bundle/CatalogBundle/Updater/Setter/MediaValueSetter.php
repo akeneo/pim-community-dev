@@ -104,7 +104,7 @@ class MediaValueSetter extends AbstractValueSetter
         }
         $value->setMedia($media);
     }
-    
+
     /**
      * @param AttributeInterface $attribute
      * @param mixed              $data
