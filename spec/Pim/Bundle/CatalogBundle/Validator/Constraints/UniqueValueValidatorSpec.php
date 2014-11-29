@@ -64,9 +64,9 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         Constraint $constraint
     ) {
         $this->initialize($emptyContext);
+        $emptyContext->getRoot()->willReturn(null);
         $productManager->valueExists($value)->shouldNotBeCalled();
         $emptyContext->addViolation()->shouldNotBeCalled();
-        $emptyContext->getPropertyPath()->shouldBeCalled();
 
         $this->validate("my_value", $constraint)->shouldReturn(null);
     }
