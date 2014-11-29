@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
@@ -47,28 +48,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
             throw new NoSuchMetadataException();
         }
 
-        $class = ClassUtils::getClass($value);
-
-        $metadata = $this->factory->createMetadata($class);
-
-        $attribute = $value->getAttribute();
-        foreach ($this->guesser->guessConstraints($attribute) as $constraint) {
-
-            $target = $constraint->getTargets();
-            if (is_array($target)) {
-                throw new \LogicException('No support provided for constraint on many targets');
-            }
-
-            if (Constraint::PROPERTY_CONSTRAINT === $target) {
-                $metadata->addPropertyConstraint($attribute->getBackendType(), $constraint);
-            } elseif (Constraint::CLASS_CONSTRAINT === $target) {
-                $metadata->addConstraint($constraint);
-            } else {
-                throw new \LogicException(
-                    sprintf('Dont know how to add this constraint on target "%s"', $target)
-                );
-            }
-        }
+        $metadata = $this->createMetadata($value);
 
         return $metadata;
     }
@@ -83,5 +63,40 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     *
+     * @return ClassMetadata
+     */
+    protected function createMetadata(ProductValueInterface $value)
+    {
+        $class = ClassUtils::getClass($value);
+        $metadata = $this->factory->createMetadata($class);
+        $attribute = $value->getAttribute();
+
+        foreach ($this->guesser->guessConstraints($attribute) as $constraint) {
+            $this->addConstraint($metadata, $constraint, $attribute);
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * @param ClassMetadata      $metadata
+     * @param Constraint         $constraint
+     * @param AttributeInterface $attribute
+     */
+    protected function addConstraint(ClassMetadata $metadata, Constraint $constraint, AttributeInterface $attribute)
+    {
+        $target = $constraint->getTargets();
+        if (is_array($target)) {
+            throw new \LogicException('No support provided for constraint on many targets');
+        } elseif (Constraint::PROPERTY_CONSTRAINT === $target) {
+            $metadata->addPropertyConstraint($attribute->getBackendType(), $constraint);
+        } elseif (Constraint::CLASS_CONSTRAINT === $target) {
+            $metadata->addConstraint($constraint);
+        }
     }
 }
