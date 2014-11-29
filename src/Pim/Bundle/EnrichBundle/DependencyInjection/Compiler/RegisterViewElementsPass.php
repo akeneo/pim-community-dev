@@ -58,9 +58,9 @@ class RegisterViewElementsPass implements CompilerPassInterface
     /**
      * Register a a view element to the view element registry
      *
-     * @param  Definition $registryDefinition
-     * @param  string     $serviceId
-     * @param  array      $tag
+     * @param Definition $registryDefinition
+     * @param string     $serviceId
+     * @param array      $tag
      */
     protected function registerViewElement($registryDefinition, $serviceId, $tag)
     {

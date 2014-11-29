@@ -175,4 +175,3 @@ services:
         class: %pim_catalog.doctrine.query.sorter.in_group.class%
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
-
