@@ -38,8 +38,8 @@ class UniqueValueValidator extends ConstraintValidator
      *
      * The constraint guesser should be re-worked in a future version to avoid such behavior
      *
-     * @param ProductValueInterface|string $data
-     * @param Constraint                   $constraint
+     * @param ProductValueInterface|mixed $data
+     * @param Constraint                  $constraint
      *
      * @see Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
      */
@@ -49,13 +49,10 @@ class UniqueValueValidator extends ConstraintValidator
             return;
         }
 
-        $productValue = null;
-        if (is_string($data)) {
-            $productValue = $this->getProductValueFromForm();
-        } elseif (is_object($data) && $data instanceof ProductValueInterface) {
+        if (is_object($data) && $data instanceof ProductValueInterface) {
             $productValue = $data;
         } else {
-            return;
+            $productValue = $this->getProductValueFromForm();
         }
 
         if ($productValue instanceof ProductValueInterface && $this->productManager->valueExists($productValue)) {
