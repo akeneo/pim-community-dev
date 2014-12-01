@@ -47,7 +47,7 @@ class CompletenessSorterSpec extends ObjectBehavior
                 'PimCatalogBundle:Locale',
                 'sorterCompletenessLocale',
                 'WITH',
-                'sorterCompletenessLocale.code = :dataLocale'
+                'sorterCompletenessLocale.code = :cLocaleCode'
             )
             ->shouldBeCalled()
             ->willReturn($qb);
@@ -57,7 +57,7 @@ class CompletenessSorterSpec extends ObjectBehavior
                 'PimCatalogBundle:Channel',
                 'sorterCompletenessChannel',
                 'WITH',
-                'sorterCompletenessChannel.code = :scopeCode'
+                'sorterCompletenessChannel.code = :cScopeCode'
             )
             ->shouldBeCalled()
             ->willReturn($qb);
@@ -73,7 +73,8 @@ class CompletenessSorterSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($qb);
-        ;
+        $qb->setParameter('cLocaleCode', Argument::any())->shouldBeCalled()->willReturn($qb);
+        $qb->setParameter('cScopeCode', Argument::any())->shouldBeCalled()->willReturn($qb);
 
         $qb->addOrderBy('sorterCompleteness.ratio', 'DESC')->shouldBeCalled();
         $qb->addOrderBy('r.id')->shouldBeCalled();

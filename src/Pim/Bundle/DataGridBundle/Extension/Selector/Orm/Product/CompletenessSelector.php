@@ -24,7 +24,10 @@ class CompletenessSelector implements SelectorInterface
         $qb        = $datasource->getQueryBuilder();
         $joinAlias = 'selectCompleteness';
         $util      = new CompletenessJoin($qb);
-        $util->addJoins($joinAlias);
+
+        $locale = $configuration->offsetGetByPath('[source][locale_code]');
+        $scope = $configuration->offsetGetByPath('[source][scope_code]');
+        $util->addJoins($joinAlias, $locale, $scope);
         $qb->addSelect($joinAlias.'.ratio AS ratio');
     }
 }
