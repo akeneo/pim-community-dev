@@ -59,6 +59,7 @@ pim_importexport:
       edit: エクスポート プロファイルを編集
       remove: エクスポート プロファイルを削除
       launch: エクスポート プロファイルを起動
+      history: エクスポートプロファイルの履歴を表示
     import_profile:
       index: インポートプロファイルリストを表示
       create: インポート プロファイルを作成
@@ -66,6 +67,7 @@ pim_importexport:
       edit: インポート プロファイルを編集
       remove: インポート プロファイルを削除
       launch: インポート プロファイルを起動
+      history: インポートプロファイルの履歴を表示
     export_execution:
       index: エクスポートレポート一覧を表示
       show: エクスポート レポートの詳細の表示

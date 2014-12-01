@@ -1,3 +1,64 @@
+pim_enrich:
+  acl:
+    currency:
+      index: Valuta weergeven
+      toggle: Valuta omschakelen
+    product:
+      index: Producten weergeven
+      create: Product aanmaken
+      remove: Product verwijderen
+      add_attribute: Voeg een attribuut toe aan een product
+      remove_attribute: Verwijder een attribuut van een product
+      categories_view: Raadpleeg de categorieën van een product
+      associations_view: Bekijk de associatietypes van een product
+      change_family: Productfamilie wijzigen
+      change_state: Status van product wijzigen
+      add_to_groups: Product toevoegen aan groepen
+      mass_edit: Product massabewerken acties
+    category:
+      list: Categorieën weergeven
+      create: Categorie aanmaken
+      edit: Categorie wijzigen
+      remove: Categorie verwijderen
+      move: Categorie verplaatsen
+      children: Kinderen van categorie weergeven
+      products: Producten van categorie weergeven
+    channel:
+      index: Kanalen weergeven
+      create: Kanaal aanmaken
+      edit: Kanaal wijzigen
+      remove: Kanaal verwijderen
+    family:
+      create: Familie aanmaken
+      remove: Familie verwijderen
+    attribute_group:
+      create: Attribuutgroep aanmaken
+      edit: Attribuutgroep wijzigen
+      remove: Attribuutgroep verwijderen
+      sort: Attribuutgroepen sorteren
+      add_attribute: Attribuut toevoegen aan een groep
+      remove_attribute: Attribuut verwijderen van een groep
+    attribute:
+      index: Attributen weergeven
+      create: Attribuut aanmaken
+      edit: Attribuut bewerken
+      remove: Attribuut verwijderen
+      sort: Sorteer attributen binnen attribuutgroepen
+    group:
+      index: Groepen weergeven
+      create: Groep aanmaken
+      edit: Groep wijzigen
+      remove: Groep verwijderen
+    group_type:
+      index: Groepstypes weergeven
+      create: Groepstype aanmaken
+      edit: Groepstype wijzigen
+      remove: Groepstype verwijderen
+    association_type:
+      index: Associatietypes weergeven
+      create: Associatietype aanmaken
+      edit: Associatietype wijzigen
+      remove: Associatietype verwijderen
 attribute:
   overview: Attribuutoverzicht
   create: Attribuut aanmaken
@@ -347,7 +408,6 @@ pim_enrich.mass_edit_action:
     description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
     success_flash: De status van één of meerdere producten is gewijzigd
   edit-common-attributes:
-    label: Kenmerken bewerken
     description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
     empty: Selecteer de attributen die u wilt bewerken
     success_flash: Productattributen zijn bijgewerkt
@@ -367,89 +427,11 @@ To enable: Om in te schakelen
 Select attributes: Selecteer attributen
 Select: Selecteer
 Remove this attribute: Dit attribuut verwijderen
-pim_enrich.completeness:
-  progress_bar.title: '%ratio%% voltooid (1 vereiste waarde) | %ratio%% voltooid (%count% vereiste waarden)'
-  subtitle: '{0} Voltooid|{1} 1 ontbrekende waarde|]1, Inf] %count% ontbrekende waarden'
-  missing_attributes: Ontbrekende waarde|Ontbrekende waarden
-  legend:
-    locale_not_associated: Lokalisatie niet gekoppeld aan dit kanaal
-pim_enrich.group:
-  axis.help: Assen zijn attributen die varianten van de variantgroep definiëren. Assen zijn attributen met opties, niet lokaliseerbaar en zonder bereik. Het kan niet worden gewijzigd na het aanmaken van de variantgroep.
-  type:
-    VARIANT: Variant
-    X_SELL: Cross-Sell
-    ADDITIONAL: Extra
-    RELATED: Gerelateerd
-pim_enrich.product:
-  no_comparison_locale_available: Geen andere lokalisatie is beschikbaar voor vergelijking
-  no_compared_media: Geen media beschikbaar voor vergelijking
 Copy: Kopieer
 Current tab: Huidige tabblad
-pim_enrich.channel.pick_conversion_unit: Kies een conversie-eenheid voor elke metrisch attribuut dat zal worden gebruikt tijdens de productexport
 Group: Groep
 View group: Bekijk groep
 Products: Producten
-pim_enrich:
-  acl:
-    currency:
-      index: Valuta weergeven
-      toggle: Valuta omschakelen
-    product:
-      index: Producten weergeven
-      create: Product aanmaken
-      remove: Product verwijderen
-      add_attribute: Voeg een attribuut toe aan een product
-      remove_attribute: Verwijder een attribuut van een product
-      categories_view: Raadpleeg de categorieën van een product
-      associations_view: Bekijk de associatietypes van een product
-      change_family: Productfamilie wijzigen
-      change_state: Status van product wijzigen
-      add_to_groups: Product toevoegen aan groepen
-      mass_edit: Product massabewerken acties
-    category:
-      list: Categorieën weergeven
-      create: Categorie aanmaken
-      edit: Categorie wijzigen
-      remove: Categorie verwijderen
-      move: Categorie verplaatsen
-      children: Kinderen van categorie weergeven
-      products: Producten van categorie weergeven
-    channel:
-      index: Kanalen weergeven
-      create: Kanaal aanmaken
-      edit: Kanaal wijzigen
-      remove: Kanaal verwijderen
-    family:
-      create: Familie aanmaken
-      remove: Familie verwijderen
-    attribute_group:
-      create: Attribuutgroep aanmaken
-      edit: Attribuutgroep wijzigen
-      remove: Attribuutgroep verwijderen
-      sort: Attribuutgroepen sorteren
-      add_attribute: Attribuut toevoegen aan een groep
-      remove_attribute: Attribuut verwijderen van een groep
-    attribute:
-      index: Attributen weergeven
-      create: Attribuut aanmaken
-      edit: Attribuut bewerken
-      remove: Attribuut verwijderen
-      sort: Sorteer attributen binnen attribuutgroepen
-    group:
-      index: Groepen weergeven
-      create: Groep aanmaken
-      edit: Groep wijzigen
-      remove: Groep verwijderen
-    group_type:
-      index: Groepstypes weergeven
-      create: Groepstype aanmaken
-      edit: Groepstype wijzigen
-      remove: Groepstype verwijderen
-    association_type:
-      index: Associatietypes weergeven
-      create: Associatietype aanmaken
-      edit: Associatietype wijzigen
-      remove: Associatietype verwijderen
 pim_menu:
   tab:
     collect: Verzamelen
