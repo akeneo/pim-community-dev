@@ -9,5 +9,6 @@ services:
             - '@pimee_catalog_rule.repository.rule_linked_resource'
             - '@pimee_catalog_rule.selector.product'
             - '@pimee_catalog_rule.loader.product'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: kernel.event_subscriber}

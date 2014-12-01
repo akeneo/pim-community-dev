@@ -43,19 +43,9 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
     function it_removes_a_rule_linked_resource_object($entityManager, RuleLinkedResource $ruleLinkedResource)
     {
         $entityManager->remove($ruleLinkedResource)->shouldBeCalled();
-        $entityManager->flush()->shouldBeCalled();
-
-        $this->remove($ruleLinkedResource);
-    }
-
-    function it_removes_a_rule_linked_resource_object_and_does_not_flush(
-        $entityManager,
-        RuleLinkedResource $ruleLinkedResource
-    ) {
-        $entityManager->remove($ruleLinkedResource)->shouldBeCalled();
         $entityManager->flush()->shouldNotBeCalled();
 
-        $this->remove($ruleLinkedResource, ['flush' => false]);
+        $this->remove($ruleLinkedResource);
     }
 
     function it_throws_an_exception_if_object_is_not_a_rule_linked_resource_on_remove(

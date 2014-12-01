@@ -7,4 +7,3 @@ services:
         class: %pimee_catalog_rule.manager.rule_linked_resource.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'

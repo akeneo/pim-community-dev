@@ -10,14 +10,15 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -49,17 +50,20 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      * @param EntityRepository          $ruleLinkedResRepo
      * @param ProductRuleSelector       $productRuleSelector
      * @param ProductRuleLoader         $productRuleLoader
+     * @param AttributeRepository       $attributeRepository
      */
     public function __construct(
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository $ruleLinkedResRepo,
         ProductRuleSelector $productRuleSelector,
-        ProductRuleLoader $productRuleLoader
+        ProductRuleLoader $productRuleLoader,
+        AttributeRepository $attributeRepository
     ) {
         $this->linkedResManager    = $linkedResManager;
         $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
         $this->productRuleSelector = $productRuleSelector;
         $this->productRuleLoader   = $productRuleLoader;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -101,54 +105,62 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      */
     public function saveRuleLinkedResource(RuleEvent $event)
     {
-        $entity = $event->getRule();
+        $rule = $event->getRule();
 
-        $loadedRule = $this->productRuleLoader->load($entity);
-
-        $subjects = $this->productRuleSelector->select($loadedRule);
+        $loadedRule = $this->productRuleLoader->load($rule);
 
         $actions = $loadedRule->getActions();
 
-        $this->executeSave($actions, $subjects, $entity);
+        $this->executeSave($actions, $rule);
 
     }
 
     /**
      * Execute the save of the rule linked resource
      *
-     * todo: move this function in a repo
-     *
      * @param $actions
-     * @param $subjects
-     * @param $entity
+     * @param $rule
      */
-    protected function executeSave($actions, $subjects, $entity)
+    protected function executeSave($actions, $rule)
     {
-        $setField = null;
-        $copyField = null;
+        $fields = [];
         foreach ($actions as $action) {
             if (array_key_exists('field', $action)) {
-                $setField = $action['field'];
+                $fields[] = $action['field'];
             }
             if (array_key_exists('to_field', $action)) {
-                $copyField = $action['to_field'];
+                $fields[] = $action['to_field'];
             }
         }
 
-        $products = $subjects->getSubjects();
-
-        foreach ($products as $product) {
-            foreach ($product->getValues() as $productValue) {
-                if ($productValue->getAttribute()->getCode() === $setField
-                    || $productValue->getAttribute()->getCode() === $copyField
-                ) {
-                    $ruleLinkedResource = new RuleLinkedResource();
-                    $ruleLinkedResource->setRule($entity);
-                    $ruleLinkedResource->setResourceName(ClassUtils::getClass($productValue->getAttribute()));
-                    $ruleLinkedResource->setResourceId($productValue->getAttribute()->getId());
-                    $this->linkedResManager->save($ruleLinkedResource);
-                }
-            }
+        $impactedAttributes = [];
+        foreach ($fields as $field) {
+            $impactedAttributes[] = $this->attributeRepository->findByReference($field);
         }
+
+        $impactedAttributes = array_unique($impactedAttributes, SORT_STRING);
+
+        foreach ($impactedAttributes as $impactedAttribute) {
+            $ruleLinkedResource = $this->instanciate($rule, $impactedAttribute);
+            $this->linkedResManager->save($ruleLinkedResource);
+        }
+    }
+
+    /**
+     * Instanciate a new rule linked resource
+     *
+     * @param $rule
+     * @param $attribute
+     *
+     * @return RuleLinkedResource
+     */
+    protected function instanciate($rule, $attribute)
+    {
+        $ruleLinkedResource = new RuleLinkedResource();
+        $ruleLinkedResource->setRule($rule);
+        $ruleLinkedResource->setResourceName(ClassUtils::getClass($attribute));
+        $ruleLinkedResource->setResourceId($attribute->getId());
+
+        return $ruleLinkedResource;
     }
 }
