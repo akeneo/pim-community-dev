@@ -43,7 +43,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     protected $productRuleSelector;
 
     /** @var ProductRuleLoader */
-    private $productRuleLoader;
+    protected $productRuleLoader;
 
     /**
      * Constructor
