@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Bundle\RuleEngineBundle\Batch;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Prophecy\Argument;
 
 class RuleReaderSpec extends ObjectBehavior
 {
-    function let(RuleRepositoryInterface $repository)
+    function let(RuleDefinitionRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }
@@ -36,11 +36,11 @@ class RuleReaderSpec extends ObjectBehavior
         );
     }
 
-    function it_reads_a_rule($repository, RuleInterface $rule)
+    function it_reads_a_rule($repository, RuleDefinitionInterface $definition)
     {
         $this->setRuleCode('therule');
-        $repository->findBy(['code' => 'therule'])->shouldBeCalled()->willReturn($rule);
+        $repository->findBy(['code' => 'therule'])->shouldBeCalled()->willReturn($definition);
 
-        $this->read()->shouldReturn($rule);
+        $this->read()->shouldReturn($definition);
     }
 }

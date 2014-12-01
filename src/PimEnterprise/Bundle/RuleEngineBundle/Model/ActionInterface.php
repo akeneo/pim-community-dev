@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Actions that are used by LoadedRuleInterface
+ * Actions that are used by RuleInterface
  */
 interface ActionInterface
 {

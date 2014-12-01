@@ -11,7 +11,7 @@ services:
         class: %pimee_catalog_rule.loader.product.class%
         arguments:
             - @event_dispatcher
-            - %pimee_rule_engine.entity.loaded_rule.class%
+            - %pimee_rule_engine.entity.rule.class%
             - %pimee_catalog_rule.model.set_value_action.class%
             - %pimee_catalog_rule.model.copy_value_action.class%
 

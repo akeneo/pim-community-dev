@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Prophecy\Argument;
@@ -21,12 +21,12 @@ class ChainedRunnerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Runner\DryRunnerInterface');
     }
 
-    function it_supports_all_rules(RuleInterface $rule)
+    function it_supports_all_rules(RuleDefinitionInterface $definition)
     {
-        $this->supports($rule)->shouldReturn(true);
+        $this->supports($definition)->shouldReturn(true);
     }
 
-    function it_runs_a_rule(RuleInterface $rule, RunnerInterface $runner1, RunnerInterface $runner2)
+    function it_runs_a_rule(RuleDefinitionInterface $rule, RunnerInterface $runner1, RunnerInterface $runner2)
     {
         $runner1->supports(Argument::any())->willReturn(false);
         $runner2->supports(Argument::any())->willReturn(true);
@@ -38,14 +38,14 @@ class ChainedRunnerSpec extends ObjectBehavior
         $this->run($rule)->shouldReturn('Runner2 launched');
     }
 
-    function it_throws_an_exception_when_no_runner_supports_the_rule(RuleInterface $rule)
+    function it_throws_an_exception_when_no_runner_supports_the_rule(RuleDefinitionInterface $rule)
     {
         $rule->getCode()->willReturn('therule');
         $this->shouldThrow(new \LogicException('No runner available for the rule "therule".'))->during('run', [$rule]);
     }
 
     function it__dry_runs_a_rule(
-        RuleInterface $rule,
+        RuleDefinitionInterface $rule,
         DryRunnerInterface $runner1,
         RunnerInterface $runner2,
         DryRunnerInterface $runner3
@@ -63,7 +63,7 @@ class ChainedRunnerSpec extends ObjectBehavior
         $this->dryRun($rule)->shouldReturn('Runner3 launched');
     }
 
-    function it_throws_an_exception_when_no_dry_runner_supports_the_rule(RuleInterface $rule)
+    function it_throws_an_exception_when_no_dry_runner_supports_the_rule(RuleDefinitionInterface $rule)
     {
         $rule->getCode()->willReturn('therule');
         $this->shouldThrow(new \LogicException('No dry runner available for the rule "therule".'))

@@ -17,8 +17,8 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -32,7 +32,7 @@ class ProductRuleLoader implements LoaderInterface
     protected $eventDispatcher;
 
     /** @var string */
-    protected $loadedRuleClass;
+    protected $ruleClass;
 
     /** @var string */
     protected $setValueActionClass;
@@ -42,26 +42,26 @@ class ProductRuleLoader implements LoaderInterface
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $loadedRuleClass
+     * @param string                   $ruleClass
      * @param string                   $setValueActionClass
      * @param string                   $copyValueActionClass
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        $loadedRuleClass,
+        $ruleClass,
         $setValueActionClass,
         $copyValueActionClass
     ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->loadedRuleClass = $loadedRuleClass;
+        $this->ruleClass = $ruleClass;
         $this->setValueActionClass = $setValueActionClass;
         $this->copyValueActionClass = $copyValueActionClass;
 
-        $refClass = new \ReflectionClass($loadedRuleClass);
-        $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface';
+        $refClass = new \ReflectionClass($ruleClass);
+        $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface';
         if (!$refClass->implementsInterface($interface)) {
             throw new \InvalidArgumentException(
-                sprintf('The provided class name "%s" must implement interface "%s".', $loadedRuleClass, $interface)
+                sprintf('The provided class name "%s" must implement interface "%s".', $ruleClass, $interface)
             );
         }
     }
@@ -69,29 +69,29 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $rule)
+    public function load(RuleDefinitionInterface $definition)
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($rule));
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($definition));
 
-        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule $loaded */
-        $loaded = new $this->loadedRuleClass($rule);
+        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $loaded */
+        $loaded = new $this->ruleClass($definition);
 
-        $content = json_decode($rule->getContent(), true);
+        $content = json_decode($definition->getContent(), true);
         if (!array_key_exists('conditions', $content)) {
             throw new \LogicException(
-                sprintf('Rule "%s" should have a "conditions" key in its content.', $rule->getCode())
+                sprintf('Rule "%s" should have a "conditions" key in its content.', $definition->getCode())
             );
         }
         if (!array_key_exists('actions', $content)) {
             throw new \LogicException(
-                sprintf('Rule "%s" should have a "actions" key in its content.', $rule->getCode())
+                sprintf('Rule "%s" should have a "actions" key in its content.', $definition->getCode())
             );
         }
 
         $this->loadConditions($loaded, $content['conditions']);
         $this->loadActions($loaded, $content['actions']);
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($rule));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($definition));
 
         return $loaded;
     }
@@ -99,20 +99,20 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule)
+    public function supports(RuleDefinitionInterface $definition)
     {
-        return 'product' === $rule->getType();
+        return 'product' === $definition->getType();
     }
 
     /**
      * Loads conditions into a rule.
      *
-     * @param LoadedRuleInterface $rule
+     * @param RuleInterface $rule
      * @param array               $rawConditions
      *
      * @return ProductRuleLoader
      */
-    protected function loadConditions(LoadedRuleInterface $rule, array $rawConditions)
+    protected function loadConditions(RuleInterface $rule, array $rawConditions)
     {
         $conditions = [];
         foreach ($rawConditions as $rawCondition) {
@@ -128,12 +128,12 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * Loads actions into a rule.
      *
-     * @param LoadedRuleInterface $rule
+     * @param RuleInterface $rule
      * @param array               $rawActions
      *
-     * @return ProductRuleLoader
+*@return ProductRuleLoader
      */
-    protected function loadActions(LoadedRuleInterface $rule, array $rawActions)
+    protected function loadActions(RuleInterface $rule, array $rawActions)
     {
         $actions = [];
         foreach ($rawActions as $rawAction) {

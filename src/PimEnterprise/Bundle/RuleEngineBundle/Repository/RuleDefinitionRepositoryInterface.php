@@ -11,20 +11,19 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
- * Rule repository
+ * Rule repository interface
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class RuleRepository extends EntityRepository implements RuleRepositoryInterface
+interface RuleDefinitionRepositoryInterface extends ObjectRepository
 {
     /**
-     * {@inheritdoc}
+     * Retrieve all rule ordered by priority
+     *
+     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface[]
      */
-    public function findAllOrderedByPriority()
-    {
-        return $this->findBy([], ['priority' => 'DESC']);
-    }
+    public function findAllOrderedByPriority();
 }

@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
 
 /**
  * Command to generate fake rules
@@ -75,7 +75,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rules = [];
             $cpt = 0;
             while ($cpt < $count) {
-                $rule = new Rule();
+                $rule = new RuleDefinition();
                 $rule->setCode('rule_' . $cpt);
                 $rule->setContent(json_encode([
                     'conditions' => $this->getConditions($filters, 2),
@@ -99,7 +99,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             }
 
         } else {
-            $rule = new Rule();
+            $rule = new RuleDefinition();
             $rule->setCode('rule_one');
             $rule->setContent(json_encode([
                 'conditions' => [
@@ -130,7 +130,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rule->setPriority(10);
             $em->persist($rule);
 
-            $rule = new Rule();
+            $rule = new RuleDefinition();
             $rule->setCode('rule_two');
             $rule->setContent(json_encode([
                 'conditions' => [
@@ -155,7 +155,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rule->setPriority(9);
             $em->persist($rule);
 
-            $rule = new Rule();
+            $rule = new RuleDefinition();
             $rule->setCode('rule_four');
             $rule->setContent(json_encode([
                 'conditions' => [
@@ -177,7 +177,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rule->setPriority(3);
             $em->persist($rule);
 
-            $rule = new Rule();
+            $rule = new RuleDefinition();
             $rule->setCode('rule_five');
             $rule->setContent(json_encode([
                 'conditions' => [

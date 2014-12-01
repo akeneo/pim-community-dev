@@ -11,27 +11,27 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Engine;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
- * Loads a rule to make to be able to apply it.
+ * Loads a rule defintion to make to be able to apply it.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface LoaderInterface
 {
     /**
-     * @param RuleInterface $rule
+     * @param RuleDefinitionInterface $definition
      *
-     * @return LoadedRuleInterface
+     * @return RuleInterface
      */
-    public function load(RuleInterface $rule);
+    public function load(RuleDefinitionInterface $definition);
 
     /**
-     * @param RuleInterface $rule
+     * @param RuleDefinitionInterface $definition
      *
      * @return bool
      */
-    public function supports(RuleInterface $rule);
+    public function supports(RuleDefinitionInterface $definition);
 }

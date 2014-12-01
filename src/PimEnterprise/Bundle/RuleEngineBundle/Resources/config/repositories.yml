@@ -1,11 +1,11 @@
 parameters:
-    pimee_rule_engine.repository.rule.class: PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepository
+    pimee_rule_engine.repository.rule.class: PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepository
 
 services:
     pimee_rule_engine.repository.rule:
         class: %pimee_rule_engine.repository.rule.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pimee_rule_engine.entity.rule.class%]
+        arguments: [%pimee_rule_engine.entity.rule_definition.class%]
         tags:
             - { name: 'pim_repository' }

@@ -23,7 +23,7 @@ interface RuleReaderInterface extends StepExecutionAwareInterface
     /**
      * Get the Rule from database
      *
-     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
      */
     public function read();
 }

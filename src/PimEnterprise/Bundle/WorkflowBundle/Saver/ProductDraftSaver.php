@@ -25,7 +25,7 @@ use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -65,7 +65,7 @@ class ProductDraftSaver implements SaverInterface
     /** @var string */
     protected $storageDriver;
 
-    /** @var RuleRepositoryInterface */
+    /** @var RuleDefinitionRepositoryInterface */
     protected $ruleRepository;
 
     /** @var RunnerInterface */
@@ -81,7 +81,7 @@ class ProductDraftSaver implements SaverInterface
      * @param ChangesCollector                $collector
      * @param ChangeSetComputerInterface      $changeSet
      * @param string                          $storageDriver
-     * @param RuleRepositoryInterface         $ruleRepository
+     * @param RuleDefinitionRepositoryInterface         $ruleRepository
      * @param RunnerInterface                 $ruleRunner
      */
     public function __construct(
@@ -94,7 +94,7 @@ class ProductDraftSaver implements SaverInterface
         ChangesCollector $collector,
         ChangeSetComputerInterface $changeSet,
         $storageDriver,
-        RuleRepositoryInterface $ruleRepository,
+        RuleDefinitionRepositoryInterface $ruleRepository,
         RunnerInterface $ruleRunner
     ) {
         $this->registry = $registry;

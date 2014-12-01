@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Event;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
@@ -25,12 +25,12 @@ class SelectedRuleEvent extends RuleEvent
     protected $subjectSet;
 
     /**
-     * @param RuleInterface           $rule
+     * @param RuleDefinitionInterface $definition
      * @param RuleSubjectSetInterface $subjectSet
      */
-    public function __construct(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
+    public function __construct(RuleDefinitionInterface $definition, RuleSubjectSetInterface $subjectSet)
     {
-        parent::__construct($rule);
+        parent::__construct($definition);
 
         $this->subjectSet = $subjectSet;
     }

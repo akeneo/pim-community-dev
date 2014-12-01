@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
@@ -50,12 +50,12 @@ abstract class AbstractRunner implements RunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule, array $options = [])
+    public function run(RuleDefinitionInterface $definition, array $options = [])
     {
-        $loadedRule = $this->loader->load($rule);
-        $subjects = $this->selector->select($loadedRule);
+        $definition = $this->loader->load($definition);
+        $subjects = $this->selector->select($definition);
         if (!empty($subjects)) {
-            $this->applier->apply($loadedRule, $subjects);
+            $this->applier->apply($definition, $subjects);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Batch;
 
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 
 /**
  * Get a rule from database with the given rule code
@@ -25,16 +25,16 @@ class RuleReader extends AbstractConfigurableStepElement implements RuleReaderIn
     /** @var string */
     protected $ruleCode;
 
-    /** @var RuleRepositoryInterface */
+    /** @var RuleDefinitionRepositoryInterface */
     protected $ruleRepository;
 
     /** @var StepExecution */
     protected $stepExecution;
 
     /**
-     * @param RuleRepositoryInterface $ruleRepository
+     * @param RuleDefinitionRepositoryInterface $ruleRepository
      */
-    public function __construct(RuleRepositoryInterface $ruleRepository)
+    public function __construct(RuleDefinitionRepositoryInterface $ruleRepository)
     {
         $this->ruleRepository = $ruleRepository;
     }

@@ -11,8 +11,8 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Behat\Behat\Context\Step;
 
 /**
@@ -464,7 +464,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     public function theFollowingProductRules(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $rule = new Rule();
+            $rule = new RuleDefinition();
             $rule->setCode($data['code']);
             $rule->setPriority($data['priority']);
             $rule->setType('product');
@@ -561,7 +561,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @return \Pim\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
      *
      * @throws \InvalidArgumentException
      */
@@ -576,7 +576,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return RuleRepositoryInterface
+     * @return RuleDefinitionRepositoryInterface
      */
     protected function getRuleRepository()
     {

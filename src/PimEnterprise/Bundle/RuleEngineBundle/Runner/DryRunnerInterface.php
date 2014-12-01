@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Runs or dry run a rule.
@@ -21,10 +21,10 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 interface DryRunnerInterface extends RunnerInterface
 {
     /**
-     * @param RuleInterface $rule
-     * @param array         $options
+     * @param RuleDefinitionInterface $definition
+     * @param array                   $options
      *
      * @return mixed
      */
-    public function dryRun(RuleInterface $rule, array $options = []);
+    public function dryRun(RuleDefinitionInterface $definition, array $options = []);
 }

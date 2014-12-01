@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Conditions that are used by LoadedRuleInterface
+ * Conditions that are used by RuleInterface
  */
 interface ConditionInterface
 {

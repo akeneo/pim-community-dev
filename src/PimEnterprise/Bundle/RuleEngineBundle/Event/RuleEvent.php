@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Event;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -21,22 +21,22 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class RuleEvent extends Event
 {
-    protected $rule;
+    protected $definition;
 
     /**
-     * @param RuleInterface $rule
+     * @param RuleDefinitionInterface $definition
      */
-    public function __construct(RuleInterface $rule)
+    public function __construct(RuleDefinitionInterface $definition)
     {
-        $this->rule = $rule;
+        $this->definition = $definition;
     }
 
     /**
      * Get rule
-     * @return RuleInterface
+     * @return RuleDefinitionInterface
      */
-    public function getRule()
+    public function getDefinition()
     {
-        return $this->rule;
+        return $this->definition;
     }
 }

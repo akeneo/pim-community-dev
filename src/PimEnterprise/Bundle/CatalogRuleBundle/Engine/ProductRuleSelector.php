@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -71,7 +71,7 @@ class ProductRuleSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function select(LoadedRuleInterface $rule)
+    public function select(RuleInterface $rule)
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
@@ -99,7 +99,7 @@ class ProductRuleSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(LoadedRuleInterface $rule)
+    public function supports(RuleInterface $rule)
     {
         return 'product' === $rule->getType();
     }

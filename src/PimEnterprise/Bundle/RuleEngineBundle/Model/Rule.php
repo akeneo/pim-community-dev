@@ -12,43 +12,95 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Rule
+ * Decores a rule to be apply to select its subjects and to be able to apply it.
  *
- * @author Nicolas Dupont <nicolas@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class Rule implements RuleInterface
 {
-    /** @var int */
-    protected $id;
+    /** @var RuleDefinitionInterface */
+    protected $definition;
 
-    /** @var string */
-    protected $code;
+    /** @var ConditionInterface[] */
+    protected $conditions;
 
-    /** @var string */
-    protected $type;
+    /** @var ActionInterface[] */
+    protected $actions;
 
-    /** @var string */
-    protected $content;
+    /**
+     * The constructor
+     *
+     * @param RuleDefinitionInterface $definition
+     */
+    public function __construct(RuleDefinitionInterface $definition)
+    {
+        $this->definition = $definition;
+        $this->actions = [];
+        $this->conditions = [];
+    }
 
-    /** @var int */
-    protected $priority;
+    /**
+     * {@inheritdoc}
+     */
+    public function getConditions()
+    {
+        return $this->conditions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConditions(array $conditions)
+    {
+        $this->conditions = $conditions;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addCondition(ConditionInterface $condition)
+    {
+        $this->conditions[] = $condition;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        return $this->actions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActions(array $actions)
+    {
+        $this->actions = $actions;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAction(ActionInterface $action)
+    {
+        $this->actions[] = $action;
+
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function getId()
     {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-
-        return $this;
+        return $this->definition->getId();
     }
 
     /**
@@ -56,33 +108,15 @@ class Rule implements RuleInterface
      */
     public function getCode()
     {
-        return $this->code;
+        return $this->definition->getCode();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setContent($content)
+    public function setCode($code)
     {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
+        $this->definition->setCode($code);
 
         return $this;
     }
@@ -92,7 +126,35 @@ class Rule implements RuleInterface
      */
     public function getType()
     {
-        return $this->type;
+        return $this->definition->getType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setType($type)
+    {
+        $this->definition->setType($type);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContent()
+    {
+        return $this->definition->getContent();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContent($content)
+    {
+        $this->definition->setContent($content);
+
+        return $this;
     }
 
     /**
@@ -100,7 +162,7 @@ class Rule implements RuleInterface
      */
     public function getPriority()
     {
-        return $this->priority;
+        return $this->definition->getPriority();
     }
 
     /**
@@ -108,7 +170,7 @@ class Rule implements RuleInterface
      */
     public function setPriority($priority)
     {
-        $this->priority = $priority;
+        $this->definition->setPriority($priority);
 
         return $this;
     }

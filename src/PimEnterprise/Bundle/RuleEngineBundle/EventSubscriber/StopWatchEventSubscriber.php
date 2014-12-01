@@ -75,7 +75,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     {
         if ($this->stopWatch) {
             $this->stopWatch->start(
-                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'load'),
+                sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'load'),
                 'rule_loading'
             );
         }
@@ -89,7 +89,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     public function postLoad(RuleEvent $event)
     {
         if ($this->stopWatch) {
-            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'load'));
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'load'));
         }
     }
 
@@ -102,7 +102,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     {
         if ($this->stopWatch) {
             $this->stopWatch->start(
-                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'select'),
+                sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'select'),
                 'rule_selecting'
             );
         }
@@ -116,7 +116,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     public function postSelect(SelectedRuleEvent $event)
     {
         if ($this->stopWatch) {
-            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'select'));
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'select'));
         }
     }
 
@@ -129,7 +129,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     {
         if ($this->stopWatch) {
             $this->stopWatch->start(
-                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'apply'),
+                sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'apply'),
                 'rule_applying'
             );
         }
@@ -143,7 +143,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     public function postApply(SelectedRuleEvent $event)
     {
         if ($this->stopWatch) {
-            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'apply'));
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'apply'));
         }
     }
 

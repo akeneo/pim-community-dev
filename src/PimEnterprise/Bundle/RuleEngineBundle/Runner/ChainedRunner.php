@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Chained rule runner. Find the runner able to handle a rule, and run it.
@@ -38,7 +38,7 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule)
+    public function supports(RuleDefinitionInterface $definition)
     {
         return true;
     }
@@ -46,28 +46,28 @@ class ChainedRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule, array $options = [])
+    public function run(RuleDefinitionInterface $definition, array $options = [])
     {
         foreach ($this->runners as $runner) {
-            if ($runner->supports($rule)) {
-                return $runner->run($rule);
+            if ($runner->supports($definition)) {
+                return $runner->run($definition);
             }
         }
 
-        throw new \LogicException(sprintf('No runner available for the rule "%s".', $rule->getCode()));
+        throw new \LogicException(sprintf('No runner available for the rule "%s".', $definition->getCode()));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function dryRun(RuleInterface $rule, array $options = [])
+    public function dryRun(RuleDefinitionInterface $definition, array $options = [])
     {
         foreach ($this->runners as $runner) {
-            if ($runner instanceof DryRunnerInterface && $runner->supports($rule)) {
-                return $runner->dryRun($rule);
+            if ($runner instanceof DryRunnerInterface && $runner->supports($definition)) {
+                return $runner->dryRun($definition);
             }
         }
 
-        throw new \LogicException(sprintf('No dry runner available for the rule "%s".', $rule->getCode()));
+        throw new \LogicException(sprintf('No dry runner available for the rule "%s".', $definition->getCode()));
     }
 }
