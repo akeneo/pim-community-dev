@@ -1,3 +1,93 @@
+pim_enrich:
+  acl:
+    locale:
+      index: Gebietsschemata auflisten
+    currency:
+      index: Währungen auflisten
+      toggle: Währungen umschalten
+    product:
+      index: Produkte auflisten
+      create: Ein Produkt anlegen
+      edit_attributes: Die Attribute eines Produktes bearbeiten
+      remove: Ein Produkt löschen
+      add_attribute: Ein Attribut zu einem Produkt hinzufügen
+      remove_attribute: Ein Attribut von einem Produkt entfernen
+      categories_view: Die Kategorien eines Produktes ansehen
+      associations_view: Die Verbindungstypen eines Produktes ansehen
+      change_family: Produktfamilie ändern
+      change_state: Status eines Produktes ändern
+      add_to_groups: Ein Produkt zu Gruppen zuordnen
+      mass_edit: Aktionen zur Massenbearbeitung von Produkten
+      comment: Produkte kommentieren
+      download: Produkt als PDF herunterladen
+      history: Produkthistorie ansehen
+    category:
+      list: Kategorien auflisten
+      create: Eine Kategorie anlegen
+      edit: Eine Kategorie bearbeiten
+      remove: Eine Kategorie löschen
+      move: Kategorie verschieben
+      children: Kategorie-Kindelemente sehen
+      products: Produkte von Kategorien sehen
+      history: Kategoriehistorie ansehen
+    channel:
+      index: Ausgabekanäle auflisten
+      create: Einen Ausgabekanal anlegen
+      edit: Einen Ausgabekanal bearbeiten
+      remove: Einen Ausgabekanal löschen
+      history: Ausgabekanal-Historie ansehen
+    family:
+      index: Produktfamilien auflisten
+      create: Eine Produktfamilie anlegen
+      edit_properties: Die Eigenschaften einer Produktfamilie bearbeiten
+      edit_attributes: Die Attribute einer Produktfamilie bearbeiten
+      remove: Eine Produktfamilie löschen
+      history: Produktfamilien-Historie ansehen
+    attribute_group:
+      index: Attributgruppen auflisten
+      create: Eine Attributgruppe anlegen
+      edit: Eine Attributgruppe bearbeiten
+      remove: Eine Attributgruppe löschen
+      sort: Attributgruppen sortieren
+      add_attribute: Attribut zu einer Gruppe hinzufügen
+      remove_attribute: Attribut aus einer Gruppe löschen
+      history: Attributgruppen-Historie ansehen
+    attribute:
+      index: Attribute auflisten
+      create: Ein Attribut anlegen
+      edit: Ein Attribut bearbeiten
+      remove: Ein Attribut löschen
+      sort: Attribute innerhalb von Attributgruppen sortieren
+      history: Attributhistorie ansehen
+    group:
+      index: Gruppen auflisten
+      create: Eine Gruppe anlegen
+      edit: Eine Gruppe bearbeiten
+      remove: Eine Gruppe entfernen
+      history: Gruppenhistorie ansehen
+    group_type:
+      index: Gruppentypen auflisten
+      create: Einen Gruppentyp anlegen
+      edit: Einen Gruppentyp bearbeiten
+      remove: Einen Gruppentyp löschen
+    association_type:
+      index: Verbindungstypen auflisten
+      create: Einen Verbindungstyp anlegen
+      edit: Einen Verbindungstyp bearbeiten
+      remove: Einen Verbindungstyp löschen
+      history: Verbindungstypen-Historie ansehen
+  acl_group:
+    association_type: Verbindungstypen
+    attribute: Attribute
+    attribute_group: Attributgruppen
+    category: Kategorien
+    channel: Ausgabekanäle
+    currency: Währungen
+    family: Produktfamilien
+    group: Gruppen
+    group_type: Gruppentypen
+    locale: Gebietsschemata
+    product: Produkte
 attribute:
   title: Attribut
   overview: Attribute Übersicht
@@ -429,7 +519,7 @@ pim_enrich.mass_edit_action:
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
-    label: Attribute bearbeiten
+    label: Gemeinsame Attribute bearbeiten
     description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
@@ -455,110 +545,11 @@ To enable: Um zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
-pim_enrich.completeness:
-  progress_bar.title: '%ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)'
-  subtitle: '{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte'
-  missing_attributes: Fehlender Wert|Fehlende Werte
-  legend:
-    locale_not_associated: Das Gebietsschema ist nicht mit diesem Ausgabekanal verbunden
-pim_enrich.group:
-  axis.help: Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht lokalisierbar sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.
-  type:
-    VARIANT: Variante
-    X_SELL: Cross-Sell
-    ADDITIONAL: Ergänzend
-    RELATED: Zugehörig
-pim_enrich.product:
-  no_comparison_locale_available: Es ist kein anderes Gebietsschema für einen Vergleich vorhanden
-  no_compared_media: Keine Medien für einen Vergleich vorhanden
 Copy: Kopieren
 Current tab: Aktueller Reiter
-pim_enrich.channel.pick_conversion_unit: Wählen Sie eine Umrechnungseinheit für jedes metrische Attribut, welche beim Produkt-Export verwendet werden soll
 Group: Gruppe
 View group: Gruppe ansehen
 Products: Produkte
-pim_enrich:
-  acl:
-    locale:
-      index: Gebietsschemata auflisten
-    currency:
-      index: Währungen auflisten
-      toggle: Währungen umschalten
-    product:
-      index: Produkte auflisten
-      create: Ein Produkt anlegen
-      edit_attributes: Die Attribute eines Produktes bearbeiten
-      remove: Ein Produkt löschen
-      add_attribute: Ein Attribut zu einem Produkt hinzufügen
-      remove_attribute: Ein Attribut von einem Produkt entfernen
-      categories_view: Die Kategorien eines Produktes ansehen
-      associations_view: Die Verbindungstypen eines Produktes ansehen
-      change_family: Produktfamilie ändern
-      change_state: Status eines Produktes ändern
-      add_to_groups: Ein Produkt zu Gruppen zuordnen
-      mass_edit: Aktionen zur Massenbearbeitung von Produkten
-      comment: Produkte kommentieren
-      download: Produkt als PDF herunterladen
-    category:
-      list: Kategorien auflisten
-      create: Eine Kategorie anlegen
-      edit: Eine Kategorie bearbeiten
-      remove: Eine Kategorie löschen
-      move: Kategorie verschieben
-      children: Kategorie-Kindelemente sehen
-      products: Produkte von Kategorien sehen
-    channel:
-      index: Ausgabekanäle auflisten
-      create: Einen Ausgabekanal anlegen
-      edit: Einen Ausgabekanal bearbeiten
-      remove: Einen Ausgabekanal löschen
-    family:
-      index: Produktfamilien auflisten
-      create: Eine Produktfamilie anlegen
-      edit_properties: Die Eigenschaften einer Produktfamilie bearbeiten
-      edit_attributes: Die Attribute einer Produktfamilie bearbeiten
-      remove: Eine Produktfamilie löschen
-    attribute_group:
-      index: Attributgruppen auflisten
-      create: Eine Attributgruppe anlegen
-      edit: Eine Attributgruppe bearbeiten
-      remove: Eine Attributgruppe löschen
-      sort: Attributgruppen sortieren
-      add_attribute: Attribut zu einer Gruppe hinzufügen
-      remove_attribute: Attribut aus einer Gruppe löschen
-    attribute:
-      index: Attribute auflisten
-      create: Ein Attribut anlegen
-      edit: Ein Attribut bearbeiten
-      remove: Ein Attribut löschen
-      sort: Attribute innerhalb von Attributgruppen sortieren
-    group:
-      index: Gruppen auflisten
-      create: Eine Gruppe anlegen
-      edit: Eine Gruppe bearbeiten
-      remove: Eine Gruppe entfernen
-    group_type:
-      index: Gruppentypen auflisten
-      create: Einen Gruppentyp anlegen
-      edit: Einen Gruppentyp bearbeiten
-      remove: Einen Gruppentyp löschen
-    association_type:
-      index: Verbindungstypen auflisten
-      create: Einen Verbindungstyp anlegen
-      edit: Einen Verbindungstyp bearbeiten
-      remove: Einen Verbindungstyp löschen
-  acl_group:
-    association_type: Verbindungstypen
-    attribute: Attribute
-    attribute_group: Attributgruppen
-    category: Kategorien
-    channel: Ausgabekanäle
-    currency: Währungen
-    family: Produktfamilien
-    group: Gruppen
-    group_type: Gruppentypen
-    locale: Gebietsschemata
-    product: Produkte
 pim_menu:
   tab:
     collect: Sammeln
