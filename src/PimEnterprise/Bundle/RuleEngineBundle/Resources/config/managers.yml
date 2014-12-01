@@ -9,3 +9,4 @@ services:
             - '@pimee_rule_engine.repository.rule'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+            - '%pimee_rule_engine.entity.rule.class%'

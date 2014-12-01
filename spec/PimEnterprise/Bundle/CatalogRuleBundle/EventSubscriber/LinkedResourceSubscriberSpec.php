@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader;
@@ -23,15 +22,14 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository          $ruleLinkedResRepo,
         ProductRuleSelector       $productRuleSelector,
-        ProductRuleLoader         $productRuleLoader,
-        AttributeRepository       $attributeRepository
+        ProductRuleLoader         $productRuleLoader
     ) {
         $this->beConstructedWith(
             $linkedResManager,
             $ruleLinkedResRepo,
             $productRuleSelector,
             $productRuleLoader,
-            $attributeRepository
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource'
         );
     }
 
@@ -75,7 +73,6 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
     function it_saves_a_new_rule_linked_resource(
         $productRuleLoader,
         $linkedResManager,
-        $attributeRepository,
         RuleEvent $event,
         LoadedRule $loadedRule,
         AbstractAttribute $attribute1,
@@ -88,8 +85,8 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
 
         $loadedRule->getActions()->shouldBeCalled()->willReturn([['field' => 'name', 'to_field' => 'description']]);
 
-        $attributeRepository->findByReference('name')->shouldBeCalled()->willReturn($attribute1);
-        $attributeRepository->findByReference('description')->shouldBeCalled()->willReturn($attribute2);
+        $linkedResManager->getImpactedAttributes([['field' => 'name', 'to_field' => 'description']])
+            ->shouldBeCalled()->willReturn([$attribute1, $attribute2]);
 
         $attribute1->__toString()->willReturn('name');
         $attribute1->getId()->willReturn(42);

@@ -12,6 +12,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
@@ -26,14 +27,19 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     /** @var EntityManager */
     protected $entityManager;
 
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
+     * @param EntityManager       $entityManager
+     * @param AttributeRepository $attributeRepository
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, AttributeRepository $attributeRepository)
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager       = $entityManager;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -75,5 +81,35 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
         }
 
         $this->entityManager->remove($object);
+    }
+
+    /**
+     * Returns all impacted attributes
+     *
+     * @param array $actions
+     *
+     * @return array
+     */
+    public function getImpactedAttributes(array $actions)
+    {
+        $fields = [];
+        foreach ($actions as $action) {
+            if (array_key_exists('field', $action)) {
+                $fields[] = $action['field'];
+            }
+            if (array_key_exists('to_field', $action)) {
+                $fields[] = $action['to_field'];
+            }
+        }
+
+        $impactedAttributes = [];
+        foreach ($fields as $field) {
+            $impactedAttributes[] = $this->attributeRepository->findByReference($field);
+        }
+
+        $impactedAttributes = array_unique($impactedAttributes);
+        $impactedAttributes = array_filter($impactedAttributes);
+
+        return $impactedAttributes;
     }
 }

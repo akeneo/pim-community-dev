@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
@@ -11,9 +12,9 @@ use Prophecy\Argument;
 
 class RuleLinkedResourceManagerSpec extends ObjectBehavior
 {
-    function let(EntityManager $entityManager)
+    function let(EntityManager $entityManager, AttributeRepository $attributeRepository)
     {
-        $this->beConstructedWith($entityManager);
+        $this->beConstructedWith($entityManager, $attributeRepository);
     }
 
     function it_is_initializable()

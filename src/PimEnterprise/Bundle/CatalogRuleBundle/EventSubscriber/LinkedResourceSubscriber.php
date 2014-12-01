@@ -10,7 +10,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
@@ -45,6 +44,9 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     /** @var ProductRuleLoader */
     protected $productRuleLoader;
 
+    /** @var string */
+    protected $ruleLinkedReClass;
+
     /**
      * Constructor
      *
@@ -52,20 +54,20 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      * @param EntityRepository          $ruleLinkedResRepo
      * @param ProductRuleSelector       $productRuleSelector
      * @param ProductRuleLoader         $productRuleLoader
-     * @param AttributeRepository       $attributeRepository
+     * @param string                    $ruleLinkedReClass
      */
     public function __construct(
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository $ruleLinkedResRepo,
         ProductRuleSelector $productRuleSelector,
         ProductRuleLoader $productRuleLoader,
-        AttributeRepository $attributeRepository
+        $ruleLinkedReClass
     ) {
         $this->linkedResManager    = $linkedResManager;
         $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
         $this->productRuleSelector = $productRuleSelector;
         $this->productRuleLoader   = $productRuleLoader;
-        $this->attributeRepository = $attributeRepository;
+        $this->ruleLinkedReClass   = $ruleLinkedReClass;
     }
 
     /**
@@ -74,8 +76,8 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AttributeEvents::PRE_REMOVE  => 'deleteRuleLinkedResource',
-            RuleEvents::POST_SAVE        => 'saveRuleLinkedResource',
+            AttributeEvents::PRE_REMOVE => 'deleteRuleLinkedResource',
+            RuleEvents::POST_SAVE       => 'saveRuleLinkedResource'
         ];
     }
 
@@ -113,57 +115,46 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
 
         $actions = $loadedRule->getActions();
 
-        $this->executeSave($actions, $rule);
-    }
-
-    /**
-     * Execute the save of the rule linked resource
-     *
-     * @param $actions
-     * @param $rule
-     */
-    protected function executeSave($actions, $rule)
-    {
-        $fields = [];
-        foreach ($actions as $action) {
-            if (array_key_exists('field', $action)) {
-                $fields[] = $action['field'];
-            }
-            if (array_key_exists('to_field', $action)) {
-                $fields[] = $action['to_field'];
-            }
-        }
-
-        $impactedAttributes = [];
-        foreach ($fields as $field) {
-            $impactedAttributes[] = $this->attributeRepository->findByReference($field);
-        }
-
-        $impactedAttributes = array_unique($impactedAttributes);
-
-        foreach ($impactedAttributes as $impactedAttribute) {
-            if (!empty($impactedAttribute)) {
-                $ruleLinkedResource = $this->instanciate($rule, $impactedAttribute);
-                $this->linkedResManager->save($ruleLinkedResource);
-            }
-        }
+        $impactedAttributes = $this->linkedResManager->getImpactedAttributes($actions);
+        $this->executeSave($rule, $impactedAttributes);
     }
 
     /**
      * Instanciate a new rule linked resource
      *
-     * @param $rule
-     * @param $attribute
+     * @param Rule               $rule
+     * @param AttributeInterface $attribute
      *
      * @return RuleLinkedResource
      */
     protected function instanciate(Rule $rule, AttributeInterface $attribute)
     {
-        $ruleLinkedResource = new RuleLinkedResource();
+        /** @var RuleLinkedResource $ruleLinkedResource */
+        $ruleLinkedResource = new $this->ruleLinkedReClass();
         $ruleLinkedResource->setRule($rule);
         $ruleLinkedResource->setResourceName(ClassUtils::getClass($attribute));
         $ruleLinkedResource->setResourceId($attribute->getId());
 
         return $ruleLinkedResource;
+    }
+
+    /**
+     * Save fetched objects
+     *
+     * @param Rule  $rule
+     * @param array $impactedAttributes
+     */
+    protected function executeSave(Rule $rule, array $impactedAttributes)
+    {
+        foreach ($impactedAttributes as $impactedAttribute) {
+
+            $ruleLinkedResource = $this->ruleLinkedResRepo->find(['rule' => $rule]);
+            if (isset($ruleLinkedResource)) {
+                $this->linkedResManager->remove($ruleLinkedResource);
+            }
+
+            $ruleLinkedResource = $this->instanciate($rule, $impactedAttribute);
+            $this->linkedResManager->save($ruleLinkedResource);
+        }
     }
 }
