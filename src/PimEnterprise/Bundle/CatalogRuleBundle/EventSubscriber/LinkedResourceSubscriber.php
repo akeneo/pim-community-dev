@@ -101,7 +101,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     /**
      * Saves a rule linked resource
      *
-     * @param RuleEvent|GenericEvent $event
+     * @param RuleEvent $event
      */
     public function saveRuleLinkedResource(RuleEvent $event)
     {
@@ -112,7 +112,6 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
         $actions = $loadedRule->getActions();
 
         $this->executeSave($actions, $rule);
-
     }
 
     /**
