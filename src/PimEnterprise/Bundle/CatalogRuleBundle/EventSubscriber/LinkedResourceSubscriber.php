@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
@@ -72,8 +73,8 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Event\AttributeEvents::PRE_REMOVE  => 'deleteRuleLinkedResource',
-            RuleEvents::POST_SAVE              => 'saveRuleLinkedResource',
+            AttributeEvents::PRE_REMOVE  => 'deleteRuleLinkedResource',
+            RuleEvents::POST_SAVE        => 'saveRuleLinkedResource',
         ];
     }
 
