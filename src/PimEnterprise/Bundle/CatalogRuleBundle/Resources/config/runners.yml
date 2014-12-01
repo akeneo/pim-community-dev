@@ -8,5 +8,6 @@ services:
             - @pimee_catalog_rule.loader.product
             - @pimee_catalog_rule.selector.product
             - @pimee_catalog_rule.applier.product
+            - %pimee_catalog_rule.model.product_condition.class%
         tags:
             - { name: pimee_rule_engine.runner }

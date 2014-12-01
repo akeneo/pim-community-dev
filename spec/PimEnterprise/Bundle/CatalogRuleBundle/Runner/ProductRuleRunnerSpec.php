@@ -13,22 +13,27 @@ use Prophecy\Argument;
 
 class ProductRuleRunnerSpec extends ObjectBehavior
 {
-    function let(LoaderInterface $loader, SelectorInterface $selector, ApplierInterface $applier)
+    public function let(LoaderInterface $loader, SelectorInterface $selector, ApplierInterface $applier)
     {
-        $this->beConstructedWith($loader, $selector, $applier);
+        $this->beConstructedWith(
+            $loader,
+            $selector,
+            $applier,
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition'
+        );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Runner\ProductRuleRunner');
     }
 
-    function it_is_a_runner()
+    public function it_is_a_runner()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface');
     }
 
-    function it_supports_product_rule(RuleInterface $rule1, RuleInterface $rule2)
+    public function it_supports_product_rule(RuleInterface $rule1, RuleInterface $rule2)
     {
         $rule1->getType()->willReturn('product');
         $rule2->getType()->willReturn('foo');
@@ -37,7 +42,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->supports($rule2)->shouldReturn(false);
     }
 
-    function it_runs_a_rule(
+    public function it_runs_a_rule(
         $loader,
         $selector,
         $applier,
@@ -52,7 +57,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->run($rule);
     }
 
-    function it_runs_a_rule_on_a_subset_of_products(
+    public function it_runs_a_rule_on_a_subset_of_products(
         $loader,
         $selector,
         $applier,
@@ -61,7 +66,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         RuleSubjectSetInterface $subjectSet
     ) {
         $loader->load($rule)->shouldBeCalled()->willReturn($loadedRule);
-        $loadedRule->addCondition(['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3]])->shouldBeCalled();
+        $loadedRule->addCondition(Argument::any())->shouldBeCalled();
         $selector->select($loadedRule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply($loadedRule, $subjectSet)->shouldBeCalled();
 

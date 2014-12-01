@@ -2,13 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use Prophecy\Argument;
@@ -16,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductRuleSelectorSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ProductQueryFactoryInterface $productQueryFactory,
         ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher
@@ -29,17 +28,17 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector');
     }
 
-    function it_should_be_a_selector()
+    public function it_should_be_a_selector()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface');
     }
 
-    function it_supports_a_product_rule(
+    public function it_supports_a_product_rule(
         LoadedRuleInterface $ruleOK,
         LoadedRuleInterface $ruleKO
     ) {
@@ -50,32 +49,41 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $this->supports($ruleKO)->shouldReturn(false);
     }
 
-    function it_selects_subjects_of_a_rule(
+    public function it_selects_subjects_of_a_rule(
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
-        LoadedRuleInterface $rule
+        LoadedRuleInterface $rule,
+        ProductConditionInterface $condition
     ) {
         $pqb->execute()->willReturn([]);
-        $rule->getConditions()->willReturn([]);
+        $rule->getConditions()->willReturn([$condition]);
         $rule->getCode()->willReturn('therule');
+        $condition->getField()->willReturn('field');
+        $condition->getOperator()->willReturn('operator');
+        $condition->getValue()->willReturn('value');
 
         $productQueryFactory->create()->shouldBeCalled()->willReturn($pqb);
+        $pqb->addFilter('field', 'operator', 'value')->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
 
         $this->select($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }
 
-    function it_selects_subject_of_a_rule_that_has_conditions(
+    public function it_selects_subject_of_a_rule_that_has_conditions(
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
-        LoadedRuleInterface $rule
+        LoadedRuleInterface $rule,
+        ProductConditionInterface $condition
     ) {
         $pqb->execute()->willReturn([]);
-        $rule->getConditions()->willReturn([$this->createConditionArray()]);
+        $rule->getConditions()->willReturn([$condition]);
         $rule->getCode()->willReturn('therule');
+        $condition->getField()->willReturn('field');
+        $condition->getOperator()->willReturn('operator');
+        $condition->getValue()->willReturn('value');
 
         $productQueryFactory->create()->shouldBeCalled()->willReturn($pqb);
         $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
@@ -83,31 +91,5 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $pqb->addFilter('field', 'operator', 'value')->shouldBeCalled();
 
         $this->select($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
-    }
-
-    function it_selects_subject_of_a_rule_that_has_conditions_with_invalid_options(
-        $eventDispatcher,
-        $productQueryFactory,
-        ProductQueryBuilderInterface $pqb,
-        LoadedRuleInterface $rule
-    ) {
-        $pqb->execute()->willReturn([]);
-        $rule->getConditions()->willReturn([$this->createConditionArray() + ['invalid_option' => 'foo']]);
-        $rule->getCode()->willReturn('therule');
-
-        $productQueryFactory->create()->shouldBeCalled()->willReturn($pqb);
-        $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
-
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
-            ->during('select', [$rule]);
-    }
-
-    private function createConditionArray()
-    {
-        return [
-            'field' => 'field',
-            'operator' => 'operator',
-            'value' => 'value',
-        ];
     }
 }

@@ -14,21 +14,23 @@ class ProductRuleLoaderSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $eventDispatcher,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule'
+            'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule',
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction',
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction'
         );
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader');
     }
 
-    function it_is_a_rule_loader()
+    public function it_is_a_rule_loader()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface');
     }
 
-    function it_supports_a_product_rule(
+    public function it_supports_a_product_rule(
         RuleInterface $ruleOK,
         RuleInterface $ruleKO
     ) {
@@ -39,18 +41,22 @@ class ProductRuleLoaderSpec extends ObjectBehavior
         $this->supports($ruleKO)->shouldReturn(false);
     }
 
-    function it_loads_a_rule($eventDispatcher, RuleInterface $rule)
+    public function it_loads_a_rule($eventDispatcher, RuleInterface $rule)
     {
-        $content = json_encode(['conditions' => [], 'actions' => []]);
+        $content =
+            <<<CONTENT
+            {"conditions":[{"field":"weight","operator":">","value":"123"},{"field":"sku","operator":"STARTS WITH","value":"sku-4372"}],"actions":[{"type":"set_value","field":"name","value":"toto"},{"type":"copy_value","from_field":"description","to_field":"description","from_scope":"tablet","from_locale":"fr_FR","to_scope":"mobile","to_locale":"fr_CH"}]}
+CONTENT;
+
         $rule->getContent()->willReturn($content);
 
         $eventDispatcher->dispatch(RuleEvents::PRE_LOAD, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_LOAD, Argument::any())->shouldBeCalled();
 
-        $this->load($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule');
+        $this->load($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface');
     }
 
-    function it_does_not_load_a_rule_with_bad_content($eventDispatcher, RuleInterface $rule1, RuleInterface $rule2)
+    public function it_does_not_load_a_rule_with_bad_content($eventDispatcher, RuleInterface $rule1, RuleInterface $rule2)
     {
         $rule1->getContent()->willReturn(json_encode(['actions' => []]));
         $rule2->getContent()->willReturn(json_encode(['conditions' => []]));

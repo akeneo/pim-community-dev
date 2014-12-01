@@ -21,40 +21,40 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 interface LoadedRuleInterface extends RuleInterface
 {
     /**
-     * @return array
+     * @return ConditionInterface[]
      */
     public function getConditions();
 
     /**
-     * @param array $conditions
+     * @param ConditionInterface[] $conditions
      *
      * @return LoadedRuleInterface
      */
     public function setConditions(array $conditions);
 
     /**
-     * @param array $condition
+     * @param ConditionInterface $condition
      *
      * @return LoadedRuleInterface
      */
-    public function addCondition(array $condition);
+    public function addCondition(ConditionInterface $condition);
 
     /**
-     * @return array
+     * @return ActionInterface[]
      */
     public function getActions();
 
     /**
-     * @param array $actions
+     * @param ActionInterface[] $actions
      *
      * @return LoadedRuleInterface
      */
     public function setActions(array $actions);
 
     /**
-     * @param array $action
+     * @param ActionInterface $action
      *
      * @return LoadedRuleInterface
      */
-    public function addAction(array $action);
+    public function addAction(ActionInterface $action);
 }

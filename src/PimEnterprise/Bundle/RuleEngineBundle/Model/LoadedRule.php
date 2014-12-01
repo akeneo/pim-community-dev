@@ -21,10 +21,10 @@ class LoadedRule implements LoadedRuleInterface
     /** @var RuleInterface */
     protected $rule;
 
-    /** @var array */
+    /** @var ConditionInterface[] */
     protected $conditions;
 
-    /** @var array */
+    /** @var ActionInterface[] */
     protected $actions;
 
     /**
@@ -60,7 +60,7 @@ class LoadedRule implements LoadedRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function addCondition(array $condition)
+    public function addCondition(ConditionInterface $condition)
     {
         $this->conditions[] = $condition;
 
@@ -88,7 +88,7 @@ class LoadedRule implements LoadedRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function addAction(array $action)
+    public function addAction(ActionInterface $action)
     {
         $this->actions[] = $action;
 
