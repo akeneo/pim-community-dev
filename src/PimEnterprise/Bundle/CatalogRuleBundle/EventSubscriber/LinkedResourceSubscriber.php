@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -138,11 +139,13 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
             $impactedAttributes[] = $this->attributeRepository->findByReference($field);
         }
 
-        $impactedAttributes = array_unique($impactedAttributes, SORT_STRING);
+        $impactedAttributes = array_unique($impactedAttributes);
 
         foreach ($impactedAttributes as $impactedAttribute) {
-            $ruleLinkedResource = $this->instanciate($rule, $impactedAttribute);
-            $this->linkedResManager->save($ruleLinkedResource);
+            if (!empty($impactedAttribute)) {
+                $ruleLinkedResource = $this->instanciate($rule, $impactedAttribute);
+                $this->linkedResManager->save($ruleLinkedResource);
+            }
         }
     }
 
@@ -154,7 +157,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      *
      * @return RuleLinkedResource
      */
-    protected function instanciate($rule, $attribute)
+    protected function instanciate(Rule $rule, AttributeInterface $attribute)
     {
         $ruleLinkedResource = new RuleLinkedResource();
         $ruleLinkedResource->setRule($rule);
