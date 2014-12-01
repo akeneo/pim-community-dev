@@ -68,8 +68,8 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Event\AttributeEvents::PRE_REMOVE => 'deleteRuleLinkedResource',
-            RuleEvents::POST_SAVE             => 'saveRuleLinkedResource',
+            Event\AttributeEvents::PRE_REMOVE  => 'deleteRuleLinkedResource',
+            RuleEvents::POST_SAVE              => 'saveRuleLinkedResource',
         ];
     }
 
