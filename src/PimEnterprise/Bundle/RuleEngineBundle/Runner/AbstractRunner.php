@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 
@@ -23,8 +23,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
  */
 abstract class AbstractRunner implements RunnerInterface
 {
-    /** @var LoaderInterface */
-    protected $loader;
+    /** @var BuilderInterface */
+    protected $builder;
 
     /** @var SelectorInterface */
     protected $selector;
@@ -33,16 +33,16 @@ abstract class AbstractRunner implements RunnerInterface
     protected $applier;
 
     /**
-     * @param LoaderInterface   $loader
+     * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
      */
     public function __construct(
-        LoaderInterface $loader,
+        BuilderInterface $builder,
         SelectorInterface $selector,
         ApplierInterface $applier
     ) {
-        $this->loader   = $loader;
+        $this->builder   = $builder;
         $this->selector = $selector;
         $this->applier  = $applier;
     }
@@ -52,7 +52,7 @@ abstract class AbstractRunner implements RunnerInterface
      */
     public function run(RuleDefinitionInterface $definition, array $options = [])
     {
-        $definition = $this->loader->load($definition);
+        $definition = $this->builder->build($definition);
         $subjects = $this->selector->select($definition);
         if (!empty($subjects)) {
             $this->applier->apply($definition, $subjects);

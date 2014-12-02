@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
@@ -30,24 +30,28 @@ class ProductRuleRunner extends AbstractRunner
     protected $productConditionClass;
 
     /**
-     * @param LoaderInterface   $loader
+     * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
      * @param string            $productConditionClass
      */
     public function __construct(
-        LoaderInterface $loader,
+        BuilderInterface $builder,
         SelectorInterface $selector,
         ApplierInterface $applier,
         $productConditionClass
     ) {
-        parent::__construct($loader, $selector, $applier);
+        parent::__construct($builder, $selector, $applier);
 
         $refClass = new \ReflectionClass($productConditionClass);
         $interface = 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface';
         if (!$refClass->implementsInterface($interface)) {
             throw new \InvalidArgumentException(
-                sprintf('The provided class name "%s" must implement interface "%s".', $productConditionClass, $interface)
+                sprintf(
+                    'The provided class name "%s" must implement interface "%s".',
+                    $productConditionClass,
+                    $interface
+                )
             );
         }
 
@@ -99,7 +103,7 @@ class ProductRuleRunner extends AbstractRunner
      */
     protected function loadRule(RuleDefinitionInterface $definition, array $options)
     {
-        $definition = $this->loader->load($definition);
+        $definition = $this->builder->build($definition);
         if (!empty($options['selected_products'])) {
             /** @var ProductConditionInterface $condition */
             $condition = new $this->productConditionClass([

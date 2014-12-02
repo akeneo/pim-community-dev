@@ -1,6 +1,6 @@
 parameters:
     pimee_catalog_rule.applier.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier
-    pimee_catalog_rule.loader.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader
+    pimee_catalog_rule.loader.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder
     pimee_catalog_rule.selector.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
     pimee_catalog_rule.model.product_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition
     pimee_catalog_rule.model.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction

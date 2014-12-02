@@ -15,18 +15,18 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
- * Loads a rule defintion to make to be able to apply it.
+ * Build a rule from a rule definition to be able to apply it.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-interface LoaderInterface
+interface BuilderInterface
 {
     /**
      * @param RuleDefinitionInterface $definition
      *
      * @return RuleInterface
      */
-    public function load(RuleDefinitionInterface $definition);
+    public function build(RuleDefinitionInterface $definition);
 
     /**
      * @param RuleDefinitionInterface $definition

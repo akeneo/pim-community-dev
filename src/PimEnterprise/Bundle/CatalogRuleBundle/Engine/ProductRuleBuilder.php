@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleLoader implements LoaderInterface
+class ProductRuleBuilder implements BuilderInterface
 {
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -69,12 +69,12 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load(RuleDefinitionInterface $definition)
+    public function build(RuleDefinitionInterface $definition)
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($definition));
 
-        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $loaded */
-        $loaded = new $this->ruleClass($definition);
+        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $rule */
+        $rule = new $this->ruleClass($definition);
 
         $content = json_decode($definition->getContent(), true);
         if (!array_key_exists('conditions', $content)) {
@@ -88,12 +88,12 @@ class ProductRuleLoader implements LoaderInterface
             );
         }
 
-        $this->loadConditions($loaded, $content['conditions']);
-        $this->loadActions($loaded, $content['actions']);
+        $this->loadConditions($rule, $content['conditions']);
+        $this->loadActions($rule, $content['actions']);
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($definition));
 
-        return $loaded;
+        return $rule;
     }
 
     /**
@@ -108,9 +108,9 @@ class ProductRuleLoader implements LoaderInterface
      * Loads conditions into a rule.
      *
      * @param RuleInterface $rule
-     * @param array               $rawConditions
+     * @param array         $rawConditions
      *
-     * @return ProductRuleLoader
+     * @return ProductRuleBuilder
      */
     protected function loadConditions(RuleInterface $rule, array $rawConditions)
     {
@@ -131,7 +131,7 @@ class ProductRuleLoader implements LoaderInterface
      * @param RuleInterface $rule
      * @param array               $rawActions
      *
-*@return ProductRuleLoader
+     * @return ProductRuleBuilder
      */
     protected function loadActions(RuleInterface $rule, array $rawActions)
     {

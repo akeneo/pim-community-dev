@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -13,10 +13,10 @@ use Prophecy\Argument;
 
 class ProductRuleRunnerSpec extends ObjectBehavior
 {
-    public function let(LoaderInterface $loader, SelectorInterface $selector, ApplierInterface $applier)
+    public function let(BuilderInterface $builder, SelectorInterface $selector, ApplierInterface $applier)
     {
         $this->beConstructedWith(
-            $loader,
+            $builder,
             $selector,
             $applier,
             'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition'
@@ -43,14 +43,14 @@ class ProductRuleRunnerSpec extends ObjectBehavior
     }
 
     public function it_runs_a_rule(
-        $loader,
+        $builder,
         $selector,
         $applier,
         RuleDefinitionInterface $definition,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet
     ) {
-        $loader->load($definition)->shouldBeCalled()->willReturn($rule);
+        $builder->build($definition)->shouldBeCalled()->willReturn($rule);
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply($rule, $subjectSet)->shouldBeCalled();
 
@@ -58,14 +58,14 @@ class ProductRuleRunnerSpec extends ObjectBehavior
     }
 
     public function it_runs_a_rule_on_a_subset_of_products(
-        $loader,
+        $builder,
         $selector,
         $applier,
         RuleDefinitionInterface $definition,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet
     ) {
-        $loader->load($definition)->shouldBeCalled()->willReturn($rule);
+        $builder->build($definition)->shouldBeCalled()->willReturn($rule);
         $rule->addCondition(Argument::any())->shouldBeCalled();
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply($rule, $subjectSet)->shouldBeCalled();
