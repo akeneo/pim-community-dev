@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
+namespace spec\PimEnterprise\Bundle\RuleEngineBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -15,10 +15,14 @@ class RuleManagerSpec extends ObjectBehavior
 {
     function let(
         RuleDefinitionRepositoryInterface $repository,
-        ObjectManager $objectManager,
+        EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($repository, $objectManager, $eventDispatcher);
+        $this->beConstructedWith(
+            $repository,
+            $entityManager,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable()
