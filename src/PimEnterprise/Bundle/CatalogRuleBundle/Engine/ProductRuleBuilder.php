@@ -97,14 +97,6 @@ class ProductRuleBuilder implements BuilderInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supports(RuleDefinitionInterface $definition)
-    {
-        return 'product' === $definition->getType();
-    }
-
-    /**
      * Loads conditions into a rule.
      *
      * @param RuleInterface $rule

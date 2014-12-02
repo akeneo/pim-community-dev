@@ -69,14 +69,6 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supports(RuleInterface $rule)
-    {
-        return 'product' === $rule->getType();
-    }
-
-    /**
      * Apply a copy action on a subhect set.
      *
      * @param RuleSubjectSetInterface         $subjectSet

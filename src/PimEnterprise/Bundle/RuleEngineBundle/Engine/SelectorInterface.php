@@ -27,11 +27,4 @@ interface SelectorInterface
      * @return RuleSubjectSetInterface
      */
     public function select(RuleInterface $rule);
-
-    /**
-     * @param RuleInterface $rule
-     *
-     * @return bool
-     */
-    public function supports(RuleInterface $rule);
 }

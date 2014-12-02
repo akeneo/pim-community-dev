@@ -38,17 +38,6 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface');
     }
 
-    public function it_supports_a_product_rule(
-        RuleInterface $ruleOK,
-        RuleInterface $ruleKO
-    ) {
-        $ruleOK->getType()->willReturn('product');
-        $ruleKO->getType()->willReturn('foo');
-
-        $this->supports($ruleOK)->shouldReturn(true);
-        $this->supports($ruleKO)->shouldReturn(false);
-    }
-
     public function it_selects_subjects_of_a_rule(
         $eventDispatcher,
         $productQueryFactory,

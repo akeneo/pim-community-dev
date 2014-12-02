@@ -95,12 +95,4 @@ class ProductRuleSelector implements SelectorInterface
 
         return $subjectSet;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(RuleInterface $rule)
-    {
-        return 'product' === $rule->getType();
-    }
 }

@@ -27,11 +27,4 @@ interface BuilderInterface
      * @return RuleInterface
      */
     public function build(RuleDefinitionInterface $definition);
-
-    /**
-     * @param RuleDefinitionInterface $definition
-     *
-     * @return bool
-     */
-    public function supports(RuleDefinitionInterface $definition);
 }

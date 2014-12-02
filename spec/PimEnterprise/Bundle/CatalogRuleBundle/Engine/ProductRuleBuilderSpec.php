@@ -30,17 +30,6 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface');
     }
 
-    public function it_supports_a_product_rule(
-        RuleDefinitionInterface $definitionOk,
-        RuleDefinitionInterface $definitionKo
-    ) {
-        $definitionOk->getType()->willReturn('product');
-        $definitionKo->getType()->willReturn('foo');
-
-        $this->supports($definitionOk)->shouldReturn(true);
-        $this->supports($definitionKo)->shouldReturn(false);
-    }
-
     public function it_builds_a_rule($eventDispatcher, RuleDefinitionInterface $definition)
     {
         $content =

@@ -28,11 +28,4 @@ interface ApplierInterface
      * @return mixed
      */
     public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet);
-
-    /**
-     * @param RuleInterface $rule
-     *
-     * @return bool
-     */
-    public function supports(RuleInterface $rule);
 }

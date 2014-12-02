@@ -29,17 +29,6 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
-    public function it_supports_a_product_rule(
-        RuleInterface $ruleOK,
-        RuleInterface $ruleKO
-    ) {
-        $ruleOK->getType()->willReturn('product');
-        $ruleKO->getType()->willReturn('foo');
-
-        $this->supports($ruleOK)->shouldReturn(true);
-        $this->supports($ruleKO)->shouldReturn(false);
-    }
-
     public function it_applies_a_rule($eventDispatcher, RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
