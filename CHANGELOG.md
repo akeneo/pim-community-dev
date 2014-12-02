@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3443: Fix prices not exported in quick export 
+- PIM-3446: Fix import export history with large amount of errors
 
 # 1.2.13 (2014-11-26)
 
