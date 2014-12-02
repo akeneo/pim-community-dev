@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle;
 
+use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -20,5 +22,21 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseCatalogRuleBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $versionMappings = [
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\CatalogRuleBundle\Model'
+        ];
 
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $versionMappings,
+                ['doctrine.orm.entity_manager'],
+                'pim_catalog.storage_driver.doctrine/orm'
+            )
+        );
+    }
 }

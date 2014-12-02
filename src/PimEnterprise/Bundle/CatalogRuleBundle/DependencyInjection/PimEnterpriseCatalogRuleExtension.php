@@ -30,7 +30,11 @@ class PimEnterpriseCatalogRuleExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('engine.yml');
+        $loader->load('entities.yml');
         $loader->load('runners.yml');
         $loader->load('readers.yml');
+        $loader->load('managers.yml');
+        $loader->load('event_subscribers.yml');
+        $loader->load('repositories.yml');
     }
 }

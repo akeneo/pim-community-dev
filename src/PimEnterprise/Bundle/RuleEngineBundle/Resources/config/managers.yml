@@ -1,0 +1,12 @@
+parameters:
+    pimee_rule_engine.manager.rule.class: PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleManager
+
+services:
+    # Managers
+    pimee_rule_engine.manager.rule:
+        class: %pimee_rule_engine.manager.rule.class%
+        arguments:
+            - '@pimee_rule_engine.repository.rule'
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_rule_engine.entity.rule.class%'

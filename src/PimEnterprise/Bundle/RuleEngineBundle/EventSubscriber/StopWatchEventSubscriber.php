@@ -35,6 +35,8 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
         'rule_loading'   => [],
         'rule_selecting' => [],
         'rule_applying'  => [],
+        'rule_removing'  => [],
+        'rule_saving'    => [],
     ];
 
     /**
@@ -51,12 +53,16 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::PRE_LOAD     => 'preLoad',
-            RuleEvents::POST_LOAD    => 'postLoad',
-            RuleEvents::PRE_SELECT   => 'preSelect',
-            RuleEvents::POST_SELECT  => 'postSelect',
-            RuleEvents::PRE_APPLY    => 'preApply',
-            RuleEvents::POST_APPLY   => 'postApply',
+            RuleEvents::PRE_LOAD    => 'preLoad',
+            RuleEvents::POST_LOAD   => 'postLoad',
+            RuleEvents::PRE_SELECT  => 'preSelect',
+            RuleEvents::POST_SELECT => 'postSelect',
+            RuleEvents::PRE_APPLY   => 'preApply',
+            RuleEvents::POST_APPLY  => 'postApply',
+            RuleEvents::PRE_REMOVE  => 'preRemove',
+            RuleEvents::POST_REMOVE => 'postRemove',
+            RuleEvents::PRE_SAVE    => 'preSave',
+            RuleEvents::POST_SAVE   => 'postSave',
         ];
     }
 
@@ -138,6 +144,60 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     {
         if ($this->stopWatch) {
             $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'apply'));
+        }
+    }
+
+    /**
+     * Track preRemove events
+     *
+     * @param RuleEvent $event
+     */
+    public function preRemove(RuleEvent $event)
+    {
+        if ($this->stopWatch) {
+            $this->stopWatch->start(
+                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'remove'),
+                'rule_removing'
+            );
+        }
+    }
+
+    /**
+     * Track postRemove events
+     *
+     * @param RuleEvent $event
+     */
+    public function postRemove(RuleEvent $event)
+    {
+        if ($this->stopWatch) {
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'remove'));
+        }
+    }
+
+    /**
+     * Track preSave events
+     *
+     * @param RuleEvent $event
+     */
+    public function preSave(RuleEvent $event)
+    {
+        if ($this->stopWatch) {
+            $this->stopWatch->start(
+                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'save'),
+                'rule_saving'
+            );
+        }
+    }
+
+    /**
+     * Track postSave events
+     *
+     * @param RuleEvent $event
+     */
+    public function postSave(RuleEvent $event)
+    {
+        if ($this->stopWatch) {
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'save'));
         }
     }
 }

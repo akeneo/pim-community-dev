@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -55,10 +56,16 @@ class GenerateFakeCommand extends ContainerAwareCommand
     {
         // get rule instance
         $count = $input->getArgument('count');
-
+        /** @var EntityManagerInterface $em */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        $fakeRules = false;
+        $rules = $this->getContainer()->get('pimee_rule_engine.repository.rule')->findAll();
+        foreach ($rules as $rule) {
+            $em->remove($rule);
+        }
+        $em->flush();
+
+        $fakeRules = true;
         if ($fakeRules) {
 
             $attributes = $em->getRepository('PimCatalogBundle:Attribute')->findAll();
@@ -194,13 +201,6 @@ class GenerateFakeCommand extends ContainerAwareCommand
 
             // TODO image, option, options, metric
         }
-
-        $connection = $em->getConnection();
-        $platform   = $connection->getDatabasePlatform();
-
-        $connection->executeUpdate($platform->getTruncateTableSQL(
-            $em->getClassMetadata('PimEnterprise\Bundle\RuleEngineBundle\Model\Rule')->getTableName()
-        ));
 
         $em->flush();
     }

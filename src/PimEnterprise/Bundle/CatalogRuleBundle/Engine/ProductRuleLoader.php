@@ -78,10 +78,14 @@ class ProductRuleLoader implements LoaderInterface
 
         $content = json_decode($rule->getContent(), true);
         if (!array_key_exists('conditions', $content)) {
-            throw new \LogicException(sprintf('Rule "%s" should have a "conditions" key in its content.', $rule->getCode()));
+            throw new \LogicException(
+                sprintf('Rule "%s" should have a "conditions" key in its content.', $rule->getCode())
+            );
         }
         if (!array_key_exists('actions', $content)) {
-            throw new \LogicException(sprintf('Rule "%s" should have a "actions" key in its content.', $rule->getCode()));
+            throw new \LogicException(
+                sprintf('Rule "%s" should have a "actions" key in its content.', $rule->getCode())
+            );
         }
 
         $this->loadConditions($loaded, $content['conditions']);
