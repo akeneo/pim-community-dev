@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,18 +29,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
-    public function it_supports_a_product_rule(
-        LoadedRuleInterface $ruleOK,
-        LoadedRuleInterface $ruleKO
-    ) {
-        $ruleOK->getType()->willReturn('product');
-        $ruleKO->getType()->willReturn('foo');
-
-        $this->supports($ruleOK)->shouldReturn(true);
-        $this->supports($ruleKO)->shouldReturn(false);
-    }
-
-    public function it_applies_a_rule($eventDispatcher, LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet)
+    public function it_applies_a_rule($eventDispatcher, RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
@@ -52,7 +41,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
     public function it_applies_a_rule_which_has_a_set_action(
         $eventDispatcher,
         $productUpdater,
-        LoadedRuleInterface $rule,
+        RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductSetValueActionInterface $action
     ) {
@@ -73,7 +62,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
     public function it_applies_a_rule_which_has_a_copy_action(
         $eventDispatcher,
         $productUpdater,
-        LoadedRuleInterface $rule,
+        RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductCopyValueAction $action
     ) {
@@ -97,7 +86,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
     public function it_applies_a_rule_which_has_an_unknown_action(
         $eventDispatcher,
-        LoadedRuleInterface $rule,
+        RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();

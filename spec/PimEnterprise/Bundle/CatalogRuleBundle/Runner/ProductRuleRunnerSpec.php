@@ -4,19 +4,19 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Prophecy\Argument;
 
 class ProductRuleRunnerSpec extends ObjectBehavior
 {
-    public function let(LoaderInterface $loader, SelectorInterface $selector, ApplierInterface $applier)
+    public function let(BuilderInterface $builder, SelectorInterface $selector, ApplierInterface $applier)
     {
         $this->beConstructedWith(
-            $loader,
+            $builder,
             $selector,
             $applier,
             'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition'
@@ -33,43 +33,43 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface');
     }
 
-    public function it_supports_product_rule(RuleInterface $rule1, RuleInterface $rule2)
+    public function it_supports_product_rule(RuleDefinitionInterface $definition1, RuleDefinitionInterface $definition2)
     {
-        $rule1->getType()->willReturn('product');
-        $rule2->getType()->willReturn('foo');
+        $definition1->getType()->willReturn('product');
+        $definition2->getType()->willReturn('foo');
 
-        $this->supports($rule1)->shouldReturn(true);
-        $this->supports($rule2)->shouldReturn(false);
+        $this->supports($definition1)->shouldReturn(true);
+        $this->supports($definition2)->shouldReturn(false);
     }
 
     public function it_runs_a_rule(
-        $loader,
+        $builder,
         $selector,
         $applier,
+        RuleDefinitionInterface $definition,
         RuleInterface $rule,
-        LoadedRuleInterface $loadedRule,
         RuleSubjectSetInterface $subjectSet
     ) {
-        $loader->load($rule)->shouldBeCalled()->willReturn($loadedRule);
-        $selector->select($loadedRule)->shouldBeCalled()->willReturn($subjectSet);
-        $applier->apply($loadedRule, $subjectSet)->shouldBeCalled();
+        $builder->build($definition)->shouldBeCalled()->willReturn($rule);
+        $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
+        $applier->apply($rule, $subjectSet)->shouldBeCalled();
 
-        $this->run($rule);
+        $this->run($definition);
     }
 
     public function it_runs_a_rule_on_a_subset_of_products(
-        $loader,
+        $builder,
         $selector,
         $applier,
+        RuleDefinitionInterface $definition,
         RuleInterface $rule,
-        LoadedRuleInterface $loadedRule,
         RuleSubjectSetInterface $subjectSet
     ) {
-        $loader->load($rule)->shouldBeCalled()->willReturn($loadedRule);
-        $loadedRule->addCondition(Argument::any())->shouldBeCalled();
-        $selector->select($loadedRule)->shouldBeCalled()->willReturn($subjectSet);
-        $applier->apply($loadedRule, $subjectSet)->shouldBeCalled();
+        $builder->build($definition)->shouldBeCalled()->willReturn($rule);
+        $rule->addCondition(Argument::any())->shouldBeCalled();
+        $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
+        $applier->apply($rule, $subjectSet)->shouldBeCalled();
 
-        $this->run($rule, ['selected_products' => [1, 2, 3]]);
+        $this->run($definition, ['selected_products' => [1, 2, 3]]);
     }
 }

@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -46,7 +46,7 @@ class ProductRuleSelector implements SelectorInterface
      * @param ProductQueryFactoryInterface $productQueryFactory
      * @param ProductRepositoryInterface   $repo
      * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $subjectSetClass
+     * @param string                       $subjectSetClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
      */
     public function __construct(
         ProductQueryFactoryInterface $productQueryFactory,
@@ -58,20 +58,12 @@ class ProductRuleSelector implements SelectorInterface
         $this->repo                = $repo;
         $this->eventDispatcher     = $eventDispatcher;
         $this->subjectSetClass     = $subjectSetClass;
-
-        $refClass = new \ReflectionClass($subjectSetClass);
-        $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface';
-        if (!$refClass->implementsInterface($interface)) {
-            throw new \InvalidArgumentException(
-                sprintf('The provided class name "%s" must implement interface "%s".', $subjectSetClass, $interface)
-            );
-        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function select(LoadedRuleInterface $rule)
+    public function select(RuleInterface $rule)
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
@@ -94,13 +86,5 @@ class ProductRuleSelector implements SelectorInterface
         $this->eventDispatcher->dispatch(RuleEvents::POST_SELECT, new SelectedRuleEvent($rule, $subjectSet));
 
         return $subjectSet;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(LoadedRuleInterface $rule)
-    {
-        return 'product' === $rule->getType();
     }
 }

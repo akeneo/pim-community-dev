@@ -15,13 +15,13 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -41,8 +41,8 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     /** @var ProductRuleSelector */
     protected $productRuleSelector;
 
-    /** @var ProductRuleLoader */
-    protected $productRuleLoader;
+    /** @var ProductRuleBuilder */
+    protected $productRuleBuilder;
 
     /** @var string */
     protected $ruleLinkedResClass;
@@ -53,20 +53,20 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      * @param RuleLinkedResourceManager $linkedResManager
      * @param EntityRepository          $ruleLinkedResRepo
      * @param ProductRuleSelector       $productRuleSelector
-     * @param ProductRuleLoader         $productRuleLoader
+     * @param ProductRuleBuilder        $productRuleBuilder
      * @param string                    $ruleLinkedResClass
      */
     public function __construct(
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository $ruleLinkedResRepo,
         ProductRuleSelector $productRuleSelector,
-        ProductRuleLoader $productRuleLoader,
+        ProductRuleBuilder $productRuleBuilder,
         $ruleLinkedResClass
     ) {
         $this->linkedResManager    = $linkedResManager;
         $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
         $this->productRuleSelector = $productRuleSelector;
-        $this->productRuleLoader   = $productRuleLoader;
+        $this->productRuleBuilder  = $productRuleBuilder;
         $this->ruleLinkedResClass  = $ruleLinkedResClass;
     }
 
@@ -109,25 +109,25 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      */
     public function saveRuleLinkedResource(RuleEvent $event)
     {
-        $rule = $event->getRule();
+        $definition = $event->getDefinition();
 
-        $loadedRule = $this->productRuleLoader->load($rule);
+        $rule = $this->productRuleBuilder->build($definition);
 
-        $actions = $loadedRule->getActions();
+        $actions = $rule->getActions();
 
         $impactedAttributes = $this->linkedResManager->getImpactedAttributes($actions);
-        $this->executeSave($rule, $impactedAttributes);
+        $this->executeSave($definition, $impactedAttributes);
     }
 
     /**
      * Instanciate a new rule linked resource
      *
-     * @param Rule               $rule
-     * @param AttributeInterface $attribute
+     * @param RuleDefinitionInterface $rule
+     * @param AttributeInterface      $attribute
      *
      * @return RuleLinkedResource
      */
-    protected function instanciate(Rule $rule, AttributeInterface $attribute)
+    protected function instanciate(RuleDefinitionInterface $rule, AttributeInterface $attribute)
     {
         /** @var RuleLinkedResource $ruleLinkedResource */
         $ruleLinkedResource = new $this->ruleLinkedResClass();
@@ -141,10 +141,10 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     /**
      * Save fetched objects
      *
-     * @param Rule  $rule
-     * @param array $impactedAttributes
+     * @param RuleDefinitionInterface $rule
+     * @param array                   $impactedAttributes
      */
-    protected function executeSave(Rule $rule, array $impactedAttributes)
+    protected function executeSave(RuleDefinitionInterface $rule, array $impactedAttributes)
     {
         foreach ($impactedAttributes as $impactedAttribute) {
             $ruleLinkedResource = $this->ruleLinkedResRepo->find($rule);

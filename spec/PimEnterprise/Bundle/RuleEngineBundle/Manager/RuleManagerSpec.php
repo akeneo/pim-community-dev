@@ -2,16 +2,19 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RuleManagerSpec extends ObjectBehavior
 {
     function let(
-        RuleRepositoryInterface $repository,
+        RuleDefinitionRepositoryInterface $repository,
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher
     ) {

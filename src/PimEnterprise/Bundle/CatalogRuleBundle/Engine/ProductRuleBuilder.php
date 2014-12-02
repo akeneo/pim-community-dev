@@ -14,11 +14,11 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -26,13 +26,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleLoader implements LoaderInterface
+class ProductRuleBuilder implements BuilderInterface
 {
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /** @var string */
-    protected $loadedRuleClass;
+    protected $ruleClass;
 
     /** @var string */
     protected $setValueActionClass;
@@ -42,77 +42,61 @@ class ProductRuleLoader implements LoaderInterface
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $loadedRuleClass
-     * @param string                   $setValueActionClass
-     * @param string                   $copyValueActionClass
+     * @param string                   $ruleClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @param string                   $setValueActionClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface\ProductSetValueActionInterface
+     * @param string                   $copyValueActionClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface\ProductCopyValueActionInterface
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        $loadedRuleClass,
+        $ruleClass,
         $setValueActionClass,
         $copyValueActionClass
     ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->loadedRuleClass = $loadedRuleClass;
+        $this->ruleClass = $ruleClass;
         $this->setValueActionClass = $setValueActionClass;
         $this->copyValueActionClass = $copyValueActionClass;
-
-        $refClass = new \ReflectionClass($loadedRuleClass);
-        $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface';
-        if (!$refClass->implementsInterface($interface)) {
-            throw new \InvalidArgumentException(
-                sprintf('The provided class name "%s" must implement interface "%s".', $loadedRuleClass, $interface)
-            );
-        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function load(RuleInterface $rule)
+    public function build(RuleDefinitionInterface $definition)
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($rule));
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($definition));
 
-        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule $loaded */
-        $loaded = new $this->loadedRuleClass($rule);
+        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $rule */
+        $rule = new $this->ruleClass($definition);
 
-        $content = json_decode($rule->getContent(), true);
+        $content = json_decode($definition->getContent(), true);
         if (!array_key_exists('conditions', $content)) {
             throw new \LogicException(
-                sprintf('Rule "%s" should have a "conditions" key in its content.', $rule->getCode())
+                sprintf('Rule "%s" should have a "conditions" key in its content.', $definition->getCode())
             );
         }
         if (!array_key_exists('actions', $content)) {
             throw new \LogicException(
-                sprintf('Rule "%s" should have a "actions" key in its content.', $rule->getCode())
+                sprintf('Rule "%s" should have a "actions" key in its content.', $definition->getCode())
             );
         }
 
-        $this->loadConditions($loaded, $content['conditions']);
-        $this->loadActions($loaded, $content['actions']);
+        $this->loadConditions($rule, $content['conditions']);
+        $this->loadActions($rule, $content['actions']);
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($rule));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($definition));
 
-        return $loaded;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(RuleInterface $rule)
-    {
-        return 'product' === $rule->getType();
+        return $rule;
     }
 
     /**
      * Loads conditions into a rule.
      *
-     * @param LoadedRuleInterface $rule
-     * @param array               $rawConditions
+     * @param RuleInterface $rule
+     * @param array         $rawConditions
      *
-     * @return ProductRuleLoader
+     * @return ProductRuleBuilder
      */
-    protected function loadConditions(LoadedRuleInterface $rule, array $rawConditions)
+    protected function loadConditions(RuleInterface $rule, array $rawConditions)
     {
         $conditions = [];
         foreach ($rawConditions as $rawCondition) {
@@ -128,12 +112,12 @@ class ProductRuleLoader implements LoaderInterface
     /**
      * Loads actions into a rule.
      *
-     * @param LoadedRuleInterface $rule
-     * @param array               $rawActions
+     * @param RuleInterface $rule
+     * @param array         $rawActions
      *
-     * @return ProductRuleLoader
+     * @return ProductRuleBuilder
      */
-    protected function loadActions(LoadedRuleInterface $rule, array $rawActions)
+    protected function loadActions(RuleInterface $rule, array $rawActions)
     {
         $actions = [];
         foreach ($rawActions as $rawAction) {

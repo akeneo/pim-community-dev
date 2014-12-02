@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Link between a rule and a resource to know that the rule if applicable to the resource.
@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 interface RuleLinkedResourceInterface
 {
     /**
-     * @return RuleInterface
+     * @return RuleDefinitionInterface
      */
     public function getRule();
 
@@ -36,11 +36,11 @@ interface RuleLinkedResourceInterface
     public function getResourceId();
 
     /**
-     * @param RuleInterface $rule
+     * @param RuleDefinitionInterface $rule
      *
      * @return RuleLinkedResourceInterface
      */
-    public function setRule(RuleInterface $rule);
+    public function setRule(RuleDefinitionInterface $rule);
 
     /**
      * @param string $resourceName

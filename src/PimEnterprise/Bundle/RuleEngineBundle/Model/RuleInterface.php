@@ -12,66 +12,49 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Rule interface
+ * Decores a rule definition to be apply to select its subjects and to be able to apply it.
+ * It represents a rule that has been loaded from the database
+ * by a \PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface
  *
- * @author Nicolas Dupont <nicolas@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-interface RuleInterface
+interface RuleInterface extends RuleDefinitionInterface
 {
     /**
-     * @return int
+     * @return ConditionInterface[]
      */
-    public function getId();
+    public function getConditions();
 
     /**
-     * @return string
-     */
-    public function getCode();
-
-    /**
-     * @param string $code
+     * @param ConditionInterface[] $conditions
      *
      * @return RuleInterface
      */
-    public function setCode($code);
+    public function setConditions(array $conditions);
 
     /**
-     * @return string
-     */
-    public function getType();
-
-    /**
-     * @param string $type
+     * @param ConditionInterface $condition
      *
      * @return RuleInterface
      */
-    public function setType($type);
+    public function addCondition(ConditionInterface $condition);
 
     /**
-     * Get rule content. For example, a JSON encoded string
-     * that contains the whole configuration or a simple string
-     * that is a rule expression.
-     *
-     * @return string
+     * @return ActionInterface[]
      */
-    public function getContent();
+    public function getActions();
 
     /**
-     * @param mixed $content
+     * @param ActionInterface[] $actions
      *
      * @return RuleInterface
      */
-    public function setContent($content);
+    public function setActions(array $actions);
 
     /**
-     * @return int
-     */
-    public function getPriority();
-
-    /**
-     * @param int $priority
+     * @param ActionInterface $action
      *
      * @return RuleInterface
      */
-    public function setPriority($priority);
+    public function addAction(ActionInterface $action);
 }

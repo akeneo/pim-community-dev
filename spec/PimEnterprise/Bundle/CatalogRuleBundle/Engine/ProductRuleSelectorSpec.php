@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -38,22 +38,11 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface');
     }
 
-    public function it_supports_a_product_rule(
-        LoadedRuleInterface $ruleOK,
-        LoadedRuleInterface $ruleKO
-    ) {
-        $ruleOK->getType()->willReturn('product');
-        $ruleKO->getType()->willReturn('foo');
-
-        $this->supports($ruleOK)->shouldReturn(true);
-        $this->supports($ruleKO)->shouldReturn(false);
-    }
-
     public function it_selects_subjects_of_a_rule(
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
-        LoadedRuleInterface $rule,
+        RuleInterface $rule,
         ProductConditionInterface $condition
     ) {
         $pqb->execute()->willReturn([]);
@@ -75,7 +64,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
-        LoadedRuleInterface $rule,
+        RuleInterface $rule,
         ProductConditionInterface $condition
     ) {
         $pqb->execute()->willReturn([]);

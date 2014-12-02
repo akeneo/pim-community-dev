@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,7 +48,7 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(LoadedRuleInterface $rule, RuleSubjectSetInterface $subjectSet)
+    public function apply(RuleInterface $rule, RuleSubjectSetInterface $subjectSet)
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
@@ -66,14 +66,6 @@ class ProductRuleApplier implements ApplierInterface
         }
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(LoadedRuleInterface $rule)
-    {
-        return 'product' === $rule->getType();
     }
 
     /**

@@ -2,12 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\RuleEngineBundle\Batch;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\RuleEngineBundle\Batch\RuleReaderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

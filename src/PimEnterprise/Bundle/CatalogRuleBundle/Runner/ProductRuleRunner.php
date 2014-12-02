@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,50 +30,41 @@ class ProductRuleRunner extends AbstractRunner
     protected $productConditionClass;
 
     /**
-     * @param LoaderInterface   $loader
+     * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
-     * @param string            $productConditionClass
+     * @param string            $productConditionClass should implement \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
      */
     public function __construct(
-        LoaderInterface $loader,
+        BuilderInterface $builder,
         SelectorInterface $selector,
         ApplierInterface $applier,
         $productConditionClass
     ) {
-        parent::__construct($loader, $selector, $applier);
-
-        $refClass = new \ReflectionClass($productConditionClass);
-        $interface = 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface';
-        if (!$refClass->implementsInterface($interface)) {
-            throw new \InvalidArgumentException(
-                sprintf('The provided class name "%s" must implement interface "%s".', $productConditionClass, $interface)
-            );
-        }
-
+        parent::__construct($builder, $selector, $applier);
         $this->productConditionClass = $productConditionClass;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run(RuleInterface $rule, array $options = [])
+    public function run(RuleDefinitionInterface $definition, array $options = [])
     {
         $options = $this->resolveOptions($options);
-        $loadedRule = $this->loadRule($rule, $options);
+        $definition = $this->loadRule($definition, $options);
 
-        $subjects = $this->selector->select($loadedRule);
+        $subjects = $this->selector->select($definition);
         if (!empty($subjects)) {
-            $this->applier->apply($loadedRule, $subjects);
+            $this->applier->apply($definition, $subjects);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleInterface $rule)
+    public function supports(RuleDefinitionInterface $definition)
     {
-        return 'product' === $rule->getType();
+        return 'product' === $definition->getType();
     }
 
     /**
@@ -92,14 +83,14 @@ class ProductRuleRunner extends AbstractRunner
     }
 
     /**
-     * @param RuleInterface $rule
-     * @param array         $options
+     * @param RuleDefinitionInterface $definition
+     * @param array                   $options
      *
-     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRuleInterface
+     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
      */
-    protected function loadRule(RuleInterface $rule, array $options)
+    protected function loadRule(RuleDefinitionInterface $definition, array $options)
     {
-        $loadedRule = $this->loader->load($rule);
+        $definition = $this->builder->build($definition);
         if (!empty($options['selected_products'])) {
             /** @var ProductConditionInterface $condition */
             $condition = new $this->productConditionClass([
@@ -107,9 +98,9 @@ class ProductRuleRunner extends AbstractRunner
                     'operator' => 'IN',
                     'value' => $options['selected_products']
                 ]);
-            $loadedRule->addCondition($condition);
+            $definition->addCondition($condition);
         }
 
-        return $loadedRule;
+        return $definition;
     }
 }

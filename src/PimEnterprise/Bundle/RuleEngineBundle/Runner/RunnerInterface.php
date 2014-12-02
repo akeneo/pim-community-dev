@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Runner;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Runs a rule.
@@ -21,17 +21,17 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 interface RunnerInterface
 {
     /**
-     * @param RuleInterface $rule
-     * @param array         $options
+     * @param RuleDefinitionInterface $definition
+     * @param array                   $options
      *
      * @return mixed
      */
-    public function run(RuleInterface $rule, array $options = []);
+    public function run(RuleDefinitionInterface $definition, array $options = []);
 
     /**
-     * @param RuleInterface $rule
+     * @param RuleDefinitionInterface $definition
      *
      * @return bool
      */
-    public function supports(RuleInterface $rule);
+    public function supports(RuleDefinitionInterface $definition);
 }
