@@ -6,48 +6,48 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\Association;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
+    public function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
         $this->setFilters([$filter]);
     }
 
-    function it_is_a_serializer_aware_normalizer()
+    public function it_is_a_serializer_aware_normalizer()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_csv_normalization_of_product(ProductInterface $product)
+    public function it_supports_csv_normalization_of_product(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'csv')->shouldBe(true);
     }
 
-    function it_supports_flat_normalization_of_product(ProductInterface $product)
+    public function it_supports_flat_normalization_of_product(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'flat')->shouldBe(true);
     }
 
-    function it_does_not_support_csv_normalization_of_integer()
+    public function it_does_not_support_csv_normalization_of_integer()
     {
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    function it_normalizes_product(
+    public function it_normalizes_product(
         $filter,
         ProductInterface $product,
         AbstractAttribute $skuAttribute,
@@ -81,12 +81,12 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'family'     => 'shoes',
                 'groups'     => 'group1, group2, variant_group_1',
                 'categories' => 'nice shoes, converse',
-                'enabled'    => 1
+                'enabled'    => 1,
             ]
         );
     }
 
-    function it_normalizes_product_with_associations(
+    public function it_normalizes_product_with_associations(
         $filter,
         ProductInterface $product,
         AbstractAttribute $skuAttribute,
@@ -151,12 +151,12 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'cross_sell-products' => '',
                 'up_sell-groups' => 'associated_group1,associated_group2',
                 'up_sell-products' => 'sku_assoc_product1,sku_assoc_product2',
-                'enabled'    => 1
+                'enabled'    => 1,
             ]
         );
     }
 
-    function it_normalizes_product_with_a_multiselect_value(
+    public function it_normalizes_product_with_a_multiselect_value(
         $filter,
         $serializer,
         ProductInterface $product,
@@ -181,7 +181,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $colorsAttribute->isLocalizable()->willReturn(false);
         $colorsAttribute->isScopable()->willReturn(false);
         $colors->getAttribute()->willReturn($colorsAttribute);
-        $colors->getData()->willReturn([$red,$blue]);
+        $colors->getData()->willReturn([$red, $blue]);
 
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
@@ -204,20 +204,20 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'groups'     => '',
                 'categories' => '',
                 'colors'     => 'red, blue',
-                'enabled'    => 1
+                'enabled'    => 1,
             ]
         );
     }
 
-    function it_normalizes_product_with_price(
+    public function it_normalizes_product_with_price(
         $filter,
         ProductInterface $product,
-        Attribute $priceAttribute,
+        AbstractAttribute $priceAttribute,
         AbstractProductValue $price,
         Collection $prices,
         Collection $values,
-        ProductPrice $productPrice,
-        Family $family,
+        ProductPriceInterface $productPrice,
+        FamilyInterface $family,
         SerializerInterface $serializer
     ) {
         $family->getCode()->willReturn('shoes');
@@ -256,7 +256,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'family'     => 'shoes',
                 'groups'     => 'group1, group2, variant_group_1',
                 'categories' => 'nice shoes, converse',
-                'enabled'    => 1
+                'enabled'    => 1,
             ]
         );
     }
