@@ -43,4 +43,32 @@ interface ProductSetValueActionInterface extends ActionInterface
      * @return string
      */
     public function getScope();
+
+    /**
+     * @param string $field
+     *
+     * @return ProductSetValueActionInterface
+     */
+    public function setField($field);
+
+    /**
+     * @param mixed $value
+     *
+     * @return ProductSetValueActionInterface
+     */
+    public function setValue($value);
+
+    /**
+     * @param string $locale
+     *
+     * @return ProductSetValueActionInterface
+     */
+    public function setLocale($locale);
+
+    /**
+     * @param string $scope
+     *
+     * @return ProductSetValueActionInterface
+     */
+    public function setScope($scope);
 }

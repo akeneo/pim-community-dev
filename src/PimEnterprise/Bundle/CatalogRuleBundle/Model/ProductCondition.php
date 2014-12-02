@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 /**
  * Condition used in product rules.
  * A product condition is used to select products given a product field (or a product value), for an operator
@@ -39,27 +37,14 @@ class ProductCondition implements ProductConditionInterface
     /** @var string */
     protected $scope;
 
-    /** @var OptionsResolver */
-    private static $optionsResolver;
-
     /**
      * @param array $data
      */
     public function __construct(array $data)
     {
-        if (null === self::$optionsResolver) {
-            self::$optionsResolver = new OptionsResolver();
-            $this->configureOptionsResolver(self::$optionsResolver);
-        }
-
-        //TODO: catch exception here and throw a real business exception ?
-        $data = self::$optionsResolver->resolve($data);
-
-        $this->field = $data['field'];
-        $this->operator = $data['operator'];
-        $this->value = $data['value'];
-        $this->locale = $data['locale'];
-        $this->scope = $data['scope'];
+        $this->field = isset($data['field']) ? $data['field'] : null;
+        $this->operator = isset($data['operator']) ? $data['operator'] : null;
+        $this->value = isset($data['value']) ? $data['value'] : null;
     }
 
     /**
@@ -106,12 +91,32 @@ class ProductCondition implements ProductConditionInterface
      * Configure the condition's optionResolver
      *
      * @param OptionsResolver $optionsResolver
+     * {@inheritdoc}
      */
-    protected function configureOptionsResolver(OptionsResolver $optionsResolver)
+    public function setField($field)
     {
-        $optionsResolver->setRequired(['field', 'operator', 'value']);
-        $optionsResolver->setOptional(['locale', 'scope']);
-        $optionsResolver->setDefaults(['locale' => null, 'scope' => null]);
-        $optionsResolver->setAllowedTypes(['field' => 'string', 'operator' => 'string']);
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOperator($operator)
+    {
+        $this->operator = $operator;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
     }
 }

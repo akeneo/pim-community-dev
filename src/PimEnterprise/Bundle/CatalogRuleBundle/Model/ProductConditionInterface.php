@@ -48,4 +48,25 @@ interface ProductConditionInterface extends ConditionInterface
      * @return string
      */
     public function getScope();
+
+    /**
+     * @param string $field
+     *
+     * @return ProductConditionInterface
+     */
+    public function setField($field);
+
+    /**
+     * @param string $operator
+     *
+     * @return ProductConditionInterface
+     */
+    public function setOperator($operator);
+
+    /**
+     * @param mixed $value
+     *
+     * @return ProductConditionInterface
+     */
+    public function setValue($value);
 }

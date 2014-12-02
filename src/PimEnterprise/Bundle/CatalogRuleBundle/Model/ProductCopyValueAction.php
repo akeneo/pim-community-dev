@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 /**
  * Copy action used in product rules.
  * A copy action value is used to copy a product source value to a product target value.
@@ -43,28 +41,17 @@ class ProductCopyValueAction implements ProductCopyValueActionInterface
     /** @var string */
     protected $toScope;
 
-    /** @var OptionsResolver */
-    private static $optionsResolver;
-
     /**
      * @param array $data
      */
     public function __construct(array $data)
     {
-        if (null === self::$optionsResolver) {
-            self::$optionsResolver = new OptionsResolver();
-            $this->configureOptionsResolver(self::$optionsResolver);
-        }
-
-        //TODO: catch exception here and throw a real business exception ?
-        $data = self::$optionsResolver->resolve($data);
-
-        $this->fromField = $data['from_field'];
-        $this->fromLocale = $data['from_locale'];
-        $this->fromScope = $data['from_scope'];
-        $this->toField = $data['to_field'];
-        $this->toLocale = $data['to_locale'];
-        $this->toScope = $data['to_scope'];
+        $this->fromField = isset($data['fromField']) ? $data['fromField'] : null;
+        $this->fromLocale = isset($data['fromLocale']) ? $data['fromLocale'] : null;
+        $this->fromScope = isset($data['fromScope']) ? $data['fromScope'] : null;
+        $this->toField = isset($data['toField']) ? $data['toField'] : null;
+        $this->toLocale = isset($data['toLocale']) ? $data['toLocale'] : null;
+        $this->toScope = isset($data['toScope']) ? $data['toScope'] : null;
     }
 
     /**
@@ -116,28 +103,50 @@ class ProductCopyValueAction implements ProductCopyValueActionInterface
     }
 
     /**
-     * Configure the condition's optionResolver
-     *
-     * @param OptionsResolver $optionsResolver
+     * {@inheritdoc}
      */
-    protected function configureOptionsResolver(OptionsResolver $optionsResolver)
+    public function setFromField($fromField)
     {
-        $optionsResolver->setDefaults([
-                'from_locale' => null,
-                'to_locale'   => null,
-                'from_scope'  => null,
-                'to_scope'    => null
-            ]);
-        $optionsResolver->setRequired(['from_field', 'to_field', 'type']);
-        $optionsResolver->setAllowedValues(['type' => [self::TYPE]]);
-        $optionsResolver->setAllowedTypes([
-                'type' => 'string',
-                'from_field' => 'string',
-                'from_locale' => ['string', 'null'],
-                'from_scope' => ['string', 'null'],
-                'to_field' => 'string',
-                'to_locale' => ['string', 'null'],
-                'to_scope' => ['string', 'null']
-            ]);
+        $this->fromField = $fromField;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFromLocale($fromLocale)
+    {
+        $this->fromLocale = $fromLocale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFromScope($fromScope)
+    {
+        $this->fromScope = $fromScope;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToField($toField)
+    {
+        $this->toField = $toField;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToLocale($toLocale)
+    {
+        $this->toLocale = $toLocale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToScope($toScope)
+    {
+        $this->toScope = $toScope;
     }
 }
