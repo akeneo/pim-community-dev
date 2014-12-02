@@ -143,8 +143,10 @@ class StepExecution
      *      targetEntity="Warning",
      *      mappedBy="stepExecution",
      *      cascade={"persist", "remove"},
+     *      fetch="EXTRA_LAZY",
      *      orphanRemoval=true
      * )
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $warnings;
 
