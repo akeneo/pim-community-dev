@@ -10,14 +10,14 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -27,33 +27,27 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class RuleManager implements SaverInterface, RemoverInterface
 {
-    /** @var RuleRepositoryInterface */
+    /** @var RuleDefinitionRepositoryInterface */
     protected $repository;
 
-    /** @var ObjectManager */
-    protected $objectManager;
-
-    /** @var string */
-    protected $ruleClassName;
+    /** @var EntityManager */
+    protected $entityManager;
 
     /**
      * Constructor
      *
-     * @param RuleRepositoryInterface  $repository
-     * @param ObjectManager            $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $ruleClassName
+     * @param RuleDefinitionRepositoryInterface $repository
+     * @param EntityManager                     $entityManager
+     * @param EventDispatcherInterface          $eventDispatcher
      */
     public function __construct(
-        RuleRepositoryInterface $repository,
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        $ruleClassName
+        RuleDefinitionRepositoryInterface $repository,
+        EntityManager $entityManager,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->repository      = $repository;
-        $this->objectManager   = $objectManager;
+        $this->entityManager   = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->ruleClassName   = $ruleClassName;
     }
 
     /**
@@ -73,9 +67,9 @@ class RuleManager implements SaverInterface, RemoverInterface
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($object));
 
         $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
+        $this->entityManager->persist($object);
         if (true === $options['flush']) {
-            $this->objectManager->flush();
+            $this->entityManager->flush();
         }
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($object));
@@ -96,9 +90,9 @@ class RuleManager implements SaverInterface, RemoverInterface
         }
 
         $options = array_merge(['flush' => true], $options);
-        $this->objectManager->remove($rule);
+        $this->entityManager->remove($rule);
         if (true === $options['flush']) {
-            $this->objectManager->flush();
+            $this->entityManager->flush();
         }
     }
 }
