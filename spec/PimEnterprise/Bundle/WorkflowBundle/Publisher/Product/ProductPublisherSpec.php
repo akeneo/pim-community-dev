@@ -2,7 +2,6 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
@@ -14,17 +13,17 @@ use Prophecy\Argument;
 
 class ProductPublisherSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\ProductPublisher');
     }
 
-    function it_is_a_publisher()
+    public function it_is_a_publisher()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
 
-    function let(
+    public function let(
         PublisherInterface $publisher,
         RelatedAssociationPublisher $associationsPublisher,
         VersionManager $versionManager,
@@ -37,6 +36,8 @@ class ProductPublisherSpec extends ObjectBehavior
         $product->getValues()->willReturn([]);
         $product->getFamily()->willReturn(null);
         $product->getId()->willReturn(1);
+        $product->isEnabled()->willReturn(true);
+        $product->setEnabled(Argument::any())->willReturn($product);
 
         $this->beConstructedWith(
             'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
@@ -46,7 +47,7 @@ class ProductPublisherSpec extends ObjectBehavior
         );
     }
 
-    function it_publishes_a_product($versionManager, $product, Version $version)
+    public function it_publishes_a_product($versionManager, $product, Version $version)
     {
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
 
@@ -55,7 +56,7 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct');
     }
 
-    function it_sets_the_version_during_publishing($versionManager, $product, Version $version)
+    public function it_sets_the_version_during_publishing($versionManager, $product, Version $version)
     {
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
         $version->isPending()->willReturn(false);
@@ -65,7 +66,21 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->getVersion()->shouldReturn($version);
     }
 
-    function it_builds_the_version_if_needed_during_publishing(
+    public function it_copies_enable_during_publishing($versionManager, $product, Version $version)
+    {
+        $versionManager->getNewestLogEntry($product, null)->willReturn($version);
+        $version->isPending()->willReturn(false);
+
+        $enableValues = array(true, false);
+
+        foreach ($enableValues as $isEnabled) {
+            $product->isEnabled()->willReturn($isEnabled);
+            $published = $this->publish($product);
+            $published->isEnabled()->shouldReturn($isEnabled);
+        }
+    }
+
+    public function it_builds_the_version_if_needed_during_publishing(
         $versionManager,
         $product,
         ObjectManager $objectManager,
