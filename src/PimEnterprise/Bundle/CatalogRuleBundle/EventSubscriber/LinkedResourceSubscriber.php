@@ -10,14 +10,14 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Pim\Bundle\CatalogBundle\Event;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -45,7 +45,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     protected $productRuleLoader;
 
     /** @var string */
-    protected $ruleLinkedReClass;
+    protected $ruleLinkedResClass;
 
     /**
      * Constructor
@@ -54,20 +54,20 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      * @param EntityRepository          $ruleLinkedResRepo
      * @param ProductRuleSelector       $productRuleSelector
      * @param ProductRuleLoader         $productRuleLoader
-     * @param string                    $ruleLinkedReClass
+     * @param string                    $ruleLinkedResClass
      */
     public function __construct(
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository $ruleLinkedResRepo,
         ProductRuleSelector $productRuleSelector,
         ProductRuleLoader $productRuleLoader,
-        $ruleLinkedReClass
+        $ruleLinkedResClass
     ) {
         $this->linkedResManager    = $linkedResManager;
         $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
         $this->productRuleSelector = $productRuleSelector;
         $this->productRuleLoader   = $productRuleLoader;
-        $this->ruleLinkedReClass   = $ruleLinkedReClass;
+        $this->ruleLinkedResClass  = $ruleLinkedResClass;
     }
 
     /**
@@ -130,7 +130,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     protected function instanciate(Rule $rule, AttributeInterface $attribute)
     {
         /** @var RuleLinkedResource $ruleLinkedResource */
-        $ruleLinkedResource = new $this->ruleLinkedReClass();
+        $ruleLinkedResource = new $this->ruleLinkedResClass();
         $ruleLinkedResource->setRule($rule);
         $ruleLinkedResource->setResourceName(ClassUtils::getClass($attribute));
         $ruleLinkedResource->setResourceId($attribute->getId());
