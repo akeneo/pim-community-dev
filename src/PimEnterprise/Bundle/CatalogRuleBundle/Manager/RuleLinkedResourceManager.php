@@ -15,6 +15,9 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
 
 /**
@@ -94,11 +97,10 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     {
         $fields = [];
         foreach ($actions as $action) {
-            if (array_key_exists('field', $action)) {
-                $fields[] = $action['field'];
-            }
-            if (array_key_exists('to_field', $action)) {
-                $fields[] = $action['to_field'];
+            if ($action instanceof ProductCopyValueActionInterface) {
+                $fields[] = $action->getToField();
+            } elseif ($action instanceof ProductSetValueActionInterface) {
+                $fields[] = $action->getField();
             }
         }
 

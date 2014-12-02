@@ -147,8 +147,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     protected function executeSave(Rule $rule, array $impactedAttributes)
     {
         foreach ($impactedAttributes as $impactedAttribute) {
-
-            $ruleLinkedResource = $this->ruleLinkedResRepo->find(['rule' => $rule]);
+            $ruleLinkedResource = $this->ruleLinkedResRepo->find($rule);
             if (isset($ruleLinkedResource)) {
                 $this->linkedResManager->remove($ruleLinkedResource);
             }

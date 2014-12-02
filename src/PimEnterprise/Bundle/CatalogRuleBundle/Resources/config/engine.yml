@@ -3,8 +3,8 @@ parameters:
     pimee_catalog_rule.loader.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader
     pimee_catalog_rule.selector.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
     pimee_catalog_rule.model.product_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition
-    pimee_catalog_rule.model.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\CopyValueCondition
-    pimee_catalog_rule.model.set_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\SetValueCondition
+    pimee_catalog_rule.model.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction
+    pimee_catalog_rule.model.set_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction
 
 services:
     pimee_catalog_rule.loader.product:
