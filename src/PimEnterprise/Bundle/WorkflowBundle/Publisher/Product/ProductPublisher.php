@@ -61,6 +61,7 @@ class ProductPublisher implements PublisherInterface
     {
         $published = $this->createNewPublishedProduct();
         $published->setOriginalProduct($object);
+        $published->setEnabled($object->isEnabled());
         $this->copyFamily($object, $published);
         $this->copyGroups($object, $published);
         $this->copyCategories($object, $published);
