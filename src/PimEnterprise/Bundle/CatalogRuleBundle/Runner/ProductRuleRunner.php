@@ -33,7 +33,7 @@ class ProductRuleRunner extends AbstractRunner
      * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
-     * @param string            $productConditionClass
+     * @param string            $productConditionClass should implement \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
      */
     public function __construct(
         BuilderInterface $builder,
@@ -42,19 +42,6 @@ class ProductRuleRunner extends AbstractRunner
         $productConditionClass
     ) {
         parent::__construct($builder, $selector, $applier);
-
-        $refClass = new \ReflectionClass($productConditionClass);
-        $interface = 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface';
-        if (!$refClass->implementsInterface($interface)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The provided class name "%s" must implement interface "%s".',
-                    $productConditionClass,
-                    $interface
-                )
-            );
-        }
-
         $this->productConditionClass = $productConditionClass;
     }
 

@@ -42,9 +42,9 @@ class ProductRuleBuilder implements BuilderInterface
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $ruleClass
-     * @param string                   $setValueActionClass
-     * @param string                   $copyValueActionClass
+     * @param string                   $ruleClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @param string                   $setValueActionClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface\ProductSetValueActionInterface
+     * @param string                   $copyValueActionClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface\ProductCopyValueActionInterface
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -56,14 +56,6 @@ class ProductRuleBuilder implements BuilderInterface
         $this->ruleClass = $ruleClass;
         $this->setValueActionClass = $setValueActionClass;
         $this->copyValueActionClass = $copyValueActionClass;
-
-        $refClass = new \ReflectionClass($ruleClass);
-        $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface';
-        if (!$refClass->implementsInterface($interface)) {
-            throw new \InvalidArgumentException(
-                sprintf('The provided class name "%s" must implement interface "%s".', $ruleClass, $interface)
-            );
-        }
     }
 
     /**

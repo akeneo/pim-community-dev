@@ -46,7 +46,7 @@ class ProductRuleSelector implements SelectorInterface
      * @param ProductQueryFactoryInterface $productQueryFactory
      * @param ProductRepositoryInterface   $repo
      * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $subjectSetClass
+     * @param string                       $subjectSetClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
      */
     public function __construct(
         ProductQueryFactoryInterface $productQueryFactory,
@@ -58,14 +58,6 @@ class ProductRuleSelector implements SelectorInterface
         $this->repo                = $repo;
         $this->eventDispatcher     = $eventDispatcher;
         $this->subjectSetClass     = $subjectSetClass;
-
-        $refClass = new \ReflectionClass($subjectSetClass);
-        $interface = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface';
-        if (!$refClass->implementsInterface($interface)) {
-            throw new \InvalidArgumentException(
-                sprintf('The provided class name "%s" must implement interface "%s".', $subjectSetClass, $interface)
-            );
-        }
     }
 
     /**
