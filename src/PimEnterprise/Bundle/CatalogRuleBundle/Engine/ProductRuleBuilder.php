@@ -121,7 +121,7 @@ class ProductRuleBuilder implements BuilderInterface
      * Loads actions into a rule.
      *
      * @param RuleInterface $rule
-     * @param array               $rawActions
+     * @param array         $rawActions
      *
      * @return ProductRuleBuilder
      */

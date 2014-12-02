@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Link between a rule and a resource to know that the rule if applicable to the resource.
@@ -23,7 +23,7 @@ class RuleLinkedResource implements RuleLinkedResourceInterface
     /** @var int */
     protected $id;
 
-    /** @var RuleInterface */
+    /** @var RuleDefinitionInterface */
     protected $rule;
 
     /** @var string */
@@ -67,7 +67,7 @@ class RuleLinkedResource implements RuleLinkedResourceInterface
     /**
      * {@inheritdoc}
      */
-    public function setRule(RuleInterface $rule)
+    public function setRule(RuleDefinitionInterface $rule)
     {
         $this->rule = $rule;
 

@@ -5,14 +5,15 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleLoader;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\LoadedRule;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -22,13 +23,13 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository          $ruleLinkedResRepo,
         ProductRuleSelector       $productRuleSelector,
-        ProductRuleLoader         $productRuleLoader
+        ProductRuleBuilder        $productRuleBuilder
     ) {
         $this->beConstructedWith(
             $linkedResManager,
             $ruleLinkedResRepo,
             $productRuleSelector,
-            $productRuleLoader,
+            $productRuleBuilder,
             'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource'
         );
     }
@@ -42,8 +43,8 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         $ruleLinkedResRepo,
         $linkedResManager,
         GenericEvent $event,
-        AbstractAttribute $attribute,
-        RuleLinkedResource $ruleLinkedResource
+        AttributeInterface $attribute,
+        RuleLinkedResourceInterface $ruleLinkedResource
     ) {
         $event->getSubject()->shouldBeCalled()->willReturn($attribute);
 
@@ -62,7 +63,7 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
     function it_does_not_delete_a_rule_linked_resource_when_argument_is_not_the_required_type(
         $linkedResManager,
         GenericEvent $event,
-        AbstractProduct $product
+        ProductInterface $product
     ) {
         $event->getSubject()->shouldBeCalled()->willReturn($product);
         $linkedResManager->remove(Argument::any())->shouldNotBeCalled();
@@ -71,19 +72,19 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
     }
 
     function it_saves_a_new_rule_linked_resource(
-        $productRuleLoader,
+        $productRuleBuilder,
         $linkedResManager,
         RuleEvent $event,
-        LoadedRule $loadedRule,
+        Rule $rule,
         AbstractAttribute $attribute1,
         AbstractAttribute $attribute2,
-        Rule $rule
+        RuleDefinitionInterface $definition
     ) {
-        $event->getRule()->shouldBeCalled()->willReturn($rule);
+        $event->getDefinition()->shouldBeCalled()->willReturn($definition);
 
-        $productRuleLoader->load($rule)->shouldBeCalled()->willReturn($loadedRule);
+        $productRuleBuilder->build($definition)->shouldBeCalled()->willReturn($rule);
 
-        $loadedRule->getActions()->shouldBeCalled()->willReturn([['field' => 'name', 'to_field' => 'description']]);
+        $rule->getActions()->shouldBeCalled()->willReturn([['field' => 'name', 'to_field' => 'description']]);
 
         $linkedResManager->getImpactedAttributes([['field' => 'name', 'to_field' => 'description']])
             ->shouldBeCalled()->willReturn([$attribute1, $attribute2]);
