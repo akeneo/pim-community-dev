@@ -21,7 +21,7 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource:
             length: 24
     manyToOne:
         rule:
-            targetEntity: PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+            targetEntity: PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
             joinColumn:
                 name: rule_id
                 referencedColumnName: id
