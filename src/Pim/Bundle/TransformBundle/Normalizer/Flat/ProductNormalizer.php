@@ -111,7 +111,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {
         if (empty($this->fields)) {
-
             $values = $this->getFilteredValues($product, $context);
             $context['metric_format'] = 'multiple_fields';
 
@@ -124,20 +123,18 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             }
             ksort($normalizedValues);
             $this->results = array_merge($this->results, $normalizedValues);
-
         } else {
-
             // TODO only used for quick export, find a way to homogeneize this part
             $values = $product->getValues();
             $context['metric_format'] = 'single_field';
 
             foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
-                if (isset($this->fields[$fieldValue])) {
+                if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection'
+                    || isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
                     $this->results = array_merge($this->results, $normalizedValue);
                 }
-
             }
         }
     }
@@ -156,7 +153,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $context = [
             'identifier'  => $product->getIdentifier(),
             'scopeCode'   => $context['scopeCode'],
-            'localeCodes' => $context['localeCodes']
+            'localeCodes' => $context['localeCodes'],
         ];
 
         foreach ($this->valuesFilters as $filter) {
@@ -184,7 +181,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             $suffix .= sprintf('-%s', $value->getScope());
         }
 
-        return $value->getAttribute()->getCode() . $suffix;
+        return $value->getAttribute()->getCode().$suffix;
     }
 
     /**
@@ -237,8 +234,8 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
                 $products[] = $product->getIdentifier();
             }
 
-            $this->results[$columnPrefix .'-groups'] = implode(',', $groups);
-            $this->results[$columnPrefix .'-products'] = implode(',', $products);
+            $this->results[$columnPrefix.'-groups'] = implode(',', $groups);
+            $this->results[$columnPrefix.'-products'] = implode(',', $products);
         }
     }
 
