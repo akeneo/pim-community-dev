@@ -118,6 +118,31 @@
                             .popover('show');
                     });
                 });
+
+                // Current value popover
+                $('.icon-code-fork[data-async-content]').on('mouseover', function() {
+                    var $this = $(this);
+                    var url = $this.data('async-content');
+
+                    $this.attr('data-content', '{{ "Loading"|trans }}');
+                    $this.popover('show');
+
+                    $this.off('mouseover');
+                    $.get(url, function(data) {
+                        if (data.length > 250) {
+                            data = data.substring(0, 250) + '...';
+                        }
+
+                        if (data.length == 0) {
+                            data = '{{ "Affected by a rule"|trans|capitalize }}';
+                        }
+
+                        $this
+                            .attr('data-content', data)
+                            .popover('destroy')
+                            .popover('show');
+                    });
+                });
             });
         }
     );

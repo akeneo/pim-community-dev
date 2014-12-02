@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\View;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -34,19 +35,25 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     /** @var UrlGeneratorInterface */
     protected $urlGenerator;
 
+    /** @var RuleLinkedResourceManager */
+    private $ruleLinkedResManager;
+
     /**
      * @param ProductFormViewInterface   $productFormView
      * @param ProductDraftChangesApplier $applier
      * @param UrlGeneratorInterface      $urlGenerator
+     * @param RuleLinkedResourceManager  $ruleLinkedResManager
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
         ProductDraftChangesApplier $applier,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        RuleLinkedResourceManager $ruleLinkedResManager
     ) {
-        $this->productFormView = $productFormView;
-        $this->applier = $applier;
-        $this->urlGenerator = $urlGenerator;
+        $this->productFormView      = $productFormView;
+        $this->applier              = $applier;
+        $this->urlGenerator         = $urlGenerator;
+        $this->ruleLinkedResManager = $ruleLinkedResManager;
     }
 
     /**
@@ -68,20 +75,8 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
 
         foreach ($views as $key => $view) {
             foreach (array_keys($view['attributes']) as $name) {
-                if (isset($views[$key]['attributes'][$name]['value'])
-                    && $this->applier->isMarkedAsModified($views[$key]['attributes'][$name])) {
-
-                    $this->markFieldAsModified($views[$key]['attributes'][$name]['value']);
-
-                } elseif (isset($views[$key]['attributes'][$name]['values'])) {
-
-                    foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
-                        if ($this->applier->isMarkedAsModified($views[$key]['attributes'][$name], $scope)) {
-                            $this->markFieldAsModified($views[$key]['attributes'][$name]['values'][$scope]);
-                        }
-                    }
-
-                }
+                $this->checkIfDraft($views, $key, $name);
+                $this->checkIfSmartAttribute($views, $key, $name);
             }
         }
 
@@ -92,7 +87,7 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
      * Mark a form view as modified
      *
      * We do it by inserting the product value id in a "modified" attribute of the form field
-     * This is usefull to later load the current product value data
+     * This is useful to later load the current product value data
      *
      * @param FormView $view
      */
@@ -115,6 +110,70 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
 
         foreach ($view as $child) {
             $child->vars['modified'] = $url;
+        }
+    }
+
+    protected function markAttributeAsSmart(FormView $view)
+    {
+        $value = $view->vars['value'];
+        if (!$value instanceof AbstractProductValue) {
+            return;
+        }
+
+        $url = $this->urlGenerator->generate(
+            'pimee_enrich_product_value_show',
+            [
+                'productId' => $value->getEntity()->getId(),
+                'attributeCode' => $value->getAttribute()->getCode(),
+                'locale' => $value->getLocale(),
+                'scope' => $value->getScope(),
+            ]
+        );
+
+        foreach ($view as $child) {
+            $child->vars['smart'] = $url;
+        }
+    }
+
+    /**
+     * @param array $views
+     * @param string $key
+     * @param string $name
+     */
+    protected function checkIfSmartAttribute(array $views, $key, $name)
+    {
+        if ((isset($views[$key]['attributes'][$name]['value'])
+            && $this->ruleLinkedResManager->isImpactedAttribute($views[$key]['attributes'][$name]['id']))
+        ) {
+            $this->markAttributeAsSmart($views[$key]['attributes'][$name]['value']);
+        } elseif (isset($views[$key]['attributes'][$name]['values'])) {
+            foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
+                if ($this->ruleLinkedResManager->isImpactedAttribute($views[$key]['attributes'][$name]['id'])) {
+                    $this->markAttributeAsSmart($views[$key]['attributes'][$name]['values'][$scope]);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array $views
+     * @param string $key
+     * @param string $name
+     *
+     * @return mixed
+     */
+    protected function checkIfDraft(array $views, $key, $name)
+    {
+        if ((isset($views[$key]['attributes'][$name]['value'])
+            && $this->applier->isMarkedAsModified($views[$key]['attributes'][$name]))
+        ) {
+            $this->markFieldAsModified($views[$key]['attributes'][$name]['value']);
+        } elseif (isset($views[$key]['attributes'][$name]['values'])) {
+            foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
+                if ($this->applier->isMarkedAsModified($views[$key]['attributes'][$name], $scope)) {
+                    $this->markFieldAsModified($views[$key]['attributes'][$name]['values'][$scope]);
+                }
+            }
         }
     }
 }

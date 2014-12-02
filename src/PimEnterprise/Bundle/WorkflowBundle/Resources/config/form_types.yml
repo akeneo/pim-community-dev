@@ -30,3 +30,4 @@ services:
             - '@pim_enrich.form.type.product.view'
             - '@pimee_workflow.applier.product_draft_changes_applier'
             - '@router'
+            - '@pimee_catalog_rule.manager.rule_linked_resource'

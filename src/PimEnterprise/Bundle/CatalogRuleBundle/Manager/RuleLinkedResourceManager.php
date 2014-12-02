@@ -12,7 +12,9 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
@@ -32,16 +34,24 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     /** @var AttributeRepository */
     protected $attributeRepository;
 
+    /** @var EntityRepository */
+    protected $ruleLinkedResRepo;
+
     /**
      * Constructor
      *
      * @param EntityManager       $entityManager
      * @param AttributeRepository $attributeRepository
+     * @param EntityRepository    $ruleLinkedResRepo
      */
-    public function __construct(EntityManager $entityManager, AttributeRepository $attributeRepository)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        AttributeRepository $attributeRepository,
+        EntityRepository $ruleLinkedResRepo
+    ) {
         $this->entityManager       = $entityManager;
         $this->attributeRepository = $attributeRepository;
+        $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
     }
 
     /**
@@ -112,5 +122,15 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
         $impactedAttributes = array_filter($impactedAttributes);
 
         return $impactedAttributes;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    public function isImpactedAttribute($attribute)
+    {
+        return $this->ruleLinkedResRepo->findBy(['resourceId' => $attribute]) ? true : false;
     }
 }
