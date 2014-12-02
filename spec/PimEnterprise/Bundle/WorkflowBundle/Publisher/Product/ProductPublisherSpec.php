@@ -9,6 +9,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
+use Prophecy\Argument;
 
 class ProductPublisherSpec extends ObjectBehavior
 {
