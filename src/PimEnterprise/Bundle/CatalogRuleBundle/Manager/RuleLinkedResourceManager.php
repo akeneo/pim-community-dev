@@ -132,6 +132,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      */
     public function isImpactedAttribute($attributeId)
     {
+        //todo: better check
         return $this->ruleLinkedResRepo->findBy(['resourceId' => $attributeId]) ? true : false;
     }
 
