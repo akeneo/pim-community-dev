@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.7 (2014-12-03)
 
 ## Bug fixes
 - PIM-3444: Fix the enabled flag not published
