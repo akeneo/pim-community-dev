@@ -1,7 +1,7 @@
-# 1.2.*
+# 1.2.14 (2014-12-03)
 
 ## Bug fixes
-- PIM-3443: Fix prices not exported in quick export 
+- PIM-3443: Fix prices not exported in quick export
 - PIM-3446: Fix import export history with large amount of errors
 
 # 1.2.13 (2014-11-26)
@@ -808,4 +808,3 @@ that made the entity too smart for its own good and created performances problem
 - Fix price format different between import and enrich
 - Fix channel datagrid result count
 - Fix end date which is updated for all jobs
-
