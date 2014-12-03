@@ -53,6 +53,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         ValidMetric $constraint,
         MetricInterface $metric
     ) {
+        $metric->getData()->willReturn(12);
         $accessor->getValue($metric, 'family')
             ->shouldBeCalled()
             ->willReturn('Weight');
@@ -80,7 +81,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
             ->willReturn('kg');
         $context->addViolationAt(Argument::any(), Argument::any())->shouldNotBeCalled();
 
-        $this->validate($metric, $constraint)->shouldReturn(null);
+        $this->validate($value, $constraint)->shouldReturn(null);
     }
 
     function it_adds_violation_when_family_doesnt_exist(
