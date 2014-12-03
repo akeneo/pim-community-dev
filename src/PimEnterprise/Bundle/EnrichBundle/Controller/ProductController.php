@@ -159,6 +159,24 @@ class ProductController extends BaseProductController
     }
 
     /**
+     * Show an attribute rule
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function showRuleAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
+        $rules = $request->query->get('rules');
+
+        return new Response((string) $rules);
+    }
+
+    /**
      * Drafts of a product
      *
      * @param Request $request

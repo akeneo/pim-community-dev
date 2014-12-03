@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\View;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
@@ -113,20 +114,27 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
         }
     }
 
-    protected function markAttributeAsSmart(FormView $view)
+    /**
+     * Mark an attribute as impacted by a rule
+     *
+     * @param FormView $view
+     * @param int      $attributeId
+     */
+    protected function markAttributeAsSmart(FormView $view, $attributeId)
     {
         $value = $view->vars['value'];
         if (!$value instanceof AbstractProductValue) {
             return;
         }
 
+        $rules = $this->ruleLinkedResManager->getRulesForAttribute($attributeId);
+
+        $rules = implode(", ", $rules);
+
         $url = $this->urlGenerator->generate(
-            'pimee_enrich_product_value_show',
+            'pimee_enrich_attribute_rules',
             [
-                'productId' => $value->getEntity()->getId(),
-                'attributeCode' => $value->getAttribute()->getCode(),
-                'locale' => $value->getLocale(),
-                'scope' => $value->getScope(),
+                'rules' => $rules,
             ]
         );
 
@@ -136,6 +144,8 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     }
 
     /**
+     * Check if an attribute is smart or not
+     *
      * @param array $views
      * @param string $key
      * @param string $name
@@ -145,22 +155,28 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
         if ((isset($views[$key]['attributes'][$name]['value'])
             && $this->ruleLinkedResManager->isImpactedAttribute($views[$key]['attributes'][$name]['id']))
         ) {
-            $this->markAttributeAsSmart($views[$key]['attributes'][$name]['value']);
+            $this->markAttributeAsSmart(
+                $views[$key]['attributes'][$name]['value'],
+                $views[$key]['attributes'][$name]['id']
+            );
         } elseif (isset($views[$key]['attributes'][$name]['values'])) {
             foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
                 if ($this->ruleLinkedResManager->isImpactedAttribute($views[$key]['attributes'][$name]['id'])) {
-                    $this->markAttributeAsSmart($views[$key]['attributes'][$name]['values'][$scope]);
+                    $this->markAttributeAsSmart(
+                        $views[$key]['attributes'][$name]['values'][$scope],
+                        $views[$key]['attributes'][$name]['id']
+                    );
                 }
             }
         }
     }
 
     /**
-     * @param array $views
+     * Check if an attribute is a draft and mark it as a draft
+     *
+     * @param array  $views
      * @param string $key
      * @param string $name
-     *
-     * @return mixed
      */
     protected function checkIfDraft(array $views, $key, $name)
     {

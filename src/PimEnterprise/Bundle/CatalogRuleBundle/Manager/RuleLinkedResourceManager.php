@@ -20,6 +20,7 @@ use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Class RuleLinkedResourceManager
@@ -125,12 +126,29 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param int $attributeId
      *
      * @return bool
      */
-    public function isImpactedAttribute($attribute)
+    public function isImpactedAttribute($attributeId)
     {
-        return $this->ruleLinkedResRepo->findBy(['resourceId' => $attribute]) ? true : false;
+        return $this->ruleLinkedResRepo->findBy(['resourceId' => $attributeId]) ? true : false;
+    }
+
+    /**
+     * @param int $attributeId
+     *
+     * @return array
+     */
+    public function getRulesForAttribute($attributeId)
+    {
+        $ruleLinkedResources = $this->ruleLinkedResRepo->findBy(['resourceId' => $attributeId]);
+
+        $rulesCode = [];
+        foreach ($ruleLinkedResources as $ruleLinkedResource) {
+            $rulesCode[] = $ruleLinkedResource->getRule()->getCode();
+        }
+
+        return $rulesCode;
     }
 }
