@@ -37,36 +37,29 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        $this->checkValue($field, $value);
+        if (Operators::IS_EMPTY !== $operator) {
+            $this->checkValue($field, $value);
+        }
 
         $rootAlias  = $this->qb->getRootAlias();
         $entityAlias = 'filter'.$field;
         $this->qb->leftJoin($rootAlias.'.'.$field, $entityAlias);
 
-        if ($operator === Operators::NOT_IN_LIST) {
+        if ($operator === Operators::IN_LIST) {
+            $this->qb->andWhere(
+                $this->qb->expr()->in($entityAlias.'.id', $value)
+            );
+        } elseif ($operator === Operators::NOT_IN_LIST) {
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
                     $this->qb->expr()->notIn($entityAlias.'.id', $value),
                     $this->qb->expr()->isNull($entityAlias.'.id')
                 )
             );
-        } else {
-            // TODO: fix this weird support of EMPTY operator
-            if (in_array('empty', $value)) {
-                unset($value[array_search('empty', $value)]);
-                $exprNull = $this->qb->expr()->isNull($entityAlias.'.id');
-
-                if (count($value) > 0) {
-                    $exprIn = $this->qb->expr()->in($entityAlias.'.id', $value);
-                    $expr = $this->qb->expr()->orX($exprNull, $exprIn);
-                } else {
-                    $expr = $exprNull;
-                }
-            } else {
-                $expr = $this->qb->expr()->in($entityAlias.'.id', $value);
-            }
-
-            $this->qb->andWhere($expr);
+        } elseif ($operator === Operators::IS_EMPTY) {
+            $this->qb->andWhere(
+                $this->qb->expr()->isNull($entityAlias.'.id')
+            );
         }
 
         return $this;
@@ -93,7 +86,7 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         foreach ($value as $entity) {
-            if (!is_numeric($entity) && 'empty' !== $entity) {
+            if (!is_numeric($entity)) {
                 throw InvalidArgumentException::integerExpected($field, 'filter', 'entity');
             }
         }

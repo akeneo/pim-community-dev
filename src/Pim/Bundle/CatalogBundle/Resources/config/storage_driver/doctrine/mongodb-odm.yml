@@ -380,7 +380,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.family.class%
         arguments:
             - ['family']
-            - ['IN', 'NOT IN']
+            - ['IN', 'NOT IN' ,'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
