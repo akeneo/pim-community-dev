@@ -142,9 +142,12 @@ class JobExecutionController extends AbstractDoctrineController
                 $this->jobExecutionManager->markAsFailed($jobExecution);
             }
 
+            // limit the number of step execution returned to avoid memory overflow
+            $context = ['limit_warnings' => 100];
+
             return new JsonResponse(
                 [
-                    'jobExecution' => $this->serializer->normalize($jobExecution, 'json'),
+                    'jobExecution' => $this->serializer->normalize($jobExecution, 'json', $context),
                     'hasLog'       => file_exists($jobExecution->getLogFile()),
                     'archives'     => $archives,
                 ]
