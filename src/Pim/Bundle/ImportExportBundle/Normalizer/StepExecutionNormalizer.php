@@ -34,13 +34,19 @@ class StepExecutionNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
+        $normalizedWarnings = $this->normalizeWarnings($object->getWarnings(), $context);
+
+        if (isset($context['limit_warnings']) && $object->getWarnings()->count() > 0) {
+            $object->addSummaryInfo('displayed', count($normalizedWarnings).'/'.$object->getWarnings()->count());
+        }
+
         return [
             'label'     => $this->translator->trans($object->getStepName()),
             'status'    => $this->normalizeStatus($object->getStatus()->getValue()),
             'summary'   => $this->normalizeSummary($object->getSummary()),
             'startedAt' => $this->normalizeDateTime($object->getStartTime()),
             'endedAt'   => $this->normalizeDateTime($object->getEndTime()),
-            'warnings'  => $this->normalizeWarnings($object->getWarnings()),
+            'warnings'  => $normalizedWarnings,
             'failures'  => array_map(
                 function ($failure) {
                     return $this->translator->trans($failure['message'], $failure['messageParameters']);
@@ -82,20 +88,29 @@ class StepExecutionNormalizer implements NormalizerInterface
      * Normalizes the warnings
      *
      * @param Collection $warnings
+     * @param array      $context
      *
      * @return array
      */
-    protected function normalizeWarnings(Collection $warnings)
+    protected function normalizeWarnings(Collection $warnings, array $context = [])
     {
         $result = [];
-        foreach ($warnings as $warning) {
+        $selectedWarnings = [];
+
+        if (isset($context['limit_warnings']) && $context['limit_warnings'] > 0) {
+            $selectedWarnings = $warnings->slice(0, $context['limit_warnings']);
+
+        } else {
+            $selectedWarnings = $warnings;
+        }
+
+        foreach ($selectedWarnings as $warning) {
             $result[] =  [
                 'label'  => $this->translator->trans($warning->getName()),
                 'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
                 'item'   => $warning->getItem(),
             ];
         }
-
         return $result;
     }
 
