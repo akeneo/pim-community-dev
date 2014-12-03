@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -48,9 +49,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
             return;
         }
 
-        $rules = $this->ruleLinkedResManager->getRulesForAttribute($attributeId);
-
-        $rules = implode(", ", $rules);
+        $rules = $this->presentRule($attributeId);
 
         $url = $this->urlGenerator->generate(
             'pimee_enrich_attribute_rules',
@@ -93,12 +92,31 @@ class SmartViewUpdater implements ViewUpdaterInterface
     }
 
     /**
-     * @param array  $views
-     * @param string $key
-     * @param string $name
+     * [@inheritdoc}
      */
     public function update(array $views, $key, $name)
     {
         $this->checkIfSmartAttribute($views, $key, $name);
+    }
+
+    /**
+     * Return the list of rules as a string
+     *
+     * @param int $attributeId
+     *
+     * @return string
+     */
+    protected function presentRule($attributeId)
+    {
+        $rules = $this->ruleLinkedResManager->getRulesForAttribute($attributeId);
+
+        $rulesCode = [];
+        foreach ($rules as $rule) {
+            $rulesCode[] = $rule->getCode();
+        }
+
+        $rulesCode = implode(", ", $rulesCode);
+
+        return $rulesCode;
     }
 }

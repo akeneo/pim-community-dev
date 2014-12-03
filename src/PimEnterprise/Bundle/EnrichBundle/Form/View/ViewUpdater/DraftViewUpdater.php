@@ -88,9 +88,7 @@ class DraftViewUpdater implements ViewUpdaterInterface
     }
 
     /**
-     * @param array  $views
-     * @param string $key
-     * @param string $name
+     * [@inheritdoc}
      */
     public function update(array $views, $key, $name)
     {

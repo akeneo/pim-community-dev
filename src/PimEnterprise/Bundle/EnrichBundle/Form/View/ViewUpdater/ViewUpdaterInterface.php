@@ -19,6 +19,8 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 interface ViewUpdaterInterface
 {
     /**
+     * Update the form view
+     *
      * @param array  $views
      * @param string $key
      * @param string $name
