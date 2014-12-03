@@ -49,7 +49,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'mongodb_json', [])->shouldReturn([
             ProductNormalizer::FAMILY_FIELD => 'family normalization',
             ProductNormalizer::COMPLETENESSES_FIELD => array('completenessCode' => 'completeness normalization'),
-            ProductNormalizer::ENABLED_FIELD => 1
+            ProductNormalizer::ENABLED_FIELD => true
         ]);
     }
 

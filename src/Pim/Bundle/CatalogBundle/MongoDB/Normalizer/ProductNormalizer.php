@@ -81,7 +81,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             );
         }
         $data[self::COMPLETENESSES_FIELD] = $completenesses;
-        $data[self::ENABLED_FIELD] = (int) $object->isEnabled();
+        $data[self::ENABLED_FIELD] = (bool) $object->isEnabled();
 
         return $data;
     }
