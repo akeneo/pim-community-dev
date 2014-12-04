@@ -35,30 +35,25 @@ class RuleController extends BaseProductController
     {
         $this->linkedResManager = $linkedResManager;
     }
+
     /**
      * List all rules for an attribute
      *
-     * @param Request $request
+     * @param string $attributeId
      *
      * @return Response
      */
-    public function listAttributeRulesAction(Request $request)
+    public function listAttributeRulesAction($attributeId)
     {
-        if (!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
-        }
-
-        $attributeId = $request->query->get('attributeId');
-
         $ruleCodes = $this->presentRule($attributeId);
 
-        return new Response((string) $ruleCodes);
+        return new Response($ruleCodes);
     }
 
     /**
      * Return the list of rules as a string
      *
-     * todo: use the future rule presenter
+     * TODO: use the future rule presenter
      *
      * @param int $attributeId
      *

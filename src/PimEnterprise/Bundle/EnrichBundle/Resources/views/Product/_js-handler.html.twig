@@ -124,7 +124,7 @@
                     var $this = $(this);
                     var url = $this.data('async-content');
 
-                    $this.attr('data-content', '{{ "Loading"|trans }}');
+                    $this.attr('data-content', '{{ "pimee_product.rule.loading"|trans }}');
                     $this.popover('show');
 
                     $this.off('mouseover');
@@ -134,7 +134,7 @@
                         }
 
                         if (data.length == 0) {
-                            data = '{{ "Affected by a rule"|trans|capitalize }}';
+                            data = '{{ "pimee_product.rule.rule_mesage"|trans|capitalize }}';
                         }
 
                         $this

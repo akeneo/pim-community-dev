@@ -142,6 +142,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      */
     public function getRulesForAttribute($attributeId)
     {
+        //TODO: move this in a repository and create a nice method
         $ruleLinkedResources = $this->ruleLinkedResRepo->findBy(['resourceId' => $attributeId]);
 
         $rules = [];
