@@ -69,4 +69,18 @@ interface ProductConditionInterface extends ConditionInterface
      * @return ProductConditionInterface
      */
     public function setValue($value);
+
+    /**
+     * @param string $locale
+     *
+     * @return ProductConditionInterface
+     */
+    public function setLocale($locale);
+
+    /**
+     * @param string $scope
+     *
+     * @return ProductConditionInterface
+     */
+    public function setScope($scope);
 }

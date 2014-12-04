@@ -45,6 +45,8 @@ class ProductCondition implements ProductConditionInterface
         $this->field = isset($data['field']) ? $data['field'] : null;
         $this->operator = isset($data['operator']) ? $data['operator'] : null;
         $this->value = isset($data['value']) ? $data['value'] : null;
+        $this->locale = isset($data['locale']) ? $data['locale'] : null;
+        $this->scope = isset($data['scope']) ? $data['scope'] : null;
     }
 
     /**
@@ -88,9 +90,6 @@ class ProductCondition implements ProductConditionInterface
     }
 
     /**
-     * Configure the condition's optionResolver
-     *
-     * @param OptionsResolver $optionsResolver
      * {@inheritdoc}
      */
     public function setField($field)
@@ -116,6 +115,26 @@ class ProductCondition implements ProductConditionInterface
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
 
         return $this;
     }

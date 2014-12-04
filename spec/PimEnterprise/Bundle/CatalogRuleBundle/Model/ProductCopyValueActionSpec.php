@@ -46,29 +46,4 @@ class ProductCopyValueActionSpec extends ObjectBehavior
         $this->getFromScope()->shouldReturn('ecommerce');
         $this->getToScope()->shouldReturn('tablet');
     }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_invalid_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
-            ->during(
-                '__construct',
-                [
-                    [
-                        'type' => ProductCopyValueActionInterface::TYPE,
-                        'from_field' => new \stdClass(),
-                        'to_field' => 'description',
-                        'from_locale' => 'FR_fr',
-                        'to_locale' => 'FR_ch',
-                        'from_scope' => 'ecommerce',
-                        'to_scope' => 'tablet',
-                    ]
-                ]
-            );
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_missing_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')
-            ->during('__construct', [['type' => ProductCopyValueActionInterface::TYPE]]);
-    }
 }

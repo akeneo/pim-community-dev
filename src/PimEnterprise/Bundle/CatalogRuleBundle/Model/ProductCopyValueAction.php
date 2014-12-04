@@ -44,12 +44,12 @@ class ProductCopyValueAction implements ProductCopyValueActionInterface
      */
     public function __construct(array $data)
     {
-        $this->fromField = isset($data['fromField']) ? $data['fromField'] : null;
-        $this->fromLocale = isset($data['fromLocale']) ? $data['fromLocale'] : null;
-        $this->fromScope = isset($data['fromScope']) ? $data['fromScope'] : null;
-        $this->toField = isset($data['toField']) ? $data['toField'] : null;
-        $this->toLocale = isset($data['toLocale']) ? $data['toLocale'] : null;
-        $this->toScope = isset($data['toScope']) ? $data['toScope'] : null;
+        $this->fromField = isset($data['from_field']) ? $data['from_field'] : null;
+        $this->fromLocale = isset($data['from_locale']) ? $data['from_locale'] : null;
+        $this->fromScope = isset($data['from_scope']) ? $data['from_scope'] : null;
+        $this->toField = isset($data['to_field']) ? $data['to_field'] : null;
+        $this->toLocale = isset($data['to_locale']) ? $data['to_locale'] : null;
+        $this->toScope = isset($data['to_scope']) ? $data['to_scope'] : null;
     }
 
     /**

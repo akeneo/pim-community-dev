@@ -42,27 +42,4 @@ class ProductSetValueActionSpec extends ObjectBehavior
         $this->getLocale()->shouldReturn('FR_fr');
         $this->getScope()->shouldReturn('ecommerce');
     }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_invalid_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
-            ->during(
-                '__construct',
-                [
-                    [
-                        'field' =>  new \stdClass(),
-                        'value' => 'RATM-NIN-001',
-                        'locale' => 'FR_fr',
-                        'scope' => 'ecommerce',
-                        'type' => ProductSetValueActionInterface::TYPE
-                    ]
-                ]
-            );
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_missing_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')
-            ->during('__construct', [['field' => 'field']]);
-    }
 }
