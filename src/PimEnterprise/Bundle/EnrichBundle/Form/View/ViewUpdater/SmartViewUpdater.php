@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use Symfony\Component\Form\FormView;

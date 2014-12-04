@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
