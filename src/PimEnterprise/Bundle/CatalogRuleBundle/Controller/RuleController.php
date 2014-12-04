@@ -68,13 +68,13 @@ class RuleController extends BaseProductController
     {
         $rules = $this->linkedResManager->getRulesForAttribute($attributeId);
 
-        $rulesCode = [];
+        $ruleCodes = [];
         foreach ($rules as $rule) {
-            $rulesCode[] = $rule->getCode();
+            $ruleCodes[] = $rule->getCode();
         }
 
-        $rulesCode = implode(", ", $rulesCode);
+        $ruleCodes = implode(", ", $ruleCodes);
 
-        return $rulesCode;
+        return $ruleCodes;
     }
 }

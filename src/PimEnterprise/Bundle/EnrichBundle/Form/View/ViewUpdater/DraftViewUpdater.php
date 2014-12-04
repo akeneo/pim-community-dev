@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -36,7 +37,7 @@ class DraftViewUpdater implements ViewUpdaterInterface
     }
 
     /**
-     * [@inheritdoc}
+     * {@inheritdoc}
      */
     public function update(array $views, $key, $name)
     {
@@ -54,7 +55,7 @@ class DraftViewUpdater implements ViewUpdaterInterface
     protected function markFieldAsModified(FormView $view)
     {
         $value = $view->vars['value'];
-        if (!$value instanceof AbstractProductValue) {
+        if (!$value instanceof ProductValueInterface) {
             return;
         }
 

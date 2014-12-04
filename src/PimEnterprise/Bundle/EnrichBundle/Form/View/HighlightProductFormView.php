@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater\DraftViewUpdater;
 use PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater\SmartViewUpdater;
+use PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterInterface;
 use Symfony\Component\Form\FormView;
 
 /**
@@ -35,13 +36,13 @@ class HighlightProductFormView implements ProductFormViewInterface
 
     /**
      * @param ProductFormViewInterface $productFormView
-     * @param DraftViewUpdater         $draftViewUpdater
-     * @param SmartViewUpdater         $smartViewUpdater
+     * @param ViewUpdaterInterface     $draftViewUpdater
+     * @param ViewUpdaterInterface     $smartViewUpdater
      */
     public function __construct(
-        ProductFormViewInterface $productFormView,
-        DraftViewUpdater $draftViewUpdater,
-        SmartViewUpdater $smartViewUpdater
+        ProductFormViewInterface  $productFormView,
+        ViewUpdaterInterface $draftViewUpdater,
+        ViewUpdaterInterface $smartViewUpdater
     ) {
         $this->productFormView  = $productFormView;
         $this->draftViewUpdater = $draftViewUpdater;
