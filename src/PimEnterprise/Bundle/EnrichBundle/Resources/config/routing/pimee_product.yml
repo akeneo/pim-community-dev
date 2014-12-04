@@ -21,7 +21,7 @@ pimee_enrich_product_value_show:
 
 pimee_enrich_attribute_rules:
     path: /smart_attribute
-    defaults: { _controller: pim_enrich.controller.product:showRuleAction }
+    defaults: { _controller: pimee_catalog_rule.controller.rule:listAttributeRulesAction }
     methods: [GET]
 
 pimee_enrich_product_product_drafts:
