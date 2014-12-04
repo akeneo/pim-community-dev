@@ -8,3 +8,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.repository.attribute'
+            - '@pimee_catalog_rule.repository.rule_linked_resource'

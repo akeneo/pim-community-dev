@@ -12,12 +12,14 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Class RuleLinkedResourceManager
@@ -32,16 +34,24 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     /** @var AttributeRepository */
     protected $attributeRepository;
 
+    /** @var EntityRepository */
+    protected $ruleLinkedResRepo;
+
     /**
      * Constructor
      *
      * @param EntityManager       $entityManager
      * @param AttributeRepository $attributeRepository
+     * @param EntityRepository    $ruleLinkedResRepo
      */
-    public function __construct(EntityManager $entityManager, AttributeRepository $attributeRepository)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        AttributeRepository $attributeRepository,
+        EntityRepository $ruleLinkedResRepo
+    ) {
         $this->entityManager       = $entityManager;
         $this->attributeRepository = $attributeRepository;
+        $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
     }
 
     /**
@@ -112,5 +122,33 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
         $impactedAttributes = array_filter($impactedAttributes);
 
         return $impactedAttributes;
+    }
+
+    /**
+     * @param array $attribute
+     *
+     * @return bool
+     */
+    public function isAttributeImpacted(array $attribute)
+    {
+        return $this->ruleLinkedResRepo->findBy(['resourceId' => $attribute['id']]) ? true : false;
+    }
+
+    /**
+     * @param int $attributeId
+     *
+     * @return RuleDefinitionInterface[]
+     */
+    public function getRulesForAttribute($attributeId)
+    {
+        //TODO: move this in a repository and create a nice method
+        $ruleLinkedResources = $this->ruleLinkedResRepo->findBy(['resourceId' => $attributeId]);
+
+        $rules = [];
+        foreach ($ruleLinkedResources as $ruleLinkedResource) {
+            $rules[] = $ruleLinkedResource->getRule();
+        }
+
+        return $rules;
     }
 }
