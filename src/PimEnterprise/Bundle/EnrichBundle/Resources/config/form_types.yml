@@ -8,7 +8,7 @@ parameters:
     pimee_enrich.form.type.unpublish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType
     pimee_enrich.form.type.classify.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
     pimee_enrich.form.type.locale.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType
-    pimee_enrich.form.type.product.highlight_view.class: PimEnterprise\Bundle\EnrichBundle\Form\View\HighlightFormView
+    pimee_enrich.form.type.product.highlight_product_view.class: PimEnterprise\Bundle\EnrichBundle\Form\View\HighlightProductFormView
 
 services:
     ##
@@ -19,14 +19,14 @@ services:
         arguments:
             - %pim_catalog.entity.product_value.class%
             - '@pim_enrich.form.subscriber.add_value_field_subscriber'
-            - '@pimee_enrich.form.type.product.highlight_view'
+            - '@pimee_enrich.form.type.product.highlight_product_view'
         tags:
             - { name: form.type, alias: pim_product_value }
 
     pim_enrich.form.type.product_edit:
         class: %pim_enrich.form.type.product_edit.class%
         arguments:
-            - '@pimee_enrich.form.type.product.highlight_view'
+            - '@pimee_enrich.form.type.product.highlight_product_view'
             - '@pim_catalog.repository.family'
             - '%pim_catalog.entity.category.class%'
         tags:
@@ -82,8 +82,8 @@ services:
     ##
     # Product form view decorator
     ##
-    pimee_enrich.form.type.product.highlight_view:
-        class: %pimee_enrich.form.type.product.highlight_view.class%
+    pimee_enrich.form.type.product.highlight_product_view:
+        class: %pimee_enrich.form.type.product.highlight_product_view.class%
         arguments:
             - '@pim_enrich.form.type.product.view'
             - '@pimee_enrich.form.view.view_updater.draft'

@@ -14,4 +14,3 @@ services:
         arguments:
             - '@pimee_catalog_rule.manager.rule_linked_resource'
             - '@router'
-

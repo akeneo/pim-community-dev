@@ -18,11 +18,11 @@ use PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater\SmartViewUpdater;
 use Symfony\Component\Form\FormView;
 
 /**
- * TEST
+ * Product form view decorator that adds classes and fields
  *
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
-class HighlightFormView implements ProductFormViewInterface
+class HighlightProductFormView implements ProductFormViewInterface
 {
     /** @var ProductFormViewInterface */
     protected $productFormView;
@@ -57,9 +57,7 @@ class HighlightFormView implements ProductFormViewInterface
     }
 
     /**
-     * Get the computed view
-     *
-     * @return array|FormView
+     * {@inheritdoc}
      */
     public function getView()
     {

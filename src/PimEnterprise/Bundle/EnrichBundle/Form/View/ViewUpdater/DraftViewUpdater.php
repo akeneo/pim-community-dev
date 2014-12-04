@@ -17,15 +17,15 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * TEST
+ * Set product value as draft
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class DraftViewUpdater implements ViewUpdaterInterface
 {
     /**
-     * @param UrlGeneratorInterface      $urlGenerator
      * @param ProductDraftChangesApplier $applier
+     * @param UrlGeneratorInterface      $urlGenerator
      */
     public function __construct(
         ProductDraftChangesApplier $applier,
@@ -33,6 +33,14 @@ class DraftViewUpdater implements ViewUpdaterInterface
     ) {
         $this->applier      = $applier;
         $this->urlGenerator = $urlGenerator;
+    }
+
+    /**
+     * [@inheritdoc}
+     */
+    public function update(array $views, $key, $name)
+    {
+        $this->checkIfDraft($views, $key, $name);
     }
 
     /**
@@ -85,13 +93,5 @@ class DraftViewUpdater implements ViewUpdaterInterface
                 }
             }
         }
-    }
-
-    /**
-     * [@inheritdoc}
-     */
-    public function update(array $views, $key, $name)
-    {
-        $this->checkIfDraft($views, $key, $name);
     }
 }

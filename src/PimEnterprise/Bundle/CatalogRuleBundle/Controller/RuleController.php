@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * TEST
+ * Rule controller
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -50,15 +50,15 @@ class RuleController extends BaseProductController
 
         $attributeId = $request->query->get('attributeId');
 
-        $this->linkedResManager->getRulesForAttribute($attributeId);
+        $ruleCodes = $this->presentRule($attributeId);
 
-        $rulesCode = $this->presentRule($attributeId);
-
-        return new Response((string) $rulesCode);
+        return new Response((string) $ruleCodes);
     }
 
     /**
      * Return the list of rules as a string
+     *
+     * todo: use the future rule presenter
      *
      * @param int $attributeId
      *

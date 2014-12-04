@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
 /**
- * TEST
+ * View updater interface, in order to update the form view
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */

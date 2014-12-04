@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * TEST
+ * Set rule impacted attributes as smart attribute
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -33,6 +33,14 @@ class SmartViewUpdater implements ViewUpdaterInterface
     ) {
         $this->ruleLinkedResManager = $ruleLinkedResManager;
         $this->urlGenerator         = $urlGenerator;
+    }
+
+    /**
+     * [@inheritdoc}
+     */
+    public function update(array $views, $key, $name)
+    {
+        $this->checkIfSmartAttribute($views, $key, $name);
     }
 
     /**
@@ -70,7 +78,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
     protected function checkIfSmartAttribute(array $views, $key, $name)
     {
         if ((isset($views[$key]['attributes'][$name]['value'])
-            && $this->ruleLinkedResManager->isImpactedAttribute($views[$key]['attributes'][$name]['id']))
+            && $this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name]['id']))
         ) {
             $this->markAttributeAsSmart(
                 $views[$key]['attributes'][$name]['value'],
@@ -78,7 +86,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
             );
         } elseif (isset($views[$key]['attributes'][$name]['values'])) {
             foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
-                if ($this->ruleLinkedResManager->isImpactedAttribute($views[$key]['attributes'][$name]['id'])) {
+                if ($this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name]['id'])) {
                     $this->markAttributeAsSmart(
                         $views[$key]['attributes'][$name]['values'][$scope],
                         $views[$key]['attributes'][$name]['id']
@@ -86,13 +94,5 @@ class SmartViewUpdater implements ViewUpdaterInterface
                 }
             }
         }
-    }
-
-    /**
-     * [@inheritdoc}
-     */
-    public function update(array $views, $key, $name)
-    {
-        $this->checkIfSmartAttribute($views, $key, $name);
     }
 }

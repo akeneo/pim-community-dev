@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit a single product with rules appliance
-  In order ease the enrichement of the catalog
+Feature: On a product edit/show display impacted attributes
+  In order to know which attributes are affected or not
   As a regular user
-  I need that the relevant rules are executed when I edit and save a product
+  I need to see which attributes are affected by a rule or not
 
   Background:
     Given a "footwear" catalog configuration
@@ -29,5 +29,5 @@ Feature: Edit a single product with rules appliance
   Scenario: Successfully create, edit and save a product
     Given I am on the "my-loafer" product page
     And the product Name should be "White loafer"
-    When I press the "Save" button
+    And I should see ""
     Then the product Name should be "My loafer"
