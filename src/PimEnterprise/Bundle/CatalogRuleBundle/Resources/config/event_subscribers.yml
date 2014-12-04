@@ -8,7 +8,7 @@ services:
             - '@pimee_catalog_rule.manager.rule_linked_resource'
             - '@pimee_catalog_rule.repository.rule_linked_resource'
             - '@pimee_catalog_rule.selector.product'
-            - '@pimee_catalog_rule.loader.product'
+            - '@pimee_catalog_rule.builder.product'
             - '%pimee_catalog_rule.entity.rule_linked_resource.class%'
         tags:
             - { name: kernel.event_subscriber}
