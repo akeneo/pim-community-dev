@@ -21,8 +21,6 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
  */
 class ProductCopyValueAction implements ProductCopyValueActionInterface
 {
-    const TYPE = 'copy_value';
-
     /** @var string */
     protected $fromField;
 

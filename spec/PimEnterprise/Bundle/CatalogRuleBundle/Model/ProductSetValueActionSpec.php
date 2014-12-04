@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 
 class ProductSetValueActionSpec extends ObjectBehavior
 {
@@ -15,7 +15,7 @@ class ProductSetValueActionSpec extends ObjectBehavior
                 'value' => 'RATM-NIN-001',
                 'locale' => 'FR_fr',
                 'scope' => 'ecommerce',
-                'type' => ProductSetValueAction::TYPE
+                'type' => ProductSetValueActionInterface::TYPE
             ]
         );
     }
@@ -54,7 +54,7 @@ class ProductSetValueActionSpec extends ObjectBehavior
                         'value' => 'RATM-NIN-001',
                         'locale' => 'FR_fr',
                         'scope' => 'ecommerce',
-                        'type' => ProductSetValueAction::TYPE
+                        'type' => ProductSetValueActionInterface::TYPE
                     ]
                 ]
             );

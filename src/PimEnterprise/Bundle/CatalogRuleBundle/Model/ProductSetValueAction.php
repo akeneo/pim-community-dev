@@ -22,8 +22,6 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
  */
 class ProductSetValueAction implements ProductSetValueActionInterface
 {
-    const TYPE = 'set_value';
-
     /** @var string */
     protected $field;
 
