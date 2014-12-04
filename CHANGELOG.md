@@ -1,7 +1,12 @@
-# 1.1.x
+# 1.1.x (based on CE 1.3.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/master/CHANGELOG.md))
 
 ## Improvements
 - Add a date filter in the proposal grid
+- remove the fixed mysql socket location
+- switch to minimum-stability:stable in composer.json
+- base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
+- remove BaseFilter usage
+- add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
@@ -12,27 +17,12 @@
 - Add `Doctrine\Common\Persistence\ObjectManager` as third argument of `PimEnterprise\Bundle\DataGridBundle\Manager` constructor
 - Change of constructor `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove arguments `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` and  `Pim\Bundle\CatalogBundle\Factory\MetricFactory`. `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface` is expected as second argument and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` is expected as seventh argument.
 - Add a requirement regarding the need of the exec() function (for job executions)
+- `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
+- Remove the override of MediaManager
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
-
-# 1.1.0 (based on CE 1.2.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/1.2/CHANGELOG.md))
-
-## Improvements
-
-- remove the fixed mysql socket location
-- switch to minimum-stability:stable in composer.json
-- base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
-- remove BaseFilter usage
-- add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
-
-## Bug fixes
-
 - Remove the `is_default` from fixtures for attribute options
-
-## BC breaks
-- `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
-- Remove the override of MediaManager
 
 # 1.0.x
 
