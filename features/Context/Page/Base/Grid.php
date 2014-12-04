@@ -182,12 +182,15 @@ class Grid extends Index
                     $filter->find('css', 'button.dropdown-toggle')->click();
                     $filter->find('css', '[data-value="empty"]')->click();
                 } else {
-                    $driver->getWebDriverSession()
-                        ->element('xpath', $select2->getXpath())
-                        ->postValue(array('value' => array($value)));
-                    sleep(2);
-                    $results->find('css', 'li')->click();
-                    sleep(2);
+                    $values = explode(',', $value);
+                    foreach ($values as $value) {
+                        $driver->getWebDriverSession()
+                            ->element('xpath', $select2->getXpath())
+                            ->postValue(array('value' => array($value)));
+                        sleep(2);
+                        $results->find('css', 'li')->click();
+                        sleep(2);
+                    }
                 }
             } elseif ($value !== false) {
                 $elt->fillField('value', $value);

@@ -41,14 +41,7 @@ class FamilyFilterSpec extends ObjectBehavior
     {
         $qb->addAnd(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
 
-        $this->addFieldFilter('family', 'IN', ['empty']);
-    }
-
-    function it_adds_empty_and_in_filters_on_a_field_in_the_query($qb)
-    {
-        $qb->addAnd(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
-
-        $this->addFieldFilter('family', 'IN', ['empty', 1, 2]);
+        $this->addFieldFilter('family', 'EMPTY', null);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array()
@@ -62,5 +55,4 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::integerExpected('family', 'filter', 'family'))
             ->during('addFieldFilter', ['family', 'IN', [1, 2, 'WRONG']]);
     }
-
 }

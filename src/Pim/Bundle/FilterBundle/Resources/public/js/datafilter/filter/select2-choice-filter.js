@@ -10,6 +10,7 @@ define(
             emptyChoice: false,
             resultCache: {},
             resultsPerPage: 20,
+            choices: [],
             popupCriteriaTemplate: _.template(
                 '<div class="choicefilter">' +
                     '<div class="input-prepend">' +
@@ -96,25 +97,34 @@ define(
                     minimumInputLength: 0
                 };
 
-                config.ajax = {
-                    url: Routing.generate(this.choiceUrl, this.choiceUrlParams),
-                    cache: true,
-                    data: _.bind(function(term, page) {
-                        return {
-                            search: term,
-                            options: {
-                                limit: this.resultsPerPage,
-                                page: page
-                            }
-                        };
-                    }, this),
-                    results: _.bind(function(data) {
-                        this._cacheResults(data.results);
-                        data.more = this.resultsPerPage === data.results.length;
+                if (this.choiceUrl) {
+                    config.ajax = {
+                        url: Routing.generate(this.choiceUrl, this.choiceUrlParams),
+                        cache: true,
+                        data: _.bind(function(term, page) {
+                            return {
+                                search: term,
+                                options: {
+                                    limit: this.resultsPerPage,
+                                    page: page
+                                }
+                            };
+                        }, this),
+                        results: _.bind(function(data) {
+                            this._cacheResults(data.results);
+                            data.more = this.resultsPerPage === data.results.length;
 
-                        return data;
-                    }, this)
-                };
+                            return data;
+                        }, this)
+                    };
+                } else {
+                    config.data = _.map(this.choices, function(choice) {
+                        return {
+                            id: choice.value,
+                            text: choice.label
+                        };
+                    });
+                }
 
                 return config;
             },
@@ -197,7 +207,16 @@ define(
 
                 _.each(ids, function(id) {
                     if (_.isUndefined(this.resultCache[id])) {
-                        missingResults.push(id);
+                        if (_.isEmpty(this.choices)) {
+                            missingResults.push(id);
+                        } else {
+                            var choice = _.findWhere(this.choices, { value: id });
+                            if (_.isUndefined(choice)) {
+                                missingResults.push(id);
+                            } else {
+                                results.push({ id: choice.value, text: choice.label });
+                            }
+                        }
                     } else {
                         results.push({ id: id, text: this.resultCache[id] });
                     }

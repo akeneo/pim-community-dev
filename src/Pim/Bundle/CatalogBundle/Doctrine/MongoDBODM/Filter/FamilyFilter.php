@@ -46,38 +46,22 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        $this->checkValue($field, $value);
+        if (Operators::IS_EMPTY !== $operator) {
+            $this->checkValue($field, $value);
+        }
 
-        $value = is_array($value) ? $value : [$value];
-
-        if ($operator === Operators::NOT_IN_LIST) {
+        if (Operators::IN_LIST === $operator) {
+            $expr = new Expr();
+            $this->qb->addAnd(
+                $expr->field($field)->in($value)
+            );
+        } elseif (Operators::NOT_IN_LIST === $operator) {
             $this->qb->field($field)->notIn($value);
-        } else {
-            // Case filter with value(s) and empty
-            if (in_array('empty', $value) && count($value) > 1) {
-                unset($value[array_search('empty', $value)]);
-                $exprValues = new Expr();
-                $exprValues->field($field)->in($value);
-
-                $exprEmpty = new Expr();
-                $exprEmpty = $exprEmpty->field($field)->exists(false);
-
-                $exprAnd = new Expr();
-                $exprAnd->addOr($exprValues);
-                $exprAnd->addOr($exprEmpty);
-                $this->qb->addAnd($exprAnd);
-            } elseif (in_array('empty', $value)) {
-                // TODO: fix this weird support of EMPTY operator
-                unset($value[array_search('empty', $value)]);
-
-                $expr = new Expr();
-                $expr = $expr->field($field)->exists(false);
-                $this->qb->addAnd($expr);
-            } elseif (count($value) > 0) {
-                $expr = new Expr();
-                $expr->field($field)->in($value);
-                $this->qb->addAnd($expr);
-            }
+        } elseif (Operators::IS_EMPTY === $operator) {
+            $expr = new Expr();
+            $this->qb->addAnd(
+                $expr->field($field)->exists(false)
+            );
         }
 
         return $this;
@@ -96,7 +80,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         foreach ($value as $family) {
-            if ('empty' !== $family && !is_integer($family)) {
+            if (!is_integer($family)) {
                 throw InvalidArgumentException::integerExpected($field, 'filter', 'family');
             }
         }

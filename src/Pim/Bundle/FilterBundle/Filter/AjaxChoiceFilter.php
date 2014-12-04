@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 /**
  * Choice filter with asynchronously populated options
@@ -31,10 +32,21 @@ class AjaxChoiceFilter extends ChoiceFilter
     {
         $formView = $this->getForm()->createView();
 
+        $choices = array_map(
+            function (ChoiceView $choice) {
+                return [
+                    'label' => $choice->label,
+                    'value' => $choice->value
+                ];
+            },
+            $formView->vars['choices']
+        );
+
         $defaultMetadata = [
             'name'                     => $this->getName(),
             'label'                    => ucfirst($this->name),
             FilterUtility::ENABLED_KEY => true,
+            'choices'                  => $choices,
         ];
 
         $metadata = array_diff_key(

@@ -97,7 +97,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.entity.class%
         arguments:
             - ['family', 'groups']
-            - ['IN', 'NOT IN']
+            - ['IN', 'NOT IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
