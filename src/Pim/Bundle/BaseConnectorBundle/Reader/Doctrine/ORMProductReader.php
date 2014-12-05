@@ -125,14 +125,6 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     public function setQuery(AbstractQuery $query)
     {
-        if (!is_a($query, 'Doctrine\ORM\AbstractQuery', true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    '$query must be a Doctrine\ORM\AbstractQuery instance, got "%s"',
-                    is_object($query) ? get_class($query) : $query
-                )
-            );
-        }
         $this->query = $query;
     }
 
