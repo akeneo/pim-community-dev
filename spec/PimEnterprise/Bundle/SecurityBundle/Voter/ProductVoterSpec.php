@@ -67,7 +67,7 @@ class ProductVoterSpec extends ObjectBehavior
         CategoryInterface $categoryFive,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::EDIT_PRODUCTS)->willReturn([1, 3]);
+        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_PRODUCTS, [5, 6])->willReturn(false);
         $product->getCategories()->willReturn([$categoryFive, $categorySix]);
         $categoryFive->getId()->willReturn(5);
         $categorySix->getId()->willReturn(6);
@@ -85,7 +85,7 @@ class ProductVoterSpec extends ObjectBehavior
         CategoryInterface $categoryOne,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::EDIT_PRODUCTS)->willReturn([1, 3]);
+        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_PRODUCTS, [1, 6])->willReturn(true);
         $product->getCategories()->willReturn([$categoryOne, $categorySix]);
         $categoryOne->getId()->willReturn(1);
         $categorySix->getId()->willReturn(6);
@@ -103,16 +103,14 @@ class ProductVoterSpec extends ObjectBehavior
         CategoryInterface $categoryOne
     ) {
         $token->getUser()->willReturn($user);
-
         $product->getCategories()->willReturn([$categoryOne]);
         $categoryOne->getId()->willReturn(1);
-        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS)->willReturn([1]);
+        $categoryAccessRepository->isCategoriesGranted($user, Attributes::OWN_PRODUCTS, [1])->willReturn(true);
 
         $this->vote($token, $product, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
     function it_denies_OWN_access_to_user_that_does_not_have_a_group_which_has_the_ownership_of_the_product(
-        $categoryAccessRepository,
         TokenInterface $token,
         ProductInterface $product,
         UserInterface $user,
@@ -122,7 +120,6 @@ class ProductVoterSpec extends ObjectBehavior
 
         $product->getCategories()->willReturn([$categoryOne]);
         $categoryOne->getId()->willReturn(1);
-        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS)->willReturn([2, 3]);
 
         $this->vote($token, $product, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);
     }

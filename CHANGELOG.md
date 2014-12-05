@@ -27,6 +27,11 @@
 # 1.0.x
 
 ## Bug fixes
+- PIM-3449: Fix performance problem on on grid with many categories
+
+# 1.0.7 (2014-12-03)
+
+## Bug fixes
 - PIM-3444: Fix the enabled flag not published
 
 # 1.0.6 (2014-11-26)
