@@ -63,7 +63,6 @@ class ProductVoter implements VoterInterface
         $result = VoterInterface::ACCESS_ABSTAIN;
 
         if ($this->supportsClass($object)) {
-
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
                     $result = VoterInterface::ACCESS_DENIED;
@@ -71,7 +70,6 @@ class ProductVoter implements VoterInterface
                     if ($this->isProductAccessible($object, $token->getUser(), $attribute)) {
                         return VoterInterface::ACCESS_GRANTED;
                     }
-
                 }
             }
         }
@@ -110,13 +108,7 @@ class ProductVoter implements VoterInterface
         foreach ($product->getCategories() as $category) {
             $categoryIds[] = $category->getId();
         }
-        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
 
-        $intersection = array_intersect($categoryIds, $grantedCategoryIds);
-        if (count($intersection)) {
-            return true;
-        }
-
-        return false;
+        return $this->categoryAccessRepo->isCategoriesGranted($user, $categoryAttribute, $categoryIds);
     }
 }
