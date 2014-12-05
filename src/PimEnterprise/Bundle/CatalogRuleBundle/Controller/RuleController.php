@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
+use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,28 +26,35 @@ class RuleController extends BaseProductController
     /** @var RuleLinkedResourceManager */
     protected $linkedResManager;
 
+    /** @var string */
+    protected $attributeClass;
+
     /**
      * Constructor
      *
      * @param RuleLinkedResourceManager $linkedResManager
      */
-    public function __construct(RuleLinkedResourceManager $linkedResManager)
+    public function __construct(RuleLinkedResourceManager $linkedResManager, $attributeClass)
     {
         $this->linkedResManager = $linkedResManager;
+        $this->attributeClass   = $attributeClass;
     }
 
-    /**
-     * List all rules for an attribute
-     *
-     * @param string $attributeId
-     *
-     * @return Response
-     */
-    public function listAttributeRulesAction($attributeId)
+    public function indexAction($ressourceType, $ressourceId)
     {
-        $ruleCodes = $this->presentRule($attributeId);
+        switch ($ressourceType) {
+            case 'attribute':
+                $resourceName = $this->attributeClass;
+                break;
+            default:
+                $resourceName = '';
+        }
 
-        return new Response($ruleCodes);
+        $rules = $this->linkedResManager->getRulesForAttribute($ressourceId, $resourceName);
+
+        $normalizedRules = $this->normalizer->normalize($rules, 'array');
+
+        return new JsonResponse($normalizedRules);
     }
 
     /**

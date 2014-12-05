@@ -1,0 +1,7 @@
+pimee_catalog_rule_attribute_rules:
+    path: /rules/attribute/{ressourceType}/{resourceId}
+    defaults: { _controller: pimee_catalog_rule.controller.rule:indexAction }
+    requirements:
+        ressourceType: '[0-9a-f]+'
+        resourceId: '[0-9a-f]+'
+    methods: [GET]

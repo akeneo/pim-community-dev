@@ -26,7 +26,10 @@ class RuleLinkedResource implements RuleLinkedResourceInterface
     /** @var RuleDefinitionInterface */
     protected $rule;
 
-    /** @var string */
+    /**
+     * @var string
+     * TODO: we should rename that into resourceType
+     */
     protected $resourceName;
 
     /** @var mixed */
