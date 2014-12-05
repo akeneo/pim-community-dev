@@ -1,0 +1,196 @@
+
+
+<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    <table class="rule-table">
+        <colgroup>
+            <col class="code"></col>
+            <col class="condition"></col>
+            <col class="action"></col>
+            <col class="button"></col>
+        </colgroup>
+        <thead>
+            <tr>
+                <th>code</th>
+                <th>condition</th>
+                <th>action</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="rule-row">
+                <td class="rule-cell rule-code">copy_name</td>
+                <td class="rule-cell">
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">Description</span>
+                        <span class="rule-item-emphasize">contains</span>
+                        <span class="condition-value">"test"</span>
+                    </div>
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">
+                            Size
+                            <span class="rule-item-context">
+                                <span class="scope">
+                                    mobile
+                                </span>
+                            </span>
+                        </span>
+                        <span class="rule-item-emphasize">>=</span>
+                        <span class="condition-value">10.5 Kilogram(s)</span>
+                    </div>
+                </td>
+                <td class="rule-cell rule-actions">
+                    <div class="rule-item rule-action">
+                        <span class="rule-item-emphasize">then</span>
+                        <span class="action-field">Name</span>
+                        <span class="rule-item-emphasize">is copied into</span>
+                        <span class="action-field">Description</span>
+                    </div>
+                </td>
+                <td class="rule-cell">
+                    <button class="btn"><i class="icon-trash"></i> Delete</button>
+                </td>
+            </tr>
+            <tr class="rule-row">
+                <td class="rule-cell rule-code">copy_name</td>
+                <td class="rule-cell">
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">Description</span>
+                        <span class="rule-item-emphasize">contains</span>
+                        <span class="condition-value">"test"</span>
+                    </div>
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">Size</span>
+                        <span class="rule-item-emphasize">>=</span>
+                        <span class="condition-value">10.5 Kilogram(s)</span>
+                    </div>
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">Name</span>
+                        <span class="rule-item-emphasize">is set to</span>
+                        <span class="condition-value">Shirt</span>
+                    </div>
+                </td>
+                <td class="rule-cell rule-actions">
+                    <div class="rule-item rule-action">
+                        <span class="rule-item-emphasize">then</span>
+                        <span class="action-field">Description</span>
+                        <span class="rule-item-emphasize">is set to</span>
+                        <span class="action-field">Really nice shirt ! With a beautyful pattern of birds in it. You should try it on our virtual fitting room.</span>
+                    </div>
+                </td>
+                <td class="rule-cell">
+                    <button class="btn"><i class="icon-trash"></i> Delete</button>
+                </td>
+            </tr>
+            <tr class="rule-row">
+                <td class="rule-cell rule-code">copy_name</td>
+                <td class="rule-cell">
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">Description</span>
+                        <span class="rule-item-emphasize">contains</span>
+                        <span class="condition-value">"test"</span>
+                    </div>
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">Size</span>
+                        <span class="rule-item-emphasize">>=</span>
+                        <span class="condition-value">10.5 Kilogram(s)</span>
+                    </div>
+                </td>
+                <td class="rule-cell rule-actions">
+                    <div class="rule-item rule-action">
+                        <span class="rule-item-emphasize">then</span>
+                        <span class="action-field">Name</span>
+                        <span class="rule-item-emphasize">is copied into</span>
+                        <span class="action-field">Description</span>
+                    </div>
+                </td>
+                <td class="rule-cell">
+                    <button class="btn"><i class="icon-trash"></i> Delete</button>
+                </td>
+            </tr>
+            <tr class="rule-row">
+                <td class="rule-cell rule-code">copy_name</td>
+                <td class="rule-cell">
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">
+                            Description
+                            <span class="rule-item-context">
+                                <span class="locale">
+                                    <span class="flag-language">
+                                        <i class="flag flag-fr"></i>
+                                    </span>
+                                </span>
+                                <span class="scope">
+                                    ecommerce
+                                </span>
+                            </span>
+                        </span>
+                        <span class="rule-item-emphasize">contains</span>
+                        <span class="condition-value">"test"</span>
+                    </div>
+                    <div class="rule-item rule-condition">
+                        <span class="rule-item-emphasize">if</span>
+                        <span class="condition-field">
+                            Size
+                            <span class="rule-item-context">
+                                <span class="locale">
+                                    <span class="flag-language">
+                                        <i class="flag flag-us"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="rule-item-emphasize">>=</span>
+                        <span class="condition-value">10.5 Kilogram(s)</span>
+                    </div>
+                </td>
+                <td class="rule-cell rule-actions">
+                    <div class="rule-item rule-action">
+                        <span class="rule-item-emphasize">then</span>
+                        <span class="action-field">Name</span>
+                        <span class="rule-item-emphasize">is copied into</span>
+                        <span class="action-field">Description</span>
+                    </div>
+                </td>
+                <td class="rule-cell">
+                    <button class="btn"><i class="icon-trash"></i> Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="rule-item rule-action">
+        <span class="rule-item-emphasize">then</span>
+        <span class="action-field">Name</span>
+        <span class="rule-item-emphasize">is copied into</span>
+        <span class="action-field">Description</span>
+    </div>
+
+
+    <div class="rule-item rule-condition">
+        <span class="rule-item-emphasize">if</span>
+        <span class="condition-field">
+            Description
+            <span class="rule-item-context">
+                <span class="locale">
+                    <span class="flag-language">
+                        <i class="flag flag-us"></i>
+                    </span>
+                </span>
+                <span class="scope">
+                    ecommerce
+                </span>
+            </span>
+        </span>
+        <span class="rule-item-emphasize">contains</span>
+        <span class="condition-value">"test"</span>
+    </div>
+
+</div>

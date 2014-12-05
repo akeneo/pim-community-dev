@@ -1,2 +1,6 @@
 pimee_catalog_rule:
-    attribute.smart.label: Smart
+    attribute:
+        tab:
+            rule.title: Smart rules
+        grid:
+            is_smart.label: Smart

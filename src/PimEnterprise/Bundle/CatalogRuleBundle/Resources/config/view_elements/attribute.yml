@@ -1,0 +1,11 @@
+parameters:
+    pimee_catalog_rule.view_element.attribute.tab.rule.template: 'PimEnterpriseCatalogRuleBundle:Attribute:Tab/rule.html.twig'
+
+services:
+    pimee_catalog_rule.view_element.attribute.tab.rule:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_catalog_rule.attribute.tab.rule'
+            - %pimee_catalog_rule.view_element.attribute.tab.rule.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 95 }
