@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Normalizer;
 
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -35,7 +36,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
                 'type'         => $object->getType(),
                 'priority'     => $object->getPriority()
             ],
-            json_decode($object->getContent())
+            json_decode($object->getContent(), true)
         );
     }
 
@@ -44,7 +45,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof RuleDefinition &&
+        return $data instanceof RuleDefinitionInterface &&
             in_array($format, $this->supportedFormats);
     }
 }

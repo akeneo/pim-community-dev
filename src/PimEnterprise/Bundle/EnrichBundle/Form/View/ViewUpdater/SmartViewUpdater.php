@@ -57,7 +57,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
         }
 
         $url = $this->urlGenerator->generate(
-            'pimee_catalog_rule_attribute_rules',
+            'pimee_catalog_rule_index',
             [
                 'resourceId'   => $attributeId,
                 'resourceType' => 'attribute',

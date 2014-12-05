@@ -13,13 +13,15 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Rule definition normalizer for internal api
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class RuleDefinitionNormalizer implements NormalizerInterface
+class RuleCollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var string[] */
     protected $supportedFormats = array('array');
@@ -29,15 +31,13 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        return array_merge(
-            [
-                'id'           => $object->getId(),
-                'code'         => $object->getCode(),
-                'type'         => $object->getType(),
-                'priority'     => $object->getPriority()
-            ],
-            json_decode($object->getContent())
-        );
+        $rules = [];
+
+        foreach ($object as $rule) {
+            $rules[] = $this->serializer->normalize($rule, $format, $context);
+        }
+
+        return $rules;
     }
 
     /**
@@ -45,8 +45,11 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Collection &&
-            in_array($format, $this->supportedFormats);
+        return (
+            is_array($data) ||
+            $data instanceof Collection
+        ) &&
+        in_array($format, $this->supportedFormats);
     }
 
     /**

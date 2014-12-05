@@ -8,4 +8,5 @@ services:
         class: %pimee_catalog_rule.controller.rule.class%
         arguments:
             - '@pimee_catalog_rule.manager.rule_linked_resource'
+            - '@pim_internal_api_serializer'
             - '%pim_catalog.entity.attribute.class%'

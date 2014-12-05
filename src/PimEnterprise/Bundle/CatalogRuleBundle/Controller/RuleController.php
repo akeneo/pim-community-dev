@@ -14,17 +14,22 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Rule controller
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleController extends BaseProductController
+class RuleController
 {
     /** @var RuleLinkedResourceManager */
     protected $linkedResManager;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /** @var string */
     protected $attributeClass;
@@ -33,16 +38,22 @@ class RuleController extends BaseProductController
      * Constructor
      *
      * @param RuleLinkedResourceManager $linkedResManager
+     * @param NormalizerInterface       $normalizer
+     * @param string                    $attributeClass
      */
-    public function __construct(RuleLinkedResourceManager $linkedResManager, $attributeClass)
-    {
+    public function __construct(
+        RuleLinkedResourceManager $linkedResManager,
+        NormalizerInterface $normalizer,
+        $attributeClass
+    ) {
         $this->linkedResManager = $linkedResManager;
+        $this->normalizer       = $normalizer;
         $this->attributeClass   = $attributeClass;
     }
 
-    public function indexAction($ressourceType, $ressourceId)
+    public function indexAction($resourceType, $resourceId)
     {
-        switch ($ressourceType) {
+        switch ($resourceType) {
             case 'attribute':
                 $resourceName = $this->attributeClass;
                 break;
@@ -50,7 +61,7 @@ class RuleController extends BaseProductController
                 $resourceName = '';
         }
 
-        $rules = $this->linkedResManager->getRulesForAttribute($ressourceId, $resourceName);
+        $rules = $this->linkedResManager->getRulesForAttribute($resourceId, $resourceName);
 
         $normalizedRules = $this->normalizer->normalize($rules, 'array');
 
