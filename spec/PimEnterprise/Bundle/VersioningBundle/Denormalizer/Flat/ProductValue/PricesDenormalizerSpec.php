@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductVa
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 class PricesDenormalizerSpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_a_price_collection(AbstractProductValue $priceValue, $productBuilder, AbstractProductPrice $productPrice)
+    function it_denormalizes_a_price_collection(AbstractProductValue $priceValue, $productBuilder, ProductPriceInterface $productPrice)
     {
         $context = ['value' => $priceValue, 'price_currency' => 'EUR'];
 
