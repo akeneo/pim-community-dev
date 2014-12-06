@@ -6,17 +6,17 @@ services:
     pim_catalog.saver.group_type:
         class: %pim_catalog.saver.base.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - @doctrine.orm.entity_manager
             - %pim_catalog.entity.group_type.class%
 
     pim_catalog.saver.currency:
         class: %pim_catalog.saver.base.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - @doctrine.orm.entity_manager
             - %pim_catalog.entity.currency.class%
 
     pim_catalog.saver.product:
         class: %pim_catalog.saver.product.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.completeness'
+            - @pim_catalog.object_manager.product
+            - @pim_catalog.manager.completeness

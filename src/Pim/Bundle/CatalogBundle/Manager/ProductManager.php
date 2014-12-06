@@ -38,6 +38,9 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /** @var SaverInterface */
     protected $productSaver;
 
+    /** @var BulkSaverInterface */
+    protected $productBulkSaver;
+
     /** @var ObjectManager */
     protected $objectManager;
 
@@ -68,6 +71,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      * @param array                      $configuration
      * @param ObjectManager              $objectManager
      * @param SaverInterface             $productSaver
+     * @param BulkSaverInterface         $productBulkSaver
      * @param EventDispatcherInterface   $eventDispatcher
      * @param MediaManager               $mediaManager
      * @param ProductBuilder             $builder
@@ -80,6 +84,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         $configuration,
         ObjectManager $objectManager,
         SaverInterface $productSaver,
+        BulkSaverInterface $productBulkSaver,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -90,6 +95,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     ) {
         $this->configuration = $configuration;
         $this->productSaver = $productSaver;
+        $this->productBulkSaver = $productBulkSaver;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaManager = $mediaManager;
@@ -229,24 +235,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      */
     public function saveAll(array $objects, array $options = [])
     {
-        $allOptions = array_merge(
-            [
-                'recalculate' => false,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
-
-        foreach ($objects as $object) {
-            $this->save($object, $itemOptions);
-        }
-
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->productBulkSaver->saveAll($objects, $options);
     }
 
     /**
