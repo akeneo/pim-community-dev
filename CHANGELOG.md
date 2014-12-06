@@ -7,7 +7,12 @@
 - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - remove BaseFilter usage
 - add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
-- Introduce an AttributeInterface to replace AbstractAttribute
+- Use ProductInterface and not AbstractProduct
+- Use ProductValueInterface and not AbstractProductValue
+- Use ProductPriceInterface and not AbstractProductPrice
+- Use ProductMediaInterface and not AbstractMetric
+- Use AttributeInterface and not AbstractAttribute
+- Use CompletenessInterface and not AbstractCompleteness
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
