@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductQueryHelpCommand extends ContainerAwareCommand
+class QueryHelpProductCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -22,7 +22,7 @@ class ProductQueryHelpCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:debug:product-query-help')
+            ->setName('pim:product:query-help')
             ->setDescription('Display useable product query filters');
     }
 

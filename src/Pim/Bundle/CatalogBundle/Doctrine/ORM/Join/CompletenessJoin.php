@@ -13,10 +13,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class CompletenessJoin
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
     /**
@@ -33,10 +30,12 @@ class CompletenessJoin
      * Add completeness joins to query builder
      *
      * @param string $completenessAlias the join alias
+     * @param string $locale            the locale
+     * @param sting  $scope             the scope
      *
      * @return CompletenessJoin
      */
-    public function addJoins($completenessAlias)
+    public function addJoins($completenessAlias, $locale, $scope)
     {
         $rootAlias         = $this->qb->getRootAlias();
         $localeAlias       = $completenessAlias.'Locale';
@@ -52,13 +51,13 @@ class CompletenessJoin
                 'PimCatalogBundle:Locale',
                 $localeAlias,
                 'WITH',
-                $localeAlias.'.code = :dataLocale'
+                $localeAlias.'.code = :cLocaleCode'
             )
             ->leftJoin(
                 'PimCatalogBundle:Channel',
                 $channelAlias,
                 'WITH',
-                $channelAlias.'.code = :scopeCode'
+                $channelAlias.'.code = :cScopeCode'
             )
             ->leftJoin(
                 $completenessClass,
@@ -67,7 +66,9 @@ class CompletenessJoin
                 $completenessAlias.'.locale = '.$localeAlias.'.id AND '.
                 $completenessAlias.'.channel = '.$channelAlias.'.id AND '.
                 $completenessAlias.'.product = '.$rootAlias.'.id'
-            );
+            )
+            ->setParameter('cLocaleCode', $locale)
+            ->setParameter('cScopeCode', $scope);
 
         return $this;
     }

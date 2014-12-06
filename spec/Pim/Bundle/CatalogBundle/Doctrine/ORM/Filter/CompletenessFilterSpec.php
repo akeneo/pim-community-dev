@@ -3,11 +3,12 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\EntityManager;
-use \Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Prophecy\Argument;
 
 class CompletenessFilterSpec extends ObjectBehavior
 {
@@ -51,13 +52,13 @@ class CompletenessFilterSpec extends ObjectBehavior
             'PimCatalogBundle:Locale',
             'filterCompletenessLocale',
             'WITH',
-            'filterCompletenessLocale'.'.code = :dataLocale'
+            'filterCompletenessLocale'.'.code = :cLocaleCode'
         )->shouldBeCalled()->willReturn($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Channel',
             'filterCompletenessChannel',
             'WITH',
-            'filterCompletenessChannel'.'.code = :scopeCode'
+            'filterCompletenessChannel'.'.code = :cScopeCode'
         )->shouldBeCalled()->willReturn($qb);
         $qb->leftJoin(
             'test',
@@ -65,6 +66,8 @@ class CompletenessFilterSpec extends ObjectBehavior
             'WITH',
             'filterCompleteness.locale = filterCompletenessLocale.id AND filterCompleteness.channel = filterCompletenessChannel.id AND filterCompleteness.product = p.id'
         )->shouldBeCalled()->willReturn($qb);
+        $qb->setParameter('cLocaleCode', Argument::any())->shouldBeCalled()->willReturn($qb);;
+        $qb->setParameter('cScopeCode', Argument::any())->shouldBeCalled()->willReturn($qb);;
 
         $qb->andWhere('filterCompleteness.ratio = 100')->shouldBeCalled();
 
@@ -93,13 +96,13 @@ class CompletenessFilterSpec extends ObjectBehavior
             'PimCatalogBundle:Locale',
             'filterCompletenessLocale',
             'WITH',
-            'filterCompletenessLocale'.'.code = :dataLocale'
+            'filterCompletenessLocale'.'.code = :cLocaleCode'
         )->shouldBeCalled()->willReturn($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Channel',
             'filterCompletenessChannel',
             'WITH',
-            'filterCompletenessChannel'.'.code = :scopeCode'
+            'filterCompletenessChannel'.'.code = :cScopeCode'
         )->shouldBeCalled()->willReturn($qb);
         $qb->leftJoin(
             'test',
@@ -107,6 +110,8 @@ class CompletenessFilterSpec extends ObjectBehavior
             'WITH',
             'filterCompleteness.locale = filterCompletenessLocale.id AND filterCompleteness.channel = filterCompletenessChannel.id AND filterCompleteness.product = p.id'
         )->shouldBeCalled()->willReturn($qb);
+        $qb->setParameter('cLocaleCode', Argument::any())->shouldBeCalled()->willReturn($qb);
+        $qb->setParameter('cScopeCode', Argument::any())->shouldBeCalled()->willReturn($qb);
 
         $qb->andWhere('filterCompleteness.ratio < 100')->shouldBeCalled();
 

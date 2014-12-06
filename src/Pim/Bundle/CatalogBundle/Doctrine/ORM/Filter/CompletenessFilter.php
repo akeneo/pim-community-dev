@@ -44,7 +44,7 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
         $alias = 'filterCompleteness';
         $field = $alias.'.ratio';
         $util = new CompletenessJoin($this->qb);
-        $util->addJoins($alias);
+        $util->addJoins($alias, $locale, $scope);
 
         if ('=' === $operator) {
             $this->qb->andWhere($this->qb->expr()->eq($field, '100'));

@@ -111,6 +111,7 @@ class StepExecutionNormalizer implements NormalizerInterface
                 'item'   => $warning->getItem(),
             ];
         }
+
         return $result;
     }
 

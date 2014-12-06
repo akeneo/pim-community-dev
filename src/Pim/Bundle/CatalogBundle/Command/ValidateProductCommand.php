@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValidatorCommand extends ContainerAwareCommand
+class ValidateProductCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -24,7 +24,8 @@ class ProductValidatorCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:debug:product-validator')
+            ->setName('pim:product:validate')
+            ->setDescription('Load and validate a product')
             ->addArgument(
                 'identifier',
                 InputArgument::REQUIRED,
@@ -69,7 +70,6 @@ class ProductValidatorCommand extends ContainerAwareCommand
     }
 
     /**
-     *
      * @param ProductInterface
      *
      * @return ConstraintViolationListInterface
