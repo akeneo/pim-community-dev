@@ -211,7 +211,7 @@ abstract class AbstractProduct implements ProductInterface
      *
      * @param ProductValueInterface $value
      *
-     * @return AbstractProduct
+     * @return ProductInterface
      */
     protected function removeIndexedValue(ProductValueInterface $value)
     {
@@ -267,7 +267,7 @@ abstract class AbstractProduct implements ProductInterface
      * is to make sure that the values are initialized
      * (loaded from DB)
      *
-     * @return AbstractProduct
+     * @return ProductInterface
      */
     protected function indexValuesIfNeeded()
     {

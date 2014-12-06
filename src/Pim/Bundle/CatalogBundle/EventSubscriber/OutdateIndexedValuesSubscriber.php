@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -37,10 +37,10 @@ class OutdateIndexedValuesSubscriber implements EventSubscriber
         $object = $args->getObject();
         if ($object instanceof ProductValueInterface) {
             $product = $object->getEntity();
-            if ($product instanceof AbstractProduct) {
+            if ($product instanceof ProductInterface) {
                 $product->markIndexedValuesOutdated();
             }
-        } elseif ($object instanceof AbstractProduct) {
+        } elseif ($object instanceof ProductInterface) {
             $object->markIndexedValuesOutdated();
         }
     }

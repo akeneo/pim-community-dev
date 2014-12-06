@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
@@ -135,9 +135,9 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
     function it_sets_a_price_collection_value_to_a_product_value(
         $builder,
         AttributeInterface $attribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
         $currencyManager,
         ProductValue $productValue
     ) {

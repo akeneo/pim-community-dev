@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
@@ -46,7 +46,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_properties_of_product(
-        AbstractProduct $product,
+        ProductInterface $product,
         ArrayCollection $values,
         \ArrayIterator $iterator,
         $filter
@@ -73,7 +73,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_values_of_product(
-        AbstractProduct $product,
+        ProductInterface $product,
         AttributeInterface $attribute,
         ProductValueInterface $value,
         ArrayCollection $values,

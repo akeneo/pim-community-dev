@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -80,29 +80,29 @@ class ProductPdfRenderer implements RendererInterface
      */
     public function supports($object, $format)
     {
-        return $object instanceof AbstractProduct && $format === static::PDF_FORMAT;
+        return $object instanceof ProductInterface && $format === static::PDF_FORMAT;
     }
 
     /**
      * Get attributes to display
-     * @param AbstractProduct $product
-     * @param string          $locale
+     * @param ProductInterface $product
+     * @param string           $locale
      *
      * @return AttributeInterface[]
      */
-    protected function getAttributes(AbstractProduct $product, $locale)
+    protected function getAttributes(ProductInterface $product, $locale)
     {
         return $product->getAttributes();
     }
 
     /**
      * get attributes grouped by attribute group
-     * @param AbstractProduct $product
-     * @param string          $locale
+     * @param ProductInterface $product
+     * @param string           $locale
      *
      * @return AttributeGroup[]
      */
-    protected function getGroupedAttributes(AbstractProduct $product, $locale)
+    protected function getGroupedAttributes(ProductInterface $product, $locale)
     {
         $groups = [];
 
@@ -120,12 +120,12 @@ class ProductPdfRenderer implements RendererInterface
 
     /**
      * Get all image attributes
-     * @param AbstractProduct $product
-     * @param string          $locale
+     * @param ProductInterface $product
+     * @param string           $locale
      *
      * @return AttributeInterface[]
      */
-    protected function getImageAttributes(AbstractProduct $product, $locale)
+    protected function getImageAttributes(ProductInterface $product, $locale)
     {
         $attributes = [];
 
