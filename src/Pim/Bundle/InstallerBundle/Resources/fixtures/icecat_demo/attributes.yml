@@ -326,3 +326,177 @@ attributes:
         type: pim_catalog_multiselect
         group: design
         sortOrder: 34
+    camera_brand:
+        labels:
+            en_US: 'Brand'
+            fr_FR: 'Marque'
+            de_DE: 'Hersteller'
+        type: pim_catalog_simpleselect
+        group: technical
+        sortOrder: 35
+    camera_model_name:
+        labels:
+            en_US: 'Model name'
+            fr_FR: 'Modèle'
+            de_DE: 'Modelname'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 35
+    short_description:
+        labels:
+            en_US: 'Short description'
+            fr_FR: 'Description courte'
+            de_DE: 'Kurze Beschreibung'
+        type: pim_catalog_textarea
+        group: technical
+        sortOrder: 36
+        localizable: true
+        scopable: true
+    max_image_resolution:
+        labels:
+            en_US: 'Maximum image resolution'
+            fr_FR: 'Résolution maximum'
+            de_DE: 'Maximale Bildauflösung'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 37
+    image_resolutions:
+        labels:
+            en_US: 'Still image resolution(s)'
+            fr_FR: 'Résolution de la capture Photo'
+            de_DE: 'Festbild Auflösung(en)'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 38
+    supported_aspect_ratios:
+        labels:
+            en_US: 'Supported aspect ratios'
+            fr_FR: 'Rapports d''aspect pris en charge'
+            de_DE: 'Unterstützte Seitenverhältnisse'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 39
+    supported_image_format:
+        labels:
+            en_US: 'Supported image format'
+            fr_FR: 'Format d''image supportée'
+            de_DE: 'Unterstützte Bildformate'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 40
+    lens_mount_interface:
+        labels:
+            en_US: 'Lens mount interface'
+            fr_FR: 'Monture d''objectif d''interface'
+            de_DE: 'Linsen Montageanschluss'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 41
+    focus:
+        labels:
+            en_US: 'Focus'
+            fr_FR: 'Mise au point'
+            de_DE: 'Fokus'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 42
+    focus_adjustement:
+        labels:
+            en_US: 'Focus adjustment'
+            fr_FR: 'Ajustement mise au point'
+            de_DE: 'Fokus-Apassung'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 43
+        localizable: true
+    auto_focus_modes:
+        labels:
+            en_US: 'Auto focus modes'
+            fr_FR: 'Auto focus modes'
+            de_DE: 'Auto focus modes'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 44
+        localizable: true
+    auto_focus_points:
+        labels:
+            en_US: 'Auto focus points'
+            fr_FR: 'Auto focus points'
+            de_DE: 'Auto focus points'
+        type: pim_catalog_number
+        group: technical
+        sortOrder: 45
+    auto_focus_lock:
+        labels:
+            en_US: 'Auto focus lock'
+            fr_FR: 'Auto focus lock'
+            de_DE: 'Auto focus lock'
+        type: pim_catalog_boolean
+        group: technical
+        sortOrder: 46
+    auto_focus_assist_beam:
+        labels:
+            en_US: 'Auto focus beam'
+            fr_FR: 'Auto focus beam'
+            de_DE: 'Auto focus beam'
+        type: pim_catalog_boolean
+        group: technical
+        sortOrder: 47
+    iso_sensitivity:
+        labels:
+            en_US: 'Iso sensitivity'
+            fr_FR: 'Iso sensitivity'
+            de_DE: 'Iso sensitivity'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 48
+    light_exposure_modes:
+         labels:
+             en_US: 'Light exposure modes'
+             fr_FR: 'Light exposure modes'
+             de_DE: 'Light exposure modes'
+         type: pim_catalog_text
+         group: technical
+         sortOrder: 49
+         localizable: true
+    light_exposure_corrections:
+         labels:
+             en_US: 'Light exposure corrections'
+             fr_FR: 'Light exposure corrections'
+             de_DE: 'Light exposure corrections'
+         type: pim_catalog_text
+         group: technical
+         sortOrder: 50
+    light_metering:
+         labels:
+             en_US: 'Light metering'
+             fr_FR: 'Light metering'
+             de_DE: 'Light metering'
+         type: pim_catalog_text
+         group: technical
+         sortOrder: 51
+         localizable: true
+    auto_exposure:
+        labels:
+            en_US: 'Auto exposure'
+            fr_FR: 'Auto exposure'
+            de_DE: 'Auto exposure'
+        type: pim_catalog_boolean
+        group: technical
+        sortOrder: 52
+    iso_sensitivity_max:
+        labels:
+            en_US: 'ISO sensitivity (max)'
+            fr_FR: 'ISO sensitivity (max)'
+            de_DE: 'ISO sensitivity (max)'
+        type: pim_catalog_number
+        group: technical
+        sortOrder: 53
+    iso_sensitivity_min:
+        labels:
+            en_US: 'ISO sensitivity (min)'
+            fr_FR: 'ISO sensitivity (min)'
+            de_DE: 'ISO sensitivity (min)'
+        type: pim_catalog_number
+        group: technical
+        sortOrder: 54
