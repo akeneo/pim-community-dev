@@ -283,7 +283,7 @@ options:
         code: canon_brand
         attribute: camera_brand
         labels: { fr_FR: 'Canon', en_US: 'Canon', de_DE: 'Canon' }
-    canon_brand:
-        code: canon_brand
+    nikon_brand:
+        code: nikon_brand
         attribute: camera_brand
         labels: { fr_FR: 'Nikon', en_US: 'Nikon', de_DE: 'Nikon' }
