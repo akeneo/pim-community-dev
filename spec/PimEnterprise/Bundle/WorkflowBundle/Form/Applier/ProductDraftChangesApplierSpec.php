@@ -25,7 +25,7 @@ class ProductDraftChangesApplierSpec extends ObjectBehavior
         $formFactory,
         FormBuilderInterface $formBuilder,
         FormInterface $form,
-        Model\AbstractProduct $product,
+        Model\ProductInterface $product,
         ProductDraft $productDraft
     ) {
         $formFactory->createBuilder('form', $product, ['csrf_protection' => false])->willReturn($formBuilder);

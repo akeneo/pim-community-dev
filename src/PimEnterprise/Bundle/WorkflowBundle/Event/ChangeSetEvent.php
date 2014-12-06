@@ -29,7 +29,7 @@ class ChangeSetEvent extends Event
 
     /**
      * @param ProductValueInterface $value
-     * @param null|array           $changeSet
+     * @param null|array            $changeSet
      */
     public function __construct(ProductValueInterface $value, $changeSet)
     {

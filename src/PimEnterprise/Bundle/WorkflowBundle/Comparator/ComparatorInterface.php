@@ -37,7 +37,7 @@ interface ComparatorInterface
      * when comparing them to value data. Instead use simple equality operators (==, !=, ...)
      *
      * @param ProductValueInterface $value
-     * @param array                $submittedData
+     * @param array                 $submittedData
      *
      * @return array|null
      */

@@ -63,7 +63,7 @@ class GroupProductValuesExtension extends \Twig_Extension
      * Group product values
      *
      * @param Collection|\Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
-     * @param string                                                            $locale
+     * @param string                                                             $locale
      *
      * @return array
      */

@@ -38,7 +38,7 @@ class FilterProductValuesHelper
      * If locale is specified, only values in this locale are returned
      *
      * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
-     * @param string|null                                            $locale
+     * @param string|null                                             $locale
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[]
      */

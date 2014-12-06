@@ -4,9 +4,8 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
@@ -63,7 +62,7 @@ class ProductVoterSpec extends ObjectBehavior
         $categoryAccessRepository,
         $token,
         $user,
-        AbstractProduct $product,
+        ProductInterface $product,
         CategoryInterface $categoryFive,
         CategoryInterface $categorySix
     ) {
@@ -81,7 +80,7 @@ class ProductVoterSpec extends ObjectBehavior
         $categoryAccessRepository,
         $token,
         $user,
-        AbstractProduct $product,
+        ProductInterface $product,
         CategoryInterface $categoryOne,
         CategoryInterface $categorySix
     ) {

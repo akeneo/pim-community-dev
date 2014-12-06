@@ -82,7 +82,7 @@ class ChangeSetComputer implements ChangeSetComputerInterface
      * Delegates change preparation to event listeners/subscribers
      *
      * @param ProductValueInterface $value
-     * @param null|array           $changes
+     * @param null|array            $changes
      *
      * @return null|array
      */

@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -29,7 +29,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $catalogContext,
         $repository,
         $applier,
-        AbstractProduct $product,
+        ProductInterface $product,
         UserInterface $user,
         ProductDraft $productDraft,
         GenericEvent $event
@@ -56,7 +56,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
     function it_applies_nothing_if_there_is_no_user(
         $userContext,
         $applier,
-        AbstractProduct $product,
+        ProductInterface $product,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
@@ -71,7 +71,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $catalogContext,
         $repository,
         $applier,
-        AbstractProduct $product,
+        ProductInterface $product,
         UserInterface $user,
         GenericEvent $event
     ) {

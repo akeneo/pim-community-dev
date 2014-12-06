@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\View;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use Symfony\Component\Form\FormView;
