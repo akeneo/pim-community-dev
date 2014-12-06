@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -35,6 +35,6 @@ class ProductPriceNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractProductPrice && in_array($format, $this->supportedFormats);
+        return $data instanceof ProductPriceInterface && in_array($format, $this->supportedFormats);
     }
 }
