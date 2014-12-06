@@ -31,7 +31,12 @@
 - Add a requirement regarding the need of the exec() function (for job executions)
 - Introduce the 'pim_validator' service to be able to validate products and cascade on values with dynamic constraints
 - Introduce commands to ease developer's life (pim:product:query, pim:product:query-help, pim:product:update, pim:product:validate)
-- Introduce an AttributeInterface to replace AbstractAttribute
+- Use ProductInterface and not AbstractProduct
+- Use ProductValueInterface and not AbstractProductValue
+- Use ProductPriceInterface and not AbstractProductPrice
+- Use ProductMediaInterface and not AbstractMetric
+- Use AttributeInterface and not AbstractAttribute
+- Use CompletenessInterface and not AbstractCompleteness
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
