@@ -29,6 +29,7 @@ attributes:
         scopable: true
         sortOrder: 3
         wysiwyg_enabled: true
+        useableAsGridFilter: true
     weight:
         labels:
             en_US: Weight
@@ -40,6 +41,7 @@ attributes:
         metricFamily: Weight
         defaultMetricUnit: KILOGRAM
         decimalsAllowed: true
+        useableAsGridFilter: true
     maximum_scan_size:
         labels:
             en_US: 'Maximum scan size'
@@ -50,6 +52,7 @@ attributes:
         sortOrder: 5
         metricFamily: Length
         defaultMetricUnit: MILLIMETER
+        useableAsGridFilter: true
     color_scanning:
         labels:
             en_US: 'Color scanning'
@@ -93,7 +96,7 @@ attributes:
             de_DE: 'Total megapixels'
         type: pim_catalog_text
         group: technical
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 10
         decimalsAllowed: true
         negativeAllowed: false
@@ -104,7 +107,7 @@ attributes:
             de_DE: 'Optischer Zoom'
         type: pim_catalog_number
         group: technical
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 11
         decimalsAllowed: true
         negativeAllowed: false
@@ -133,7 +136,7 @@ attributes:
             de_DE: 'THD, totalklirren'
         type: pim_catalog_number
         group: technical
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 14
         decimalsAllowed: false
         negativeAllowed: false
@@ -144,7 +147,7 @@ attributes:
             de_DE: 'Signal-zu-Geräusche Verhältnis (SNR)'
         type: pim_catalog_number
         group: technical
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 21
         decimalsAllowed: false
         negativeAllowed: false
@@ -173,7 +176,7 @@ attributes:
             de_DE: 'Maximale Bildfrequenz'
         type: pim_catalog_number
         group: technical
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 18
         decimalsAllowed: false
         negativeAllowed: false
@@ -221,7 +224,7 @@ attributes:
             de_DE: Bildschirmdiagonale
         type: pim_catalog_metric
         group: technical
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 24
         metricFamily: Length
         defaultMetricUnit: INCH
@@ -242,7 +245,7 @@ attributes:
             de_DE: 'Effektive Bildfläche'
         type: pim_catalog_metric
         group: technical
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 24
         metricFamily: Length
         defaultMetricUnit: MILLIMETER
@@ -263,7 +266,7 @@ attributes:
             de_DE: Photography
         type: pim_catalog_image
         group: media
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 27
         allowedExtensions: 'jpg,jpeg,gif'
     pdf_description:
@@ -273,7 +276,7 @@ attributes:
             de_DE: PDF Bezeichnung
         type: pim_catalog_file
         group: media
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder: 28
         allowedExtensions: 'pdf'
     container_material:
@@ -302,6 +305,7 @@ attributes:
         type: pim_catalog_simpleselect
         group: color
         sortOrder: 31
+        useableAsGridFilter: true
     clothing_size:
         labels:
             en_US: 'Clothing size'
@@ -310,6 +314,7 @@ attributes:
         type: pim_catalog_simpleselect
         group: size
         sortOrder: 32
+        useableAsGridFilter: true
     tshirt_materials:
         labels:
             en_US: 'T-Shirt material'
@@ -318,6 +323,7 @@ attributes:
         type: pim_catalog_simpleselect
         group: manufacturing
         sortOrder: 33
+        useableAsGridFilter: true
     tshirt_style:
         labels:
             en_US: 'T-Shirt style'
@@ -326,6 +332,7 @@ attributes:
         type: pim_catalog_multiselect
         group: design
         sortOrder: 34
+        useableAsGridFilter: true
     camera_brand:
         labels:
             en_US: 'Brand'
@@ -334,6 +341,7 @@ attributes:
         type: pim_catalog_simpleselect
         group: technical
         sortOrder: 35
+        useableAsGridFilter: true
     camera_model_name:
         labels:
             en_US: 'Model name'
@@ -342,6 +350,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 35
+        useableAsGridFilter: true
     short_description:
         labels:
             en_US: 'Short description'
@@ -352,6 +361,7 @@ attributes:
         sortOrder: 36
         localizable: true
         scopable: true
+        useableAsGridFilter: true
     max_image_resolution:
         labels:
             en_US: 'Maximum image resolution'
@@ -360,6 +370,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 37
+        useableAsGridFilter: true
     image_resolutions:
         labels:
             en_US: 'Still image resolution(s)'
@@ -368,6 +379,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 38
+        useableAsGridFilter: true
     supported_aspect_ratios:
         labels:
             en_US: 'Supported aspect ratios'
@@ -376,6 +388,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 39
+        useableAsGridFilter: true
     supported_image_format:
         labels:
             en_US: 'Supported image format'
@@ -384,6 +397,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 40
+        useableAsGridFilter: true
     lens_mount_interface:
         labels:
             en_US: 'Lens mount interface'
@@ -392,6 +406,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 41
+        useableAsGridFilter: true
     focus:
         labels:
             en_US: 'Focus'
@@ -400,6 +415,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 42
+        useableAsGridFilter: true
     focus_adjustement:
         labels:
             en_US: 'Focus adjustment'
@@ -409,6 +425,7 @@ attributes:
         group: technical
         sortOrder: 43
         localizable: true
+        useableAsGridFilter: true
     auto_focus_modes:
         labels:
             en_US: 'Auto focus modes'
@@ -418,6 +435,7 @@ attributes:
         group: technical
         sortOrder: 44
         localizable: true
+        useableAsGridFilter: true
     auto_focus_points:
         labels:
             en_US: 'Auto focus points'
@@ -426,6 +444,7 @@ attributes:
         type: pim_catalog_number
         group: technical
         sortOrder: 45
+        useableAsGridFilter: true
     auto_focus_lock:
         labels:
             en_US: 'Auto focus lock'
@@ -434,6 +453,7 @@ attributes:
         type: pim_catalog_boolean
         group: technical
         sortOrder: 46
+        useableAsGridFilter: true
     auto_focus_assist_beam:
         labels:
             en_US: 'Auto focus beam'
@@ -442,6 +462,7 @@ attributes:
         type: pim_catalog_boolean
         group: technical
         sortOrder: 47
+        useableAsGridFilter: true
     iso_sensitivity:
         labels:
             en_US: 'Iso sensitivity'
@@ -450,6 +471,7 @@ attributes:
         type: pim_catalog_text
         group: technical
         sortOrder: 48
+        useableAsGridFilter: true
     light_exposure_modes:
          labels:
              en_US: 'Light exposure modes'
@@ -459,6 +481,7 @@ attributes:
          group: technical
          sortOrder: 49
          localizable: true
+         useableAsGridFilter: true
     light_exposure_corrections:
          labels:
              en_US: 'Light exposure corrections'
@@ -467,6 +490,7 @@ attributes:
          type: pim_catalog_text
          group: technical
          sortOrder: 50
+         useableAsGridFilter: true
     light_metering:
          labels:
              en_US: 'Light metering'
@@ -476,6 +500,7 @@ attributes:
          group: technical
          sortOrder: 51
          localizable: true
+         useableAsGridFilter: true
     auto_exposure:
         labels:
             en_US: 'Auto exposure'
@@ -484,6 +509,7 @@ attributes:
         type: pim_catalog_boolean
         group: technical
         sortOrder: 52
+        useableAsGridFilter: true
     iso_sensitivity_max:
         labels:
             en_US: 'ISO sensitivity (max)'
@@ -492,6 +518,7 @@ attributes:
         type: pim_catalog_number
         group: technical
         sortOrder: 53
+        useableAsGridFilter: true
     iso_sensitivity_min:
         labels:
             en_US: 'ISO sensitivity (min)'
@@ -500,3 +527,4 @@ attributes:
         type: pim_catalog_number
         group: technical
         sortOrder: 54
+        useableAsGridFilter: true
