@@ -11,7 +11,7 @@ class OptionsComparatorSpec extends ObjectBehavior
 {
     function let(
         Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
     }

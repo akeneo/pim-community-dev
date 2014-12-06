@@ -11,9 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;

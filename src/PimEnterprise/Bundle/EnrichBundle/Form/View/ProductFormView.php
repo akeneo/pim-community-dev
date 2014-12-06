@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as BaseProductFormView;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -43,7 +43,7 @@ class ProductFormView extends BaseProductFormView
     /**
      * {@inheritdoc}
      */
-    protected function prepareAttributeView(AbstractAttribute $attribute, ProductValueInterface $value, FormView $view)
+    protected function prepareAttributeView(AttributeInterface $attribute, ProductValueInterface $value, FormView $view)
     {
         $attributeView = parent::prepareAttributeView($attribute, $value, $view);
 

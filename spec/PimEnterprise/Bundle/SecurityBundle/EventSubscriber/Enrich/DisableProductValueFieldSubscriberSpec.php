@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
@@ -33,7 +33,7 @@ class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
     function it_disables_the_product_value_form_when_no_edit_right(
         CreateProductValueFormEvent $event,
         AbstractProductValue $value,
-        AbstractAttribute $sku,
+        AttributeInterface $sku,
         AttributeGroup $group,
         $context
     ) {
@@ -52,7 +52,7 @@ class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
     function it_doesnt_disable_the_product_value_form_when_no_edit_right_but_creating_the_product(
         CreateProductValueFormEvent $event,
         AbstractProductValue $value,
-        AbstractAttribute $sku,
+        AttributeInterface $sku,
         AttributeGroup $group,
         $context
     ) {

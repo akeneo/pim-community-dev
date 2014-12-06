@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductVa
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
@@ -23,7 +23,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_a_existing_metric(AbstractProductValue $metricValue, AbstractMetric $metric, AbstractAttribute $weight, $metricFactory)
+    function it_denormalizes_a_existing_metric(AbstractProductValue $metricValue, AbstractMetric $metric, AttributeInterface $weight, $metricFactory)
     {
         $context = ['value' => $metricValue];
 
@@ -34,7 +34,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->denormalize('KILOGRAM', 'className', null, $context)->shouldReturn($metric);
     }
 
-    function it_denormalizes_a_new_metric(AbstractProductValue $metricValue, AbstractMetric $metric, AbstractAttribute $weight, $metricFactory)
+    function it_denormalizes_a_new_metric(AbstractProductValue $metricValue, AbstractMetric $metric, AttributeInterface $weight, $metricFactory)
     {
         $context = ['value' => $metricValue];
 

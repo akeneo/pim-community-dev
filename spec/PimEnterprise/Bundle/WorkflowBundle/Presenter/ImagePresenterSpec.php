@@ -20,7 +20,7 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_supports_value_which_stores_data_in_the_media_property_and_have_an_old_image_and_a_new_one(
         Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute,
+        Model\AttributeInterface $attribute,
         Model\ProductMedia $media
     ) {
         $value->getAttribute()->willReturn($attribute);
@@ -33,7 +33,7 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_supports_value_which_stores_data_in_the_media_property_and_have_only_an_old_image(
         Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute,
+        Model\AttributeInterface $attribute,
         Model\ProductMedia $media
     ) {
         $value->getAttribute()->willReturn($attribute);
@@ -46,7 +46,7 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_supports_value_which_stores_data_in_the_media_property_and_have_only_a_new_image(
         Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getBackendType()->willReturn('media');
