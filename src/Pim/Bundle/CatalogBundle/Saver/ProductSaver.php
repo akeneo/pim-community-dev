@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Saver;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Resource\Model\BulkSaverInterface;
@@ -20,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 class ProductSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
-    protected $om;
+    protected $objectManager;
 
     /** @var CompletenessManager */
     protected $completenessManager;
@@ -31,7 +30,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
      */
     public function __construct(ObjectManager $om, CompletenessManager $completenessManager)
     {
-        $this->om                  = $om;
+        $this->objectManager       = $om;
         $this->completenessManager = $completenessManager;
     }
 
@@ -58,14 +57,14 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             $options
         );
 
-        $this->om->persist($product);
+        $this->objectManager->persist($product);
 
         if (true === $options['schedule'] || true === $options['recalculate']) {
             $this->completenessManager->schedule($product);
         }
 
         if (true === $options['recalculate'] || true === $options['flush']) {
-            $this->om->flush();
+            $this->objectManager->flush();
         }
 
         if (true === $options['recalculate']) {
@@ -76,9 +75,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $objects, array $options = [])
+    public function saveAll(array $products, array $options = [])
     {
-        if (empty($objects)) {
+        if (empty($products)) {
             return;
         }
 
@@ -93,12 +92,12 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
-        foreach ($objects as $object) {
-            $this->save($object, $itemOptions);
+        foreach ($products as $product) {
+            $this->save($product, $itemOptions);
         }
 
         if (true === $allOptions['flush']) {
-            $this->om->flush();
+            $this->objectManager->flush();
         }
     }
 }
