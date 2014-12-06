@@ -195,7 +195,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function addPendingVersioning($versionable)
     {
-        $oid = spl_object_hash($versionable);
+        $oid = sprintf('%s#%s', spl_object_hash($versionable), sha1($this->versionManager->getContext()));
         if (!isset($this->versionableEntities[$oid]) && !in_array($oid, $this->versionedEntities)) {
             $this->versionableEntities[$oid] = $versionable;
         }
