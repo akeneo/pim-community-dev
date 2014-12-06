@@ -72,7 +72,9 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         ProductValueInterface $value,
         MetricInterface $metric
     ) {
-        $value->getData()->willReturn($metric);
+        $value->getMetric()->willReturn($metric);
+        $metric->getUnit()->willReturn('cm');
+        $metric->getData()->willReturn(12);
         $accessor->getValue($metric, 'family')
             ->shouldBeCalled()
             ->willReturn('Weight');

@@ -39,27 +39,29 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Validate metric type and default metric unit
      *
-     * @param AttributeInterface|MetricInterface|ProductValueInterface $entity
+     * @param AttributeInterface|MetricInterface|ProductValueInterface $object
      * @param Constraint                                               $constraint
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($object, Constraint $constraint)
     {
-        if ($entity instanceof AttributeInterface) {
+        if ($object instanceof AttributeInterface) {
             $familyProperty = 'metricFamily';
             $unitProperty   = 'defaultMetricUnit';
-        } elseif ($entity instanceof MetricInterface && null !== $entity->getData()) {
+        } elseif ($object instanceof MetricInterface && null !== $object->getData()) {
             $familyProperty = 'family';
             $unitProperty   = 'unit';
-        } elseif ($entity instanceof ProductValueInterface && null !== $entity->getData()) {
-            $entity = $entity->getData();
+        } elseif ($object instanceof ProductValueInterface && null !== $object->getMetric()
+            && null !== $object->getMetric()->getUnit() && null !== $object->getMetric()->getData()
+        ) {
+            $object = $object->getMetric();
             $familyProperty = 'family';
             $unitProperty   = 'unit';
         } else {
             return;
         }
 
-        $family = $this->propertyAccessor->getValue($entity, $familyProperty);
-        $unit   = $this->propertyAccessor->getValue($entity, $unitProperty);
+        $family = $this->propertyAccessor->getValue($object, $familyProperty);
+        $unit   = $this->propertyAccessor->getValue($object, $unitProperty);
 
         if (!array_key_exists($family, $this->measures)) {
             $this->context->addViolationAt($familyProperty, $constraint->familyMessage);
