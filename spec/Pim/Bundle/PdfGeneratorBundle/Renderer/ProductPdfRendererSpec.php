@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -32,7 +32,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     function it_renders_a_product_without_images(
         AbstractProduct $blender,
         AttributeGroup $design,
-        AbstractAttribute $color,
+        AttributeInterface $color,
         $templating
     ) {
         $blender->getAttributes()->willReturn([$color]);
@@ -57,7 +57,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     function it_renders_a_product_with_an_image(
         AbstractProduct $blender,
         AttributeGroup $media,
-        AbstractAttribute $mainImage,
+        AttributeInterface $mainImage,
         $templating
     ) {
         $blender->getAttributes()->willReturn([$mainImage]);

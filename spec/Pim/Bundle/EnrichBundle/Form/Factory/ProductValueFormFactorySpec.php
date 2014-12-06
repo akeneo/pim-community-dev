@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Factory;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,7 +25,7 @@ class ProductValueFormFactorySpec extends ObjectBehavior
     function it_builds_product_value_form(
         FormInterface $form,
         ProductValueInterface $value,
-        AbstractAttribute $sku,
+        AttributeInterface $sku,
         TextType $textType,
         $attributeTypeRegistry,
         $dispatcher,

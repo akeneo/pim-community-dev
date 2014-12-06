@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
@@ -42,7 +42,7 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
         ClassMetadata $metadata,
         GuesserInterface $guesser,
         DefaultTransformer $defaultTransformer,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
         $data = ['code' => 'blue', 'attribute' => 'color'];

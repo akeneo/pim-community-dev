@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -95,8 +95,8 @@ class GroupManagerSpec extends ObjectBehavior
     function it_provides_available_axis(
         $registry,
         AttributeRepository $attRepository,
-        AbstractAttribute $attribute1,
-        AbstractAttribute $attribute2
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2
     ) {
         $registry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
         $attRepository->findAllAxis()->willReturn([$attribute1, $attribute2]);
@@ -107,8 +107,8 @@ class GroupManagerSpec extends ObjectBehavior
     function it_provides_available_axis_as_a_sorted_choice(
         $registry,
         AttributeRepository $attRepository,
-        AbstractAttribute $attribute1,
-        AbstractAttribute $attribute2
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2
     ) {
         $attribute1->getId()->willReturn(1);
         $attribute1->getLabel()->willReturn('Foo');

@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -97,7 +97,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->createProductValue()->shouldReturnAnInstanceOf(self::VALUE_CLASS);
     }
 
-    function it_provides_the_identifier_attribute(AttributeRepository $attributeRepository, AbstractAttribute $sku)
+    function it_provides_the_identifier_attribute(AttributeRepository $attributeRepository, AttributeInterface $sku)
     {
         $attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier'])->willReturn($sku);
 
@@ -109,9 +109,9 @@ class ProductManagerSpec extends ObjectBehavior
         $builder,
         ProductInterface $product,
         AvailableAttributes $attributes,
-        AbstractAttribute $sku,
-        AbstractAttribute $name,
-        AbstractAttribute $size
+        AttributeInterface $sku,
+        AttributeInterface $name,
+        AttributeInterface $size
     ) {
         $attributes->getAttributes()->willReturn([$sku, $name, $size]);
 
@@ -130,9 +130,9 @@ class ProductManagerSpec extends ObjectBehavior
         $builder,
         ProductInterface $product,
         AvailableAttributes $attributes,
-        AbstractAttribute $sku,
-        AbstractAttribute $name,
-        AbstractAttribute $size
+        AttributeInterface $sku,
+        AttributeInterface $name,
+        AttributeInterface $size
     ) {
         $attributes->getAttributes()->willReturn([$sku, $name, $size]);
 
@@ -150,8 +150,8 @@ class ProductManagerSpec extends ObjectBehavior
         $productSaver,
         ProductInterface $product,
         AvailableAttributes $attributes,
-        AbstractAttribute $skuAttribute,
-        AbstractAttribute $nameAttribute,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
         ProductValueInterface $sku,
         ProductValueInterface $nameFr,
         ProductValueInterface $nameEn
@@ -174,8 +174,8 @@ class ProductManagerSpec extends ObjectBehavior
         $productSaver,
         ProductInterface $product,
         AvailableAttributes $attributes,
-        AbstractAttribute $skuAttribute,
-        AbstractAttribute $nameAttribute,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
         ProductValueInterface $sku,
         ProductValueInterface $nameFr,
         ProductValueInterface $nameEn

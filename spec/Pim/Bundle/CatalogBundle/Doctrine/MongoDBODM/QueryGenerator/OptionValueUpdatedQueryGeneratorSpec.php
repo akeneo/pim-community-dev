@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class OptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
@@ -19,7 +19,7 @@ class OptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
         $namingUtility,
         AttributeOptionValue $bleu,
         AttributeOption $blue,
-        AbstractAttribute $color
+        AttributeInterface $color
     ) {
         $bleu->getOption()->willReturn($blue);
         $bleu->getLocale()->willReturn('fr_FR');

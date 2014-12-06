@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
@@ -147,7 +147,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     protected function createEntity(array $data)
     {
@@ -194,10 +194,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addLabels(AbstractAttribute $attribute, $data)
+    protected function addLabels(AttributeInterface $attribute, $data)
     {
         foreach ($data['label'] as $locale => $label) {
             $translation = $attribute->getTranslation($locale);
@@ -206,10 +206,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addAvailableLocales(AbstractAttribute $attribute, $data)
+    protected function addAvailableLocales(AttributeInterface $attribute, $data)
     {
         foreach ($data['available_locales'] as $code) {
             $locale = new Locale();
@@ -221,10 +221,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     /**
      * Create attribute options
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addOptions(AbstractAttribute $attribute, $data)
+    protected function addOptions(AttributeInterface $attribute, $data)
     {
         if (count($data['options']) === 1) {
             $attribute->setBackendType('option');

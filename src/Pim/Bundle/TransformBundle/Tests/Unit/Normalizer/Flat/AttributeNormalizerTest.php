@@ -5,7 +5,7 @@ namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
@@ -95,10 +95,10 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addLabels(AbstractAttribute $attribute, $data)
+    protected function addLabels(AttributeInterface $attribute, $data)
     {
         foreach ($data as $key => $label) {
             if (strpos($key, 'label-') !== false) {
@@ -110,10 +110,10 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addAvailableLocales(AbstractAttribute $attribute, $data)
+    protected function addAvailableLocales(AttributeInterface $attribute, $data)
     {
         if (strtolower($data['available_locales']) !== 'all') {
             $locales = explode(',', $data['available_locales']);
@@ -128,10 +128,10 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
     /**
      * Create attribute options
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addOptions(AbstractAttribute $attribute, $data)
+    protected function addOptions(AttributeInterface $attribute, $data)
     {
         $options = array_filter(explode('|', $data['options']));
         foreach ($options as $option) {

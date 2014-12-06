@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -37,7 +37,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_an_attribute_is_removed(
         $collection,
-        AbstractAttribute $title
+        AttributeInterface $title
     ) {
         $title->getCode()->willReturn('title');
 
@@ -56,7 +56,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_a_scopable_attribute_is_removed(
         $collection,
-        AbstractAttribute $title
+        AttributeInterface $title
     ) {
         $title->getCode()->willReturn('title');
 
@@ -77,7 +77,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_an_option_attribute_is_removed(
         $collection,
-        AbstractAttribute $color
+        AttributeInterface $color
     ) {
         $color->getCode()->willReturn('color');
 
@@ -98,7 +98,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_a_scopable_option_attribute_is_removed(
         $collection,
-        AbstractAttribute $color
+        AttributeInterface $color
     ) {
         $color->getCode()->willReturn('color');
 
@@ -121,7 +121,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_a_price_attribute_is_removed(
         $collection,
-        AbstractAttribute $price
+        AttributeInterface $price
     ) {
         $price->getCode()->willReturn('price');
 
@@ -144,7 +144,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_a_scopable_price_attribute_is_removed(
         $collection,
-        AbstractAttribute $price
+        AttributeInterface $price
     ) {
         $price->getCode()->willReturn('price');
 
@@ -167,7 +167,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_a_localizable_attribute_is_removed(
         $collection,
-        AbstractAttribute $title
+        AttributeInterface $title
     ) {
         $title->getCode()->willReturn('title');
 
@@ -188,7 +188,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_attribute_indexes_when_a_localizable_and_scopable_attribute_is_removed(
         $collection,
-        AbstractAttribute $title
+        AttributeInterface $title
     ) {
         $title->getCode()->willReturn('title');
 

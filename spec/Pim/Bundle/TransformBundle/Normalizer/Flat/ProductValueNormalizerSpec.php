@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, AbstractAttribute $simpleAttribute)
+    function let(SerializerInterface $serializer, AttributeInterface $simpleAttribute)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);

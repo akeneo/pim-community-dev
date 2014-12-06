@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Converter;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -22,9 +22,9 @@ class MetricConverterSpec extends ObjectBehavior
         AbstractProductValue $weightValue,
         AbstractProductValue $surfaceValue,
         AbstractProductValue $nameValue,
-        AbstractAttribute $weight,
-        AbstractAttribute $surface,
-        AbstractAttribute $name,
+        AttributeInterface $weight,
+        AttributeInterface $surface,
+        AttributeInterface $name,
         AbstractMetric $weightMetric,
         AbstractMetric $surfaceMetric,
         ProductInterface $product,

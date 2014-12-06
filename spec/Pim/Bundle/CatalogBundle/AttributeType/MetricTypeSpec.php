@@ -6,10 +6,11 @@ use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
 class MetricTypeSpec extends ObjectBehavior
@@ -19,7 +20,7 @@ class MetricTypeSpec extends ObjectBehavior
         MeasureManager $manager,
         MetricFactory $metricFactory,
         AbstractProductValue $value,
-        AbstractAttribute $size
+        AttributeInterface $size
     ) {
         $value->getAttribute()->willReturn($size);
 
@@ -34,6 +35,9 @@ class MetricTypeSpec extends ObjectBehavior
 
     function it_builds_the_attribute_forms(FormFactory $factory, $size)
     {
+        $size->getId()->willReturn(42);
+        $size->getProperties()->willReturn([]);
+        $size->setProperty(Argument::any(), Argument::any())->shouldBeCalled();
         $this->buildAttributeFormTypes($factory, $size)->shouldHaveCount(10);
     }
 

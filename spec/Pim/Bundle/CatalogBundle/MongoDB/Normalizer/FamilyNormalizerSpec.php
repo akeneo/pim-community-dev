@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 class FamilyNormalizerSpec extends ObjectBehavior
@@ -29,7 +29,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
     function it_normalizes_family(
         $normalizer,
         FamilyInterface $family,
-        AbstractAttribute $sku
+        AttributeInterface $sku
     ) {
         $sku->getCode()->willReturn('sku');
         $family->getCode()->willReturn('mongo');

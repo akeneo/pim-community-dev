@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -50,7 +50,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     public function it_normalizes_product(
         $filter,
         ProductInterface $product,
-        AbstractAttribute $skuAttribute,
+        AttributeInterface $skuAttribute,
         AbstractProductValue $sku,
         Collection $values,
         FamilyInterface $family,
@@ -89,7 +89,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     public function it_normalizes_product_with_associations(
         $filter,
         ProductInterface $product,
-        AbstractAttribute $skuAttribute,
+        AttributeInterface $skuAttribute,
         AbstractProductValue $sku,
         Association $myCrossSell,
         AssociationType $crossSell,
@@ -160,8 +160,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         $serializer,
         ProductInterface $product,
-        AbstractAttribute $skuAttribute,
-        AbstractAttribute $colorsAttribute,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $colorsAttribute,
         AbstractProductValue $sku,
         AbstractProductValue $colors,
         AttributeOption $red,
@@ -212,7 +212,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     public function it_normalizes_product_with_price(
         $filter,
         ProductInterface $product,
-        AbstractAttribute $priceAttribute,
+        AttributeInterface $priceAttribute,
         AbstractProductValue $price,
         Collection $prices,
         Collection $values,

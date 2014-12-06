@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -161,7 +161,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithAttribute(AbstractAttribute $attribute)
+    public function findAllWithAttribute(AttributeInterface $attribute)
     {
         return $this
             ->createQueryBuilder('p')
@@ -527,7 +527,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * Return the identifier attribute
      *
-     * @return AbstractAttribute|null
+     * @return AttributeInterface|null
      */
     protected function getIdentifierAttribute()
     {

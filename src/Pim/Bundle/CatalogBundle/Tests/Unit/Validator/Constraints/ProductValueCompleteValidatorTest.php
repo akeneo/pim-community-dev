@@ -182,8 +182,8 @@ class ProductValueCompleteValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a product value mock
      *
-     * @param mixed             $return
-     * @param AbstractAttribute $attribute
+     * @param mixed              $return
+     * @param AttributeInterface $attribute
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */

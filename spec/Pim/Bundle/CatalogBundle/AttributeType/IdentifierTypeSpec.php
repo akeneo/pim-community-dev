@@ -4,14 +4,15 @@ namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
 class IdentifierTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser, AbstractProductValue $value, AbstractAttribute $sku)
+    function let(AttributeConstraintGuesser $guesser, AbstractProductValue $value, AttributeInterface $sku)
     {
         $value->getAttribute()->willReturn($sku);
 
@@ -20,6 +21,9 @@ class IdentifierTypeSpec extends ObjectBehavior
 
     function it_builds_the_attribute_forms(FormFactory $factory, $sku)
     {
+        $sku->getId()->willReturn(42);
+        $sku->getProperties()->willReturn([]);
+        $sku->setProperty(Argument::any(), Argument::any())->shouldBeCalled();
         $this->buildAttributeFormTypes($factory, $sku)->shouldHaveCount(7);
     }
 

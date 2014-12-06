@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class AttributeGroupManagerSpec extends ObjectBehavior
 {
@@ -38,7 +38,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
     function it_throws_an_exception_when_removing_an_attribute_group_and_the_default_group_does_not_exist(
         $repository,
         AttributeGroup $group,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $repository->findDefaultAttributeGroup()->willReturn(null);
 
@@ -51,7 +51,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
         $objectManager,
         AttributeGroup $default,
         AttributeGroup $group,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $repository->findDefaultAttributeGroup()->willReturn($default);
 
@@ -69,8 +69,8 @@ class AttributeGroupManagerSpec extends ObjectBehavior
         $objectManager,
         AttributeGroup $default,
         AttributeGroup $group,
-        AbstractAttribute $sku,
-        AbstractAttribute $name
+        AttributeInterface $sku,
+        AttributeInterface $name
     ) {
         $group->getMaxAttributeSortOrder()->willReturn(5);
 
