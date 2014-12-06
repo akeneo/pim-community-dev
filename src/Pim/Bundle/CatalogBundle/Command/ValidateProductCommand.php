@@ -41,14 +41,14 @@ class ValidateProductCommand extends ContainerAwareCommand
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
         if (!$product) {
-            $output->writeln(sprintf('<error>Product with identifier "%s" not found<error>', $identifier));
+            $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
             return;
         }
 
         $violations = $this->validate($product);
         if (0 === $violations->count()) {
-            $output->writeln('<info>Product is valid<info>');
+            $output->writeln(sprintf('<info>product "%s" is valid<info>', $identifier));
         } else {
             foreach ($violations as $violation) {
                 $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
