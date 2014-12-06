@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Resource\Model\BulkSaverInterface;
@@ -39,7 +38,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class ProductDraftSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
-    protected $om;
+    protected $objectManager;
 
     /** @var CompletenessManager */
     protected $completenessManager;
@@ -87,7 +86,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         ChangeSetComputerInterface $changeSet,
         $storageDriver
     ) {
-        $this->om = $om;
+        $this->objectManager = $om;
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
@@ -99,7 +98,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * TODO: do not check the context here. ProductDraftSaver should only persist propostions.
+     * TODO: do not check the context here. ProductDraftSaver should only persist drafts.
      *
      * {@inheritdoc}
      */
@@ -127,7 +126,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             }
         }
 
-        if ($isOwner || $options['bypass_product_draft'] || !$this->om->contains($product)) {
+        if ($isOwner || $options['bypass_product_draft'] || !$this->objectManager->contains($product)) {
             $this->persistProduct($product, $options);
         } else {
             $this->refreshProductValues($product);
@@ -138,9 +137,9 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $objects, array $options = [])
+    public function saveAll(array $products, array $options = [])
     {
-        if (empty($objects)) {
+        if (empty($products)) {
             return;
         }
 
@@ -148,12 +147,12 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
-        foreach ($objects as $object) {
-            $this->save($object, $itemOptions);
+        foreach ($products as $product) {
+            $this->save($product, $itemOptions);
         }
 
         if (true === $allOptions['flush']) {
-            $this->om->flush();
+            $this->objectManager->flush();
         }
     }
 
@@ -166,14 +165,14 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     protected function persistProduct(ProductInterface $product, array $options)
     {
         // TODO : remove the flush case, once the saveAll will be implemented
-        $this->om->persist($product);
+        $this->objectManager->persist($product);
 
         if (true === $options['schedule'] || true === $options['recalculate']) {
             $this->completenessManager->schedule($product);
         }
 
         if (true === $options['recalculate'] || true === $options['flush']) {
-            $this->om->flush();
+            $this->objectManager->flush();
         }
 
         if (true === $options['recalculate']) {
@@ -228,7 +227,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $username = $this->getUser()->getUsername();
         if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {
             $productDraft = $this->factory->createProductDraft($product, $username);
-            $this->om->persist($productDraft);
+            $this->objectManager->persist($productDraft);
         }
 
         $event = $this->dispatcher->dispatch(
@@ -241,14 +240,14 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $changes = $event->getChanges();
 
         if (empty($changes)) {
-            $this->om->remove($productDraft);
+            $this->objectManager->remove($productDraft);
 
-            return $this->om->flush();
+            return $this->objectManager->flush();
         }
 
         $productDraft->setChanges($changes);
 
-        $this->om->flush();
+        $this->objectManager->flush();
     }
 
     /**
@@ -281,11 +280,11 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     {
         if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             foreach ($product->getValues() as $value) {
-                if (true === $this->om->contains($value)) {
-                    $this->om->refresh($value);
+                if (true === $this->objectManager->contains($value)) {
+                    $this->objectManager->refresh($value);
                     foreach ($value->getPrices() as $price) {
-                        if (true === $this->om->contains($price)) {
-                            $this->om->refresh($price);
+                        if (true === $this->objectManager->contains($price)) {
+                            $this->objectManager->refresh($price);
                         }
                     }
                 } else {
@@ -301,7 +300,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             $categories = $product->getCategories();
             $associations = $product->getAssociations();
 
-            $this->om->refresh($product);
+            $this->objectManager->refresh($product);
 
             $product->setEnabled($enabled);
             $product->getCategories()->clear();
