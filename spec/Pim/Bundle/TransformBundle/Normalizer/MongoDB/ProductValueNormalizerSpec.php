@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -44,7 +44,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $mongoFactory,
         $serializer,
         AbstractProductValue $value,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         \MongoDBRef $mongoDBRef,
         \MongoId $mongoId
     ) {

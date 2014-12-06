@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
@@ -35,7 +35,7 @@ class AttributeUpdateGuesserSpec extends ObjectBehavior
     function it_marks_products_as_updated_when_an_attribute_is_removed(
         $repository,
         EntityManager $em,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         ProductInterface $foo,
         ProductInterface $bar
     ) {

@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -38,7 +38,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($product, 'csv')->shouldReturn(false);
     }
 
-    function it_does_not_support_normalization_of_other_entities(AbstractAttribute $attribute)
+    function it_does_not_support_normalization_of_other_entities(AttributeInterface $attribute)
     {
         $this->supportsNormalization($attribute, 'json')->shouldReturn(false);
         $this->supportsNormalization($attribute, 'xml')->shouldReturn(false);
@@ -74,7 +74,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_the_values_of_product(
         AbstractProduct $product,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         ProductValueInterface $value,
         ArrayCollection $values,
         \ArrayIterator $iterator,

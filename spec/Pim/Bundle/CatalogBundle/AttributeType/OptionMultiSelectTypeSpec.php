@@ -6,9 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
 class OptionMultiSelectTypeSpec extends ObjectBehavior
@@ -16,7 +17,7 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
     function let(
         AttributeConstraintGuesser $guesser,
         AbstractProductValue $value,
-        AbstractAttribute $color,
+        AttributeInterface $color,
         AttributeOption $red
     ) {
         $value->getAttribute()->willReturn($color);
@@ -30,6 +31,7 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
     {
         $color->getProperties()->willReturn(['autoOptionSorting' => false]);
         $color->getId()->willReturn(42);
+        $color->setProperty(Argument::any(), Argument::any())->shouldBeCalled();
 
         $this->buildAttributeFormTypes($factory, $color)->shouldHaveCount(7);
     }

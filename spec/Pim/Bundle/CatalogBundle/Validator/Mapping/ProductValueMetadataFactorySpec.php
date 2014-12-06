@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Mapping\ClassMetadataFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -48,7 +48,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $factory,
         ClassMetadata $metadata,
         ProductValueInterface $value,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         Constraint $unique,
         Constraint $validNumber
     ) {
@@ -72,7 +72,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $factory,
         ClassMetadata $metadata,
         ProductValueInterface $value,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         Constraint $property,
         Constraint $validNumber
     ) {
@@ -92,7 +92,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $factory,
         ClassMetadata $metadata,
         ProductValueInterface $value,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         Constraint $class,
         Constraint $validNumber
     ) {
@@ -112,7 +112,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $factory,
         ClassMetadata $metadata,
         ProductValueInterface $value,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         Constraint $multiTargets,
         Constraint $validNumber
     ) {

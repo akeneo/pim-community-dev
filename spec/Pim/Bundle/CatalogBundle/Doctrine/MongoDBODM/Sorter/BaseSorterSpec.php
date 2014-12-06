@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
 /**
@@ -32,12 +32,12 @@ class BaseSorterSpec extends ObjectBehavior
         $this->supportsField(Argument::any())->shouldReturn(true);
     }
 
-    function it_supports_attributes(AbstractAttribute $attribute)
+    function it_supports_attributes(AttributeInterface $attribute)
     {
         $this->supportsAttribute($attribute)->shouldReturn(true);
     }
 
-    function it_adds_a_order_by_on_an_attribute_value_in_the_query(Builder $queryBuilder, AbstractAttribute $sku)
+    function it_adds_a_order_by_on_an_attribute_value_in_the_query(Builder $queryBuilder, AttributeInterface $sku)
     {
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);

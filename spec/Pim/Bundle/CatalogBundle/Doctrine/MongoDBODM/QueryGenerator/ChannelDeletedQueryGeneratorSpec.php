@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class ChannelDeletedQueryGeneratorSpec extends ObjectBehavior
 {
@@ -16,7 +16,7 @@ class ChannelDeletedQueryGeneratorSpec extends ObjectBehavior
 
     function it_generates_a_query_to_update_product_scopable_attributes(
         $namingUtility,
-        AbstractAttribute $label,
+        AttributeInterface $label,
         Channel $mobile
     ) {
         $namingUtility->getScopableAttributes(false)->willReturn([$label]);

@@ -5,17 +5,17 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
     function let(NamingUtility $utility)
     {
-        $this->beConstructedWith($utility, 'Pim\Bundle\CatalogBundle\Model\AbstractAttribute', 'attributeAsLabel');
+        $this->beConstructedWith($utility, 'Pim\Bundle\CatalogBundle\Model\AttributeInterface', 'attributeAsLabel');
     }
 
     function it_filters_updates_on_attribute_class_and_attribute_as_label_field(
-        AbstractAttribute $price,
+        AttributeInterface $price,
         Channel $mobile
     ) {
         $this->supports($price, 'attributeAsLabel')->shouldReturn(true);
@@ -24,7 +24,7 @@ class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
         $this->supports($mobile, '')->shouldReturn(false);
     }
 
-    function it_generates_a_query_to_update_product_families(AbstractAttribute $price)
+    function it_generates_a_query_to_update_product_families(AttributeInterface $price)
     {
         $price->getId()->willReturn(12);
 

@@ -4,14 +4,15 @@ namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
 class DateTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser, AbstractProductValue $value, AbstractAttribute $releaseDate)
+    function let(AttributeConstraintGuesser $guesser, AbstractProductValue $value, AttributeInterface $releaseDate)
     {
         $value->getAttribute()->willReturn($releaseDate);
 
@@ -20,6 +21,9 @@ class DateTypeSpec extends ObjectBehavior
 
     function it_builds_the_attribute_forms(FormFactory $factory, $releaseDate)
     {
+        $releaseDate->getId()->willReturn(42);
+        $releaseDate->getProperties()->willReturn([]);
+        $releaseDate->setProperty(Argument::any(), Argument::any())->shouldBeCalled();
         $this->buildAttributeFormTypes($factory, $releaseDate)->shouldHaveCount(6);
     }
 

@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -18,7 +18,7 @@ class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
         ManagerRegistry $registry,
         ProductRepositoryInterface $repository,
         EntityManager $em,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         AttributeOption $option,
         AttributeOptionValue $optionValue
     ) {

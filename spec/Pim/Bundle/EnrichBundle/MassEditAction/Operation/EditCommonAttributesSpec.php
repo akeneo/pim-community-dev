@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -123,7 +123,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
     function it_initializes_the_operation_with_common_attributes_of_the_products(
         ProductInterface $product1,
         ProductInterface $product2,
-        AbstractAttribute $name,
+        AttributeInterface $name,
         $massActionManager
     ) {
         $this->setObjectsToMassEdit([$product1, $product2]);

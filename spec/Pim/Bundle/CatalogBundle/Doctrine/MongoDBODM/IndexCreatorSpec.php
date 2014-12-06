@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -37,7 +37,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_scopable_indexes_when_creating_channel(
         $collection,
         $namingUtility,
-        AbstractAttribute $title,
+        AttributeInterface $title,
         Locale $en_US,
         Locale $de_DE,
         Channel $ecommerce,
@@ -81,7 +81,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_localizable_indexes_when_saving_enabled_locale(
         $collection,
         $namingUtility,
-        AbstractAttribute $description,
+        AttributeInterface $description,
         Locale $en_US,
         Locale $de_DE,
         Channel $ecommerce
@@ -124,7 +124,7 @@ class IndexCreatorSpec extends ObjectBehavior
         $collection,
         $namingUtility,
         Currency $eur,
-        AbstractAttribute $price
+        AttributeInterface $price
     ) {
         $eur->getCode()->willReturn('EUR');
         $eur->isActivated()->willReturn(true);
@@ -159,7 +159,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_attribute(
         $collection,
         $namingUtility,
-        AbstractAttribute $name
+        AttributeInterface $name
     ) {
         $name->getCode()->willReturn('name');
         $name->getBackendType()->willReturn('varchar');
@@ -183,7 +183,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_unique_attribute(
         $collection,
         $namingUtility,
-        AbstractAttribute $ean
+        AttributeInterface $ean
     ) {
         $ean->getCode()->willReturn('ean');
         $ean->getBackendType()->willReturn('varchar');
@@ -208,7 +208,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_identifier_attribute(
         $collection,
         $namingUtility,
-        AbstractAttribute $sku
+        AttributeInterface $sku
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
@@ -232,7 +232,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_price_attribute(
         $namingUtility,
         $collection,
-        AbstractAttribute $price
+        AttributeInterface $price
     ) {
         $namingUtility->getPricesAttributes()->willReturn([$price]);
         $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
@@ -265,7 +265,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_option_attribute(
         $collection,
         $namingUtility,
-        AbstractAttribute $color
+        AttributeInterface $color
     ) {
         $color->getCode()->willReturn('color');
         $color->getBackendType()->willReturn('option');
@@ -289,7 +289,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_scopable_attribute(
         $namingUtility,
         $collection,
-        AbstractAttribute $title,
+        AttributeInterface $title,
         Channel $ecommerce,
         Channel $mobile
     ) {
@@ -317,7 +317,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_localizable_attribute(
         $collection,
         $namingUtility,
-        AbstractAttribute $description
+        AttributeInterface $description
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('varchar');
@@ -343,7 +343,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_attribute_indexes_when_saving_filterable_scopable_and_localizable_attribute(
         $collection,
         $namingUtility,
-        AbstractAttribute $description
+        AttributeInterface $description
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('varchar');

@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
@@ -38,7 +38,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_the_whole_option(
         AttributeOption $option,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         AttributeOptionValue $valueEn,
         AttributeOptionValue $valueFr
     ) {
@@ -63,7 +63,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_the_whole_option_and_ignore_disabled_locales(
         AttributeOption $option,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         AttributeOptionValue $valueEn,
         AttributeOptionValue $valueFr
     ) {
@@ -88,7 +88,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
     function it_provides_all_locales_if_no_list_provided_in_context(
         AttributeOption $option,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         AttributeOptionValue $valueEn,
         AttributeOptionValue $valueFr,
         AttributeOptionValue $valueDe
