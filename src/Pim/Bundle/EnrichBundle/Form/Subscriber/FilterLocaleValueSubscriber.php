@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -82,11 +82,11 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return boolean
      */
-    protected function isLocalizable(AbstractAttribute $attribute = null)
+    protected function isLocalizable(AttributeInterface $attribute = null)
     {
         return $attribute && $attribute->isLocalizable();
     }

@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Event\ProductValueEvent;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -203,13 +203,13 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
-     * @param array             $savingOptions
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
+     * @param array              $savingOptions
      */
     public function removeAttributeFromProduct(
         ProductInterface $product,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         array $savingOptions = []
     ) {
         foreach ($product->getValues() as $value) {
@@ -267,7 +267,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /**
      * Return the identifier attribute
      *
-     * @return AbstractAttribute|null
+     * @return AttributeInterface|null
      */
     public function getIdentifierAttribute()
     {

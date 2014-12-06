@@ -68,7 +68,7 @@ class AttributeConstraintGuesserTest extends \PHPUnit_Framework_TestCase
             $options
         );
 
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\AbstractAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\AttributeInterface');
 
         $attribute->expects($this->any())
             ->method('getBackendType')

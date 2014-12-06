@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -71,9 +71,9 @@ interface AttributeTypeInterface
      * Build form types for custom properties of an attribute
      *
      * @param FormFactoryInterface $factory   the form factory
-     * @param AbstractAttribute    $attribute the attribute
+     * @param AttributeInterface   $attribute the attribute
      *
      * @return FormInterface the form
      */
-    public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute);
+    public function buildAttributeFormTypes(FormFactoryInterface $factory, AttributeInterface $attribute);
 }

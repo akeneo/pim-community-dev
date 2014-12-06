@@ -7,7 +7,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
@@ -195,7 +195,7 @@ class AttributeController extends AbstractDoctrineController
     }
 
     /**
-     * Edit AbstractAttribute sort order
+     * Edit AttributeInterface sort order
      *
      * @param Request $request
      *
@@ -307,7 +307,7 @@ class AttributeController extends AbstractDoctrineController
      *
      * @param integer $id
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findAttributeOr404($id)
@@ -318,13 +318,13 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Check if the attribute is removable, otherwise throw an exception or redirect
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
      * @return RedirectResponse|null
      */
-    protected function validateRemoval(AbstractAttribute $attribute)
+    protected function validateRemoval(AttributeInterface $attribute)
     {
         if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';

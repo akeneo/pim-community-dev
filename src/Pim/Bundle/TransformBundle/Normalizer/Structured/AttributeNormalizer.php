@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * A normalizer to transform an AbstractAttribute entity into array
+ * A normalizer to transform an AttributeInterface entity into array
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -82,17 +82,17 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractAttribute && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Get extra data to store in version
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getVersionedData(AbstractAttribute $attribute)
+    protected function getVersionedData(AttributeInterface $attribute)
     {
         $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
@@ -123,11 +123,11 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize available locales
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function normalizeAvailableLocales(AbstractAttribute $attribute)
+    protected function normalizeAvailableLocales(AttributeInterface $attribute)
     {
         $locales = array();
         foreach ($attribute->getAvailableLocales() as $locale) {
@@ -140,11 +140,11 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize options
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function normalizeOptions(AbstractAttribute $attribute)
+    protected function normalizeOptions(AttributeInterface $attribute)
     {
         $data = array();
         $options = $attribute->getOptions();
