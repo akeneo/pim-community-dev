@@ -279,3 +279,11 @@ options:
         code: short_sleeve
         attribute: tshirt_style
         labels: { fr_FR: 'Manches courtes', en_US: 'Short sleeve', de_DE: 'Kurze Ärmel' }
+    canon_brand:
+        code: canon_brand
+        attribute: camera_brand
+        labels: { fr_FR: 'Canon', en_US: 'Canon', de_DE: 'Canon' }
+    nikon_brand:
+        code: nikon_brand
+        attribute: camera_brand
+        labels: { fr_FR: 'Nikon', en_US: 'Nikon', de_DE: 'Nikon' }
