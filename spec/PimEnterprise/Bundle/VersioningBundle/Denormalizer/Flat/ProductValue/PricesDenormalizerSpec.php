@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductVa
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class PricesDenormalizerSpec extends ObjectBehavior
 {
@@ -22,7 +22,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_a_price_collection(AbstractProductValue $priceValue, $productBuilder, ProductPriceInterface $productPrice)
+    function it_denormalizes_a_price_collection(ProductValueInterface $priceValue, $productBuilder, ProductPriceInterface $productPrice)
     {
         $context = ['value' => $priceValue, 'price_currency' => 'EUR'];
 
@@ -33,7 +33,7 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->denormalize('100', 'className', null, $context)->shouldReturn($productPrice);
     }
 
-    function it_returns_null_if_the_data_is_empty(AbstractProductValue $productValueInterface)
+    function it_returns_null_if_the_data_is_empty(ProductValueInterface $productValueInterface)
     {
         $this->denormalize('', 'className', null, [])->shouldReturn(null);
         $this->denormalize(null, 'className', null, [])->shouldReturn(null);

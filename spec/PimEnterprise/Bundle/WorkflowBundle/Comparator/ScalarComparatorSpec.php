@@ -9,7 +9,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class ScalarComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute,
         PropertyAccessor $accessor
     ) {

@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model;
 class OptionsComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);

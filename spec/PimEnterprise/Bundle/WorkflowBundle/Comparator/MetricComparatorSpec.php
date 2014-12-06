@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model;
 class MetricComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);

@@ -4,11 +4,11 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class DateComparatorSpec extends ObjectBehavior
 {
-    function let(AbstractProductValue $value, AttributeInterface $attribute)
+    function let(ProductValueInterface $value, AttributeInterface $attribute)
     {
         $value->getAttribute()->willReturn($attribute);
     }

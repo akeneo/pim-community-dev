@@ -21,7 +21,7 @@ class OptionsPresenterSpec extends ObjectBehavior
     }
 
     function it_supports_change_if_it_has_an_options_key(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $this->supports($value, ['options' => '1,2,3'])->shouldBe(true);
     }
@@ -29,7 +29,7 @@ class OptionsPresenterSpec extends ObjectBehavior
     function it_presents_options_change_using_the_injected_renderer(
         $repository,
         RendererInterface $renderer,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         AttributeOption $red,
         AttributeOption $green,
         AttributeOption $blue

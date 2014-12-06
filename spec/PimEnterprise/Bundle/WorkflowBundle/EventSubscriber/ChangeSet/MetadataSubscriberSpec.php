@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
@@ -29,7 +29,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
 
     function it_adds_value_changeset_metadata(
         ChangeSetEvent $event,
-        AbstractProductValue $value,
+        ProductValueInterface $value,
         AttributeInterface $attribute
     ) {
         $event->getChangeSet()->willReturn([

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -37,7 +37,7 @@ class FilePresenter implements PresenterInterface
      */
     public function supports($data, array $change)
     {
-        return $data instanceof AbstractProductValue && array_key_exists('media', $change);
+        return $data instanceof ProductValueInterface && array_key_exists('media', $change);
     }
 
     /**

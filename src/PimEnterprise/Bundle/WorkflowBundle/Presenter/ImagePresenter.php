@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -38,7 +38,7 @@ class ImagePresenter implements PresenterInterface
      */
     public function supports($data, array $change)
     {
-        return $data instanceof AbstractProductValue
+        return $data instanceof ProductValueInterface
             && array_key_exists('media', $change)
             && (
                 $this->isImageMimeType($data->getMedia()) || $this->isImageMimeType($change['media'])

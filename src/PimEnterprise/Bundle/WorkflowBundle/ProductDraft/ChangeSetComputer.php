@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\ProductDraft;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
@@ -81,12 +81,12 @@ class ChangeSetComputer implements ChangeSetComputerInterface
     /**
      * Delegates change preparation to event listeners/subscribers
      *
-     * @param AbstractProductValue $value
+     * @param ProductValueInterface $value
      * @param null|array           $changes
      *
      * @return null|array
      */
-    protected function prepareChange(AbstractProductValue $value, $changes)
+    protected function prepareChange(ProductValueInterface $value, $changes)
     {
         $event = new ChangeSetEvent($value, $changes);
         $this->eventDispatcher->dispatch(ChangeSetEvents::PREPARE_CHANGE, $event);

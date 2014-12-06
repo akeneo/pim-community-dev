@@ -19,7 +19,7 @@ class ImagePresenterSpec extends ObjectBehavior
     }
 
     function it_supports_value_which_stores_data_in_the_media_property_and_have_an_old_image_and_a_new_one(
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute,
         Model\ProductMedia $media
     ) {
@@ -32,7 +32,7 @@ class ImagePresenterSpec extends ObjectBehavior
     }
 
     function it_supports_value_which_stores_data_in_the_media_property_and_have_only_an_old_image(
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute,
         Model\ProductMedia $media
     ) {
@@ -45,7 +45,7 @@ class ImagePresenterSpec extends ObjectBehavior
     }
 
     function it_supports_value_which_stores_data_in_the_media_property_and_have_only_a_new_image(
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
@@ -57,7 +57,7 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_presents_old_and_new_images_side_by_side(
         $generator,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
         $value->getMedia()->willReturn($media);
@@ -83,7 +83,7 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_presents_only_old_image_if_no_new_one_is_provided(
         $generator,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
         $value->getMedia()->willReturn($media);
@@ -103,7 +103,7 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_presents_only_new_image_if_there_is_no_old_one(
         $generator,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $value->getMedia()->willReturn(null);
 
