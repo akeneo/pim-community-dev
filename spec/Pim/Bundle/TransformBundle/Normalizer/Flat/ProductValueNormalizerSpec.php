@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -27,12 +27,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_csv_normalization_of_product_value(AbstractProductValue $value)
+    function it_supports_csv_normalization_of_product_value(ProductValueInterface $value)
     {
         $this->supportsNormalization($value, 'csv')->shouldBe(true);
     }
 
-    function it_supports_flat_normalization_of_product(AbstractProductValue $value)
+    function it_supports_flat_normalization_of_product(ProductValueInterface $value)
     {
         $this->supportsNormalization($value, 'flat')->shouldBe(true);
     }
@@ -42,35 +42,35 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    function it_normalizes_a_value_with_null_data(AbstractProductValue $value, $simpleAttribute)
+    function it_normalizes_a_value_with_null_data(ProductValueInterface $value, $simpleAttribute)
     {
         $value->getData()->willReturn(null);
         $value->getAttribute()->willReturn($simpleAttribute);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '']);
     }
 
-    function it_normalizes_a_value_with_a_integer_data(AbstractProductValue $value, $simpleAttribute)
+    function it_normalizes_a_value_with_a_integer_data(ProductValueInterface $value, $simpleAttribute)
     {
         $value->getData()->willReturn(12);
         $value->getAttribute()->willReturn($simpleAttribute);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
     }
 
-    function it_normalizes_a_value_with_a_float_data(AbstractProductValue $value, $simpleAttribute)
+    function it_normalizes_a_value_with_a_float_data(ProductValueInterface $value, $simpleAttribute)
     {
         $value->getData()->willReturn(12.25);
         $value->getAttribute()->willReturn($simpleAttribute);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12.2500']);
     }
 
-    function it_normalizes_a_value_with_a_string_data(AbstractProductValue $value, $simpleAttribute)
+    function it_normalizes_a_value_with_a_string_data(ProductValueInterface $value, $simpleAttribute)
     {
         $value->getData()->willReturn('my data');
         $value->getAttribute()->willReturn($simpleAttribute);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'my data']);
     }
 
-    function it_normalizes_a_value_with_a_boolean_data(AbstractProductValue $value, $simpleAttribute)
+    function it_normalizes_a_value_with_a_boolean_data(ProductValueInterface $value, $simpleAttribute)
     {
         $value->getData()->willReturn(false);
         $value->getAttribute()->willReturn($simpleAttribute);
@@ -81,7 +81,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '1']);
     }
 
-    function it_normalizes_a_value_with_a_collection_data(AbstractProductValue $value, $simpleAttribute, $serializer)
+    function it_normalizes_a_value_with_a_collection_data(ProductValueInterface $value, $simpleAttribute, $serializer)
     {
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
@@ -97,7 +97,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 
-    function it_normalizes_a_value_with_an_array_data(AbstractProductValue $value, $simpleAttribute, $serializer)
+    function it_normalizes_a_value_with_an_array_data(ProductValueInterface $value, $simpleAttribute, $serializer)
     {
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();

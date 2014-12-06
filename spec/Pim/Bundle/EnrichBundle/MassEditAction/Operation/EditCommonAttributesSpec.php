@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -29,7 +29,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Locale $en,
         Locale $de,
         AttributeRepository $attributeRepository,
-        AbstractProductValue $productValue,
+        ProductValueInterface $productValue,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
         NormalizerInterface $normalizer
