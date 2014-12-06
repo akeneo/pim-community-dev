@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 
 /**
  * Normalize a metric data
@@ -21,7 +21,7 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractMetric && in_array($format, $this->supportedFormats);
+        return $data instanceof MetricInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -59,12 +59,12 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
     /**
      * Get the data stored in the metric
      *
-     * @param AbstractMetric $metric
+     * @param MetricInterface $metric
      * @param boolean        $withUnit
      *
      * @return string
      */
-    public function getMetricData(AbstractMetric $metric, $withUnit)
+    public function getMetricData(MetricInterface $metric, $withUnit)
     {
         $data = $metric->getData();
         if (null === $data || '' === $data) {

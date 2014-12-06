@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Prophecy\Argument;
 
 /**
@@ -34,7 +34,7 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 
     function it_converts_metric_data_before_persisting(
         LifecycleEventArgs $args,
-        AbstractMetric $metric,
+        MetricInterface $metric,
         MeasureManager $manager,
         MeasureConverter $converter
     ) {
@@ -56,7 +56,7 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 
     function it_converts_metric_data_before_updating(
         LifecycleEventArgs $args,
-        AbstractMetric $metric,
+        MetricInterface $metric,
         MeasureManager $manager,
         MeasureConverter $converter,
         DocumentManager $dm,
