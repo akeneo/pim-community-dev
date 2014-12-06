@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 
@@ -44,7 +44,7 @@ class ChainedComparatorSpec extends ObjectBehavior
 
     function it_throws_exception_when_no_eligible_comparator_is_available(
         AbstractProductValue $value,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn('pim_catalog_fancy');

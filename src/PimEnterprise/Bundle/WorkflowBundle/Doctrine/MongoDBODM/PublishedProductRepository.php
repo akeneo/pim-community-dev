@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -204,7 +204,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
+    public function countPublishedProductsForAttribute(AttributeInterface $attribute)
     {
         return $this->createQueryBuilder('pp')
             ->field('values.attribute')->equals($attribute->getId())

@@ -20,7 +20,7 @@ class FilePresenterSpec extends ObjectBehavior
 
     function it_supports_presentation_of_value_which_stores_data_in_the_media_property_with_a_media_change(
         Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getBackendType()->willReturn('media');

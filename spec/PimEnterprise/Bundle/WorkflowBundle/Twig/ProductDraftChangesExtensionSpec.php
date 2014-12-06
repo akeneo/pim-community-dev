@@ -61,7 +61,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributeRepository,
         $attributePresenter,
         $valuePresenter,
-        Model\AbstractAttribute $attribute,
+        Model\AttributeInterface $attribute,
         Model\AbstractProductValue $value
     ) {
         $attributeRepository->findByReference('description')->willReturn($attribute);

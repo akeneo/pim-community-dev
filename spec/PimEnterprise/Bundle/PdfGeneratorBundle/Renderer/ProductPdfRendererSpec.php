@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
@@ -29,7 +29,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AbstractProduct $blender,
         ArrayCollection $blenderValues,
         AttributeGroup $design,
-        AbstractAttribute $color,
+        AttributeInterface $color,
         AbstractProductValue $blue,
         $templating
     ) {
@@ -60,7 +60,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AbstractProduct $blender,
         ArrayCollection $blenderValues,
         AttributeGroup $media,
-        AbstractAttribute $mainImage,
+        AttributeInterface $mainImage,
         AbstractProductValue $blenderPicture,
         $templating
     ) {
