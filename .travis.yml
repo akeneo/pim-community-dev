@@ -21,3 +21,5 @@ before_script:
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix
+notifications:
+  slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
