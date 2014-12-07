@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
@@ -49,7 +49,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     /**
      * {@inheritdoc}
      */
-    protected function getAttributes(AbstractProduct $product, $locale)
+    protected function getAttributes(ProductInterface $product, $locale)
     {
         $values     = $this->filterHelper->filter($product->getValues()->toArray(), $locale);
         $attributes = [];

@@ -15,14 +15,14 @@ class PricesPresenterSpec extends ObjectBehavior
     }
 
     function it_supports_change_if_it_is_a_value_instance_and_change_has_a_prices_key(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $this->supports($value, ['prices' => 'foo'])->shouldBe(true);
     }
 
     function it_presents_prices_change_using_the_injected_renderer(
         RendererInterface $renderer,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Collection $collection,
         Model\ProductPrice $eur,
         Model\ProductPrice $usd,

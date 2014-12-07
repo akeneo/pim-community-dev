@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * A comparator that delegates comparison to a chain of comparators
@@ -28,7 +28,7 @@ class ChainedComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(AbstractProductValue $value)
+    public function supportsComparison(ProductValueInterface $value)
     {
         return true;
     }
@@ -36,7 +36,7 @@ class ChainedComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(ProductValueInterface $value, $submittedData)
     {
         foreach ($this->getComparators() as $comparator) {
             if ($comparator->supportsComparison($value)) {

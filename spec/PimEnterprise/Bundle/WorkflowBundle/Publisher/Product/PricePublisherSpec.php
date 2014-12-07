@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 
 class PricePublisherSpec extends ObjectBehavior
 {
@@ -17,12 +17,12 @@ class PricePublisherSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
 
-    function it_supports_price(AbstractProductPrice $value)
+    function it_supports_price(ProductPriceInterface $value)
     {
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_publishes_price(AbstractProductPrice $value)
+    function it_publishes_price(ProductPriceInterface $value)
     {
         $this
             ->publish($value)

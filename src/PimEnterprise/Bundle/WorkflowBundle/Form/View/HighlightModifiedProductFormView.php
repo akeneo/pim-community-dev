@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\View;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
@@ -99,7 +98,7 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     protected function markFieldAsModified(FormView $view)
     {
         $value = $view->vars['value'];
-        if (!$value instanceof AbstractProductValue) {
+        if (!$value instanceof ProductValueInterface) {
             return;
         }
 

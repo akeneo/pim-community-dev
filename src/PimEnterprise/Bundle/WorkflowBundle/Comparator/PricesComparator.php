@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Comparator which calculate change set for prices
@@ -25,7 +25,7 @@ class PricesComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(AbstractProductValue $value)
+    public function supportsComparison(ProductValueInterface $value)
     {
         return 'pim_catalog_price_collection' === $value->getAttribute()->getAttributeType();
     }
@@ -33,7 +33,7 @@ class PricesComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(ProductValueInterface $value, $submittedData)
     {
         if (!isset($submittedData['prices'])) {
             return;

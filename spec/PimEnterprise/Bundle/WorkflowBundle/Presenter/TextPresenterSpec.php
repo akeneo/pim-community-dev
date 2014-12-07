@@ -14,14 +14,14 @@ class TextPresenterSpec extends ObjectBehavior
     }
 
     function it_supports_change_if_it_has_a_text_key(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $this->supports($value, ['text' => 'foo'])->shouldBe(true);
     }
 
     function it_presents_text_change_using_the_injected_renderer(
         RendererInterface $renderer,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $value->getData()->willReturn('bar');
         $renderer->renderDiff(['bar'], ['foo'])->willReturn('diff between bar and foo');
@@ -32,7 +32,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_explodes_text_paragraph_before_rendering_diff(
         RendererInterface $renderer,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $value->getData()->willReturn('<p>foo</p> <p>bar</p>');
         $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
@@ -43,7 +43,7 @@ class TextPresenterSpec extends ObjectBehavior
 
     function it_explodes_text_paragraph_without_space_before_rendering_diff(
         RendererInterface $renderer,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $value->getData()->willReturn('<p>foo</p><p>bar</p>');
         $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');

@@ -5,7 +5,6 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -38,7 +37,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $manager,
         $repository,
         ObjectManager $om,
-        AbstractProduct $product,
+        ProductInterface $product,
         PublishedProductInterface $published
     ) {
         $repository->findOneByOriginalProduct(Argument::any())->willReturn(null);
@@ -61,7 +60,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $manager,
         $repository,
         ObjectManager $om,
-        AbstractProduct $product,
+        ProductInterface $product,
         PublishedProductInterface $alreadyPublished,
         PublishedProductInterface $published
     ) {

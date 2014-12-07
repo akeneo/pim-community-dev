@@ -62,7 +62,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\AttributeInterface $attribute,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $attributeRepository->findByReference('description')->willReturn($attribute);
 
@@ -89,7 +89,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $valueRepository,
         $attributePresenter,
         $valuePresenter,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         ProductDraft $productDraft
     ) {
@@ -116,7 +116,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $translator,
         $attributePresenter,
         $valuePresenter,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraft $productDraft
@@ -149,7 +149,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $renderer,
         $attributePresenter,
         $valuePresenter,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraft $productDraft
@@ -182,7 +182,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $renderer,
         $attributePresenter,
         $valuePresenter,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,

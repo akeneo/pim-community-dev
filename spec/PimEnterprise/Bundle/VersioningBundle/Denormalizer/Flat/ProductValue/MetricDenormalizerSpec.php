@@ -5,8 +5,8 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductVa
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class MetricDenormalizerSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_a_existing_metric(AbstractProductValue $metricValue, AbstractMetric $metric, AttributeInterface $weight, $metricFactory)
+    function it_denormalizes_a_existing_metric(ProductValueInterface $metricValue, MetricInterface $metric, AttributeInterface $weight, $metricFactory)
     {
         $context = ['value' => $metricValue];
 
@@ -34,7 +34,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->denormalize('KILOGRAM', 'className', null, $context)->shouldReturn($metric);
     }
 
-    function it_denormalizes_a_new_metric(AbstractProductValue $metricValue, AbstractMetric $metric, AttributeInterface $weight, $metricFactory)
+    function it_denormalizes_a_new_metric(ProductValueInterface $metricValue, MetricInterface $metric, AttributeInterface $weight, $metricFactory)
     {
         $context = ['value' => $metricValue];
 
@@ -49,7 +49,7 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->denormalize('100', 'className', null, $context)->shouldReturn($metric);
     }
 
-    function it_returns_null_if_the_data_is_empty(AbstractProductValue $productValueInterface)
+    function it_returns_null_if_the_data_is_empty(ProductValueInterface $productValueInterface)
     {
         $this->denormalize('', 'className', null, [])->shouldReturn(null);
         $this->denormalize(null, 'className', null, [])->shouldReturn(null);

@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -26,11 +26,11 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
     function it_renders_a_product_without_images(
         $filterHelper,
-        AbstractProduct $blender,
+        ProductInterface $blender,
         ArrayCollection $blenderValues,
         AttributeGroup $design,
         AttributeInterface $color,
-        AbstractProductValue $blue,
+        ProductValueInterface $blue,
         $templating
     ) {
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
@@ -57,11 +57,11 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
     function it_renders_a_product_with_an_image(
         $filterHelper,
-        AbstractProduct $blender,
+        ProductInterface $blender,
         ArrayCollection $blenderValues,
         AttributeGroup $media,
         AttributeInterface $mainImage,
-        AbstractProductValue $blenderPicture,
+        ProductValueInterface $blenderPicture,
         $templating
     ) {
         $filterHelper->filter([$blenderPicture], 'en_US')->willReturn([$blenderPicture]);

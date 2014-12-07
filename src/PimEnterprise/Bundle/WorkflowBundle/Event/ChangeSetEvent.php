@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -21,17 +21,17 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ChangeSetEvent extends Event
 {
-    /** @var AbstractProductValue */
+    /** @var ProductValueInterface */
     protected $value;
 
     /** @var null|array */
     protected $changeSet;
 
     /**
-     * @param AbstractProductValue $value
-     * @param null|array           $changeSet
+     * @param ProductValueInterface $value
+     * @param null|array            $changeSet
      */
-    public function __construct(AbstractProductValue $value, $changeSet)
+    public function __construct(ProductValueInterface $value, $changeSet)
     {
         $this->value = $value;
         $this->changeSet = $changeSet;
@@ -40,7 +40,7 @@ class ChangeSetEvent extends Event
     /**
      * Get the value
      *
-     * @return AbstractProductValue
+     * @return ProductValueInterface
      */
     public function getValue()
     {
