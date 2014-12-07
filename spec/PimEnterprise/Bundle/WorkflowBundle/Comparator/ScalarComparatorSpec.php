@@ -9,8 +9,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class ScalarComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute,
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute,
         PropertyAccessor $accessor
     ) {
         $value->getAttribute()->willReturn($attribute);

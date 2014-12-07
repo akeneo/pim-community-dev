@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
@@ -35,7 +35,7 @@ class ProductSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([ProductEvents::PRE_EDIT => 'checkEditPermission']);
     }
 
-    function it_checks_edit_permission($securityContext, GenericEvent $event, AbstractProduct $product, $locale)
+    function it_checks_edit_permission($securityContext, GenericEvent $event, ProductInterface $product, $locale)
     {
         $event->getSubject()->willReturn($product);
         $securityContext->isGranted(Argument::any(), $product)->willReturn(false);

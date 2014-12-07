@@ -11,12 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
@@ -24,22 +27,20 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Store product through product drafts
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftSaver implements SaverInterface
+class ProductDraftSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var CompletenessManager */
     protected $completenessManager;
@@ -72,20 +73,20 @@ class ProductDraftSaver implements SaverInterface
     protected $ruleRunner;
 
     /**
-     * @param ManagerRegistry                 $registry
-     * @param CompletenessManager             $completenessManager
-     * @param SecurityContextInterface        $securityContext
-     * @param ProductDraftFactory             $factory
-     * @param ProductDraftRepositoryInterface $repository
-     * @param EventDispatcherInterface        $dispatcher
-     * @param ChangesCollector                $collector
-     * @param ChangeSetComputerInterface      $changeSet
-     * @param string                          $storageDriver
-     * @param RuleDefinitionRepositoryInterface         $ruleRepository
-     * @param RunnerInterface                 $ruleRunner
+     * @param ObjectManager                     $om
+     * @param CompletenessManager               $completenessManager
+     * @param SecurityContextInterface          $securityContext
+     * @param ProductDraftFactory               $factory
+     * @param ProductDraftRepositoryInterface   $repository
+     * @param EventDispatcherInterface          $dispatcher
+     * @param ChangesCollector                  $collector
+     * @param ChangeSetComputerInterface        $changeSet
+     * @param string                            $storageDriver
+     * @param RuleDefinitionRepositoryInterface $ruleRepository
+     * @param RunnerInterface                   $ruleRunner
      */
     public function __construct(
-        ManagerRegistry $registry,
+        ObjectManager $om,
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
@@ -97,7 +98,7 @@ class ProductDraftSaver implements SaverInterface
         RuleDefinitionRepositoryInterface $ruleRepository,
         RunnerInterface $ruleRunner
     ) {
-        $this->registry = $registry;
+        $this->objectManager = $om;
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
@@ -111,7 +112,7 @@ class ProductDraftSaver implements SaverInterface
     }
 
     /**
-     * TODO: do not check the context here. ProductDraftSaver should only persist propostions.
+     * TODO: do not check the context here. ProductDraftSaver should only persist drafts.
      *
      * {@inheritdoc}
      */
@@ -127,7 +128,6 @@ class ProductDraftSaver implements SaverInterface
         }
 
         $options = $this->resolveOptions($options);
-        $manager = $this->registry->getManagerForClass(get_class($product));
 
         if (null === $product->getId()) {
             $isOwner = true;
@@ -140,32 +140,53 @@ class ProductDraftSaver implements SaverInterface
             }
         }
 
-        if ($isOwner || $options['bypass_product_draft'] || !$manager->contains($product)) {
-            $this->persistProduct($manager, $product, $options);
+        if ($isOwner || $options['bypass_product_draft'] || !$this->objectManager->contains($product)) {
+            $this->persistProduct($product, $options);
         } else {
-            $this->refreshProductValues($manager, $product);
-            $this->persistProductDraft($manager, $product);
+            $this->refreshProductValues($product);
+            $this->persistProductDraft($product);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $products, array $options = [])
+    {
+        if (empty($products)) {
+            return;
+        }
+
+        $allOptions = $this->resolveOptions($options);
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
+
+        foreach ($products as $product) {
+            $this->save($product, $itemOptions);
+        }
+
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
         }
     }
 
     /**
      * Persist the product
      *
-     * @param ObjectManager    $manager
      * @param ProductInterface $product
      * @param array            $options
      */
-    protected function persistProduct(ObjectManager $manager, ProductInterface $product, array $options)
+    protected function persistProduct(ProductInterface $product, array $options)
     {
         // TODO : remove the flush case, once the saveAll will be implemented
-        $manager->persist($product);
+        $this->objectManager->persist($product);
 
         if (true === $options['schedule'] || true === $options['recalculate']) {
             $this->completenessManager->schedule($product);
         }
 
         if (true === $options['recalculate'] || true === $options['flush']) {
-            $manager->flush();
+            $this->objectManager->flush();
         }
 
         if (true === $options['recalculate']) {
@@ -173,7 +194,7 @@ class ProductDraftSaver implements SaverInterface
         }
 
         if (true === $options['execute_rules']) {
-            $this->applyAllRules($manager, $product);
+            $this->applyAllRules($product);
         }
     }
 
@@ -211,29 +232,27 @@ class ProductDraftSaver implements SaverInterface
     /**
      * Apply the rules on the product
      *
-     * @param ObjectManager    $manager
      * @param ProductInterface $product
      */
-    protected function applyAllRules(ObjectManager $manager, ProductInterface $product)
+    protected function applyAllRules(ProductInterface $product)
     {
         $rules = $this->ruleRepository->findAllOrderedByPriority();
         foreach ($rules as $rule) {
             $this->ruleRunner->run($rule, ['selected_products' => [$product->getId()]]);
-            $manager->flush();
+            $this->objectManager->flush();
         }
     }
 
     /**
      * Persist a product draft of the product
      *
-     * @param ObjectManager    $manager
      * @param ProductInterface $product
      *
      * @return null
      *
      * @throws \LogicException
      */
-    protected function persistProductDraft(ObjectManager $manager, ProductInterface $product)
+    protected function persistProductDraft(ProductInterface $product)
     {
         if (null === $submittedData = $this->collector->getData()) {
             throw new \LogicException('No product data were collected');
@@ -242,7 +261,7 @@ class ProductDraftSaver implements SaverInterface
         $username = $this->getUser()->getUsername();
         if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {
             $productDraft = $this->factory->createProductDraft($product, $username);
-            $manager->persist($productDraft);
+            $this->objectManager->persist($productDraft);
         }
 
         $event = $this->dispatcher->dispatch(
@@ -255,14 +274,14 @@ class ProductDraftSaver implements SaverInterface
         $changes = $event->getChanges();
 
         if (empty($changes)) {
-            $manager->remove($productDraft);
+            $this->objectManager->remove($productDraft);
 
-            return $manager->flush();
+            return $this->objectManager->flush();
         }
 
         $productDraft->setChanges($changes);
 
-        $manager->flush();
+        $this->objectManager->flush();
     }
 
     /**
@@ -289,18 +308,17 @@ class ProductDraftSaver implements SaverInterface
      * Refresh the values of the product to not have the changes made by binding the request to the form
      * This is hackish, but no elegant solution has been found
      *
-     * @param ObjectManager    $manager
      * @param ProductInterface $product
      */
-    protected function refreshProductValues(ObjectManager $manager, ProductInterface $product)
+    protected function refreshProductValues(ProductInterface $product)
     {
         if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             foreach ($product->getValues() as $value) {
-                if (true === $manager->contains($value)) {
-                    $manager->refresh($value);
+                if (true === $this->objectManager->contains($value)) {
+                    $this->objectManager->refresh($value);
                     foreach ($value->getPrices() as $price) {
-                        if (true === $manager->contains($price)) {
-                            $manager->refresh($price);
+                        if (true === $this->objectManager->contains($price)) {
+                            $this->objectManager->refresh($price);
                         }
                     }
                 } else {
@@ -316,7 +334,7 @@ class ProductDraftSaver implements SaverInterface
             $categories = $product->getCategories();
             $associations = $product->getAssociations();
 
-            $manager->refresh($product);
+            $this->objectManager->refresh($product);
 
             $product->setEnabled($enabled);
             $product->getCategories()->clear();

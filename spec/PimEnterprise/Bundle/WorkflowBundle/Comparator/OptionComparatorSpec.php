@@ -9,8 +9,8 @@ use Pim\Bundle\CatalogBundle\Model;
 class OptionComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
     }
@@ -58,7 +58,7 @@ class OptionComparatorSpec extends ObjectBehavior
     }
 
     function it_detects_no_changes_when_option_is_the_same(
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         AttributeOption $red
     ) {
         $submittedData = [
@@ -72,7 +72,7 @@ class OptionComparatorSpec extends ObjectBehavior
     }
 
     function it_detects_no_changes_when_setting_no_option_on_a_value_that_already_does_not_have_one(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $submittedData = [
             'option' => '',
@@ -84,7 +84,7 @@ class OptionComparatorSpec extends ObjectBehavior
     }
 
     function it_detects_no_change_when_the_option_is_not_defined(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $submittedData = [];
 

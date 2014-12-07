@@ -15,7 +15,7 @@ class BooleanPresenterSpec extends ObjectBehavior
     }
 
     function it_supports_change_if_it_has_a_boolean_key(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $this->supports($value, ['boolean' => '1'])->shouldBe(true);
     }
@@ -23,7 +23,7 @@ class BooleanPresenterSpec extends ObjectBehavior
     function it_presents_boolean_change_using_the_injected_renderer(
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $translator->trans('Yes')->willReturn('Yes');
         $translator->trans('No')->willReturn('No');

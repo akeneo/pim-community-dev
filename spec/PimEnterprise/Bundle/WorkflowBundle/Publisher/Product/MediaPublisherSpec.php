@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class MediaPublisherSpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class MediaPublisherSpec extends ObjectBehavior
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_publishes_media(ProductMediaInterface $media, ProductInterface $product, AbstractProductValue $value)
+    function it_publishes_media(ProductMediaInterface $media, ProductInterface $product, ProductValueInterface $value)
     {
         $options = ['product' => $product, 'value' => $value];
         $this

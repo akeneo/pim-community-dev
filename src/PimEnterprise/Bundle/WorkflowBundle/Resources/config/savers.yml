@@ -5,7 +5,7 @@ services:
     pim_catalog.saver.product:
         class: %pim_catalog.saver.product.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.object_manager.product'
             - '@pim_catalog.manager.completeness'
             - '@security.context'
             - '@pimee_workflow.factory.product_draft'

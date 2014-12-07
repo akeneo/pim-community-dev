@@ -9,8 +9,8 @@ use Pim\Bundle\CatalogBundle\Model;
 class PricesComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
     }

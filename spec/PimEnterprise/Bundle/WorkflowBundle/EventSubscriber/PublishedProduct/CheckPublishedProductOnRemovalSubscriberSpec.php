@@ -8,8 +8,8 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Event;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -38,7 +38,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_a_product_is_not_published(
         $publishedRepository,
-        AbstractProduct $product,
+        ProductInterface $product,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
@@ -50,7 +50,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_product_is_published(
         $publishedRepository,
-        AbstractProduct $product,
+        ProductInterface $product,
         PublishedProductInterface $published,
         GenericEvent $event
     ) {
@@ -91,7 +91,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_the_attribute_is_linked_to_a_published_product(
         $publishedRepository,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($attribute);
@@ -102,7 +102,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_attribute_is_linked_to_a_published_product(
         $publishedRepository,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($attribute);

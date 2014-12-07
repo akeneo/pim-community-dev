@@ -19,8 +19,8 @@ class FilePresenterSpec extends ObjectBehavior
     }
 
     function it_supports_presentation_of_value_which_stores_data_in_the_media_property_with_a_media_change(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getBackendType()->willReturn('media');
@@ -30,7 +30,7 @@ class FilePresenterSpec extends ObjectBehavior
 
     function it_presents_files_in_a_list(
         $generator,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
         $value->getMedia()->willReturn($media);
@@ -67,7 +67,7 @@ class FilePresenterSpec extends ObjectBehavior
 
     function it_only_presents_new_file_if_value_does_not_have_a_media_yet(
         $generator,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $value->getMedia()->willReturn(null);
 
@@ -94,7 +94,7 @@ class FilePresenterSpec extends ObjectBehavior
 
     function it_only_presents_old_file_if_a_new_one_is_not_provided(
         $generator,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
         $value->getMedia()->willReturn($media);

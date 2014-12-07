@@ -24,7 +24,7 @@ class MetricPresenterSpec extends ObjectBehavior
     }
 
     function it_supports_change_if_it_has_a_metric_key(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $this->supports($value, ['metric' => 'foo'])->shouldBe(true);
     }
@@ -32,7 +32,7 @@ class MetricPresenterSpec extends ObjectBehavior
     function it_presents_metric_change_using_the_injected_renderer(
         $translator,
         RendererInterface $renderer,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         Model\Metric $metric
     ) {
         $value->getData()->willReturn($metric);
@@ -51,7 +51,7 @@ class MetricPresenterSpec extends ObjectBehavior
     function it_presents_metric_new_value_even_if_metric_does_not_have_a_value_yet(
         $translator,
         RendererInterface $renderer,
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $value->getData()->willReturn(null);
 
