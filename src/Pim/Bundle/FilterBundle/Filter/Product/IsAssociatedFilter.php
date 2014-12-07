@@ -9,7 +9,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -96,7 +96,7 @@ class IsAssociatedFilter extends BooleanFilter
     }
 
     /**
-     * @return AbstractProduct
+     * @return ProductInterface
      */
     protected function getCurrentProduct()
     {
@@ -110,12 +110,12 @@ class IsAssociatedFilter extends BooleanFilter
     }
 
     /**
-     * @param AbstractProduct $product
-     * @param AssociationType $type
+     * @param ProductInterface $product
+     * @param AssociationType  $type
      *
      * @return array
      */
-    protected function getAssociatedProductIds(AbstractProduct $product, AssociationType $type)
+    protected function getAssociatedProductIds(ProductInterface $product, AssociationType $type)
     {
         $productIds  = [];
         $association = $product->getAssociationForType($type);

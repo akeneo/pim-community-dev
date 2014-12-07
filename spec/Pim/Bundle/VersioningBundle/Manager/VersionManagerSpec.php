@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
@@ -41,7 +41,7 @@ class VersionManagerSpec extends ObjectBehavior
         $this->getContext()->shouldReturn('import');
     }
 
-    function it_uses_version_builder_to_build_versions(AbstractProduct $product, $builder)
+    function it_uses_version_builder_to_build_versions(ProductInterface $product, $builder)
     {
         $this->setUsername('julia');
         $this->setContext('spec');
@@ -50,7 +50,7 @@ class VersionManagerSpec extends ObjectBehavior
         $builder->buildVersion($product, 'julia', null, 'spec')->shouldHaveBeenCalled();
     }
 
-    function it_builds_versions_for_versionable_entities(AbstractProduct $product, $builder)
+    function it_builds_versions_for_versionable_entities(ProductInterface $product, $builder)
     {
         $builder->buildVersion(Argument::cetera())->willReturn(new Version('foo', 1, 'bar'));
 
@@ -59,7 +59,7 @@ class VersionManagerSpec extends ObjectBehavior
         $versions[0]->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
     }
 
-    function it_creates_pending_versions_when_real_time_versioning_is_disabled(AbstractProduct $product, $builder)
+    function it_creates_pending_versions_when_real_time_versioning_is_disabled(ProductInterface $product, $builder)
     {
         $this->setRealTimeVersioning(false);
         $builder->createPendingVersion(Argument::cetera())->willReturn(new Version('foo', 1, 'bar'));
@@ -71,7 +71,7 @@ class VersionManagerSpec extends ObjectBehavior
         $version->isPending()->shouldReturn(true);
     }
 
-    function it_builds_pending_versions_when_versioning_an_entity(AbstractProduct $product, $builder, $repo)
+    function it_builds_pending_versions_when_versioning_an_entity(ProductInterface $product, $builder, $repo)
     {
         $product->getId()->willReturn(1);
 

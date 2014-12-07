@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -57,7 +57,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         foreach ($collection as $item) {
             $data = $this->serializer->normalize($item, $format, $context);
             if ($data !== null) {
-                if ($item instanceof AbstractProductPrice) {
+                if ($item instanceof ProductPriceInterface) {
                     $normalized[$item->getCurrency()] = $data;
                 } else {
                     $normalized[] = $data;

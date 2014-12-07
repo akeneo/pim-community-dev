@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -19,7 +19,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder);
     }
 
-    function it_does_not_filter_compatible_entities(AbstractProduct $blender)
+    function it_does_not_filter_compatible_entities(ProductInterface $blender)
     {
         $this->supports($blender, 'pdf')->shouldReturn(true);
     }
@@ -30,7 +30,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     }
 
     function it_renders_a_product_without_images(
-        AbstractProduct $blender,
+        ProductInterface $blender,
         AttributeGroup $design,
         AttributeInterface $color,
         $templating
@@ -55,7 +55,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     }
 
     function it_renders_a_product_with_an_image(
-        AbstractProduct $blender,
+        ProductInterface $blender,
         AttributeGroup $media,
         AttributeInterface $mainImage,
         $templating

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
@@ -47,10 +47,10 @@ class MetricValueCopierSpec extends ObjectBehavior
         MetricInterface $metric,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
-        AbstractProduct $product4,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
         ProductValue $toProductValue2
@@ -110,10 +110,10 @@ class MetricValueCopierSpec extends ObjectBehavior
     function it_does_not_copy_a_metric_value_to_a_product_value_if_its_not_the_same_familly(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
-        AbstractProduct $product4
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';

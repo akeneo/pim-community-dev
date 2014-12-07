@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -41,9 +41,9 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         ProductManager $productManager,
         AssociationType $assocType,
         AbstractAssociation $association,
-        AbstractProduct $productOwner,
-        AbstractProduct $productAssociatedOne,
-        AbstractProduct $productAssociatedTwo,
+        ProductInterface $productOwner,
+        ProductInterface $productAssociatedOne,
+        ProductInterface $productAssociatedTwo,
         $manager
     ) {
         $extractor->getDatagridParameter('_parameters', [])->willReturn([]);

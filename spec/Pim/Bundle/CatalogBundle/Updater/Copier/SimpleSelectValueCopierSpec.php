@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
@@ -53,10 +53,10 @@ class SimpleSelectValueCopierSpec extends ObjectBehavior
         $builder,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
-        AbstractProduct $product4,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
         AttributeOption $attributeOption

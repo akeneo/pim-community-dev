@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
@@ -19,7 +19,7 @@ class MetricTypeSpec extends ObjectBehavior
         AttributeConstraintGuesser $guesser,
         MeasureManager $manager,
         MetricFactory $metricFactory,
-        AbstractProductValue $value,
+        ProductValueInterface $value,
         AttributeInterface $size
     ) {
         $value->getAttribute()->willReturn($size);

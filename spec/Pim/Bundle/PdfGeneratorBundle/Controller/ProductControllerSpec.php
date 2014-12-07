@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ class ProductControllerSpec extends ObjectBehavior
 
     function it_generates_a_pdf_for_a_given_product(
         Request $request,
-        AbstractProduct $blender,
+        ProductInterface $blender,
         $rendererRegistry,
         $productManager
     ) {
@@ -38,7 +38,7 @@ class ProductControllerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_there_is_no_compatible_renderer(
         Request $request,
-        AbstractProduct $blender,
+        ProductInterface $blender,
         $rendererRegistry,
         $productManager
     ) {
@@ -60,7 +60,7 @@ class ProductControllerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_product_doesnt_exist(
         Request $request,
-        AbstractProduct $blender,
+        ProductInterface $blender,
         $rendererRegistry,
         $productManager
     ) {

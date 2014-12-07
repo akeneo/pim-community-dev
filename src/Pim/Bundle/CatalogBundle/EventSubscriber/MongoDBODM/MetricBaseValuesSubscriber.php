@@ -7,7 +7,7 @@ use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 
 /**
  * Metric base value listener
@@ -61,7 +61,7 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $object = $args->getObject();
-        if ($object instanceof AbstractMetric && $object->getUnit()) {
+        if ($object instanceof MetricInterface && $object->getUnit()) {
             $this->createMetricBaseValues($object);
         }
     }
@@ -75,7 +75,7 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         $object = $args->getObject();
-        if ($object instanceof AbstractMetric && $object->getUnit()) {
+        if ($object instanceof MetricInterface && $object->getUnit()) {
             $this->createMetricBaseValues($object);
 
             $class = new ClassMetadata($object);
@@ -86,9 +86,9 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     /**
      * Allow to create convert data in standard unit for metrics
      *
-     * @param AbstractMetric $metric
+     * @param MetricInterface $metric
      */
-    protected function createMetricBaseValues(AbstractMetric $metric)
+    protected function createMetricBaseValues(MetricInterface $metric)
     {
         $baseUnit = $this->manager->getStandardUnitForFamily($metric->getFamily());
         if (is_numeric($metric->getData())) {

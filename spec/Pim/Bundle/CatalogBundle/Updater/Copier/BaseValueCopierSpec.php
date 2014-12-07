@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
@@ -47,10 +47,10 @@ class BaseValueCopierSpec extends ObjectBehavior
     function it_copies_a_boolean_value_to_a_product_value(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
-        AbstractProduct $product4,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
         $builder
@@ -93,10 +93,10 @@ class BaseValueCopierSpec extends ObjectBehavior
     function it_copies__a_date_value_to_a_product_value(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
-        AbstractProduct $product4,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
         $builder
@@ -139,10 +139,10 @@ class BaseValueCopierSpec extends ObjectBehavior
     function it_copies_number_value_to_a_product_value(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
-        AbstractProduct $product4,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
         $builder
@@ -185,10 +185,10 @@ class BaseValueCopierSpec extends ObjectBehavior
     function it_copies_text_value_to_a_product_value(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
-        AbstractProduct $product4,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
         $builder

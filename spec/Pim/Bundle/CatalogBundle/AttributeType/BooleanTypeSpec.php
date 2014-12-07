@@ -5,14 +5,14 @@ namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
 class BooleanTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser, AbstractProductValue $value, AttributeInterface $isAvailable)
+    function let(AttributeConstraintGuesser $guesser, ProductValueInterface $value, AttributeInterface $isAvailable)
     {
         $value->getAttribute()->willReturn($isAvailable);
 

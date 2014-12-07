@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -51,7 +51,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         ProductInterface $product,
         AttributeInterface $skuAttribute,
-        AbstractProductValue $sku,
+        ProductValueInterface $sku,
         Collection $values,
         FamilyInterface $family,
         $serializer
@@ -90,7 +90,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         ProductInterface $product,
         AttributeInterface $skuAttribute,
-        AbstractProductValue $sku,
+        ProductValueInterface $sku,
         Association $myCrossSell,
         AssociationType $crossSell,
         Association $myUpSell,
@@ -99,8 +99,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         Group $associatedGroup2,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
-        AbstractProductValue $skuAssocProduct1,
-        AbstractProductValue $skuAssocProduct2,
+        ProductValueInterface $skuAssocProduct1,
+        ProductValueInterface $skuAssocProduct2,
         Collection $values,
         FamilyInterface $family,
         $serializer
@@ -162,8 +162,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $skuAttribute,
         AttributeInterface $colorsAttribute,
-        AbstractProductValue $sku,
-        AbstractProductValue $colors,
+        ProductValueInterface $sku,
+        ProductValueInterface $colors,
         AttributeOption $red,
         AttributeOption $blue,
         Collection $values,
@@ -213,7 +213,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter,
         ProductInterface $product,
         AttributeInterface $priceAttribute,
-        AbstractProductValue $price,
+        ProductValueInterface $price,
         Collection $prices,
         Collection $values,
         ProductPriceInterface $productPrice,

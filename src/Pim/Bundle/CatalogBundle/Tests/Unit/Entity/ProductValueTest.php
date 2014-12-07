@@ -27,7 +27,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     public function itShouldBeAProductValue()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Model\AbstractProductValue',
+            'Pim\Bundle\CatalogBundle\Model\ProductValueInterface',
             $this->value
         );
     }

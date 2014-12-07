@@ -6,8 +6,8 @@ use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class MetricConverterSpec extends ObjectBehavior
@@ -19,14 +19,14 @@ class MetricConverterSpec extends ObjectBehavior
 
     function it_converts_metric_values_given_the_configured_base_unit_in_the_channel(
         $converter,
-        AbstractProductValue $weightValue,
-        AbstractProductValue $surfaceValue,
-        AbstractProductValue $nameValue,
+        ProductValueInterface $weightValue,
+        ProductValueInterface $surfaceValue,
+        ProductValueInterface $nameValue,
         AttributeInterface $weight,
         AttributeInterface $surface,
         AttributeInterface $name,
-        AbstractMetric $weightMetric,
-        AbstractMetric $surfaceMetric,
+        MetricInterface $weightMetric,
+        MetricInterface $surfaceMetric,
         ProductInterface $product,
         Channel $channel
     ) {

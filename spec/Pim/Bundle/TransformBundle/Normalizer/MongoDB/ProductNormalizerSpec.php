@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -56,8 +56,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         CategoryInterface $category2,
         Group $group1,
         Group $group2,
-        AbstractProductValue $value1,
-        AbstractProductValue $value2,
+        ProductValueInterface $value1,
+        ProductValueInterface $value2,
         FamilyInterface $family
     ) {
         $mongoFactory->createMongoId()->willReturn($mongoId);
@@ -117,8 +117,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         CategoryInterface $category2,
         Group $group1,
         Group $group2,
-        AbstractProductValue $value1,
-        AbstractProductValue $value2,
+        ProductValueInterface $value1,
+        ProductValueInterface $value2,
         FamilyInterface $family
     ) {
         $mongoFactory->createMongoId('product1')->willReturn($mongoId);

@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
@@ -126,9 +126,9 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $builder,
         $attrOptionRepository,
         AttributeInterface $attribute,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
         ProductValue $productValue,
         AttributeOption $attributeOption
     ) {
