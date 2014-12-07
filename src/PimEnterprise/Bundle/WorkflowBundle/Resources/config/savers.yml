@@ -1,16 +1,43 @@
 parameters:
-    pim_catalog.saver.product.class: PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver
+    pim_catalog.saver.product.class:              PimEnterprise\Bundle\WorkflowBundle\Saver\DelegatingProductSaver
+    pim_catalog.saver.product_working_copy.class: PimEnterprise\Bundle\WorkflowBundle\Saver\ProductWorkingCopySaver
+    pim_catalog.saver.product_draft.class:        PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver
+    pim_catalog.saver.product_base.class:         Pim\Bundle\CatalogBundle\Saver\ProductSaver
 
 services:
+    # declares the base product saver service with another alias to be able to overrides and decorates it
+    pim_catalog.saver.product_base:
+        class: %pim_catalog.saver.product_base.class%
+        arguments:
+            - @pim_catalog.object_manager.product
+            - @pim_catalog.manager.completeness
+
+    # this service overrides the community product saver to delegates to draft or working copy savers
     pim_catalog.saver.product:
         class: %pim_catalog.saver.product.class%
         arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.completeness'
-            - '@security.context'
-            - '@pimee_workflow.factory.product_draft'
-            - '@pimee_workflow.repository.product_draft'
-            - '@event_dispatcher'
-            - '@pimee_workflow.collector.product_submitted_changes'
-            - '@pimee_workflow.change_set_computer'
+            - @pim_catalog.saver.product_working_copy
+            - @pim_catalog.saver.product_draft
+            - @pim_catalog.object_manager.product
+            - @security.context
+
+    # product working copy saver is private and used through the delegating saver, it decorates the community saver
+    pim_catalog.saver.product_working_copy:
+        class: %pim_catalog.saver.product_working_copy.class%
+        arguments:
+            - @pim_catalog.saver.product_base
+        public: false
+
+    # product draft saver is private and used through the delegating saver
+    pim_catalog.saver.product_draft:
+        class: %pim_catalog.saver.product_draft.class%
+        arguments:
+            - @pim_catalog.object_manager.product
+            - @security.context
+            - @pimee_workflow.factory.product_draft
+            - @pimee_workflow.repository.product_draft
+            - @event_dispatcher
+            - @pimee_workflow.collector.product_submitted_changes
+            - @pimee_workflow.change_set_computer
             - %akeneo_storage_utils.storage_driver%
+        public: false

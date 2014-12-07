@@ -16,9 +16,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\SaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
@@ -31,7 +29,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Store product through product drafts
+ * Save product drafts, drafts will need to be approved to be merged in the working product data
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
@@ -39,9 +37,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
-
-    /** @var CompletenessManager */
-    protected $completenessManager;
 
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -66,7 +61,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                   $om
-     * @param CompletenessManager             $completenessManager
      * @param SecurityContextInterface        $securityContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
@@ -77,7 +71,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      */
     public function __construct(
         ObjectManager $om,
-        CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
@@ -87,7 +80,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $storageDriver
     ) {
         $this->objectManager = $om;
-        $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
         $this->repository = $repository;
@@ -98,8 +90,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * TODO: do not check the context here. ProductDraftSaver should only persist drafts.
-     *
      * {@inheritdoc}
      */
     public function save($product, array $options = [])
@@ -113,25 +103,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $options = $this->resolveOptions($options);
-
-        if (null === $product->getId()) {
-            $isOwner = true;
-        } else {
-            try {
-                $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
-            } catch (AuthenticationCredentialsNotFoundException $e) {
-                // We are probably on a CLI context
-                $isOwner = true;
-            }
-        }
-
-        if ($isOwner || $options['bypass_product_draft'] || !$this->objectManager->contains($product)) {
-            $this->persistProduct($product, $options);
-        } else {
-            $this->refreshProductValues($product);
-            $this->persistProductDraft($product);
-        }
+        $this->refreshProductValues($product);
+        $this->persistProductDraft($product);
     }
 
     /**
@@ -157,36 +130,13 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * Persist the product
-     *
-     * @param ProductInterface $product
-     * @param array            $options
-     */
-    protected function persistProduct(ProductInterface $product, array $options)
-    {
-        // TODO : remove the flush case, once the saveAll will be implemented
-        $this->objectManager->persist($product);
-
-        if (true === $options['schedule'] || true === $options['recalculate']) {
-            $this->completenessManager->schedule($product);
-        }
-
-        if (true === $options['recalculate'] || true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        if (true === $options['recalculate']) {
-            $this->completenessManager->generateMissingForProduct($product);
-        }
-    }
-
-    /**
      * @param array $options
      *
      * @return array
      */
     protected function resolveOptions(array $options)
     {
+        // TODO : extract the resolver part that should be shared by savers
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
             [
