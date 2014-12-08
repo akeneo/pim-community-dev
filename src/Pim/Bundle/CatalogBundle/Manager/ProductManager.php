@@ -62,9 +62,6 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /** @var AttributeRepository */
     protected $attributeRepository;
 
-    /** @var AttributeOptionRepository */
-    protected $attOptionRepository;
-
     /**
      * Constructor
      *
@@ -78,7 +75,6 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      * @param ProductRepositoryInterface $productRepository
      * @param AssociationTypeRepository  $assocTypeRepository
      * @param AttributeRepository        $attributeRepository
-     * @param AttributeOptionRepository  $attOptionRepository
      */
     public function __construct(
         $configuration,
@@ -90,8 +86,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         ProductBuilder $builder,
         ProductRepositoryInterface $productRepository,
         AssociationTypeRepository $assocTypeRepository,
-        AttributeRepository $attributeRepository,
-        AttributeOptionRepository $attOptionRepository
+        AttributeRepository $attributeRepository
     ) {
         $this->configuration = $configuration;
         $this->productSaver = $productSaver;
@@ -103,7 +98,6 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         $this->productRepository = $productRepository;
         $this->assocTypeRepository = $assocTypeRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->attOptionRepository = $attOptionRepository;
     }
 
     /**
@@ -404,16 +398,6 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     public function getAttributeRepository()
     {
         return $this->attributeRepository;
-    }
-
-    /**
-     * Return related repository
-     *
-     * @return ObjectRepository
-     */
-    public function getAttributeOptionRepository()
-    {
-        return $this->attOptionRepository;
     }
 
     /**
