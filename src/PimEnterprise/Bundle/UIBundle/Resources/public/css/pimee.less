@@ -89,10 +89,6 @@
     width: 150px;
   }
 
-  col.button {
-    width: 100px;
-  }
-
   th {
     text-align: left;
     text-transform: uppercase;
@@ -102,17 +98,23 @@
     .rule-cell {
       border-top: 1px solid #ccc;
       border-bottom: 1px solid #ccc;
+      vertical-align: top;
 
       &:first-child {
         border-left: 1px solid #ccc;
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
+        vertical-align: middle;
       }
 
       &:last-child {
         border-right: 1px solid #ccc;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
+        border-left: 1px solid #ccc;
+        padding: 0 5px;
+        text-align: center;
+        vertical-align: middle;
       }
 
       &.rule-code {
@@ -127,15 +129,23 @@
       vertical-align: top;
     }
   }
+
+  .no-rule {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
 }
 
 .rule-item {
   border: 1px solid #ddd;
   border-radius: 5px;
-  display: inline-block;
+  display: block;
   line-height: 30px;
   white-space: nowrap;
   overflow: hidden;
+  float: left;
+  clear: both;
 
   & > span {
     display: inline-block;
@@ -187,7 +197,7 @@
 
       .flag {
         position: relative;
-        margin: auto;
+        margin: auto 3px auto auto;
         display: inline-block;
         top: 2px;
       }

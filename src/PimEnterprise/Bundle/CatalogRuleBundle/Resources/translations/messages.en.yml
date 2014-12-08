@@ -1,6 +1,6 @@
 pimee_catalog_rule:
     attribute:
         tab:
-            rule.title: Smart rules
+            rule.title: Rules
         grid:
             is_smart.label: Smart

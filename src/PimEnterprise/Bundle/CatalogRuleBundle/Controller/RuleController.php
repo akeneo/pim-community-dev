@@ -14,6 +14,8 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
+use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -28,6 +30,12 @@ class RuleController
     /** @var RuleLinkedResourceManager */
     protected $linkedResManager;
 
+    /** @var RuleDefinitionManager */
+    protected $ruleManager;
+
+    /** @var RuleDefinitionRepositoryInterface */
+    protected $ruleDefinitionRepo;
+
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -37,18 +45,24 @@ class RuleController
     /**
      * Constructor
      *
-     * @param RuleLinkedResourceManager $linkedResManager
-     * @param NormalizerInterface       $normalizer
-     * @param string                    $attributeClass
+     * @param RuleLinkedResourceManager         $linkedResManager
+     * @param RuleDefinitionManager             $ruleManager
+     * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
+     * @param NormalizerInterface               $normalizer
+     * @param string                            $attributeClass
      */
     public function __construct(
         RuleLinkedResourceManager $linkedResManager,
+        RuleDefinitionManager $ruleManager,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         NormalizerInterface $normalizer,
         $attributeClass
     ) {
-        $this->linkedResManager = $linkedResManager;
-        $this->normalizer       = $normalizer;
-        $this->attributeClass   = $attributeClass;
+        $this->linkedResManager   = $linkedResManager;
+        $this->ruleManager        = $ruleManager;
+        $this->ruleDefinitionRepo = $ruleDefinitionRepo;
+        $this->normalizer         = $normalizer;
+        $this->attributeClass     = $attributeClass;
     }
 
     public function indexAction($resourceType, $resourceId)
@@ -69,25 +83,24 @@ class RuleController
     }
 
     /**
-     * Return the list of rules as a string
+     * Delete an rule of a resource
      *
-     * TODO: use the future rule presenter
+     * @param string $resourceType
+     * @param int    $resourceId
+     * @param int    $ruleId
      *
-     * @param int $attributeId
-     *
-     * @return string
+     * @return JsonResponse
      */
-    protected function presentRule($attributeId)
+    public function deleteAction($resourceType, $resourceId, $ruleId)
     {
-        $rules = $this->linkedResManager->getRulesForAttribute($attributeId);
+        $rule = $this->ruleDefinitionRepo->findOneById($ruleId);
 
-        $ruleCodes = [];
-        foreach ($rules as $rule) {
-            $ruleCodes[] = $rule->getCode();
+        try {
+            $this->ruleManager->remove($rule);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 500);
         }
 
-        $ruleCodes = implode(", ", $ruleCodes);
-
-        return $ruleCodes;
+        return new JsonResponse();
     }
 }
