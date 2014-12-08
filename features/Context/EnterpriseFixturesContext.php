@@ -5,7 +5,7 @@ namespace Context;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Model\Product;
+use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -509,11 +509,12 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
             $content['conditions'][] = $condition;
 
+            $content['actions'] = [];
+
             $rule->setContent(json_encode($content));
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
-            $manager->persist($rule);
+            $manager = $this->getRuleManager();
+            $manager->save($rule);
         }
-        $manager->flush();
     }
 
     /**
@@ -552,10 +553,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $content['actions'][] = $action;
 
             $rule->setContent(json_encode($content));
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
-            $manager->persist($rule);
+            $manager = $this->getRuleManager();
+            $manager->save($rule);
         }
-        $manager->flush();
     }
 
     /**
@@ -581,5 +581,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getRuleRepository()
     {
         return $this->getContainer()->get('pimee_rule_engine.repository.rule');
+    }
+
+    /**
+     * @return RuleManager
+     */
+    protected function getRuleManager()
+    {
+        return $this->getContainer()->get('pimee_rule_engine.manager.rule');
     }
 }

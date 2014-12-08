@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,7 +31,7 @@ class RuleManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Resource\Model\RemoverInterface');
     }
 
-    function it_saves_a_rule_object($entityManager, Rule $rule)
+    function it_saves_a_rule_object($entityManager, RuleInterface $rule)
     {
         $entityManager->persist($rule)->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
@@ -49,7 +49,7 @@ class RuleManagerSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->during('save', [$productInterface]);
     }
 
-    function it_removes_a_rule_object($entityManager, Rule $rule)
+    function it_removes_a_rule_object($entityManager, RuleInterface $rule)
     {
         $entityManager->remove($rule)->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
@@ -59,7 +59,7 @@ class RuleManagerSpec extends ObjectBehavior
 
     function it_removes_a_rule_object_and_does_not_flush(
         $entityManager,
-        Rule $rule
+        RuleInterface $rule
     ) {
         $entityManager->remove($rule)->shouldBeCalled();
         $entityManager->flush()->shouldNotBeCalled();
