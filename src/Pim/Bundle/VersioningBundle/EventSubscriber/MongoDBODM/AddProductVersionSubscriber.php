@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -100,7 +102,7 @@ class AddProductVersionSubscriber implements EventSubscriber
         foreach ($this->versionableObjects as $versionable) {
             $currentVersions = $this->createVersion($versionable);
             $versions = array_merge($versions, $currentVersions);
-            $this->versionedObjects[] = spl_object_hash($versionable);
+            $this->versionedObjects[] = $this->getObjectHash($versionable);
         }
 
         $this->versionableObjects = array();
@@ -111,11 +113,11 @@ class AddProductVersionSubscriber implements EventSubscriber
     }
 
     /**
-     * @param object $versionable
+     * @param VersionableInterface $versionable
      *
      * @return Version[]
      */
-    protected function createVersion($versionable)
+    protected function createVersion(VersionableInterface $versionable)
     {
         $changeset = [];
         if (!$this->versionManager->isRealTimeVersioning()) {
@@ -128,12 +130,12 @@ class AddProductVersionSubscriber implements EventSubscriber
     /**
      * Mark object as to be versioned
      *
-     * @param object $versionable
+     * @param VersionableInterface $versionable
      */
-    protected function addPendingVersioning($versionable)
+    protected function addPendingVersioning(VersionableInterface $versionable)
     {
         if ($versionable instanceof ProductInterface) {
-            $oid = spl_object_hash($versionable);
+            $oid = $this->getObjectHash($versionable);
             if (!isset($this->versionableObjects[$oid]) && !in_array($oid, $this->versionedObjects)) {
                 $this->versionableObjects[$oid] = $versionable;
             }
@@ -150,10 +152,26 @@ class AddProductVersionSubscriber implements EventSubscriber
         $om = $this->versionManager->getObjectManager();
         if ($version->getChangeset()) {
             $om->persist($version);
-            $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(get_class($version)), $version);
+            $om->getUnitOfWork()->computeChangeSet(
+                $om->getClassMetadata(ClassUtils::getClass($version)),
+                $version
+            );
             $om->flush($version);
         } else {
             $om->remove($version);
         }
+    }
+
+    /**
+     * Get an object hash, provides different hashes depending on version manager context to allows to log different
+     * versions of a same object during a request depending on context
+     *
+     * @param VersionableInterface $versionable
+     * @return string
+     */
+    protected function getObjectHash(VersionableInterface $versionable)
+    {
+        // TODO add a new class to deal with versionable / versioned entities ?
+        return sprintf('%s#%s', spl_object_hash($versionable), sha1($this->versionManager->getContext()));
     }
 }
