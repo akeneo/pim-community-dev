@@ -1,3 +1,83 @@
+pim_enrich:
+  acl:
+    locale:
+      index: Elenco formato impostazioni locali
+    currency:
+      index: Elenco valute
+      toggle: Conversione valute
+    product:
+      index: Elenco articoli
+      create: Crea un articolo
+      edit_attributes: "Modifica gli attributi dell'articolo"
+      remove: Rimuovere un articolo
+      add_attribute: Aggiungere un attributo ad un articolo
+      remove_attribute: Rimuovere un attributo da un articolo
+      categories_view: Consultare le categorie di un articolo
+      associations_view: Mostra i tipi di associazione di un articolo
+      change_family: "Cambia la famiglia dell'articolo"
+      change_state: "Cambia lo stato dell'articolo"
+      add_to_groups: "Aggiungi l'articolo ai gruppi"
+      mass_edit: "Azione di modifica di massa dell'articolo"
+    category:
+      list: Lista Categorie
+      create: Creare una categoria
+      edit: Modificare una categoria
+      remove: Rimuovere una categoria
+      move: Sposta la categoria
+      children: Visualizza categoria bambini
+      products: Visualizza gli articoli della categoria
+    channel:
+      index: Elenco canali
+      create: Creare un canale
+      edit: Modificare un canale
+      remove: Rimuovere un canale
+    family:
+      index: Elenco famiglie
+      create: Creare una famiglia
+      edit_properties: Modificare le proprietà di una famiglia
+      edit_attributes: Modificare gli attributi di una famiglia
+      remove: Rimuovere una famiglia
+    attribute_group:
+      index: Elenco attributi di gruppo
+      create: Creare un attributo di gruppo
+      edit: Modificare un attributo di gruppo
+      remove: Rimuovere un attributo di gruppo
+      sort: Ordina attributi di gruppo
+      add_attribute: "Aggiungere l'attributo a un gruppo"
+      remove_attribute: "Rimuovere l'attributo da un gruppo"
+    attribute:
+      index: Elenco attributi
+      create: Creare un attributo
+      edit: Modificare un attributo
+      remove: Rimuovere un attributo
+      sort: "Ordinare gli attributi all'interno degli attributi di gruppo"
+    group:
+      index: Elenco gruppi
+      create: Creare un gruppo
+      edit: Modificare un gruppo
+      remove: Rimuovere un gruppo
+    group_type:
+      index: Elenco tipi di gruppo
+      create: Creare un tipo di gruppo
+      edit: Modifica un tipo di gruppo
+      remove: Rimuovi un tipo di gruppo
+    association_type:
+      index: Elenco tipi di associazione
+      create: Crea un tipo di associazione
+      edit: Modifica un tipo di associazione
+      remove: Rimuovi un tipo di associazione
+  acl_group:
+    association_type: Tipi di associazione
+    attribute: Attributi
+    attribute_group: Gruppi di attributi
+    category: Categorie
+    channel: Canali
+    currency: Valute
+    family: Famiglie
+    group: Gruppi
+    group_type: Tipi di gruppo
+    locale: Impostazioni locali
+    product: Articoli
 attribute:
   title: attributo
   overview: Anteprima attributi
@@ -412,7 +492,6 @@ pim_enrich.mass_edit_action:
     description: Gli articoli selezionati saranno attivati o disattivati.
     success_flash: "Lo stato dell'articolo/degli articoli è stato modificato"
   edit-common-attributes:
-    label: Modificare gli attributi
     description: "Gli attributi dell'articolo selezionato verranno modificati con i seguenti dati per le impostazioni locali selezionate."
     empty: "Si prega di selezionare l'attributo/gli attributi che si desidera modificare"
     success_flash: "L'attributo (/gli attributi) dell'articolo (/degli articoli) è stato caricato"
@@ -436,110 +515,11 @@ To enable: Per attivare
 Select attributes: Selezionare gli attributi
 Select: Selezionare
 Remove this attribute: "Rimuovere l'attributo"
-pim_enrich.completeness:
-  progress_bar.title: '%ratio%% completo (1 valore richiesto)|%ratio%% completi (%count% valori richiesti)'
-  subtitle: '{0} Completi|{1} 1 valore mancante|]1,Inf] %count% valori mancanti'
-  missing_attributes: Valore mancante | Valori mancanti
-  legend:
-    locale_not_associated: Formato impostazioni locali non associato a questo canale
-pim_enrich.group:
-  axis.help: Gli assi sono gli attributi che definiscono le varianti del gruppo variante. Gli assi sono attributi con opzioni, non localizzabili e non customizzabili. Non possono essere modificati dopo la creazione del gruppo variante.
-  type:
-    VARIANT: Variante
-    X_SELL: Cross-Selling
-    ADDITIONAL: Aggiuntivo
-    RELATED: Correlato
-pim_enrich.product:
-  no_comparison_locale_available: "Nessun'altra impostazione locale disponibile per il confronto"
-  no_compared_media: Nessun media disponibile per il confronto
 Copy: Copia
 Current tab: Scheda corrente
-pim_enrich.channel.pick_conversion_unit: |
-  Scegliere un'unità di conversione per ogni attributo metrico che verrà utilizzato durante l'esportazione dell'articolo
-  
 Group: Gruppo
 View group: Visualizzazione gruppo
 Products: Articoli
-pim_enrich:
-  acl:
-    locale:
-      index: Elenco formato impostazioni locali
-    currency:
-      index: Elenco valute
-      toggle: Conversione valute
-    product:
-      index: Elenco articoli
-      create: Crea un articolo
-      edit_attributes: "Modifica gli attributi dell'articolo"
-      remove: Rimuovere un articolo
-      add_attribute: Aggiungere un attributo ad un articolo
-      remove_attribute: Rimuovere un attributo da un articolo
-      categories_view: Consultare le categorie di un articolo
-      associations_view: Mostra i tipi di associazione di un articolo
-      change_family: "Cambia la famiglia dell'articolo"
-      change_state: "Cambia lo stato dell'articolo"
-      add_to_groups: "Aggiungi l'articolo ai gruppi"
-      mass_edit: "Azione di modifica di massa dell'articolo"
-    category:
-      list: Lista Categorie
-      create: Creare una categoria
-      edit: Modificare una categoria
-      remove: Rimuovere una categoria
-      move: Sposta la categoria
-      children: Visualizza categoria bambini
-      products: Visualizza gli articoli della categoria
-    channel:
-      index: Elenco canali
-      create: Creare un canale
-      edit: Modificare un canale
-      remove: Rimuovere un canale
-    family:
-      index: Elenco famiglie
-      create: Creare una famiglia
-      edit_properties: Modificare le proprietà di una famiglia
-      edit_attributes: Modificare gli attributi di una famiglia
-      remove: Rimuovere una famiglia
-    attribute_group:
-      index: Elenco attributi di gruppo
-      create: Creare un attributo di gruppo
-      edit: Modificare un attributo di gruppo
-      remove: Rimuovere un attributo di gruppo
-      sort: Ordina attributi di gruppo
-      add_attribute: "Aggiungere l'attributo a un gruppo"
-      remove_attribute: "Rimuovere l'attributo da un gruppo"
-    attribute:
-      index: Elenco attributi
-      create: Creare un attributo
-      edit: Modificare un attributo
-      remove: Rimuovere un attributo
-      sort: "Ordinare gli attributi all'interno degli attributi di gruppo"
-    group:
-      index: Elenco gruppi
-      create: Creare un gruppo
-      edit: Modificare un gruppo
-      remove: Rimuovere un gruppo
-    group_type:
-      index: Elenco tipi di gruppo
-      create: Creare un tipo di gruppo
-      edit: Modifica un tipo di gruppo
-      remove: Rimuovi un tipo di gruppo
-    association_type:
-      index: Elenco tipi di associazione
-      create: Crea un tipo di associazione
-      edit: Modifica un tipo di associazione
-      remove: Rimuovi un tipo di associazione
-  acl_group:
-    association_type: Tipi di associazione
-    attribute: Attributi
-    attribute_group: Gruppi di attributi
-    category: Categorie
-    channel: Canali
-    currency: Valute
-    family: Famiglie
-    group: Gruppi
-    group_type: Tipi di gruppo
-    locale: Impostazioni locali
-    product: Articoli
 pim_menu:
   tab:
     collect: Importazioni
