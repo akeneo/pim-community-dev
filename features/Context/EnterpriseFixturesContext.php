@@ -4,11 +4,8 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
+use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -473,18 +470,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $rule->setType('product');
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
             $manager->persist($rule);
-
-            $attribute = $this
-                ->getRepository('Pim\Bundle\CatalogBundle\Entity\Attribute')
-                ->findOneBy(['code' => $data['impacted_attribute']]);
-
-            $ruleLinkedResource = new RuleLinkedResource();
-            $ruleLinkedResource->setResourceId($attribute->getId());
-            $ruleLinkedResource->setResourceName(ClassUtils::getClass($attribute));
-            $ruleLinkedResource->setRule($rule);
-
-            $this->getEntityManager()->persist($ruleLinkedResource);
-            $this->getEntityManager()->flush($ruleLinkedResource);
         }
         $manager->flush();
     }
@@ -524,11 +509,12 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
             $content['conditions'][] = $condition;
 
+            $content['actions'] = [];
+
             $rule->setContent(json_encode($content));
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
-            $manager->persist($rule);
+            $manager = $this->getRuleManager();
+            $manager->save($rule);
         }
-        $manager->flush();
     }
 
     /**
@@ -567,10 +553,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $content['actions'][] = $action;
 
             $rule->setContent(json_encode($content));
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
-            $manager->persist($rule);
+            $manager = $this->getRuleManager();
+            $manager->save($rule);
         }
-        $manager->flush();
     }
 
     /**
@@ -599,10 +584,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return EntityRepository
+     * @return RuleManager
      */
-    protected function getEntityManager()
+    protected function getRuleManager()
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        return $this->getContainer()->get('pimee_rule_engine.manager.rule');
     }
 }

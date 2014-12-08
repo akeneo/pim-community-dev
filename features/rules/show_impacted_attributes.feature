@@ -12,10 +12,16 @@ Feature: On a product edit/show display impacted attributes
       | sku       | family  |
       | my-loafer | sandals |
     And the following product rules:
-      | code  | priority | impacted_attribute |
-      | rule1 | 10       | description        |
+      | code  | priority |
+      | rule1 | 10       |
+    And the following product rule conditions:
+      | rule  | field | operator | value     |
+      | rule1 | sku   | =        | my-loafer |
+    And the following product rule setter actions:
+      | rule  | field       | value     | locale |
+      | rule1 | name | My loafer | en_US  |
 
   Scenario: Successfully create, edit and save a product
     Given I am on the "my-loafer" product page
-    And I should see an "i.icon-code-fork" element
+    And I should see that Name is a smart
     Then I should see the smart attribute tooltip

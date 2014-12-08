@@ -56,6 +56,25 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @param string $attribute
+     *
+     * @return bool
+     * @throws ExpectationException
+     * @Then /^I should see that (.*) is a smart$/
+     */
+    public function iShouldSeeThatAttributeIsASmart($attribute)
+    {
+        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
+        foreach ($icons as $icon) {
+            if ($icon->hasClass('icon-code-fork')) {
+                return true;
+            }
+        }
+
+        throw $this->createExpectationException('Affected by a rule icon was not found');
+    }
+
+    /**
      * @param string $field
      * @param string $userGroups
      *
