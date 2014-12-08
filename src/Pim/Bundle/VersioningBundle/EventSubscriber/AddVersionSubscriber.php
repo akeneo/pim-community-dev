@@ -113,8 +113,8 @@ class AddVersionSubscriber implements EventSubscriber
             $this->versionedEntities[] = $oid;
         }
 
-        $versionedCount = count($this->versionedEntities);
-        $this->versionableEntities = array();
+        $versionedCount = count($this->versionableEntities);
+        $this->versionableEntities = [];
 
         if ($versionedCount) {
             $this->versionManager->getObjectManager()->flush();
