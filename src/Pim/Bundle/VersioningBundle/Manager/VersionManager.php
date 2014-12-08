@@ -6,6 +6,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Version manager
@@ -115,12 +116,12 @@ class VersionManager
     /**
      * Build a version from a versionable entity
      *
-     * @param object $versionable
-     * @param array  $changeset
+     * @param VersionableInterface $versionable
+     * @param array                $changeset
      *
      * @return Version[]
      */
-    public function buildVersion($versionable, array $changeset = array())
+    public function buildVersion(VersionableInterface $versionable, array $changeset = array())
     {
         $createdVersions = [];
 
@@ -173,11 +174,11 @@ class VersionManager
     /**
      * Return log entries
      *
-     * @param object $versionable
+     * @param VersionableInterface $versionable
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getLogEntries($versionable)
+    public function getLogEntries(VersionableInterface $versionable)
     {
         return $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($versionable), $versionable->getId());
     }
@@ -186,12 +187,12 @@ class VersionManager
      * Return the oldest log entry. A the log is order by date
      * desc, it means the very last line of the log
      *
-     * @param object    $versionable
-     * @param null|bool $pending
+     * @param VersionableInterface $versionable
+     * @param null|bool            $pending
      *
      * @return Version|null
      */
-    public function getOldestLogEntry($versionable, $pending = false)
+    public function getOldestLogEntry(VersionableInterface $versionable, $pending = false)
     {
         return $this->getVersionRepository()->getOldestLogEntry(
             ClassUtils::getClass($versionable),
