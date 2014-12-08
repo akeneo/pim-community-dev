@@ -156,7 +156,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     {
         if ($this->stopWatch) {
             $this->stopWatch->start(
-                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'remove'),
+                sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'remove'),
                 'rule_removing'
             );
         }
@@ -170,7 +170,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     public function postRemove(RuleEvent $event)
     {
         if ($this->stopWatch) {
-            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'remove'));
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'remove'));
         }
     }
 
@@ -183,7 +183,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     {
         if ($this->stopWatch) {
             $this->stopWatch->start(
-                sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'save'),
+                sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'save'),
                 'rule_saving'
             );
         }
@@ -197,7 +197,7 @@ class StopWatchEventSubscriber implements EventSubscriberInterface
     public function postSave(RuleEvent $event)
     {
         if ($this->stopWatch) {
-            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getRule()->getCode(), 'save'));
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'save'));
         }
     }
 }

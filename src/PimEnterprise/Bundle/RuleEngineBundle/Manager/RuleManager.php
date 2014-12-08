@@ -16,12 +16,14 @@ use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class RuleManager
+ *
+ * todo: maybe renamed it to rule definition manager
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -55,10 +57,10 @@ class RuleManager implements SaverInterface, RemoverInterface
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof RuleInterface) {
+        if (!$object instanceof RuleDefinitionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a use  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface, "%s" provided',
+                    'Expects a use  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );
@@ -80,10 +82,10 @@ class RuleManager implements SaverInterface, RemoverInterface
      */
     public function remove($rule, array $options = [])
     {
-        if (!$rule instanceof RuleInterface) {
+        if (!$rule instanceof RuleDefinitionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a use  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface, "%s" provided',
+                    'Expects a use  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
                     ClassUtils::getClass($rule)
                 )
             );

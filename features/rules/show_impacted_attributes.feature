@@ -18,8 +18,8 @@ Feature: On a product edit/show display impacted attributes
       | rule  | field | operator | value     |
       | rule1 | sku   | =        | my-loafer |
     And the following product rule setter actions:
-      | rule  | field       | value     | locale |
-      | rule1 | name | My loafer | en_US  |
+      | rule  | field | value     | locale |
+      | rule1 | name  | My loafer | en_US  |
 
   Scenario: Successfully create, edit and save a product
     Given I am on the "my-loafer" product page
