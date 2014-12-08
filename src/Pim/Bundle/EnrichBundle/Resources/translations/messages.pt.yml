@@ -1,3 +1,64 @@
+pim_enrich:
+  acl:
+    currency:
+      index: Lista de moedas
+      toggle: Alternar moedas
+    product:
+      index: Listar produtos
+      create: Criar um produto
+      remove: Remover um produto
+      add_attribute: Adicionar um atributo a um produto
+      remove_attribute: Remover um atributo de um produto
+      categories_view: Consultar as categorias de um produto
+      associations_view: Exibir os tipos de associações de um produto
+      change_family: Alterar a família de um produto
+      change_state: Alterar o estado do produto
+      add_to_groups: Adicionar produto aos grupos
+      mass_edit: Ações de edição em massa de produtos
+    category:
+      list: Listar categorias
+      create: Criar uma categoria
+      edit: Editar uma categoria
+      remove: Remover uma categoria
+      move: Mover categoria
+      children: Ver categorias filhas
+      products: Ver os produtos da categoria
+    channel:
+      index: Listar canais
+      create: Criar um canal
+      edit: Editar um canal
+      remove: Remover um canal
+    family:
+      create: Criar uma família
+      remove: Remover uma família
+    attribute_group:
+      create: Criar um grupo de atributos
+      edit: Editar um grupo de atributos
+      remove: Remover um grupo de atributos
+      sort: Ordenar grupos de atributos
+      add_attribute: Adicionar atributo a um grupo
+      remove_attribute: Remover atributo de um grupo
+    attribute:
+      index: Listar atributos
+      create: Criar um atributo
+      edit: Editar um atributo
+      remove: Remover um atributo
+      sort: Ordenar atributos dentro de grupos de atributos
+    group:
+      index: Listar grupos
+      create: Criar um grupo
+      edit: Editar um grupo
+      remove: Remover um grupo
+    group_type:
+      index: Listar tipos de grupo
+      create: Criar um tipo de grupo
+      edit: Editar um tipo de grupo
+      remove: Remover um tipo de grupo
+    association_type:
+      index: Lista de tipos de associação
+      create: Criar um tipo de associação
+      edit: Editar um tipo de associação
+      remove: Remover um tipo de associação
 attribute:
   overview: visão geral dos atributos
   create: criar atributo
@@ -352,7 +413,6 @@ pim_enrich.mass_edit_action:
     description: Os produtos selecionados serão habilitados ou desabilitados.
     success_flash: O status do(s) produto(s) foi alterado
   edit-common-attributes:
-    label: Editar atributos
     description: Os atributos selecionados do produto serão editados com os seguintes dados para a localidade escolhida.
     empty: Por favor, selecione o(s) atributo(s) que deseja editar
     success_flash: O(s) atributo(s) do(s) produto(s) foi(ram) atualizado(s)
@@ -372,89 +432,11 @@ To enable: Habilitar
 Select attributes: Selecione os atributos
 Select: Selecionar
 Remove this attribute: Remover esse atributo
-pim_enrich.completeness:
-  progress_bar.title: '%ratio%% completo (1 valor obrigatório)|%ratio%% completo (%count% valores obrigatórios)'
-  subtitle: '{0} Completo|{1} valor faltando 1|]1,Inf] %count% valores faltando'
-  missing_attributes: Valor faltando|Valores faltando
-  legend:
-    locale_not_associated: Localidade não associada a este canal
-pim_enrich.group:
-  axis.help: Eixos são atributos que definem as variantes do grupo variante. Eixos são atributos não localizáveis e sem escopo, porém com opções. Eles não podem ser alterados após a criação do grupo variante.
-  type:
-    VARIANT: Variante
-    X_SELL: Venda Cruzada
-    ADDITIONAL: Adicional
-    RELATED: Relacionado
-pim_enrich.product:
-  no_comparison_locale_available: Não há outra localidade disponível para comparação
-  no_compared_media: Não há mídia disponível para comparação
 Copy: Cópia
 Current tab: Aba atual
-pim_enrich.channel.pick_conversion_unit: Escolha uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
 Group: Grupo
 View group: Visualizar grupo
 Products: Produtos
-pim_enrich:
-  acl:
-    currency:
-      index: Lista de moedas
-      toggle: Alternar moedas
-    product:
-      index: Listar produtos
-      create: Criar um produto
-      remove: Remover um produto
-      add_attribute: Adicionar um atributo a um produto
-      remove_attribute: Remover um atributo de um produto
-      categories_view: Consultar as categorias de um produto
-      associations_view: Exibir os tipos de associações de um produto
-      change_family: Alterar a família de um produto
-      change_state: Alterar o estado do produto
-      add_to_groups: Adicionar produto aos grupos
-      mass_edit: Ações de edição em massa de produtos
-    category:
-      list: Listar categorias
-      create: Criar uma categoria
-      edit: Editar uma categoria
-      remove: Remover uma categoria
-      move: Mover categoria
-      children: Ver categorias filhas
-      products: Ver os produtos da categoria
-    channel:
-      index: Listar canais
-      create: Criar um canal
-      edit: Editar um canal
-      remove: Remover um canal
-    family:
-      create: Criar uma família
-      remove: Remover uma família
-    attribute_group:
-      create: Criar um grupo de atributos
-      edit: Editar um grupo de atributos
-      remove: Remover um grupo de atributos
-      sort: Ordenar grupos de atributos
-      add_attribute: Adicionar atributo a um grupo
-      remove_attribute: Remover atributo de um grupo
-    attribute:
-      index: Listar atributos
-      create: Criar um atributo
-      edit: Editar um atributo
-      remove: Remover um atributo
-      sort: Ordenar atributos dentro de grupos de atributos
-    group:
-      index: Listar grupos
-      create: Criar um grupo
-      edit: Editar um grupo
-      remove: Remover um grupo
-    group_type:
-      index: Listar tipos de grupo
-      create: Criar um tipo de grupo
-      edit: Editar um tipo de grupo
-      remove: Remover um tipo de grupo
-    association_type:
-      index: Lista de tipos de associação
-      create: Criar um tipo de associação
-      edit: Editar um tipo de associação
-      remove: Remover um tipo de associação
 pim_menu:
   tab:
     collect: Importar

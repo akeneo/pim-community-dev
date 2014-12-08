@@ -24,8 +24,10 @@ pim_title:
   user_group.index: Groupes
   system_configuration.index: Configuration
 user.title: Utilisateur
+user.overview: Utilisateur
 Users Management: Gestion des utilisateurs
 Create user: Créer un utilisateur
+btn.create.user: Créer un utilisateur
 New user: Nouvel utilisateur
 Additional: Supplémentaire
 Groups and Roles: Groupes et rôles
@@ -69,8 +71,10 @@ Save and close: Enregistrer et fermer
 Has role: A un rôle
 role:
   title: rôle
+  overview: rôle
   edit: Editer un rôle
   create: Créer un rôle
+btn.create.role: Créer un rôle
 rights:
   action: Permissions
 oro_security:
@@ -111,8 +115,10 @@ oro:
       SYSTEM: Système
       NONE: Aucun
 Create group: Créer un groupe
+btn.create.user-group: Créer un groupe
 Has group: A un groupe
 Save and Close: Enregistrer et fermer
+user-group.overview: Groupes
 Log in: Connexion
 Remember me on this computer: Mémoriser mes informations sur cet ordinateur
 Forgot your password?: Mot de passe oublié ?
