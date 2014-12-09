@@ -254,7 +254,7 @@ class VersionManager
                 'resourceName' => ClassUtils::getClass($versionable),
                 'pending'      => true
             ],
-            ['loggedAt' => 'asc']
+            ['version' => 'desc']
         );
 
         $previousVersion = null;
