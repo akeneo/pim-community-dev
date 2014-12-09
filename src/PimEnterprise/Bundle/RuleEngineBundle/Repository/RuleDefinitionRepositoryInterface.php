@@ -12,13 +12,15 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Rule repository interface
+ * TODO: move ReferableEntityRepositoryInterface to Component/Resource and rename it to XXXRepositoryInterface
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-interface RuleDefinitionRepositoryInterface extends ObjectRepository
+interface RuleDefinitionRepositoryInterface extends ObjectRepository, ReferableEntityRepositoryInterface
 {
     /**
      * Retrieve all rule ordered by priority

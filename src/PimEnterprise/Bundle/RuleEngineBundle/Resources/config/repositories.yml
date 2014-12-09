@@ -2,6 +2,7 @@ parameters:
     pimee_rule_engine.repository.rule.class: PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepository
 
 services:
+    #TODO: rename it to pimee_rule_engine.repository.rule_definition
     pimee_rule_engine.repository.rule:
         class: %pimee_rule_engine.repository.rule.class%
         factory_service: doctrine.orm.entity_manager
