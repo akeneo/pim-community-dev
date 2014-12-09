@@ -1,3 +1,93 @@
+pim_enrich:
+  acl:
+    locale:
+      index: Liste des locales
+    currency:
+      index: Liste des devises
+      toggle: Activer/désactiver devises
+    product:
+      index: Lister les produits
+      create: Créer un produit
+      edit_attributes: Editer les attributs du produit
+      remove: Supprimer un produit
+      add_attribute: Ajouter un attribut à un produit
+      remove_attribute: "Supprimer un attribut d'un produit"
+      categories_view: "Consulter les catégories d'un produit"
+      associations_view: "Afficher les types d'association d'un produit"
+      change_family: Changer la famille du produit
+      change_state: "Changer l'état du produit"
+      add_to_groups: Ajouter le produit à des groupes
+      mass_edit: Actions de modification des produits en masse
+      comment: Commenter les produits
+      download: Télécharger le produit en PDF
+      history: "Afficher l'historique du produit"
+    category:
+      list: Lister les catégories
+      create: Créer une catégorie
+      edit: Modifier une catégorie
+      remove: Supprimer une catégorie
+      move: Déplacer la catégorie
+      children: Voir les catégories enfants
+      products: Voir les produits de la catégorie
+      history: "Afficher l'historique de la catégorie"
+    channel:
+      index: Lister les canaux
+      create: Créer un canal
+      edit: Modifier un canal
+      remove: Supprimer un canal
+      history: "Afficher l'historique du canal"
+    family:
+      index: Liste des familles
+      create: Créer une famille
+      edit_properties: "Editer les propriétés d'une famille"
+      edit_attributes: "Editer les attributs d'une famille"
+      remove: Supprimer une famille
+      history: "Afficher l'historique de la famille"
+    attribute_group:
+      index: "Liste des groupes d'attributs"
+      create: "Créer un groupe d'attributs"
+      edit: "Modifier un groupe d'attributs"
+      remove: "Supprimer un groupe d'attributs"
+      sort: "Trier les groupes d'attributs"
+      add_attribute: "Ajouter l'attribut à un groupe"
+      remove_attribute: "Supprimer l'attribut d'un groupe"
+      history: "Afficher l'historique du groupe d'attributs"
+    attribute:
+      index: Liste des attributs
+      create: Créer un attribut
+      edit: Modifier un attribut
+      remove: Supprimer un attribut
+      sort: "Trier les attributs au sein d'un groupe d'attributs"
+      history: "Afficher l'historique de l'attribut"
+    group:
+      index: Lister les groupes
+      create: Créer un groupe
+      edit: Modifier un groupe
+      remove: Supprimer un groupe
+      history: "Afficher l'historique du groupe"
+    group_type:
+      index: Lister les types de groupe
+      create: Créer un type de groupe
+      edit: Modifier un type de groupe
+      remove: Supprimer un type de groupe
+    association_type:
+      index: "Lister les types d'association"
+      create: "Créer un type d'association"
+      edit: "Modifier un type d'association"
+      remove: "Supprimer un type d'association"
+      history: "Afficher l'historique du type d'association"
+  acl_group:
+    association_type: "Types d'associations"
+    attribute: Attributs
+    attribute_group: "Groupes d'attributs"
+    category: Catégories
+    channel: Canaux
+    currency: Devises
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    locale: Locales
+    product: Produits
 attribute:
   title: attribut
   overview: Liste des attributs
@@ -8,11 +98,17 @@ attribute group:
   overview: "Liste des groupes d'attributs"
   create: "Créer un groupe d'attributs"
   edit: "Modifier un groupe d'attributs"
+  suggest creation: "Veuillez sélectionner un groupe d'attributs à gauche"
+  or: ou
+  create new: "Créer un nouveau groupe d'attributs"
 category:
   title: catégorie
   overview: Liste des catégories
   create: Créer une catégorie
   edit: Editer une catégorie
+  suggest selection: Veuillez sélectionner une catégorie à gauche
+  or: ou
+  create new: Créer une nouvelle catégorie
 tree:
   title: arbre
   create: Créer un arbre
@@ -273,6 +369,7 @@ Attribute type: "Type d'attribut"
 Defaultvalue: Valeur par défaut
 Variant: Variante
 Smart: Intelligent
+Useable as grid column: Utilisable en tant que colonne de la grille
 Useable as grid filter: Utilisable en tant que filtre de la grille
 Family: Famille
 Available locales: Locales disponibles
@@ -334,9 +431,11 @@ Default: Défaut
 Attributes: Attributs
 Title: Titre
 pim_title.attribute_group:
+  index: "Groupes d'attributs"
   create: "Groupe d'attributs | Créer"
   edit: "Groupe d'attribut %group.label% | Modifier"
 pim_title.category:
+  index: Arborescences des catégories
   create: Arborescences | Créer
   edit: 'Arborescences %category.label% | Modifier'
 pim_title.attribute:
@@ -420,10 +519,12 @@ pim_enrich.mass_edit_action:
     description: Les produits sélectionnés vont être activés ou désactivés.
     success_flash: Le statut des produits ont été changés
   edit-common-attributes:
-    label: Modifier les attributs
-    description: Les attributs sélectionnés vont être modifié avec les valeurs suivantes pour la locale choisie.
+    label: Modifier les attributs communs
+    description: Les attributs sélectionnés vont être modifiés avec les valeurs suivantes pour la locale choisie.
     empty: Veuillez sélectionner le ou les attribut(s) à modifier
     success_flash: Le(s) attribut(s) ont été mise à jour
+    message:
+      warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
   classify:
     label: Classer les produits dans des catégories
     description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
@@ -444,110 +545,11 @@ To enable: Pour activer
 Select attributes: Sélectionnez les attributs
 Select: Sélectionner
 Remove this attribute: Supprimer cet attribut
-pim_enrich.completeness:
-  progress_bar.title: '%ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)'
-  subtitle: '{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes'
-  missing_attributes: Valeur manquante|Valeurs manquantes
-  legend:
-    locale_not_associated: Locale non associée à ce canal
-pim_enrich.group:
-  axis.help: Les axes sont les attributs qui définissent des variantes du groupe. Les axes sont des attributs avec des options, non localisables et sans portées limitées. Il ne peut pas être modifié après la création.
-  type:
-    VARIANT: Variante
-    X_SELL: Vente croisée
-    ADDITIONAL: Supplémentaire
-    RELATED: Associé
-pim_enrich.product:
-  no_comparison_locale_available: "Aucune autre locale n'est disponible pour la comparaison"
-  no_compared_media: Aucun média disponible pour comparaison
 Copy: Copier
 Current tab: Onglet actif
-pim_enrich.channel.pick_conversion_unit: "Choisissez une unité de conversion pour chaque attribut métrique qui sera utilisé lors de l'exportation du produit"
 Group: Groupe
 View group: Afficher le groupe
 Products: Produits
-pim_enrich:
-  acl:
-    locale:
-      index: Liste des locales
-    currency:
-      index: Liste des devises
-      toggle: Activer/désactiver devises
-    product:
-      index: Lister les produits
-      create: Créer un produit
-      edit_attributes: Editer les attributs du produit
-      remove: Supprimer un produit
-      add_attribute: Ajouter un attribut à un produit
-      remove_attribute: "Supprimer un attribut d'un produit"
-      categories_view: "Consulter les catégories d'un produit"
-      associations_view: "Afficher les types d'association d'un produit"
-      change_family: Changer la famille du produit
-      change_state: "Changer l'état du produit"
-      add_to_groups: Ajouter le produit à des groupes
-      mass_edit: Actions de modification des produits en masse
-      comment: Commenter les produits
-      download: Télécharger le produit en PDF
-    category:
-      list: Lister les catégories
-      create: Créer une catégorie
-      edit: Modifier une catégorie
-      remove: Supprimer une catégorie
-      move: Déplacer la catégorie
-      children: Voir les catégories enfants
-      products: Voir les produits de la catégorie
-    channel:
-      index: Lister les canaux
-      create: Créer un canal
-      edit: Modifier un canal
-      remove: Supprimer un canal
-    family:
-      index: Liste des familles
-      create: Créer une famille
-      edit_properties: "Editer les propriétés d'une famille"
-      edit_attributes: "Editer les attributs d'une famille"
-      remove: Supprimer une famille
-    attribute_group:
-      index: "Liste des groupes d'attributs"
-      create: "Créer un groupe d'attributs"
-      edit: "Modifier un groupe d'attributs"
-      remove: "Supprimer un groupe d'attributs"
-      sort: "Trier les groupes d'attributs"
-      add_attribute: "Ajouter l'attribut à un groupe"
-      remove_attribute: "Supprimer l'attribut d'un groupe"
-    attribute:
-      index: Liste des attributs
-      create: Créer un attribut
-      edit: Modifier un attribut
-      remove: Supprimer un attribut
-      sort: "Trier les attributs au sein d'un groupe d'attributs"
-    group:
-      index: Lister les groupes
-      create: Créer un groupe
-      edit: Modifier un groupe
-      remove: Supprimer un groupe
-    group_type:
-      index: Lister les types de groupe
-      create: Créer un type de groupe
-      edit: Modifier un type de groupe
-      remove: Supprimer un type de groupe
-    association_type:
-      index: "Lister les types d'association"
-      create: "Créer un type d'association"
-      edit: "Modifier un type d'association"
-      remove: "Supprimer un type d'association"
-  acl_group:
-    association_type: "Types d'associations"
-    attribute: Attributs
-    attribute_group: "Groupes d'attributs"
-    category: Catégories
-    channel: Canaux
-    currency: Devises
-    family: Familles
-    group: Groupes
-    group_type: Types de groupe
-    locale: Locales
-    product: Produits
 pim_menu:
   tab:
     collect: Extraire

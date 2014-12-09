@@ -112,10 +112,15 @@
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 
-# 1.2.*
+# 1.2.x
 
 ## Bug fixes
-- PIM-3443: Fix prices not exported in quick export 
+- PIM-3447: Fix date picker year range selection over next year
+
+# 1.2.14 (2014-12-03)
+
+## Bug fixes
+- PIM-3443: Fix prices not exported in quick export
 - PIM-3446: Fix import export history with large amount of errors
 
 # 1.2.13 (2014-11-26)
@@ -495,7 +500,6 @@
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
 - Rename service `pim_catalog.validator.attribute_constraint_guesser` by `pim_catalog.validator.constraint_guesser.chained_attribute`
-- Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductManager` to accept a `Pim\Component\Resource\Model\SaverInterface` as second argument. Add a `Pim\Component\Resource\Model\BulkSaverInterface` as third argument. 
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
@@ -923,4 +927,3 @@ that made the entity too smart for its own good and created performances problem
 - Fix price format different between import and enrich
 - Fix channel datagrid result count
 - Fix end date which is updated for all jobs
-
