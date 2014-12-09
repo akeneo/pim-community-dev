@@ -23,11 +23,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Class RuleManager
  *
- * todo: maybe renamed it to rule definition manager
- *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleManager implements SaverInterface, RemoverInterface
+class RuleDefinitionManager implements SaverInterface, RemoverInterface
 {
     /** @var RuleDefinitionRepositoryInterface */
     protected $repository;

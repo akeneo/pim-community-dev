@@ -11,7 +11,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInt
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class RuleManagerSpec extends ObjectBehavior
+class RuleDefinitionManagerSpec extends ObjectBehavior
 {
     function let(
         RuleDefinitionRepositoryInterface $repository,
