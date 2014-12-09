@@ -4,3 +4,5 @@ pimee_catalog_rule:
             rule.title: Rules
         grid:
             is_smart.label: Smart
+        acl:
+            rule.view_permissions: View rules

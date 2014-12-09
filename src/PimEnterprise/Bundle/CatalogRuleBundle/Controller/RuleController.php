@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
 use Doctrine\ORM\EntityNotFoundException;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
@@ -65,6 +66,15 @@ class RuleController
         $this->attributeClass     = $attributeClass;
     }
 
+    /**
+     * List all rules for the given resource
+     * @param string $resourceType
+     * @param int    $resourceId
+     *
+     * @return JsonResponse
+     *
+     * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
+     */
     public function indexAction($resourceType, $resourceId)
     {
         switch ($resourceType) {
