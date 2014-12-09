@@ -46,7 +46,7 @@ class ProductRuleSelector implements SelectorInterface
      * @param ProductQueryFactoryInterface $productQueryFactory
      * @param ProductRepositoryInterface   $repo
      * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $subjectSetClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
+     * @param string                       $subjectSetClass     should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
      */
     public function __construct(
         ProductQueryFactoryInterface $productQueryFactory,

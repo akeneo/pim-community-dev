@@ -26,7 +26,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
-
 /**
  * Applies product rules via a batch.
  *
@@ -51,7 +50,7 @@ class ProductRuleApplier implements ApplierInterface
 
     /**
      * @param ProductUpdaterInterface  $productUpdater
-     * @param ValidatorInterface       $validator
+     * @param ValidatorInterface       $productValidator
      * @param BulkSaverInterface       $productSaver
      * @param EventDispatcherInterface $eventDispatcher
      * @param VersionManager           $versionManager

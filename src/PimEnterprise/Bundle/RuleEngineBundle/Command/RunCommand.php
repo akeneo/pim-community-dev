@@ -76,11 +76,11 @@ class RunCommand extends ContainerAwareCommand
 
     /**
      * Run a single rule
-     * @param  DryRunnerInterface $runnerRegistry
-     * @param  OutputInterface    $output
-     * @param  RuleInterface      $rule
-     * @param  boolean            $dryRun
-     * @param  boolean            $stopOnError
+     * @param DryRunnerInterface $runnerRegistry
+     * @param OutputInterface    $output
+     * @param RuleInterface      $rule
+     * @param boolean            $dryRun
+     * @param boolean            $stopOnError
      */
     protected function runRule(
         DryRunnerInterface $runnerRegistry,

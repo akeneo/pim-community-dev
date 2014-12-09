@@ -144,6 +144,50 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->apply($rule, $subjectSet);
     }
 
+    public function it_applies_a_rule_with_not_valid_product(
+        $eventDispatcher,
+        $productUpdater,
+        $productValidator,
+        $productSaver,
+        $versionManager,
+        RuleInterface $rule,
+        RuleSubjectSetInterface $subjectSet,
+        ProductCopyValueAction $action,
+        ProductInterface $validProduct,
+        ProductInterface $invalidProduct,
+        ConstraintViolationList $emptyViolationList,
+        ConstraintViolationList $notEmptyViolationList
+    ) {
+        $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
+
+        // update products
+        $action->getFromField()->willReturn('sku');
+        $action->getToField()->willReturn('description');
+        $action->getFromLocale()->willReturn('fr_FR');
+        $action->getToLocale()->willReturn('fr_CH');
+        $action->getFromScope()->willReturn('ecommerce');
+        $action->getToScope()->willReturn('tablet');
+        $rule->getActions()->willReturn([$action]);
+        $subjectSet->getSubjects()->willReturn([$validProduct, $invalidProduct]);
+        $productUpdater
+            ->copyValue([$validProduct, $invalidProduct], 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
+            ->shouldBeCalled();
+
+        // validate products
+        $rule->getCode()->willReturn('rule_one');
+        $productValidator->validate($validProduct)->shouldBeCalled()->willReturn($emptyViolationList);
+        $emptyViolationList->count()->willReturn(0);
+
+        $productValidator->validate($invalidProduct)->shouldBeCalled()->willReturn($notEmptyViolationList);
+        $notEmptyViolationList->count()->willReturn(1);
+        $subjectSet->skipSubject($invalidProduct, $notEmptyViolationList)->shouldBeCalled();
+        $subjectSet->skipSubject($validProduct, $notEmptyViolationList)->shouldNotBeCalled();
+
+        $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
+
+        $this->apply($rule, $subjectSet);
+    }
+
     public function it_applies_a_rule_which_has_an_unknown_action(
         $eventDispatcher,
         RuleInterface $rule,

@@ -65,15 +65,15 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     protected $storageDriver;
 
     /**
-     * @param ObjectManager                     $om
-     * @param CompletenessManager               $completenessManager
-     * @param SecurityContextInterface          $securityContext
-     * @param ProductDraftFactory               $factory
-     * @param ProductDraftRepositoryInterface   $repository
-     * @param EventDispatcherInterface          $dispatcher
-     * @param ChangesCollector                  $collector
-     * @param ChangeSetComputerInterface        $changeSet
-     * @param string                            $storageDriver
+     * @param ObjectManager                   $om
+     * @param CompletenessManager             $completenessManager
+     * @param SecurityContextInterface        $securityContext
+     * @param ProductDraftFactory             $factory
+     * @param ProductDraftRepositoryInterface $repository
+     * @param EventDispatcherInterface        $dispatcher
+     * @param ChangesCollector                $collector
+     * @param ChangeSetComputerInterface      $changeSet
+     * @param string                          $storageDriver
      */
     public function __construct(
         ObjectManager $om,

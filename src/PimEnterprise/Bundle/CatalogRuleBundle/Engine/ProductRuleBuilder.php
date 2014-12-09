@@ -42,8 +42,8 @@ class ProductRuleBuilder implements BuilderInterface
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $ruleClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
-     * @param string                   $setValueActionClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface\ProductSetValueActionInterface
+     * @param string                   $ruleClass            should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @param string                   $setValueActionClass  should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface\ProductSetValueActionInterface
      * @param string                   $copyValueActionClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface\ProductCopyValueActionInterface
      */
     public function __construct(
