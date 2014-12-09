@@ -13,6 +13,7 @@
 - Use ProductMediaInterface and not AbstractMetric
 - Use AttributeInterface and not AbstractAttribute
 - Use CompletenessInterface and not AbstractCompleteness
+- Add a command to run a rule or all rules in database
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.

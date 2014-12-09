@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\RuleEngineBundle\Command;
 
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use PimEnterprise\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,8 +33,10 @@ class RunCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:rule:run')
-            ->addArgument('code', InputArgument::REQUIRED, 'Rule code')
+            ->addArgument('code', InputArgument::OPTIONAL, 'Rule code')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
+            ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
+            ->setDescription('Run all rules or only one if a code is provided.')
         ;
     }
 
@@ -41,22 +45,68 @@ class RunCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // get rule instance
-        $code = $input->getArgument('code');
         $repo = $this->getContainer()->get('pimee_rule_engine.repository.rule');
-        $rule = $repo->findOneByCode($code);
 
-        if (null === $rule) {
-            throw new \InvalidArgumentException(sprintf('The rule %s does not exists', $code));
+        // get rule instances
+        if ($code = $input->getArgument('code')) {
+            $rule = $repo->findOneByCode($code);
+
+            if (null === $rule) {
+                throw new \InvalidArgumentException(sprintf('The rule %s does not exists', $code));
+            }
+
+            $rules = [$rule];
+        } else {
+            $rules = $repo->findAll();
         }
 
-        // run the rule
+        // run the rules
         $runnerRegistry = $this->getContainer()->get('pimee_rule_engine.runner.chained');
 
-        if ($input->getOption('dry-run')) {
-            $runnerRegistry->dryRun($rule);
-        } else {
-            $runnerRegistry->run($rule);
+        foreach ($rules as $rule) {
+            $this->runRule(
+                $runnerRegistry,
+                $output,
+                $rule,
+                $input->getOption('dry-run'),
+                $input->getOption('stop-on-error')
+            );
+        }
+    }
+
+    /**
+     * Run a single rule
+     * @param  DryRunnerInterface $runnerRegistry
+     * @param  OutputInterface    $output
+     * @param  RuleInterface      $rule
+     * @param  boolean            $dryRun
+     * @param  boolean            $stopOnError
+     */
+    protected function runRule(
+        DryRunnerInterface $runnerRegistry,
+        OutputInterface $output,
+        RuleDefinition $rule,
+        $dryRun,
+        $stopOnError
+    ) {
+        try {
+            if ($dryRun) {
+                $runnerRegistry->dryRun($rule);
+            } else {
+                $runnerRegistry->run($rule);
+            }
+        } catch (\Exception $e) {
+            if ($stopOnError) {
+                throw $e;
+            } else {
+                $output->writeln(
+                    sprintf(
+                        "Error during execution of rule %s : %s\n",
+                        $rule->getCode(),
+                        $e->getMessage()
+                    )
+                );
+            }
         }
     }
 }
