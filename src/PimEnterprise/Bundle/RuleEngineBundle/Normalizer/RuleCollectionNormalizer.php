@@ -45,11 +45,7 @@ class RuleCollectionNormalizer implements NormalizerInterface, SerializerAwareIn
      */
     public function supportsNormalization($data, $format = null)
     {
-        return (
-            is_array($data) ||
-            $data instanceof Collection
-        ) &&
-        in_array($format, $this->supportedFormats);
+        return (is_array($data) || $data instanceof Collection) && in_array($format, $this->supportedFormats);
     }
 
     /**

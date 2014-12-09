@@ -5,7 +5,6 @@ define(
 
         return Backbone.View.extend({
             tagName: 'table',
-            className: '',
             template: '',
             events: {},
             $target: null,

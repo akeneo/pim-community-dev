@@ -59,7 +59,7 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface
         if (!$object instanceof RuleDefinitionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a RuleDefinitionInterface, "%s" provided',
+                    'Expects a PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );
@@ -85,7 +85,7 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface
         if (!$rule instanceof RuleDefinitionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a RuleDefinitionInterface, "%s" provided',
+                    'Expects a PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
                     ClassUtils::getClass($rule)
                 )
             );

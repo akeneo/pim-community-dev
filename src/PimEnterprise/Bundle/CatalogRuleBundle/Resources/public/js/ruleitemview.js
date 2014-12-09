@@ -12,7 +12,7 @@ define(
                             '<%= rulePart.field %>' +
                             '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
                         '</span>' +
-                        '<span class="rule-item-emphasize"><%= rulePart.operator %></span>' +
+                        '<span class="rule-item-emphasize rule-operator"><%= rulePart.operator %></span>' +
                         '<% if (rulePart.operator != \'EMPTY\') { %>' +
                             '<span class="condition-value"><%= rulePart.value %></span>' +
                         '<% } %>' +

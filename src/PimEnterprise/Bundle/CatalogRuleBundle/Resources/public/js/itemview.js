@@ -5,8 +5,7 @@ define(
 
         return Backbone.View.extend({
             tagName: 'tr',
-            className: '',
-            showTemplate: '',
+            template: '',
             events: {
                 'click .delete-row': 'deleteItem'
             },

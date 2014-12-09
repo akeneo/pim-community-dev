@@ -82,7 +82,8 @@ class RuleController
                 $resourceName = $this->attributeClass;
                 break;
             default:
-                $resourceName = '';
+                throw new \InvalidArgumentException(sprintf('Resource type %s is unknown', $resourceType));
+
         }
 
         $rules = $this->linkedResManager->getRulesForAttribute($resourceId, $resourceName);

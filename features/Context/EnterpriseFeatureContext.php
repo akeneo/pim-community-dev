@@ -75,6 +75,70 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^I should see the following rule conditions:$/
+     */
+    public function iShouldSeeTheFollowingRuleConditions(TableNode $table)
+    {
+        $expectedConditions = $table->getHash();
+        $actualConditions = $this->getSession()->getPage()->findAll('css', '.rule-table .rule-condition');
+
+        $expectedCount = count($expectedConditions);
+        $actualCount   = count($actualConditions);
+        if ($expectedCount !== $actualCount) {
+            throw new \Exception(
+                sprintf(
+                    'Expecting %d rules conditions, actually saw %d',
+                    $expectedCount,
+                    $actualCount
+                )
+            );
+        }
+
+        foreach ($expectedConditions as $key => $condition) {
+            $actualCondition = $actualConditions[$key];
+
+            $field    = $actualCondition->findAll('css', '.condition-field');
+            $operator = $actualCondition->findAll('css', '.condition-operator');
+            $value    = $actualConditions[$key]->findAll('css', '.condition-value');
+
+            if ($field->getText() !== $condition['field']) {
+                throw new \Exception(
+                    sprintf(
+                        'Rule #%d field is expected to be "%s", actually is "%s"',
+                        $key + 1,
+                        $condition['field'],
+                        $field->getText()
+                    )
+                );
+            }
+
+            if ($operator->getText() !== $condition['operator']) {
+                throw new \Exception(
+                    sprintf(
+                        'Rule #%d operator is expected to be "%s", actually is "%s"',
+                        $key + 1,
+                        $condition['operator'],
+                        $operator->getText()
+                    )
+                );
+            }
+
+            if ($value->getText() !== $condition['value']) {
+                throw new \Exception(
+                    sprintf(
+                        'Rule #%d value is expected to be "%s", actually is "%s"',
+                        $key + 1,
+                        $condition['value'],
+                        $value->getText()
+                    )
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $field
      * @param string $userGroups
      *
