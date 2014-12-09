@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3447: Fix date picker year range selection over next year
+
 # 1.2.14 (2014-12-03)
 
 ## Bug fixes

@@ -27,7 +27,7 @@ define(
                 altFormat: 'yy-mm-dd',
                 changeMonth: true,
                 changeYear: true,
-                yearRange: '-80:+1',
+                yearRange: '-80:+80',
                 showButtonPanel: true,
                 disabled: $field.is(':disabled')
             });
