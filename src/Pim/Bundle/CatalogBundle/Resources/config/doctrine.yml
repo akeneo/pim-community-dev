@@ -8,3 +8,11 @@ services:
         public: false
         tags:
             - { name: doctrine.event_subscriber }
+
+    # deprecetad: will be removed in 1.4
+    pim_catalog.doctrine.smart_manager_registry:
+        alias: akeneo_doctrine_extensions.doctrine.smart_manager_registry
+
+    # deprecetad: will be removed in 1.4
+    pim_catalog.doctrine.table_name_builder:
+        alias: akeneo_doctrine_extensions.doctrine.table_name_builder

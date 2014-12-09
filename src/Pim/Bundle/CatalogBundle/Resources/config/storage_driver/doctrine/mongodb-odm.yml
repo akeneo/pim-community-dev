@@ -97,10 +97,18 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
 
+    # deprecetad: will be removed in 1.4
+    pim_catalog.event_subscriber.mongodb.entities_type:
+        alias: akeneo_doctrine_extensions.event_subscriber.mongodb.entities_type
+
     pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
         class: %pim_catalog.event_subscriber.resolve_target_repository.class%
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
+
+    # deprecetad: will be removed in 1.4
+    pim_catalog.event_subscriber.mongodb.entity_type:
+        alias: akeneo_doctrine_extensions.event_subscriber.mongodb.entity_type
 
     # Normalizers
     pim_catalog.mongodb.normalizer.product:
@@ -167,6 +175,9 @@ services:
         tags:
             - { name: pim_serializer.normalizer }
 
+    pim_catalog.mongodb.mongo_objects_factory:
+        alias: akeneo_doctrine_extensions.mongodb.mongo_objects_factory
+
     pim_catalog.repository.product:
         class: %pim_catalog.repository.product.class%
         factory_service: pim_catalog.object_manager.product
@@ -203,6 +214,9 @@ services:
         class: %pim_catalog.manager.association.class%
         arguments:
             - '@pim_catalog.repository.product'
+
+    pim_catalog.doctrine.smart_manager_registry:
+        alias: akeneo_doctrine_extensions.doctrine.smart_manager_registry
 
     pim_catalog.event_subscriber.mongodb.set_normalized_product_data:
         class: %pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class%

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\DoctrineExtensionsBundle;
 
+//TODO: should be trashed
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
