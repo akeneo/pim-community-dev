@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Resource\Model\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
@@ -21,6 +24,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+
 
 /**
  * Applies product rules via a batch.
@@ -35,14 +40,35 @@ class ProductRuleApplier implements ApplierInterface
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
 
+    /** @var ValidatorInterface */
+    protected $productValidator;
+
+    /** @var BulkSaverInterface */
+    protected $productSaver;
+
+    /** @var VersionManager */
+    protected $versionManager;
+
     /**
      * @param ProductUpdaterInterface  $productUpdater
+     * @param ValidatorInterface       $validator
+     * @param BulkSaverInterface       $productSaver
      * @param EventDispatcherInterface $eventDispatcher
+     * @param VersionManager           $versionManager
      */
-    public function __construct(ProductUpdaterInterface $productUpdater, EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        ProductUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        BulkSaverInterface $productSaver,
+        EventDispatcherInterface $eventDispatcher,
+        VersionManager $versionManager
+    )
     {
-        $this->productUpdater  = $productUpdater;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->productUpdater   = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->productSaver     = $productSaver;
+        $this->eventDispatcher  = $eventDispatcher;
+        $this->versionManager   = $versionManager;
     }
 
     /**
@@ -52,7 +78,19 @@ class ProductRuleApplier implements ApplierInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
-        $actions = $rule->getActions();
+        $this->updateProducts($subjectSet, $rule->getActions());
+        $this->validateProducts($subjectSet);
+        $this->saveProducts($subjectSet, sprintf('Applied rule "%s"', $rule->getCode()));
+
+        $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+    }
+
+    /**
+     * @param RuleSubjectSetInterface                                        $subjectSet
+     * @param \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
+     */
+    protected function updateProducts(RuleSubjectSetInterface $subjectSet, $actions)
+    {
         foreach ($actions as $action) {
             if ($action instanceof ProductSetValueActionInterface) {
                 $this->applySetAction($subjectSet, $action);
@@ -64,12 +102,34 @@ class ProductRuleApplier implements ApplierInterface
                 );
             }
         }
-
-        $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
     }
 
     /**
-     * Apply a copy action on a subhect set.
+     * @param RuleSubjectSetInterface $subjectSet
+     */
+    protected function validateProducts(RuleSubjectSetInterface $subjectSet)
+    {
+        foreach ($subjectSet->getSubjects() as $product) {
+            $violations = $this->productValidator->validate($product);
+            if (0 < $violations->count()) {
+                $subjectSet->skipSubject($product, $violations);
+                // TODO : detach from the unit of work ?
+            }
+        }
+    }
+
+    /**
+     * @param RuleSubjectSetInterface $subjectSet
+     * @param string                  $savingContext
+     */
+    protected function saveProducts(RuleSubjectSetInterface $subjectSet, $savingContext)
+    {
+        $this->versionManager->setContext($savingContext);
+        $this->productSaver->saveAll($subjectSet->getSubjects());
+    }
+
+    /**
+     * Apply a copy action on a subject set.
      *
      * @param RuleSubjectSetInterface         $subjectSet
      * @param ProductCopyValueActionInterface $action

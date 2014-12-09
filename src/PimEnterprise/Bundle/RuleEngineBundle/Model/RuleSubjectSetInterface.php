@@ -53,4 +53,31 @@ interface RuleSubjectSetInterface
      * @return RuleSubjectSetInterface
      */
     public function setSubjects(array $subjects);
+
+    /**
+     * Mark a subject as skipped, means selected by a rule but not updated for the given reasons
+     *
+     * @param object $subject
+     * @param array  $reasons
+     */
+    public function skipSubject($subject, array $reasons);
+
+    /**
+     * @return array
+     */
+    public function getSkippedSubjects();
+
+    /**
+     * @param object $subject
+     *
+     * @return array
+     */
+    public function getSkippedReasons($subject);
+
+    /**
+     * @param object $subject
+     *
+     * @return boolean
+     */
+    public function isSkipped($subject);
 }

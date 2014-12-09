@@ -18,8 +18,6 @@ use Pim\Component\Resource\Model\SaverInterface;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
@@ -66,12 +64,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     /** @var string */
     protected $storageDriver;
 
-    /** @var RuleDefinitionRepositoryInterface */
-    protected $ruleRepository;
-
-    /** @var RunnerInterface */
-    protected $ruleRunner;
-
     /**
      * @param ObjectManager                     $om
      * @param CompletenessManager               $completenessManager
@@ -82,8 +74,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      * @param ChangesCollector                  $collector
      * @param ChangeSetComputerInterface        $changeSet
      * @param string                            $storageDriver
-     * @param RuleDefinitionRepositoryInterface $ruleRepository
-     * @param RunnerInterface                   $ruleRunner
      */
     public function __construct(
         ObjectManager $om,
@@ -94,9 +84,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $dispatcher,
         ChangesCollector $collector,
         ChangeSetComputerInterface $changeSet,
-        $storageDriver,
-        RuleDefinitionRepositoryInterface $ruleRepository,
-        RunnerInterface $ruleRunner
+        $storageDriver
     ) {
         $this->objectManager = $om;
         $this->completenessManager = $completenessManager;
@@ -107,8 +95,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $this->collector = $collector;
         $this->changeSet = $changeSet;
         $this->storageDriver = $storageDriver;
-        $this->ruleRepository = $ruleRepository;
-        $this->ruleRunner = $ruleRunner;
     }
 
     /**
@@ -192,10 +178,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         if (true === $options['recalculate']) {
             $this->completenessManager->generateMissingForProduct($product);
         }
-
-        if (true === $options['execute_rules']) {
-            $this->applyAllRules($product);
-        }
     }
 
     /**
@@ -211,7 +193,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 'recalculate' => true,
                 'flush' => true,
                 'schedule' => true,
-                'execute_rules' => true,
                 'bypass_product_draft' => false
             ]
         );
@@ -220,27 +201,12 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 'recalculate' => 'bool',
                 'flush' => 'bool',
                 'schedule' => 'bool',
-                'execute_rules' => 'bool',
                 'bypass_product_draft' => 'bool'
             ]
         );
         $options = $resolver->resolve($options);
 
         return $options;
-    }
-
-    /**
-     * Apply the rules on the product
-     *
-     * @param ProductInterface $product
-     */
-    protected function applyAllRules(ProductInterface $product)
-    {
-        $rules = $this->ruleRepository->findAllOrderedByPriority();
-        foreach ($rules as $rule) {
-            $this->ruleRunner->run($rule, ['selected_products' => [$product->getId()]]);
-            $this->objectManager->flush();
-        }
     }
 
     /**

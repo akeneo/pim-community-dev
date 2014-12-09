@@ -27,4 +27,7 @@ services:
         class: %pimee_catalog_rule.applier.product.class%
         arguments:
             - @pim_catalog.updater.product
+            - @pim_validator
+            - @pim_catalog.saver.product
             - @event_dispatcher
+            - @pim_versioning.manager.version
