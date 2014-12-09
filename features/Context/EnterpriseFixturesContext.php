@@ -5,7 +5,7 @@ namespace Context;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleManager;
+use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -584,10 +584,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return RuleManager
+     * @return RuleDefinitionManager
      */
     protected function getRuleManager()
     {
-        return $this->getContainer()->get('pimee_rule_engine.manager.rule');
+        return $this->getContainer()->get('pimee_rule_engine.manager.rule_definition');
     }
 }

@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInt
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class RuleManager
+ * Rule definition manager
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
