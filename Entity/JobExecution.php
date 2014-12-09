@@ -62,7 +62,7 @@ class JobExecution
     /**
      * @var string|null The user who launched the job
      *
-     * @ORM\Column(name="user", type="string", nullable=true)
+     * @ORM\Column(name="`user`", type="string", nullable=true)
      */
     private $user;
 
