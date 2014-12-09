@@ -13,8 +13,8 @@ pim_import_export:
     7: ABANDONNÉ
     8: INCONNU
   download_archive:
-    archive: Télécharger le fichier générés|Télécharger les fichiers générés
-    output: Télécharger le fichier générés|Télécharger les fichiers générés
+    archive: Télécharger le fichier généré|Télécharger les fichiers générés
+    output: Télécharger le fichier généré|Télécharger les fichiers générés
     input: Télécharger le fichier lu|Télécharger les fichiers lus
     invalid: Télécharger données invalides
   notification:
@@ -59,6 +59,7 @@ pim_importexport:
       edit: "Modifier un profil d'export"
       remove: "Supprimer un profil d'export"
       launch: "Lancer un profil d'export"
+      history: "Afficher l'historique du profil d'export"
     import_profile:
       index: "Visualiser la liste des profils d'import"
       create: "Créer un profil d'import"
@@ -66,6 +67,7 @@ pim_importexport:
       edit: "Modifier un profil d'import"
       remove: "Supprimer un profil d'import"
       launch: "Lancer un profil d'import"
+      history: "Afficher l'historique du profil d'import"
     export_execution:
       index: "Visualiser la liste des rapports d'export"
       show: "Visualiser les détails du rapport d'export"
@@ -122,7 +124,7 @@ Download log: "Télécharger l'historique"
 Show profile: Afficher le profil
 execution details: "détails d'exécution"
 job_execution.summary:
-  read: lire
+  read: lu
   write: écrit
   skip: ignoré
   create: créé

@@ -66,7 +66,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
         dateWidgetOptions: {
             changeMonth: true,
             changeYear:  true,
-            yearRange:  '-80:+1',
+            yearRange:  '-80:+80',
             dateFormat: localeSettings.getVendorDateTimeFormat('jquery_ui', 'date', 'mm/dd/yy'),
             altFormat:  'yy-mm-dd',
             className:      'date-filter-widget',
