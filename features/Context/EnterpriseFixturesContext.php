@@ -619,8 +619,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 'from_field' => $data['from_field'],
                 'to_field' => $data['to_field'],
             ];
+            if ($data['from_locale'] !== null) {
+                $action['from_locale'] = $data['from_locale'];
+            }
             if ($data['to_locale'] !== null) {
                 $action['to_locale'] = $data['to_locale'];
+            }
+            if ($data['from_scope'] !== null) {
+                $action['from_scope'] = $data['from_scope'];
             }
             if ($data['to_scope'] !== null) {
                 $action['to_scope'] = $data['to_scope'];
