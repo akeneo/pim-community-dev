@@ -75,7 +75,7 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
         }
         foreach ($decodedContent['actions'] as $action) {
             // TODO
-            $actions[] = $this->conditionNormalizer->denormalize($action, 'TODO');
+            $actions[] = $this->actionNormalizer->denormalize($action, 'TODO');
         }
 
         return [

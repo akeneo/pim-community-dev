@@ -51,12 +51,10 @@ class ProductRuleActionNormalizer implements NormalizerInterface, DenormalizerIn
         }
 
         if (ProductSetValueActionInterface::TYPE === $data['type']) {
-            // TODO: remove $data from the constructor ?
             return new $this->setValueActionClass($data);
         }
 
         if (ProductCopyValueActionInterface::TYPE === $data['type']) {
-            // TODO: remove $data from the constructor ?
             return new $this->copyValueActionClass($data);
         }
 
