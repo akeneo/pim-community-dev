@@ -116,9 +116,14 @@ class ProductRuleApplier implements ApplierInterface
     {
         foreach ($subjectSet->getSubjects() as $product) {
             $violations = $this->productValidator->validate($product);
-            if (0 < $violations->count()) {
+            if ($violations->count() > 0) {
                 $this->objectManager->detach($product);
-                $subjectSet->skipSubject($product, $violations);
+                $reasons = [];
+                /** @var \Symfony\Component\Validator\ConstraintViolation $violation */
+                foreach ($violations as $violation) {
+                    $reasons[] = sprintf('%s : %s', $violation->getInvalidValue(), $violation->getMessage());
+                }
+                $subjectSet->skipSubject($product, $reasons);
             }
         }
     }
