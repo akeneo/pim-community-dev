@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Command;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;

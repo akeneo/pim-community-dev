@@ -38,4 +38,14 @@ interface ProductConditionInterface extends ConditionInterface
      * @return mixed
      */
     public function getValue();
+
+    /**
+     * @return string
+     */
+    public function getLocale();
+
+    /**
+     * @return string
+     */
+    public function getScope();
 }

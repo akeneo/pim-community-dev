@@ -33,6 +33,12 @@ class ProductCondition implements ProductConditionInterface
     /** @var mixed */
     protected $value;
 
+    /** @var string */
+    protected $locale;
+
+    /** @var string */
+    protected $scope;
+
     /** @var OptionsResolver */
     private static $optionsResolver;
 
@@ -52,6 +58,8 @@ class ProductCondition implements ProductConditionInterface
         $this->field = $data['field'];
         $this->operator = $data['operator'];
         $this->value = $data['value'];
+        $this->locale = $data['locale'];
+        $this->scope = $data['scope'];
     }
 
     /**
@@ -79,6 +87,22 @@ class ProductCondition implements ProductConditionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
      * Configure the condition's optionResolver
      *
      * @param OptionsResolver $optionsResolver
@@ -86,9 +110,8 @@ class ProductCondition implements ProductConditionInterface
     protected function configureOptionsResolver(OptionsResolver $optionsResolver)
     {
         $optionsResolver->setRequired(['field', 'operator', 'value']);
-        $optionsResolver->setAllowedTypes([
-                'field' => 'string',
-                'operator' => 'string'
-            ]);
+        $optionsResolver->setOptional(['locale', 'scope']);
+        $optionsResolver->setDefaults(['locale' => null, 'scope' => null]);
+        $optionsResolver->setAllowedTypes(['field' => 'string', 'operator' => 'string']);
     }
 }

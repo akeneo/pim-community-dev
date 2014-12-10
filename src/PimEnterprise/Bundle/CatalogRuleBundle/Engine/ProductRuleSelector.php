@@ -46,7 +46,7 @@ class ProductRuleSelector implements SelectorInterface
      * @param ProductQueryFactoryInterface $productQueryFactory
      * @param ProductRepositoryInterface   $repo
      * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $subjectSetClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
+     * @param string                       $subjectSetClass     should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
      */
     public function __construct(
         ProductQueryFactoryInterface $productQueryFactory,
@@ -73,8 +73,12 @@ class ProductRuleSelector implements SelectorInterface
 
         /** @var \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface $condition */
         foreach ($rule->getConditions() as $condition) {
-            // TODO : we need to pass the locale and scope as a context here !
-            $pqb->addFilter($condition->getField(), $condition->getOperator(), $condition->getValue());
+            $pqb->addFilter(
+                $condition->getField(),
+                $condition->getOperator(),
+                $condition->getValue(),
+                ['locale' => $condition->getLocale(), 'scope' => $condition->getScope()]
+            );
         }
 
         $products = $pqb->execute();
