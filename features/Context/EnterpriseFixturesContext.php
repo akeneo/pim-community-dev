@@ -496,6 +496,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             if (!isset($content['conditions'])) {
                 $content['conditions'] = [];
             }
+
+            if ($data['operator'] === 'IN') {
+                $data['value'] = [$data['value']];
+            }
+
             $condition = [
                 'field' => $data['field'],
                 'operator' => $data['operator'],
@@ -619,16 +624,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 'from_field' => $data['from_field'],
                 'to_field' => $data['to_field'],
             ];
-            if ($data['from_locale'] !== null) {
+            if ($data['from_locale'] !== null && $data['from_locale'] !== '') {
                 $action['from_locale'] = $data['from_locale'];
             }
-            if ($data['to_locale'] !== null) {
+            if ($data['to_locale'] !== null && $data['to_locale'] !== '') {
                 $action['to_locale'] = $data['to_locale'];
             }
-            if ($data['from_scope'] !== null) {
+            if ($data['from_scope'] !== null && $data['from_scope'] !== '') {
                 $action['from_scope'] = $data['from_scope'];
             }
-            if ($data['to_scope'] !== null) {
+            if ($data['to_scope'] !== null && $data['to_scope'] !== '') {
                 $action['to_scope'] = $data['to_scope'];
             }
             $content['actions'][] = $action;
