@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Resource\Model\BulkSaverInterface;
@@ -45,6 +45,9 @@ class ProductRuleApplier implements ApplierInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
+    /** @var ObjectManager */
+    protected $objectManager;
+
     /** @var VersionManager */
     protected $versionManager;
 
@@ -53,6 +56,7 @@ class ProductRuleApplier implements ApplierInterface
      * @param ValidatorInterface       $productValidator
      * @param BulkSaverInterface       $productSaver
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ObjectManager            $objectManager
      * @param VersionManager           $versionManager
      */
     public function __construct(
@@ -60,6 +64,7 @@ class ProductRuleApplier implements ApplierInterface
         ValidatorInterface $productValidator,
         BulkSaverInterface $productSaver,
         EventDispatcherInterface $eventDispatcher,
+        ObjectManager $objectManager,
         VersionManager $versionManager
     )
     {
@@ -67,6 +72,7 @@ class ProductRuleApplier implements ApplierInterface
         $this->productValidator = $productValidator;
         $this->productSaver     = $productSaver;
         $this->eventDispatcher  = $eventDispatcher;
+        $this->objectManager    = $objectManager;
         $this->versionManager   = $versionManager;
     }
 
@@ -111,8 +117,8 @@ class ProductRuleApplier implements ApplierInterface
         foreach ($subjectSet->getSubjects() as $product) {
             $violations = $this->productValidator->validate($product);
             if (0 < $violations->count()) {
+                $this->objectManager->detach($product);
                 $subjectSet->skipSubject($product, $violations);
-                // TODO : detach from the unit of work in a coming PR
             }
         }
     }
