@@ -12,8 +12,8 @@ define(
                             '<%= rulePart.field %>' +
                             '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
                         '</span>' +
-                        '<span class="rule-item-emphasize rule-operator"><%= rulePart.operator %></span>' +
-                        '<% if (rulePart.operator != \'EMPTY\') { %>' +
+                        '<span class="rule-item-emphasize condition-operator"><%= rulePart.operator %></span>' +
+                        '<% if (!!rulePart.value) { %>' +
                             '<span class="condition-value"><%= rulePart.value %></span>' +
                         '<% } %>' +
                     '</div>'
@@ -53,7 +53,7 @@ define(
                             '<span class="flag-language">' +
                                 '<i class="flag flag-<%= localeCountry %>"></i>' +
                             '</span>' +
-                            '<%= localeLanguage %>' +
+                            '<span class="locale"><%= localeLanguage %></span>' +
                         '</span>' +
                     '<% } %>' +
                     '<% if (scope) { %>' +
@@ -70,10 +70,10 @@ define(
                 '<!-- PimEnterprise/Bundle/CatalogRuleBundle/Resources/public/js/ruleitemview.js -->' +
                 '<td class="rule-cell rule-code"><%= rule.code %></td>' +
                 '<td class="rule-cell rule-conditions">' +
-                '<%= conditions %>' +
+                    '<%= conditions %>' +
                 '</td>' +
                 '<td class="rule-cell rule-actions">' +
-                '<%= actions %>' +
+                    '<%= actions %>' +
                 '</td>' +
                 '<td class="rule-cell">' +
                     '<span class="btn delete-row"><i class="icon-trash"></i> Delete</span>' +

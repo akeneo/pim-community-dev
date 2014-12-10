@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Behat\Gherkin\Node\TableNode;
+
 /**
  * A context for creating entities
  *
@@ -97,41 +99,138 @@ class EnterpriseFeatureContext extends FeatureContext
         }
 
         foreach ($expectedConditions as $key => $condition) {
+            $condition = array_merge(
+                [
+                    'locale' => null,
+                    'scope' => null
+                ],
+                $condition
+            );
+
             $actualCondition = $actualConditions[$key];
 
-            $field    = $actualCondition->findAll('css', '.condition-field');
-            $operator = $actualCondition->findAll('css', '.condition-operator');
-            $value    = $actualConditions[$key]->findAll('css', '.condition-value');
+            $this->checkElementValue($actualCondition->findAll('css', '.condition-field'), $condition['field']);
+            $this->checkElementValue($actualCondition->findAll('css', '.condition-operator'), $condition['operator']);
+            $this->checkElementValue($actualCondition->findAll('css', '.condition-value'), $condition['value'], false);
+            $this->checkElementValue($actualCondition->findAll('css', '.rule-item-context .locale'), $condition['locale']);
+            $this->checkElementValue($actualCondition->findAll('css', '.rule-item-context .locale'), $condition['scope']);
 
-            if ($field->getText() !== $condition['field']) {
+        //     $fields    = $actualCondition->findAll('css', '.condition-field');
+        //     $operators = $actualCondition->findAll('css', '.condition-operator');
+        //     $values    = $actualCondition->findAll('css', '.condition-value');
+        //     $locales   = $actualCondition->findAll('css', '.rule-item-context .locale');
+        //     $scopes    = $actualCondition->findAll('css', '.rule-item-context .scope');
+
+        //     $field    = reset($fields);
+        //     $operator = reset($operators);
+        //     $value    = reset($values);
+        //     $locale   = reset($locales);
+        //     $scope    = reset($scopes);
+
+        //     if ($field->getText() !== $condition['field']) {
+        //         throw new \Exception(
+        //             sprintf(
+        //                 'Rule #%d field is expected to be "%s", actually is "%s"',
+        //                 $key + 1,
+        //                 $condition['field'],
+        //                 $field->getText()
+        //             )
+        //         );
+        //     }
+
+        //     if ($operator->getText() !== $condition['operator']) {
+        //         throw new \Exception(
+        //             sprintf(
+        //                 'Rule #%d operator is expected to be "%s", actually is "%s"',
+        //                 $key + 1,
+        //                 $condition['operator'],
+        //                 $operator->getText()
+        //             )
+        //         );
+        //     }
+
+        //     if (
+        //         $condition['value'] !== '' && $value === null ||
+        //         false !== $value && $value->getText() !== $condition['value']
+        //     ) {
+        //         throw new \Exception(
+        //             sprintf(
+        //                 'Rule #%d value is expected to be "%s", actually is "%s"',
+        //                 $key + 1,
+        //                 $condition['value'],
+        //                 $value->getText()
+        //             )
+        //         );
+        //     }
+
+        //     if (
+        //         $condition['value'] !== '' && $value === null ||
+        //         false !== $value && $value->getText() !== $condition['value']
+        //     ) {
+        //         throw new \Exception(
+        //             sprintf(
+        //                 'Rule #%d value is expected to be "%s", actually is "%s"',
+        //                 $key + 1,
+        //                 $condition['value'],
+        //                 $value->getText()
+        //             )
+        //         );
+        //     }
+
+        //     if (
+        //         false === $locale && $condition['locale'] !== null ||
+        //         false !== $locale && $locale->getText() !== $condition['locale']
+        //     ) {
+        //         throw new \Exception(
+        //             sprintf(
+        //                 'Rule #%d locale is expected to be "%s", actually is "%s"',
+        //                 $key + 1,
+        //                 $condition['locale'],
+        //                 $locale->getText()
+        //             )
+        //         );
+        //     }
+
+        //     if (
+        //         false === $scope && $condition['scope'] !== null ||
+        //         false !== $scope && $scope->getText() !== $condition['scope']
+        //     ) {
+        //         throw new \Exception(
+        //             sprintf(
+        //                 'Rule #%d scope is expected to be "%s", actually is "%s"',
+        //                 $key + 1,
+        //                 $condition['scope'],
+        //                 $scope->getText()
+        //             )
+        //         );
+        //     }
+        }
+    }
+
+    protected function checkElementValue($element, $expectedValue, $mandatory = true)
+    {
+        $element = is_array($element) ? reset($element) : $element;
+
+        if ($mandatory) {
+            if ($element->getText() !== $expectedValue) {
                 throw new \Exception(
                     sprintf(
-                        'Rule #%d field is expected to be "%s", actually is "%s"',
-                        $key + 1,
-                        $condition['field'],
-                        $field->getText()
+                        'Rule element is expected to be "%s", actually is "%s"',
+                        $expectedValue,
+                        $element->getText()
                     )
                 );
             }
-
-            if ($operator->getText() !== $condition['operator']) {
+        } else {
+            if (
+                false === $element && $expectedValue !== null ||
+                false !== $element && $element->getText() !== $expectedValue
+            ) {
                 throw new \Exception(
                     sprintf(
-                        'Rule #%d operator is expected to be "%s", actually is "%s"',
-                        $key + 1,
-                        $condition['operator'],
-                        $operator->getText()
-                    )
-                );
-            }
-
-            if ($value->getText() !== $condition['value']) {
-                throw new \Exception(
-                    sprintf(
-                        'Rule #%d value is expected to be "%s", actually is "%s"',
-                        $key + 1,
-                        $condition['value'],
-                        $value->getText()
+                        'Rule element is expected to be "%s", actually is "%s"',
+                        $expectedValue,
+                        $element->getText()
                     )
                 );
             }
