@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3447: Fix date picker year range selection over next year
+- PIM-3475: Fix attribute options sort order in import/export
 
 # 1.2.14 (2014-12-03)
 
