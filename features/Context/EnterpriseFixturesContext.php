@@ -496,6 +496,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             if (!isset($content['conditions'])) {
                 $content['conditions'] = [];
             }
+
+            if ($data['operator'] === 'IN') {
+                $data['value'] = [$data['value']];
+            }
+
             $condition = [
                 'field' => $data['field'],
                 'operator' => $data['operator'],
@@ -539,16 +544,97 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             if (!isset($content['actions'])) {
                 $content['actions'] = [];
             }
+
+            $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $data['field']]);
+            $attributeType = $attribute->getAttributeType();
+
+            //TODO: replace this dirty fix once rule import is done (and use what's done in it to convert values).
+            switch ($attributeType) {
+                case 'pim_catalog_text':
+                case 'pim_catalog_textarea':
+                case 'pim_catalog_date':
+                case 'pim_catalog_identifier':
+                    $value = (string) $data['value'];
+                    break;
+                case 'pim_catalog_number':
+                    $value = (int) $data['value'];
+                    break;
+                case 'pim_catalog_metric':
+                case 'pim_catalog_multiselect':
+                case 'pim_catalog_price_collection':
+                    $values = explode(',', $data['value']);
+                    $value = [['data' => $values[0], 'currency' => $values[1]]];
+                    break;
+                case 'pim_catalog_simpleselect':
+                    $value = ['code' => $data['value'], 'attribute' => $attribute->getCode()];
+                    break;
+                case 'pim_catalog_boolean':
+                    $value = (bool) $data['value'];
+                    break;
+                case 'pim_catalog_image':
+                case 'pim_catalog_file':
+                    $values = explode(',', $data['value']);
+                    $value = ['originalFilename' => $values[0], 'filePath' => $values[1]];
+                    break;
+            }
+
             $action = [
                 'type' => 'set_value',
                 'field' => $data['field'],
-                'value' => $data['value'],
+                'value' => $value,
             ];
             if ($data['locale'] !== null) {
                 $action['locale'] = $data['locale'];
             }
             if ($data['scope'] !== null) {
                 $action['scope'] = $data['scope'];
+            }
+            $content['actions'][] = $action;
+
+            $rule->setContent(json_encode($content));
+            $manager = $this->getRuleManager();
+            $manager->save($rule);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product rule copier actions:$/
+     */
+    public function theFollowingProductRuleCopierActions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                [
+                    'locale' => null,
+                    'scope' => null
+                ],
+                $data
+            );
+
+            $rule = $this->getRule($data['rule']);
+            $content = $rule->getContent();
+            $content = json_decode($content, true);
+            if (!isset($content['actions'])) {
+                $content['actions'] = [];
+            }
+            $action = [
+                'type' => 'copy_value',
+                'from_field' => $data['from_field'],
+                'to_field' => $data['to_field'],
+            ];
+            if ($data['from_locale'] !== null && $data['from_locale'] !== '') {
+                $action['from_locale'] = $data['from_locale'];
+            }
+            if ($data['to_locale'] !== null && $data['to_locale'] !== '') {
+                $action['to_locale'] = $data['to_locale'];
+            }
+            if ($data['from_scope'] !== null && $data['from_scope'] !== '') {
+                $action['from_scope'] = $data['from_scope'];
+            }
+            if ($data['to_scope'] !== null && $data['to_scope'] !== '') {
+                $action['to_scope'] = $data['to_scope'];
             }
             $content['actions'][] = $action;
 
