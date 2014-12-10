@@ -133,4 +133,17 @@ class EnterpriseFeatureContext extends FeatureContext
             );
         }
     }
+
+    /**
+     * @param string $code
+     *
+     * @throws \LogicException
+     * @Given /^the product rule "([^"]*)" is executed$/
+     */
+    public function iExecuteTheProductRule($code)
+    {
+        $rule = $this->getSubcontext('fixtures')->getRule($code);
+        $runner = $this->getContainer()->get('pimee_rule_engine.runner.chained');
+        $updated = $runner->run($rule);
+    }
 }
