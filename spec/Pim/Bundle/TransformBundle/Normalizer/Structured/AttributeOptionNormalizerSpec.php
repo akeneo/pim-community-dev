@@ -51,6 +51,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
             'en_US' => $valueEn,
             'fr_FR' => $valueFr,
         ]);
+        $option->getSortOrder()->willReturn(1);
         $valueEn->getLocale()->willReturn('en_US');
         $valueEn->getValue()->willReturn('Red');
         $valueFr->getLocale()->willReturn('fr_FR');
@@ -60,6 +61,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
             'attribute' => 'color',
             'code' => 'red',
             'default' => '1',
+            'sort_order' => 1,
             'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => '']
         ]);
     }
@@ -73,6 +75,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
         $option->isDefault()->willReturn(true);
+        $option->getSortOrder()->willReturn(1);
         $attribute->getCode()->willReturn('color');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
@@ -87,6 +90,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
             'attribute' => 'color',
             'code' => 'red',
             'default' => '1',
+            'sort_order' => 1,
             'label' => ['en_US' => 'Red', 'de_DE' => '']
         ]);
     }
@@ -101,6 +105,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
         $option->isDefault()->willReturn(true);
+        $option->getSortOrder()->willReturn(1);
         $attribute->getCode()->willReturn('color');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
@@ -118,6 +123,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
             'attribute' => 'color',
             'code' => 'red',
             'default' => '1',
+            'sort_order' => 1,
             'label' => ['en_US' => 'Red', 'fr_FR' => 'Rouge', 'de_DE' => '']
         ]);
     }

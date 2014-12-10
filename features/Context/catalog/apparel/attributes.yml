@@ -567,30 +567,35 @@ attributes:
                     en_GB: Dry
                     fr_FR: Sec
                     de_DE: Trocken
+                sortOrder: 1
             wet:
                 labels:
                     en_US: Wet
                     en_GB: Wet
                     fr_FR: Humide
                     de_DE: Nass
+                sortOrder: 2
             hot:
                 labels:
                     en_US: Hot
                     en_GB: Hot
                     fr_FR: Chaud
                     de_DE: Heiß
+                sortOrder: 3
             cold:
                 labels:
                     en_US: Cold
                     en_GB: Cold
                     fr_FR: Froid
                     de_DE: Kalt
+                sortOrder: 4
             snowy:
                 labels:
                     en_US: Snowy
                     en_GB: Snowy
                     fr_FR: Neigeux
                     de_DE: Verschneit
+                sortOrder: 5
     care_instructions:
         labels:
             en_US: Care instructions
@@ -649,42 +654,49 @@ attributes:
                     en_GB: Cotton
                     fr_FR: Coton
                     de_DE: Baumwolle
+                sortOrder: 1
             flax:
                 labels:
                     en_US: Flax
                     en_GB: Flax
                     fr_FR: Lin
                     de_DE: Flachs
+                sortOrder: 2
             wool:
                 labels:
                     en_US: Wool
                     en_GB: Wool
                     fr_FR: Laine
                     de_DE: Wolle
+                sortOrder: 3
             silk:
                 labels:
                     en_US: Silk
                     en_GB: Silk
                     fr_FR: Soie
                     de_DE: Seide
+                sortOrder: 4
             denim:
                 labels:
                     en_US: Denim
                     en_GB: Denim
                     fr_FR: Toile
                     de_DE: Denim
+                sortOrder: 5
             leather:
                 labels:
                     en_US: Leather
                     en_GB: Leather
                     fr_FR: Cuir
                     de_DE: Leder
+                sortOrder: 6
             fur:
                 labels:
                     en_US: Fur
                     en_GB: Fur
                     fr_FR: Fourrure
                     de_DE: Pelz
+                sortOrder: 7
     additional_materials:
         labels:
             en_US: Additional materials
@@ -703,42 +715,49 @@ attributes:
                     en_GB: Cotton
                     fr_FR: Coton
                     de_DE: Baumwolle
+                sortOrder: 1
             additional_flax:
                 labels:
                     en_US: Flax
                     en_GB: Flax
                     fr_FR: Lin
                     de_DE: Flachs
+                sortOrder: 2
             additional_wool:
                 labels:
                     en_US: Wool
                     en_GB: Wool
                     fr_FR: Laine
                     de_DE: Wolle
+                sortOrder: 3
             additional_silk:
                 labels:
                     en_US: Silk
                     en_GB: Silk
                     fr_FR: Soie
                     de_DE: Seide
+                sortOrder: 4
             additional_denim:
                 labels:
                     en_US: Denim
                     en_GB: Denim
                     fr_FR: Toile
                     de_DE: Denim
+                sortOrder: 5
             additional_leather:
                 labels:
                     en_US: Leather
                     en_GB: Leather
                     fr_FR: Cuir
                     de_DE: Leder
+                sortOrder: 6
             additional_fur:
                 labels:
                     en_US: Fur
                     en_GB: Fur
                     fr_FR: Fourrure
                     de_DE: Pelz
+                sortOrder: 7
     cost:
         labels:
             en_US: Cost

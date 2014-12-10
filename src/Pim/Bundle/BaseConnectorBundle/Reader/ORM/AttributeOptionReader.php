@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\Reader;
 
 /**
- * Category reader that reads categories ordered by tree and order inside the tree
+ * Attribute option reader sorted by the sortOrder
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -14,14 +14,10 @@ use Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\Reader;
  */
 class AttributeOptionReader extends Reader
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $em;
 
-    /**
-     * @var string
-     */
+    /** @var string        */
     protected $className;
 
     /**
