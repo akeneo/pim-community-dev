@@ -39,7 +39,7 @@ class NumberValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_numeric($data)) {
-            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number');
+            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number', gettype($data));
         }
 
         foreach ($products as $product) {

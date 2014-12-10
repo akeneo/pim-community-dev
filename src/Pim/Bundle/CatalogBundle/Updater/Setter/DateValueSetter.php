@@ -54,7 +54,7 @@ class DateValueSetter extends AbstractValueSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'date');
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'date', gettype($data));
         }
 
         $dateValues = explode('-', $data);
@@ -68,7 +68,8 @@ class DateValueSetter extends AbstractValueSetter
                 $attribute->getCode(),
                 'a string with the format yyyy-mm-dd',
                 'setter',
-                'date'
+                'date',
+                gettype($data)
             );
         }
     }

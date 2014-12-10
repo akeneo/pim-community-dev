@@ -49,7 +49,12 @@ class MultiSelectValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'multi select');
+            throw InvalidArgumentException::arrayExpected(
+                $attribute->getCode(),
+                'setter',
+                'multi select',
+                gettype($data)
+            );
         }
 
         $attributeOptions = [];
@@ -65,7 +70,8 @@ class MultiSelectValueSetter extends AbstractValueSetter
                     'code',
                     sprintf('Option with code "%s" does not exist', $attributeOption['code']),
                     'setter',
-                    'multi select'
+                    'multi select',
+                    gettype($data)
                 );
             }
 
@@ -86,7 +92,12 @@ class MultiSelectValueSetter extends AbstractValueSetter
     protected function checkData(AttributeInterface $attribute, $attributeOption)
     {
         if (!is_array($attributeOption)) {
-            throw InvalidArgumentException::arrayOfArraysExpected($attribute->getCode(), 'setter', 'multi select');
+            throw InvalidArgumentException::arrayOfArraysExpected(
+                $attribute->getCode(),
+                'setter',
+                'multi select',
+                gettype($attributeOption)
+            );
         }
 
         if (!array_key_exists('attribute', $attributeOption)) {
@@ -94,7 +105,8 @@ class MultiSelectValueSetter extends AbstractValueSetter
                 $attribute->getCode(),
                 'attribute',
                 'setter',
-                'multi select'
+                'multi select',
+                gettype($attributeOption)
             );
         }
 
@@ -103,7 +115,8 @@ class MultiSelectValueSetter extends AbstractValueSetter
                 $attribute->getCode(),
                 'code',
                 'setter',
-                'multi select'
+                'multi select',
+                gettype($attributeOption)
             );
         }
     }

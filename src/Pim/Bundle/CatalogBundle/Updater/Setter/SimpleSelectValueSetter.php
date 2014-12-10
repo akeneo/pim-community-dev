@@ -58,7 +58,8 @@ class SimpleSelectValueSetter extends AbstractValueSetter
                 'code',
                 sprintf('Option with code "%s" does not exist', $data['code']),
                 'setter',
-                'simple select'
+                'simple select',
+                gettype($data)
             );
         }
 
@@ -76,7 +77,12 @@ class SimpleSelectValueSetter extends AbstractValueSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'simple select');
+            throw InvalidArgumentException::arrayExpected(
+                $attribute->getCode(),
+                'setter',
+                'simple select',
+                gettype($data)
+            );
         }
 
         if (!array_key_exists('attribute', $data)) {
@@ -84,12 +90,19 @@ class SimpleSelectValueSetter extends AbstractValueSetter
                 $attribute->getCode(),
                 'attribute',
                 'setter',
-                'simple select'
+                'simple select',
+                gettype($data)
             );
         }
 
         if (!array_key_exists('code', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'code', 'setter', 'simple select');
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'code',
+                'setter',
+                'simple select',
+                gettype($data)
+            );
         }
     }
 

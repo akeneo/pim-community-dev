@@ -47,7 +47,7 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $data = 'not a boolean';
 
         $this->shouldThrow(
-            InvalidArgumentException::booleanExpected('attributeCode', 'setter', 'boolean')
+            InvalidArgumentException::booleanExpected('attributeCode', 'setter', 'boolean', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 

@@ -51,7 +51,7 @@ class TextValueSetterSpec extends ObjectBehavior
         $data = 42;
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text value')
+            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text value', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 

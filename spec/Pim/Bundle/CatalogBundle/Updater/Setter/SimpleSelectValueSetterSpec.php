@@ -52,7 +52,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $data = 'not a simple select option';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'simple select')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'simple select', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -66,7 +66,13 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $data = ['no attribute key' => 'value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'attribute', 'setter', 'simple select')
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'attribute',
+                'setter',
+                'simple select',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -80,7 +86,13 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $data = ['attribute' => 'value', 'no code' => 'value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'code', 'setter', 'simple select')
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'code',
+                'setter',
+                'simple select',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -104,7 +116,8 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
                 'code',
                 'Option with code "unknown code" does not exist',
                 'setter',
-                'simple select'
+                'simple select',
+                gettype($data)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

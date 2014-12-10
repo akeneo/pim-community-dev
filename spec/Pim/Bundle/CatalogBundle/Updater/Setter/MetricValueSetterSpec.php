@@ -50,7 +50,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = 'Not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'metric')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'metric', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -64,7 +64,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -78,7 +78,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 'data value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -92,7 +92,13 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 'text', 'unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('attributeCode', 'data', 'setter', 'metric')
+            InvalidArgumentException::arrayNumericKeyExpected(
+                'attributeCode',
+                'data',
+                'setter',
+                'metric',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -106,7 +112,13 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 42, 'unit' => 123];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected('attributeCode', 'unit', 'setter', 'metric')
+            InvalidArgumentException::arrayStringKeyExpected(
+                'attributeCode',
+                'unit',
+                'setter',
+                'metric',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -132,7 +144,8 @@ class MetricValueSetterSpec extends ObjectBehavior
                 'unit',
                 '"incorrect unit" does not exist in any attribute\'s families',
                 'setter',
-                'metric'
+                'metric',
+                gettype($data)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

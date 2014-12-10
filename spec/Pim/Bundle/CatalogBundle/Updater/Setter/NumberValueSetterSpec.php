@@ -47,7 +47,7 @@ class NumberValueSetterSpec extends ObjectBehavior
         $data = 'not a number';
 
         $this->shouldThrow(
-            InvalidArgumentException::numericExpected('attributeCode', 'setter', 'number')
+            InvalidArgumentException::numericExpected('attributeCode', 'setter', 'number', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 

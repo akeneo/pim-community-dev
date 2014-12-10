@@ -54,7 +54,7 @@ class BooleanValueSetter extends AbstractValueSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_bool($data)) {
-            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean');
+            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean', gettype($data));
         }
     }
 

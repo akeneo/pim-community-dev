@@ -50,7 +50,12 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $data = ['not a multi select option'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayOfArraysExpected('attributeCode', 'setter', 'multi select')
+            InvalidArgumentException::arrayOfArraysExpected(
+                'attributeCode',
+                'setter',
+                'multi select',
+                gettype($data[0])
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -64,7 +69,13 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $data = [['not a multi select option']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'attribute', 'setter', 'multi select')
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'attribute',
+                'setter',
+                'multi select',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -78,7 +89,13 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $data = [['attribute' => 'attribute value', 'not code key' => 'invalid values']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'code', 'setter', 'multi select')
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'code',
+                'setter',
+                'multi select',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -92,7 +109,7 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $data = 'not a multi select option';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'multi select')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'multi select', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -117,7 +134,8 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
                 'code',
                 'Option with code "unknown code" does not exist',
                 'setter',
-                'multi select'
+                'multi select',
+                gettype($data)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

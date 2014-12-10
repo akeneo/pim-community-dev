@@ -76,23 +76,47 @@ class MetricValueSetter extends AbstractValueSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric');
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'metric', gettype($data));
         }
 
         if (!array_key_exists('data', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'data', 'setter', 'metric');
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'data',
+                'setter',
+                'metric',
+                gettype($data)
+            );
         }
 
         if (!array_key_exists('unit', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'unit', 'setter', 'metric');
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'unit',
+                'setter',
+                'metric',
+                gettype($data)
+            );
         }
 
         if (!is_numeric($data['data'])) {
-            throw InvalidArgumentException::arrayNumericKeyExpected($attribute->getCode(), 'data', 'setter', 'metric');
+            throw InvalidArgumentException::arrayNumericKeyExpected(
+                $attribute->getCode(),
+                'data',
+                'setter',
+                'metric',
+                gettype($data)
+            );
         }
 
         if (!is_string($data['unit'])) {
-            throw InvalidArgumentException::arrayStringKeyExpected($attribute->getCode(), 'unit', 'setter', 'metric');
+            throw InvalidArgumentException::arrayStringKeyExpected(
+                $attribute->getCode(),
+                'unit',
+                'setter',
+                'metric',
+                gettype($data)
+            );
         }
 
         if (!array_key_exists(
@@ -104,7 +128,8 @@ class MetricValueSetter extends AbstractValueSetter
                 'unit',
                 sprintf('"%s" does not exist in any attribute\'s families', $data['unit']),
                 'setter',
-                'metric'
+                'metric',
+                gettype($data)
             );
         }
     }
