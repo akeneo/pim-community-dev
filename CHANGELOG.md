@@ -1,4 +1,4 @@
-# 1.0.*
+# 1.0.8 (2014-12-10)
 
 ## Bug fixes
 - PIM-3449: Fix performance problem on on grid with many categories
