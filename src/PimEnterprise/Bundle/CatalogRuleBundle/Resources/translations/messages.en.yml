@@ -6,3 +6,7 @@ pimee_catalog_rule:
             is_smart.label: Smart
         acl:
             rule.view_permissions: View rules
+    product:
+        tooltip:
+            affected_by_a_rule.title: Is affected by a rule
+            loading.title: Loading

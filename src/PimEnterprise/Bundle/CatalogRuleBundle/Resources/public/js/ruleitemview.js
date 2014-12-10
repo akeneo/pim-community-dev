@@ -5,7 +5,7 @@ define(
 
         var templates = {
             'conditions': {
-                'field':
+                'field': _.template(
                     '<div class="rule-item rule-condition">' +
                         '<span class="rule-item-emphasize">if</span>' +
                         '<span class="condition-field">' +
@@ -17,35 +17,38 @@ define(
                             '<span class="condition-value"><%= rulePart.value %></span>' +
                         '<% } %>' +
                     '</div>'
+                )
             },
             'actions': {
-                'set_value':
+                'set_value': _.template(
                     '<div class="rule-item rule-action">' +
                         '<span class="rule-item-emphasize">then</span>' +
-                        '<span class="action-field"><%= rulePart.value %></span>' +
-                        '<span class="rule-item-emphasize">is set into</span>' +
+                        '<span class="action-values"><%= rulePart.value %></span>' +
+                        '<span class="rule-item-emphasize action-type">is set into</span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
                             '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
                         '</span>' +
-                    '</div>',
-                'copy_value':
+                    '</div>'
+                ),
+                'copy_value': _.template(
                     '<div class="rule-item rule-action">' +
                         '<span class="rule-item-emphasize">then</span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.from_field %>' +
                             '<%= renderItemContext(rulePart.from_locale, rulePart.from_scope) %>' +
                         '</span>' +
-                        '<span class="rule-item-emphasize">is copied into</span>' +
+                        '<span class="rule-item-emphasize action-type">is copied into</span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.to_field %>' +
                             '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +
                         '</span>' +
                     '</div>'
+                )
             }
         };
 
-        var itemContextTemplate =
+        var itemContextTemplate = _.template(
             '<% if (localeCountry || scope) { %>' +
                 '<span class="rule-item-context">' +
                     '<% if (localeCountry) { %>' +
@@ -62,7 +65,8 @@ define(
                         '</span>' +
                     '<% } %>' +
                 '</span>' +
-            '<% } %>';
+            '<% } %>'
+        );
 
         return ItemView.extend({
             className: 'rule-row',
@@ -76,7 +80,7 @@ define(
                     '<%= actions %>' +
                 '</td>' +
                 '<td class="rule-cell">' +
-                    '<span class="btn delete-row"><i class="icon-trash"></i> Delete</span>' +
+                    '<button class="btn delete-row" alt="Delete rule" type="button"><i class="icon-trash"></i> Delete</button>' +
                 '</td>'
             ),
             renderRuleParts: function(type) {
@@ -91,13 +95,13 @@ define(
             renderRulePart: function(rulePart, type) {
                 var rulePartType = rulePart.type ? rulePart.type : 'field';
 
-                return _.template(templates[type][rulePartType])({
+                return templates[type][rulePartType]({
                     'rulePart': rulePart,
                     'renderItemContext': function(locale, scope) {
                         var localeCountry  = locale ? locale.split('_')[1].toLowerCase() : locale;
                         var localeLanguage = locale ? locale.split('_')[0].toLowerCase() : locale;
 
-                        return _.template(itemContextTemplate)({'localeCountry': localeCountry, 'localeLanguage': localeLanguage, 'scope': scope});
+                        return itemContextTemplate({'localeCountry': localeCountry, 'localeLanguage': localeLanguage, 'scope': scope});
                     }
                 });
             },

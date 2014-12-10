@@ -109,128 +109,147 @@ class EnterpriseFeatureContext extends FeatureContext
 
             $actualCondition = $actualConditions[$key];
 
-            $this->checkElementValue($actualCondition->findAll('css', '.condition-field'), $condition['field']);
-            $this->checkElementValue($actualCondition->findAll('css', '.condition-operator'), $condition['operator']);
-            $this->checkElementValue($actualCondition->findAll('css', '.condition-value'), $condition['value'], false);
-            $this->checkElementValue($actualCondition->findAll('css', '.rule-item-context .locale'), $condition['locale']);
-            $this->checkElementValue($actualCondition->findAll('css', '.rule-item-context .locale'), $condition['scope']);
-
-        //     $fields    = $actualCondition->findAll('css', '.condition-field');
-        //     $operators = $actualCondition->findAll('css', '.condition-operator');
-        //     $values    = $actualCondition->findAll('css', '.condition-value');
-        //     $locales   = $actualCondition->findAll('css', '.rule-item-context .locale');
-        //     $scopes    = $actualCondition->findAll('css', '.rule-item-context .scope');
-
-        //     $field    = reset($fields);
-        //     $operator = reset($operators);
-        //     $value    = reset($values);
-        //     $locale   = reset($locales);
-        //     $scope    = reset($scopes);
-
-        //     if ($field->getText() !== $condition['field']) {
-        //         throw new \Exception(
-        //             sprintf(
-        //                 'Rule #%d field is expected to be "%s", actually is "%s"',
-        //                 $key + 1,
-        //                 $condition['field'],
-        //                 $field->getText()
-        //             )
-        //         );
-        //     }
-
-        //     if ($operator->getText() !== $condition['operator']) {
-        //         throw new \Exception(
-        //             sprintf(
-        //                 'Rule #%d operator is expected to be "%s", actually is "%s"',
-        //                 $key + 1,
-        //                 $condition['operator'],
-        //                 $operator->getText()
-        //             )
-        //         );
-        //     }
-
-        //     if (
-        //         $condition['value'] !== '' && $value === null ||
-        //         false !== $value && $value->getText() !== $condition['value']
-        //     ) {
-        //         throw new \Exception(
-        //             sprintf(
-        //                 'Rule #%d value is expected to be "%s", actually is "%s"',
-        //                 $key + 1,
-        //                 $condition['value'],
-        //                 $value->getText()
-        //             )
-        //         );
-        //     }
-
-        //     if (
-        //         $condition['value'] !== '' && $value === null ||
-        //         false !== $value && $value->getText() !== $condition['value']
-        //     ) {
-        //         throw new \Exception(
-        //             sprintf(
-        //                 'Rule #%d value is expected to be "%s", actually is "%s"',
-        //                 $key + 1,
-        //                 $condition['value'],
-        //                 $value->getText()
-        //             )
-        //         );
-        //     }
-
-        //     if (
-        //         false === $locale && $condition['locale'] !== null ||
-        //         false !== $locale && $locale->getText() !== $condition['locale']
-        //     ) {
-        //         throw new \Exception(
-        //             sprintf(
-        //                 'Rule #%d locale is expected to be "%s", actually is "%s"',
-        //                 $key + 1,
-        //                 $condition['locale'],
-        //                 $locale->getText()
-        //             )
-        //         );
-        //     }
-
-        //     if (
-        //         false === $scope && $condition['scope'] !== null ||
-        //         false !== $scope && $scope->getText() !== $condition['scope']
-        //     ) {
-        //         throw new \Exception(
-        //             sprintf(
-        //                 'Rule #%d scope is expected to be "%s", actually is "%s"',
-        //                 $key + 1,
-        //                 $condition['scope'],
-        //                 $scope->getText()
-        //             )
-        //         );
-        //     }
+            $this->checkElementValue(
+                $actualCondition->find('css', '.condition-field'),
+                $condition['field'],
+                true,
+                true
+            );
+            $this->checkElementValue(
+                $actualCondition->find('css', '.condition-operator'),
+                $condition['operator']
+            );
+            $this->checkElementValue(
+                $actualCondition->find('css', '.condition-value'),
+                $condition['value'],
+                false
+            );
+            $this->checkElementValue(
+                $actualCondition->find('css', '.rule-item-context .locale'),
+                $condition['locale'],
+                false
+            );
+            $this->checkElementValue(
+                $actualCondition->find('css', '.rule-item-context .scope'),
+                $condition['scope'],
+                false
+            );
         }
     }
 
-    protected function checkElementValue($element, $expectedValue, $mandatory = true)
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^I should see the following rule actions:$/
+     */
+    public function iShouldSeeTheFollowingRuleActions(TableNode $table)
+    {
+        $expectedActions = $table->getHash();
+        $actualActions = $this->getSession()->getPage()->findAll('css', '.rule-table .rule-action');
+
+        $expectedCount = count($expectedActions);
+        $actualCount   = count($actualActions);
+        if ($expectedCount !== $actualCount) {
+            throw new \Exception(
+                sprintf(
+                    'Expecting %d rules actions, actually saw %d',
+                    $expectedCount,
+                    $actualCount
+                )
+            );
+        }
+
+        foreach ($expectedActions as $key => $action) {
+            $action = array_merge(
+                [
+                    'locale' => null,
+                    'scope' => null
+                ],
+                $action
+            );
+
+            $actualAction = $actualActions[$key];
+
+            switch (trim($action['type'])) {
+                case 'set_value':
+                    $action['type'] = 'is set into';
+
+                    $this->checkElementValue(
+                        $actualAction->find('css', '.action-field'),
+                        $action['field'],
+                        true,
+                        true
+                    );
+                    $this->checkElementValue(
+                        $actualAction->find('css', '.action-type'),
+                        $action['type']
+                    );
+                    $this->checkElementValue(
+                        $actualAction->find('css', '.action-value'),
+                        $action['value'],
+                        false
+                    );
+                    $this->checkElementValue(
+                        $actualAction->find('css', '.rule-item-context .locale'),
+                        $action['locale'],
+                        false
+                    );
+                    $this->checkElementValue(
+                        $actualAction->find('css', '.rule-item-context .scope'),
+                        $action['scope'],
+                        false
+                    );
+
+                    break;
+                case 'copy_value':
+                    $action['type'] = 'is copied into';
+
+
+                    break;
+                default:
+                    throw new \Exception(
+                        sprintf('The action type %s is not supported yet', $action['type'])
+                    );
+            }
+        }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Given /^I delete the rule "([^"]*)"$/
+     */
+    public function iDeleteTheRule($code)
+    {
+        $rules = $this->getSession()->getPage()->findAll('css', '.rule-table .rule-row');
+
+        foreach ($rules as $rule) {
+            if (strtolower($rule->find('css', '.rule-code')->getText()) === $code) {
+                $rule->find('css', '.delete-row')->click();
+
+                $this->wait();
+
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf('No rule found with code %s', $code));
+
+    }
+
+    protected function checkElementValue($element, $expectedValue, $mandatory = true, $firstElement = false)
     {
         $element = is_array($element) ? reset($element) : $element;
 
-        if ($mandatory) {
-            if ($element->getText() !== $expectedValue) {
+        if ($mandatory || null !== $element && $expectedValue !== null) {
+            $actualValue = $firstElement ? explode('<', trim($element->getHTML()))[0] : $element->getText();
+
+            if ($actualValue !== $expectedValue) {
                 throw new \Exception(
                     sprintf(
                         'Rule element is expected to be "%s", actually is "%s"',
                         $expectedValue,
-                        $element->getText()
-                    )
-                );
-            }
-        } else {
-            if (
-                false === $element && $expectedValue !== null ||
-                false !== $element && $element->getText() !== $expectedValue
-            ) {
-                throw new \Exception(
-                    sprintf(
-                        'Rule element is expected to be "%s", actually is "%s"',
-                        $expectedValue,
-                        $element->getText()
+                        $actualValue
                     )
                 );
             }

@@ -100,6 +100,8 @@ class RuleController
      * @param int    $resourceId
      * @param int    $ruleId
      *
+     * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
+     *
      * @return JsonResponse
      */
     public function deleteAction($resourceType, $resourceId, $ruleId)
