@@ -73,8 +73,12 @@ class ProductRuleSelector implements SelectorInterface
 
         /** @var \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface $condition */
         foreach ($rule->getConditions() as $condition) {
-            // TODO : we need to pass the locale and scope as a context here !
-            $pqb->addFilter($condition->getField(), $condition->getOperator(), $condition->getValue());
+            $pqb->addFilter(
+                $condition->getField(),
+                $condition->getOperator(),
+                $condition->getValue(),
+                ['locale' => $condition->getLocale(), 'scope' => $condition->getScope()]
+            );
         }
 
         $products = $pqb->execute();

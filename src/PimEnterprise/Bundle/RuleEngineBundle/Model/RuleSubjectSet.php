@@ -89,8 +89,12 @@ class RuleSubjectSet implements RuleSubjectSetInterface
      */
     public function skipSubject($subject, \ArrayAccess $reasons)
     {
+        // TODO : to remove and replace by log in a coming PR
+        error_log($reasons);
         $this->skippedSubjects[] = ['subject' => $subject, 'reasons' => $reasons];
-        unset($this->subjects[$subject]);
+        foreach ($this->subjects as $index => $subject) {
+            unset($this->subjects[$index]);
+        }
     }
 
     /**

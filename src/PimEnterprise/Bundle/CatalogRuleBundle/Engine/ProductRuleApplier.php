@@ -112,7 +112,7 @@ class ProductRuleApplier implements ApplierInterface
             $violations = $this->productValidator->validate($product);
             if (0 < $violations->count()) {
                 $subjectSet->skipSubject($product, $violations);
-                // TODO : detach from the unit of work ?
+                // TODO : detach from the unit of work in a coming PR
             }
         }
     }
