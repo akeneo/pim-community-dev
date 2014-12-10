@@ -1,4 +1,4 @@
-@javascript
+
 Feature: Edit a single product with rules appliance
   In order ease the enrichement of the catalog
   As a regular user
@@ -27,7 +27,6 @@ Feature: Edit a single product with rules appliance
       | rule1 | name   | My loafer | en_US  |
 
   Scenario: Successfully create, edit and save a product
-    Given I am on the "my-loafer" product page
-    And the product Name should be "White loafer"
-    When I press the "Save" button
-    Then the product Name should be "My loafer"
+    Given the product rule "rule1" is executed
+    Then I am on the "my-loafer" product page
+    And the product Name should be "My loafer"
