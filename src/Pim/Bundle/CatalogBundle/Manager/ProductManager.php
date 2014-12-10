@@ -168,7 +168,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      *
      * @param string $identifier
      *
-     * @return Product|null
+     * @return ProductInterface|null
      */
     public function findByIdentifier($identifier)
     {
