@@ -11,64 +11,107 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
-use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use Symfony\Component\HttpFoundation\Response;
+use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Rule controller
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleController extends BaseProductController
+class RuleController
 {
     /** @var RuleLinkedResourceManager */
     protected $linkedResManager;
 
+    /** @var RuleDefinitionManager */
+    protected $ruleManager;
+
+    /** @var RuleDefinitionRepositoryInterface */
+    protected $ruleDefinitionRepo;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var string */
+    protected $attributeClass;
+
     /**
      * Constructor
      *
-     * @param RuleLinkedResourceManager $linkedResManager
+     * @param RuleLinkedResourceManager         $linkedResManager
+     * @param RuleDefinitionManager             $ruleManager
+     * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
+     * @param NormalizerInterface               $normalizer
+     * @param string                            $attributeClass
      */
-    public function __construct(RuleLinkedResourceManager $linkedResManager)
-    {
-        $this->linkedResManager = $linkedResManager;
+    public function __construct(
+        RuleLinkedResourceManager $linkedResManager,
+        RuleDefinitionManager $ruleManager,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
+        NormalizerInterface $normalizer,
+        $attributeClass
+    ) {
+        $this->linkedResManager   = $linkedResManager;
+        $this->ruleManager        = $ruleManager;
+        $this->ruleDefinitionRepo = $ruleDefinitionRepo;
+        $this->normalizer         = $normalizer;
+        $this->attributeClass     = $attributeClass;
     }
 
     /**
-     * List all rules for an attribute
+     * List all rules for the given resource
+     * @param string $resourceType
+     * @param int    $resourceId
      *
-     * @param string $attributeId
+     * @return JsonResponse
      *
-     * @return Response
+     * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
      */
-    public function listAttributeRulesAction($attributeId)
+    public function indexAction($resourceType, $resourceId)
     {
-        $ruleCodes = $this->presentRule($attributeId);
+        switch ($resourceType) {
+            case 'attribute':
+                $resourceName = $this->attributeClass;
+                break;
+            default:
+                throw new NotFoundHttpException(sprintf('Resource type %s is unknown', $resourceType));
 
-        return new Response($ruleCodes);
-    }
-
-    /**
-     * Return the list of rules as a string
-     *
-     * TODO: use the future rule presenter
-     *
-     * @param int $attributeId
-     *
-     * @return string
-     */
-    protected function presentRule($attributeId)
-    {
-        $rules = $this->linkedResManager->getRulesForAttribute($attributeId);
-
-        $ruleCodes = [];
-        foreach ($rules as $rule) {
-            $ruleCodes[] = $rule->getCode();
         }
 
-        $ruleCodes = implode(", ", $ruleCodes);
+        $rules = $this->linkedResManager->getRulesForAttribute($resourceId, $resourceName);
 
-        return $ruleCodes;
+        $normalizedRules = $this->normalizer->normalize($rules, 'array');
+
+        return new JsonResponse($normalizedRules);
+    }
+
+    /**
+     * Delete an rule of a resource
+     *
+     * @param string $resourceType
+     * @param int    $resourceId
+     * @param int    $ruleId
+     *
+     * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
+     *
+     * @return JsonResponse
+     */
+    public function deleteAction($resourceType, $resourceId, $ruleId)
+    {
+        $rule = $this->ruleDefinitionRepo->findOneById($ruleId);
+
+        try {
+            $this->ruleManager->remove($rule);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => 'An error occured during the deletion of the rule.'], 500);
+        }
+
+        return new JsonResponse();
     }
 }

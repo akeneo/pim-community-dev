@@ -37,21 +37,27 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     /** @var EntityRepository */
     protected $ruleLinkedResRepo;
 
+    /** @var string */
+    protected $attributeClass;
+
     /**
      * Constructor
      *
      * @param EntityManager       $entityManager
      * @param AttributeRepository $attributeRepository
      * @param EntityRepository    $ruleLinkedResRepo
+     * @param string              $attributeClass
      */
     public function __construct(
         EntityManager $entityManager,
         AttributeRepository $attributeRepository,
-        EntityRepository $ruleLinkedResRepo
+        EntityRepository $ruleLinkedResRepo,
+        $attributeClass
     ) {
         $this->entityManager       = $entityManager;
         $this->attributeRepository = $attributeRepository;
         $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
+        $this->attributeClass      = $attributeClass;
     }
 
     /**
@@ -113,25 +119,27 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
             }
         }
 
+        $fields = array_unique($fields);
+
         $impactedAttributes = [];
         foreach ($fields as $field) {
             $impactedAttributes[] = $this->attributeRepository->findByReference($field);
         }
 
-        $impactedAttributes = array_unique($impactedAttributes);
         $impactedAttributes = array_filter($impactedAttributes);
 
         return $impactedAttributes;
     }
 
     /**
-     * @param array $attribute
+     * @param int $attribute
      *
      * @return bool
      */
-    public function isAttributeImpacted(array $attribute)
+    public function isAttributeImpacted($attributeId)
     {
-        return $this->ruleLinkedResRepo->findBy(['resourceId' => $attribute['id']]) ? true : false;
+        //TODO: create a proper repo method to get this information
+        return $this->ruleLinkedResRepo->isResourceImpactedByRule($attributeId, $this->attributeClass);
     }
 
     /**
@@ -141,14 +149,41 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      */
     public function getRulesForAttribute($attributeId)
     {
-        //TODO: move this in a repository and create a nice method
-        $ruleLinkedResources = $this->ruleLinkedResRepo->findBy(['resourceId' => $attributeId]);
+        return $this->getRulesForResource($attributeId, $this->attributeClass);
+    }
+
+    /**
+     * Get rules related to a resource
+     * @param integer $resourceId
+     * @param string  $resourceName
+     *
+     * @return array
+     */
+    protected function getRulesForResource($resourceId, $resourceName)
+    {
+        $ruleRelations = $this->getRuleRelationsForResource($resourceId, $resourceName);
 
         $rules = [];
-        foreach ($ruleLinkedResources as $ruleLinkedResource) {
-            $rules[] = $ruleLinkedResource->getRule();
+        foreach ($ruleRelations as $ruleRelation) {
+            $rules[] = $ruleRelation->getRule();
         }
 
         return $rules;
+    }
+
+    /**
+     * Get rules relations
+     * @param string $resourceId
+     * @param string $resourceName
+     *
+     * @return PersistentCollection
+     */
+    protected function getRuleRelationsForResource($resourceId, $resourceName)
+    {
+        //TODO: move this in a repository and create a nice method
+        return $this->ruleLinkedResRepo->findBy([
+            'resourceId'   => $resourceId,
+            'resourceName' => $resourceName
+        ]);
     }
 }

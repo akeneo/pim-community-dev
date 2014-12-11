@@ -57,9 +57,10 @@ class SmartViewUpdater implements ViewUpdaterInterface
         }
 
         $url = $this->urlGenerator->generate(
-            'pimee_enrich_attribute_rules',
+            'pimee_catalog_rule_index',
             [
-                'attributeId' => $attributeId,
+                'resourceId'   => $attributeId,
+                'resourceType' => 'attribute',
             ]
         );
 
@@ -78,7 +79,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
     protected function checkIfSmartAttribute(array $views, $key, $name)
     {
         if ((isset($views[$key]['attributes'][$name]['value'])
-            && $this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name]))
+            && $this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name]['id']))
         ) {
             $this->markAttributeAsSmart(
                 $views[$key]['attributes'][$name]['value'],
@@ -86,7 +87,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
             );
         } elseif (isset($views[$key]['attributes'][$name]['values'])) {
             foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
-                if ($this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name])) {
+                if ($this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name]['id'])) {
                     $this->markAttributeAsSmart(
                         $views[$key]['attributes'][$name]['values'][$scope],
                         $views[$key]['attributes'][$name]['id']

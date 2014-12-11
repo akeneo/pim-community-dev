@@ -1,2 +1,15 @@
 pimee_catalog_rule:
-    attribute.smart.label: Smart
+    attribute:
+        tab:
+            rule.title: Rules
+        grid:
+            is_smart.label: Smart
+        acl:
+            rule.view_permissions: View rules
+    product:
+        tooltip:
+            affected_by_a_rule.title: Is affected by a rule
+            loading.title: Loading...
+    product_value:
+        tooltip:
+            affected_by.title: 'Affected by rule(s):'
