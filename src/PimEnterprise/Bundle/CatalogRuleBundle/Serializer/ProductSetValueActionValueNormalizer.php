@@ -99,7 +99,8 @@ class ProductSetValueActionValueNormalizer implements NormalizerInterface
             }
 
         } elseif (in_array($attributeType, ['pim_catalog_image', 'pim_catalog_file'])) {
-            $value = ['code' => $data, 'attribute' => $attributeCode];
+            $tokens = explode(' ', $data);
+            $value = ['filePath' => realpath($tokens[0]), 'originalFilename' => $tokens[1]];
 
         } else {
             $value = (string) $data;

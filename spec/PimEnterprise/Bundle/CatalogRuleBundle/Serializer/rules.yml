@@ -80,11 +80,11 @@ rules:
         conditions:
             - field:    sku
               operator: CONTAINS
-              value:    AKNTS
+              value:    AKNTS_PB
             - field:    main_color
               operator: IN
               value:
-                - 30
+                - 42
         actions:
             - type:   set_value
               field:  description
@@ -95,7 +95,7 @@ rules:
         conditions:
             - field:    sku
               operator: CONTAINS
-              value:    AKNTS
+              value:    AKNTS_PB
         actions:
             - type:  set_value
               field: price
@@ -106,7 +106,7 @@ rules:
         conditions:
             - field:    sku
               operator: CONTAINS
-              value:    AKNTS
+              value:    AKNTS_PB
         actions:
             - type:  set_value
               field: weight
@@ -115,10 +115,24 @@ rules:
         conditions:
             - field:    sku
               operator: CONTAINS
-              value:    AKNTS
+              value:    AKNTS_PB
         actions:
             - type:  set_value
               field: tshirt_style
               value:
                 - sportwear
                 - vneck
+    set_purple_tshirt_picture:
+        priority: 90
+        conditions:
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS_PB
+            - field:    main_color
+              operator: IN
+              value:
+                - 42
+        actions:
+            - type:   set_value
+              field:  picture
+              value:  features/Context/fixtures/akeneo.jpg akeneo.jpg
