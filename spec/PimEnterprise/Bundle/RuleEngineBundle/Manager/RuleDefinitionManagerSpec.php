@@ -39,6 +39,18 @@ class RuleDefinitionManagerSpec extends ObjectBehavior
         $this->save($rule);
     }
 
+    function it_saves_multiple_rule_objects($entityManager, RuleInterface $rule1, RuleInterface $rule2)
+    {
+        $rules = [$rule1, $rule2];
+
+        $entityManager->persist($rule1)->shouldBeCalled();
+        $entityManager->persist($rule2)->shouldBeCalled();
+
+        $entityManager->flush()->shouldBeCalledTimes(1);
+
+        $this->saveAll($rules);
+    }
+
     function it_throws_an_exception_if_object_is_not_a_rule_on_save(
         $entityManager,
         ProductInterface $productInterface

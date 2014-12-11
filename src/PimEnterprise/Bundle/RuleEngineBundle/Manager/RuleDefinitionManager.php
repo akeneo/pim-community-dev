@@ -12,6 +12,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
@@ -25,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionManager implements SaverInterface, RemoverInterface
+class RuleDefinitionManager implements SaverInterface, RemoverInterface, BulkSaverInterface
 {
     /** @var RuleDefinitionRepositoryInterface */
     protected $repository;
@@ -58,7 +59,7 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface
         if (!$object instanceof RuleDefinitionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a use  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
+                    'Expects a PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );
@@ -78,12 +79,27 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface
     /**
      * {@inheritdoc}
      */
+    public function saveAll(array $objects, array $options = [])
+    {
+        $options = array_merge(['flush' => true], $options);
+        foreach ($objects as $object) {
+            $this->save($object, ['flush' => false]);
+        }
+
+        if ($options['flush']) {
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function remove($rule, array $options = [])
     {
         if (!$rule instanceof RuleDefinitionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a use  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
+                    'Expects a PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface, "%s" provided',
                     ClassUtils::getClass($rule)
                 )
             );
