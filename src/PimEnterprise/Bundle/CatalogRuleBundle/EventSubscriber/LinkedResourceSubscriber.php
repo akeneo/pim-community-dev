@@ -111,6 +111,10 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     {
         $definition = $event->getDefinition();
 
+        if (null === $definition->getId()) {
+            return;
+        }
+
         $rule = $this->productRuleBuilder->build($definition);
 
         $actions = $rule->getActions();
