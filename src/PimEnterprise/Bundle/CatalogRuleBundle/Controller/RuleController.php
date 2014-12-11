@@ -11,14 +11,12 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -82,7 +80,7 @@ class RuleController
                 $resourceName = $this->attributeClass;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Resource type %s is unknown', $resourceType));
+                throw new NotFoundHttpException(sprintf('Resource type %s is unknown', $resourceType));
 
         }
 
@@ -111,7 +109,7 @@ class RuleController
         try {
             $this->ruleManager->remove($rule);
         } catch (\Exception $e) {
-            return new JsonResponse(['message' => $e->getMessage()], 500);
+            return new JsonResponse(['message' => 'An error occured during the deletion of the rule.'], 500);
         }
 
         return new JsonResponse();

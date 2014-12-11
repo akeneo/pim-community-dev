@@ -2,7 +2,7 @@
 Feature: Show all rules related to an attribute
   In order ease the enrichement of the catalog
   As a regular user
-  I need to know which rules are
+  I need to know which rules are linked to an attribute
 
   Background:
     Given a "footwear" catalog configuration

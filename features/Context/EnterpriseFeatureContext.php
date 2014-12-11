@@ -91,7 +91,7 @@ class EnterpriseFeatureContext extends FeatureContext
         if ($expectedCount !== $actualCount) {
             throw new \Exception(
                 sprintf(
-                    'Expecting %d rules conditions, actually saw %d',
+                    'Expecting %d rule conditions, actually saw %d',
                     $expectedCount,
                     $actualCount
                 )
@@ -109,27 +109,27 @@ class EnterpriseFeatureContext extends FeatureContext
 
             $actualCondition = $actualConditions[$key];
 
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualCondition->find('css', '.condition-field'),
                 $condition['field'],
                 true,
                 true
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualCondition->find('css', '.condition-operator'),
                 $condition['operator']
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualCondition->find('css', '.condition-value'),
                 $condition['value'],
                 false
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualCondition->find('css', '.rule-item-context .locale'),
                 $condition['locale'],
                 false
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualCondition->find('css', '.rule-item-context .scope'),
                 $condition['scope'],
                 false
@@ -152,7 +152,7 @@ class EnterpriseFeatureContext extends FeatureContext
         if ($expectedCount !== $actualCount) {
             throw new \Exception(
                 sprintf(
-                    'Expecting %d rules actions, actually saw %d',
+                    'Expecting %d rule actions, actually saw %d',
                     $expectedCount,
                     $actualCount
                 )
@@ -172,27 +172,27 @@ class EnterpriseFeatureContext extends FeatureContext
 
             $action['type'] = 'is set into';
 
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-field'),
                 $action['field'],
                 true,
                 true
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-type'),
                 $action['type']
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-value'),
                 $action['value'],
                 false
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.rule-item-context .locale'),
                 $action['locale'],
                 false
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.rule-item-context .scope'),
                 $action['scope'],
                 false
@@ -235,38 +235,38 @@ class EnterpriseFeatureContext extends FeatureContext
 
             $action['type'] = 'is copied into';
 
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-field.from-field'),
                 $action['from_field'],
                 true,
                 true
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-field.to-field'),
                 $action['to_field'],
                 true,
                 true
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-type'),
                 $action['type']
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.from-field .rule-item-context .locale'),
                 $action['from_locale'],
                 false
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.to-field .rule-item-context .locale'),
                 $action['to_locale'],
                 false
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.from-field .rule-item-context .scope'),
                 $action['from_scope'],
                 false
             );
-            $this->checkElementValue(
+            $this->checkRuleElementValue(
                 $actualAction->find('css', '.to-field .rule-item-context .scope'),
                 $action['to_scope'],
                 false
@@ -297,7 +297,7 @@ class EnterpriseFeatureContext extends FeatureContext
 
     }
 
-    protected function checkElementValue($element, $expectedValue, $mandatory = true, $firstElement = false)
+    protected function checkRuleElementValue($element, $expectedValue, $mandatory = true, $firstElement = false)
     {
         $element = is_array($element) ? reset($element) : $element;
 

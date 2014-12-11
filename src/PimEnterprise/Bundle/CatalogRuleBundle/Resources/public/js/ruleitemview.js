@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pimee/catalogrule/itemview'],
-    function ($, _, Backbone, __, Routing, mediator, LoadingMask, ItemView) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'pimee/catalogrule/itemview'],
+    function ($, _, Backbone, __, Routing, mediator, ItemView) {
         'use strict';
 
         var templates = {

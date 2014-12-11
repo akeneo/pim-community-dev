@@ -115,28 +115,18 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
 
         $actions = $rule->getActions();
 
-        $impactedAttributes = $this->linkedResManager->getImpactedAttributes($actions);
-        $this->executeSave($definition, $impactedAttributes);
-    }
+        $linkedAttributes = $this->linkedResManager->getImpactedAttributes($actions);
 
-    /**
-     * Save fetched objects
-     *
-     * @param RuleDefinitionInterface $rule
-     * @param array                   $impactedAttributes
-     */
-    protected function executeSave(RuleDefinitionInterface $rule, array $impactedAttributes)
-    {
-        foreach ($impactedAttributes as $impactedAttribute) {
-            $ruleLinkedResource = $this->ruleLinkedResRepo->find($rule);
+        foreach ($linkedAttributes as $linkedAttribute) {
+            $ruleLinkedResource = $this->ruleLinkedResRepo->find($definition);
 
             if (null === $ruleLinkedResource) {
                 $ruleLinkedResource = new $this->ruleLinkedResClass();
             }
 
-            $ruleLinkedResource->setRule($rule);
-            $ruleLinkedResource->setResourceName(ClassUtils::getClass($impactedAttribute));
-            $ruleLinkedResource->setResourceId($impactedAttribute->getId());
+            $ruleLinkedResource->setRule($definition);
+            $ruleLinkedResource->setResourceName(ClassUtils::getClass($linkedAttribute));
+            $ruleLinkedResource->setResourceId($linkedAttribute->getId());
 
             $this->linkedResManager->save($ruleLinkedResource);
         }
