@@ -37,6 +37,7 @@
 - Use ProductMediaInterface and not AbstractMetric
 - Use AttributeInterface and not AbstractAttribute
 - Use CompletenessInterface and not AbstractCompleteness
+- Allow to generate many versions in a single request
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
