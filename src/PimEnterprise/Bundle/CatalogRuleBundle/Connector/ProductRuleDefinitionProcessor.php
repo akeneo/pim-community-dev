@@ -76,7 +76,7 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
             // TODO: detach the $definition ?
         }
 
-        return $this->updateDefinitionFromRule($definition, $rule);
+        return $this->updateDefinitionFromRule($rule, $definition);
     }
 
     /**
@@ -85,18 +85,18 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
      *
      * @return RuleInterface
      */
-    protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition)
+    protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition = null)
     {
         return $this->denormalizer->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
     }
 
     /**
-     * @param RuleDefinitionInterface $definition
      * @param RuleInterface           $rule
+     * @param RuleDefinitionInterface $definition
      *
      * @return RuleDefinitionInterface
      */
-    protected function updateDefinitionFromRule(RuleDefinitionInterface $definition, RuleInterface $rule)
+    protected function updateDefinitionFromRule(RuleInterface $rule, RuleDefinitionInterface $definition = null)
     {
         if (null === $definition) {
             $definition = new $this->class();

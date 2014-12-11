@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
 
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
@@ -23,17 +25,25 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
     /** @var ProductRuleConditionNormalizer */
     protected $conditionNormalizer;
 
-    /** @var ProductRuleActionNormalizer */
-    protected $actionNormalizer;
+    /** @var ProductSetValueActionNormalizer */
+    protected $setValueActionNormalizer;
+
+    /** @var ProductCopyValueActionNormalizer */
+    protected $copyValueActionNormalizer;
 
     /**
-     * @param ProductRuleConditionNormalizer $conditionNormalizer
-     * @param ProductRuleActionNormalizer    $actionNormalizer
+     * @param ProductRuleConditionNormalizer   $conditionNormalizer
+     * @param ProductSetValueActionNormalizer  $setValueActionNormalizer
+     * @param ProductCopyValueActionNormalizer $copyValueActionNormalizer
      */
-    public function __construct(ProductRuleConditionNormalizer $conditionNormalizer, ProductRuleActionNormalizer $actionNormalizer)
-    {
+    public function __construct(
+        ProductRuleConditionNormalizer $conditionNormalizer,
+        ProductSetValueActionNormalizer $setValueActionNormalizer,
+        ProductCopyValueActionNormalizer $copyValueActionNormalizer
+    ) {
         $this->conditionNormalizer = $conditionNormalizer;
-        $this->actionNormalizer = $actionNormalizer;
+        $this->setValueActionNormalizer = $setValueActionNormalizer;
+        $this->copyValueActionNormalizer = $copyValueActionNormalizer;
     }
 
     /**
@@ -46,7 +56,12 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
             $conditions[] = $this->conditionNormalizer->normalize($condition);
         }
         foreach ($rule->getActions() as $action) {
-            $actions[] = $this->actionNormalizer->normalize($action);
+            if ($action instanceof ProductSetValueActionInterface) {
+                $actions[] = $this->setValueActionNormalizer->normalize($action);
+            } elseif ($action instanceof ProductCopyValueActionInterface) {
+                $actions[] = $this->copyValueActionNormalizer->normalize($action);
+            }
+            // TODO throw exception on else ?
         }
 
         return json_encode([
@@ -75,7 +90,12 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
         }
         foreach ($decodedContent['actions'] as $action) {
             // TODO
-            $actions[] = $this->actionNormalizer->denormalize($action, 'TODO');
+            if (ProductSetValueActionInterface::TYPE === $action['type']) {
+                $actions[] = $this->setValueActionNormalizer->denormalize($action, 'TODO');
+            } elseif (ProductCopyValueActionInterface::TYPE === $action['type']) {
+                $actions[] = $this->copyValueActionNormalizer->denormalize($action, 'TODO');
+            }
+            // TODO throw exception on else ?
         }
 
         return [

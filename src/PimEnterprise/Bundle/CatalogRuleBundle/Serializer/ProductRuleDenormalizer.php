@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
 
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -25,8 +27,11 @@ class ProductRuleDenormalizer implements DenormalizerInterface
     /** @var ProductRuleConditionNormalizer */
     protected $conditionNormalizer;
 
-    /** @var ProductRuleActionNormalizer */
-    protected $actionNormalizer;
+    /** @var ProductSetValueActionNormalizer */
+    protected $setValueActionNormalizer;
+
+    /** @var ProductCopyValueActionNormalizer */
+    protected $copyValueActionNormalizer;
 
     /** @var string */
     protected $class;
@@ -35,19 +40,22 @@ class ProductRuleDenormalizer implements DenormalizerInterface
     protected $definitionClass;
 
     /**
-     * @param ProductRuleConditionNormalizer $conditionNormalizer
-     * @param ProductRuleActionNormalizer    $actionNormalizer
-     * @param string                         $class
-     * @param string                         $definitionClass
+     * @param ProductRuleConditionNormalizer   $conditionNormalizer
+     * @param ProductSetValueActionNormalizer  $setValueActionNormalizer
+     * @param ProductCopyValueActionNormalizer $copyValueActionNormalizer
+     * @param string                           $class
+     * @param string                           $definitionClass
      */
     public function __construct(
         ProductRuleConditionNormalizer $conditionNormalizer,
-        ProductRuleActionNormalizer $actionNormalizer,
+        ProductSetValueActionNormalizer $setValueActionNormalizer,
+        ProductCopyValueActionNormalizer $copyValueActionNormalizer,
         $class,
         $definitionClass
     ) {
         $this->conditionNormalizer = $conditionNormalizer;
-        $this->actionNormalizer = $actionNormalizer;
+        $this->setValueActionNormalizer = $setValueActionNormalizer;
+        $this->copyValueActionNormalizer = $copyValueActionNormalizer;
         $this->class = $class;
         $this->definitionClass = $definitionClass;
     }
@@ -79,7 +87,12 @@ class ProductRuleDenormalizer implements DenormalizerInterface
         if (isset($data['actions'])) {
             foreach ($data['actions'] as $rawAction) {
                 //TODO
-                $action = $this->actionNormalizer->denormalize($rawAction, 'TODO');
+                if (ProductSetValueActionInterface::TYPE === $rawAction['type']) {
+                    $action = $this->setValueActionNormalizer->denormalize($rawAction, 'TODO');
+                } elseif (ProductCopyValueActionInterface::TYPE === $rawAction['type']) {
+                    $action = $this->copyValueActionNormalizer->denormalize($rawAction, 'TODO');
+                }
+                // TODO throw exception on else ?
                 $rule->addAction($action);
             }
         }

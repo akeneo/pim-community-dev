@@ -10,13 +10,15 @@ services:
         class: %pimee_catalog_rule.serializer.rule_content.class%
         arguments:
             - @pimee_catalog_rule.normalizer.product_rule_condition
-            - @pimee_catalog_rule.normalizer.product_rule_action
+            - @pimee_catalog_rule.normalizer.product_set_value_action
+            - @pimee_catalog_rule.normalizer.product_copy_value_action
 
     pimee_catalog_rule.denormalizer.rule:
         class: %pimee_catalog_rule.denormalizer.rule.class%
         arguments:
             - @pimee_catalog_rule.normalizer.product_rule_condition
-            - @pimee_catalog_rule.normalizer.product_rule_action
+            - @pimee_catalog_rule.normalizer.product_set_value_action
+            - @pimee_catalog_rule.normalizer.product_copy_value_action
             - %pimee_rule_engine.entity.rule.class%
             - %pimee_rule_engine.entity.rule_definition.class%
 
