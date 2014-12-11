@@ -6,4 +6,3 @@ services:
         class: %pimee_catalog_rule.event_listener.datagrid.configure_attribute_grid.class%
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.attribute-grid, method: buildBefore }
-
