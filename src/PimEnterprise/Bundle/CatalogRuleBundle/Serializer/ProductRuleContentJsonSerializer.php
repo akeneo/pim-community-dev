@@ -89,13 +89,17 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
             $conditions[] = $this->conditionNormalizer->denormalize($condition, 'TODO');
         }
         foreach ($decodedContent['actions'] as $action) {
-            // TODO
-            if (ProductSetValueActionInterface::TYPE === $action['type']) {
+            if (!isset($action['type'])) {
+                throw new \LogicException(sprintf('Rule content "%s" has an action with no type.', $content));
+            } elseif (ProductSetValueActionInterface::TYPE === $action['type']) {
                 $actions[] = $this->setValueActionNormalizer->denormalize($action, 'TODO');
             } elseif (ProductCopyValueActionInterface::TYPE === $action['type']) {
                 $actions[] = $this->copyValueActionNormalizer->denormalize($action, 'TODO');
+            } else {
+                throw new \LogicException(
+                    sprintf('Rule content "%s" has an unknown type of action "%s".', $content, $action['type'])
+                );
             }
-            // TODO throw exception on else ?
         }
 
         return [
