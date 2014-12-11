@@ -5,3 +5,11 @@ pimee_catalog_rule:
             condition.label: Condition
             action.label: Action
             no_rule_yet.label: No rule for now
+            delete_rule.label: Delete
+    rule:
+        condition:
+            if.label: if
+        action:
+            then.label: then
+            set_value.label: is set into
+            copy_value.label: is copied into

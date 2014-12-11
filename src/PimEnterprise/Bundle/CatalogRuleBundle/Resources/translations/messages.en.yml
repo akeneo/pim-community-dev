@@ -9,4 +9,7 @@ pimee_catalog_rule:
     product:
         tooltip:
             affected_by_a_rule.title: Is affected by a rule
-            loading.title: Loading
+            loading.title: Loading...
+    product_value:
+        tooltip:
+            affected_by.title: 'Affected by rule(s):'

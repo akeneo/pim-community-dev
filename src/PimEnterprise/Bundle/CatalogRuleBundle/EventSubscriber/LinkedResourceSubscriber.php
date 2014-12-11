@@ -120,25 +120,6 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Instanciate a new rule linked resource
-     *
-     * @param RuleDefinitionInterface $rule
-     * @param AttributeInterface      $attribute
-     *
-     * @return RuleLinkedResource
-     */
-    protected function instanciate(RuleDefinitionInterface $rule, AttributeInterface $attribute)
-    {
-        /** @var RuleLinkedResource $ruleLinkedResource */
-        $ruleLinkedResource = new $this->ruleLinkedResClass();
-        $ruleLinkedResource->setRule($rule);
-        $ruleLinkedResource->setResourceName(ClassUtils::getClass($attribute));
-        $ruleLinkedResource->setResourceId($attribute->getId());
-
-        return $ruleLinkedResource;
-    }
-
-    /**
      * Save fetched objects
      *
      * @param RuleDefinitionInterface $rule
@@ -148,11 +129,15 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     {
         foreach ($impactedAttributes as $impactedAttribute) {
             $ruleLinkedResource = $this->ruleLinkedResRepo->find($rule);
-            if (isset($ruleLinkedResource)) {
-                $this->linkedResManager->remove($ruleLinkedResource);
+
+            if (null === $ruleLinkedResource) {
+                $ruleLinkedResource = new $this->ruleLinkedResClass();
             }
 
-            $ruleLinkedResource = $this->instanciate($rule, $impactedAttribute);
+            $ruleLinkedResource->setRule($rule);
+            $ruleLinkedResource->setResourceName(ClassUtils::getClass($impactedAttribute));
+            $ruleLinkedResource->setResourceId($impactedAttribute->getId());
+
             $this->linkedResManager->save($ruleLinkedResource);
         }
     }

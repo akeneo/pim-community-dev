@@ -46,6 +46,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof RuleDefinitionInterface &&
+            $data->getType() === 'product' &&
             in_array($format, $this->supportedFormats);
     }
 }

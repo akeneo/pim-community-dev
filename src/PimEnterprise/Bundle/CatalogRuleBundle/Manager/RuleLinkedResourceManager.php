@@ -119,12 +119,13 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
             }
         }
 
+        $fields = array_unique($fields);
+
         $impactedAttributes = [];
         foreach ($fields as $field) {
             $impactedAttributes[] = $this->attributeRepository->findByReference($field);
         }
 
-        $impactedAttributes = array_unique($impactedAttributes);
         $impactedAttributes = array_filter($impactedAttributes);
 
         return $impactedAttributes;
@@ -138,7 +139,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     public function isAttributeImpacted($attributeId)
     {
         //TODO: create a proper repo method to get this information
-        return $this->getRuleRelationsForResource($attributeId, $this->attributeClass) ? true : false;
+        return $this->ruleLinkedResRepo->isResourceImpactedByRule($attributeId, $this->attributeClass);
     }
 
     /**

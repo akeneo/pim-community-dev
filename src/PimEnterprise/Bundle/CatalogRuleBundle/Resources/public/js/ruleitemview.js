@@ -7,7 +7,7 @@ define(
             'conditions': {
                 'field': _.template(
                     '<div class="rule-item rule-condition">' +
-                        '<span class="rule-item-emphasize">if</span>' +
+                        '<span class="rule-item-emphasize"><%= if_label %></span>' +
                         '<span class="condition-field">' +
                             '<%= rulePart.field %>' +
                             '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
@@ -22,9 +22,9 @@ define(
             'actions': {
                 'set_value': _.template(
                     '<div class="rule-item rule-action">' +
-                        '<span class="rule-item-emphasize">then</span>' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
                         '<span class="action-values"><%= rulePart.value %></span>' +
-                        '<span class="rule-item-emphasize action-type">is set into</span>' +
+                        '<span class="rule-item-emphasize action-type"><%= set_value_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
                             '<%= renderItemContext(rulePart.locale, rulePart.scope) %>' +
@@ -33,12 +33,12 @@ define(
                 ),
                 'copy_value': _.template(
                     '<div class="rule-item rule-action">' +
-                        '<span class="rule-item-emphasize">then</span>' +
+                        '<span class="rule-item-emphasize"><%= then_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.from_field %>' +
                             '<%= renderItemContext(rulePart.from_locale, rulePart.from_scope) %>' +
                         '</span>' +
-                        '<span class="rule-item-emphasize action-type">is copied into</span>' +
+                        '<span class="rule-item-emphasize action-type"><%= if_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.to_field %>' +
                             '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +
@@ -80,7 +80,7 @@ define(
                     '<%= actions %>' +
                 '</td>' +
                 '<td class="rule-cell">' +
-                    '<button class="btn delete-row" alt="Delete rule" type="button"><i class="icon-trash"></i> Delete</button>' +
+                    '<button class="btn delete-row" alt="Delete rule" type="button"><i class="icon-trash"></i> <%= delete_label %></button>' +
                 '</td>'
             ),
             renderRuleParts: function(type) {
@@ -102,7 +102,11 @@ define(
                         var localeLanguage = locale ? locale.split('_')[0].toLowerCase() : locale;
 
                         return itemContextTemplate({'localeCountry': localeCountry, 'localeLanguage': localeLanguage, 'scope': scope});
-                    }
+                    },
+                    'if_label': __('pimee_catalog_rule.rule.condition.if.label'),
+                    'then_label': __('pimee_catalog_rule.rule.action.then.label'),
+                    'set_value_label': __('pimee_catalog_rule.rule.action.set_value.label'),
+                    'copy_value_label': __('pimee_catalog_rule.rule.action.copy_value.label')
                 });
             },
             renderTemplate: function() {
@@ -112,7 +116,8 @@ define(
                 return this.template({
                     'rule':       this.model.toJSON(),
                     'conditions': renderedConditions,
-                    'actions':    renderedActions
+                    'actions':    renderedActions,
+                    'delete_label': __('pimee_catalog_rule.attribute.list.delete_rule.label')
                 });
             },
         });
