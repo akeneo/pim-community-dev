@@ -19,7 +19,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
 
 /**
  * Command to generate fake rules
- * TODO: remove this
+ *
+ * TODO: delete this test command
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
