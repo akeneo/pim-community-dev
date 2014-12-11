@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize set value rule actions data, comes as string due to json_decode
+ * Normalize the value which comes as a string due to json_decode, we convert it to format expected by the updater
  *
  * TODO : the field in action could be named data, it perhaps makes more sense
  *
@@ -50,41 +50,7 @@ class ProductSetValueActionValueNormalizer implements NormalizerInterface
         }
 
         $attributeType = $attribute->getAttributeType();
-        $value = $data;
-        // TODO : cover the cases will be done in feature branch
-        switch ($attributeType) {
-            case 'pim_catalog_text':
-            case 'pim_catalog_textarea':
-            case 'pim_catalog_date':
-            case 'pim_catalog_identifier':
-                $value = (string) $data;
-                break;
-            case 'pim_catalog_number':
-                $value = (int) $data;
-                break;
-            /*
-            case 'pim_catalog_metric':
-            case 'pim_catalog_multiselect':
-            */
-            case 'pim_catalog_price_collection':
-                $value = [];
-                foreach ($data as $price) {
-                    $tokens = explode(' ', $price);
-                    $value[] = ['data' => $tokens[0], 'currency' => $tokens[1]];
-                }
-                break;
-            case 'pim_catalog_simpleselect':
-                $value = ['code' => $data, 'attribute' => $attribute->getCode()];
-                break;
-            case 'pim_catalog_boolean':
-                $value = (bool) $data;
-                break;
-            case 'pim_catalog_image':
-            case 'pim_catalog_file':
-                $values = explode(',', $data);
-                $value = ['originalFilename' => $values[0], 'filePath' => $values[1]];
-            break;
-        }
+        $value = $this->convert($data, $attributeType, $attributeCode);
 
         return $value;
     }
@@ -95,5 +61,51 @@ class ProductSetValueActionValueNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return is_array($data) && $format === 'array_updater';
+    }
+
+    /**
+     * @param mixed  $data
+     * @param string $attributeType
+     * @param string $attributeCode
+     *
+     * @return mixed
+     */
+    protected function convert($data, $attributeType, $attributeCode)
+    {
+        if ('pim_catalog_number' === $attributeType) {
+            $value = (int) $data;
+
+        } elseif ('pim_catalog_boolean' === $attributeType) {
+            $value = (bool) $data;
+
+        } elseif ('pim_catalog_price_collection' === $attributeType) {
+            $value = [];
+            foreach ($data as $price) {
+                $tokens = explode(' ', $price);
+                $value[] = ['data' => $tokens[0], 'currency' => $tokens[1]];
+            }
+
+        } elseif ('pim_catalog_metric' === $attributeType) {
+            $tokens = explode(' ', $data);
+            $value = ['data' => (float) $tokens[0], 'unit' => $tokens[1]];
+
+        } elseif ('pim_catalog_simpleselect' === $attributeType) {
+            $value = ['code' => $data, 'attribute' => $attributeCode];
+
+        } elseif ('pim_catalog_multiselect' === $attributeType) {
+            $value = [];
+            foreach ($data as $option) {
+                $value[] = ['code' => $option, 'attribute' => $attributeCode];
+            }
+
+        } elseif (in_array($attributeType, ['pim_catalog_image', 'pim_catalog_file'])) {
+            $tokens = explode(' ', $data);
+            $value = ['filePath' => realpath($tokens[0]), 'originalFilename' => $tokens[1]];
+
+        } else {
+            $value = (string) $data;
+        }
+
+        return $value;
     }
 }
