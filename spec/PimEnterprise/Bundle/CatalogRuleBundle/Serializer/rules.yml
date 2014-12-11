@@ -1,33 +1,75 @@
 rules:
-    discharge_fr_description:
+    camera_set_canon_brand:
+        conditions:
+            - field:    family
+              operator: IN
+              value:
+                - 4
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
+        actions:
+            - type:  set_value
+              field: camera_brand
+              value: canon_brand
+    camera_copy_name_to_model:
+        conditions:
+            - field:    family
+              operator: IN
+              value:
+                - 4
+        actions:
+            - type:       copy_value
+              from_field: name
+              to_field:   camera_model_name
+    camera_set_camera_type:
+        conditions:
+            - field:    family
+              operator: IN
+              value:
+                - 4
+        actions:
+            - type:  set_value
+              field: camera_type
+              value: compact
+    copy_description_print_us_to_ecommerce_us:
+        conditions:
+            - field:    family
+              operator: IN
+              value:
+                - 4
+        actions:
+            - type:        copy_value
+              from_field:  description
+              from_locale: en_US
+              from_scope:  print
+              to_field:    description
+              to_locale:   en_US
+              to_scope:    ecommerce
+    set_purple_tshirt_ecommerce_description:
         priority: 100
         conditions:
-            - field: sku
-              operator: LIKE
-              value: foo
-            - field: clothing_size
-              operator: NOT LIKE
-              value: XL
-              locale: fr_FR
-              scope: ecommerce
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS
+            - field:    main_color
+              operator: IN
+              value:
+                - 30
         actions:
-            - type: set_value
-              field: name
-              value: awesome-jacket
+            - type:   set_value
+              field:  description
               locale: en_US
-              scope: tablet
-            - type: copy_value
-              from_field: description
-              to_field: description
-              from_locale: fr_FR
-              to_locale: fr_CH
-    set_size:
+              scope:  ecommerce
+              value:  My very new description for purple tshirt
+    set_tshirt_price:
         conditions:
-            - field: sku
-              operator: LIKE
-              value: foo
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS
         actions:
-            - type: set_value
-              field: size
-              value: [XL]
-
+            - type:  set_value
+              field: price
+              value:
+                - 12 EUR
+                - 25 USD

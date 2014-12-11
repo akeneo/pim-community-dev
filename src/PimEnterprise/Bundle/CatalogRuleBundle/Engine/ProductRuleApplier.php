@@ -135,7 +135,7 @@ class ProductRuleApplier implements ApplierInterface
     protected function saveProducts(RuleSubjectSetInterface $subjectSet, $savingContext)
     {
         $this->versionManager->setContext($savingContext);
-        $this->productSaver->saveAll($subjectSet->getSubjects());
+        $this->productSaver->saveAll($subjectSet->getSubjects(), ['recalculate' => false, 'schedule' => true]);
     }
 
     /**
