@@ -28,10 +28,39 @@ rules:
               operator: IN
               value:
                 - 4
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
         actions:
             - type:  set_value
               field: camera_type
               value: compact
+    camera_set_autofocus:
+        conditions:
+            - field:    family
+              operator: IN
+              value:
+                - 4
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
+        actions:
+            - type:  set_value
+              field: auto_focus_lock
+              value: true
+    camera_set_autofocus_point:
+        conditions:
+            - field:    family
+              operator: IN
+              value:
+                - 4
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
+        actions:
+            - type:  set_value
+              field: auto_focus_points
+              value: 4
     copy_description_print_us_to_ecommerce_us:
         conditions:
             - field:    family

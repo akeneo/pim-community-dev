@@ -75,7 +75,7 @@ class ProductSetValueActionValueNormalizer implements NormalizerInterface
         if ('pim_catalog_number' === $attributeType) {
             $value = (int) $data;
 
-        } elseif ('pim_catalog_number' === $attributeType) {
+        } elseif ('pim_catalog_boolean' === $attributeType) {
             $value = (bool) $data;
 
         } elseif ('pim_catalog_price_collection' === $attributeType) {
