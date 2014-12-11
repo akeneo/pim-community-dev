@@ -508,10 +508,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 // TODO: replace this dirty fix to use the same class than ProductRuleConditionNormalizer
                 'value' => $data['value'],
             ];
-            if ($data['locale'] !== null) {
+            if ($data['locale']) {
                 $condition['locale'] = $data['locale'];
             }
-            if ($data['scope'] !== null) {
+            if ($data['scope']) {
                 $condition['scope'] = $data['scope'];
             }
             $content['conditions'][] = $condition;
@@ -585,10 +585,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 'field' => $data['field'],
                 'value' => $value,
             ];
-            if ($data['locale'] !== null) {
+            if ($data['locale']) {
                 $action['locale'] = $data['locale'];
             }
-            if ($data['scope'] !== null) {
+            if ($data['scope']) {
                 $action['scope'] = $data['scope'];
             }
             $content['actions'][] = $action;
