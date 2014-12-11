@@ -57,10 +57,10 @@ interface RuleSubjectSetInterface
     /**
      * Mark a subject as skipped, means selected by a rule but not updated for the given reasons
      *
-     * @param object       $subject
-     * @param \ArrayAccess $reasons
+     * @param object $subject
+     * @param array  $reasons
      */
-    public function skipSubject($subject, \ArrayAccess $reasons);
+    public function skipSubject($subject, array $reasons);
 
     /**
      * @return array

@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,20 +55,17 @@ class GenerateFakeCommand extends ContainerAwareCommand
     {
         // get rule instance
         $count = $input->getArgument('count');
-        /** @var EntityManagerInterface $em */
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        $rules = $this->getContainer()->get('pimee_rule_engine.repository.rule')->findAll();
-        foreach ($rules as $rule) {
-            $em->remove($rule);
+        $rulesToRemove = $this->getRuleDefinitionRepository()->findAll();
+        $ruleDefinitionManager = $this->getRuleDefinitionManager();
+        foreach ($rulesToRemove as $rule) {
+            $ruleDefinitionManager->remove($rule);
         }
-        $em->flush();
 
-        $fakeRules = true;
+        $rules = [];
+        $fakeRules = false;
         if ($fakeRules) {
 
-            $attributes = $em->getRepository('PimCatalogBundle:Attribute')->findAll();
-
+            $attributes = $this->getAttributeRepository()->findAll();
             $filters = $this->getFilters($attributes);
 
             $rules = [];
@@ -92,9 +88,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
                     ]));
                 $rule->setType('product');
                 $rule->setPriority(1);
-
-                $em->persist($rule);
-
+                $rules[] = $rule;
                 $cpt++;
             }
 
@@ -128,7 +122,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             ]));
             $rule->setType('product');
             $rule->setPriority(10);
-            $em->persist($rule);
+            $rules[] = $rule;
 
             $rule = new RuleDefinition();
             $rule->setCode('rule_two');
@@ -153,7 +147,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             ]));
             $rule->setType('product');
             $rule->setPriority(9);
-            $em->persist($rule);
+            $rules[] = $rule;
 
             $rule = new RuleDefinition();
             $rule->setCode('rule_four');
@@ -175,7 +169,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             ]));
             $rule->setType('product');
             $rule->setPriority(3);
-            $em->persist($rule);
+            $rules[] = $rule;
 
             $rule = new RuleDefinition();
             $rule->setCode('rule_five');
@@ -197,12 +191,14 @@ class GenerateFakeCommand extends ContainerAwareCommand
             ]));
             $rule->setType('product');
             $rule->setPriority(3);
-            $em->persist($rule);
+            $rules[] = $rule;
 
-            // TODO image, option, options, metric
+            // TODO image, option, options, metric, add an installer fixtures to add demo rules
         }
 
-        $em->flush();
+        foreach ($rules as $rule) {
+            $ruleDefinitionManager->save($rule);
+        }
     }
 
     /**
@@ -276,5 +272,20 @@ class GenerateFakeCommand extends ContainerAwareCommand
         }
 
         return $value;
+    }
+
+    protected function getRuleDefinitionManager()
+    {
+        return $this->getContainer()->get('pimee_rule_engine.manager.rule_definition');
+    }
+
+    protected function getAttributeRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.attribute');
+    }
+
+    protected function getRuleDefinitionRepository()
+    {
+        return $this->getContainer()->get('pimee_rule_engine.repository.rule');
     }
 }

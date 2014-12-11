@@ -34,10 +34,16 @@ class PimEnterpriseCatalogRuleExtension extends Extension
         $loader->load('engine.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
-        $loader->load('managers.yml');
+        $loader->load('runners.yml');
         $loader->load('readers.yml');
+        $loader->load('managers.yml');
+        $loader->load('event_subscribers.yml');
         $loader->load('repositories.yml');
         $loader->load('runners.yml');
         $loader->load('serializers.yml');
+        $loader->load('controllers.yml');
+        $loader->load('datagrid_listeners.yml');
+        $loader->load('datagrid_extensions.yml');
+        $loader->load('datagrid_filters.yml');
     }
 }

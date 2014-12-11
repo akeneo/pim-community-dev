@@ -53,6 +53,7 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface, BulkSav
 
     /**
      * {@inheritdoc}
+     * TODO : should be extracted in a dedicated Saver
      */
     public function save($object, array $options = [])
     {
@@ -78,6 +79,7 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface, BulkSav
 
     /**
      * {@inheritdoc}
+     * TODO : should be extracted in a dedicated Remover
      */
     public function saveAll(array $objects, array $options = [])
     {

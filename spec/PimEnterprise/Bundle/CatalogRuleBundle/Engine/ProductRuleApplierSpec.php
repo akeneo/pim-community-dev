@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -24,9 +25,17 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductUpdaterInterface $productUpdater,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
-        ValidatorInterface $productValidator
+        ValidatorInterface $productValidator,
+        ObjectManager $objectManager
     ) {
-        $this->beConstructedWith($productUpdater, $productValidator, $productSaver, $eventDispatcher, $versionManager);
+        $this->beConstructedWith(
+            $productUpdater,
+            $productValidator,
+            $productSaver,
+            $eventDispatcher,
+            $objectManager,
+            $versionManager
+        );
     }
 
     public function it_is_initializable()
@@ -144,12 +153,11 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->apply($rule, $subjectSet);
     }
 
-    public function it_applies_a_rule_with_not_valid_product(
+    public function it_applies_a_rule_with_invalid_product(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
-        $productSaver,
-        $versionManager,
+        $objectManager,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductCopyValueAction $action,
@@ -180,8 +188,11 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         $productValidator->validate($invalidProduct)->shouldBeCalled()->willReturn($notEmptyViolationList);
         $notEmptyViolationList->count()->willReturn(1);
-        $subjectSet->skipSubject($invalidProduct, $notEmptyViolationList)->shouldBeCalled();
-        $subjectSet->skipSubject($validProduct, $notEmptyViolationList)->shouldNotBeCalled();
+        $notEmptyViolationList->getIterator()->willReturn(new \ArrayIterator([]));
+
+        $objectManager->detach($invalidProduct)->shouldBeCalled();
+        $subjectSet->skipSubject($invalidProduct, Argument::any())->shouldBeCalled();
+        $subjectSet->skipSubject($validProduct, Argument::any())->shouldNotBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
