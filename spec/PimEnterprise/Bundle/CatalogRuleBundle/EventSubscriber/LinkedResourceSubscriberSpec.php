@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
@@ -22,13 +21,11 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
     function let(
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository          $ruleLinkedResRepo,
-        ProductRuleSelector       $productRuleSelector,
         ProductRuleBuilder        $productRuleBuilder
     ) {
         $this->beConstructedWith(
             $linkedResManager,
             $ruleLinkedResRepo,
-            $productRuleSelector,
             $productRuleBuilder,
             'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource'
         );
@@ -74,15 +71,24 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
     function it_saves_a_new_rule_linked_resource(
         $productRuleBuilder,
         $linkedResManager,
+        $ruleLinkedResRepo,
         RuleEvent $event,
         Rule $rule,
         AbstractAttribute $attribute1,
         AbstractAttribute $attribute2,
-        RuleDefinitionInterface $definition
+        RuleDefinitionInterface $definition,
+        RuleLinkedResourceInterface $oldResource1,
+        RuleLinkedResourceInterface $oldResource2
     ) {
         $event->getDefinition()->shouldBeCalled()->willReturn($definition);
         $definition->getId()->willReturn(42);
 
+        // delete old resources
+        $ruleLinkedResRepo->findBy(['rule' => 42])->willReturn([$oldResource1, $oldResource2]);
+        $linkedResManager->remove($oldResource1)->shouldBeCalled();
+        $linkedResManager->remove($oldResource2)->shouldBeCalled();
+
+        // add new resources
         $productRuleBuilder->build($definition)->shouldBeCalled()->willReturn($rule);
 
         $rule->getActions()->shouldBeCalled()->willReturn([['field' => 'name', 'to_field' => 'description']]);
