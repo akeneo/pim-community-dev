@@ -13,7 +13,7 @@ class ProductSetValueActionSpec extends ObjectBehavior
             [
                 'field' => 'sku',
                 'value' => 'RATM-NIN-001',
-                'locale' => 'FR_fr',
+                'locale' => 'fr_FR',
                 'scope' => 'ecommerce',
                 'type' => ProductSetValueActionInterface::TYPE
             ]
@@ -39,7 +39,7 @@ class ProductSetValueActionSpec extends ObjectBehavior
     {
         $this->getField()->shouldReturn('sku');
         $this->getValue()->shouldReturn('RATM-NIN-001');
-        $this->getLocale()->shouldReturn('FR_fr');
+        $this->getLocale()->shouldReturn('fr_FR');
         $this->getScope()->shouldReturn('ecommerce');
     }
 }
