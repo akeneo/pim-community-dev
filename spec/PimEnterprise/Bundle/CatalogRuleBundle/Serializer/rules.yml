@@ -73,3 +73,12 @@ rules:
               value:
                 - 12 EUR
                 - 25 USD
+    set_tshirt_weight:
+        conditions:
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS
+        actions:
+            - type:  set_value
+              field: weight
+              value: 0.5 KILOGRAM
