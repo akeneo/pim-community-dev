@@ -47,14 +47,14 @@ class ProductCopyValueActionNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_supports_normalization(ProductCopyValueActionInterface $data)
+    function it_supports_normalization(ProductCopyValueActionInterface $object)
     {
-        $this->supportsNormalization($data)->shouldReturn(true);
+        $this->supportsNormalization($object)->shouldReturn(true);
     }
 
-    function it_does_not_support_normalization(AttributeInterface $data)
+    function it_does_not_support_normalization_for_invalid_object(AttributeInterface $object)
     {
-        $this->supportsNormalization($data)->shouldReturn(false);
+        $this->supportsNormalization($object)->shouldReturn(false);
     }
 
     function it_denormalizes()
@@ -73,7 +73,7 @@ class ProductCopyValueActionNormalizerSpec extends ObjectBehavior
         $this->supportsDenormalization($data, $type)->shouldReturn(true);
     }
 
-    function it_does_not_support_denormalization_for_wrong_object()
+    function it_does_not_support_denormalization_for_invalid_data()
     {
         $data['type'] = ProductCopyValueActionInterface::TYPE;
         $type = '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition';

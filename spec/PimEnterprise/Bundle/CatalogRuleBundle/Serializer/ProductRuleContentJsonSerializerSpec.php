@@ -6,18 +6,20 @@ use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductCopyValueActionNormalizer;
+use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleConditionNormalizer;
+use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionNormalizer;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 
 class ProductRuleContentJsonSerializerSpec extends ObjectBehavior
 {
-    public function let()
-    {
-        $this->beConstructedWith(
-            '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition',
-            '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction',
-            '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction'
-        );
+    public function let(
+        ProductRuleConditionNormalizer $conditionNormalizer,
+        ProductSetValueActionNormalizer $setValueActionNormalizer,
+        ProductCopyValueActionNormalizer $copyValueActionNormalizer
+    ) {
+        $this->beConstructedWith($conditionNormalizer, $setValueActionNormalizer, $copyValueActionNormalizer);
     }
 
     function it_is_initializable()
@@ -31,6 +33,9 @@ class ProductRuleContentJsonSerializerSpec extends ObjectBehavior
     }
 
     function it_serializes_a_product_rule_content(
+        $conditionNormalizer,
+        $setValueActionNormalizer,
+        $copyValueActionNormalizer,
         RuleInterface $rule,
         ProductConditionInterface $condition1,
         ProductConditionInterface $condition2,
@@ -64,6 +69,19 @@ class ProductRuleContentJsonSerializerSpec extends ObjectBehavior
         $conditions = [$condition1, $condition2];
         $actions = [$setAction, $copyAction];
 
+        $conditionNormalizer->normalize($condition1)->shouldBeCalled()->willReturn(
+            ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo']
+        );
+        $conditionNormalizer->normalize($condition2)->shouldBeCalled()->willReturn(
+            ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce']
+        );
+        $setValueActionNormalizer->normalize($setAction)->shouldBeCalled()->willReturn(
+            ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet']
+        );
+        $copyValueActionNormalizer->normalize($copyAction)->shouldBeCalled()->willReturn(
+            ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH']
+        );
+
         $rule->getConditions()->willReturn($conditions);
         $rule->getActions()->willReturn($actions);
 
@@ -80,7 +98,7 @@ EXPECTED;
 {"conditions":[{"field":"sku","operator":"LIKE","value":"foo"},{"field":"clothing_size","operator":"NOT LIKE","value":"XL","locale":"fr_FR","scope":"ecommerce"}],"actions":[{"type":"set_value","field":"name","value":"awesome-jacket","locale":"en_US","scope":"tablet"},{"type":"copy_value","from_field":"description","to_field":"description","from_locale":"fr_FR","to_locale":"fr_CH"}]}
 CONTENT;
 
-        // impossible to spec it properly (test the result of the method) as we create objects in this object
+        // TODO: use a custom matcher to test it
         $this->deserialize($content);
     }
 
