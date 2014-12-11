@@ -17,9 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class AddContextSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
     /**
