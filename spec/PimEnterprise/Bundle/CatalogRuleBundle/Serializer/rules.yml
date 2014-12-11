@@ -82,3 +82,14 @@ rules:
             - type:  set_value
               field: weight
               value: 0.5 KILOGRAM
+    set_tshirt_style:
+        conditions:
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS
+        actions:
+            - type:  set_value
+              field: tshirt_style
+              value:
+                - sportwear
+                - vneck
