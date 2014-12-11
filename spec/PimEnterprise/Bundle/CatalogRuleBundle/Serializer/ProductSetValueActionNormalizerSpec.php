@@ -5,13 +5,14 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionValueNormalizer;
 use Prophecy\Argument;
 
 class ProductSetValueActionNormalizerSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(ProductSetValueActionValueNormalizer $valueNormalizer)
     {
-        $this->beConstructedWith('\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction');
+        $this->beConstructedWith('\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction', $valueNormalizer);
     }
 
     function it_is_initializable()
@@ -25,12 +26,16 @@ class ProductSetValueActionNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_normalizes(ProductSetValueActionInterface $object)
+    function it_normalizes(ProductSetValueActionInterface $object, $valueNormalizer)
     {
         $object->getField()->shouldBeCalled()->willReturn('description');
         $object->getValue()->shouldBeCalled()->willReturn('My beautiful description');
         $object->getLocale()->shouldBeCalled()->willReturn('fr_FR');
         $object->getScope()->shouldBeCalled()->willReturn('mobile');
+
+        $valueNormalizer
+            ->normalize('My beautiful description', 'array_updater', ['attribute_code' => 'description'])
+            ->willReturn('My beautiful description');
 
         $this->normalize($object)->shouldReturn(
             [
