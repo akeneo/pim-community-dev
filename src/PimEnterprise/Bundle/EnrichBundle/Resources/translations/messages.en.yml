@@ -113,7 +113,3 @@ pimee_enrich:
     category:
         tab:
             permission.title: Permissions
-
-pimee_product:
-    rule.rule_mesage: 'Is affected by a rule'
-    rule.loading: 'Loading'

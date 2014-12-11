@@ -23,7 +23,7 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
         AttributeRepository $attributeRepository,
         EntityRepository $ruleLinkedResRepo
     ) {
-        $this->beConstructedWith($entityManager, $attributeRepository, $ruleLinkedResRepo);
+        $this->beConstructedWith($entityManager, $attributeRepository, $ruleLinkedResRepo, 'AttributeClass');
     }
 
     function it_is_initializable()

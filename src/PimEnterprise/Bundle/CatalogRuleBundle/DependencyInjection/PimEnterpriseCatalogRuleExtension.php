@@ -40,5 +40,6 @@ class PimEnterpriseCatalogRuleExtension extends Extension
         $loader->load('datagrid_listeners.yml');
         $loader->load('datagrid_extensions.yml');
         $loader->load('datagrid_filters.yml');
+        $loader->load('view_elements/attribute.yml');
     }
 }
