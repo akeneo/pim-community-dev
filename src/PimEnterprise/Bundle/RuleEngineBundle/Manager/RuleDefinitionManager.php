@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -79,10 +80,12 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface, BulkSav
 
     /**
      * {@inheritdoc}
-     * TODO : should be extracted in a dedicated Remover
+     * TODO : should be extracted in a dedicated Saver
      */
     public function saveAll(array $objects, array $options = [])
     {
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE_ALL, new BulkRuleEvent($objects));
+
         $options = array_merge(['flush' => true], $options);
         foreach ($objects as $object) {
             $this->save($object, ['flush' => false]);
@@ -91,6 +94,8 @@ class RuleDefinitionManager implements SaverInterface, RemoverInterface, BulkSav
         if ($options['flush']) {
             $this->entityManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE_ALL, new BulkRuleEvent($objects));
     }
 
     /**

@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class RuleEvent extends Event
 {
+    /** @var RuleDefinitionInterface */
     protected $definition;
 
     /**
