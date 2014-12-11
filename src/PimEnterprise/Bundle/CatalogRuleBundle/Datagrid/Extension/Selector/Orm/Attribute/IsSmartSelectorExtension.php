@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\Selector\Orm\Attribute;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
