@@ -12,15 +12,17 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
+use JMS\DiExtraBundle\Generator\DefinitionInjectorGenerator;
 use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -75,8 +77,9 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AttributeEvents::PRE_REMOVE => 'deleteRuleLinkedResource',
-            RuleEvents::POST_SAVE       => 'saveRuleLinkedResource'
+            AttributeEvents::PRE_REMOVE => 'removeAttribute',
+            RuleEvents::POST_SAVE       => 'saveRule',
+            RuleEvents::POST_SAVE_ALL   => 'saveRules'
         ];
     }
 
@@ -85,10 +88,9 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function deleteRuleLinkedResource(GenericEvent $event)
+    public function removeAttribute(GenericEvent $event)
     {
         $entity = $event->getSubject();
-
         $ruleLinkedResources = [];
 
         if ($entity instanceof AttributeInterface) {
@@ -102,14 +104,36 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Saves a rule linked resource
+     * When saves a single rule
      *
      * @param RuleEvent $event
      */
-    public function saveRuleLinkedResource(RuleEvent $event)
+    public function saveRule(RuleEvent $event)
     {
         $definition = $event->getDefinition();
+        $this->saveRuleLinkedResource($definition);
+    }
 
+    /**
+     * When saves many rules, via import for instance
+     *
+     * @param BulkRuleEvent $event
+     */
+    public function saveRules(BulkRuleEvent $event)
+    {
+        $definitions = $event->getDefinitions();
+        foreach ($definitions as $definition) {
+            $this->saveRuleLinkedResource($definition);
+        }
+    }
+
+    /**
+     * Saves a rule linked resource
+     *
+     * @param RuleDefinitionInterface $definition
+     */
+    public function saveRuleLinkedResource(RuleDefinitionInterface $definition)
+    {
         if (null === $definition->getId()) {
             return;
         }

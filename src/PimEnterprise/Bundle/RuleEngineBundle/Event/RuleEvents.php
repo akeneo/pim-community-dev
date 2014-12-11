@@ -119,6 +119,26 @@ final class RuleEvents
     const POST_SAVE = 'pim_rule_engine.rule.post_save';
 
     /**
+     * This event is thrown before saving many rules.
+     *
+     * The event listener receives an
+     * PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE_ALL = 'pim_rule_engine.rule.pre_save_all';
+
+    /**
+     * This event is thrown after saving many rules.
+     *
+     * The event listener receives an
+     * PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE_ALL = 'pim_rule_engine.rule.post_save_all';
+
+    /**
      * This event is thrown before updating a rule.
      *
      * The event listener receives an

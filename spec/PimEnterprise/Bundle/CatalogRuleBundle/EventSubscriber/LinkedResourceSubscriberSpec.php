@@ -57,7 +57,7 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
 
         $linkedResManager->remove($ruleLinkedResource)->shouldBeCalled();
 
-        $this->deleteRuleLinkedResource($event);
+        $this->removeAttribute($event);
     }
 
     function it_does_not_delete_a_rule_linked_resource_when_argument_is_not_the_required_type(
@@ -68,7 +68,7 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         $event->getSubject()->shouldBeCalled()->willReturn($product);
         $linkedResManager->remove(Argument::any())->shouldNotBeCalled();
 
-        $this->deleteRuleLinkedResource($event);
+        $this->removeAttribute($event);
     }
 
     function it_saves_a_new_rule_linked_resource(
@@ -81,6 +81,7 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         RuleDefinitionInterface $definition
     ) {
         $event->getDefinition()->shouldBeCalled()->willReturn($definition);
+        $definition->getId()->willReturn(42);
 
         $productRuleBuilder->build($definition)->shouldBeCalled()->willReturn($rule);
 
@@ -98,6 +99,6 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         $linkedResManager->save(Argument::type('PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource'))
             ->shouldBeCalledTimes(2);
 
-        $this->saveRuleLinkedResource($event);
+        $this->saveRule($event);
     }
 }
