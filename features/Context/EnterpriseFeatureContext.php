@@ -140,12 +140,12 @@ class EnterpriseFeatureContext extends FeatureContext
     /**
      * @param TableNode $table
      *
-     * @Given /^I should see the following rule actions:$/
+     * @Given /^I should see the following rule setter actions:$/
      */
-    public function iShouldSeeTheFollowingRuleActions(TableNode $table)
+    public function iShouldSeeTheFollowingRuleSetterActions(TableNode $table)
     {
         $expectedActions = $table->getHash();
-        $actualActions = $this->getSession()->getPage()->findAll('css', '.rule-table .rule-action');
+        $actualActions = $this->getSession()->getPage()->findAll('css', '.rule-table .rule-action.set-value-action');
 
         $expectedCount = count($expectedActions);
         $actualCount   = count($actualActions);
@@ -170,47 +170,107 @@ class EnterpriseFeatureContext extends FeatureContext
 
             $actualAction = $actualActions[$key];
 
-            switch (trim($action['type'])) {
-                case 'set_value':
-                    $action['type'] = 'is set into';
+            $action['type'] = 'is set into';
 
-                    $this->checkElementValue(
-                        $actualAction->find('css', '.action-field'),
-                        $action['field'],
-                        true,
-                        true
-                    );
-                    $this->checkElementValue(
-                        $actualAction->find('css', '.action-type'),
-                        $action['type']
-                    );
-                    $this->checkElementValue(
-                        $actualAction->find('css', '.action-value'),
-                        $action['value'],
-                        false
-                    );
-                    $this->checkElementValue(
-                        $actualAction->find('css', '.rule-item-context .locale'),
-                        $action['locale'],
-                        false
-                    );
-                    $this->checkElementValue(
-                        $actualAction->find('css', '.rule-item-context .scope'),
-                        $action['scope'],
-                        false
-                    );
+            $this->checkElementValue(
+                $actualAction->find('css', '.action-field'),
+                $action['field'],
+                true,
+                true
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.action-type'),
+                $action['type']
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.action-value'),
+                $action['value'],
+                false
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.rule-item-context .locale'),
+                $action['locale'],
+                false
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.rule-item-context .scope'),
+                $action['scope'],
+                false
+            );
+        }
+    }
 
-                    break;
-                case 'copy_value':
-                    $action['type'] = 'is copied into';
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^I should see the following rule copier actions:$/
+     */
+    public function iShouldSeeTheFollowingRuleCopierActions(TableNode $table)
+    {
+        $expectedActions = $table->getHash();
+        $actualActions = $this->getSession()->getPage()->findAll('css', '.rule-table .rule-action.copy-value-action');
 
+        $expectedCount = count($expectedActions);
+        $actualCount   = count($actualActions);
+        if ($expectedCount !== $actualCount) {
+            throw new \Exception(
+                sprintf(
+                    'Expecting %d rules actions, actually saw %d',
+                    $expectedCount,
+                    $actualCount
+                )
+            );
+        }
 
-                    break;
-                default:
-                    throw new \Exception(
-                        sprintf('The action type %s is not supported yet', $action['type'])
-                    );
-            }
+        foreach ($expectedActions as $key => $action) {
+            $action = array_merge(
+                [
+                    'locale' => null,
+                    'scope' => null
+                ],
+                $action
+            );
+
+            $actualAction = $actualActions[$key];
+
+            $action['type'] = 'is copied into';
+
+            $this->checkElementValue(
+                $actualAction->find('css', '.action-field.from-field'),
+                $action['from_field'],
+                true,
+                true
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.action-field.to-field'),
+                $action['to_field'],
+                true,
+                true
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.action-type'),
+                $action['type']
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.from-field .rule-item-context .locale'),
+                $action['from_locale'],
+                false
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.to-field .rule-item-context .locale'),
+                $action['to_locale'],
+                false
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.from-field .rule-item-context .scope'),
+                $action['from_scope'],
+                false
+            );
+            $this->checkElementValue(
+                $actualAction->find('css', '.to-field .rule-item-context .scope'),
+                $action['to_scope'],
+                false
+            );
         }
     }
 

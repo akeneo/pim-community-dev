@@ -21,7 +21,7 @@ define(
             },
             'actions': {
                 'set_value': _.template(
-                    '<div class="rule-item rule-action">' +
+                    '<div class="rule-item rule-action set-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
                         '<span class="action-values"><%= rulePart.value %></span>' +
                         '<span class="rule-item-emphasize action-type"><%= set_value_label %></span>' +
@@ -32,14 +32,14 @@ define(
                     '</div>'
                 ),
                 'copy_value': _.template(
-                    '<div class="rule-item rule-action">' +
+                    '<div class="rule-item rule-action copy-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
-                        '<span class="action-field">' +
+                        '<span class="action-field from-field">' +
                             '<%= rulePart.from_field %>' +
                             '<%= renderItemContext(rulePart.from_locale, rulePart.from_scope) %>' +
                         '</span>' +
-                        '<span class="rule-item-emphasize action-type"><%= if_label %></span>' +
-                        '<span class="action-field">' +
+                        '<span class="rule-item-emphasize action-type"><%= copy_value_label %></span>' +
+                        '<span class="action-field to-field">' +
                             '<%= rulePart.to_field %>' +
                             '<%= renderItemContext(rulePart.to_locale, rulePart.to_scope) %>' +
                         '</span>' +

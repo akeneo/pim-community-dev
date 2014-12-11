@@ -22,6 +22,12 @@ Feature: Show all rules related to an attribute
       | rule                       | field         | value                | locale | scope     |
       | copy_description_into_name | description   | a nice tshirt        | en_US  |           |
       | copy_fallback              | description   | an other description | fr_FR  | ecommerce |
+    And the following product rule copier actions:
+      | rule          | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | copy_fallback | name       | description     | en_US       | en_US     | mobile     | mobile   |
+      | copy_fallback | name       | description     | fr_FR       |           | ecommerce  |          |
+      | copy_fallback | name       | description     | de_DE       | en_US     |            |          |
+      | copy_fallback | name       | description     |             | es_ES     |            | print    |
 
   Scenario: Successfully show rules of an attribute
     Given I am on the "description" attribute page
@@ -33,7 +39,13 @@ Feature: Show all rules related to an attribute
       | copy_description_into_name | weather_conditions   | CONTAINS    | dry,wet        | fr     | mobile |
       | copy_description_into_name | comment              | STARTS WITH | promo          | de     | print  |
       | copy_fallback              | category             | IN          | men            |        |        |
-    Then I should see the following rule actions:
-      | rule                       | type      | field       | value                | locale | scope     |
-      | copy_description_into_name | set_value | description | a nice tshirt        | en     |           |
-      | copy_fallback              | set_value | description | an other description | fr     | ecommerce |
+    Then I should see the following rule setter actions:
+      | rule                       | field       | value                | locale | scope     |
+      | copy_description_into_name | description | a nice tshirt        | en     |           |
+      | copy_fallback              | description | an other description | fr     | ecommerce |
+    Then I should see the following rule copier actions:
+      | rule          | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | copy_fallback | name       | description     | en          | en        | mobile     | mobile   |
+      | copy_fallback | name       | description     | fr          |           | ecommerce  |          |
+      | copy_fallback | name       | description     | de          | en        |            |          |
+      | copy_fallback | name       | description     |             | es        |            | print    |
