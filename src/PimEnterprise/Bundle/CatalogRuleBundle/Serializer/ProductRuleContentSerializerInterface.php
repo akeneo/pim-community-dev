@@ -30,11 +30,11 @@ interface ProductRuleContentSerializerInterface
     /**
      * @param string $content
      *
-     * @return array        that contains the key "actions" and "conditions" with
-     *         "conditions" array of PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
-     *         "actions"    array of PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface
-     *                      (either PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction or
-     *                       PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction)
+     * @return array that contains the key "actions" and "conditions" with
+     *               "conditions" array of PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
+     *               "actions"    array of PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface
+     *               (either PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction or
+     *               PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction)
      *
      * @throws \LogicException in case the content is invalid
      */

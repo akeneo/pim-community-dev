@@ -11,20 +11,11 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -46,7 +37,7 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
      * @param ValidatorInterface                    $validator
      * @param string                                $ruleDefinitionClass
      * @param ProductRuleContentSerializerInterface $contentSerializer
-     * @param string                               $ruleClass
+     * @param string                                $ruleClass
      */
     public function __construct(
         ReferableEntityRepositoryInterface $repository,

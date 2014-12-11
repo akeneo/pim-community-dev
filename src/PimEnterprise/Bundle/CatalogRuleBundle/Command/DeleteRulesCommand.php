@@ -13,10 +13,8 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
 
 /**
  * Command to generate fake rules

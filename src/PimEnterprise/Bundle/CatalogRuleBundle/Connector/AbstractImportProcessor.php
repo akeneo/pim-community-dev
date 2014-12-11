@@ -87,10 +87,10 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
      * Try to find an object according to its identifiers from a repository or create an empty object
      * if it does not exist.
      *
-     * @param ReferableEntityRepositoryInterface $repository    the repository to search inside
-     * @param array                              $data          the data that is currently processed
-     * @param string                             $class         the class to instanciate in case the
-     *                                                          object has not been found
+     * @param ReferableEntityRepositoryInterface $repository the repository to search inside
+     * @param array                              $data       the data that is currently processed
+     * @param string                             $class      the class to instanciate in case the
+     *                                                       object has not been found
      *
      * @return object
      *
@@ -109,8 +109,8 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
     /**
      * Find an object according to its identifiers from a repository.
      *
-     * @param ReferableEntityRepositoryInterface $repository    the repository to search inside
-     * @param array                              $data          the data that is currently processed
+     * @param ReferableEntityRepositoryInterface $repository the repository to search inside
+     * @param array                              $data       the data that is currently processed
      *
      * @return object|null
      *

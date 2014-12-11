@@ -18,7 +18,7 @@ pimee_enrich_product_value_show:
     requirements:
         product: '[0-9a-f]+'
     methods: [GET]
-    
+
 pimee_enrich_product_product_drafts:
     path: /{id}/product_drafts
     defaults: { _controller: pim_enrich.controller.product:draftsAction }

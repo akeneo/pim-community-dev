@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

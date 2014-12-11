@@ -43,7 +43,7 @@ class ProductRuleBuilder implements BuilderInterface
      * @param EventDispatcherInterface              $eventDispatcher
      * @param ValidatorInterface                    $validator
      * @param ProductRuleContentSerializerInterface $ruleContentSerializer
-     * @param string                                $ruleClass should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @param string                                $ruleClass             should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
