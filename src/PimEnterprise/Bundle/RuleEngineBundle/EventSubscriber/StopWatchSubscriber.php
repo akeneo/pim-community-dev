@@ -18,26 +18,17 @@ use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 
 /**
- * Add context in version data
+ * Log execution time on rules
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class StopWatchEventSubscriber implements EventSubscriberInterface
+class StopWatchSubscriber implements EventSubscriberInterface
 {
     /** @var StopWatch */
     protected $stopWatch;
 
     /** @staticvar string */
     const NAME_PATTERN = 'Rule event : %s %s';
-
-    /** @var array */
-    protected $stopWatchEvents = [
-        'rule_loading'   => [],
-        'rule_selecting' => [],
-        'rule_applying'  => [],
-        'rule_removing'  => [],
-        'rule_saving'    => [],
-    ];
 
     /**
      * @param StopWatch $stopWatch
