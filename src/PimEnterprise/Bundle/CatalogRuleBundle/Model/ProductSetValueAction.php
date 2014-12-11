@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 /**
  * Set action used in product rules.
  * A set action value is used to set a product source field (or product value) with a given value
@@ -24,8 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductSetValueAction implements ProductSetValueActionInterface
 {
-    const TYPE = 'set_value';
-
     /** @var string */
     protected $field;
 
@@ -38,30 +34,19 @@ class ProductSetValueAction implements ProductSetValueActionInterface
     /** @var string */
     protected $scope;
 
-    /** @var OptionsResolver */
-    private static $optionsResolver;
-
     /**
      * @param array $data
      */
     public function __construct(array $data)
     {
-        if (null === self::$optionsResolver) {
-            self::$optionsResolver = new OptionsResolver();
-            $this->configureOptionsResolver(self::$optionsResolver);
-        }
-
-        //TODO: catch exception here and throw a real business exception ?
-        $data = self::$optionsResolver->resolve($data);
-
-        $this->field = $data['field'];
-        $this->value = $data['value'];
-        $this->locale = $data['locale'];
-        $this->scope = $data['scope'];
+        $this->field = isset($data['field']) ? $data['field'] : null;
+        $this->value = isset($data['value']) ? $data['value'] : null;
+        $this->locale = isset($data['locale']) ? $data['locale'] : null;
+        $this->scope = isset($data['scope']) ? $data['scope'] : null;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getField()
     {
@@ -69,7 +54,7 @@ class ProductSetValueAction implements ProductSetValueActionInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getValue()
     {
@@ -77,7 +62,7 @@ class ProductSetValueAction implements ProductSetValueActionInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -85,7 +70,7 @@ class ProductSetValueAction implements ProductSetValueActionInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getScope()
     {
@@ -93,20 +78,42 @@ class ProductSetValueAction implements ProductSetValueActionInterface
     }
 
     /**
-     * Configure the condition's optionResolver
-     *
-     * @param OptionsResolver $optionsResolver
+     * {@inheritdoc}
      */
-    protected function configureOptionsResolver(OptionsResolver $optionsResolver)
+    public function setField($field)
     {
-        $optionsResolver->setDefaults(['locale' => null, 'scope'  => null]);
-        $optionsResolver->setRequired(['field', 'value', 'type']);
-        $optionsResolver->setAllowedValues(['type' => [self::TYPE]]);
-        $optionsResolver->setAllowedTypes([
-                'type' => 'string',
-                'field' => 'string',
-                'locale' => ['string', 'null'],
-                'scope' => ['string', 'null'],
-            ]);
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+
+        return $this;
     }
 }

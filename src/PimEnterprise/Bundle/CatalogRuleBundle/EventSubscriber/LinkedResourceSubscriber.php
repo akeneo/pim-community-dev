@@ -16,9 +16,8 @@ use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
+use PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -38,9 +37,6 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     /** @var EntityRepository */
     protected $ruleLinkedResRepo;
 
-    /** @var ProductRuleSelector */
-    protected $productRuleSelector;
-
     /** @var ProductRuleBuilder */
     protected $productRuleBuilder;
 
@@ -52,20 +48,17 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      *
      * @param RuleLinkedResourceManager $linkedResManager
      * @param EntityRepository          $ruleLinkedResRepo
-     * @param ProductRuleSelector       $productRuleSelector
      * @param ProductRuleBuilder        $productRuleBuilder
      * @param string                    $ruleLinkedResClass
      */
     public function __construct(
         RuleLinkedResourceManager $linkedResManager,
         EntityRepository $ruleLinkedResRepo,
-        ProductRuleSelector $productRuleSelector,
         ProductRuleBuilder $productRuleBuilder,
         $ruleLinkedResClass
     ) {
         $this->linkedResManager    = $linkedResManager;
         $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
-        $this->productRuleSelector = $productRuleSelector;
         $this->productRuleBuilder  = $productRuleBuilder;
         $this->ruleLinkedResClass  = $ruleLinkedResClass;
     }
@@ -76,8 +69,9 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AttributeEvents::PRE_REMOVE => 'deleteRuleLinkedResource',
-            RuleEvents::POST_SAVE       => 'saveRuleLinkedResource'
+            AttributeEvents::PRE_REMOVE => 'removeAttribute',
+            RuleEvents::POST_SAVE       => 'saveRule',
+            RuleEvents::POST_SAVE_ALL   => 'saveRules'
         ];
     }
 
@@ -86,10 +80,9 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function deleteRuleLinkedResource(GenericEvent $event)
+    public function removeAttribute(GenericEvent $event)
     {
         $entity = $event->getSubject();
-
         $ruleLinkedResources = [];
 
         if ($entity instanceof AttributeInterface) {
@@ -103,32 +96,71 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Saves a rule linked resource
+     * When saves a single rule
      *
      * @param RuleEvent $event
      */
-    public function saveRuleLinkedResource(RuleEvent $event)
+    public function saveRule(RuleEvent $event)
     {
         $definition = $event->getDefinition();
+        $this->saveRuleLinkedResources($definition);
+    }
 
+    /**
+     * When saves many rules, via import for instance
+     *
+     * @param BulkRuleEvent $event
+     */
+    public function saveRules(BulkRuleEvent $event)
+    {
+        $definitions = $event->getDefinitions();
+        foreach ($definitions as $definition) {
+            $this->saveRuleLinkedResources($definition);
+        }
+    }
+
+    /**
+     * Saves a rule linked resource
+     *
+     * @param RuleDefinitionInterface $definition
+     */
+    protected function saveRuleLinkedResources(RuleDefinitionInterface $definition)
+    {
+        if (null === $definition->getId()) {
+            return;
+        }
+
+        $this->removeRuleLinkedResources($definition);
+        $this->addRuleLinkedResources($definition);
+    }
+
+    /**
+     * @param RuleDefinitionInterface $definition
+     */
+    protected function addRuleLinkedResources(RuleDefinitionInterface $definition)
+    {
         $rule = $this->productRuleBuilder->build($definition);
-
         $actions = $rule->getActions();
-
         $linkedAttributes = $this->linkedResManager->getImpactedAttributes($actions);
 
         foreach ($linkedAttributes as $linkedAttribute) {
-            $ruleLinkedResource = $this->ruleLinkedResRepo->find($definition);
-
-            if (null === $ruleLinkedResource) {
-                $ruleLinkedResource = new $this->ruleLinkedResClass();
-            }
-
+            $ruleLinkedResource = new $this->ruleLinkedResClass();
             $ruleLinkedResource->setRule($definition);
             $ruleLinkedResource->setResourceName(ClassUtils::getClass($linkedAttribute));
             $ruleLinkedResource->setResourceId($linkedAttribute->getId());
 
             $this->linkedResManager->save($ruleLinkedResource);
+        }
+    }
+
+    /**
+     * @param RuleDefinitionInterface $definition
+     */
+    protected function removeRuleLinkedResources(RuleDefinitionInterface $definition)
+    {
+        $ruleLinkedResources = $this->ruleLinkedResRepo->findBy(['rule' => $definition->getId()]);
+        foreach ($ruleLinkedResources as $resource) {
+            $this->linkedResManager->remove($resource);
         }
     }
 }

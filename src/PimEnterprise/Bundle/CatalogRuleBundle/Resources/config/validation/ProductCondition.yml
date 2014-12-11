@@ -1,0 +1,16 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition:
+    properties:
+        field:
+           - Type:
+                type: string
+           - NotBlank: ~
+           - Length:
+               max: 255
+        operator:
+            - Type:
+                type: string
+            - NotBlank: ~
+            - Length:
+                max: 100
+        value:
+            - NotBlank: ~

@@ -69,7 +69,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productValidator->validate(Argument::any())->shouldNotBeCalled();
 
         // save products
-        $productSaver->saveAll([])->shouldBeCalled();
+        $productSaver->saveAll([], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
         $this->apply($rule, $subjectSet);
@@ -105,7 +105,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         // save products
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
-        $productSaver->saveAll([$selectedProduct])->shouldBeCalled();
+        $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
@@ -146,7 +146,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         // save products
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
-        $productSaver->saveAll([$selectedProduct])->shouldBeCalled();
+        $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 

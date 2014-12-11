@@ -1,0 +1,20 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction:
+    properties:
+        field:
+           - Type:
+                type: string
+           - NotBlank: ~
+           - Length:
+               max: 255
+        value:
+           - NotBlank: ~
+        scope:
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        locale:
+            - Type:
+                type: string
+            - Length:
+                max: 100

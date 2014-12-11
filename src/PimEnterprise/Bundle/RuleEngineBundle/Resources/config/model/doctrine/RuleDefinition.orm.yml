@@ -9,12 +9,12 @@ PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition:
                 strategy: AUTO
         code:
             type: string
-            length: 255
+            length: 100
             nullable: false
             column: code
         type:
             type: string
-            length: 255
+            length: 100
             nullable: false
             column: type
         content:

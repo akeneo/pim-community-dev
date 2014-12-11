@@ -31,7 +31,7 @@ class RuleDefinition implements RuleDefinitionInterface
     protected $content;
 
     /** @var int */
-    protected $priority;
+    protected $priority = 0;
 
     /**
      * {@inheritdoc}

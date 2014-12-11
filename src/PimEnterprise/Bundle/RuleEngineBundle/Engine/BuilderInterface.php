@@ -25,6 +25,8 @@ interface BuilderInterface
      * @param RuleDefinitionInterface $definition
      *
      * @return RuleInterface
+     *
+     * @throws \PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException
      */
     public function build(RuleDefinitionInterface $definition);
 }

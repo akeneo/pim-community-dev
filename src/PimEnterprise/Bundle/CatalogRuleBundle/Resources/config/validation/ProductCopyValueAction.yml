@@ -1,0 +1,34 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction:
+    properties:
+        fromField:
+           - Type:
+                type: string
+           - NotBlank: ~
+           - Length:
+               max: 255
+        toField:
+           - Type:
+                type: string
+           - NotBlank: ~
+           - Length:
+               max: 255
+        fromScope:
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        toScope:
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        fromLocale:
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        toLocale:
+            - Type:
+                type: string
+            - Length:
+                max: 100

@@ -23,6 +23,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface;
  */
 interface ProductCopyValueActionInterface extends ActionInterface
 {
+    const TYPE = 'copy_value';
+
     /**
      * @return string
      */
@@ -52,4 +54,46 @@ interface ProductCopyValueActionInterface extends ActionInterface
      * @return string
      */
     public function getToScope();
+
+    /**
+     * @param string $fromField
+     *
+     * @return ProductCopyValueActionInterface
+     */
+    public function setFromField($fromField);
+
+    /**
+     * @param mixed $fromLocale
+     *
+     * @return ProductCopyValueActionInterface
+     */
+    public function setFromLocale($fromLocale);
+
+    /**
+     * @param string $fromScope
+     *
+     * @return ProductCopyValueActionInterface
+     */
+    public function setFromScope($fromScope);
+
+    /**
+     * @param string $toField
+     *
+     * @return ProductCopyValueActionInterface
+     */
+    public function setToField($toField);
+
+    /**
+     * @param mixed $toLocale
+     *
+     * @return ProductCopyValueActionInterface
+     */
+    public function setToLocale($toLocale);
+
+    /**
+     * @param string $toScope
+     *
+     * @return ProductCopyValueActionInterface
+     */
+    public function setToScope($toScope);
 }

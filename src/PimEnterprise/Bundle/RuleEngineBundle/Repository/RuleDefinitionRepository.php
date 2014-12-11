@@ -27,4 +27,20 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
     {
         return $this->findBy([], ['priority' => 'DESC']);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceProperties()
+    {
+        return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneBy(['code' => $code]);
+    }
 }

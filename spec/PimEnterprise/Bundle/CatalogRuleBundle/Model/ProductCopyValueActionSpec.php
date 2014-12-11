@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 
 class ProductCopyValueActionSpec extends ObjectBehavior
 {
@@ -11,7 +11,7 @@ class ProductCopyValueActionSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [
-                'type' => ProductCopyValueAction::TYPE,
+                'type' => ProductCopyValueActionInterface::TYPE,
                 'from_field' => 'sku',
                 'to_field' => 'description',
                 'from_locale' => 'FR_fr',
@@ -45,30 +45,5 @@ class ProductCopyValueActionSpec extends ObjectBehavior
         $this->getToLocale()->shouldReturn('FR_ch');
         $this->getFromScope()->shouldReturn('ecommerce');
         $this->getToScope()->shouldReturn('tablet');
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_invalid_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
-            ->during(
-                '__construct',
-                [
-                    [
-                        'type' => ProductCopyValueAction::TYPE,
-                        'from_field' => new \stdClass(),
-                        'to_field' => 'description',
-                        'from_locale' => 'FR_fr',
-                        'to_locale' => 'FR_ch',
-                        'from_scope' => 'ecommerce',
-                        'to_scope' => 'tablet',
-                    ]
-                ]
-            );
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_missing_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')
-            ->during('__construct', [['type' => ProductCopyValueAction::TYPE]]);
     }
 }

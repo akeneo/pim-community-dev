@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 
 class ProductSetValueActionSpec extends ObjectBehavior
 {
@@ -13,9 +13,9 @@ class ProductSetValueActionSpec extends ObjectBehavior
             [
                 'field' => 'sku',
                 'value' => 'RATM-NIN-001',
-                'locale' => 'FR_fr',
+                'locale' => 'fr_FR',
                 'scope' => 'ecommerce',
-                'type' => ProductSetValueAction::TYPE
+                'type' => ProductSetValueActionInterface::TYPE
             ]
         );
     }
@@ -39,30 +39,7 @@ class ProductSetValueActionSpec extends ObjectBehavior
     {
         $this->getField()->shouldReturn('sku');
         $this->getValue()->shouldReturn('RATM-NIN-001');
-        $this->getLocale()->shouldReturn('FR_fr');
+        $this->getLocale()->shouldReturn('fr_FR');
         $this->getScope()->shouldReturn('ecommerce');
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_invalid_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
-            ->during(
-                '__construct',
-                [
-                    [
-                        'field' =>  new \stdClass(),
-                        'value' => 'RATM-NIN-001',
-                        'locale' => 'FR_fr',
-                        'scope' => 'ecommerce',
-                        'type' => ProductSetValueAction::TYPE
-                    ]
-                ]
-            );
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_an_action_with_missing_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')
-            ->during('__construct', [['field' => 'field']]);
     }
 }

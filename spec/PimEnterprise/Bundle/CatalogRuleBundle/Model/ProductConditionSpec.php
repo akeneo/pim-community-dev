@@ -8,7 +8,9 @@ class ProductConditionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith(['field' => 'sku', 'operator' => 'EQUALS', 'value' => 'RATM-NIN-001']);
+        $this->beConstructedWith(
+            ['field' => 'sku', 'operator' => 'EQUALS', 'value' => 'RATM-001', 'locale' => 'fr_FR', 'scope' => 'print']
+        );
     }
 
     public function it_is_initializable()
@@ -30,23 +32,8 @@ class ProductConditionSpec extends ObjectBehavior
     {
         $this->getField()->shouldReturn('sku');
         $this->getOperator()->shouldReturn('EQUALS');
-        $this->getValue()->shouldReturn('RATM-NIN-001');
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_a_condition_with_invalid_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException')
-            ->during(
-                '__construct',
-                [
-                    ['field' => new \stdClass(), 'operator' => [], 'value' => 'value']
-                ]
-            );
-    }
-
-    public function it_throws_an_exception_when_trying_to_construct_a_condition_with_missing_data()
-    {
-        $this->shouldThrow('\Symfony\Component\OptionsResolver\Exception\MissingOptionsException')
-            ->during('__construct', [['field' => 'field']]);
+        $this->getValue()->shouldReturn('RATM-001');
+        $this->getLocale()->shouldReturn('fr_FR');
+        $this->getScope()->shouldReturn('print');
     }
 }
