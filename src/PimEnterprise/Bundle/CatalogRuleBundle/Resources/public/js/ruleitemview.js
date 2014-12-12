@@ -23,7 +23,15 @@ define(
                 'set_value': _.template(
                     '<div class="rule-item rule-action set-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
-                        '<span class="action-values"><%= rulePart.value %></span>' +
+                        '<% if (typeof rulePart.value === \'object\') { %>' +
+                            '<span class="action-values" title="<%= JSON.stringify(rulePart.value).replace(/\"/g, \'\\\'\') %>" >' +
+                                '<%= JSON.stringify(rulePart.value) %>' +
+                            '</span>' +
+                        '<% } else { %>' +
+                            '<span class="action-values" >' +
+                                '<%= rulePart.value %>' +
+                            '</span>' +
+                        '<% } %>' +
                         '<span class="rule-item-emphasize action-type"><%= set_value_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
