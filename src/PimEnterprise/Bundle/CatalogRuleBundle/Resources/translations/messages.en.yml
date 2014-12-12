@@ -17,3 +17,7 @@ pimee_catalog_rule:
         yml_rule_import:
             title: Rule import in YAML
             import.title: Rule import
+    steps:
+        product_rule_definition_reader.title: Product rule import reader
+        product_rule_definition_processor.title: Product rule import processor
+        product_rule_definition_writer.title: Product rule import writer
