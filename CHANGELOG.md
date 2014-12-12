@@ -1,3 +1,8 @@
+# 1.0.x
+
+## Improvements
+- PIM-3475: Add sort order in options attribute to sample catalog
+
 # 1.0.8 (2014-12-10)
 
 ## Bug fixes
