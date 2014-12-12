@@ -2,6 +2,10 @@
 
 ## Bug fixes
 - PIM-3447: Fix date picker year range selection over next year
+- PIM-3475: Fix attribute options sort order in import/export
+
+## BC breaks
+- Export of attribute options in CSV now include a sort_order column
 
 # 1.2.14 (2014-12-03)
 

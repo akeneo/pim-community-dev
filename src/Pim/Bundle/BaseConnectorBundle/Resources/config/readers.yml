@@ -2,6 +2,7 @@ parameters:
     pim_base_connector.reader.doctrine.bulk_product.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\BulkProductReader
     pim_base_connector.reader.orm.entity.class:            Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
     pim_base_connector.reader.orm.category.class:          Pim\Bundle\BaseConnectorBundle\Reader\ORM\CategoryReader
+    pim_base_connector.reader.orm.attribute_option.class:  Pim\Bundle\BaseConnectorBundle\Reader\ORM\AttributeOptionReader
 
     pim_base_connector.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
     pim_base_connector.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
@@ -38,7 +39,7 @@ services:
             - %pim_catalog.entity.attribute.class%
 
     pim_base_connector.reader.orm.attribute_option:
-        class: %pim_base_connector.reader.orm.entity.class%
+        class: %pim_base_connector.reader.orm.attribute_option.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.attribute_option.class%
