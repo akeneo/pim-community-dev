@@ -44,6 +44,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
+        $option->getSortOrder()->willReturn(1);
         $attribute->getCode()->willReturn('color');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
@@ -57,6 +58,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => ['en_US', 'fr_FR', 'de_DE']])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
+            'sort_order' => 1,
             'label-en_US' => 'Red',
             'label-fr_FR' => 'Rouge',
             'label-de_DE' => '',
@@ -71,6 +73,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
+        $option->getSortOrder()->willReturn(1);
         $attribute->getCode()->willReturn('color');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
@@ -84,6 +87,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => ['en_US', 'de_DE']])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
+            'sort_order' => 1,
             'label-en_US' => 'Red',
             'label-de_DE' => '',
         ]);
@@ -98,6 +102,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
+        $option->getSortOrder()->willReturn(1);
         $attribute->getCode()->willReturn('color');
         $option->getOptionValues()->willReturn([
             'en_US' => $valueEn,
@@ -114,6 +119,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->normalize($option, null, ['locales' => []])->shouldReturn([
             'attribute' => 'color',
             'code' => 'red',
+            'sort_order' => 1,
             'label-en_US' => 'Red',
             'label-fr_FR' => 'Rouge',
             'label-de_DE' => '',

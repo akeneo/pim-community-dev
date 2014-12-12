@@ -14,44 +14,44 @@ Feature: Export options
     And I wait for the "footwear_option_export" job to finish
     Then exported file of "footwear_option_export" should contain:
     """
-    attribute;code;label-en_US
-    manufacturer;Converse;Converse
-    manufacturer;TimberLand;TimberLand
-    manufacturer;Nike;Nike
-    manufacturer;Caterpillar;Caterpillar
-    weather_conditions;dry;Dry
-    weather_conditions;wet;Wet
-    weather_conditions;hot;Hot
-    weather_conditions;cold;Cold
-    weather_conditions;snowy;Snowy
-    rating;1;"1 star"
-    rating;2;"2 stars"
-    rating;3;"3 stars"
-    rating;4;"4 stars"
-    rating;5;"5 stars"
-    size;35;35
-    size;36;36
-    size;37;37
-    size;38;38
-    size;39;39
-    size;40;40
-    size;41;41
-    size;42;42
-    size;43;43
-    size;44;44
-    size;45;45
-    size;46;46
-    color;white;White
-    color;black;Black
-    color;blue;Blue
-    color;maroon;Maroon
-    color;saddle;Saddle
-    color;greem;Greem
-    color;red;Red
-    color;charcoal;Charcoal
-    lace_color;laces_black;Black
-    lace_color;laces_brown;Brown
-    lace_color;laces_white;White
+    attribute;code;sort_order;label-en_US
+    manufacturer;Converse;1;Converse
+    manufacturer;TimberLand;2;TimberLand
+    manufacturer;Nike;3;Nike
+    manufacturer;Caterpillar;4;Caterpillar
+    weather_conditions;dry;1;Dry
+    weather_conditions;wet;2;Wet
+    weather_conditions;hot;3;Hot
+    weather_conditions;cold;4;Cold
+    weather_conditions;snowy;5;Snowy
+    rating;1;1;"1 star"
+    rating;2;2;"2 stars"
+    rating;3;3;"3 stars"
+    rating;4;4;"4 stars"
+    rating;5;5;"5 stars"
+    size;35;1;35
+    size;36;2;36
+    size;37;3;37
+    size;38;4;38
+    size;39;5;39
+    size;40;6;40
+    size;41;7;41
+    size;42;8;42
+    size;43;9;43
+    size;44;10;44
+    size;45;11;45
+    size;46;12;46
+    color;white;1;White
+    color;black;2;Black
+    color;blue;3;Blue
+    color;maroon;4;Maroon
+    color;saddle;5;Saddle
+    color;greem;6;Greem
+    color;red;7;Red
+    color;charcoal;8;Charcoal
+    lace_color;laces_black;1;Black
+    lace_color;laces_brown;2;Brown
+    lace_color;laces_white;3;White
 
     """
 
