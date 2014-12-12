@@ -3,7 +3,11 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Yaml reader
@@ -12,21 +16,32 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class YamlReader extends FileReader implements ItemReaderInterface
+class YamlReader extends FileReader implements ItemReaderInterface, UploadedFileAwareInterface
 {
     /**
-     * @var string
+     * @Assert\NotBlank(groups={"Execution"})
+     * @AssertFile(
+     *     groups={"Execution"},
+     *     allowedExtensions={"yml", "yaml"}
+     * )
      */
+    protected $filePath;
+
+    /** @var string */
     protected $codeField = 'code';
 
-    /**
-     * @var boolean
-     */
+    /** @var bool */
     protected $multiple = false;
 
     /**
-     * @var \ArrayIterator
+     * @var bool
+     *
+     * @Assert\Type(type="bool")
+     * @Assert\True(groups={"UploadExecution"})
      */
+    protected $uploadAllowed = false;
+
+    /** @var \ArrayIterator */
     protected $yaml;
 
     /**
@@ -110,6 +125,63 @@ class YamlReader extends FileReader implements ItemReaderInterface
         return $this->codeField;
     }
 
+
+    /**
+     * Set the uploadAllowed property
+     *
+     * @param bool $uploadAllowed
+     *
+     * @return YamlReader
+     */
+    public function setUploadAllowed($uploadAllowed)
+    {
+        $this->uploadAllowed = $uploadAllowed;
+
+        return $this;
+    }
+
+    /**
+     * Get the uploadAllowed property
+     *
+     * @return bool
+     */
+    public function isUploadAllowed()
+    {
+        return $this->uploadAllowed;
+    }
+
+    /**
+     * Get uploaded file constraints
+     *
+     * @return array
+     */
+    public function getUploadedFileConstraints()
+    {
+        return array(
+            new Assert\NotBlank(),
+            new AssertFile(
+                array(
+                    'allowedExtensions' => array('yml', 'yaml')
+                )
+            )
+        );
+    }
+
+    /**
+     * Set uploaded file
+     *
+     * @param File $uploadedFile
+     *
+     * @return CsvReader
+     */
+    public function setUploadedFile(File $uploadedFile)
+    {
+        $this->filePath = $uploadedFile->getRealPath();
+        $this->csv = null;
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -152,7 +224,19 @@ class YamlReader extends FileReader implements ItemReaderInterface
     public function getConfigurationFields()
     {
         return [
-            'filePath' => [],
+            'filePath' => array(
+                'options' => array(
+                    'label' => 'pim_base_connector.import.yamlFilePath.label',
+                    'help'  => 'pim_base_connector.import.yamlFilePath.help'
+                )
+            ),
+            'uploadAllowed' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_base_connector.import.uploadAllowed.label',
+                    'help'  => 'pim_base_connector.import.uploadAllowed.help'
+                )
+            ),
         ];
     }
 

@@ -107,7 +107,10 @@ pim_base_connector:
             help: Name of the groups column
         filePath:
             label: File
-            help: The csv file to import
+            help: The CSV file to import
+        yamlFilePath:
+            label: File
+            help: The YAML file to import
         uploadAllowed:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
