@@ -21,31 +21,19 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AddVersionSubscriber implements EventSubscriber
 {
-    /**
-     * Entities to version
-     *
-     * @var object[]
-     */
+    /** @var object[] */
     protected $versionableEntities = array();
 
-    /**
-     * @var integer[]
-     */
+    /** @var string[] */
     protected $versionedEntities = array();
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var ChainedUpdateGuesser
-     */
+    /** @var ChainedUpdateGuesser */
     protected $guesser;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $normalizer;
 
     /**
@@ -118,8 +106,9 @@ class AddVersionSubscriber implements EventSubscriber
     protected function processVersionableEntities()
     {
         foreach ($this->versionableEntities as $versionable) {
+            $oid = $this->getObjectHash($versionable);
             $this->createVersion($versionable);
-            $this->versionedEntities[] = spl_object_hash($versionable);
+            $this->versionedEntities[] = $oid;
         }
 
         $versionedCount = count($this->versionableEntities);
@@ -195,7 +184,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function addPendingVersioning($versionable)
     {
-        $oid = spl_object_hash($versionable);
+        $oid = $this->getObjectHash($versionable);
         if (!isset($this->versionableEntities[$oid]) && !in_array($oid, $this->versionedEntities)) {
             $this->versionableEntities[$oid] = $versionable;
         }
@@ -215,5 +204,18 @@ class AddVersionSubscriber implements EventSubscriber
         } else {
             $om->remove($version);
         }
+    }
+
+    /**
+     * Get an object hash, provides different hashes depending on version manager context to allows to log different
+     * versions of a same object during a request
+     *
+     * @param object $object
+     *
+     * @return string
+     */
+    protected function getObjectHash($object)
+    {
+        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionManager->getContext()));
     }
 }
