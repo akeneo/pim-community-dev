@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Yaml\Yaml;
@@ -16,7 +18,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class YamlReader extends FileReader implements ItemReaderInterface, UploadedFileAwareInterface
+class YamlReader extends FileReader implements
+    ItemReaderInterface,
+    UploadedFileAwareInterface,
+    StepExecutionAwareInterface
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
@@ -41,6 +46,9 @@ class YamlReader extends FileReader implements ItemReaderInterface, UploadedFile
      */
     protected $uploadAllowed = false;
 
+    /** @var StepExecution */
+    protected $stepExecution;
+
     /** @var \ArrayIterator */
     protected $yaml;
 
@@ -57,8 +65,7 @@ class YamlReader extends FileReader implements ItemReaderInterface, UploadedFile
     }
 
     /**
-     * Set file path
-     * @param string $filePath
+     * {@inheritdoc}
      *
      * @return YamlReader
      */
@@ -71,8 +78,7 @@ class YamlReader extends FileReader implements ItemReaderInterface, UploadedFile
     }
 
     /**
-     * Get file path
-     * @return string $filePath
+     * {@inheritdoc}
      */
     public function getFilePath()
     {
@@ -125,6 +131,13 @@ class YamlReader extends FileReader implements ItemReaderInterface, UploadedFile
         return $this->codeField;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
 
     /**
      * Set the uploadAllowed property
@@ -151,9 +164,7 @@ class YamlReader extends FileReader implements ItemReaderInterface, UploadedFile
     }
 
     /**
-     * Get uploaded file constraints
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getUploadedFileConstraints()
     {
@@ -168,11 +179,9 @@ class YamlReader extends FileReader implements ItemReaderInterface, UploadedFile
     }
 
     /**
-     * Set uploaded file
+     * {@inheritdoc}
      *
-     * @param File $uploadedFile
-     *
-     * @return CsvReader
+     * @return YamlReader
      */
     public function setUploadedFile(File $uploadedFile)
     {
@@ -193,6 +202,10 @@ class YamlReader extends FileReader implements ItemReaderInterface, UploadedFile
 
         if ($data = $this->yaml->current()) {
             $this->yaml->next();
+
+            if (null !== $this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('read');
+            }
 
             return $data;
         }
