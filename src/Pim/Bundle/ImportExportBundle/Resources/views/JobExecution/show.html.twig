@@ -72,7 +72,9 @@
                         <span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;
                         <ul>
                             <% _.each(warning.reason.split("\n"), function(warningItem) { %>
-                                <li><%= warningItem %></li>
+                                <% if (warningItem) { %>
+                                    <li><%= warningItem %></li>
+                                <% } %>
                             <% }) %>
                         </ul>
                         <a class="data" href="#"
@@ -84,7 +86,13 @@
                             <% _.each(warning.item, function (value, key) { %>
                                 <tr>
                                     <td><%= key %></td>
-                                    <td><%= value %></td>
+                                    <td>
+                                        <% if (typeof value === 'object') { %>
+                                            <%= JSON.stringify(value) %>
+                                        <% } else { %>
+                                            <%= value %>
+                                        <% } %>
+                                    </td>
                                 </tr>
                             <% }); %>
                         </table>
