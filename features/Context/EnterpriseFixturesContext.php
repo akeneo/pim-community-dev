@@ -466,8 +466,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $rule = new RuleDefinition();
             $rule->setCode($data['code']);
-            $rule->setPriority($data['priority']);
+            $rule->setPriority((int)$data['priority']);
             $rule->setType('product');
+            // TODO : via EM to avoid validation
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
             $manager->persist($rule);
         }
