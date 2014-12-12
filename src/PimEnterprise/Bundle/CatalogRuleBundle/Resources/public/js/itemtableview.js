@@ -105,7 +105,7 @@ define(
                             message = response.responseText;
                         }
 
-                        Dialog.alert(message, __('error.removing.attribute_option'));
+                        Dialog.alert(message, __('pimee_catalog_rule.rule.list.delete_rule.error'));
                     }, this)
                 });
             },

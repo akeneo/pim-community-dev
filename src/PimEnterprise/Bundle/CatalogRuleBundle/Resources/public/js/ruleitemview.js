@@ -117,7 +117,7 @@ define(
                     'rule':       this.model.toJSON(),
                     'conditions': renderedConditions,
                     'actions':    renderedActions,
-                    'delete_label': __('pimee_catalog_rule.attribute.list.delete_rule.label')
+                    'delete_label': __('pimee_catalog_rule.rule.list.delete_rule.label')
                 });
             },
         });
