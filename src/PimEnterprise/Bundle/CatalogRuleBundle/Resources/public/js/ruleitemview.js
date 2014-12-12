@@ -28,7 +28,7 @@ define(
                                 '<%= JSON.stringify(rulePart.value) %>' +
                             '</span>' +
                         '<% } else { %>' +
-                            '<span class="action-values" >' +
+                            '<span class="action-values" title="rulePart.value">' +
                                 '<%= rulePart.value %>' +
                             '</span>' +
                         '<% } %>' +
