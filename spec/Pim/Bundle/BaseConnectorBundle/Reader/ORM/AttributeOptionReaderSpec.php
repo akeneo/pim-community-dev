@@ -28,10 +28,10 @@ class AttributeOptionReaderSpec extends ObjectBehavior {
         AbstractQuery $query
     ) {
         $entityManager->getRepository(Argument::any())->willReturn($entityRepository);
-        $entityRepository->createQueryBuilder('ao')->willReturn($qb);
-        $qb->orderBy('ao.attribute')->willReturn($qb);
-        $qb->addOrderBy('ao.sortOrder')->willReturn($qb);
-        $qb->getQuery()->willReturn($query);
+        $entityRepository->createQueryBuilder('ao')->willReturn($qb)->shouldBeCalled();
+        $qb->orderBy('ao.attribute')->willReturn($qb)->shouldBeCalled();
+        $qb->addOrderBy('ao.sortOrder')->willReturn($qb)->shouldBeCalled();
+        $qb->getQuery()->willReturn($query)->shouldBeCalled();
 
         $this->getQuery()->shouldNotBeNull();
     }
