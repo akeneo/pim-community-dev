@@ -2,15 +2,16 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupProductTemplate;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Temporary command to import product templates
@@ -34,9 +35,10 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Setup the template with an existing product
         $referenceProduct = $this->getProduct('AKNTS_BPS');
         $productValues = $referenceProduct->getValues()->toArray();
-        $productValuesData = $this->normalize($productValues);
+        $productValuesData = $this->normalizeToDB($productValues);
 
         $variantGroup = $this->getVariantGroup('akeneo_tshirt');
         if ($variantGroup->getProductTemplate()) {
@@ -48,12 +50,16 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
         $template->setGroup($variantGroup);
         $this->save($template); // TODO : should use cascade on VG
 
-        /** @var Group */
+        // Fetch the values from the stored template
         $variantGroup = $this->getVariantGroup('akeneo_tshirt');
         $readProductTemplate = $variantGroup->getProductTemplate();
         $rawValuesData = $readProductTemplate->getValuesData();
-        $values = $this->denormalize($rawValuesData);
-        var_dump($values);
+        $values = $this->denormalizeFromDB($rawValuesData);
+
+        // Apply the update on another products
+        $updates = $this->normalizeToUpdate($values);
+        var_dump($updates);
+
     }
 
     /**
@@ -61,21 +67,72 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
      *
      * @return array
      */
-    protected function normalize(array $productValues)
+    protected function normalizeToDB(array $productValues)
     {
         // TODO : as for versionning, we should really change for json/structured format
-        return $this->getContainer()->get('pim_serializer')->normalize($productValues, 'csv');
+        $normalizer = $this->getContainer()->get('pim_serializer');
+        $normalizedValues = [];
+        foreach ($productValues as $value) {
+            $normalizedValues += $normalizer->normalize($value, 'csv');
+        }
+
+        return $normalizedValues;
     }
 
     /**
-     * @param ProductValueInterface[] $productValues
+     * @param ArrayCollection $productValues
      *
      * @return array
      */
-    protected function denormalize(array $productValues)
+    protected function normalizeToUpdate(ArrayCollection $productValues)
     {
-        // TODO : as for versionning, we should really change for json/structured format
-        return $this->getContainer()->get('pim_serializer')->denormalize($productValues, 'csv');
+        $normalizer = $this->getContainer()->get('pim_serializer');
+        $normalizedValues = [];
+        foreach ($productValues as $value) {
+            $normalizedValues[] = $normalizer->normalize($value, 'json', ['locales' => []]);
+        }
+
+        return $normalizedValues;
+    }
+
+    /**
+     * @param array $rawProductValues
+     *
+     * @return ProductValueInterface[]
+     */
+    protected function denormalizeFromDB(array $rawProductValues)
+    {
+        $denormalizer = $this->getContainer()->get('pim_serializer');
+        $fieldNameBuilder = $this->getContainer()->get('pim_transform.builder.field_name');
+        $productValueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
+        $productValues = [];
+
+        foreach ($rawProductValues as $attFieldName => $dataValue) {
+            $attributeInfos = $fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
+            $attribute = $attributeInfos['attribute'];
+            $value = new ProductValue();
+            $value->setAttribute($attribute);
+            $value->setLocale($attributeInfos['locale_code']);
+            $value->setScope($attributeInfos['scope_code']);
+            unset($attributeInfos['attribute']);
+            unset($attributeInfos['locale_code']);
+            unset($attributeInfos['scope_code']);
+
+            // TODO : as for versionning, we should really change for json/structured format
+            $productValues[] = $denormalizer->denormalize(
+                $dataValue,
+                $productValueClass,
+                'csv',
+                ['entity' => $value] + $attributeInfos
+            );
+        }
+
+        $valuesCollection = new ArrayCollection();
+        foreach ($productValues as $value) {
+            $valuesCollection[ProductValueKeyGenerator::getKey($value)] = $value;
+        }
+
+        return $valuesCollection;
     }
 
     /**
