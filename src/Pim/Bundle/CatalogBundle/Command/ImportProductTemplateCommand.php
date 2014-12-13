@@ -58,8 +58,23 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
 
         // Apply the update on another products
         $updates = $this->normalizeToUpdate($values);
-        var_dump($updates);
 
+        // TODO unset identifier and axis updates and picture (not supported for now)
+        $skippedAttributes = ['sku', 'main_color', 'secondary_color', 'clothing_size', 'picture'];
+        foreach ($updates as $indexUpdate => $update) {
+            if (in_array($update['attribute'], $skippedAttributes)) {
+                unset($updates[$indexUpdate]);
+            } elseif (null === $update['value']) {
+                // TODO ugly fix on null string
+                $updates[$indexUpdate]['value'] = "";
+            }
+        }
+
+        // TODO picture doesnt work
+        // TODO prices doesnt work
+
+        $productToUpdate = $this->getProduct('AKNTS_BPM');
+        $this->update($productToUpdate, $updates);
     }
 
     /**
@@ -74,22 +89,6 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
         $normalizedValues = [];
         foreach ($productValues as $value) {
             $normalizedValues += $normalizer->normalize($value, 'csv');
-        }
-
-        return $normalizedValues;
-    }
-
-    /**
-     * @param ArrayCollection $productValues
-     *
-     * @return array
-     */
-    protected function normalizeToUpdate(ArrayCollection $productValues)
-    {
-        $normalizer = $this->getContainer()->get('pim_serializer');
-        $normalizedValues = [];
-        foreach ($productValues as $value) {
-            $normalizedValues[] = $normalizer->normalize($value, 'json', ['locales' => []]);
         }
 
         return $normalizedValues;
@@ -136,6 +135,29 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
     }
 
     /**
+     * @param ArrayCollection $productValues
+     *
+     * @return array
+     */
+    protected function normalizeToUpdate(ArrayCollection $productValues)
+    {
+        $normalizer = $this->getContainer()->get('pim_serializer');
+        $normalizedValues = [];
+        foreach ($productValues as $value) {
+            $update = [
+                // TODO : weird result with price
+                'value' => $normalizer->normalize($value->getData(), 'json', ['locales' => []]),
+                'attribute' => $value->getAttribute()->getCode(),
+                'locale' => $value->getLocale(),
+                'scope' => $value->getScope()
+            ];
+            $normalizedValues[] = $update;
+        }
+
+        return $normalizedValues;
+    }
+
+    /**
      * @param string $identifier
      *
      * @return ProductInterface
@@ -169,5 +191,59 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
         $objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $objectManager->persist($template);
         $objectManager->flush();
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @param array $updates
+     */
+    protected function update(ProductInterface $product, array $updates)
+    {
+        $updater = $this->getContainer()->get('pim_catalog.updater.product');
+        foreach ($updates as $update) {
+            $updater->setValue(
+                [$product],
+                $update['attribute'],
+                $update['value'],
+                $update['locale'],
+                $update['scope']
+            );
+        }
+
+        $violations = $this->validateProduct($product);
+        foreach ($violations as $violation) {
+            $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
+        }
+        if (0 !== $violations->count()) {
+            $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
+
+            return;
+        }
+
+        $this->saveProduct($product);
+    }
+
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function validateProduct(ProductInterface $product)
+    {
+        $validator = $this->getContainer()->get('pim_validator');
+        $errors = $validator->validate($product);
+
+        return $errors;
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    protected function saveProduct(ProductInterface $product)
+    {
+        $saver = $this->getContainer()->get('pim_catalog.saver.product');
+        $saver->save($product);
     }
 }

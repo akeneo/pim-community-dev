@@ -35,9 +35,6 @@ class PricesDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        // TODO : to fix
-        return null;
-
         if ($data === null || $data === '') {
             return null;
         }

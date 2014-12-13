@@ -34,6 +34,7 @@ class MediaDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        // TODO : to fix
         return;
 
         if ($data === null || $data === '') {
