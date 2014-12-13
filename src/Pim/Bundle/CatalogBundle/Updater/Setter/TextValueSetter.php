@@ -39,7 +39,12 @@ class TextValueSetter extends AbstractValueSetter
         AttributeUtility::validateScope($attribute, $scope);
 
         if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'text value');
+            throw InvalidArgumentException::stringExpected(
+                $attribute->getCode(),
+                'setter',
+                'text value',
+                gettype($data)
+            );
         }
 
         foreach ($products as $product) {

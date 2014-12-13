@@ -60,7 +60,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $data = new \stdClass();
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'media')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'media', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -76,7 +76,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media')
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -92,7 +92,13 @@ class MediaValueSetterSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'originalFilename', 'setter', 'media')
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'originalFilename',
+                'setter',
+                'media',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -113,7 +119,8 @@ class MediaValueSetterSpec extends ObjectBehavior
                 'attributeCode',
                 'a valid file path ("path/to/unknown/file" given)',
                 'setter',
-                'media'
+                'media',
+                gettype($data)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

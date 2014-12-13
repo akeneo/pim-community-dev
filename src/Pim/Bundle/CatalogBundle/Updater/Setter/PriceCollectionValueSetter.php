@@ -65,7 +65,12 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'prices collection');
+            throw InvalidArgumentException::arrayExpected(
+                $attribute->getCode(),
+                'setter',
+                'prices collection',
+                gettype($data)
+            );
         }
 
         foreach ($data as $price) {
@@ -73,7 +78,8 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                 throw InvalidArgumentException::arrayOfArraysExpected(
                     $attribute->getCode(),
                     'setter',
-                    'prices collection'
+                    'prices collection',
+                    gettype($data)
                 );
             }
 
@@ -82,7 +88,8 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     $attribute->getCode(),
                     'data',
                     'setter',
-                    'prices collection'
+                    'prices collection',
+                    gettype($data)
                 );
             }
 
@@ -91,7 +98,8 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     $attribute->getCode(),
                     'currency',
                     'setter',
-                    'prices collection'
+                    'prices collection',
+                    gettype($data)
                 );
             }
 
@@ -100,7 +108,8 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     $attribute->getCode(),
                     'data',
                     'setter',
-                    'prices collection'
+                    'prices collection',
+                    gettype($data)
                 );
             }
 
@@ -110,7 +119,8 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     'currency',
                     sprintf('Currency "%s" does not exist', $price['currency']),
                     'setter',
-                    'prices collection'
+                    'prices collection',
+                    gettype($data)
                 );
             }
         }

@@ -65,7 +65,8 @@ class MediaValueSetter extends AbstractValueSetter
                 $attribute->getCode(),
                 sprintf('a valid file path ("%s" given)', $data['filePath']),
                 'setter',
-                'media'
+                'media',
+                gettype($data)
             );
         }
 
@@ -112,7 +113,7 @@ class MediaValueSetter extends AbstractValueSetter
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'media');
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'media', gettype($data));
         }
 
         if (!array_key_exists('originalFilename', $data)) {
@@ -120,12 +121,19 @@ class MediaValueSetter extends AbstractValueSetter
                 $attribute->getCode(),
                 'originalFilename',
                 'setter',
-                'media'
+                'media',
+                gettype($data)
             );
         }
 
         if (!array_key_exists('filePath', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected($attribute->getCode(), 'filePath', 'setter', 'media');
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'filePath',
+                'setter',
+                'media',
+                gettype($data)
+            );
         }
     }
 }

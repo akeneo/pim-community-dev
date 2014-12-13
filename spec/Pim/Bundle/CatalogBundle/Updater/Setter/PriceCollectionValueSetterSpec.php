@@ -49,7 +49,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = 'not an array';
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'prices collection')
+            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'prices collection', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -63,7 +63,12 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = ['not an array'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayOfArraysExpected('attributeCode', 'setter', 'prices collection')
+            InvalidArgumentException::arrayOfArraysExpected(
+                'attributeCode',
+                'setter',
+                'prices collection',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -77,7 +82,13 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = [['not the data key' => 123]];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'prices collection')
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'data',
+                'setter',
+                'prices collection',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -91,7 +102,13 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = [['data' => 'non numeric value', 'currency' => 'EUR']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected('attributeCode', 'data', 'setter', 'prices collection')
+            InvalidArgumentException::arrayNumericKeyExpected(
+                'attributeCode',
+                'data',
+                'setter',
+                'prices collection',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -105,7 +122,13 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $data = [['data' => 123, 'not the currency key' => 'euro']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'currency', 'setter', 'prices collection')
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'currency',
+                'setter',
+                'prices collection',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -127,7 +150,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'currency',
                 'Currency "invalid currency" does not exist',
                 'setter',
-                'prices collection'
+                'prices collection',
+                gettype($data)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

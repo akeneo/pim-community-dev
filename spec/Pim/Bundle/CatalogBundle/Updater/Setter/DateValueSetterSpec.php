@@ -48,7 +48,13 @@ class DateValueSetterSpec extends ObjectBehavior
         $data = 'not a date';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected('attributeCode', 'a string with the format yyyy-mm-dd', 'setter', 'date')
+            InvalidArgumentException::expected(
+                'attributeCode',
+                'a string with the format yyyy-mm-dd',
+                'setter',
+                'date',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -62,7 +68,13 @@ class DateValueSetterSpec extends ObjectBehavior
         $data = '1970-mm-01';
 
         $this->shouldThrow(
-            InvalidArgumentException::expected('attributeCode', 'a string with the format yyyy-mm-dd', 'setter', 'date')
+            InvalidArgumentException::expected(
+                'attributeCode',
+                'a string with the format yyyy-mm-dd',
+                'setter',
+                'date',
+                gettype($data)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -76,7 +88,7 @@ class DateValueSetterSpec extends ObjectBehavior
         $data = new \Datetime();
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'date')
+            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'date', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
