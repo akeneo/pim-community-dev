@@ -41,3 +41,12 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 - persist
                 - detach
                 - refresh
+    oneToOne:
+        # TODO add a custom constraint, only if type is variant group
+        productTemplate:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupProductTemplate
+            mappedBy: group
+            joinColumns:
+                product_template_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
