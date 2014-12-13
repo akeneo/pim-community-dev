@@ -26,29 +26,19 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  */
 class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer $id */
     protected $id;
 
-    /**
-     * @var string $code
-     */
+    /** @var string $code */
     protected $code;
 
-    /**
-     * @var GroupType
-     */
+    /** @var GroupType */
     protected $type;
 
-    /**
-     * @var ArrayCollection $products
-     */
+    /**  @var ArrayCollection $products */
     protected $products;
 
-    /**
-     * @var ArrayCollection $attributes
-     */
+    /**  @var ArrayCollection $attributes */
     protected $attributes;
 
     /**
@@ -59,10 +49,11 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
      */
     protected $locale;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     */
+    /**  @var \Doctrine\Common\Collections\ArrayCollection $translations */
     protected $translations;
+
+    /**  @var GroupProductTemplate */
+    protected $productTemplate;
 
     /**
      * Constructor
@@ -382,5 +373,21 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * @return GroupProductTemplate
+     */
+    public function getProductTemplate()
+    {
+        return $this->productTemplate;
+    }
+
+    /**
+     * @param GroupProductTemplate $productTemplate
+     */
+    public function setProductTemplate($productTemplate)
+    {
+        $this->productTemplate = $productTemplate;
     }
 }
