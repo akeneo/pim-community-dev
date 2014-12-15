@@ -31,12 +31,25 @@ Feature: Ensure that a published product is safe
     Then I am on the "jackets" category page
     And I should see the "Jackets" category under the "Summer collection" category
 
+  Scenario: Successfully remove a category that is not linked to a published product
+    Given I am on the "winter_top" category page
+    And I press the "Delete" button
+    And I confirm the removal
+    Then I should not see the "Winter tops" category under the "Winter collection" category
+
   Scenario: Fail to remove a family that is linked to a published product
     Given I am on the "jackets" family page
     And I press the "Delete" button
     And I confirm the removal
     Then I am on the families page
     And I should see family jackets
+
+  Scenario: Successfully remove a family that is not linked to a published product
+    Given I am on the "pants" family page
+    And I press the "Delete" button
+    And I confirm the removal
+    When I am on the families page
+    Then I should not see family pants
 
   Scenario: Fail to remove a group that is linked to a published product
     Given I am on the "similar_jackets" product group page
@@ -45,12 +58,26 @@ Feature: Ensure that a published product is safe
     Then I am on the product groups page
     And I should see group similar_jacket
 
+  Scenario: Successfully remove a group that is not linked to a published product
+    Given I am on the "hm_jackets" product group page
+    And I press the "Delete" button
+    And I confirm the removal
+    When I am on the product groups page
+    Then I should not see group hm_jackets
+
   Scenario: Fail to remove an attribute that is linked to a published product
     Given I am on the "handmade" attribute page
     And I press the "Delete" button
     And I confirm the removal
     Then I am on the attributes page
     And I should see attribute handmade
+
+  Scenario: Successfully remove an attribute that is not linked to a published product
+    Given I am on the "comment" attribute page
+    And I press the "Delete" button
+    And I confirm the removal
+    Then I am on the attributes page
+    And I should not see attribute comment
 
   Scenario: Fail to mass delete products if one of them has been published
     Given the following products:
@@ -69,9 +96,23 @@ Feature: Ensure that a published product is safe
     When I save the attribute
     Then the Options section should contain 4 options
 
+  Scenario: Successfully remove an option not linked to a published product
+    Given I am on the "manufacturer" attribute page
+    And I visit the "Values" tab
+    And I remove the "Desigual" option
+    When I save the attribute
+    Then the Options section should contain 3 options
+
   Scenario: Fail to remove a multi-option linked to a published product
     Given I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I remove the "dry" option
     When I save the attribute
     Then the Options section should contain 5 options
+
+  Scenario: Successfully remove a multi-option not linked to a published product
+    Given I am on the "weather_conditions" attribute page
+    And I visit the "Values" tab
+    And I remove the "hot" option
+    When I save the attribute
+    Then the Options section should contain 4 options
