@@ -105,6 +105,8 @@ services:
         class: %pim_enrich.form.type.attribute_group.class%
         tags:
             - { name: form.type, alias: pim_enrich_attribute_group }
+        calls:
+            - [addEventSubscriber, ['@pim_enrich.form.subscriber.set_attribute_group_sort_order']]
 
     pim_enrich.form.type.family:
         class: %pim_enrich.form.type.family.class%
