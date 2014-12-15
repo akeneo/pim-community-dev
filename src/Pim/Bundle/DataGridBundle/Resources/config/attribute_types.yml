@@ -60,7 +60,7 @@ parameters:
                     multiple: true
                     attr:
                         empty_choice: true
-        sorter:          product_value
+        sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:
             type:        product_value_field
