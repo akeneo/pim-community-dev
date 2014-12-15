@@ -43,3 +43,12 @@ Feature: Validate identifier attribute of a product
     Then I should see validation tooltip "This value is not valid."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3447
+  Scenario: Validate the max database value length of identifier attribute
+    Given I am on the "bar" product page
+    When I change the SKU to an invalid value
+    And I save the product
+    Then I should see validation tooltip "This value is too long. It should have 255 characters or less."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red

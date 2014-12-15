@@ -15,6 +15,12 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class LengthGuesser implements ConstraintGuesserInterface
 {
+    /** @staticvar int */
+    const TEXT_FIELD_LEMGTH = 255;
+
+    /** @staticvar int */
+    const TEXTAREA_FIELD_LEMGTH = 65535;
+
     /**
      * {@inheritdoc}
      */
@@ -37,9 +43,15 @@ class LengthGuesser implements ConstraintGuesserInterface
     {
         $constraints = array();
 
+        $characterLimit = 'pim_catalog_textarea' === $attribute->getAttributeType() ?
+            static::TEXTAREA_FIELD_LEMGTH :
+            static::TEXT_FIELD_LEMGTH;
+
         if ($maxCharacters = $attribute->getMaxCharacters()) {
-            $constraints[] = new Assert\Length(array('max' => $maxCharacters));
+            $characterLimit = min($maxCharacters, $characterLimit);
         }
+
+        $constraints[] = new Assert\Length(array('max' => $characterLimit));
 
         return $constraints;
     }
