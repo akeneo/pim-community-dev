@@ -72,7 +72,6 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
 
         // TODO picture doesnt work
         // TODO prices doesnt work
-
         $productToUpdate = $this->getProduct('AKNTS_BPM');
         $this->update($productToUpdate, $updates);
     }
