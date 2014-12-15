@@ -14,9 +14,10 @@ Feature: Validate text attributes of a product
       | barcodes | Barcodes    | text | yes      | no     | 8              | regexp          | /^0\d*$/          |
       | emails   | Emails      | text | yes      | no     |                | email           |                   |
       | links    | Links       | text | yes      | no     |                | url             |                   |
+      | desc     | Description | text | no       | no     |                |                 |                   |
     And the following family:
-      | code | label-en_US | attributes                                         |
-      | baz  | Baz         | sku, barcode, email, link, barcodes, emails, links |
+      | code | label-en_US | attributes                                               |
+      | baz  | Baz         | sku, barcode, email, link, barcodes, emails, links, desc |
     And the following products:
       | sku | family |
       | foo | baz    |
@@ -87,5 +88,13 @@ Feature: Validate text attributes of a product
     Given I change the "ecommerce Barcodes" to "111111"
     And I save the product
     Then I should see validation tooltip "This value is not valid."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3447
+  Scenario: Validate the max database value length of text attribute
+    Given I change the Description to an invalid value
+    And I save the product
+    Then I should see validation tooltip "This value is too long. It should have 255 characters or less."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
