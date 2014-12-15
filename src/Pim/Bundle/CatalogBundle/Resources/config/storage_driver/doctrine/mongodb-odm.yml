@@ -66,6 +66,7 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_catalog.doctrine.naming_utility'
             - %pim_catalog.entity.product.class%
+            - @logger
 
     pim_catalog.doctrine.naming_utility:
         class: %pim_catalog.doctrine.naming_utility.class%
