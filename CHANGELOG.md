@@ -1,7 +1,12 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3447: Enforce max database length limit on identifier, text and textarea attribute values
+
 # 1.2.15 (2014-12-10)
 
 ## Bug fixes
-- PIM-3447: Fix date picker year range selection over next year
+- PIM-3473: Fix date picker year range selection over next year
 - PIM-3475: Fix attribute options sort order in import/export
 
 ## BC breaks
