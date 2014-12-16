@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Psr\Log\LoggerInterface;
 
 /**
  * Create index for different entity requirements
@@ -27,19 +28,25 @@ class IndexCreator
     /** @var string */
     protected $productClass;
 
+    /** @var LoggerInterface */
+    protected $logger;
+
     /**
      * @param ManagerRegistry $managerRegistry
      * @param NamingUtility   $namingUtility
      * @param string          $productClass
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         NamingUtility $namingUtility,
-        $productClass
+        $productClass,
+        $logger = null
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;
         $this->productClass    = $productClass;
+        $this->logger          = $logger;
     }
 
     /**
@@ -195,6 +202,18 @@ class IndexCreator
     protected function ensureIndexes(array $fields)
     {
         $collection = $this->getCollection();
+        $preNbIndexes = count($collection->getIndexInfo());
+        $postNbIndexes = $preNbIndexes + count($fields);
+        if ($postNbIndexes > 64) {
+            $msg = sprintf('Too many MongoDB indexes (%d), no way to add %s', $preNbIndexes, print_r($fields, true));
+            if (null !== $this->logger) {
+                $this->logger->error($msg);
+            } else {
+                error_log($msg);
+            }
+
+            return;
+        }
 
         $indexOptions = [
             'background' => true,
