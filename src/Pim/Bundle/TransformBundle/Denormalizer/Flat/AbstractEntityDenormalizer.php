@@ -1,18 +1,8 @@
 <?php
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
+namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -22,6 +12,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  * Abstract denormalizer class for flat entity denormalizers
  *
  * @author Romain Monceau <romain@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, DenormalizerInterface
 {
@@ -143,13 +135,13 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      *
      * @return object|false
      *
-     * @throws RevertException
+     * @throws \LogicException
      */
     protected function findEntity($identifier)
     {
         $entity = $this->getRepository()->findByReference($identifier);
         if (!$entity) {
-            throw new RevertException(
+            throw new \LogicException(
                 sprintf('Entity "%s" with identifier "%s" not found', $this->entityClass, $identifier)
             );
         }

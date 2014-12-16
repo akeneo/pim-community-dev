@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
+namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;

@@ -1,15 +1,6 @@
 <?php
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
+namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -18,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * - pim_catalog_multiselect
  *
  * @author Romain Monceau <romain@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeOptionsDenormalizer extends AbstractValueDenormalizer
 {

@@ -39,6 +39,7 @@
 - Use CompletenessInterface and not AbstractCompleteness
 - Allow to generate many versions in a single request
 - Better display on batch warnings
+- Add flat / csv denormalizers for product data
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
