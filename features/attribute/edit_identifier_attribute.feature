@@ -43,7 +43,6 @@ Feature: Edit an identifier attribute
     And I save the attribute
     Then I should see validation error "This value should not be blank."
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"
