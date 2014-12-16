@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository;
@@ -51,7 +51,7 @@ class GroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Entity\Group", "%s" provided.',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )
@@ -66,7 +66,7 @@ class GroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Entity\Group", "%s" provided.',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )
@@ -78,7 +78,7 @@ class GroupManagerSpec extends ObjectBehavior
         $eventDispatcher,
         $registry,
         ObjectManager $objectManager,
-        Group $group
+        Groupinterface $group
     ) {
         $eventDispatcher->dispatch(
             GroupEvents::PRE_REMOVE,

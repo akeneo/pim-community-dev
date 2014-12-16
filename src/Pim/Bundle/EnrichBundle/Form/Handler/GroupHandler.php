@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Symfony\Component\Form\FormInterface;
@@ -78,9 +78,9 @@ class GroupHandler implements HandlerInterface
     /**
      * Call when form is valid
      *
-     * @param Group $group
+     * @param GroupInterface $group
      */
-    protected function onSuccess(Group $group)
+    protected function onSuccess(GroupInterface $group)
     {
         $this->groupManager->save($group);
 

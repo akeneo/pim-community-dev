@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
@@ -114,6 +115,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('pim_enrich_group_index');
         }
 
+        // TODO : inject class or use a factory
         $group = new Group();
 
         if ($this->groupHandler->process($group)) {
@@ -136,6 +138,8 @@ class GroupController extends AbstractController
     /**
      * Edit a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @Template
@@ -156,6 +160,9 @@ class GroupController extends AbstractController
 
     /**
      * Remove a group
+     *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_remove")
@@ -175,6 +182,8 @@ class GroupController extends AbstractController
     /**
      * Display the products of a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @return array
@@ -189,6 +198,8 @@ class GroupController extends AbstractController
 
     /**
      * History of a group
+     *
+     * TODO : find a way to use param converter with interfaces
      *
      * @param Group $group
      *

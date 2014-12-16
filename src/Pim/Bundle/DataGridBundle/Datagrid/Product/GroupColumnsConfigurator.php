@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -72,7 +72,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     }
 
     /**
-     * @return Group
+     * @return GroupInterface
      */
     protected function getGroup()
     {

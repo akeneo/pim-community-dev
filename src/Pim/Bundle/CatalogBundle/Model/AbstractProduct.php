@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
@@ -588,7 +587,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addGroup(Group $group)
+    public function addGroup(GroupInterface $group)
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -601,7 +600,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeGroup(Group $group)
+    public function removeGroup(GroupInterface $group)
     {
         $this->groups->removeElement($group);
 

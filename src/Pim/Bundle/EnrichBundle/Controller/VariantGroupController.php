@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +47,7 @@ class VariantGroupController extends GroupController
             ->getGroupTypeRepository()
             ->findOneBy(array('code' => 'VARIANT'));
 
+        // TODO inject the class or use a factory
         $group = new Group();
         $group->setType($groupType);
 
@@ -68,6 +70,8 @@ class VariantGroupController extends GroupController
 
     /**
      * {@inheritdoc}
+     *
+     * TODO : find a way to use param converter with interfaces
      *
      * @AclAncestor("pim_enrich_group_edit")
      * @Template

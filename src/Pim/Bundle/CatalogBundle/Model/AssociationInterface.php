@@ -2,7 +2,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Association interface
@@ -66,7 +65,7 @@ interface AssociationInterface extends ReferableInterface
     /**
      * Set groups
      *
-     * @param Group[] $groups
+     * @param GroupInterface[] $groups
      *
      * @return AssociationInterface
      */
@@ -91,27 +90,27 @@ interface AssociationInterface extends ReferableInterface
     /**
      * Add a group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return AssociationInterface
      */
-    public function addGroup(Group $group);
+    public function addGroup(GroupInterface $group);
 
     /**
      * Get groups
      *
-     * @return Group[]
+     * @return GroupInterface[]
      */
     public function getGroups();
 
     /**
      * Remove a group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return AssociationInterface
      */
-    public function removeGroup(Group $group);
+    public function removeGroup(GroupInterface $group);
 
     /**
      * Get owner

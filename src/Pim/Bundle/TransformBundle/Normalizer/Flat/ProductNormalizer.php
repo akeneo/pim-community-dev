@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
@@ -197,7 +197,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalizes groups
      *
-     * @param Group[] $groups
+     * @param GroupInterface[] $groups
      */
     protected function normalizeGroups($groups = null)
     {

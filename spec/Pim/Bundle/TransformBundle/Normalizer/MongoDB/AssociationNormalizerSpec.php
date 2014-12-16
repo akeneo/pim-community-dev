@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
@@ -105,8 +105,8 @@ class AssociationNormalizerSpec extends ObjectBehavior
         AssociationType $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
-        Group $group1,
-        Group $group2
+        GroupInterface $group1,
+        GroupInterface $group2
     ) {
         $assocType->getId()->willReturn(8);
         $assoc->getProducts()->willReturn([]);
@@ -140,8 +140,8 @@ class AssociationNormalizerSpec extends ObjectBehavior
         \MongoDBRef $product1Ref,
         ProductInterface $product2,
         \MongoDBRef $product2Ref,
-        Group $group1,
-        Group $group2
+        GroupInterface $group1,
+        GroupInterface $group2
     ) {
         $assocType->getId()->willReturn(8);
         $assoc->getAssociationType()->willReturn($assocType);
