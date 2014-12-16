@@ -14,7 +14,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class FieldNameBuilder
 {
-    const CHANNEL_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Channel';
+    /** @var static string */
+    const CHANNEL_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Channel';
+
+    /** @var static string */
     const LOCALE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Locale';
 
     /** @var ManagerRegistry */
@@ -39,16 +42,16 @@ class FieldNameBuilder
      * @param string          $channelClass
      * @param string          $localeClass
      */
-    public function __construct(ManagerRegistry $managerRegistry, $assocTypeClass, $attributeClass, $channelClass = null, $localeClass = null)
-    {
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        $assocTypeClass, $attributeClass,
+        $channelClass = self::CHANNEL_CLASS,
+        $localeClass = self::LOCALE_CLASS
+    ) {
         $this->managerRegistry = $managerRegistry;
         $this->assocTypeClass  = $assocTypeClass;
         $this->attributeClass  = $attributeClass;
-        if ($channelClass == null)
-            $channelClass =  self::CHANNEL_CLASS;
         $this->channelClass    = $channelClass;
-        if ($localeClass == null)
-            $localeClass =  self::LOCALE_CLASS;
         $this->localeClass     = $localeClass;
     }
 
@@ -251,7 +254,7 @@ class FieldNameBuilder
             $channel = $this->getRepository($this->channelClass)->findByReference($attributeInfos['scope_code']);
             $locale = $this->getRepository($this->localeClass)->findByReference($attributeInfos['locale_code']);
 
-            if ($channel != null && $locale != null && !$channel->hasLocale($locale)) {
+            if ($channel !== null && $locale !== null && !$channel->hasLocale($locale)) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The locale "%s" of the field "%s" is not available in scope "%s"',

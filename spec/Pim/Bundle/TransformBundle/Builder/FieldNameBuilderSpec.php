@@ -274,10 +274,12 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()->willReturn('text');
 
-        $attributeInfos = [
-            'attribute'   => $attribute,
-            'locale_code' => 'de_DE',
-            'scope_code'  => 'mobile'];
+        $attributeInfos =
+            [
+                'attribute'   => $attribute,
+                'locale_code' => 'de_DE',
+                'scope_code'  => 'mobile'
+            ];
 
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
         $repository->findByReference('description')->willReturn($attribute);
