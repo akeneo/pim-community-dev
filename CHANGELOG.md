@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-3447: Enforce max database length limit on identifier, text and textarea attribute values
 - PIM-3471 : Add an error log when the max number of indexes is reached for the mongo product collection (MongoResultException is raised since Mongo 2.6.*)
+- PIM-3369: Check on import if the couple channel/local exist
 
 # 1.2.15 (2014-12-10)
 
