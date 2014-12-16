@@ -72,4 +72,23 @@ class AttributeGroupRepository extends ReferableEntityRepository
     {
         return $this->findOneBy(array('code' => AttributeGroup::DEFAULT_GROUP_CODE));
     }
+
+    /**
+     * @param array $codes
+     *
+     * @return AttributeGroup[]
+     */
+    public function getAttributeGroupsFromAttributeCodes(array $codes)
+    {
+        $qb = $this->createQueryBuilder('ga');
+
+        $query = $qb
+            ->innerJoin('ga.attributes', 'a')
+            ->where($qb->expr()->in('a.code', ':codes'))
+            ->setParameter(':codes', $codes)
+            ->getQuery()
+        ;
+
+        return $query->getResult();
+    }
 }
