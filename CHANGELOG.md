@@ -5,8 +5,9 @@
 - PIM-3471 : Add an error log when the max number of indexes is reached for the mongo product collection (MongoResultException is raised since Mongo 2.6.*)
 - PIM-3369: Check on import if the couple channel/local exist
 - PIM-3368: Add association type check on association import
+- PIM-3377 : Add a check if the specific locale exists on imports, and skip unused attribute column for locale specific on exports
 
-## BC breaks
+## BC breaks
 - Add AssociationType class argument to the Pim\Bundle\TransformBundle\Transformer\AssociationTransformer constructor
 
 # 1.2.15 (2014-12-10)
