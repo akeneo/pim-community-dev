@@ -1,4 +1,3 @@
-@javascript
 Feature: Edit a product
   In order to enrich the catalog
   As a regular user
@@ -19,6 +18,7 @@ Feature: Edit a product
     Then I should be on the product "sandal" edit page
     Then the product Name should be "My Sandal"
 
+  @javascript
   Scenario: Don't see the attributes tab when the user can't edit a product
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page
