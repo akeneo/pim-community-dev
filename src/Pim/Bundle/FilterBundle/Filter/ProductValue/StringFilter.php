@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 
 /**
  * String filter
@@ -64,5 +65,27 @@ class StringFilter extends OroStringFilter
         }
 
         return $data;
+    }
+
+    /**
+     * Get operator string
+     *
+     * @param int $type
+     *
+     * @return string
+     */
+    protected function getOperator($type)
+    {
+        $operatorTypes = array(
+            TextFilterType::TYPE_CONTAINS     => 'LIKE',
+            TextFilterType::TYPE_NOT_CONTAINS => 'NOT LIKE',
+            TextFilterType::TYPE_EQUAL        => 'LIKE',
+            TextFilterType::TYPE_STARTS_WITH  => 'LIKE',
+            TextFilterType::TYPE_ENDS_WITH    => 'LIKE',
+            FilterType::TYPE_EMPTY            => 'EMPTY',
+            FilterType::TYPE_IN_LIST          => 'IN',
+        );
+
+        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
     }
 }
