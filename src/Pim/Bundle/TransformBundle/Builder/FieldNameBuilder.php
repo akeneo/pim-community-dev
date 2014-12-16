@@ -14,6 +14,9 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class FieldNameBuilder
 {
+    const CHANNEL_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Channel';
+    const LOCALE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Locale';
+
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
@@ -23,16 +26,30 @@ class FieldNameBuilder
     /** @var string */
     protected $attributeClass;
 
+    /** @var string */
+    protected $channelClass;
+
+    /** @var string */
+    protected $localeClass;
+
     /**
      * @param ManagerRegistry $managerRegistry
      * @param string          $assocTypeClass
      * @param string          $attributeClass
+     * @param string          $channelClass
+     * @param string          $localeClass
      */
-    public function __construct(ManagerRegistry $managerRegistry, $assocTypeClass, $attributeClass)
+    public function __construct(ManagerRegistry $managerRegistry, $assocTypeClass, $attributeClass, $channelClass = null, $localeClass = null)
     {
         $this->managerRegistry = $managerRegistry;
         $this->assocTypeClass  = $assocTypeClass;
         $this->attributeClass  = $attributeClass;
+        if ($channelClass == null)
+            $channelClass =  self::CHANNEL_CLASS;
+        $this->channelClass    = $channelClass;
+        if ($localeClass == null)
+            $localeClass =  self::LOCALE_CLASS;
+        $this->localeClass     = $localeClass;
     }
 
     /**
@@ -45,8 +62,8 @@ class FieldNameBuilder
         $fieldNames = [];
         $assocTypes = $this->getRepository($this->assocTypeClass)->findAll();
         foreach ($assocTypes as $assocType) {
-            $fieldNames[] = $assocType->getCode() .'-groups';
-            $fieldNames[] = $assocType->getCode() .'-products';
+            $fieldNames[] = $assocType->getCode().'-groups';
+            $fieldNames[] = $assocType->getCode().'-products';
         }
 
         return $fieldNames;
@@ -78,8 +95,10 @@ class FieldNameBuilder
 
         if (null !== $attribute) {
             $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
+            $attributeInfos = $this->extractAttributeInfos($attribute, $explodedFieldName);
+            $this->checkFieldNameLocaleByChannel($attribute,  $fieldName, $attributeInfos);
 
-            return $this->extractAttributeInfos($attribute, $explodedFieldName);
+            return $attributeInfos;
         }
 
         return null;
@@ -146,7 +165,7 @@ class FieldNameBuilder
     }
 
     /**
-     * Check th consistency of the field with the attribute and it properties locale, scope, currency
+     * Check the consistency of the field with the attribute and it properties locale, scope, currency
      *
      * @param AbstractAttribute $attribute
      * @param string            $fieldName
@@ -210,6 +229,38 @@ class FieldNameBuilder
                     $expected
                 )
             );
+        }
+    }
+
+    /**
+     * Check the consistency of the field with channel associated
+     *
+     * @param AbstractAttribute $attribute
+     * @param string            $fieldName
+     * @param array             $attributeInfos
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function checkFieldNameLocaleByChannel(AbstractAttribute $attribute,  $fieldName, array $attributeInfos)
+    {
+        if ($attribute->isScopable() &&
+            $attribute->isLocalizable() &&
+            isset($attributeInfos['scope_code']) &&
+            isset($attributeInfos['locale_code'])
+        ) {
+            $channel = $this->getRepository($this->channelClass)->findByReference($attributeInfos['scope_code']);
+            $locale = $this->getRepository($this->localeClass)->findByReference($attributeInfos['locale_code']);
+
+            if ($channel != null && $locale != null && !$channel->hasLocale($locale)) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'The locale "%s" of the field "%s" is not available in scope "%s"',
+                        $attributeInfos['locale_code'],
+                        $fieldName,
+                        $attributeInfos['scope_code']
+                    )
+                );
+            }
         }
     }
 

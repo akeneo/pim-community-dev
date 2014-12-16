@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3369: Check on import if the couple channel/local exist
+
 # 1.2.15 (2014-12-10)
 
 ## Bug fixes
