@@ -7,6 +7,7 @@
 - PIM-3368: Add association type check on association import
 - PIM-3377: Add a check if the specific locale exists on imports, and skip unused attribute column for locale specific on exports
 - PIM-3458: When creating an attribute group, automatically set the sort order to the last one
+- PIM-3420: Remove update guessers on attributes and attributes option to fix the versionning memory leak
 
 ## BC breaks
 - PIM-3368: Add AssociationType class argument to the `Pim\Bundle\TransformBundle\Transformer\AssociationTransformer` constructor

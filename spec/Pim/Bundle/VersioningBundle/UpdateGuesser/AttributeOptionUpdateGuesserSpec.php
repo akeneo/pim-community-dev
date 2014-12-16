@@ -59,18 +59,4 @@ class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
         $this->guessUpdates($em, $optionValue, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$attribute]);
         $this->guessUpdates($em, $optionValue, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$attribute]);
     }
-
-    function it_marks_products_as_updated_when_an_attribute_option_is_removed(
-        $em,
-        $repository,
-        $attribute,
-        $option,
-        ProductInterface $foo,
-        ProductInterface $bar
-    ) {
-        $repository->findAllWithAttributeOption($option)->willReturn([$foo, $bar]);
-
-        $this->guessUpdates($em, $option, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$attribute]);
-        $this->guessUpdates($em, $option, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$attribute, $foo, $bar]);
-    }
 }
