@@ -59,6 +59,10 @@ error:
         user:             Cannot delete this user
         role:             Cannot delete this role
 
+alert:
+    category:
+        edit: You do not have rights to edit categories
+
 Edit:                           Edit
 Delete:                         Delete
 Edit attributes of the product: Edit attributes of the product
