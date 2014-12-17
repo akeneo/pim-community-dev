@@ -35,7 +35,7 @@ class PimEnterpriseCatalogRuleBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $versionMappings,
                 ['doctrine.orm.entity_manager'],
-                'pim_catalog.storage_driver.doctrine/orm'
+                false
             )
         );
     }

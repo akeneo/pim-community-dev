@@ -39,7 +39,7 @@ class PimEnterpriseRuleEngineBundle extends Bundle
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
                     $mappings,
                     array('doctrine.orm.entity_manager'),
-                    'pim_catalog.storage_driver.doctrine/orm'
+                    false
                 )
             )
             ->addCompilerPass(new RegisterRunnerPass())
