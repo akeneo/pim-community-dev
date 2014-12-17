@@ -1,6 +1,6 @@
 @javascript
 Feature: Delete a rule
-  In order ease the enrichement of the catalog
+  In order ease the enrichment of the catalog
   As a regular user
   I need to be able to delete a rule
 
