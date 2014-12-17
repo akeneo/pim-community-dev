@@ -6,6 +6,7 @@
 - PIM-3369: Check on import if the couple channel/local exist
 - PIM-3368: Add association type check on association import
 - PIM-3377: Add a check if the specific locale exists on imports, and skip unused attribute column for locale specific on exports
+- PIM-3458: When creating an attribute group, automatically set the sort order to the last one
 
 ## BC breaks
 - PIM-3368: Add AssociationType class argument to the `Pim\Bundle\TransformBundle\Transformer\AssociationTransformer` constructor
