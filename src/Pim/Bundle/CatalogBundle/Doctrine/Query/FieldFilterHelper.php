@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
-class FieldHelper
+class FieldFilterHelper
 {
     public static function getCode($field, $default = null)
     {
@@ -11,7 +11,7 @@ class FieldHelper
         return count($fieldData) > 1 ? $fieldData[0] : $default;
     }
 
-    public static function getIdentifier($field, $default = 'id')
+    public static function getProperty($field, $default = 'id')
     {
         $fieldData = explode('.', $field);
 

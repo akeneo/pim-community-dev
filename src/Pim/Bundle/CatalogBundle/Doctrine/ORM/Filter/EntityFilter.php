@@ -48,12 +48,12 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
 
         if ($operator === Operators::IN_LIST) {
             $this->qb->andWhere(
-                $this->qb->expr()->in($entityAlias . '.' . FieldFilterHelper::getIdentifier($field), $value)
+                $this->qb->expr()->in($entityAlias . '.' . FieldFilterHelper::getProperty($field), $value)
             );
         } elseif ($operator === Operators::NOT_IN_LIST) {
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
-                    $this->qb->expr()->notIn($entityAlias . '.' . FieldFilterHelper::getIdentifier($field), $value),
+                    $this->qb->expr()->notIn($entityAlias . '.' . FieldFilterHelper::getProperty($field), $value),
                     $this->qb->expr()->isNull($entityAlias.'.id')
                 )
             );
@@ -90,7 +90,7 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
         foreach ($value as $entity) {
             if ((
                     FieldFilterHelper::hasProperty($field) &&
-                    FieldFilterHelper::getIdentifier($field) === 'id' &&
+                    FieldFilterHelper::getProperty($field) === 'id' &&
                     !is_numeric($entity)
                 ) ||
                 (
@@ -100,7 +100,7 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
             ) {
                 throw InvalidArgumentException::integerExpected($field, 'filter', 'entity');
             } elseif (FieldFilterHelper::hasProperty($field) &&
-                FieldFilterHelper::getIdentifier($field) !== 'id'
+                FieldFilterHelper::getProperty($field) !== 'id'
                 && !is_string($entity)
             ) {
                 throw InvalidArgumentException::stringExpected($field, 'filter', 'entity');

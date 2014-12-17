@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * Category filter
@@ -56,7 +57,11 @@ class CategoryFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        $categoryIds = $value;
+        if (FieldFilterHelper::getProperty($field) === 'code') {
+            $categoryIds = $this->getIdsFromCodes($value);
+        } else {
+            $categoryIds = $value;
+        }
 
         if ($operator === 'IN') {
             $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, true);
@@ -132,5 +137,17 @@ class CategoryFilter implements FieldFilterInterface
         }
 
         return $allChildrenIds;
+    }
+
+    protected function getIdsFromCodes($categoryCodes)
+    {
+        $categoryIds = [];
+
+        foreach ($categoryCodes as $code) {
+            //TODO catch exception if the code does not exists
+            $categoryIds[] = $this->categoryRepository->findOneByCode($code)->getId();
+        }
+
+        return $categoryIds;
     }
 }
