@@ -57,7 +57,7 @@ class CategoryFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
     {
-        if (FieldFilterHelper::getProperty($field) === 'code') {
+        if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
             $categoryIds = $this->getIdsFromCodes($value);
         } else {
             $categoryIds = $value;
