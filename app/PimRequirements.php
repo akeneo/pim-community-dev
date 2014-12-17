@@ -43,6 +43,12 @@ class PimRequirements extends OroRequirements
             );
         }
 
+        $this->addPimRequirement(
+            function_exists('exec'),
+            'The exec() function should be enabled in order to run jobs',
+            'Make sure the <strong>exec()</strong> function is not disabled in php.ini'
+        );
+
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {
             $this->addPimRequirement(

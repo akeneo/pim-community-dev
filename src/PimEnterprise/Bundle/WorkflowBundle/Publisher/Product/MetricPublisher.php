@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product metric publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class MetricPublisher implements PublisherInterface
 {
@@ -52,7 +52,7 @@ class MetricPublisher implements PublisherInterface
      */
     public function supports($object)
     {
-        return $object instanceof AbstractMetric;
+        return $object instanceof MetricInterface;
     }
 
     /**

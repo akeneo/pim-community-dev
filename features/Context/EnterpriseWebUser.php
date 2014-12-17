@@ -15,6 +15,8 @@ class EnterpriseWebUser extends BaseWebUser
 {
     /**
      * Override parent
+     *
+     * {@inheritdoc}
      */
     public function iChooseTheOperation($operation)
     {
@@ -36,7 +38,10 @@ class EnterpriseWebUser extends BaseWebUser
         new Step\Given('I should not see an "input" element');
     }
     /**
-    * @Then /^the view mode field (.*) should contain "([^"]*)"$/
+     * @param string $fieldName
+     * @param string $expected
+     *
+     * @Then /^the view mode field (.*) should contain "([^"]*)"$/
      */
     public function theProductViewModeFieldValueShouldBe($fieldName, $expected = '')
     {

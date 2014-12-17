@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\AbstractType;
 
 /**
  * Form type for AttributeGroup permissions
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class AttributeGroupPermissionsType extends AbstractType
 {

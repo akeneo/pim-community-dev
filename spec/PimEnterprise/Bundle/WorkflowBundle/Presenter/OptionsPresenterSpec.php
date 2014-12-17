@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model;
@@ -22,7 +21,7 @@ class OptionsPresenterSpec extends ObjectBehavior
     }
 
     function it_supports_change_if_it_has_an_options_key(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $this->supports($value, ['options' => '1,2,3'])->shouldBe(true);
     }
@@ -30,7 +29,7 @@ class OptionsPresenterSpec extends ObjectBehavior
     function it_presents_options_change_using_the_injected_renderer(
         $repository,
         RendererInterface $renderer,
-        Model\AbstractProductValue $value,
+        Model\ProductValueInterface $value,
         AttributeOption $red,
         AttributeOption $green,
         AttributeOption $blue
@@ -41,7 +40,9 @@ class OptionsPresenterSpec extends ObjectBehavior
         $green->__toString()->willReturn('Green');
         $blue->__toString()->willReturn('Blue');
 
-        $renderer->renderDiff(['Red', 'Green'], ['Red', 'Green', 'Blue'])->willReturn('diff between two options collections');
+        $renderer
+            ->renderDiff(['Red', 'Green'], ['Red', 'Green', 'Blue'])
+            ->willReturn('diff between two options collections');
 
         $this->setRenderer($renderer);
         $this->present($value, ['options' => '1,2,3'])->shouldReturn('diff between two options collections');

@@ -1,0 +1,60 @@
+parameters:
+    pim_enrich.view_element.product.tab.attribute.template:        'PimEnterpriseEnrichBundle:Product:Tab/attribute_edit.html.twig'
+    pimee_enrich.view_element.product.tab.proposal.template:       'PimEnterpriseEnrichBundle:Product:Tab/proposal.html.twig'
+    pimee_enrich.view_element.product.tab.attribute_show.template: 'PimEnterpriseEnrichBundle:Product:Tab/attribute_show.html.twig'
+
+services:
+    # Category
+    pim_enrich.view_element.product.tab.category:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.category'
+            - %pim_enrich.view_element.product.tab.category.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_product_categories_view'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.voter', {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'object': '[product]' }] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 100 }
+
+    # Association
+    pim_enrich.view_element.product.tab.association:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.association'
+            - %pim_enrich.view_element.product.tab.association.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.voter', {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'object': '[product]' }] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 110 }
+
+    # Proposal
+    pim_enrich.view_element.product.tab.proposal:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_enrich.product.tab.proposal'
+            - %pimee_enrich.view_element.product.tab.proposal.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.voter', {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'object': '[product]' }] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 115 }
+
+    # Attributes show
+    pim_enrich.view_element.product.tab.attribute_show:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.attribute'
+            - %pimee_enrich.view_element.product.tab.attribute_show.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_show.form_tab, position: 100 }
+
+    # Completeness
+    pim_enrich.view_element.product.tab.completeness:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.product.tab.completeness'
+            - %pim_enrich.view_element.product.tab.completeness.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 120 }
+            - { name: pim_enrich.view_element, type: pim_product_show.form_tab, position: 120 }

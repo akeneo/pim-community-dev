@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Present an attribute
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class AttributePresenter implements PresenterInterface, TwigAwareInterface
 {
@@ -27,7 +27,7 @@ class AttributePresenter implements PresenterInterface, TwigAwareInterface
      */
     public function supports($data, array $change)
     {
-        return $data instanceof AbstractAttribute;
+        return $data instanceof AttributeInterface;
     }
 
     /**
@@ -52,7 +52,7 @@ class AttributePresenter implements PresenterInterface, TwigAwareInterface
             $parts[] = $change['__context__']['scope'];
         }
 
-        $parts[] = (string) $data;
+        $parts[] = $data->getLabel();
 
         return join(' - ', $parts);
     }

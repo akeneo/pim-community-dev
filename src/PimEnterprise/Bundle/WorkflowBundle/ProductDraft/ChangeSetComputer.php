@@ -11,18 +11,18 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\ProductDraft;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Product change set computer during product draft workflow
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ChangeSetComputer implements ChangeSetComputerInterface
 {
@@ -81,12 +81,12 @@ class ChangeSetComputer implements ChangeSetComputerInterface
     /**
      * Delegates change preparation to event listeners/subscribers
      *
-     * @param AbstractProductValue $value
-     * @param null|array           $changes
+     * @param ProductValueInterface $value
+     * @param null|array            $changes
      *
      * @return null|array
      */
-    protected function prepareChange(AbstractProductValue $value, $changes)
+    protected function prepareChange(ProductValueInterface $value, $changes)
     {
         $event = new ChangeSetEvent($value, $changes);
         $this->eventDispatcher->dispatch(ChangeSetEvents::PREPARE_CHANGE, $event);

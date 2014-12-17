@@ -2,20 +2,20 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs as MongoDBODMLifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs as MongoDBODMPreUpdateEventsArgs;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\UnitOfWork;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -52,7 +52,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
     ) {
         $event->getDocument()->willReturn($productDraft);
         $productDraft->getProduct()->willReturn($product);
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
@@ -70,7 +72,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
     ) {
         $event->getDocument()->willReturn($productDraft);
         $productDraft->getProduct()->willReturn($product);
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
@@ -95,7 +99,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $event->getDocumentManager()->willReturn($dm);
         $dm->getUnitOfWork()->willReturn($uow);
 
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
@@ -172,7 +178,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $event->getDocumentManager()->willReturn($dm);
         $dm->getUnitOfWork()->willReturn($uow);
 
-        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $product
+            ->getCategories()
+            ->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 

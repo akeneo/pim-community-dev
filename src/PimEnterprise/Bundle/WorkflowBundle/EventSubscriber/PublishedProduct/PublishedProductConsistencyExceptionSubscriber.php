@@ -11,17 +11,17 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
+use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
-use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 
 /**
  * Subscriber when PublishedProductConsistencyException is thrown as response
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PublishedProductConsistencyExceptionSubscriber implements EventSubscriberInterface
 {

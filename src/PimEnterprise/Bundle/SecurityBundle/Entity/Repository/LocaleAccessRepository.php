@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Locale access repository
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocaleAccessRepository extends EntityRepository
 {

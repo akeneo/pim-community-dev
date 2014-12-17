@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Helper for product draft datagrid
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class GridHelper
 {

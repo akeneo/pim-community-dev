@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class GroupsTypeSpec extends ObjectBehavior
 {

@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Row actions configurator for product grid
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RowActionsConfigurator implements ConfiguratorInterface
 {
@@ -78,7 +78,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
+            $product = $this->productRepository->findOneById($record->getValue('id'));
             $locale = $this->localeRepository->findOneBy(['code' => $record->getValue('dataLocale')]);
 
             $editGranted = $this->securityContext->isGranted(Attributes::EDIT, $product);

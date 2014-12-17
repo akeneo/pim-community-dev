@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Compiler pass that register product draft value presenters into the product draft twig extension
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class RegisterComparatorsPass implements CompilerPassInterface
 {

@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Factory of uploaded file
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class UploadedFileFactory
 {

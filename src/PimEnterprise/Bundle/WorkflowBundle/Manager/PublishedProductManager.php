@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Published product manager
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductManager
 {
@@ -110,14 +110,7 @@ class PublishedProductManager
      */
     public function findByIdentifier($identifier)
     {
-        return $this->repository->findOneBy(
-            [
-                [
-                    'attribute' => $this->productManager->getIdentifierAttribute(),
-                    'value' => $identifier
-                ]
-            ]
-        );
+        return $this->repository->findOneByIdentifier($identifier);
     }
 
     /**

@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 /**
  * Product draft
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraft
 {

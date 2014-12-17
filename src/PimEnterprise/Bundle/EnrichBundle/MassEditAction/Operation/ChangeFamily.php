@@ -13,12 +13,10 @@ namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily as BaseChangeFamily;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
-
 /**
  * Batch operation to change the family of products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ChangeFamily extends BaseChangeFamily
 {

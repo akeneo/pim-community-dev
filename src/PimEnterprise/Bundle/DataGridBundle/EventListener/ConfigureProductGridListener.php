@@ -12,18 +12,18 @@
 namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener as BaseConfigureProductGridListener;
+use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator;
 
 /**
  * Grid listener to configure columns, filters, sorters and rows actions
  * based on product attributes, business rules and permissions
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ConfigureProductGridListener extends BaseConfigureProductGridListener
 {

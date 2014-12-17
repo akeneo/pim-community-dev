@@ -11,21 +11,21 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Published products repository
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {
@@ -97,7 +97,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForFamily(Family $family)
+    public function countPublishedProductsForFamily(FamilyInterface $family)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb
@@ -123,7 +123,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
+    public function countPublishedProductsForAttribute(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->innerJoin('pp.values', 'ppv', 'WITH', $qb->expr()->eq('ppv.attribute', $attribute->getId()));

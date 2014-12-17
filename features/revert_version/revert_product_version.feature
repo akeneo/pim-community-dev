@@ -8,7 +8,6 @@ Feature: Revert a product to a previous version
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  @skip
   Scenario: Successfully revert the status of a product (disabled)
     Given an enabled "shirt" product
     And I am on the "shirt" product page
@@ -17,7 +16,6 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: shirt"
     Then product "shirt" should be enabled
 
-  @skip
   Scenario: Successfully revert the status of a product (enable)
     Given a disabled "shirt" product
     And I am on the "shirt" product page
@@ -26,7 +24,6 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: shirt"
     Then product "shirt" should be disabled
 
-  @skip
   Scenario: Successfully revert the family of a product
     Given the following product:
       | sku  | family |
@@ -42,7 +39,6 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: jean"
     Then the family of product "jean" should be "pants"
 
-  @skip
   Scenario: Successfully revert the category of a product
     Given the following product:
       | sku     | categories        |

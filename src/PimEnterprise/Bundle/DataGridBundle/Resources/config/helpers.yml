@@ -1,5 +1,6 @@
 parameters:
-    pimee_datagrid.datagrid.product_draft.grid_helper.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper
+    pimee_datagrid.datagrid.product_draft.grid_helper.class:     PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper
+    pimee_datagrid.datagrid.proposal.grid_helper.class:          PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper
     pimee_datagrid.datagrid.published_product.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct\GridHelper
     pimee_datagrid.datagrid.product_history.grid_helper.class:   PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductHistory\GridHelper
 
@@ -8,6 +9,11 @@ services:
         class: %pimee_datagrid.datagrid.product_draft.grid_helper.class%
         arguments:
             - '@security.context'
+
+    pimee_datagrid.datagrid.proposal.grid_helper:
+        class: %pimee_datagrid.datagrid.proposal.grid_helper.class%
+        arguments:
+            - '@oro_user.manager'
 
     pimee_datagrid.datagrid.published_product.grid_helper:
         class: %pimee_datagrid.datagrid.published_product.grid_helper.class%

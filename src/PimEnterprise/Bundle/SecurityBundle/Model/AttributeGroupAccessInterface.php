@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 /**
  * Attribute group access interface
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface AttributeGroupAccessInterface extends AccessInterface
 {

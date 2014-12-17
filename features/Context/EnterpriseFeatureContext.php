@@ -2,8 +2,6 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step;
-
 /**
  * A context for creating entities
  *
@@ -39,6 +37,10 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @param string $field
+     *
+     * @return bool
+     * @throws ExpectationException
      * @Then /^I should see that (.*) is a modified value$/
      */
     public function iShouldSeeThatFieldIsAModifiedValue($field)
@@ -54,6 +56,10 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @param string $field
+     * @param string $userGroups
+     *
+     * @throws ExpectationException
      * @Then /^I should see the permission (.*) with user groups (.*)$/
      */
     public function iShouldSeeThePermissionFieldWithRoles($field, $userGroups)
@@ -89,6 +95,9 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @param string $status
+     *
+     * @throws \LogicException
      * @Then /^its status should be "([^"]*)"$/
      */
     public function itsStatusShouldBe($status)

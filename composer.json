@@ -17,10 +17,10 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.0.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-master",
         "monolog/monolog": "1.10.*",
         "symfony/icu": "1.1.0",
-        "oro/platform": "1.0.0-beta13",
+        "oro/platform": "1.0.0-beta14",
         "phpspec/php-diff": "1.0.2",
         "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
         "knplabs/knp-menu":"v2.0.0-alpha2",

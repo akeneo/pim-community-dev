@@ -11,18 +11,18 @@
 
 namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
-use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
  * Subscriber to manager permissions on job profiles
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfilePermissionsSubscriber implements EventSubscriberInterface
 {

@@ -17,12 +17,12 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs as MongoDBODMLifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs as MongoDBODMPreUpdateEventsArgs;
 use Doctrine\ODM\MongoDB\Events as MongoDBODMEvents;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use Doctrine\ORM\Events as ORMEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
  * Keeps product draft categoryIds field synchronized with its related product's categories
@@ -33,7 +33,7 @@ use Doctrine\ODM\MongoDB\UnitOfWork;
  *
  * This subscriber is only registered when the mongodb support is activated
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
 {
@@ -41,16 +41,16 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     protected $registry;
 
     /** @var string */
-    protected $productDraftClassName;
+    protected $productDraftClass;
 
     /**
      * @param ManagerRegistry $registry
-     * @param string          $productDraftClassName
+     * @param string          $productDraftClass
      */
-    public function __construct(ManagerRegistry $registry, $productDraftClassName)
+    public function __construct(ManagerRegistry $registry, $productDraftClass)
     {
         $this->registry = $registry;
-        $this->productDraftClassName = $productDraftClassName;
+        $this->productDraftClass = $productDraftClass;
     }
 
     /**
@@ -136,6 +136,8 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      * Synchronize category ids of product draft
      *
      * @param ProductDraft $productDraft
+     *
+     * @return null
      */
     protected function syncProductDraft(ProductDraft $productDraft)
     {
@@ -156,6 +158,8 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      *
      * @param ProductInterface $product
      * @param UnitOfWork       $uow
+     *
+     * @return null
      */
     protected function syncProductDrafts(ProductInterface $product, UnitOfWork $uow)
     {
@@ -191,6 +195,6 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      */
     protected function getProductDrafts(ProductInterface $product)
     {
-        return $this->registry->getRepository($this->productDraftClassName)->findByProduct($product);
+        return $this->registry->getRepository($this->productDraftClass)->findByProduct($product);
     }
 }

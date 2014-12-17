@@ -3,8 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class DefaultPresenterSpec extends ObjectBehavior
@@ -14,15 +13,13 @@ class DefaultPresenterSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter');
     }
 
-    function it_supports_all_the_product_values(Model\AbstractProductValue $value)
+    function it_supports_all_the_product_values(ProductValueInterface $value)
     {
         $this->supports($value, [])->shouldBe(true);
     }
 
-    function it_presents_change_using_the_injected_renderer(
-        RendererInterface $renderer,
-        Model\AbstractProductValue $value
-    ) {
+    function it_presents_change_using_the_injected_renderer(RendererInterface $renderer, ProductValueInterface $value)
+    {
         $value->getData()->willReturn('bar');
         $renderer->renderDiff('bar', 'foo')->willReturn('diff between two simple values');
 

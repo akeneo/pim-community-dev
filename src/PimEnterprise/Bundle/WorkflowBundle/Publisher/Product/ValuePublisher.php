@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 /**
  * Product value publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ValuePublisher implements PublisherInterface
 {

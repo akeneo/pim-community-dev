@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * User context that provides access to user locale, channel and default category tree
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class UserContext extends BaseUserContext
 {

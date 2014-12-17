@@ -2,7 +2,6 @@ parameters:
     pim_catalog.manager.product_mass_action.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.category.class: PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.manager.product_category.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager
-    pim_catalog.manager.media.class: PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager
 
 services:
     pim_catalog.manager.product_mass_action:
@@ -29,10 +28,3 @@ services:
             - '@pim_catalog.repository.category'
             - '@security.context'
             - '@pimee_security.repository.category_access'
-
-    pim_catalog.manager.media:
-        class: %pim_catalog.manager.media.class%
-        arguments:
-            - '@pim_filesystem'
-            - %upload_dir%
-            - '@pim_catalog.factory.media'
