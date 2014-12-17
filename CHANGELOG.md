@@ -1,4 +1,4 @@
-# 1.2.x
+# 1.2.16 (2014-12-17)
 
 ## Bug fixes
 - PIM-3447: Enforce max database length limit on identifier, text and textarea attribute values
