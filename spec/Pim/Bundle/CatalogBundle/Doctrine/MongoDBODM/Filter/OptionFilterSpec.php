@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Prophecy\Argument;
 
 /**
@@ -14,9 +15,9 @@ use Prophecy\Argument;
  */
 class OptionFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb)
+    function let(Builder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith(['pim_catalog_simpleselect'], ['IN', 'EMPTY']);
+        $this->beConstructedWith($objectIdResolver, ['pim_catalog_simpleselect'], ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -58,7 +59,7 @@ class OptionFilterSpec extends ObjectBehavior
         $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
         $qb->addAnd($expr)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'IN', ['118', '270']);
+        $this->addAttributeFilter($attribute, 'IN', ['118', '270'], null, null, ['field' => 'option_code.id']);
     }
 
     function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
@@ -73,20 +74,20 @@ class OptionFilterSpec extends ObjectBehavior
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $qb->addAnd($expr)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'EMPTY', null);
+        $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'option_code.id']);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('option_code');
         $this->shouldThrow(InvalidArgumentException::arrayExpected('option_code', 'filter', 'option'))
-            ->during('addAttributeFilter', [$attribute, 'IN', 'WRONG']);
+            ->during('addAttributeFilter', [$attribute, 'IN', 'WRONG', null, null, ['field' => 'option_code.id']]);
     }
 
     function it_throws_an_exception_if_the_content_of_value_are_not_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('option_code');
         $this->shouldThrow(InvalidArgumentException::numericExpected('option_code', 'filter', 'option'))
-            ->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric']]);
+            ->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric'], null, null, ['field' => 'option_code.id']]);
     }
 }

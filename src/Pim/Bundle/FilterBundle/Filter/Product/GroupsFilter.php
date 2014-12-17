@@ -54,7 +54,7 @@ class GroupsFilter extends AjaxChoiceFilter
         }
 
         $ids = $data['value'];
-        $this->util->applyFilter($ds, 'groups', 'IN', $ids);
+        $this->util->applyFilter($ds, 'groups.id', 'IN', $ids);
 
         return true;
     }

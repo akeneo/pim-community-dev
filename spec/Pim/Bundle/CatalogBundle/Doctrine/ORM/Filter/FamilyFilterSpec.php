@@ -6,12 +6,13 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
-class EntityFilterSpec extends ObjectBehavior
+class FamilyFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb)
+    function let(QueryBuilder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith(['family', 'groups'], ['IN', 'NOT IN']);
+        $this->beConstructedWith($objectIdResolver, ['family', 'groups'], ['IN', 'NOT IN']);
         $this->setQueryBuilder($qb);
     }
 
@@ -71,17 +72,16 @@ class EntityFilterSpec extends ObjectBehavior
     function it_checks_if_field_is_supported()
     {
         $this->supportsField('family')->shouldReturn(true);
-        $this->supportsField('groups')->shouldReturn(true);
         $this->supportsField('other')->shouldReturn(false);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'entity'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 
     function it_throws_an_exception_if_values_in_array_are_not_integers()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'entity'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 }

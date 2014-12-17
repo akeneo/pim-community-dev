@@ -43,7 +43,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_string($value) && !is_array($value)) {
             throw InvalidArgumentException::expected($field, 'array or string value', 'filter', 'productId');

@@ -60,8 +60,14 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
         $this->checkValues($attribute->getCode(), $value);
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
@@ -73,7 +79,7 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         $this->checkValues($field, $value);
 

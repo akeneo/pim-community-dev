@@ -4,8 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
 /**
  * Family filter
@@ -19,16 +21,22 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
+    /** @var ObjectIdResolverInterface */
+    protected $objectIdResolver;
+
     /**
      * Instanciate the filter
      *
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param ObjectIdResolverInterface $objectIdResolver
+     * @param array                     $supportedFields
+     * @param array                     $supportedOperators
      */
     public function __construct(
+        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
+        $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -44,24 +52,33 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (Operators::IS_EMPTY !== $operator) {
             $this->checkValue($field, $value);
+
+            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+            }
         }
 
-        if (Operators::IN_LIST === $operator) {
-            $expr = new Expr();
-            $this->qb->addAnd(
-                $expr->field($field)->in($value)
-            );
-        } elseif (Operators::NOT_IN_LIST === $operator) {
-            $this->qb->field($field)->notIn($value);
-        } elseif (Operators::IS_EMPTY === $operator) {
-            $expr = new Expr();
-            $this->qb->addAnd(
-                $expr->field($field)->exists(false)
-            );
+        $fieldCode = FieldFilterHelper::getCode($field);
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $expr = new Expr();
+                $this->qb->addAnd(
+                    $expr->field($fieldCode)->in($value)
+                );
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($fieldCode)->notIn($value);
+                break;
+            case Operators::IS_EMPTY:
+                $expr = new Expr();
+                $this->qb->addAnd(
+                    $expr->field($fieldCode)->exists(false)
+                );
+                break;
         }
 
         return $this;
@@ -71,18 +88,14 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
      * Check if value is valid
      *
      * @param string $field
-     * @param mixed  $value
+     * @param mixed  $values
      */
-    protected function checkValue($field, $value)
+    protected function checkValue($field, $values)
     {
-        if (!is_array($value)) {
-            throw InvalidArgumentException::arrayExpected($field, 'filter', 'family');
-        }
+        FieldFilterHelper::checkArray($field, $values, 'family');
 
-        foreach ($value as $family) {
-            if (!is_integer($family)) {
-                throw InvalidArgumentException::integerExpected($field, 'filter', 'family');
-            }
+        foreach ($values as $value) {
+            FieldFilterHelper::checkIdentifier($field, $value, 'family');
         }
     }
 }

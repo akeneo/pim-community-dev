@@ -12,7 +12,8 @@ parameters:
     pim_catalog.doctrine.query.filter.number.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter
     pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter
     pim_catalog.doctrine.query.filter.boolean.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BooleanFilter
-    pim_catalog.doctrine.query.filter.entity.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter
+    pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\FamilyFilter
+    pim_catalog.doctrine.query.filter.groups.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter
     pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter
     pim_catalog.doctrine.query.filter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter
     pim_catalog.doctrine.query.filter.price.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter
@@ -93,10 +94,20 @@ services:
             - %pim_catalog.entity.product.class%
 
     # PQB filters
-    pim_catalog.doctrine.query.filter.entity:
-        class: %pim_catalog.doctrine.query.filter.entity.class%
+    pim_catalog.doctrine.query.filter.family:
+        class: %pim_catalog.doctrine.query.filter.family.class%
         arguments:
-            - ['family', 'groups']
+            - '@pim_catalog.resolver.object_id'
+            - ['family.id', 'family.code']
+            - ['IN', 'NOT IN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
+
+    pim_catalog.doctrine.query.filter.groups:
+        class: %pim_catalog.doctrine.query.filter.groups.class%
+        arguments:
+            - '@pim_catalog.resolver.object_id'
+            - ['groups.id', 'groups.code']
             - ['IN', 'NOT IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }

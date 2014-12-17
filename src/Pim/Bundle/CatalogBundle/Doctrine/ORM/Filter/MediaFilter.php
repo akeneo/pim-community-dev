@@ -35,8 +35,14 @@ class MediaFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
         if ($operator === Operators::IS_EMPTY) {
             $this->addIsEmptyFilter($attribute, $operator, $value, $locale, $scope);
         } else {
