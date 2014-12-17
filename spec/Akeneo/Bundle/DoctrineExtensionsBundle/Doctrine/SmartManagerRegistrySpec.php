@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
+namespace spec\Pim\Bundle\DoctrineExtensionsBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\MongoDB\MongoDBException;

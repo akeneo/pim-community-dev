@@ -252,7 +252,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     }
 
     /**
-     * @expectedException Akeneo\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedException \Akeneo\Bundle\BatchBundle\Item\InvalidItemException
      * @expectedExceptionMessage key1: <tr>Error</tr>
      */
     public function testTransformWithErrorsWithoutStepExecution()

@@ -6,6 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\MongoObjectsFactory;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
