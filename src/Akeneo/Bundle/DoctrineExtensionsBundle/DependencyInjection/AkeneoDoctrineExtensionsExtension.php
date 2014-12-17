@@ -50,7 +50,7 @@ class AkeneoDoctrineExtensionsExtension extends Extension
     }
 
     /**
-     * Provides the supported driver for product storage
+     * Provides the supported driver for application storage
      * @return string[]
      */
     protected function getSupportedStorageDrivers()
@@ -59,7 +59,7 @@ class AkeneoDoctrineExtensionsExtension extends Extension
     }
 
     /**
-     * Load the mapping for product and product storage
+     * Load the mapping for application storage
      *
      * TODO: rename this method
      * @param ContainerBuilder $container
