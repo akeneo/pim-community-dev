@@ -140,7 +140,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             }
 
             if (!in_array($actualLocale, $availableLocales)) {
-
                 return true;
             }
         }
