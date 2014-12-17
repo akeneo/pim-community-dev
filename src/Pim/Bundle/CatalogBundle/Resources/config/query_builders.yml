@@ -104,6 +104,7 @@ services:
         arguments:
             - ['pim_catalog_simpleselect']
             - ['IN', 'EMPTY']
+            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 

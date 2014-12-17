@@ -6,6 +6,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 
 /**
  * Filtering by simple option backend type
@@ -19,6 +21,9 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var array */
     protected $supportedAttributes;
 
+    /** @var AttributeOptionRepository */
+    protected $attributeOptionRepo;
+
     /**
      * Instanciate the base filter
      *
@@ -27,18 +32,28 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
      */
     public function __construct(
         array $supportedAttributes = [],
-        array $supportedOperators = []
+        array $supportedOperators = [],
+        AttributeOptionRepository $attributeOptionRepo
     ) {
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
+        $this->attributeOptionRepo = $attributeOptionRepo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
-        $this->checkValue($attribute, $operator, $value);
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
+        $field = $options['field'];
+
+        $this->checkValue($field, $operator, $value);
 
         $joinAlias = 'filter'.$attribute->getCode();
 
@@ -57,6 +72,11 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         } else {
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
+
+            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
+                $value = $this->getIdsFromCodes($value);
+            }
+
             $condition .= ' AND ( '. $this->qb->expr()->in($optionAlias, $value) .' ) ';
 
             $this->qb->innerJoin(
@@ -85,18 +105,44 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
      * @param string             $operator
      * @param mixed              $value
      */
-    protected function checkValue(AttributeInterface $attribute, $operator, $value)
+    protected function checkValue($field, $operator, $value)
     {
         if (!is_array($value) && Operators::IS_EMPTY !== $operator) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'option');
+            throw InvalidArgumentException::arrayExpected(FieldFilterHelper::getCode($field), 'filter', 'option');
         }
 
         if (Operators::IS_EMPTY !== $operator) {
-            foreach ($value as $option) {
-                if (!is_numeric($option)) {
-                    throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'option');
+            foreach ($value as $entity) {
+                if ((
+                        FieldFilterHelper::hasProperty($field) &&
+                        FieldFilterHelper::getProperty($field) === 'id' &&
+                        !is_numeric($entity)
+                    ) ||
+                    (
+                        !FieldFilterHelper::hasProperty($field) &&
+                        !is_numeric($entity)
+                    )
+                ) {
+                    throw InvalidArgumentException::integerExpected($field, 'filter', 'option');
+                } elseif (FieldFilterHelper::hasProperty($field) &&
+                    FieldFilterHelper::getProperty($field) !== 'id'
+                    && !is_string($entity)
+                ) {
+                    throw InvalidArgumentException::stringExpected($field, 'filter', 'option');
                 }
             }
         }
+    }
+
+    protected function getIdsFromCodes($attributeOptionCodes)
+    {
+        $attributeOptionIds = [];
+
+        foreach ($attributeOptionCodes as $code) {
+            //TODO catch exception if the code does not exists
+            $attributeOptionIds[] = $this->attributeOptionRepo->findOneByCode($code)->getId();
+        }
+
+        return $attributeOptionIds;
     }
 }

@@ -60,10 +60,8 @@ class CategoryFilter extends NumberFilter
 
         if ($data['categoryId'] === self::ALL_CATEGORY) {
             return $this->applyFilterByAll($ds, $data);
-
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
             return $this->applyFilterByUnclassified($ds, $data);
-
         } else {
             return $this->applyFilterByCategory($ds, $data);
         }
