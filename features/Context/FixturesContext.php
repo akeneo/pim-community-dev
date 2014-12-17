@@ -1010,15 +1010,19 @@ class FixturesContext extends RawMinkContext
     /**
      * @param PyStringNode $string
      *
-     * @Given /^the following file to import:$/
+     * @Given /^the following ([^"]*) file to import:$/
      */
-    public function theFollowingFileToImport(PyStringNode $string)
+    public function theFollowingFileToImport($extension, PyStringNode $string)
     {
+        $extension = strtolower($extension);
+
         $this->placeholderValues['%file to import%'] = $filename =
             sprintf(
-                '%s/pim-import/behat-import-%s.csv',
+                '%s/pim-import/behat-import-%s.%s',
                 $this->placeholderValues['%tmp%'],
-                substr(md5(rand()), 0, 7)
+                substr(md5(rand()), 0, 7),
+                $extension
+
             );
         @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
@@ -1031,7 +1035,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return null
      *
-     * @Given /^the following CSV to import:$/
+     * @Given /^the following CSV configuration to import:$/
      */
     public function theFollowingCSVToImport(TableNode $table)
     {
@@ -1056,7 +1060,7 @@ class FixturesContext extends RawMinkContext
 
         array_unshift($rows, $columns);
 
-        return $this->theFollowingFileToImport(new PyStringNode(join("\n", $rows)));
+        return $this->theFollowingFileToImport('csv', new PyStringNode(join("\n", $rows)));
     }
 
     /**

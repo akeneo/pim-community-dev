@@ -47,7 +47,7 @@ Feature: Import attributes
   Scenario: Fail to change immutable properties of attributes during the import
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
-    And the following CSV to import:
+    And the following CSV configuration to import:
       | type                   | pim_catalog_date | pim_catalog_metric |
       | code                   | release_date     | weight             |
       | unique                 | no               | no                 |

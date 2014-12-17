@@ -19,7 +19,7 @@ Feature: Display notifications for import and export jobs
       | success | Export Attribute export finished |
 
   Scenario: Successfully display a notification when an job finishes with errors
-    Given the following CSV to import:
+    Given the following CSV configuration to import:
       | type        | pim_catalog_text | pim_catalog_text |
       | code        | attribute        | attribute        |
       | label-en_US | Attribute        | Attribute        |
