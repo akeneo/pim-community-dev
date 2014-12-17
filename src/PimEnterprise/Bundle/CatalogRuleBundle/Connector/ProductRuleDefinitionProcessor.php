@@ -59,7 +59,12 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
     public function process($item)
     {
         $definition = $this->findObject($this->repository, $item);
-        $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
+
+        try {
+            $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
+        } catch (\LogicException $e) {
+            $this->handleExceptionItem($item, $e);
+        }
 
         $violations = $this->validator->validate($rule);
         if ($violations->count()) {

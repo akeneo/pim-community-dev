@@ -14,3 +14,13 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition:
                 max: 100
         value:
             - NotBlank: ~
+        scope:
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        locale:
+            - Type:
+                type: string
+            - Length:
+                max: 100

@@ -70,7 +70,7 @@ class ProductRuleDenormalizer implements DenormalizerInterface
      *
      * @throws \LogicException
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         /** @var RuleInterface $rule */
         $rule = $this->getObject($context);
@@ -79,6 +79,10 @@ class ProductRuleDenormalizer implements DenormalizerInterface
 
         if (isset($data['priority'])) {
             $rule->setPriority((int) $data['priority']);
+        }
+
+        if (!array_key_exists('condition', $data)) {
+            throw new \LogicException(sprintf('Missing the "%s" key', 'condition'));
         }
 
         if (isset($data['conditions'])) {
