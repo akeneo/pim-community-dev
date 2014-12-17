@@ -1,3 +1,16 @@
-<span class="label label-{{ value == 1 ? 'success' : 'info' }}">
-    {{ ('pimee_workflow.product_draft.status.' ~ (value == 1 ? 'ready' : 'in_progress'))|trans }}
-</span>
+{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ATTRIBUTES'), record.rootEntity) %}
+    <span class="label label-{{ value == 1 ? 'success' : 'info' }}">
+        {{ ('pimee_workflow.product_draft.status.' ~ (value == 1 ? 'ready' : 'in_progress'))|trans }}
+    </span>
+{% else %}
+    {% if value == 1 %}
+        {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_approved' %}
+        {% set status = 'pimee_workflow.product_draft.status.can_not_be_approved' %}
+    {% else %}
+        {% set message = 'pimee_workflow.product_draft.status_message.can_not_be_deleted' %}
+        {% set status = 'pimee_workflow.product_draft.status.can_not_be_deleted' %}
+    {% endif %}
+    <span class="label label-error" title="{{ message|trans }}">
+        {{ status|trans }}
+    </span>
+{% endif %}

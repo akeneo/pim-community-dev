@@ -3,6 +3,9 @@
 ## Improvements
 - PIM-3475: Add sort order in options attribute to sample catalog
 
+## Bug fixes
+- PIM-3448: Avoid to allow to approve/refuse/delete a proposal if the user can't edit all values of this proposal
+
 # 1.0.8 (2014-12-10)
 
 ## Bug fixes

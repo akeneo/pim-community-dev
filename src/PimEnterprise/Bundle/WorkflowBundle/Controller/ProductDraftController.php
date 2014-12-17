@@ -108,6 +108,10 @@ class ProductDraftController extends AbstractController
             throw new AccessDeniedHttpException();
         }
 
+        if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+            throw new AccessDeniedHttpException();
+        }
+
         try {
             $this->manager->approve($productDraft);
             $this->addFlash('success', 'flash.product_draft.approve.success');
@@ -140,6 +144,10 @@ class ProductDraftController extends AbstractController
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 

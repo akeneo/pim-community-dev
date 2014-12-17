@@ -22,6 +22,7 @@ Feature: Review a product draft
       | handmade                  | no                |
       | release_date-ecommerce    | 2014-05-14        |
       | length                    | 60 CENTIMETER     |
+      | legacy_attribute          | legacy            |
 
   Scenario: Successfully accept an identifier attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
@@ -207,3 +208,25 @@ Feature: Review a product draft
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Jacket"
+
+  Scenario: Not being able to approve or refuse a proposal with values I can't edit
+    Given Mary proposed the following change to "my-jacket":
+      | field                          | value                                | tab                        |
+      | Old attribute not used anymore | a new value for the legacy attribute | old group not used anymore |
+    And I am logged in as "Julia"
+    And I edit the "my-jacket" product
+    When I visit the "Proposals" tab
+    Then I should not be able to view the "Approve" action of the row which contains "Old attribute not used anymore"
+    And I should not be able to view the "Refuse" action of the row which contains "Old attribute not used anymore"
+    And I should see "Can't be approved or refused"
+
+  Scenario: Not being able to delete a draft with values I can't edit
+    Given Mary started to propose the following change to "my-jacket":
+      | field                          | value                                | tab                        |
+      | Old attribute not used anymore | a new value for the legacy attribute | old group not used anymore |
+    And I am logged in as "Julia"
+    And I edit the "my-jacket" product
+    When I visit the "Proposals" tab
+    Then I should not be able to view the "Delete" action of the row which contains "Old attribute not used anymore"
+    And I should see "Can't be deleted"
+
