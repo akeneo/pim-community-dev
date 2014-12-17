@@ -26,6 +26,7 @@
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
 - Remove the override of MediaManager
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver`. `Doctrine\Common\Persistence\ObjectManager` is now expected as first argument.
+- Move the versioning denormalizers to CE PimTransformBundle, namespaces are changed but the services alias are kept
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
