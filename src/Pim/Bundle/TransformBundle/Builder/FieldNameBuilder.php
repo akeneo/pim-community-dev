@@ -247,7 +247,7 @@ class FieldNameBuilder
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameLocaleByChannel(AbstractAttribute $attribute,  $fieldName, array $attributeInfos)
+    protected function checkFieldNameLocaleByChannel(AbstractAttribute $attribute, $fieldName, array $attributeInfos)
     {
         if ($attribute->isScopable() &&
             $attribute->isLocalizable() &&
