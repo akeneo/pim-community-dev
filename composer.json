@@ -22,8 +22,8 @@
         "incenteev/composer-parameter-handler": "2.1.0",
         "symfony/icu": "1.1.0",
         "akeneo/measure-bundle": "0.2.*",
-        "akeneo/batch-bundle": "0.2.*",
-        "oro/platform": "1.0.0-beta13",
+        "akeneo/batch-bundle": "0.3.*",
+        "oro/platform": "1.0.0-beta14",
         "apy/jsfv-bundle": "2.0.1",
         "doctrine/common": "2.4.*",
         "doctrine/doctrine-bundle": "1.2.*",
@@ -38,7 +38,8 @@
         "nelmio/api-doc-bundle": "2.4.*",
         "knplabs/knp-menu-bundle":"v2.0.0-alpha2",
         "knplabs/knp-menu":"v2.0.0-alpha2",
-        "gedmo/doctrine-extensions":"2.3.x-dev@dev"
+        "gedmo/doctrine-extensions":"2.3.x-dev@dev",
+        "dompdf/dompdf" : "0.6.1"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
@@ -57,7 +58,9 @@
         "behat/transliterator":"dev-master#2fd406d@dev",
         "sensiolabs/behat-page-object-extension": "1.0.x-dev#6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
         "phpspec/phpspec": "2.1.0-RC1",
-        "akeneo/phpspec-skip-example-extension": "1.0.*"
+        "akeneo/phpspec-skip-example-extension": "1.0.*",
+        "doctrine/migrations": "1.0.*@dev",
+        "doctrine/doctrine-migrations-bundle": "1.0.0-RC1"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"

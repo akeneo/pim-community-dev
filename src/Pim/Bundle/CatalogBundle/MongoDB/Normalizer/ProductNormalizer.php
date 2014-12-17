@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -81,7 +81,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             );
         }
         $data[self::COMPLETENESSES_FIELD] = $completenesses;
-        $data[self::ENABLED_FIELD] = (int) $object->isEnabled();
+        $data[self::ENABLED_FIELD] = (bool) $object->isEnabled();
 
         return $data;
     }

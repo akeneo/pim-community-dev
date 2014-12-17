@@ -13,12 +13,14 @@ interface LocalizableInterface
 {
     /**
      * Get used locale
+     *
      * @return string $locale
      */
     public function getLocale();
 
     /**
      * Set used locale
+     *
      * @param string $locale
      *
      * @return LocalizableInterface

@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Provides util methods to ease the query building in MongoDB
@@ -27,19 +26,30 @@ class ProductQueryUtility
     /**
      * Normalize the field name from attribute and catalog context
      *
-     * @param AbstractAttribute $attribute
-     * @param CatalogContext    $context
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
      *
      * @return string
      */
-    public static function getNormalizedValueFieldFromAttribute(AbstractAttribute $attribute, CatalogContext $context)
-    {
+    public static function getNormalizedValueFieldFromAttribute(
+        AttributeInterface $attribute,
+        $locale = null,
+        $scope = null
+    ) {
+        if ($attribute->isLocalizable() && null === $locale) {
+            throw new \LogicException('Locale is not configured');
+        }
+        if ($attribute->isScopable() && null === $scope) {
+            throw new \LogicException('Scope is not configured');
+        }
+
         return self::getNormalizedValueField(
             $attribute->getCode(),
             $attribute->isLocalizable(),
             $attribute->isScopable(),
-            ($attribute->isLocalizable() ? $context->getLocaleCode() : null),
-            ($attribute->isScopable() ? $context->getScopeCode() : null)
+            ($attribute->isLocalizable() ? $locale : null),
+            ($attribute->isScopable() ? $scope : null)
         );
     }
 
@@ -68,8 +78,13 @@ class ProductQueryUtility
      *
      * @throws \LogicException
      */
-    public static function getNormalizedValueField($attributeCode, $localizable, $scopable, $locale, $scope)
-    {
+    public static function getNormalizedValueField(
+        $attributeCode,
+        $localizable,
+        $scopable,
+        $locale = null,
+        $scope = null
+    ) {
         $suffix = '';
 
         if ($localizable) {

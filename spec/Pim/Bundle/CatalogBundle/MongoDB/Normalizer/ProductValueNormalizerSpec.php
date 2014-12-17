@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
@@ -18,8 +17,10 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_value(ProductValueInterface $value, AbstractAttribute $attribute)
-    {
+    function it_supports_normalization_in_mongodb_json_of_value(
+        ProductValueInterface $value,
+        AttributeInterface $attribute
+    ) {
         $attribute->getBackendType()->willReturn('foo');
 
         $this->supportsNormalization($value, 'mongodb_json')->shouldBe(true);
@@ -30,7 +31,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_value_with_simple_data(
         SerializerInterface $serializer,
         ProductValueInterface $value,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
@@ -52,7 +53,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_value_with_collection_data(
         SerializerInterface $serializer,
         ProductValueInterface $value,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
@@ -70,12 +71,14 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $serializer->normalize($price, 'mongodb_json', [])->willReturn(['data' => 42, 'currency' => 'EUR']);
 
-        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => ['EUR' => ['data' => 42, 'currency' => 'EUR']]]);
+        $this
+            ->normalize($value, 'mongodb_json', [])
+            ->shouldReturn(['code' => ['EUR' => ['data' => 42, 'currency' => 'EUR']]]);
     }
 
     function it_normalizes_value_with_empty_collection_data(
         ProductValueInterface $value,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         Collection $collection,
         \Iterator $iterator
     ) {
@@ -92,7 +95,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_value_with_decimal_support_backend(
         ProductValueInterface $value,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('code');
         $attribute->getBackendType()->willReturn('decimal');
@@ -104,6 +107,4 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
         $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => 42.42]);
     }
-
-
 }

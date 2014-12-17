@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\AssociationTypeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
  * Association type normalizer test

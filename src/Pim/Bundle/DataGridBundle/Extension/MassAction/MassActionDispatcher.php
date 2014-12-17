@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Symfony\Component\HttpFoundation\Request;
-
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -11,9 +9,9 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Mass action dispatcher
@@ -40,7 +38,7 @@ class MassActionDispatcher
      * Constructor
      *
      * @param MassActionHandlerRegistry  $handlerRegistry
-     * @param Manager                    $manager
+     * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
      */
@@ -67,23 +65,52 @@ class MassActionDispatcher
      */
     public function dispatch(Request $request)
     {
-        $parameters   = $this->parametersParser->parse($request);
-        $datagridName = $request->get('gridName');
-        $actionName   = $request->get('actionName');
+        $parameters = $this->parametersParser->parse($request);
+        $inset   = $this->prepareInsetParameter($parameters);
+        $values  = $this->prepareValuesParameter($parameters);
+        $filters = $this->prepareFiltersParameter($parameters);
 
-        $inset   = isset($parameters['inset'])   ? $parameters['inset']   : true;
-        $values  = isset($parameters['values'])  ? $parameters['values']  : [];
-        $filters = isset($parameters['filters']) ? $parameters['filters'] : [];
-
+        $actionName = $request->get('actionName');
         if ($inset && empty($values)) {
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
+        $datagridName = $request->get('gridName');
         $datagrid   = $this->manager->getDatagrid($datagridName);
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         return $this->performMassAction($datagrid, $massAction, $inset, $values);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return boolean
+     */
+    protected function prepareInsetParameter(array $parameters)
+    {
+        return isset($parameters['inset']) ? $parameters['inset'] : true;
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    protected function prepareValuesParameter(array $parameters)
+    {
+        return isset($parameters['values']) ? $parameters['values'] : [];
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    protected function prepareFiltersParameter(array $parameters)
+    {
+        return isset($parameters['filters']) ? $parameters['filters'] : [];
     }
 
     /**

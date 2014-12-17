@@ -2,14 +2,11 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Prophecy\Argument;
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class AddToGroupsSpec extends ObjectBehavior
 {
@@ -56,8 +53,8 @@ class AddToGroupsSpec extends ObjectBehavior
 
     function it_adds_products_to_groups_when_performing_the_operation(
         AbstractQuery $query,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
+        ProductInterface $product1,
+        ProductInterface $product2,
         $shirts,
         $pants
     ) {

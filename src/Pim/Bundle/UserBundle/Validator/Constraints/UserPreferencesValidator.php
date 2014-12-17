@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validator for the user preferences constraint
@@ -38,9 +38,9 @@ class UserPreferencesValidator extends ConstraintValidator
         if (is_callable(array($user, 'getCatalogLocale'))) {
             $locale = $user->getCatalogLocale();
             if (!$locale) {
-                $this->context->addViolation($constraint->missingLocaleMessage);
+                $this->context->addViolation($constraint->missingLocaleMsg);
             } elseif (!$locale->isActivated()) {
-                $this->context->addViolation($constraint->inactiveLocaleMessage);
+                $this->context->addViolation($constraint->inactiveLocaleMsg);
             }
         }
     }
@@ -55,7 +55,7 @@ class UserPreferencesValidator extends ConstraintValidator
     {
         if (is_callable(array($user, 'getCatalogScope'))) {
             if (!$user->getCatalogScope()) {
-                $this->context->addViolation($constraint->missingScopeMessage);
+                $this->context->addViolation($constraint->missingScopeMsg);
             }
         }
     }
@@ -71,9 +71,9 @@ class UserPreferencesValidator extends ConstraintValidator
         if (is_callable(array($user, 'getDefaultTree'))) {
             $tree = $user->getDefaultTree();
             if (!$tree) {
-                $this->context->addViolation($constraint->missingTreeMessage);
+                $this->context->addViolation($constraint->missingTreeMsg);
             } elseif (!$tree->isRoot()) {
-                $this->context->addViolation($constraint->invalidTreeMessage);
+                $this->context->addViolation($constraint->invalidTreeMsg);
             }
         }
     }

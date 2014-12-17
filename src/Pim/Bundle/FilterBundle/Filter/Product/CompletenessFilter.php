@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
  * Overriding of boolean filter to filter by the product completeness
@@ -25,8 +25,6 @@ class CompletenessFilter extends BooleanFilter
             return false;
         }
 
-        $qb = $ds->getQueryBuilder();
-
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
                 $operator = '=';
@@ -37,9 +35,7 @@ class CompletenessFilter extends BooleanFilter
                 break;
         }
 
-        $repository = $this->util->getProductRepository();
-        $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('completeness', $operator, '100');
+        $this->util->applyFilter($ds, 'completeness', $operator, '100');
 
         return true;
     }

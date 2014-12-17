@@ -3,9 +3,9 @@
 namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**

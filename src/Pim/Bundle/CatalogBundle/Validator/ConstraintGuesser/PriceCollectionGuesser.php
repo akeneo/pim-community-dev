@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Constraint guesser for price collections
@@ -19,7 +19,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AbstractAttribute $attribute)
+    public function supportAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
@@ -32,7 +32,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AbstractAttribute $attribute)
+    public function guessConstraints(AttributeInterface $attribute)
     {
         $notDecimalGuesser = new NotDecimalGuesser();
         $rangeGuesser = new RangeGuesser();

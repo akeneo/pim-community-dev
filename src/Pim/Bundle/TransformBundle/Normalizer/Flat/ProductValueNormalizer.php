@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Normalize a product value into an array
@@ -123,15 +122,15 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Check if the attribute is locale specific and check if the given local exist in available locales
      *
-     * @param AbstractProductValue $entity
+     * @param ProductValueInterface $entity
      *
      * @return bool
      */
-    protected function filterLocaleSpecific(AbstractProductValue $entity)
+    protected function filterLocaleSpecific(ProductValueInterface $entity)
     {
         $actualLocale = $entity->getLocale();
 
-        /** @var AbstractAttribute $attribute */
+        /** @var AttributeInterface $attribute */
         $attribute = $entity->getAttribute();
         if ($attribute->isLocaleSpecific()) {
             $availableLocales = [];

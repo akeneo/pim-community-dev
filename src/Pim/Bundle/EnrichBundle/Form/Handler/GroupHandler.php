@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Form handler for group
@@ -14,57 +15,51 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupHandler
+class GroupHandler implements HandlerInterface
 {
-    /**
-     * @var FormInterface
-     */
+    /** @var FormInterface */
     protected $form;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    /** @var GroupManager */
+    protected $groupManager;
 
-    /**
-     * @var string
-     */
-    protected $productClass;
+    /** @var ProductManager */
+    protected $productManager;
 
     /**
      * Constructor for handler
-     * @param FormInterface   $form
-     * @param Request         $request
-     * @param ManagerRegistry $registry
-     * @param string          $productClass
+     *
+     * @param FormInterface  $form
+     * @param Request        $request
+     * @param GroupManager   $groupManager
+     * @param ProductManager $productManager
      */
-    public function __construct(FormInterface $form, Request $request, ManagerRegistry $registry, $productClass)
-    {
-        $this->form         = $form;
-        $this->request      = $request;
-        $this->registry     = $registry;
-        $this->productClass = $productClass;
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        GroupManager $groupManager,
+        ProductManager $productManager
+    ) {
+        $this->form           = $form;
+        $this->request        = $request;
+        $this->groupManager   = $groupManager;
+        $this->productManager = $productManager;
     }
 
     /**
-     * Process method for handler
-     * @param Group $group
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function process(Group $group)
+    public function process($group)
     {
         $this->form->setData($group);
 
         if ($this->request->isMethod('POST')) {
             // Load products when ODM storage is used to enable validation
             if (null === $group->getProducts()) {
-                $products = $this->registry->getRepository($this->productClass)->findAllForGroup($group)->toArray();
+                $products = $this->productManager->getProductRepository()->findAllForGroup($group)->toArray();
                 $group->setProducts($products);
             }
 
@@ -82,23 +77,17 @@ class GroupHandler
 
     /**
      * Call when form is valid
+     *
      * @param Group $group
      */
     protected function onSuccess(Group $group)
     {
-        $groupManager = $this->registry->getManagerForClass(get_class($group));
-        $groupManager->persist($group);
+        $this->groupManager->save($group);
 
-        $productManager = $this->registry->getManagerForClass($this->productClass);
         $appendProducts = $this->form->get('appendProducts')->getData();
         $removeProducts = $this->form->get('removeProducts')->getData();
         $products = $appendProducts + $removeProducts;
 
-        foreach ($products as $product) {
-            $productManager->persist($product);
-        }
-
-        $productManager->flush();
-        $groupManager->flush();
+        $this->productManager->saveAll($products, ['recalculate' => false, 'schedule' => false]);
     }
 }

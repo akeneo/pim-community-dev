@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Factory;
 
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Build the product value form
@@ -22,8 +22,8 @@ class ProductValueFormFactory
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** @var AttributeTypeFactory */
-    protected $attributeTypeFactory;
+    /** @var AttributeTypeRegistry */
+    protected $attTypeRegistry;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -32,16 +32,16 @@ class ProductValueFormFactory
      * Constructor
      *
      * @param FormFactoryInterface     $factory
-     * @param AttributeTypeFactory     $attTypeFactory
+     * @param AttributeTypeRegistry    $attTypeRegistry
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         FormFactoryInterface $factory,
-        AttributeTypeFactory $attTypeFactory,
+        AttributeTypeRegistry $attTypeRegistry,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->formFactory = $factory;
-        $this->attributeTypeFactory = $attTypeFactory;
+        $this->attTypeRegistry = $attTypeRegistry;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -54,7 +54,7 @@ class ProductValueFormFactory
     public function buildProductValueForm(ProductValueInterface $value, array $context)
     {
         $attributeTypeAlias = $value->getAttribute()->getAttributeType();
-        $attributeType = $this->attributeTypeFactory->get($attributeTypeAlias);
+        $attributeType = $this->attTypeRegistry->get($attributeTypeAlias);
 
         $name    = $attributeType->prepareValueFormName($value);
         $type    = $attributeType->prepareValueFormAlias($value);

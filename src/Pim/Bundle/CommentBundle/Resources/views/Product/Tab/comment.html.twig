@@ -1,0 +1,2 @@
+<div class="tab-pane tab-comment {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}" data-url="{{ path('pim_enrich_product_comments', { id: product.id, dataLocale: dataLocale }) }}">
+</div>

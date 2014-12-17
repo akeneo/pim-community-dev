@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -39,14 +39,14 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ProductValueInterface $taxValue,
-        AbstractAttribute $taxAttribute // TODO use AttributeInterface in 1.3
+        AttributeInterface $taxAttribute
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
         $taxValue->getAttribute()->willReturn($taxAttribute);
         $fr = new Locale();
         $fr->setCode('fr_FR');
-        $taxAttribute->getAvailableLocales()->willReturn(new ArrayCollection([$fr]));
+        $taxAttribute->getAvailableLocaleCodes()->willReturn(['fr_FR']);
         $form->remove('tax')->shouldBeCalled();
          
         $this->preSetData($event);
@@ -58,7 +58,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ProductValueInterface $taxValue,
-        AbstractAttribute $taxAttribute // TODO use AttributeInterface in 1.3
+        AttributeInterface $taxAttribute
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
@@ -67,7 +67,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $fr->setCode('fr_FR');
         $en = new Locale();
         $en->setCode('en_US');
-        $taxAttribute->getAvailableLocales()->willReturn(new ArrayCollection([$fr, $en]));
+        $taxAttribute->getAvailableLocaleCodes()->willReturn(['fr_FR', 'en_US']);
         $form->remove('tax')->shouldNotBeCalled();
          
         $this->preSetData($event);
@@ -79,12 +79,12 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ProductValueInterface $nameValue,
-        AbstractAttribute $nameAttribute // TODO use AttributeInterface in 1.3
+        AttributeInterface $nameAttribute
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['name' => $nameValue]);
         $nameValue->getAttribute()->willReturn($nameAttribute);
-        $nameAttribute->getAvailableLocales()->willReturn(null);
+        $nameAttribute->getAvailableLocaleCodes()->willReturn(null);
         $form->remove('name')->shouldNotBeCalled();
          
         $this->preSetData($event);

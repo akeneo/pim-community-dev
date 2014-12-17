@@ -1,4 +1,3 @@
-@javascript
 Feature: Define the attribute requirement
   In order to ensure product completness when exporting them
   As an administrator
@@ -16,6 +15,7 @@ Feature: Define the attribute requirement
     And attribute "side_view" should be required in channel tablet
     And attribute "side_view" should not be required in channel mobile
 
+  @javascript
   Scenario: Successfully make an attribute required for a channel
     Given I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
@@ -23,6 +23,7 @@ Feature: Define the attribute requirement
     And I visit the "Attributes" tab
     Then attribute "rating" should be required in channels mobile and tablet
 
+  @javascript
   Scenario: Successfully make an attribute optional for a channel
     Given I visit the "Attributes" tab
     And I switch the attribute "Description" requirement in channel "Tablet"

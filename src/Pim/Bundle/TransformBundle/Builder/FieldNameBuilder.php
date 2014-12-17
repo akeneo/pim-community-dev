@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Builder;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Create field names for associations and product values
@@ -79,7 +79,7 @@ class FieldNameBuilder
      *
      * Returned array like:
      * [
-     *     "attribute"   => AbstractAttribute,
+     *     "attribute"   => AttributeInterface,
      *     "locale_code" => <locale_code>|null,
      *     "scope_code"  => <scope_code>|null,
      *     "price_currency" => <currency_code> // this key is optional
@@ -112,38 +112,26 @@ class FieldNameBuilder
      * Extract information from an attribute and exploded field name
      * This method is used from extractAttributeFieldNameInfos and can be redefine to add new rules
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $explodedFieldName
+     * @param AttributeInterface $attribute
+     * @param array              $explodedFieldName
      *
      * @return array
      */
-    protected function extractAttributeInfos(AbstractAttribute $attribute, array $explodedFieldName)
+    protected function extractAttributeInfos(AttributeInterface $attribute, array $explodedFieldName)
     {
-        if ($attribute->isLocalizable() && $attribute->isScopable()) {
-            $localeCode = $explodedFieldName[1];
-            $scopeCode  = $explodedFieldName[2];
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[3] : null;
-        } elseif ($attribute->isLocalizable()) {
-            $localeCode = $explodedFieldName[1];
-            $scopeCode  = null;
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[2] : null;
-        } elseif ($attribute->isScopable()) {
-            $localeCode = null;
-            $scopeCode  = $explodedFieldName[1];
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[2] : null;
-        } else {
-            $localeCode = null;
-            $scopeCode  = null;
-            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[1] : null;
+        array_shift($explodedFieldName);
+
+        $info = [
+            'attribute'   => $attribute,
+            'locale_code' => $attribute->isLocalizable() ? array_shift($explodedFieldName) : null,
+            'scope_code'  => $attribute->isScopable() ? array_shift($explodedFieldName) : null,
+        ];
+
+        if ('prices' === $attribute->getBackendType()) {
+            $info['price_currency'] = array_shift($explodedFieldName);
         }
 
-        $priceArray = (null === $priceCurrency) ? [] : ['price_currency' => $priceCurrency];
-
-        return [
-            'attribute'   => $attribute,
-            'locale_code' => $localeCode,
-            'scope_code'  => $scopeCode,
-        ] + $priceArray;
+        return $info;
     }
 
     /**
@@ -171,13 +159,13 @@ class FieldNameBuilder
     /**
      * Check the consistency of the field with the attribute and it properties locale, scope, currency
      *
-     * @param AbstractAttribute $attribute
-     * @param string            $fieldName
-     * @param array             $explodedFieldName
+     * @param AttributeInterface $attribute
+     * @param string             $fieldName
+     * @param array              $explodedFieldName
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameTokens(AbstractAttribute $attribute, $fieldName, array $explodedFieldName)
+    protected function checkFieldNameTokens(AttributeInterface $attribute, $fieldName, array $explodedFieldName)
     {
         // the expected number of tokens in a field may vary,
         //  - with the current price import, the currency can be optionally present in the header,

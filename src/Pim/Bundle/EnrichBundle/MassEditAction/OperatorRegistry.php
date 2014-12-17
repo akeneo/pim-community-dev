@@ -22,8 +22,8 @@ class OperatorRegistry
     /**
      * Registers an operator inside a gridName index
      *
-     * @param string                 $gridName
-     * @param MassEditActionOperator $operator
+     * @param string                   $gridName
+     * @param AbstractMassEditOperator $operator
      */
     public function register($gridName, AbstractMassEditOperator $operator)
     {

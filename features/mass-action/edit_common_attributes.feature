@@ -25,7 +25,7 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Allow editing only common attributes
     Given I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"
     And I should see available attribute Side view in group "Media"
@@ -36,7 +36,7 @@ Feature: Edit common attributes of many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Allow editing only common attributes define from families
     Given I mass-edit products boots and highheels
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"
     And I should see available attribute Size in group "Sizes"
@@ -62,7 +62,7 @@ Feature: Edit common attributes of many products at once
       | highheels | sole_color    | Red                   |
       | highheels | serial_number | 987654321             |
     When I mass-edit products boots and highheels
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     Then I should see available attribute Comment in group "Other"
     And I should not see available attributes Sole color, Fur and Serial number in group "Other"
 
@@ -75,12 +75,12 @@ Feature: Edit common attributes of many products at once
       | product | attribute  | value |
       | boots   | sole_color | Blue  |
     When I mass-edit products boots and high_heels
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     Then I should see available attribute Sole in group "Other"
 
   Scenario: Successfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
@@ -92,7 +92,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully update localized values on selected locale
     Given I add the "french" locale to the "mobile" channel
     When I mass-edit products boots, sandals and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I switch the locale to "French (France)"
     And I display the [name] attribute
     And I change the "[name]" to "chaussure"
@@ -107,7 +107,7 @@ Feature: Edit common attributes of many products at once
     And I add the "french" locale to the "tablet" channel
     And I set product "pump" family to "boots"
     And I mass-edit products boots and pump
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I switch the locale to "French (France)"
     And I display the [description] attribute
     And I expand the "[description]" attribute
@@ -121,7 +121,7 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Successfully update many price values at once
     Given I mass-edit products boots and sandals
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
@@ -133,7 +133,7 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Successfully update many file values at once
     Given I mass-edit products sandals and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
     And I move on to the next step
@@ -141,7 +141,7 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Successfully update many multi-valued values at once
     Given I mass-edit products boots and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
@@ -152,7 +152,7 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Successfully update many metric values at once
     Given I mass-edit products boots and sandals
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
@@ -165,7 +165,7 @@ Feature: Edit common attributes of many products at once
       | name      | french | Nom    |
       | size      | french | Taille |
     When I mass-edit products boots and sandals
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Name and Size attributes
     Then I should see "Product information"
     And I should see "Sizes"
@@ -181,7 +181,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully mass edit product values that does not belong yet to the product
     Given I set product "pump" family to "sneakers"
     When I mass-edit products pump and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
@@ -192,7 +192,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully mass edit scoped product values
     Given I set product "pump" family to "boots"
     When I mass-edit products boots and pump
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Description attribute
     And I expand the "Description" attribute
     And fill in "pim_enrich_mass_edit_action_operation_values_description_mobile_text" with "Foo"
@@ -212,7 +212,7 @@ Feature: Edit common attributes of many products at once
     And I press the "Save" button in the popin
     And I am on the products page
     When I mass-edit products Shoes
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
@@ -238,7 +238,7 @@ Feature: Edit common attributes of many products at once
     And I filter by "Description" with value "A beautiful description"
     And I select all products
     And I press mass-edit button
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
@@ -251,7 +251,7 @@ Feature: Edit common attributes of many products at once
       | product   | attribute                | value   |
       | boots     | weather_conditions       | dry,hot |
     Given I mass-edit products boots and sneakers
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step

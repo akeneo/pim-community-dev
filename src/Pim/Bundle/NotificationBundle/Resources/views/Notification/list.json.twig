@@ -1,0 +1,12 @@
+{% set notifications = [] %}
+{% for item in userNotifications %}
+    {% set notifications = notifications|merge([{
+        id: item.id,
+        type: item.notification.type,
+        message: item.notification.message|trans(item.notification.messageParams),
+        viewed: item.viewed,
+        url: item.notification.route ? path(item.notification.route, item.notification.routeParams) : null
+    }]) %}
+{% endfor %}
+{% set data = { notifications: notifications, unreadCount: notification_count() } %}
+{{ data|json_encode|raw }}

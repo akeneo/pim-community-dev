@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Constraint
@@ -18,7 +18,7 @@ class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AbstractAttribute $attribute)
+    public function supportAttribute(AttributeInterface $attribute)
     {
         return true;
     }
@@ -26,7 +26,7 @@ class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AbstractAttribute $attribute)
+    public function guessConstraints(AttributeInterface $attribute)
     {
         $constraints = array();
 

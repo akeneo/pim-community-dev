@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Symfony\Component\Validator\GroupSequenceProviderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
  * Group entity
@@ -125,7 +125,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Get group type
      *
-     * @return Group
+     * @return GroupType
      */
     public function getType()
     {
@@ -289,11 +289,11 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Add attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return Group
      */
-    public function addAttribute(AbstractAttribute $attribute)
+    public function addAttribute(AttributeInterface $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes[] = $attribute;
@@ -305,13 +305,13 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Remove attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return Group
      *
      * @throws \InvalidArgumentException
      */
-    public function removeAttribute(AbstractAttribute $attribute)
+    public function removeAttribute(AttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
 
@@ -346,7 +346,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     /**
      * Setter for attributes property
      *
-     * @param AbstractAttribute[] $attributes
+     * @param AttributeInterface[] $attributes
      *
      * @return Group
      */

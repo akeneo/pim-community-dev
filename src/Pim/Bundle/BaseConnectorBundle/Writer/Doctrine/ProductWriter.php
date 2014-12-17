@@ -2,15 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Product writer using ORM method
@@ -111,7 +110,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $this->incrementCount($item);
         }
         $this->productManager->handleAllMedia($items);
-        $this->productManager->saveAllProducts($items, ['recalculate' => false]);
+        $this->productManager->saveAll($items, ['recalculate' => false]);
 
         $this->cacheClearer->clear();
     }
