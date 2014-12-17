@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 
 /**
  * Entity filter
@@ -42,17 +43,17 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         $rootAlias  = $this->qb->getRootAlias();
-        $entityAlias = 'filter'.$field;
-        $this->qb->leftJoin($rootAlias.'.'.$field, $entityAlias);
+        $entityAlias = 'filter' . FieldFilterHelper::getCode($field);
+        $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
         if ($operator === Operators::IN_LIST) {
             $this->qb->andWhere(
-                $this->qb->expr()->in($entityAlias.'.id', $value)
+                $this->qb->expr()->in($entityAlias . '.' . FieldFilterHelper::getIdentifier($field), $value)
             );
         } elseif ($operator === Operators::NOT_IN_LIST) {
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
-                    $this->qb->expr()->notIn($entityAlias.'.id', $value),
+                    $this->qb->expr()->notIn($entityAlias . '.' . FieldFilterHelper::getIdentifier($field), $value),
                     $this->qb->expr()->isNull($entityAlias.'.id')
                 )
             );
@@ -81,13 +82,28 @@ class EntityFilter extends AbstractFilter implements FieldFilterInterface
      */
     protected function checkValue($field, $value)
     {
+        //TODO : cyclomatic complexity is too high
         if (!is_array($value)) {
             throw InvalidArgumentException::arrayExpected($field, 'filter', 'entity');
         }
 
         foreach ($value as $entity) {
-            if (!is_numeric($entity)) {
+            if ((
+                    FieldFilterHelper::hasProperty($field) &&
+                    FieldFilterHelper::getIdentifier($field) === 'id' &&
+                    !is_numeric($entity)
+                ) ||
+                (
+                    !FieldFilterHelper::hasProperty($field) &&
+                    !is_numeric($entity)
+                )
+            ) {
                 throw InvalidArgumentException::integerExpected($field, 'filter', 'entity');
+            } elseif (FieldFilterHelper::hasProperty($field) &&
+                FieldFilterHelper::getIdentifier($field) !== 'id'
+                && !is_string($entity)
+            ) {
+                throw InvalidArgumentException::stringExpected($field, 'filter', 'entity');
             }
         }
     }

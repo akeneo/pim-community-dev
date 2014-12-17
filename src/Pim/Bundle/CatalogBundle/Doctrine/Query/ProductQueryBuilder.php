@@ -90,7 +90,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $attribute = $this->attributeRepository->findOneByCode($field);
+        $attribute = $this->attributeRepository->findOneByCode(FieldFilterHelper::getCode($field));
 
         if ($attribute !== null) {
             $filter = $this->filterRegistry->getAttributeFilter($attribute);
@@ -114,7 +114,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         if ($attribute !== null) {
             $this->addAttributeFilter($filter, $attribute, $operator, $value, $context);
         } else {
-            $this->addFieldFilter($filter, $field, $operator, $value, $context);
+            $this->addFieldFilter($filter, FieldFilterHelper::getWithProperty($field), $operator, $value, $context);
         }
 
         return $this;
