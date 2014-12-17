@@ -5,6 +5,11 @@ parameters:
     akeneo_doctrine_extensions.doctrine.smart_manager_registry.class:      Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\SmartManagerRegistry
 
 services:
+    akeneo_doctrine_extensions.event_subscriber.mongodb.resolve_target_repositories:
+        class: %akeneo_doctrine_extensions.event_subscriber.resolve_target_repository.class%
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
     akeneo_doctrine_extensions.event_subscriber.mongodb.entities_type:
         class: %akeneo_doctrine_extensions.event_subscriber.mongodb.entities_type.class%
         arguments:

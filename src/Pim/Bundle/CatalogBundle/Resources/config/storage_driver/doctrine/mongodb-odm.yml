@@ -101,10 +101,9 @@ services:
     pim_catalog.event_subscriber.mongodb.entities_type:
         alias: akeneo_doctrine_extensions.event_subscriber.mongodb.entities_type
 
+    # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
-        class: %pim_catalog.event_subscriber.resolve_target_repository.class%
-        tags:
-            - { name: doctrine_mongodb.odm.event_subscriber }
+        alias: akeneo_doctrine_extensions.event_subscriber.mongodb.resolve_target_repositories
 
     # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entity_type:

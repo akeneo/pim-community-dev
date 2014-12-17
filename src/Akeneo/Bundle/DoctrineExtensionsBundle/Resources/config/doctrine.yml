@@ -3,8 +3,15 @@ parameters:
     doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
     akeneo_doctrine_extensions.doctrine.smart_manager_registry.class: Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\SmartManagerRegistry
     akeneo_doctrine_extensions.doctrine.table_name_builder.class:     Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\TableNameBuilder
+    akeneo_doctrine_extensions.event_subscriber.resolve_target_repository.class: Akeneo\Bundle\DoctrineExtensionsBundle\EventSubscriber\ResolveTargetRepositorySubscriber
 
 services:
+    akeneo_doctrine_extensions.event_subscriber.resolve_target_repository:
+        class: %akeneo_doctrine_extensions.event_subscriber.resolve_target_repository.class%
+        public: false
+        tags:
+            - { name: doctrine.event_subscriber }
+
     akeneo_doctrine_extensions.doctrine.smart_manager_registry:
         class: %akeneo_doctrine_extensions.doctrine.smart_manager_registry.class%
         calls:

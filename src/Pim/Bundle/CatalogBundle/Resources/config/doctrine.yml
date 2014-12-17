@@ -1,13 +1,10 @@
 parameters:
-    doctrine.orm.cache.apc.class:       Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
-    pim_catalog.event_subscriber.resolve_target_repository.class: Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber
+    doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
 
 services:
+    # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.resolve_target_repository:
-        class: %pim_catalog.event_subscriber.resolve_target_repository.class%
-        public: false
-        tags:
-            - { name: doctrine.event_subscriber }
+        alias: akeneo_doctrine_extensions.event_subscriber.resolve_target_repository
 
     # deprecetad: will be removed in 1.4
     pim_catalog.doctrine.smart_manager_registry:
