@@ -2033,6 +2033,11 @@ class WebUser extends RawMinkContext
                 return $this->lorem(20);
             case 'attribute creation.description':
                 return $this->lorem(256);
+            case 'product edit.sku':
+            case 'product edit.description':
+                return str_repeat('foobar ', 50);
+            case 'product edit.longtext':
+                return str_repeat('foobar ', 9500);
             default:
                 return '!@#-?_'.$this->lorem(250);
         }

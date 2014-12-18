@@ -321,8 +321,8 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function filterExpectedValues(AttributeInterface $attribute, array $values)
     {
-        if ($attribute->getAvailableLocales()) {
-            $availableLocales = $attribute->getAvailableLocaleCodes();
+        if ($attribute->isLocaleSpecific()) {
+            $availableLocales = $attribute->getLocaleSpecificCodes();
             foreach ($values as $index => $value) {
                 if ($value['locale'] && !in_array($value['locale'], $availableLocales)) {
                     unset($values[$index]);

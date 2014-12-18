@@ -83,7 +83,6 @@
 - Remove the `Pim\Bundle\CatalogBundle\Doctrine\(ORM|MongoDBODM)\Filter\BaseFilter` to use proper dedicated filters
 - The parameter `category_id` for the route `pim_enrich_product_listcategories` has been renamed to `categoryId`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader`. Now `FieldNameBuilder`, channel, locale and currency entity classes are mandatory.
-- Add getAvailableLocaleCodes in AttributeInterface
 - AttributeTypeRegistry replaces AttributeTypeFactory, changed constructors for AttributeManager, ProductValueFormFactory, AddAttributeTypeRelatedFieldsSubscriber
 - Drop Pim\Bundle\CatalogBundle\Doctrine\EntityRepository, ORM repositories now extends Doctrine\ORM\EntityRepository, no more access to buildAll(), build() and buildOne()
 - Replace AssociationTypeRepository::buildMissingAssociationTypes by AssociationTypeRepository::findMissingAssociationTypes
@@ -110,15 +109,38 @@
 - Add `MediaFactory` and `ObjectManager` arguments in MediaManager contructor
 - Change of constructor `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove arguments `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` and  `Pim\Bundle\CatalogBundle\Factory\MetricFactory`. `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface` is expected as second argument and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` is expected as last but one.
 - Enabled field in normalized data is now a boolean in mongodb. You can migrate your database with the script located at `./upgrades/1.2-1.3/mongodb/migrate_statuses.php`
+- Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductManager` to accept a `Pim\Component\Resource\Model\SaverInterface` as second argument. Add a `Pim\Component\Resource\Model\BulkSaverInterface` as third argument
+- FieldNameBuilder constructor now expects $channelClass and $localeClass FQCN
+- The Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeUpdateGuesser has been removed
+- IndexCreator constructor now expects a LoggerInterface as last argument
+- Add methods isLocaleSpecific and getLocaleSpecificCodes in AttributeInterface
+- AssociationTransformer constructor now expects a $associationTypeClass as last argument
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 
-# 1.2.x
+# 1.2.16 (2014-12-17)
 
 ## Bug fixes
-- PIM-3447: Fix date picker year range selection over next year
+- PIM-3447: Enforce max database length limit on identifier, text and textarea attribute values
+- PIM-3471: Add an error log when the max number of indexes is reached for the mongo product collection (MongoResultException is raised since Mongo 2.6.*)
+- PIM-3369: Check on import if the couple channel/local exist
+- PIM-3368: Add association type check on association import
+- PIM-3377: Add a check if the specific locale exists on imports, and skip unused attribute column for locale specific on exports
+- PIM-3458: When creating an attribute group, automatically set the sort order to the last one
+- PIM-3420: Remove update guessers on attributes and attributes option to fix the versionning memory leak
+
+## BC breaks
+- PIM-3368: Add AssociationType class argument to the `Pim\Bundle\TransformBundle\Transformer\AssociationTransformer` constructor
+
+## Improvements
+- PIM-3448: Add the method `getAttributeGroupsFromAttributeCodes` in the `Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository`
+
+# 1.2.15 (2014-12-10)
+
+## Bug fixes
+- PIM-3473: Fix date picker year range selection over next year
 - PIM-3475: Fix attribute options sort order in import/export
 
 ## BC breaks
@@ -507,7 +529,6 @@
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
 - Rename service `pim_catalog.validator.attribute_constraint_guesser` by `pim_catalog.validator.constraint_guesser.chained_attribute`
-- Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductManager` to accept a `Pim\Component\Resource\Model\SaverInterface` as second argument. Add a `Pim\Component\Resource\Model\BulkSaverInterface` as third argument.
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

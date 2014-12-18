@@ -129,10 +129,7 @@ class AttributeNormalizer implements NormalizerInterface
      */
     protected function normalizeAvailableLocales(AttributeInterface $attribute)
     {
-        $locales = array();
-        foreach ($attribute->getAvailableLocales() as $locale) {
-            $locales[] = $locale->getCode();
-        }
+        $locales = $attribute->getLocaleSpecificCodes();
 
         return $locales;
     }

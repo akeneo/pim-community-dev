@@ -12,9 +12,10 @@ Feature: Validate textarea attributes of a product
       | description      | Description     | textarea | yes      | 5              | no              |
       | long_info        | Longinfo        | textarea | no       | 10             | yes             |
       | long_description | Longdescription | textarea | yes      | 10             | yes             |
+      | long_text        | Longtext        | textarea | no       |                | yes             |
     And the following family:
-      | code | label-en_US | attributes                                          |
-      | baz  | Baz         | sku, info, long_info, description, long_description |
+      | code | label-en_US | attributes                                                     |
+      | baz  | Baz         | sku, info, long_info, description, long_description, long_text |
     And the following product:
       | sku | family |
       | foo | baz    |
@@ -46,5 +47,13 @@ Feature: Validate textarea attributes of a product
     Given I change the "ecommerce Longdescription" to "information"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3447
+  Scenario: Validate the max database value length of textarea attribute
+    Given I change the Longtext to an invalid value
+    And I save the product
+    Then I should see validation tooltip "This value is too long. It should have 65535 characters or less."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red

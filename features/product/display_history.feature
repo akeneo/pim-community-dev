@@ -19,6 +19,7 @@ Feature: Display the product history
       | version | property | value       |
       | 1       | sku      | sandals-001 |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when a linked attribute option is removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -37,10 +38,10 @@ Feature: Display the product history
     And I save the attribute
     And I edit the "boots" product
     And I visit the "History" tab
-    Then there should be 2 updates
+    Then there should be 1 updates
     And I should see history:
-      | version | property           | value |
-      | 2       | weather_conditions | cold  |
+      | version | property           | value      |
+      | 1       | weather_conditions | cold,snowy |
 
   Scenario: Update product history when a linked category is removed
     Given a "footwear" catalog configuration
@@ -86,6 +87,7 @@ Feature: Display the product history
       | version | property   | value    |
       | 2       | categories | men_2014 |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when a linked attribute is removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -103,11 +105,12 @@ Feature: Display the product history
     And I confirm the deletion
     And I edit the "boots" product
     And I visit the "History" tab
-    Then there should be 2 updates
+    Then there should be 1 updates
     And I should see history:
-      | version | property     | value |
-      | 2       | manufacturer |       |
+      | version | property     | value    |
+      | 1       | manufacturer | Converse |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when multiple linked attributes are removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -129,8 +132,9 @@ Feature: Display the product history
     And I confirm the deletion
     And I edit the "boots" product
     And I visit the "History" tab
-    Then there should be 3 updates
+    Then there should be 1 updates
     And I should see history:
-      | version | property           | value |
-      | 2       | weather_conditions |       |
-      | 3       | comment            |       |
+      | version | property           | value      |
+      | 1       | weather_conditions | cold,snowy |
+      | 1       | comment            | nice boots |
+

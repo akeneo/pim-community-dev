@@ -192,3 +192,22 @@ Feature: Execute a job
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3377
+  Scenario: Fail when import invalid attribute with nonexistent specific locale
+    Given the following attributes:
+      | code                      | type | localizable | availableLocales |
+      | locale_specific_attribute | text | yes         | en_US            |
+    Then I am on the Attribute index page
+    And I add the "french" locale to the "mobile" channel
+    Given the following file to import:
+      """
+      sku;locale_specific_attribute-fr_FR
+      SKU-001;test value
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "The provided specific locale \"fr_FR\" does not exist for \"locale_specific_attribute\" attribute"
