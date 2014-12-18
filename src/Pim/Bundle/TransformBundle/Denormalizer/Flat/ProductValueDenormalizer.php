@@ -45,7 +45,8 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
     {
         if (isset($context['entity'])) {
             $value = $context['entity'];
-            $context['entity'] = null;
+            // TODO : this fix should be merged from EE 1.0.x
+            unset($context['entity']);
             $context['value']  = $value;
         } else {
             throw new InvalidArgumentException('Value should be passed in context');
