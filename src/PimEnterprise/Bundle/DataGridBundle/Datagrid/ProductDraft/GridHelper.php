@@ -28,10 +28,8 @@ class GridHelper
 
     /**
      * @param SecurityContextInterface $securityContext
-     *
-     * TODO: make this parameter mandatory for 1.3
      */
-    public function __construct(SecurityContextInterface $securityContext = null)
+    public function __construct(SecurityContextInterface $securityContext)
     {
         $this->securityContext = $securityContext;
     }
