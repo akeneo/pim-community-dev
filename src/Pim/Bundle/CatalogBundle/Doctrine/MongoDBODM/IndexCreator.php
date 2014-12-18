@@ -41,7 +41,7 @@ class IndexCreator
         ManagerRegistry $managerRegistry,
         NamingUtility $namingUtility,
         $productClass,
-        $logger
+        LoggerInterface $logger
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;
