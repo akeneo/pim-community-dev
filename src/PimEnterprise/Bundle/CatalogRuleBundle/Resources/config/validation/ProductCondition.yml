@@ -1,4 +1,6 @@
 PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition:
+    constraints:
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\SupportedOperatorCondition: ~
     properties:
         field:
            - Type:
