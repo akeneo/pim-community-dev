@@ -1,5 +1,6 @@
 parameters:
     pimee_catalog_rule.validator.supported_operator_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\SupportedOperatorConditionValidator
+    pimee_catalog_rule.validator.existing_field.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFieldValidator
 
 services:
     pimee_catalog_rule.validator.supported_operator_condition:
@@ -8,3 +9,10 @@ services:
             - @pim_catalog.doctrine.query.filter_registry
         tags:
             - { name: validator.constraint_validator, alias: pimee_supported_operator_condition_validator }
+
+    pimee_catalog_rule.validator.existing_field:
+        class: %pimee_catalog_rule.validator.existing_field.class%
+        arguments:
+            - @pim_catalog.doctrine.query.filter_registry
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_field_validator }

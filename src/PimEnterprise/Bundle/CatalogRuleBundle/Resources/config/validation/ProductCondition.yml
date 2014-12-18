@@ -8,6 +8,7 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition:
            - NotBlank: ~
            - Length:
                max: 255
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
         operator:
             - Type:
                 type: string
