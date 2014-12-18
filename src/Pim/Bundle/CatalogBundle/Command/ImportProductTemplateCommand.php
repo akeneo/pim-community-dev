@@ -48,7 +48,7 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
         }
         $template->setValuesData($productValuesData);
         $template->setGroup($variantGroup);
-        $this->save($template); // TODO : should use cascade on VG
+        $this->saveTemplate($template); // TODO : should use cascade on VG
 
         // Fetch the values from the stored template
         $variantGroup = $this->getVariantGroup('akeneo_tshirt');
@@ -72,8 +72,21 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
 
         // TODO picture doesnt work
         // TODO prices doesnt work
-        $productToUpdate = $this->getProduct('AKNTS_BPM');
-        $this->update($productToUpdate, $updates);
+
+        $products = $variantGroup->getProducts();
+        $products = $products->count() > 0 ? $products->toArray() : [];
+
+        $this->updateAll($products, $updates);
+        $this->validateAll($products, $output);
+        $this->saveAll($products);
+
+        $output->writeln(
+            sprintf(
+                '<info>%d products in variant group "%s" have been updated<error>',
+                count($products),
+                $variantGroup->getCode()
+            )
+        );
     }
 
     /**
@@ -185,7 +198,7 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
     /**
      * @param GroupProductTemplate $template
      */
-    protected function save(GroupProductTemplate $template)
+    protected function saveTemplate(GroupProductTemplate $template)
     {
         $objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $objectManager->persist($template);
@@ -193,36 +206,40 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface $product
-     *
-     * @param array $updates
+     * @param ProductInterface[] $products
+     * @param array              $updates
      */
-    protected function update(ProductInterface $product, array $updates)
+    protected function updateAll($products, $updates)
     {
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
         foreach ($updates as $update) {
             $updater->setValue(
-                [$product],
+                $products,
                 $update['attribute'],
                 $update['value'],
                 $update['locale'],
                 $update['scope']
             );
         }
-
-        $violations = $this->validateProduct($product);
-        foreach ($violations as $violation) {
-            $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
-        }
-        if (0 !== $violations->count()) {
-            $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
-
-            return;
-        }
-
-        $this->saveProduct($product);
     }
 
+    /**
+     * @param ProductInterface[] $products
+     * @param OutputInterface    $output
+     */
+    protected function validateAll($products, OutputInterface $output)
+    {
+        foreach ($products as $product) {
+            $violations = $this->validateProduct($product);
+            foreach ($violations as $violation) {
+                $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
+            }
+            if (0 !== $violations->count()) {
+                $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
+                // TODO : skip from UOW
+            }
+        }
+    }
 
     /**
      * @param ProductInterface $product
@@ -238,11 +255,11 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface $product
+     * @param ProductInterface[] $products
      */
-    protected function saveProduct(ProductInterface $product)
+    protected function saveAll($products)
     {
         $saver = $this->getContainer()->get('pim_catalog.saver.product');
-        $saver->save($product);
+        $saver->saveAll($products);
     }
 }
