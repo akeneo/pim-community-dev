@@ -218,51 +218,28 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     And I should see "actions[0].value: This value should not be blank."
 
-  @javascript
-  Scenario: Fails when import rule with missing value key for set action
-    Given the following yaml file to import:
-    """
-    rules:
-        canon_beautiful_description:
-            conditions:
-                - field:    name
-                  operator: CONTAINS
-                  value:    Canon
-            actions:
-                - type:  set_value
-                  field: description
-                  value: A beautiful description
-
-    """
-    And the following job "clothing_rule_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "clothing_rule_import" import job page
-    And I launch the import job
-    And I wait for the "clothing_rule_import" job to finish
-    And I should see "condition[0].locale: This value should not be blank."
-
-  @javascript
-  Scenario: Fails when import rule with invalid operator for conditions
-    Given the following yaml file to import:
-    """
-    rules:
-        canon_beautiful_description:
-            conditions:
-                - field:    name
-                  operator: WRONG
-                  value:    Canon
-            actions:
-                - type:  set_value
-                  field: description
-                  value: A beautiful description
-
-    """
-    And the following job "clothing_rule_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "clothing_rule_import" import job page
-    And I launch the import job
-    And I wait for the "clothing_rule_import" job to finish
-    And I should see "wrong operator"
+#  @javascript
+#  Scenario: Fails when import rule with invalid operator for conditions
+#    Given the following yaml file to import:
+#    """
+#    rules:
+#        canon_beautiful_description:
+#            conditions:
+#                - field:    name
+#                  operator: WRONG
+#                  value:    Canon
+#            actions:
+#                - type:  set_value
+#                  field: description
+#                  value: A beautiful description
+#
+#    """
+#    And the following job "clothing_rule_import" configuration:
+#      | filePath | %file to import% |
+#    When I am on the "clothing_rule_import" import job page
+#    And I launch the import job
+#    And I wait for the "clothing_rule_import" job to finish
+#    And I should see "wrong operator"
 
 #  @javascript
 #  Scenario: Fails when import rule with wrong locale key for set action
