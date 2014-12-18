@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -13,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ProductDraftApprovalVoterSpec extends ObjectBehavior
+class ProductDraftVoterSpec extends ObjectBehavior
 {
     function let(
         AttributeGroupRepository $attrGroupRepository,
@@ -24,7 +25,7 @@ class ProductDraftApprovalVoterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftApprovalVoter');
+        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftVoter');
     }
 
     function it_is_a_voter()
@@ -41,7 +42,11 @@ class ProductDraftApprovalVoterSpec extends ObjectBehavior
     function it_supports_edit_attributes()
     {
         $this->supportsAttribute(Attributes::EDIT_ATTRIBUTES)->shouldReturn(true);
-        $this->supportsAttribute(Argument::any())->shouldReturn(false);
+    }
+
+    function it_supports_the_own_attribute()
+    {
+        $this->supportsAttribute(Attributes::OWN)->shouldReturn(true);
     }
 
     function it_grants_voting_as_the_user_can_edit_all_values_contained_in_the_draft(
@@ -99,6 +104,44 @@ class ProductDraftApprovalVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
+    function it_grants_own_access_to_user_that_has_created_the_proposal(
+        TokenInterface $token,
+        ProductDraft $productDraft,
+        UserInterface $user
+    ) {
+        $token->getUser()->willReturn($user);
+        $user->getUsername()->willReturn('bob');
+        $productDraft->getAuthor()->willReturn('bob');
+
+        $this->vote($token, $productDraft, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
+    }
+
+    function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_product_draft(
+        TokenInterface $token,
+        ProductDraft $productDraft,
+        UserInterface $user
+    ) {
+        $token->getUser()->willReturn($user);
+        $user->getUsername()->willReturn('bob');
+        $productDraft->getAuthor()->willReturn('alice');
+
+        $this->vote($token, $productDraft, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);
+    }
+
+    function it_does_not_vote_if_the_attribute_own_is_not_being_checked(
+        TokenInterface $token,
+        ProductDraft $productDraft
+    ) {
+        $this->vote($token, $productDraft, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
+    }
+
+    function it_does_not_vote_if_checking_the_own_access_of_something_else_than_a_product_draft(
+        TokenInterface $token,
+        ProductInterface $product
+    ) {
+        $this->vote($token, $product, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
+    }
+
     private function getChanges(array $attributeCodes)
     {
         $changes = [];
@@ -117,5 +160,4 @@ class ProductDraftApprovalVoterSpec extends ObjectBehavior
             '__context__' => ['attribute' => $attributeCode]
         ];
     }
-
 }

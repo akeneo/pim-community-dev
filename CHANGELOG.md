@@ -28,6 +28,7 @@
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver`. `Doctrine\Common\Persistence\ObjectManager` is now expected as first argument.
 - Move the versioning denormalizers to CE PimTransformBundle, namespaces are changed but the services alias are kept
 - change constructor `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper` which now expects a SecurityContextInterface
+- rename src/PimEnterprise/Bundle/SecurityBundle/Voter/ProductDraftOwnershipVoter.php to ProductDraftVoter
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options

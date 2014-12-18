@@ -20,14 +20,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Voter of the product draft approval attribute. Determine if a user can approve or refuse a proposal (ie: if he
- * can edit all values contained in this draft).
- *
- * TODO 1.3: merge this class with ProductDraftOwnershipVoter to have only one voter
+ * Voter of the product draft, determine if,
+ *  - a user is the owner of the product draft
+ *  - a user can approve or refuse a proposal (ie: if he can edit all values contained in this draft).
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductDraftApprovalVoter implements VoterInterface
+class ProductDraftVoter implements VoterInterface
 {
     /** @var AttributeGroupRepository */
     protected $attrGroupRepository;
@@ -52,7 +51,7 @@ class ProductDraftApprovalVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return Attributes::EDIT_ATTRIBUTES === $attribute;
+        return (Attributes::EDIT_ATTRIBUTES === $attribute) || (Attributes::OWN === $attribute);
     }
 
     /**
@@ -74,10 +73,16 @@ class ProductDraftApprovalVoter implements VoterInterface
 
         foreach ($attributes as $attribute) {
             if ($this->supportsAttribute($attribute)) {
-                return $this->canUserApproveDraft($token->getUser(), $object) ?
-                    VoterInterface::ACCESS_GRANTED :
-                    VoterInterface::ACCESS_DENIED
-                ;
+                if (Attributes::EDIT_ATTRIBUTES === $attribute) {
+                    return $this->canApprove($token->getUser(), $object) ?
+                        VoterInterface::ACCESS_GRANTED :
+                        VoterInterface::ACCESS_DENIED;
+
+                } elseif (Attributes::OWN === $attribute) {
+                    return $this->isOwner($token->getUser(), $object) ?
+                        VoterInterface::ACCESS_GRANTED :
+                        VoterInterface::ACCESS_DENIED;
+                }
             }
         }
 
@@ -90,7 +95,18 @@ class ProductDraftApprovalVoter implements VoterInterface
      *
      * @return bool
      */
-    protected function canUserApproveDraft(UserInterface $user, ProductDraft $draft)
+    protected function isOwner(UserInterface $user, ProductDraft $draft)
+    {
+        return $user->getUsername() === $draft->getAuthor();
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param ProductDraft  $draft
+     *
+     * @return bool
+     */
+    protected function canApprove(UserInterface $user, ProductDraft $draft)
     {
         foreach ($this->getAttributeGroupsImpactedByADraft($draft) as $group) {
             if (false === $this->attrGroupAccessManager->isUserGranted(
