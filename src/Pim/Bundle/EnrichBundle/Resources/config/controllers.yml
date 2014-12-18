@@ -151,9 +151,10 @@ services:
         class: %pim_enrich.controller.group.class%
         parent: pim_enrich.controller.abstract
         arguments:
-            - '@pim_catalog.manager.group'
-            - '@pim_enrich.form.handler.group'
-            - '@pim_enrich.form.group'
+            - @pim_catalog.manager.group
+            - @pim_enrich.form.handler.group
+            - @pim_enrich.form.group
+            - @pim_catalog.factory.group
 
     pim_enrich.controller.association_type:
         scope: request

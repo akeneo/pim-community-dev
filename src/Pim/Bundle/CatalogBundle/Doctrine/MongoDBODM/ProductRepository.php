@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
@@ -185,11 +185,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return ProductInterface[]
      */
-    public function findAllForGroup(Group $group)
+    public function findAllForGroup(GroupInterface $group)
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -322,7 +322,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
     {
         $qb = $this->createQueryBuilder()->eagerCursor(true);
 

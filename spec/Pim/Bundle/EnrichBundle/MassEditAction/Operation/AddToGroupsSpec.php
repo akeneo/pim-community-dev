@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -12,8 +12,8 @@ class AddToGroupsSpec extends ObjectBehavior
 {
     function let(
         GroupRepository $groupRepository,
-        Group $shirts,
-        Group $pants
+        GroupInterface $shirts,
+        GroupInterface $pants
     ) {
         $this->beConstructedWith($groupRepository);
     }

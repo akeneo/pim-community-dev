@@ -154,6 +154,8 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Edit a family
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Family $family
      *
      * @Template
@@ -177,6 +179,8 @@ class FamilyController extends AbstractDoctrineController
 
     /**
      * History of a family
+     *
+     * TODO : find a way to use param converter with interfaces
      *
      * @param Family $family
      *

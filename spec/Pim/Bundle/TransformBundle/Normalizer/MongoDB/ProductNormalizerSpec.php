@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -54,8 +54,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         Association $assoc2,
         CategoryInterface $category1,
         CategoryInterface $category2,
-        Group $group1,
-        Group $group2,
+        GroupInterface $group1,
+        GroupInterface $group2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
         FamilyInterface $family
@@ -115,8 +115,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         Association $assoc2,
         CategoryInterface $category1,
         CategoryInterface $category2,
-        Group $group1,
-        Group $group2,
+        GroupInterface $group1,
+        GroupInterface $group2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
         FamilyInterface $family
