@@ -6,12 +6,14 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction:
            - NotBlank: ~
            - Length:
                max: 255
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
         toField:
            - Type:
                 type: string
            - NotBlank: ~
            - Length:
                max: 255
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
         fromScope:
             - Type:
                 type: string

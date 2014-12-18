@@ -14,6 +14,8 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * Validation constraint on a field.
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ExistingField extends Constraint

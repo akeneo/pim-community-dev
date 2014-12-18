@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
+ * Validates that a field exists or not.
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ExistingFieldValidator extends ConstraintValidator
@@ -35,13 +37,17 @@ class ExistingFieldValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($productCondition, Constraint $constraint)
+    public function validate($fieldName, Constraint $constraint)
     {
+        if (null === $fieldName) {
+            return;
+        }
+
         /** @var ProductConditionInterface $productCondition */
-        $filter = $this->registry->getFilter($productCondition->getField());
+        $filter = $this->registry->getFilter($fieldName);
 
         if (null === $filter) {
-            $this->context->addViolation($constraint->message, ['%field%' => $productCondition->getField()]);
+            $this->context->addViolation($constraint->message, ['%field%' => $fieldName]);
         }
     }
 }

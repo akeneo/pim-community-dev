@@ -58,6 +58,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "Rule content \"canon_beautiful_description\" should have a \"conditions\" key."
 
   @javascript
@@ -81,6 +82,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "Rule content \"canon_beautiful_description\" should have a \"actions\" key."
 
   @javascript
@@ -104,6 +106,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "conditions[0].operator: This value should not be blank."
 
   @javascript
@@ -127,6 +130,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "conditions[0].field: This value should not be blank."
 
   @javascript
@@ -149,6 +153,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "actions[0].fromField: This value should not be blank."
 
   @javascript
@@ -171,6 +176,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "actions[0].toField: This value should not be blank."
 
   @javascript
@@ -193,6 +199,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "conditions[0].value: This value should not be blank."
 
   @javascript
@@ -216,6 +223,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "actions[0].value: This value should not be blank."
 
   @javascript
@@ -287,6 +295,7 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "Rule content \"canon_beautiful_description\" has an action with no type."
 
   @javascript
@@ -310,99 +319,103 @@ Feature: Import rules
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
     And I should see "Rule \"canon_beautiful_description\" has an unknown type of action \"wrong\"."
 
-#  @javascript
-#  Scenario: Fails when import rule with not existing field for conditions
-#    Given the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    wrong
-#                  operator: CONTAINS
-#                  value:    Canon
-#            actions:
-#                - type:  set_value
-#                  field: description
-#                  value: A beautiful description
-#
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    And I should see "actions[0].value: This value should not be blank."
+  @javascript
+  Scenario: Fails when import rule with not existing field for conditions
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    wrong
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - type:  set_value
+                  field: description
+                  value: A beautiful description
 
-#  @javascript
-#  Scenario: Fails when import rule with not existing field for set action
-#    Given the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#            actions:
-#                - type:  set_value
-#                  field: wrong
-#                  value: A beautiful description
-#
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    And I should see "actions[0].value: This value should not be blank."
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "conditions[0].field: The field \"wrong\" does not exist."
 
-#  @javascript
-#  Scenario: Fails when import rule with not existing from_field for copy action
-#    Given the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#            actions:
-#                - type:       copy_value
-#                  from_field: wrong
-#                  to_field:   description
-#
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    And I should see "actions[0].value: This value should not be blank."
-#
-#  @javascript
-#  Scenario: Fails when import rule with not existing to_field for copy action
-#    Given the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#            actions:
-#                - type:       copy_value
-#                  from_field: description
-#                  to_field:   wrong
-#
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    And I should see "actions[0].value: This value should not be blank."
+  @javascript
+  Scenario: Fails when import rule with not existing field for set action
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - type:  set_value
+                  field: wrong
+                  value: A beautiful description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "actions[0].field: The field \"wrong\" does not exist."
+
+  @javascript
+  Scenario: Fails when import rule with not existing from_field for copy action
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - type:       copy_value
+                  from_field: wrong
+                  to_field:   description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "actions[0].fromField: The field \"wrong\" does not exist."
+
+  @javascript
+  Scenario: Fails when import rule with not existing to_field for copy action
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - type:       copy_value
+                  from_field: description
+                  to_field:   wrong
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "actions[0].toField: The field \"wrong\" does not exist."
 
   @javascript
   Scenario: Skip rules containing unknown action

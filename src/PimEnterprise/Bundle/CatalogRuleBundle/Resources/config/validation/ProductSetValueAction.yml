@@ -6,6 +6,7 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction:
            - NotBlank: ~
            - Length:
                max: 255
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
         value:
            - NotBlank: ~
         scope:
