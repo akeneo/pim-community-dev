@@ -81,9 +81,7 @@ class ProductRuleDenormalizer implements DenormalizerInterface
             $rule->setPriority((int) $data['priority']);
         }
 
-        if (!array_key_exists('condition', $data)) {
-            throw new \LogicException(sprintf('Missing the "%s" key', 'condition'));
-        }
+        $this->checkRuleKeys($data);
 
         if (isset($data['conditions'])) {
             foreach ($data['conditions'] as $rawCondition) {
@@ -95,6 +93,9 @@ class ProductRuleDenormalizer implements DenormalizerInterface
 
         if (isset($data['actions'])) {
             foreach ($data['actions'] as $rawAction) {
+                if (!array_key_exists('type', $rawAction)) {
+                    throw new \LogicException(sprintf('Rule content "%s" has an action with no type.', $data['code']));
+                }
                 //TODO
                 if (ProductSetValueActionInterface::TYPE === $rawAction['type']) {
                     $action = $this->setValueActionNormalizer->denormalize($rawAction, 'TODO');
@@ -139,5 +140,21 @@ class ProductRuleDenormalizer implements DenormalizerInterface
         }
 
         return new $this->class($definition);
+    }
+
+    /**
+     * Checks if the rule have a 'conditions' and 'actions' keys
+     *
+     * @param array $data
+     */
+    protected function checkRuleKeys(array $data)
+    {
+        if (!array_key_exists('conditions', $data)) {
+            throw new \LogicException(sprintf('Rule content "%s" should have a "conditions" key.', $data['code']));
+        }
+
+        if (!array_key_exists('actions', $data)) {
+            throw new \LogicException(sprintf('Rule content "%s" should have a "actions" key.', $data['code']));
+        }
     }
 }

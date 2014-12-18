@@ -37,28 +37,51 @@ Feature: Import rules
       | rule                        | field       | value                   |
       | canon_beautiful_description | description | A beautiful description |
 
-#  @javascript
-#  Scenario: Fails when import rule with missing field key for conditions
-#    Given the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            wrong:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#            actions:
-#                - type:  set_value
-#                  field: description
-#                  value: A beautiful description
-#
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    And I should see "conditions[0].operator: This value should not be blank."
+  @javascript
+  Scenario: Fails when import rule with missing conditions key
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            wrong:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - type:  set_value
+                  field: description
+                  value: A beautiful description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    And I should see "Rule content \"canon_beautiful_description\" should have a \"conditions\" key."
+
+  @javascript
+  Scenario: Fails when import rule with missing actions key
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            wrong:
+                - type:  set_value
+                  field: description
+                  value: A beautiful description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    And I should see "Rule content \"canon_beautiful_description\" should have a \"actions\" key."
 
   @javascript
   Scenario: Fails when import rule with missing operator key for conditions
@@ -205,7 +228,6 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    Canon
-                  locale:   []
             actions:
                 - type:  set_value
                   field: description
@@ -218,9 +240,32 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see "condition[0].locale: This value should not be blank."
-#
+
+  @javascript
+  Scenario: Fails when import rule with invalid operator for conditions
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: WRONG
+                  value:    Canon
+            actions:
+                - type:  set_value
+                  field: description
+                  value: A beautiful description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    And I should see "wrong operator"
+
 #  @javascript
-#  Scenario: Fails when import rule with missing value key for set action
+#  Scenario: Fails when import rule with wrong locale key for set action
 #    Given the following yaml file to import:
 #    """
 #    rules:
@@ -243,28 +288,51 @@ Feature: Import rules
 #    And I wait for the "clothing_rule_import" job to finish
 #    And I should see "condition[0].locale: This value should not be blank."
 
-#  @javascript
-#  Scenario: Fails when import rule with missing type key for copy or set action
-#    Given the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#            actions:
-#                - wrong: set_value
-#                  field: description
-#                  value: A beautiful description
-#
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    And I should see "actions[0].type: This value should not be blank."
+  @javascript
+  Scenario: Fails when import rule with missing type key for copy or set action
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - wrong: set_value
+                  field: description
+                  value: A beautiful description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    And I should see "Rule content \"canon_beautiful_description\" has an action with no type."
+
+  @javascript
+  Scenario: Fails when import rule with invalid type for copy or set action
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - type:  wrong
+                  field: description
+                  value: A beautiful description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    And I should see "Rule \"canon_beautiful_description\" has an unknown type of action \"wrong\"."
 
 #  @javascript
 #  Scenario: Fails when import rule with not existing field for conditions

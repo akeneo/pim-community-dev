@@ -26,7 +26,8 @@ class ProductRuleConditionNormalizer implements NormalizerInterface, Denormalize
     protected $conditionClass;
 
     /**
-     * @param string $conditionClass should implement \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
+     * @param string $conditionClass should implement
+     *                               \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
      */
     public function __construct($conditionClass)
     {
@@ -36,7 +37,7 @@ class ProductRuleConditionNormalizer implements NormalizerInterface, Denormalize
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         return new $this->conditionClass($data);
     }
@@ -52,7 +53,7 @@ class ProductRuleConditionNormalizer implements NormalizerInterface, Denormalize
     /**
      * {@inheritdoc}
      */
-    public function normalize($condition, $format = null, array $context = array())
+    public function normalize($condition, $format = null, array $context = [])
     {
         $data = [];
         if (null !== $condition->getField()) {

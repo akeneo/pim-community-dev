@@ -80,6 +80,7 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
     {
         $decodedContent = json_decode($content, true);
 
+        // TODO remove exceptions
         if (!array_key_exists('conditions', $decodedContent)) {
             throw new \LogicException(sprintf('Rule content "%s" should have a "conditions" key.', $content));
         } elseif (!array_key_exists('actions', $decodedContent)) {

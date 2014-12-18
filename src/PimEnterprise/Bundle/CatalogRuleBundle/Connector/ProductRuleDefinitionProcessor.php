@@ -60,11 +60,7 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
     {
         $definition = $this->findObject($this->repository, $item);
 
-        try {
-            $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
-        } catch (\LogicException $e) {
-            $this->handleExceptionItem($item, $e);
-        }
+        $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
 
         $violations = $this->validator->validate($rule);
         if ($violations->count()) {
@@ -84,7 +80,8 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
     protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition = null)
     {
         try {
-            $rule = $this->denormalizer->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
+            $rule = $this->denormalizer
+                ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
         } catch (\LogicException $e) {
             $this->handleExceptionOnItem($item, $e);
         }
