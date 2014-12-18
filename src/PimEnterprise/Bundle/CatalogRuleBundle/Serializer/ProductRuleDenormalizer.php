@@ -21,6 +21,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  * Denormalize product rules.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ *
+ * TODO: use a normalizer registry instead of all those normalizers
+ * TODO: that would also allow to remove he $denormalizer->denormalize($raw, 'TODO')
  */
 class ProductRuleDenormalizer implements DenormalizerInterface
 {
@@ -64,6 +67,8 @@ class ProductRuleDenormalizer implements DenormalizerInterface
      * {@inheritdoc}
      *
      * @return RuleDefinitionInterface
+     *
+     * @throws \LogicException
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
@@ -91,8 +96,12 @@ class ProductRuleDenormalizer implements DenormalizerInterface
                     $action = $this->setValueActionNormalizer->denormalize($rawAction, 'TODO');
                 } elseif (ProductCopyValueActionInterface::TYPE === $rawAction['type']) {
                     $action = $this->copyValueActionNormalizer->denormalize($rawAction, 'TODO');
+                } else {
+                    throw new \LogicException(
+                        sprintf('Rule "%s" has an unknown type of action "%s".', $rule->getCode(), $rawAction['type'])
+                    );
                 }
-                // TODO throw exception on else ?
+
                 $rule->addAction($action);
             }
         }

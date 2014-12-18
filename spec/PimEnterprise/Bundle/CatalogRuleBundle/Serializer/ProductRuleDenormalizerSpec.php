@@ -49,4 +49,18 @@ class ProductRuleDenormalizerSpec extends ObjectBehavior
 
         $this->supportsDenormalization(Argument::any(), $type)->shouldReturn(false);
     }
+
+    function it_throws_an_exception_when_denormalizing_a_rule_with_an_unknow_action()
+    {
+        $rule = [
+            'code' => 'discharge_fr_description',
+            'actions' => [
+                ['type' => 'unknown_action'],
+            ]
+        ];
+
+        $this->shouldThrow(
+            new \LogicException('Rule "discharge_fr_description" has an unknown type of action "unknown_action".')
+        )->during('denormalize', [$rule, Argument::any()]);
+    }
 }

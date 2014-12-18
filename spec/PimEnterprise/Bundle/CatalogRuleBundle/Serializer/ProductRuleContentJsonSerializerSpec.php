@@ -9,6 +9,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductCopyValueActionNormalizer;
 use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleConditionNormalizer;
 use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionNormalizer;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 
@@ -100,6 +101,19 @@ CONTENT;
 
         // TODO: use a custom matcher to test it
         $this->deserialize($content);
+    }
+
+    function it_throws_an_exception_when_serializing_a_product_rule_with_an_unknown_action(
+        RuleInterface $rule,
+        ActionInterface $unknownAction
+    ) {
+        $actions = [$unknownAction];
+
+        $rule->getCode()->willReturn('discharge_description');
+        $rule->getConditions()->willReturn([]);
+        $rule->getActions()->willReturn($actions);
+
+        $this->shouldThrow('\LogicException')->during('serialize', [$rule]);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_conditions_key()

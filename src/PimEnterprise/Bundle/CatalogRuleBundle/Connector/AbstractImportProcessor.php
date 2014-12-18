@@ -19,6 +19,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -45,6 +46,9 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
 
     /** @var DenormalizerInterface */
     protected $denormalizer;
+
+    /** @var TranslatorInterface */
+    protected $translator;
 
     /** @var string */
     protected $class;
@@ -134,36 +138,40 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
     /**
      * Sets an item as skipped and throws an invalid item exception.
      *
-     * @param array                            $item
-     * @param ConstraintViolationListInterface $violations
+     * @param array      $item
+     * @param \Exception $e
      *
      * @throws InvalidItemException
      */
-    protected function handleInvalidItem(array $item, ConstraintViolationListInterface $violations)
+    protected function handleExceptionOnItem(array $item, \Exception $e)
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($this->constraintViolationListToErrorMessage($item, $violations), $item);
+        throw new InvalidItemException($e->getMessage(), $item);
     }
 
     /**
-     * Transforms a list of constraint violations list to a readable error message.
+     * Sets an item as skipped and throws an invalid item exception.
      *
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
      *
-     * @return string
+     * @throws InvalidItemException
      */
-    protected function constraintViolationListToErrorMessage(array $item, ConstraintViolationListInterface $violations)
+    protected function handleConstraintViolationsOnItem(array $item, ConstraintViolationListInterface $violations)
     {
+        if ($this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+
         $errors = [];
         /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
             $errors[] = sprintf("%s: %s\n", $violation->getPropertyPath(), $violation->getMessage());
         }
 
-        return implode("\n", $errors);
+        throw new InvalidItemException(implode("\n", $errors), $item);
     }
 }

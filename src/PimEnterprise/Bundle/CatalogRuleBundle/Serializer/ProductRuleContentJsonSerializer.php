@@ -60,8 +60,11 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
                 $actions[] = $this->setValueActionNormalizer->normalize($action);
             } elseif ($action instanceof ProductCopyValueActionInterface) {
                 $actions[] = $this->copyValueActionNormalizer->normalize($action);
+            } else {
+                throw new \LogicException(
+                    sprintf('Rule "%s" has an unknown type of action "%s".', $rule->getCode(), get_class($action))
+                );
             }
-            // TODO throw exception on else ?
         }
 
         return json_encode([

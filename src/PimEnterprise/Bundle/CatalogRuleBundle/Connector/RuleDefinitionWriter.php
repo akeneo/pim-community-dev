@@ -20,6 +20,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 /**
  * Writer for rules definitions
  *
+ * TODO: move to base connector once rename and generic ?
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class RuleDefinitionWriter extends AbstractConfigurableStepElement implements
@@ -34,6 +36,8 @@ class RuleDefinitionWriter extends AbstractConfigurableStepElement implements
 
     /**
      * @param RuleDefinitionManager $ruleDefManager
+     *
+     * TODO: expect a BulkSaverInterface and rename this class to make it generic
      */
     public function __construct(RuleDefinitionManager $ruleDefManager)
     {
