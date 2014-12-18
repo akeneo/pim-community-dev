@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -56,7 +55,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     {
         $value->getData()->willReturn(null);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '']);
     }
@@ -65,7 +63,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     {
         $value->getData()->willReturn(12);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
     }
@@ -74,7 +71,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     {
         $value->getData()->willReturn(12.25);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12.2500']);
     }
@@ -83,7 +79,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     {
         $value->getData()->willReturn('my data');
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'my data']);
     }
@@ -92,6 +87,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     {
         $value->getData()->willReturn(false);
         $value->getAttribute()->willReturn($simpleAttribute);
+        $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '0']);
 
         $value->getData()->willReturn(true);
@@ -106,6 +102,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $collection = new ArrayCollection([$itemOne, $itemTwo]);
         $value->getData()->willReturn($collection);
         $value->getAttribute()->willReturn($simpleAttribute);
+        $simpleAttribute->isLocaleSpecific()->willReturn(false);
 
         $serializer->normalize($collection, 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
@@ -118,6 +115,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $array = [$itemOne, $itemTwo];
         $value->getData()->willReturn($array);
         $value->getAttribute()->willReturn($simpleAttribute);
+        $simpleAttribute->isLocaleSpecific()->willReturn(false);
 
         $serializer->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);

@@ -98,7 +98,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $localeRepository->findByReference('en_US')->shouldBeCalled()->willReturn($locale);
 
         $attributeRepository->findByReference('foo')->willReturn($attribute);
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attributeRepository);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(true);
 

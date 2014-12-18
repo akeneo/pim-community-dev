@@ -122,23 +122,23 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Check if the attribute is locale specific and check if the given local exist in available locales
      *
-     * @param ProductValueInterface $entity
+     * @param ProductValueInterface $value
      *
      * @return bool
      */
-    protected function filterLocaleSpecific(ProductValueInterface $entity)
+    protected function filterLocaleSpecific(ProductValueInterface $value)
     {
-        $actualLocale = $entity->getLocale();
-
         /** @var AttributeInterface $attribute */
-        $attribute = $entity->getAttribute();
+        $attribute = $value->getAttribute();
         if ($attribute->isLocaleSpecific()) {
+            $currentLocale = $value->getLocale();
             $availableLocales = [];
+            // TODO : use getAvalaibleLocaleCode
             foreach ($attribute->getAvailableLocales() as $locale) {
                 $availableLocales[] = $locale->getCode();
             }
 
-            if (!in_array($actualLocale, $availableLocales)) {
+            if (!in_array($currentLocale, $availableLocales)) {
                 return true;
             }
         }

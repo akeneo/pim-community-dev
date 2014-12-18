@@ -1006,11 +1006,7 @@ abstract class AbstractAttribute implements AttributeInterface
     }
 
     /**
-     * Check if attribute is locale specific
-     *
-     * TODO: don't forget to add this method declaration in AttributeInterface for the 1.3
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isLocaleSpecific()
     {

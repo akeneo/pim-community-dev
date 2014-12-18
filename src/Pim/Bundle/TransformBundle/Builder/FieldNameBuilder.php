@@ -14,12 +14,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class FieldNameBuilder
 {
-    /** @var static string */
-    const CHANNEL_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Channel';
-
-    /** @var static string */
-    const LOCALE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Locale';
-
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
@@ -46,8 +40,8 @@ class FieldNameBuilder
         ManagerRegistry $managerRegistry,
         $assocTypeClass,
         $attributeClass,
-        $channelClass = self::CHANNEL_CLASS,
-        $localeClass = self::LOCALE_CLASS
+        $channelClass,
+        $localeClass
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->assocTypeClass  = $assocTypeClass;
@@ -229,13 +223,13 @@ class FieldNameBuilder
     /**
      * Check the consistency of the field with channel associated
      *
-     * @param AbstractAttribute $attribute
-     * @param string            $fieldName
-     * @param array             $attributeInfos
+     * @param AttributeInterface $attribute
+     * @param string             $fieldName
+     * @param array              $attributeInfos
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameLocaleByChannel(AbstractAttribute $attribute, $fieldName, array $attributeInfos)
+    protected function checkFieldNameLocaleByChannel(AttributeInterface $attribute, $fieldName, array $attributeInfos)
     {
         if ($attribute->isScopable() &&
             $attribute->isLocalizable() &&
@@ -271,10 +265,10 @@ class FieldNameBuilder
     /**
      * Check if provided locales for an locale specific attribute exist
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $explodedFieldNames
+     * @param AttributeInterface $attribute
+     * @param array              $explodedFieldNames
      */
-    protected function checkForLocaleSpecificValue(AbstractAttribute $attribute, array $explodedFieldNames)
+    protected function checkForLocaleSpecificValue(AttributeInterface $attribute, array $explodedFieldNames)
     {
         if ($attribute->isLocaleSpecific()) {
             $attributeInfo = $this->extractAttributeInfos($attribute, $explodedFieldNames);

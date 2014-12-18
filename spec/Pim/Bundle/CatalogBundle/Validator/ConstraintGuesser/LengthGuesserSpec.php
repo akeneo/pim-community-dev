@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class LengthGuesserSpec extends ObjectBehavior
 {
-    function let(AbstractAttribute $text, AbstractAttribute $identifier, AbstractAttribute $textarea)
+    function let(AttributeInterface $text, AttributeInterface $identifier, AttributeInterface $textarea)
     {
         $text->getAttributeType()->willReturn('pim_catalog_text');
         $identifier->getAttributeType()->willReturn('pim_catalog_identifier');
@@ -24,7 +24,7 @@ class LengthGuesserSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface');
     }
 
-    function it_supports_text_attributes($text, $identifier, $textarea, AbstractAttribute $image)
+    function it_supports_text_attributes($text, $identifier, $textarea, AttributeInterface $image)
     {
         $image->getAttributeType()->willReturn('pim_catalog_image');
 

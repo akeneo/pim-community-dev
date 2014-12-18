@@ -588,4 +588,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
      * @return AttributeInterface
      */
     public function setMetricFamily($metricFamily);
+
+    /**
+     * Check if attribute is locale specific
+     *
+     * @return bool
+     */
+    public function isLocaleSpecific();
 }
