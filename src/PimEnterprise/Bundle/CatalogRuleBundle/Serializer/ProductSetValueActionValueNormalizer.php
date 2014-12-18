@@ -40,7 +40,9 @@ class ProductSetValueActionValueNormalizer implements NormalizerInterface
     public function normalize($data, $format = null, array $context = [])
     {
         if (!isset($context['attribute_code'])) {
-            throw new \InvalidArgumentException("An attribute code must be passed as context to normalize action value");
+            throw new \InvalidArgumentException(
+                "An attribute code must be passed as context to normalize action value"
+            );
         }
 
         $attributeCode = $context['attribute_code'];

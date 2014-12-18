@@ -29,8 +29,10 @@ class ProductSetValueActionNormalizer implements NormalizerInterface, Denormaliz
     protected $valueNormalizer;
 
     /**
-     * @param string $setValueActionClass should implement
-     *                                    \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface
+     * @param string                               $setValueActionClass should implement
+     *                                             \PimEnterprise\Bundle\CatalogRuleBundle\Model
+     *                                             \ProductSetValueActionInterface
+     * @param ProductSetValueActionValueNormalizer $valueNormalizer
      */
     public function __construct($setValueActionClass, ProductSetValueActionValueNormalizer $valueNormalizer)
     {
