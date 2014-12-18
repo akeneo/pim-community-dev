@@ -132,12 +132,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         $attribute = $value->getAttribute();
         if ($attribute->isLocaleSpecific()) {
             $currentLocale = $value->getLocale();
-            $availableLocales = [];
-            // TODO : use getAvalaibleLocaleCode
-            foreach ($attribute->getAvailableLocales() as $locale) {
-                $availableLocales[] = $locale->getCode();
-            }
-
+            $availableLocales = $attribute->getLocaleSpecificCodes();
             if (!in_array($currentLocale, $availableLocales)) {
                 return true;
             }

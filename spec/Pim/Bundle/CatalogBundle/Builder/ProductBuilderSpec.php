@@ -63,19 +63,19 @@ class ProductBuilderSpec extends ObjectBehavior
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
-        $sku->getAvailableLocales()->willReturn(null);
+        $sku->isLocaleSpecific()->willReturn(false);
 
         $name->getCode()->willReturn('name');
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
-        $name->getAvailableLocales()->willReturn(null);
+        $name->isLocaleSpecific()->willReturn(false);
 
         $desc->getCode()->willReturn('desc');
         $desc->getAttributeType()->willReturn('pim_catalog_text');
         $desc->isLocalizable()->willReturn(true);
         $desc->isScopable()->willReturn(true);
-        $desc->getAvailableLocales()->willReturn(null);
+        $desc->isLocaleSpecific()->willReturn(false);
 
         $fr->getCode()->willReturn('fr_FR');
         $en->getCode()->willReturn('fr_FR');

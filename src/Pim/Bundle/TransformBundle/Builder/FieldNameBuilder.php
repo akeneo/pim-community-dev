@@ -272,11 +272,7 @@ class FieldNameBuilder
     {
         if ($attribute->isLocaleSpecific()) {
             $attributeInfo = $this->extractAttributeInfos($attribute, $explodedFieldNames);
-            $availableLocales = [];
-            // TODO: use the getAvailableLocaleCodes instead of this for 1.3
-            foreach ($attribute->getAvailableLocales() as $locale) {
-                $availableLocales[] = $locale->getCode();
-            }
+            $availableLocales = $attribute->getLocaleSpecificCodes();
             if (!in_array($explodedFieldNames[1], $availableLocales)) {
                 throw new \LogicException(
                     sprintf(
