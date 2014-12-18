@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -19,6 +20,17 @@ class QueryFilterRegistry implements QueryFilterRegistryInterface
     /** @var FieldSorterInterface[] priorized field filters */
     protected $fieldFilters = [];
 
+    /** @var AttributeRepository  */
+    protected $attributeRepository;
+
+    /**
+     * @param AttributeRepository $attributeRepository
+     */
+    public function __construct(AttributeRepository $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +47,22 @@ class QueryFilterRegistry implements QueryFilterRegistryInterface
     /**
      * {@inheritdoc}
      */
+    public function getFilter($code)
+    {
+        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+
+        if (null !== $attribute) {
+            return $this->getAttributeFilter($attribute);
+        }
+
+        return $this->getFieldFilter($code);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: make this protected
+     */
     public function getFieldFilter($field)
     {
         foreach ($this->fieldFilters as $filter) {
@@ -48,6 +76,8 @@ class QueryFilterRegistry implements QueryFilterRegistryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: make this protected
      */
     public function getAttributeFilter(AttributeInterface $attribute)
     {
