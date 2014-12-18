@@ -46,6 +46,7 @@ class IndexCreator
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;
         $this->productClass    = $productClass;
+        $this->logger          = $logger;
     }
 
     /**

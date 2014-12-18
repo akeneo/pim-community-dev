@@ -11,6 +11,8 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Psr\Log\LoggerInterface;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
