@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -95,11 +95,11 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Count published products for a specific group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return integer
      */
-    public function countPublishedProductsForGroup(Group $group);
+    public function countPublishedProductsForGroup(GroupInterface $group);
 
     /**
      * Count published products for a specific association type

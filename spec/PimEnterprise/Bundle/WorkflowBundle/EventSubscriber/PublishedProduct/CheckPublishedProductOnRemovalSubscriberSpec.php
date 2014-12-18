@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProd
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -150,7 +150,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_the_group_is_linked_to_a_published_product(
         $publishedRepository,
-        Group $group,
+        GroupInterface $group,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($group);
@@ -161,7 +161,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_group_is_linked_to_a_published_product(
         $publishedRepository,
-        Group $group,
+        GroupInterface $group,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($group);
