@@ -113,6 +113,7 @@
 - The Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeUpdateGuesser has been removed
 - IndexCreator constructor now expects a LoggerInterface as last argument
 - Add methods isLocaleSpecific and getLocaleSpecificCodes in AttributeInterface
+- AssociationTransformer constructor now expects a $associationTypeClass as last argument
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

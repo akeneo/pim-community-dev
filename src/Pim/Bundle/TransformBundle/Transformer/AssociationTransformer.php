@@ -43,7 +43,7 @@ class AssociationTransformer extends EntityTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $colInfoTransformer,
         $productClass,
-        $associationTypeClass = 'Pim\Bundle\CatalogBundle\Entity\AssociationType'
+        $associationTypeClass
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
         $this->productClass         = $productClass;
