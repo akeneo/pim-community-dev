@@ -232,7 +232,7 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
         foreach ($products as $product) {
             $violations = $this->validateProduct($product);
             foreach ($violations as $violation) {
-                $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
+                $output->writeln(sprintf("<error>%s : %s<error>", $violation->getMessage(), $violation->getInvalidValue()));
             }
             if (0 !== $violations->count()) {
                 $output->writeln(sprintf('<error>product "%s" is not valid<error>', $product->getIdentifier()));
