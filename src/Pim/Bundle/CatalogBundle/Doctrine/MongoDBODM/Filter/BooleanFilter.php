@@ -59,8 +59,14 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
         }
@@ -74,7 +80,7 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean');

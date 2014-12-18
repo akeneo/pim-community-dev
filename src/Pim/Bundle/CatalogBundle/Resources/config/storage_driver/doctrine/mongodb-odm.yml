@@ -379,7 +379,8 @@ services:
     pim_catalog.doctrine.query.filter.family:
         class: %pim_catalog.doctrine.query.filter.family.class%
         arguments:
-            - ['family']
+            - '@pim_catalog.helper.filter'
+            - ['family.id', 'family.code']
             - ['IN', 'NOT IN' ,'EMPTY']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
@@ -387,7 +388,8 @@ services:
     pim_catalog.doctrine.query.filter.groups:
         class: %pim_catalog.doctrine.query.filter.groups.class%
         arguments:
-            - ['groups']
+            - '@pim_catalog.helper.filter'
+            - ['groups.id', 'groups.code']
             - ['IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

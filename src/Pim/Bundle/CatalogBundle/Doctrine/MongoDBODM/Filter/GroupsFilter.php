@@ -3,8 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
 
 /**
  * Entity filter
@@ -18,16 +20,22 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
+    /** @var EntityIdResolverInterface */
+    protected $entityIdResolver;
+
     /**
      * Instanciate the filter
      *
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param EntityIdResolverInterface $entityIdResolver
+     * @param array                     $supportedFields
+     * @param array                     $supportedOperators
      */
     public function __construct(
+        EntityIdResolverInterface $entityIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
+        $this->entityIdResolver   = $entityIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -43,15 +51,17 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         $this->checkValue($field, $value);
 
         $value = is_array($value) ? $value : [$value];
+        if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
+            $value = $this->entityIdResolver->getIdsFromCodes('group', $value);
+        }
         $value = array_map('intval', $value);
-        $field = 'groupIds';
 
-        $this->applyFilter($value, $field, $operator);
+        $this->applyFilter($value, 'groupIds', $operator);
 
         return $this;
     }
@@ -60,18 +70,14 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      * Check if value is valid
      *
      * @param string $field
-     * @param mixed  $value
+     * @param mixed  $values
      */
-    protected function checkValue($field, $value)
+    protected function checkValue($field, $values)
     {
-        if (!is_array($value)) {
-            throw InvalidArgumentException::arrayExpected($field, 'filter', 'groups');
-        }
+        FieldFilterHelper::checkArray($field, $values, 'groups');
 
-        foreach ($value as $group) {
-            if ('empty' !== $group && !is_numeric($group)) {
-                throw InvalidArgumentException::numericExpected($field, 'filter', 'groups');
-            }
+        foreach ($values as $value) {
+            FieldFilterHelper::checkIdentifier($field, $value, 'groups');
         }
     }
 
