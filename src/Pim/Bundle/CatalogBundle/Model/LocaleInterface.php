@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+
 /**
  * Locale interface
  *
@@ -15,6 +17,13 @@ interface LocaleInterface extends ReferableInterface
      * @return int
      */
     public function getId();
+
+    /**
+     * @param int id
+     *
+     * @return LocaleInterface
+     */
+    public function setId($id);
 
     /**
      * @return string
@@ -46,16 +55,16 @@ interface LocaleInterface extends ReferableInterface
     public function setChannels($channels);
 
     /**
-     * @param ChannelInterface $channel
+     * @param Channel $channel
      *
      * @return LocaleInterface
      */
-    public function addChannel(ChannelInterface $channel);
+    public function addChannel(Channel $channel);
 
     /**
-     * @param ChannelInterface $channel
+     * @param Channel $channel
      *
      * @return LocaleInterface
      */
-    public function removeChannel(ChannelInterface $channel);
+    public function removeChannel(Channel $channel);
 }

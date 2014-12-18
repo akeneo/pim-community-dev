@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -60,9 +59,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -70,11 +67,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -84,9 +77,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -94,11 +85,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -108,9 +95,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Is activated
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isActivated()
     {
@@ -118,9 +103,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Get channels
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getChannels()
     {
@@ -128,11 +111,7 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Set channels
-     *
-     * @param ArrayCollection $channels
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function setChannels($channels)
     {
@@ -142,13 +121,9 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Add channel
-     *
-     * @param Channel $channel
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
-    public function addChannel(ChannelInterface $channel)
+    public function addChannel(Channel $channel)
     {
         $this->channels[] = $channel;
         if ($this->channels->count() > 0) {
@@ -159,13 +134,9 @@ class Locale implements LocaleInterface
     }
 
     /**
-     * Remove channel
-     *
-     * @param Channel $channel
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
-    public function removeChannel(ChannelInterface $channel)
+    public function removeChannel(Channel $channel)
     {
         $this->channels->removeElement($channel);
         if ($this->channels->count() === 0) {
