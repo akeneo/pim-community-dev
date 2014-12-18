@@ -402,3 +402,31 @@ Feature: Import rules
 #    And I launch the import job
 #    And I wait for the "clothing_rule_import" job to finish
 #    And I should see "actions[0].value: This value should not be blank."
+
+  @javascript
+  Scenario: Skip rules containing unknown action
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+            actions:
+                - type:  unknown_action
+                  field: description
+                  value: A beautiful description
+
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    And I should see "Rule \"canon_beautiful_description\" has an unknown type of action \"unknown_action\""
+    Then I should see "skipped 1"
+    When I am on the "description" attribute page
+    And I visit the "Rules" tab
+    Then I should not see "canon_beautiful_description"
+
