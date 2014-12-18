@@ -235,8 +235,9 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
                 $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
             }
             if (0 !== $violations->count()) {
-                $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
-                // TODO : skip from UOW
+                $output->writeln(sprintf('<error>product "%s" is not valid<error>', $product->getIdentifier()));
+                $detacher = $this->getContainer()->get('pim_catalog.doctrine.detacher');
+                $detacher->detach($product);
             }
         }
     }
