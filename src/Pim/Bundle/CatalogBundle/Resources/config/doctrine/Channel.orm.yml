@@ -32,7 +32,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                     referencedColumnName: id
     manyToMany:
         currencies:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Currency
+            targetEntity: Pim\Bundle\CatalogBundle\Model\CurrencyInterface
             mappedBy: null
             inversedBy: null
             cascade:
