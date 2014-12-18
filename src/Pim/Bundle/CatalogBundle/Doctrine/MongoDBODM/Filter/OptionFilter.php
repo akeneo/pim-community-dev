@@ -5,7 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -21,16 +23,22 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var array */
     protected $supportedAttributes;
 
+    /** @var EntityIdResolverInterface */
+    protected $entityIdResolver;
+
     /**
      * Instanciate the filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param EntityIdResolverInterface $entityIdResolver
+     * @param array                     $supportedAttributes
+     * @param array                     $supportedOperators
      */
     public function __construct(
+        EntityIdResolverInterface $entityIdResolver,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->entityIdResolver    = $entityIdResolver;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -46,15 +54,27 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
-        $this->checkValue($attribute, $operator, $value);
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
+        $this->checkValue($options['field'], $value);
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $field = sprintf('%s.id', $field);
+        if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
+            $value = $this->entityIdResolver->getIdsFromCodes('option', $value);
+        }
 
-        $this->applyFilter($operator, $value, $field);
+        $mongoField = sprintf(
+            '%s.%s.id',
+            ProductQueryUtility::NORMALIZED_FIELD,
+            ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope)
+        );
+
+        $this->applyFilter($operator, $value, $mongoField, $options);
 
         return $this;
     }
@@ -62,22 +82,15 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Check if value is valid
      *
-     * @param AttributeInterface $attribute
-     * @param string             $operator
-     * @param mixed              $value
+     * @param string $field
+     * @param mixed  $values
      */
-    protected function checkValue(AttributeInterface $attribute, $operator, $value)
+    protected function checkValue($field, $values)
     {
-        if (!is_array($value) && Operators::IS_EMPTY !== $operator) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'option');
-        }
+        FieldFilterHelper::checkArray($field, $values, 'option');
 
-        if (Operators::IS_EMPTY !== $operator) {
-            foreach ($value as $option) {
-                if (!is_numeric($option)) {
-                    throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'option');
-                }
-            }
+        foreach ($values as $value) {
+            FieldFilterHelper::checkIdentifier($field, $value, 'option');
         }
     }
 

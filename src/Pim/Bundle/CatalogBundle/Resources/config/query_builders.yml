@@ -51,6 +51,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.helper.filter'
             - ['categories.id', 'categories.code']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
         tags:
@@ -102,15 +103,16 @@ services:
     pim_catalog.doctrine.query.filter.option:
         class: %pim_catalog.doctrine.query.filter.option.class%
         arguments:
+            - '@pim_catalog.helper.filter'
             - ['pim_catalog_simpleselect']
             - ['IN', 'EMPTY']
-            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.doctrine.query.filter.options:
         class: %pim_catalog.doctrine.query.filter.options.class%
         arguments:
+            - '@pim_catalog.helper.filter'
             - ['pim_catalog_multiselect']
             - ['IN', 'EMPTY']
         tags:

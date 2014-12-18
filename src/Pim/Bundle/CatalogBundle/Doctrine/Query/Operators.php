@@ -11,18 +11,22 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
  */
 class Operators
 {
-    const STARTS_WITH           = 'STARTS WITH';
-    const ENDS_WITH             = 'ENDS WITH';
-    const CONTAINS              = 'CONTAINS';
-    const DOES_NOT_CONTAIN      = 'DOES NOT CONTAIN';
-    const IS_EMPTY              = 'EMPTY';
-    const IN_LIST               = 'IN';
-    const NOT_IN_LIST           = 'NOT IN';
-    const BETWEEN               = 'BETWEEN';
-    const NOT_BETWEEN           = 'NOT BETWEEN';
-    const GREATER_THAN          = '>';
-    const GREATER_OR_EQUAL_THAN = '>=';
-    const LOWER_THAN            = '<';
-    const LOWER_OR_EQUAL_THAN   = '<=';
-    const EQUALS                = '=';
+    const STARTS_WITH             = 'STARTS WITH';
+    const ENDS_WITH               = 'ENDS WITH';
+    const CONTAINS                = 'CONTAINS';
+    const DOES_NOT_CONTAIN        = 'DOES NOT CONTAIN';
+    const IS_EMPTY                = 'EMPTY';
+    const IN_LIST                 = 'IN';
+    const NOT_IN_LIST             = 'NOT IN';
+    const IN_CHILDREN_LIST        = 'IN CHILDREN';
+    const NOT_IN_CHILDREN_LIST    = 'NOT IN CHILDREN';
+    const UNCLASSIFIED            = 'UNCLASSIFIED';
+    const IN_LIST_OR_UNCLASSIFIED = 'IN OR UNCLASSIFIED';
+    const BETWEEN                 = 'BETWEEN';
+    const NOT_BETWEEN             = 'NOT BETWEEN';
+    const GREATER_THAN            = '>';
+    const GREATER_OR_EQUAL_THAN   = '>=';
+    const LOWER_THAN              = '<';
+    const LOWER_OR_EQUAL_THAN     = '<=';
+    const EQUALS                  = '=';
 }

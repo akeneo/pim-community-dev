@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Filtering by simple option backend type
@@ -27,13 +27,14 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param AttributeOptionRepository $attributeOptionRepo
+     * @param array                     $supportedAttributes
+     * @param array                     $supportedOperators
      */
     public function __construct(
+        AttributeOptionRepository $attributeOptionRepo,
         array $supportedAttributes = [],
-        array $supportedOperators = [],
-        AttributeOptionRepository $attributeOptionRepo
+        array $supportedOperators = []
     ) {
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
