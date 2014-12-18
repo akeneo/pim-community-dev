@@ -7,6 +7,8 @@ parameters:
 services:
     pimee_datagrid.datagrid.product_draft.grid_helper:
         class: %pimee_datagrid.datagrid.product_draft.grid_helper.class%
+        arguments:
+            - '@security.context'
 
     pimee_datagrid.datagrid.proposal.grid_helper:
         class: %pimee_datagrid.datagrid.proposal.grid_helper.class%
