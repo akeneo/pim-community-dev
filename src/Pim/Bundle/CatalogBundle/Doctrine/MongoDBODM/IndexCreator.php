@@ -205,11 +205,7 @@ class IndexCreator
         $postNbIndexes = $preNbIndexes + count($fields);
         if ($postNbIndexes > 64) {
             $msg = sprintf('Too many MongoDB indexes (%d), no way to add %s', $preNbIndexes, print_r($fields, true));
-            if (null !== $this->logger) {
-                $this->logger->error($msg);
-            } else {
-                error_log($msg);
-            }
+            $this->logger->error($msg);
 
             return;
         }
