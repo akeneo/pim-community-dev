@@ -109,6 +109,7 @@
 - Add `MediaFactory` and `ObjectManager` arguments in MediaManager contructor
 - Change of constructor `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove arguments `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` and  `Pim\Bundle\CatalogBundle\Factory\MetricFactory`. `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface` is expected as second argument and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` is expected as last but one.
 - Enabled field in normalized data is now a boolean in mongodb. You can migrate your database with the script located at `./upgrades/1.2-1.3/mongodb/migrate_statuses.php`
+- Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductManager` to accept a `Pim\Component\Resource\Model\SaverInterface` as second argument. Add a `Pim\Component\Resource\Model\BulkSaverInterface` as third argument
 - FieldNameBuilder constructor now expects $channelClass and $localeClass FQCN
 - The Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeUpdateGuesser has been removed
 - IndexCreator constructor now expects a LoggerInterface as last argument
