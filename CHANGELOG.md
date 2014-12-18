@@ -116,6 +116,7 @@
 - IndexCreator constructor now expects a LoggerInterface as last argument
 - Add methods isLocaleSpecific and getLocaleSpecificCodes in AttributeInterface
 - AssociationTransformer constructor now expects a $associationTypeClass as last argument
+- Inject the GroupFactory as las constructor argument in GroupController and VariantGroupController
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

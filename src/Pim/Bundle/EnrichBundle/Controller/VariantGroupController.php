@@ -46,10 +46,7 @@ class VariantGroupController extends GroupController
         $groupType = $this->groupManager
             ->getGroupTypeRepository()
             ->findOneBy(array('code' => 'VARIANT'));
-
-        // TODO inject the class or use a factory
-        $group = new Group();
-        $group->setType($groupType);
+        $group = $this->groupFactory->createGroup($groupType);
 
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.variant group.created');
