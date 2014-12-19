@@ -2,12 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\ORM;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 
 class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 {
@@ -28,7 +27,7 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 
     function it_converts_metric_data_before_persisting(
         LifecycleEventArgs $args,
-        AbstractMetric $metric,
+        MetricInterface $metric,
         MeasureManager $manager,
         MeasureConverter $converter
     ) {
@@ -50,7 +49,7 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 
     function it_converts_metric_data_before_updating(
         LifecycleEventArgs $args,
-        AbstractMetric $metric,
+        MetricInterface $metric,
         MeasureManager $manager,
         MeasureConverter $converter
     ) {

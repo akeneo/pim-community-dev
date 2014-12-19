@@ -7,7 +7,7 @@ use Doctrine\MongoDB\Collection;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -41,7 +41,7 @@ class IndexCreator
         ManagerRegistry $managerRegistry,
         NamingUtility $namingUtility,
         $productClass,
-        $logger = null
+        LoggerInterface $logger
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;
@@ -54,9 +54,9 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for attribute
      * that are usable as column and as filter and for identifier and unique attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    public function ensureIndexesFromAttribute(AbstractAttribute $attribute)
+    public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
 
@@ -206,11 +206,7 @@ class IndexCreator
         $postNbIndexes = $preNbIndexes + count($fields);
         if ($postNbIndexes > 64) {
             $msg = sprintf('Too many MongoDB indexes (%d), no way to add %s', $preNbIndexes, print_r($fields, true));
-            if (null !== $this->logger) {
-                $this->logger->error($msg);
-            } else {
-                error_log($msg);
-            }
+            $this->logger->error($msg);
 
             return;
         }

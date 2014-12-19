@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -72,7 +72,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     }
 
     /**
-     * @return Group
+     * @return GroupInterface
      */
     protected function getGroup()
     {
@@ -81,7 +81,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             $groupId = $this->requestParams->get('currentGroup', null);
         }
 
-        $group = $this->groupRepository->findOne($groupId);
+        $group = $this->groupRepository->find($groupId);
 
         return $group;
     }

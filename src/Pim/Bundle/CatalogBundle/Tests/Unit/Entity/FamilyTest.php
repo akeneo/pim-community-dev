@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -301,7 +301,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     protected function getAttributeMock($type = 'pim_catalog_text', $code = null, $label = null)
     {

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;

@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\GroupNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -68,7 +69,7 @@ class GroupNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      *
-     * @return Group
+     * @return GroupInterface
      */
     protected function createEntity(array $data)
     {

@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\MongoDB\Collection;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Makes sure that the indexes links to entity are removed.
@@ -94,9 +94,9 @@ class IndexPurger
     /**
      * Remove indexes associated with the provided attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    public function purgeIndexesFromAttribute(AbstractAttribute $attribute)
+    public function purgeIndexesFromAttribute(AttributeInterface $attribute)
     {
         $attributePattern = sprintf(
             '/^%s\.%s([\.-].+)?$/',

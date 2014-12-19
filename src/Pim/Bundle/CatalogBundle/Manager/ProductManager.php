@@ -2,23 +2,26 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\BulkSaverInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
-use Pim\Bundle\CatalogBundle\Event\ProductValueEvent;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Event\ProductValueEvent;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Product manager
@@ -27,13 +30,16 @@ use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager
+class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInterface
 {
     /** @var array */
     protected $configuration;
 
-    /** @var ProductPersister */
-    protected $persister;
+    /** @var SaverInterface */
+    protected $productSaver;
+
+    /** @var BulkSaverInterface */
+    protected $productBulkSaver;
 
     /** @var ObjectManager */
     protected $objectManager;
@@ -64,7 +70,8 @@ class ProductManager
      *
      * @param array                      $configuration
      * @param ObjectManager              $objectManager
-     * @param ProductPersister           $persister
+     * @param SaverInterface             $productSaver
+     * @param BulkSaverInterface         $productBulkSaver
      * @param EventDispatcherInterface   $eventDispatcher
      * @param MediaManager               $mediaManager
      * @param ProductBuilder             $builder
@@ -76,7 +83,8 @@ class ProductManager
     public function __construct(
         $configuration,
         ObjectManager $objectManager,
-        ProductPersister $persister,
+        SaverInterface $productSaver,
+        BulkSaverInterface $productBulkSaver,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
         ProductBuilder $builder,
@@ -86,7 +94,8 @@ class ProductManager
         AttributeOptionRepository $attOptionRepository
     ) {
         $this->configuration = $configuration;
-        $this->persister = $persister;
+        $this->productSaver = $productSaver;
+        $this->productBulkSaver = $productBulkSaver;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->mediaManager = $mediaManager;
@@ -121,7 +130,7 @@ class ProductManager
      *
      * @param integer $id
      *
-     * @return Product|null
+     * @return ProductInterface|null
      */
     public function find($id)
     {
@@ -159,19 +168,11 @@ class ProductManager
      *
      * @param string $identifier
      *
-     * @return Product|null
+     * @return ProductInterface|null
      */
     public function findByIdentifier($identifier)
     {
-        $product = $this->getProductRepository()->findOneBy(
-            [
-                [
-                    'attribute' => $this->getIdentifierAttribute(),
-                    'value' => $identifier
-                ]
-            ]
-        );
-
+        $product = $this->getProductRepository()->findOneByIdentifier($identifier);
         if ($product) {
             $this->builder->addMissingProductValues($product);
         }
@@ -184,50 +185,57 @@ class ProductManager
      *
      * @param ProductInterface    $product
      * @param AvailableAttributes $availableAttributes
-     *
-     * @return null
+     * @param array               $savingOptions
      */
-    public function addAttributesToProduct(ProductInterface $product, AvailableAttributes $availableAttributes)
-    {
+    public function addAttributesToProduct(
+        ProductInterface $product,
+        AvailableAttributes $availableAttributes,
+        array $savingOptions = []
+    ) {
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $this->builder->addAttributeToProduct($product, $attribute);
         }
+
+        $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
+        $this->save($product, $options);
     }
 
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
-     *
-     * @return boolean
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
+     * @param array              $savingOptions
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
-    {
-        $this->builder->removeAttributeFromProduct($product, $attribute);
+    public function removeAttributeFromProduct(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        array $savingOptions = []
+    ) {
+        foreach ($product->getValues() as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $product->removeValue($value);
+            }
+        }
+
+        $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
+        $this->save($product, $options);
     }
 
     /**
-     * Save a product
-     *
-     * @param ProductInterface $product     The product to save
-     * @param boolean          $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean          $flush       Whether or not to flush the entity manager
-     * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     *
-     * @deprecated use saveProduct() instead. Will be removed in 1.3
+     * {@inheritdoc}
      */
-    public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
+    public function save($object, array $options = [])
     {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-        ];
+        $this->productSaver->save($object, $options);
+    }
 
-        return $this->saveProduct($product, $options);
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $objects, array $options = [])
+    {
+        $this->productBulkSaver->saveAll($objects, $options);
     }
 
     /**
@@ -236,42 +244,11 @@ class ProductManager
      * @param ProductInterface $product The product to save
      * @param array            $options Saving options
      *
-     * @return null
+     * @deprecated will be removed in 1.4, use save()
      */
     public function saveProduct(ProductInterface $product, array $options = [])
     {
-        $options = array_merge(
-            [
-                'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
-
-        return $this->persister->persist($product, $options);
-    }
-
-    /**
-     * Save multiple products
-     *
-     * @param ProductInterface[] $products    The products to save
-     * @param boolean            $recalculate Whether or not to directly recalculate the completeness
-     * @param boolean            $flush       Whether or not to flush the entity manager
-     * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
-     *
-     * @return null
-     * @deprecated use saveAllProducts() instead. Will be removed in 1.3
-     */
-    public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
-    {
-        $options = [
-            'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
-        ];
-
-        return $this->saveAllProducts($products, $options);
+        $this->save($product, $options);
     }
 
     /**
@@ -279,33 +256,18 @@ class ProductManager
      *
      * @param ProductInterface[] $products The products to save
      * @param array              $options  Saving options
+     *
+     * @deprecated will be removed in 1.4, use saveAll()
      */
     public function saveAllProducts(array $products, array $options = [])
     {
-        $allOptions = array_merge(
-            [
-                'recalculate' => false,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
-        $itemOptions = $allOptions;
-        $itemOptions['flush'] = false;
-
-        foreach ($products as $product) {
-            $this->saveProduct($product, $itemOptions);
-        }
-
-        if ($allOptions['flush'] === true) {
-            $this->objectManager->flush();
-        }
+        $this->saveAll($products, $options);
     }
 
     /**
      * Return the identifier attribute
      *
-     * @return AbstractAttribute|null
+     * @return AttributeInterface|null
      */
     public function getIdentifierAttribute()
     {
@@ -376,53 +338,22 @@ class ProductManager
 
     /**
      * @param ProductInterface $product
+     *
+     * @deprecated will be removed in 1.4, replaced by MediaManager::handleProductMedias
      */
     public function handleMedia(ProductInterface $product)
     {
-        foreach ($product->getValues() as $value) {
-            if ($media = $value->getMedia()) {
-                if ($id = $media->getCopyFrom()) {
-                    $source = $this
-                        ->objectManager
-                        ->getRepository('Pim\Bundle\CatalogBundle\Model\ProductMedia')
-                        ->find($id);
-
-                    if (!$source) {
-                        throw new \Exception(
-                            sprintf('Could not find media with id %d', $id)
-                        );
-                    }
-
-                    $this->mediaManager->duplicate(
-                        $source,
-                        $media,
-                        $this->mediaManager->generateFilenamePrefix($product, $value)
-                    );
-                } else {
-                    $filenamePrefix =  $media->getFile() ?
-                        $this->mediaManager->generateFilenamePrefix($product, $value) : null;
-                    $this->mediaManager->handle($media, $filenamePrefix);
-                }
-            }
-        }
+        return $this->mediaManager->handleProductMedias($product);
     }
 
     /**
      * @param ProductInterface[] $products
+     *
+     * @deprecated will be removed in 1.4, replaced by MediaManager::handleAllProductsMedias
      */
     public function handleAllMedia(array $products)
     {
-        foreach ($products as $product) {
-            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
-                        get_class($product)
-                    )
-                );
-            }
-            $this->handleMedia($product);
-        }
+        return $this->mediaManager->handleAllProductsMedias($products);
     }
 
     /**
@@ -442,32 +373,25 @@ class ProductManager
     }
 
     /**
-     * Remove products
-     *
-     * @param integer[] $ids
+     * {@inheritdoc}
      */
-    public function removeAll(array $ids)
+    public function remove($object, array $options = [])
     {
-        $products = $this->getProductRepository()->findByIds($ids);
-        foreach ($products as $product) {
-            $this->remove($product, false);
+        if (!$object instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
         }
-        $this->objectManager->flush();
-    }
 
-    /**
-     * Remove a product
-     *
-     * @param ProductInterface $product
-     * @param boolean          $flush
-     */
-    public function remove(ProductInterface $product, $flush = true)
-    {
-        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($product));
-        $this->objectManager->remove($product);
-        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($product));
+        $options = array_merge(['flush' => true], $options);
+        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($object));
+        $this->objectManager->remove($object);
+        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($object));
 
-        if (true === $flush) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }

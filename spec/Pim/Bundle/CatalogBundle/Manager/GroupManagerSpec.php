@@ -2,17 +2,17 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Event\GroupEvents;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Prophecy\Argument;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GroupManagerSpec extends ObjectBehavior
 {
@@ -35,11 +35,50 @@ class GroupManagerSpec extends ObjectBehavior
         );
     }
 
+    function it_is_a_saver()
+    {
+        $this->shouldHaveType('Pim\Component\Resource\Model\SaverInterface');
+    }
+    function it_is_a_remover()
+    {
+        $this->shouldHaveType('Pim\Component\Resource\Model\RemoverInterface');
+    }
+
+    function it_throws_exception_when_save_anything_else_than_a_group()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->during('save', [$anythingElse]);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_a_group()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->during('remove', [$anythingElse]);
+    }
+
     function it_dispatches_an_event_when_removing_a_group(
         $eventDispatcher,
         $registry,
         ObjectManager $objectManager,
-        Group $group
+        Groupinterface $group
     ) {
         $eventDispatcher->dispatch(
             GroupEvents::PRE_REMOVE,
@@ -56,8 +95,8 @@ class GroupManagerSpec extends ObjectBehavior
     function it_provides_available_axis(
         $registry,
         AttributeRepository $attRepository,
-        AbstractAttribute $attribute1,
-        AbstractAttribute $attribute2
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2
     ) {
         $registry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
         $attRepository->findAllAxis()->willReturn([$attribute1, $attribute2]);
@@ -68,8 +107,8 @@ class GroupManagerSpec extends ObjectBehavior
     function it_provides_available_axis_as_a_sorted_choice(
         $registry,
         AttributeRepository $attRepository,
-        AbstractAttribute $attribute1,
-        AbstractAttribute $attribute2
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2
     ) {
         $attribute1->getId()->willReturn(1);
         $attribute1->getLabel()->willReturn('Foo');

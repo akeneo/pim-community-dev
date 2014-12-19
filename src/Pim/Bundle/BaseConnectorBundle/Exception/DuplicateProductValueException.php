@@ -3,8 +3,8 @@
 namespace Pim\Bundle\BaseConnectorBundle\Exception;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\TransformBundle\Exception\ParametrizedExceptionInterface;
 use Pim\Bundle\TransformBundle\Exception\ParametrizedException;
+use Pim\Bundle\TransformBundle\Exception\ParametrizedExceptionInterface;
 
 /**
  * Exception for duplicate product values that should be unique, used during imports

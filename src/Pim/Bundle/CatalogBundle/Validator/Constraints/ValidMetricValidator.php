@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Metric attribute validator
@@ -16,14 +18,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class ValidMetricValidator extends ConstraintValidator
 {
-    /**
-     * @var array $measures
-     */
+    /** @var array $measures */
     protected $measures;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
+    /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
     /**
@@ -41,24 +39,29 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Validate metric type and default metric unit
      *
-     * @param AbstractAttribute $entity
-     * @param Constraint        $constraint
+     * @param AttributeInterface|MetricInterface|ProductValueInterface $object
+     * @param Constraint                                               $constraint
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($object, Constraint $constraint)
     {
-        if ($entity instanceof AbstractAttribute) {
+        if ($object instanceof AttributeInterface) {
             $familyProperty = 'metricFamily';
             $unitProperty   = 'defaultMetricUnit';
-        } else {
-            if (null === $entity || (null !== $entity && !$entity->getData())) {
-                return;
-            }
+        } elseif ($object instanceof MetricInterface && null !== $object->getData()) {
             $familyProperty = 'family';
             $unitProperty   = 'unit';
+        } elseif ($object instanceof ProductValueInterface && null !== $object->getMetric()
+            && null !== $object->getMetric()->getUnit() && null !== $object->getMetric()->getData()
+        ) {
+            $object = $object->getMetric();
+            $familyProperty = 'family';
+            $unitProperty   = 'unit';
+        } else {
+            return;
         }
 
-        $family = $this->propertyAccessor->getValue($entity, $familyProperty);
-        $unit   = $this->propertyAccessor->getValue($entity, $unitProperty);
+        $family = $this->propertyAccessor->getValue($object, $familyProperty);
+        $unit   = $this->propertyAccessor->getValue($object, $unitProperty);
 
         if (!array_key_exists($family, $this->measures)) {
             $this->context->addViolationAt($familyProperty, $constraint->familyMessage);

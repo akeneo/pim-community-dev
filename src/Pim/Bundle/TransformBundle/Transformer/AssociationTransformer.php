@@ -3,9 +3,9 @@
 namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -43,7 +43,7 @@ class AssociationTransformer extends EntityTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $colInfoTransformer,
         $productClass,
-        $associationTypeClass = 'Pim\Bundle\CatalogBundle\Entity\AssociationType'
+        $associationTypeClass
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
         $this->productClass         = $productClass;

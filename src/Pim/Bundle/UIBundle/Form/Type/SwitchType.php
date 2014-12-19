@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
+use Pim\Bundle\UIBundle\Form\Transformer\BooleanToStringTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\UIBundle\Form\Transformer\BooleanToStringTransformer;
 
 /**
  * Form type for a on/off switch field

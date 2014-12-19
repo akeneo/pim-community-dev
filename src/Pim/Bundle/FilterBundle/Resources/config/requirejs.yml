@@ -7,3 +7,19 @@ config:
         oro/datafilter/product_completeness-filter: pimfilter/js/datafilter/filter/product_completeness-filter
         oro/datafilter/ajax-choice-filter:          pimfilter/js/datafilter/filter/ajax-choice-filter
         oro/datafilter/select2-choice-filter:       pimfilter/js/datafilter/filter/select2-choice-filter
+
+        oro/datafilter/abstract-filter:             pimfilter/js/datafilter/filter/abstract-filter
+        oro/datafilter/none-filter:                 pimfilter/js/datafilter/filter/none-filter
+        oro/datafilter/choice-filter:               pimfilter/js/datafilter/filter/choice-filter
+        oro/datafilter/date-filter:                 pimfilter/js/datafilter/filter/date-filter
+        oro/datafilter/datetime-filter:             pimfilter/js/datafilter/filter/datetime-filter
+        oro/datafilter/multiselect-filter:          pimfilter/js/datafilter/filter/multiselect-filter
+        oro/datafilter/number-filter:               pimfilter/js/datafilter/filter/number-filter
+        oro/datafilter/select-filter:               pimfilter/js/datafilter/filter/select-filter
+        oro/datafilter/select-row-filter:           pimfilter/js/datafilter/filter/select-row-filter
+        oro/datafilter/text-filter:                 pimfilter/js/datafilter/filter/text-filter
+        oro/datafilter/abstract-formatter:          pimfilter/js/datafilter/formatter/abstract-formatter
+        oro/datafilter/number-formatter:            pimfilter/js/datafilter/formatter/number-formatter
+        oro/datafilter/filters-manager:             pimfilter/js/datafilter/filters-manager
+        oro/datafilter/collection-filters-manager:  pimfilter/js/datafilter/collection-filters-manager
+        oro/datafilter-builder:                     pimfilter/js/datafilter-builder

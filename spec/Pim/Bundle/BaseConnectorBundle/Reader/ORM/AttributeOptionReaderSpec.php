@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\EntityManager;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\EntityRepository;
 
 class AttributeOptionReaderSpec extends ObjectBehavior {
 
@@ -28,10 +28,10 @@ class AttributeOptionReaderSpec extends ObjectBehavior {
         AbstractQuery $query
     ) {
         $entityManager->getRepository(Argument::any())->willReturn($entityRepository);
-        $entityRepository->createQueryBuilder('ao')->willReturn($qb);
-        $qb->orderBy('ao.attribute')->willReturn($qb);
-        $qb->addOrderBy('ao.sortOrder')->willReturn($qb);
-        $qb->getQuery()->willReturn($query);
+        $entityRepository->createQueryBuilder('ao')->willReturn($qb)->shouldBeCalled();
+        $qb->orderBy('ao.attribute')->willReturn($qb)->shouldBeCalled();
+        $qb->addOrderBy('ao.sortOrder')->willReturn($qb)->shouldBeCalled();
+        $qb->getQuery()->willReturn($query)->shouldBeCalled();
 
         $this->getQuery()->shouldNotBeNull();
     }

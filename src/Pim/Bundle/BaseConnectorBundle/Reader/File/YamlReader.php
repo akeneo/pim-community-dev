@@ -2,8 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Symfony\Component\Yaml\Yaml;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Yaml reader
@@ -12,21 +18,38 @@ use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class YamlReader extends FileReader implements ItemReaderInterface
+class YamlReader extends FileReader implements
+    ItemReaderInterface,
+    UploadedFileAwareInterface,
+    StepExecutionAwareInterface
 {
     /**
-     * @var string
+     * @Assert\NotBlank(groups={"Execution"})
+     * @AssertFile(
+     *     groups={"Execution"},
+     *     allowedExtensions={"yml", "yaml"}
+     * )
      */
+    protected $filePath;
+
+    /** @var string */
     protected $codeField = 'code';
 
-    /**
-     * @var boolean
-     */
+    /** @var bool */
     protected $multiple = false;
 
     /**
-     * @var \ArrayIterator
+     * @var bool
+     *
+     * @Assert\Type(type="bool")
+     * @Assert\True(groups={"UploadExecution"})
      */
+    protected $uploadAllowed = false;
+
+    /** @var StepExecution */
+    protected $stepExecution;
+
+    /** @var \ArrayIterator */
     protected $yaml;
 
     /**
@@ -42,8 +65,7 @@ class YamlReader extends FileReader implements ItemReaderInterface
     }
 
     /**
-     * Set file path
-     * @param string $filePath
+     * {@inheritdoc}
      *
      * @return YamlReader
      */
@@ -56,8 +78,7 @@ class YamlReader extends FileReader implements ItemReaderInterface
     }
 
     /**
-     * Get file path
-     * @return string $filePath
+     * {@inheritdoc}
      */
     public function getFilePath()
     {
@@ -113,6 +134,66 @@ class YamlReader extends FileReader implements ItemReaderInterface
     /**
      * {@inheritdoc}
      */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * Set the uploadAllowed property
+     *
+     * @param bool $uploadAllowed
+     *
+     * @return YamlReader
+     */
+    public function setUploadAllowed($uploadAllowed)
+    {
+        $this->uploadAllowed = $uploadAllowed;
+
+        return $this;
+    }
+
+    /**
+     * Get the uploadAllowed property
+     *
+     * @return bool
+     */
+    public function isUploadAllowed()
+    {
+        return $this->uploadAllowed;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUploadedFileConstraints()
+    {
+        return array(
+            new Assert\NotBlank(),
+            new AssertFile(
+                array(
+                    'allowedExtensions' => array('yml', 'yaml')
+                )
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return YamlReader
+     */
+    public function setUploadedFile(File $uploadedFile)
+    {
+        $this->filePath = $uploadedFile->getRealPath();
+        $this->csv = null;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function read()
     {
         if (null === $this->yaml) {
@@ -121,6 +202,10 @@ class YamlReader extends FileReader implements ItemReaderInterface
 
         if ($data = $this->yaml->current()) {
             $this->yaml->next();
+
+            if (null !== $this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('read');
+            }
 
             return $data;
         }
@@ -152,12 +237,19 @@ class YamlReader extends FileReader implements ItemReaderInterface
     public function getConfigurationFields()
     {
         return [
-            'filePath' => [
-                'system' => true
-            ],
-            'multiple' => [
-                'system' => true
-            ],
+            'filePath' => array(
+                'options' => array(
+                    'label' => 'pim_base_connector.import.yamlFilePath.label',
+                    'help'  => 'pim_base_connector.import.yamlFilePath.help'
+                )
+            ),
+            'uploadAllowed' => array(
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_base_connector.import.uploadAllowed.label',
+                    'help'  => 'pim_base_connector.import.uploadAllowed.help'
+                )
+            ),
         ];
     }
 

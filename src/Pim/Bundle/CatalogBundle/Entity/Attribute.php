@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Product attribute, business code is in AbstractAttribute, this class can be overriden in projects
+ * Product attribute, business code is in AttributeInterface, this class can be overriden in projects
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

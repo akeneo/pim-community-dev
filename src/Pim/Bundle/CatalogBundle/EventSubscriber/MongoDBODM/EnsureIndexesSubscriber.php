@@ -4,14 +4,13 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
  * Makes sure that the right indexes are set on MongoDB.
@@ -88,7 +87,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
      */
     protected function ensureIndexesFromEntity($entity)
     {
-        if ($entity instanceof AbstractAttribute) {
+        if ($entity instanceof AttributeInterface) {
             $this->ensureIndexesFromAttribute($entity);
         }
 
@@ -116,9 +115,9 @@ class EnsureIndexesSubscriber implements EventSubscriber
     /**
      * Ensure indexes from attribute if needed
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    public function ensureIndexesFromAttribute(AbstractAttribute $attribute)
+    public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         if ($attribute->isUseableAsGridFilter()
             || AbstractProduct::IDENTIFIER_TYPE === $attribute->getAttributeType()
@@ -134,7 +133,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
      */
     protected function purgeIndexesFromEntity($entity)
     {
-        if ($entity instanceof AbstractAttribute) {
+        if ($entity instanceof AttributeInterface) {
             $this->indexPurger->purgeIndexesFromAttribute($entity);
         }
 

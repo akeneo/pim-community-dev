@@ -1,0 +1,3 @@
+<div class="tab-pane tab-property {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.group_values': form_row(form.label) }) }}
+</div>

@@ -28,8 +28,8 @@ Feature: Filter products by date field
   @skip @info Broken because timezone is mot well managed yet (except for UTC)
   Scenario: Successfully filter products by date attributes
     Given the following attributes:
-      | label   | code    | type | localizable | scopable | useable as grid filter | useable as grid column |
-      | release | release | date | no          | no       | yes                    | yes                    |
+      | label   | code    | type | localizable | scopable | useable as grid filter |
+      | release | release | date | no          | no       | yes                    |
     And the following products:
       | sku    | release    |
       | postit | 2014-05-01 |

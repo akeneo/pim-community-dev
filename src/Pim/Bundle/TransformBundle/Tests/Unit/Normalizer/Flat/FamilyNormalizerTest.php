@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\FamilyNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
 /**
  * Family normalizer test

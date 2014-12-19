@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Renders the full name of the author of the version and adds context

@@ -24,7 +24,6 @@ Feature: Edit a family
     And I save the family
     Then I should see "NewBoots"
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "Boots" family page
     And I fill in the following information:
@@ -34,7 +33,7 @@ Feature: Edit a family
       | title   | Are you sure you want to leave this page?                  |
       | content | You will lose changes to the family if you leave the page. |
 
-  @javascript @skip
+  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "Boots" family page
     And I fill in the following information:

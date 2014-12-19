@@ -2,19 +2,19 @@
 
 namespace Pim\Bundle\EnrichBundle\AbstractController;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Base abstract controller
@@ -22,6 +22,8 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.4, please avoid to use parent controller
  */
 abstract class AbstractController
 {
@@ -226,7 +228,7 @@ abstract class AbstractController
     /**
      * Get a user from the Security Context
      *
-     * @return mixed
+     * @return \Symfony\Component\Security\Core\User\UserInterface|null
      *
      * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
      */
@@ -295,7 +297,7 @@ abstract class AbstractController
      * @param mixed                    $data    The initial data for the form
      * @param array                    $options Options for the form
      *
-     * @return Form
+     * @return \Symfony\Component\Form\Form
      */
     public function createForm($type, $data = null, array $options = array())
     {

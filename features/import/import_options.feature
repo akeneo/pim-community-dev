@@ -12,11 +12,11 @@ Feature: Import options
     And I am logged in as "Julia"
     And the following file to import:
     """
-    attribute;code;default;label-en_US
-    brand;Converse;0;Converse
-    brand;TimberLand;0;TimberLand
-    brand;Nike;0;Nike
-    brand;Caterpillar;1;Caterpillar
+    attribute;code;label-en_US
+    brand;Converse;Converse
+    brand;TimberLand;TimberLand
+    brand;Nike;Nike
+    brand;Caterpillar;Caterpillar
     """
     And the following job "footwear_option_import" configuration:
       | filePath | %file to import% |
@@ -24,11 +24,11 @@ Feature: Import options
     And I launch the import job
     And I wait for the "footwear_option_import" job to finish
     Then there should be the following options:
-      | attribute | code        | default | label-en_US |
-      | brand     | Converse    | 0       | Converse    |
-      | brand     | TimberLand  | 0       | TimberLand  |
-      | brand     | Nike        | 0       | Nike        |
-      | brand     | Caterpillar | 1       | Caterpillar |
+      | attribute | code        | label-en_US |
+      | brand     | Converse    | Converse    |
+      | brand     | TimberLand  | TimberLand  |
+      | brand     | Nike        | Nike        |
+      | brand     | Caterpillar | Caterpillar |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip options with empty code

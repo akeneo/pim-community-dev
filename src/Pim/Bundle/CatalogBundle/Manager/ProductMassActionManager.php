@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 
 /**
  * Product mass action manager
@@ -47,7 +47,7 @@ class ProductMassActionManager
      *
      * @param array $productIds
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface[]
      */
     public function findCommonAttributes(array $productIds)
     {

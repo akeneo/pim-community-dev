@@ -1,0 +1,11 @@
+<div class="tab-pane tab-property {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {% set generalProperties %}
+        {{ form_row(form.code) }}
+        {{ form_row(form.attributeAsLabel) }}
+    {% endset %}
+
+    {{ elements.accordion({
+        'pane.accordion.general_properties': generalProperties,
+        'pane.accordion.locale_values': form_row(form.label)
+    }) }}
+</div>

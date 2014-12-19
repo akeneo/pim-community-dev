@@ -2,13 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
- * A normalizer to transform an AbstractAttribute entity into array
+ * A normalizer to transform an AttributeInterface entity into array
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -58,7 +56,6 @@ class AttributeNormalizer implements NormalizerInterface
             array(
                 'group'                   => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
                 'unique'                  => (int) $object->isUnique(),
-                'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
                 'metric_family'           => $object->getMetricFamily(),
@@ -85,17 +82,17 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractAttribute && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Get extra data to store in version
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getVersionedData(AbstractAttribute $attribute)
+    protected function getVersionedData(AttributeInterface $attribute)
     {
         $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
@@ -105,10 +102,8 @@ class AttributeNormalizer implements NormalizerInterface
             'localizable'         => $attribute->isLocalizable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),
-            'default_options'     => $this->normalizeDefaultOptions($attribute),
             'sort_order'          => (int) $attribute->getSortOrder(),
             'required'            => (int) $attribute->isRequired(),
-            'default_value'       => $this->normalizeDefaultValue($attribute),
             'max_characters'      => (string) $attribute->getMaxCharacters(),
             'validation_rule'     => (string) $attribute->getValidationRule(),
             'validation_regexp'   => (string) $attribute->getValidationRegexp(),
@@ -128,16 +123,13 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize available locales
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function normalizeAvailableLocales(AbstractAttribute $attribute)
+    protected function normalizeAvailableLocales(AttributeInterface $attribute)
     {
-        $locales = array();
-        foreach ($attribute->getAvailableLocales() as $locale) {
-            $locales[] = $locale->getCode();
-        }
+        $locales = $attribute->getLocaleSpecificCodes();
 
         return $locales;
     }
@@ -145,55 +137,14 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * Normalize options
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function normalizeOptions(AbstractAttribute $attribute)
+    protected function normalizeOptions(AttributeInterface $attribute)
     {
         $data = array();
         $options = $attribute->getOptions();
-        foreach ($options as $option) {
-            $data[$option->getCode()] = array();
-            foreach ($option->getOptionValues() as $value) {
-                $data[$option->getCode()][$value->getLocale()] = $value->getValue();
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Normalize default value
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return array
-     */
-    protected function normalizeDefaultValue(AbstractAttribute $attribute)
-    {
-        $defaultValue = $attribute->getDefaultValue();
-
-        if ($defaultValue instanceof \DateTime) {
-            return $defaultValue->format(\DateTime::ISO8601);
-        } elseif ($defaultValue instanceof ArrayCollection || $defaultValue instanceof AttributeOption) {
-            return $this->normalizeDefaultOptions($attribute);
-        } else {
-            return (string) $defaultValue;
-        }
-    }
-
-    /**
-     * Normalize default options
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return array
-     */
-    protected function normalizeDefaultOptions(AbstractAttribute $attribute)
-    {
-        $data = array();
-        $options = $attribute->getDefaultOptions();
         foreach ($options as $option) {
             $data[$option->getCode()] = array();
             foreach ($option->getOptionValues() as $value) {

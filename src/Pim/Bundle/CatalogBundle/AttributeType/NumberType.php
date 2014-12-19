@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -17,13 +17,9 @@ class NumberType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name'      => 'defaultValue',
-                'fieldType' => 'pim_number'
-            ],
             'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'pim_number'

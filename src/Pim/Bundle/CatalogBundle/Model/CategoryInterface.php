@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 interface CategoryInterface
 {
     /**
-     * @return integer
+     * @return int|string
      */
     public function getId();
 
@@ -129,15 +129,6 @@ interface CategoryInterface
     public function getChildren();
 
     /**
-     * Add a product in the category
-     *
-     * @param ProductInterface $product
-     *
-     * @return CategoryInterface
-     */
-    public function addProduct(ProductInterface $product);
-
-    /**
      * Predicate to know if this category has product(s) linked
      *
      * @return boolean
@@ -145,27 +136,9 @@ interface CategoryInterface
     public function hasProducts();
 
     /**
-     * Remove a product from a category
-     *
-     * @param ProductInterface $product
-     *
-     * @return CategoryInterface
-     */
-    public function removeProduct(ProductInterface $product);
-
-    /**
      * Get products for this category node
      *
      * @return ProductInterface[]
      */
     public function getProducts();
-
-    /**
-     * Set products for this category node
-     *
-     * @param ProductInterface[] $products
-     *
-     * @return CategoryInterface
-     */
-    public function setProducts($products);
 }

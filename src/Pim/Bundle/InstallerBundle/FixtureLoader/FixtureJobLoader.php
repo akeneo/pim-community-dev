@@ -44,7 +44,7 @@ class FixtureJobLoader
     public function __construct(ContainerInterface $container, array $jobsFilePaths)
     {
         $this->container = $container;
-        $this->reader = $container->get('pim_base_connector.reader.file.yaml');
+        $this->reader = $container->get('pim_installer.reader.file.yaml');
         $this->em = $container->get('doctrine.orm.entity_manager');
         $this->processor = $container->get('pim_base_connector.processor.job_instance');
         $this->jobsFilePaths = $jobsFilePaths;

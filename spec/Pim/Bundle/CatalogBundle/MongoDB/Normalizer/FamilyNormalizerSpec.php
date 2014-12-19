@@ -3,9 +3,8 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 class FamilyNormalizerSpec extends ObjectBehavior
@@ -20,7 +19,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_family(Family $family)
+    function it_supports_normalization_in_mongodb_json_of_family(FamilyInterface $family)
     {
         $this->supportsNormalization($family, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($family, 'json')->shouldBe(false);
@@ -29,8 +28,8 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_family(
         $normalizer,
-        Family $family,
-        AbstractAttribute $sku
+        FamilyInterface $family,
+        AttributeInterface $sku
     ) {
         $sku->getCode()->willReturn('sku');
         $family->getCode()->willReturn('mongo');

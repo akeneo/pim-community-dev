@@ -1,0 +1,15 @@
+parameters:
+    pim_comment.controller.comment.class: Pim\Bundle\CommentBundle\Controller\CommentController
+
+services:
+    pim_comment.controller.comment:
+        scope: request
+        class: %pim_comment.controller.comment.class%
+        arguments:
+            - '@templating'
+            - '@security.context'
+            - '@form.factory'
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_comment.manager.comment'
+            - '@pim_comment.builder.comment'
+            - %pim_comment.entity.comment.class%

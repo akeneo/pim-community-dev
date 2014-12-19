@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Flat family normalizer
@@ -22,7 +22,7 @@ class FamilyNormalizer extends Structured\FamilyNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(Family $family)
+    protected function normalizeAttributes(FamilyInterface $family)
     {
         $attributes = parent::normalizeAttributes($family);
 
@@ -32,7 +32,7 @@ class FamilyNormalizer extends Structured\FamilyNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeRequirements(Family $family)
+    protected function normalizeRequirements(FamilyInterface $family)
     {
         $requirements = parent::normalizeRequirements($family);
         $flat = array();

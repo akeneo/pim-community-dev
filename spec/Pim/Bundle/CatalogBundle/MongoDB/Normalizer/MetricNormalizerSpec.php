@@ -3,8 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior
 {
@@ -13,14 +12,14 @@ class MetricNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_metric(AbstractMetric $metric)
+    function it_supports_normalization_in_mongodb_json_of_metric(MetricInterface $metric)
     {
         $this->supportsNormalization($metric, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($metric, 'json')->shouldBe(false);
         $this->supportsNormalization($metric, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_metric_when_has_data(AbstractMetric $metric)
+    function it_normalizes_metric_when_has_data(MetricInterface $metric)
     {
         $metric->getData()->willReturn(42.55);
         $metric->getUnit()->willReturn('GRAM');
@@ -39,7 +38,7 @@ class MetricNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_normalizes_metric_when_has_no_data(AbstractMetric $metric)
+    function it_normalizes_metric_when_has_no_data(MetricInterface $metric)
     {
         $metric->getData()->willReturn(null);
 

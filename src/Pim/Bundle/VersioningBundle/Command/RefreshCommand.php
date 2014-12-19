@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\VersioningBundle\Command;
 
+use Monolog\Handler\StreamHandler;
+use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Monolog\Handler\StreamHandler;
-use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Refresh versioning data

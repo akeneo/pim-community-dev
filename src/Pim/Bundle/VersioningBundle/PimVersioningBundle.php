@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\VersioningBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\PimCatalogBundle;
 use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
 use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Pim Versioning Bundle
