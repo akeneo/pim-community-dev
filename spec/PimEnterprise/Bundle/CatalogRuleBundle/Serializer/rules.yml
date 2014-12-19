@@ -11,7 +11,9 @@ rules:
         actions:
             - type:  set_value
               field: camera_brand
-              value: canon_brand
+              value:
+                  attribute: camera_brand
+                  code:      canon_brand
     camera_copy_name_to_model:
         conditions:
             - field:    family.code
@@ -34,7 +36,9 @@ rules:
         actions:
             - type:  set_value
               field: camera_type
-              value: compact
+              value:
+                  attribute: camera_type
+                  code:      compact
     camera_set_autofocus:
         conditions:
             - field:    family.code
@@ -100,8 +104,8 @@ rules:
             - type:  set_value
               field: price
               value:
-                - 12 EUR
-                - 25 USD
+                  - data:     12
+                    currency: EUR
     set_tshirt_weight:
         conditions:
             - field:    sku
@@ -110,7 +114,9 @@ rules:
         actions:
             - type:  set_value
               field: weight
-              value: 0.5 KILOGRAM
+              value:
+                   data: 0.5
+                   unit: KILOGRAM
     set_tshirt_style:
         conditions:
             - field:    sku
@@ -120,8 +126,10 @@ rules:
             - type:  set_value
               field: tshirt_style
               value:
-                - sportwear
-                - vneck
+                - code:      sportwear
+                  attribute: tshirt_style
+                - code:      vneck
+                  attribute: tshirt_style
     set_purple_tshirt_picture:
         priority: 90
         conditions:
@@ -135,4 +143,6 @@ rules:
         actions:
             - type:   set_value
               field:  picture
-              value:  features/Context/fixtures/akeneo.jpg akeneo.jpg
+              value:
+                  filePath:         ../../../features/Context/fixtures/akeneo.jpg
+                  originalFilename: akeneo

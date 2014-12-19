@@ -3,14 +3,16 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction:
         fromField:
            - Type:
                 type: string
-           - NotBlank: ~
+           - NotBlank:
+                message: The key "from_field" is missing or empty.
            - Length:
                max: 255
            - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
         toField:
            - Type:
                 type: string
-           - NotBlank: ~
+           - NotBlank:
+                message: The key "to_field" is missing or empty.
            - Length:
                max: 255
            - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~

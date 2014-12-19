@@ -82,6 +82,7 @@ class ProductRuleBuilder implements BuilderInterface
         $errors = $this->validator->validate($rule);
         if (count($errors)) {
             throw new BuilderException(
+                //TODO: improve message
                 sprintf('Impossible to build the rule "%s" as it does not appear to be valid.', $definition->getCode())
             );
         }

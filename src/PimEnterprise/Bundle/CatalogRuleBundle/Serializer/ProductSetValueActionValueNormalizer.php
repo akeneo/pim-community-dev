@@ -51,10 +51,7 @@ class ProductSetValueActionValueNormalizer implements NormalizerInterface
             throw new \InvalidArgumentException(sprintf('The attribute "%s" is not known', $attributeCode));
         }
 
-        $attributeType = $attribute->getAttributeType();
-        $value = $this->convert($data, $attributeType, $attributeCode);
-
-        return $value;
+        return $data;
     }
 
     /**
@@ -63,53 +60,5 @@ class ProductSetValueActionValueNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return is_array($data) && $format === 'array_updater';
-    }
-
-    /**
-     * @param mixed  $data
-     * @param string $attributeType
-     * @param string $attributeCode
-     *
-     * @return mixed
-     */
-    protected function convert($data, $attributeType, $attributeCode)
-    {
-        if ('pim_catalog_number' === $attributeType) {
-            $value = (int) $data;
-
-        } elseif ('pim_catalog_boolean' === $attributeType) {
-            $value = (bool) $data;
-
-        } elseif ('pim_catalog_price_collection' === $attributeType) {
-            $value = [];
-            foreach ($data as $price) {
-                $tokens = explode(' ', $price);
-                $value[] = ['data' => $tokens[0], 'currency' => $tokens[1]];
-            }
-
-        } elseif ('pim_catalog_metric' === $attributeType) {
-            $tokens = explode(' ', $data);
-            $value = ['data' => (float) $tokens[0], 'unit' => $tokens[1]];
-
-        } elseif ('pim_catalog_simpleselect' === $attributeType) {
-            $value = ['code' => $data, 'attribute' => $attributeCode];
-
-        } elseif ('pim_catalog_multiselect' === $attributeType) {
-            $value = [];
-            foreach ($data as $option) {
-                $value[] = ['code' => $option, 'attribute' => $attributeCode];
-            }
-
-        } elseif (in_array($attributeType, ['pim_catalog_image', 'pim_catalog_file'])) {
-            $tokens = explode(' ', $data);
-            //TODO: fix the path
-            $path = __DIR__ . '/../../../../../' . $tokens[0];
-            $value = ['filePath' => realpath($path), 'originalFilename' => $tokens[1]];
-
-        } else {
-            $value = (string) $data;
-        }
-
-        return $value;
     }
 }

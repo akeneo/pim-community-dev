@@ -41,8 +41,9 @@ class SupportedOperatorConditionValidator extends ConstraintValidator
     {
         /** @var ProductConditionInterface $productCondition */
         $filter = $this->registry->getFilter($productCondition->getField());
+        $operator = $productCondition->getOperator();
 
-        if (null !== $filter && false === $filter->supportsOperator($productCondition->getOperator())) {
+        if (null !== $filter && !empty($operator) && false === $filter->supportsOperator($operator)) {
             $this->context->addViolation(
                 $constraint->message,
                 [

@@ -562,7 +562,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = (int) $data['value'];
                     break;
                 case 'pim_catalog_metric':
+                    $values = explode(',', $data['value']);
+                    $value = ['unit' => $values[1], 'data' => $values[0]];
+                    break;
                 case 'pim_catalog_multiselect':
+                    $values = explode(',', $data['value']);
+                    $value = [];
+                    foreach ($values as $val) {
+                        $value[] = ['code' => $val, 'attribute' => $attribute->getCode()];
+                    }
+                    break;
                 case 'pim_catalog_price_collection':
                     $values = explode(',', $data['value']);
                     $value = [['data' => $values[0], 'currency' => $values[1]]];
@@ -576,7 +585,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 case 'pim_catalog_image':
                 case 'pim_catalog_file':
                     $values = explode(',', $data['value']);
-                    $value = ['originalFilename' => $values[0], 'filePath' => $values[1]];
+                    $value = ['filePath' => $values[1], 'originalFilename' => $values[0]];
                     break;
             }
 
