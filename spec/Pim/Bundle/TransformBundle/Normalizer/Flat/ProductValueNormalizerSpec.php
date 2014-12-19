@@ -109,6 +109,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($simpleAttribute);
         $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('options');
 
         $serializer->normalize($collection, 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
@@ -123,6 +124,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($simpleAttribute);
         $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('options');
 
         $serializer->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
