@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common;
 
 use Doctrine\ORM\EntityManager;
 
-class EntityIdResolver implements EntityIdResolverInterface
+class ObjectIdResolver implements ObjectIdResolverInterface
 {
     /** @var EntityManager */
     protected $entityManager;

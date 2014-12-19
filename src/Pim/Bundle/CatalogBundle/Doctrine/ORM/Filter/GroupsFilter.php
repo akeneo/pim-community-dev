@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
@@ -20,18 +20,18 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
-    /** @var EntityIdResolverInterface */
+    /** @var ObjectIdResolverInterface */
     protected $entityIdResolver;
 
     /**
      * Instanciate the base filter
      *
-     * @param EntityIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $entityIdResolver
      * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
-        EntityIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $entityIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {

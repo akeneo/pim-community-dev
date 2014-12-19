@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
 /**
  * Entity filter
@@ -20,18 +20,18 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     /** @var array */
     protected $supportedFields;
 
-    /** @var EntityIdResolverInterface */
+    /** @var ObjectIdResolverInterface */
     protected $entityIdResolver;
 
     /**
      * Instanciate the filter
      *
-     * @param EntityIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $entityIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
      */
     public function __construct(
-        EntityIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $entityIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {

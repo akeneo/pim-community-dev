@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common;
 
-interface EntityIdResolverInterface
+interface ObjectIdResolverInterface
 {
     /**
      * Get ids for the given codes

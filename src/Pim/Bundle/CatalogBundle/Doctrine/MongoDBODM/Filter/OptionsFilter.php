@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -22,18 +22,18 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var array */
     protected $supportedAttributes;
 
-    /** @var EntityIdResolverInterface */
+    /** @var ObjectIdResolverInterface */
     protected $entityIdResolver;
 
     /**
      * Instanciate the filter
      *
-     * @param EntityIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $entityIdResolver
      * @param array                     $supportedAttributes
      * @param array                     $supportedOperators
      */
     public function __construct(
-        EntityIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $entityIdResolver,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
