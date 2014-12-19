@@ -122,6 +122,9 @@
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 
+# 1.2.17 (2014-12-19)
+- PIM-3550 : force the version of "doctrine/annotations" to "v1.2.1" to avoid the BC Break introduced with v1.2.2
+
 # 1.2.16 (2014-12-17)
 
 ## Bug fixes
