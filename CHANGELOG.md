@@ -1,4 +1,4 @@
-# 1.2.*
+# 1.2.17 (2014-12-19)
 - PIM-3550 : force the version of "doctrine/annotations" to "v1.2.1" to avoid the BC Break introduced with v1.2.2
 
 # 1.2.16 (2014-12-17)
