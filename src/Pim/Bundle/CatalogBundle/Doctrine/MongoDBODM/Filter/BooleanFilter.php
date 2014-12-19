@@ -72,7 +72,7 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $this->addFieldFilter($field, $operator, $value, $locale, $scope);
+        $this->addFieldFilter($field, $operator, $value, $locale, $scope, $options);
 
         return $this;
     }

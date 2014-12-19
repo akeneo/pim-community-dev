@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -21,24 +21,24 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var array */
     protected $supportedAttributes;
 
-    /** @var AttributeOptionRepository */
-    protected $attributeOptionRepo;
+    /** @var EntityIdResolverInterface */
+    protected $entityIdResolver;
 
     /**
      * Instanciate the base filter
      *
-     * @param AttributeOptionRepository $attributeOptionRepo
+     * @param EntityIdResolverInterface $entityIdResolver
      * @param array                     $supportedAttributes
      * @param array                     $supportedOperators
      */
     public function __construct(
-        AttributeOptionRepository $attributeOptionRepo,
+        EntityIdResolverInterface $entityIdResolver,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->entityIdResolver    = $entityIdResolver;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
-        $this->attributeOptionRepo = $attributeOptionRepo;
     }
 
     /**
@@ -54,7 +54,9 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     ) {
         $field = $options['field'];
 
-        $this->checkValue($field, $operator, $value);
+        if (Operators::IS_EMPTY !== $operator) {
+            $this->checkValue($field, $value);
+        }
 
         $joinAlias = 'filter'.$attribute->getCode();
 
@@ -75,7 +77,7 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->getIdsFromCodes($value);
+                $value = $this->entityIdResolver->getIdsFromCodes('option', $value);
             }
 
             $condition .= ' AND ( '. $this->qb->expr()->in($optionAlias, $value) .' ) ';
@@ -103,47 +105,14 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
      * Check if value is valid
      *
      * @param AttributeInterface $attribute
-     * @param string             $operator
      * @param mixed              $value
      */
-    protected function checkValue($field, $operator, $value)
+    protected function checkValue($field, $values)
     {
-        if (!is_array($value) && Operators::IS_EMPTY !== $operator) {
-            throw InvalidArgumentException::arrayExpected(FieldFilterHelper::getCode($field), 'filter', 'option');
+        FieldFilterHelper::checkArray($field, $values, 'option');
+
+        foreach ($values as $value) {
+            FieldFilterHelper::checkIdentifier($field, $value, 'option');
         }
-
-        if (Operators::IS_EMPTY !== $operator) {
-            foreach ($value as $entity) {
-                if ((
-                        FieldFilterHelper::hasProperty($field) &&
-                        FieldFilterHelper::getProperty($field) === 'id' &&
-                        !is_numeric($entity)
-                    ) ||
-                    (
-                        !FieldFilterHelper::hasProperty($field) &&
-                        !is_numeric($entity)
-                    )
-                ) {
-                    throw InvalidArgumentException::integerExpected($field, 'filter', 'option');
-                } elseif (FieldFilterHelper::hasProperty($field) &&
-                    FieldFilterHelper::getProperty($field) !== 'id'
-                    && !is_string($entity)
-                ) {
-                    throw InvalidArgumentException::stringExpected($field, 'filter', 'option');
-                }
-            }
-        }
-    }
-
-    protected function getIdsFromCodes($attributeOptionCodes)
-    {
-        $attributeOptionIds = [];
-
-        foreach ($attributeOptionCodes as $code) {
-            //TODO catch exception if the code does not exists
-            $attributeOptionIds[] = $this->attributeOptionRepo->findOneByCode($code)->getId();
-        }
-
-        return $attributeOptionIds;
     }
 }

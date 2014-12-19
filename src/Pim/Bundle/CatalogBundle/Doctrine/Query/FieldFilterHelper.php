@@ -96,7 +96,9 @@ class FieldFilterHelper
             )
         ) {
             throw InvalidArgumentException::integerExpected($field, 'filter', $filter);
-        } elseif (static::hasProperty($field) &&
+        }
+
+        if (static::hasProperty($field) &&
             static::getProperty($field) !== 'id' &&
             !is_string($value)
         ) {
