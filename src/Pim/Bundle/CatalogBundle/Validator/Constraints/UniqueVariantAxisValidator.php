@@ -17,9 +17,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class UniqueVariantAxisValidator extends ConstraintValidator
 {
-    /**
-     * @var ProductManager $manager
-     */
+    /** @var ProductManager $manager */
     protected $manager;
 
     /**
@@ -141,8 +139,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @return ProductInterface[]
      */
-    protected function getMatchingProducts(GroupInterface $variantGroup, ProductInterface $entity = null, array $criteria = [])
-    {
+    protected function getMatchingProducts(
+        GroupInterface $variantGroup,
+        ProductInterface $entity = null,
+        array $criteria = []
+    ) {
         if (!$variantGroup->getId()) {
             return [];
         }

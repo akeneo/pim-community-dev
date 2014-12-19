@@ -16,7 +16,7 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface,
-    VersionableInterface
+ VersionableInterface
 {
     /**
      * Get the id

@@ -1,6 +1,7 @@
 <?php
 
 namespace Pim\Bundle\CatalogBundle\Factory;
+
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 
 /**
