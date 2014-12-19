@@ -92,6 +92,8 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
      */
     protected function configContext(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(['value']);
+        $resolver
+            ->setRequired(['value'])
+            ->setOptional(['entity', 'locale_code', 'product', 'scope_code']);
     }
 }

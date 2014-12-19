@@ -65,6 +65,8 @@ class PricesDenormalizer extends AbstractValueDenormalizer
      */
     protected function configContext(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(['value', 'price_currency']);
+        $resolver
+            ->setRequired(['value', 'price_currency'])
+            ->setOptional(['entity', 'locale_code', 'product', 'scope_code']);
     }
 }

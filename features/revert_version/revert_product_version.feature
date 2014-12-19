@@ -8,7 +8,6 @@ Feature: Revert a product to a previous version
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  @skip
   Scenario: Successfully revert the status of a product (disabled)
     Given an enabled "shirt" product
     And I am on the "shirt" product page
@@ -17,7 +16,6 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: shirt"
     Then product "shirt" should be enabled
 
-  @skip
   Scenario: Successfully revert the status of a product (enable)
     Given a disabled "shirt" product
     And I am on the "shirt" product page
@@ -26,7 +24,6 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: shirt"
     Then product "shirt" should be disabled
 
-  @skip
   Scenario: Successfully revert the family of a product
     Given the following product:
       | sku  | family |
@@ -42,7 +39,6 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: jean"
     Then the family of product "jean" should be "pants"
 
-  @skip
   Scenario: Successfully revert the category of a product
     Given the following product:
       | sku     | categories        |
@@ -57,6 +53,17 @@ Feature: Revert a product to a previous version
     Then I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: sandals"
     Then the category of "sandals" should be "winter_collection"
+
+  Scenario: Successfully revert simpleselect attribute options of a product
+    Given the following product:
+      | sku  | family |
+      | jean | pants  |
+    Given I am on the "jean" product page
+    And I change the Manufacturer to "Desigual"
+    And I save the product
+    And I visit the "History" tab
+    When I click on the "Revert to this version" action of the row which contains "sku: jean"
+    Then I should see a flash message "Successfully revert the product to the previous version"
 
   Scenario: Successfully revert multiselect attribute options of a product
     Given the following product:
@@ -74,7 +81,7 @@ Feature: Revert a product to a previous version
     Then I should see a flash message "Successfully revert the product to the previous version"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3351
-  Scenario: Successfully revert a product with prices and leaving them empty
+  Scenario: Successfully revert a product with prices and leave them empty
     And the following product:
       | sku   | name-fr_FR | family |
       | jeans | Nice jeans | pants  |
@@ -88,14 +95,14 @@ Feature: Revert a product to a previous version
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
     And the product "jeans" should have the following values:
-      | price      | |
+      | price      |            |
       | name-fr_FR | Nice jeans |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3301
-  Scenario: Successfully revert a product date and leaving it empty
+  Scenario: Successfully revert a product date and leave it empty
     And the following product:
-      | sku   | family |
-      | jeans | jackets  |
+      | sku   | family  |
+      | jeans | jackets |
     And I am logged in as "Julia"
     When I edit the "jeans" product
     And I change the "mobile Release date" to "2014-05-20"
@@ -106,10 +113,10 @@ Feature: Revert a product to a previous version
     And the product "jeans" should have the following values:
       | release_date-mobile |  |
 
-  Scenario: Successfully revert a product number and leaving it empty
+  Scenario: Successfully revert a product number and leave it empty
     And the following product:
-      | sku   | family |
-      | jeans | jackets  |
+      | sku   | family  |
+      | jeans | jackets |
     And I am logged in as "Julia"
     When I edit the "jeans" product
     And I visit the "Marketing" group
