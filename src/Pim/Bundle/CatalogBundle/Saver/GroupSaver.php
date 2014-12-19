@@ -96,5 +96,8 @@ class GroupSaver implements SaverInterface
     protected function applyProductTemplate()
     {
         // TODO : apply the template on products
+        // - update
+        // - validate
+        // - save
     }
 }
