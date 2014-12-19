@@ -5,8 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Command;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,31 +38,11 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
     {
         // Fetch the values from the stored template
         $variantGroup = $this->getVariantGroup('akeneo_tshirt');
-        $readProductTemplate = $variantGroup->getProductTemplate();
-        $rawValuesData = $readProductTemplate->getValuesData();
-        $values = $this->denormalizeFromDB($rawValuesData);
-
-        // Apply the update on another products
-        $updates = $this->normalizeToUpdate($values);
-
-        // TODO unset identifier and axis updates and picture (not supported for now)
-        $skippedAttributes = ['sku', 'main_color', 'secondary_color', 'clothing_size', 'picture'];
-        foreach ($updates as $indexUpdate => $update) {
-            if (in_array($update['attribute'], $skippedAttributes)) {
-                unset($updates[$indexUpdate]);
-            } elseif (null === $update['value']) {
-                // TODO ugly fix on null string
-                $updates[$indexUpdate]['value'] = "";
-            }
-        }
-
-        // TODO picture doesnt work
-        // TODO prices doesnt work
-
+        $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
         $products = $products->count() > 0 ? $products->toArray() : [];
 
-        $this->updateAll($products, $updates);
+        $this->updateAll($products, $template);
         $this->validateAll($products, $output);
         $this->saveAll($products);
 
@@ -71,69 +53,6 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
                 $variantGroup->getCode()
             )
         );
-    }
-
-    /**
-     * @param array $rawProductValues
-     *
-     * @return ProductValueInterface[]
-     */
-    protected function denormalizeFromDB(array $rawProductValues)
-    {
-        $denormalizer = $this->getContainer()->get('pim_serializer');
-        $fieldNameBuilder = $this->getContainer()->get('pim_transform.builder.field_name');
-        $productValueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
-        $productValues = [];
-
-        foreach ($rawProductValues as $attFieldName => $dataValue) {
-            $attributeInfos = $fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
-            $attribute = $attributeInfos['attribute'];
-            $value = new ProductValue();
-            $value->setAttribute($attribute);
-            $value->setLocale($attributeInfos['locale_code']);
-            $value->setScope($attributeInfos['scope_code']);
-            unset($attributeInfos['attribute']);
-            unset($attributeInfos['locale_code']);
-            unset($attributeInfos['scope_code']);
-
-            // TODO : as for versionning, we should really change for json/structured format
-            $productValues[] = $denormalizer->denormalize(
-                $dataValue,
-                $productValueClass,
-                'csv',
-                ['entity' => $value] + $attributeInfos
-            );
-        }
-
-        $valuesCollection = new ArrayCollection();
-        foreach ($productValues as $value) {
-            $valuesCollection[ProductValueKeyGenerator::getKey($value)] = $value;
-        }
-
-        return $valuesCollection;
-    }
-
-    /**
-     * @param ArrayCollection $productValues
-     *
-     * @return array
-     */
-    protected function normalizeToUpdate(ArrayCollection $productValues)
-    {
-        $normalizer = $this->getContainer()->get('pim_serializer');
-        $normalizedValues = [];
-        foreach ($productValues as $value) {
-            $update = [
-                // TODO : weird result with price
-                'value' => $normalizer->normalize($value->getData(), 'json', ['locales' => []]),
-                'attribute' => $value->getAttribute()->getCode(),
-                'locale' => $value->getLocale(),
-                'scope' => $value->getScope()
-            ];
-            $normalizedValues[] = $update;
-        }
-
-        return $normalizedValues;
     }
 
     /**
@@ -150,21 +69,14 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface[] $products
-     * @param array              $updates
+     * @param ProductInterface[]       $products
+     * @param ProductTemplateInterface $template
      */
-    protected function updateAll($products, $updates)
+    protected function updateAll($products, ProductTemplateInterface $template)
     {
-        $updater = $this->getContainer()->get('pim_catalog.updater.product');
-        foreach ($updates as $update) {
-            $updater->setValue(
-                $products,
-                $update['attribute'],
-                $update['value'],
-                $update['locale'],
-                $update['scope']
-            );
-        }
+        /** @var ProductTemplateUpdaterInterface */
+        $updater = $this->getContainer()->get('pim_catalog.updater.product_template');
+        $updater->update($products, $template);
     }
 
     /**
