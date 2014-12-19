@@ -35,28 +35,9 @@ class GroupManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_saver()
-    {
-        $this->shouldHaveType('Pim\Component\Resource\Model\SaverInterface');
-    }
     function it_is_a_remover()
     {
         $this->shouldHaveType('Pim\Component\Resource\Model\RemoverInterface');
-    }
-
-    function it_throws_exception_when_save_anything_else_than_a_group()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->during('save', [$anythingElse]);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_group()
