@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3533: Fix wrong keys being generated for empty price attributes in normalized product snapshots
+
 # 1.2.17 (2014-12-19)
 - PIM-3550 : force the version of "doctrine/annotations" to "v1.2.1" to avoid the BC Break introduced with v1.2.2
 
