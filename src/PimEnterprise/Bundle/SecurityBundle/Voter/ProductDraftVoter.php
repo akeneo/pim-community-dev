@@ -109,11 +109,8 @@ class ProductDraftVoter implements VoterInterface
     protected function canApprove(UserInterface $user, ProductDraft $draft)
     {
         foreach ($this->getAttributeGroupsImpactedByADraft($draft) as $group) {
-            if (false === $this->attrGroupAccessManager->isUserGranted(
-                    $user,
-                    $group,
-                    Attributes::EDIT_ATTRIBUTES)
-            ) {
+            $userGranted = $this->attrGroupAccessManager->isUserGranted($user, $group, Attributes::EDIT_ATTRIBUTES);
+            if (false === $userGranted) {
                 return false;
             }
         }
