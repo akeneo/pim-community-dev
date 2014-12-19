@@ -23,3 +23,4 @@ parameters:
     pim_catalog.entity.metric.class:                 Pim\Bundle\CatalogBundle\Model\Metric
     pim_catalog.entity.product_media.class:          Pim\Bundle\CatalogBundle\Model\ProductMedia
     pim_catalog.entity.product_price.class:          Pim\Bundle\CatalogBundle\Model\ProductPrice
+    pim_catalog.entity.product_template.class:       Pim\Bundle\CatalogBundle\Entity\ProductTemplate
