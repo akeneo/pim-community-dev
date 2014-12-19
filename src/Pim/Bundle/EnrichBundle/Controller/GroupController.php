@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;

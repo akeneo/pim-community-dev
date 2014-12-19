@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
