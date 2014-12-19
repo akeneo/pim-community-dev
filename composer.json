@@ -28,6 +28,7 @@
         "doctrine/common": "2.4.*",
         "doctrine/doctrine-bundle": "1.2.*",
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
+        "doctrine/annotations": "v1.2.1",
         "friendsofsymfony/rest-bundle": "0.12.*",
         "liip/imagine-bundle": "0.17.*",
         "jms/serializer-bundle": "0.13.*",
