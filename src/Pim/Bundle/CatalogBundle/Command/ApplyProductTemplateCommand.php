@@ -20,14 +20,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ImportProductTemplateCommand extends ContainerAwareCommand
+class ApplyProductTemplateCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('pim:import:template');
+        $this->setName('pim:variant-group:apply-template');
     }
 
     /**
@@ -35,21 +35,6 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Setup the template with an existing product
-        $referenceProduct = $this->getProduct('AKNTS_BPS');
-        $productValues = $referenceProduct->getValues()->toArray();
-        $productValuesData = $this->normalizeToDB($productValues);
-
-        $variantGroup = $this->getVariantGroup('akeneo_tshirt');
-        if ($variantGroup->getProductTemplate()) {
-            $template = $variantGroup->getProductTemplate();
-        } else {
-            $template = new GroupProductTemplate();
-        }
-        $template->setValuesData($productValuesData);
-        $template->setGroup($variantGroup);
-        $this->saveTemplate($template); // TODO : should use cascade on VG
-
         // Fetch the values from the stored template
         $variantGroup = $this->getVariantGroup('akeneo_tshirt');
         $readProductTemplate = $variantGroup->getProductTemplate();
@@ -87,23 +72,6 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
                 $variantGroup->getCode()
             )
         );
-    }
-
-    /**
-     * @param ProductValueInterface[] $productValues
-     *
-     * @return array
-     */
-    protected function normalizeToDB(array $productValues)
-    {
-        // TODO : as for versionning, we should really change for json/structured format
-        $normalizer = $this->getContainer()->get('pim_serializer');
-        $normalizedValues = [];
-        foreach ($productValues as $value) {
-            $normalizedValues += $normalizer->normalize($value, 'csv');
-        }
-
-        return $normalizedValues;
     }
 
     /**
@@ -170,19 +138,6 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string $identifier
-     *
-     * @return ProductInterface
-     */
-    protected function getProduct($identifier)
-    {
-        $repository = $this->getContainer()->get('pim_catalog.repository.product');
-        $product    = $repository->findOneByIdentifier($identifier);
-
-        return $product;
-    }
-
-    /**
      * @param string $code
      *
      * @return Group
@@ -193,16 +148,6 @@ class ImportProductTemplateCommand extends ContainerAwareCommand
         $group      = $repository->findOneByCode($code);
 
         return $group;
-    }
-
-    /**
-     * @param GroupProductTemplate $template
-     */
-    protected function saveTemplate(GroupProductTemplate $template)
-    {
-        $objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $objectManager->persist($template);
-        $objectManager->flush();
     }
 
     /**
