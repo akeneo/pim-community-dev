@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Command;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\GroupProductTemplate;
+use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -44,12 +44,12 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
         if ($variantGroup->getProductTemplate()) {
             $template = $variantGroup->getProductTemplate();
         } else {
-            $template = new GroupProductTemplate();
+            $template = new ProductTemplate();
+            $variantGroup->setProductTemplate($template);
         }
         $template->setValuesData($productValuesData);
-        $template->setGroup($variantGroup);
         // TODO : should use cascade on VG
-        $this->saveTemplate($template);
+        $this->saveVariantGroup($variantGroup);
 
         $output->writeln(
             sprintf(
@@ -103,12 +103,11 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param GroupProductTemplate $template
+     * @param Group $group
      */
-    protected function saveTemplate(GroupProductTemplate $template)
+    protected function saveVariantGroup(Group $group)
     {
-        $objectManager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $objectManager->persist($template);
-        $objectManager->flush();
+        $saver = $this->getContainer()->get('pim_catalog.saver.group');
+        $saver->save($group);
     }
 }
