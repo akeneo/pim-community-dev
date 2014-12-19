@@ -7,6 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupProductTemplate
+class ProductTemplate implements ProductTemplateInterface
 {
     /** @var integer $id */
     protected $id;
@@ -50,22 +51,6 @@ class GroupProductTemplate
     public function __construct()
     {
         $this->values = new ArrayCollection();
-    }
-
-    /**
-     * @return Group
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
-     * @param Group $group
-     */
-    public function setGroup($group)
-    {
-        $this->group = $group;
     }
 
     /**

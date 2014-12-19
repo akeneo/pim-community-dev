@@ -49,7 +49,7 @@ class Group implements GroupInterface
     /**  @var \Doctrine\Common\Collections\ArrayCollection $translations */
     protected $translations;
 
-    /**  @var GroupProductTemplate */
+    /**  @var ProductTemplateInterface */
     protected $productTemplate;
 
     /**
@@ -321,7 +321,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @return GroupProductTemplate
+     * @return ProductTemplateInterface
      */
     public function getProductTemplate()
     {
@@ -329,7 +329,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param GroupProductTemplate $productTemplate
+     * @param ProductTemplateInterface $productTemplate
      */
     public function setProductTemplate($productTemplate)
     {
