@@ -34,7 +34,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness:
                     onDelete: CASCADE
                     nullable: false
         channel:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
             joinColumns:
                 channel_id:
                     referencedColumnName: id
