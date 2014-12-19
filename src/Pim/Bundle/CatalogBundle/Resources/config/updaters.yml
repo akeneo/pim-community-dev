@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
+    pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
     pim_catalog.updater.setter.registry.class:               Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
 
     pim_catalog.updater.setter.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\TextValueSetter
@@ -30,6 +31,13 @@ services:
             - @pim_catalog.repository.attribute
             - @pim_catalog.updater.setter.registry
             - @pim_catalog.updater.copier.registry
+
+    pim_catalog.updater.product_template:
+        class: %pim_catalog.updater.product_template.class%
+        arguments:
+            - @pim_catalog.updater.product
+            - @pim_serializer
+            - @pim_transform.builder.field_name
 
     pim_catalog.updater.setter.registry:
         class: %pim_catalog.updater.setter.registry.class%
