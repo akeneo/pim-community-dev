@@ -44,8 +44,9 @@ Pim\Bundle\CatalogBundle\Entity\Group:
     oneToOne:
         # TODO add a custom constraint, only if type is variant group
         productTemplate:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupProductTemplate
-            mappedBy: group
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
+            cascade:
+                - persist
             joinColumns:
                 product_template_id:
                     referencedColumnName: id
