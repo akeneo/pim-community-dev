@@ -124,6 +124,16 @@ In case of standard ORM use, to update and keep your existing history, you can u
     CREATE INDEX pending_idx ON pim_versioning_version (pending);
 ```
 
+### Version migration - ORM storage only
+
+A bug with versioning empty prices on ORM has been fixed, launch the following script to update existing product versions:
+
+**Make sure you backup your database before launching this script**
+
+```
+    $ php upgrades/1.1-1.2/orm/migrate_versions.php --env=<environment>
+```
+
 ## MongoDB implementation
 
 ### Normalized data updates
