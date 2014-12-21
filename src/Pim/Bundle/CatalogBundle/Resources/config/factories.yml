@@ -18,7 +18,7 @@ services:
 
     # deprecetad: will be removed in 1.4
     pim_catalog.factory.referenced_collection:
-        alias: akeneo_doctrine_extensions.factory.referenced_collection
+        alias: akeneo_storage_utils.factory.referenced_collection
 
     pim_catalog.factory.media:
         class: %pim_catalog.factory.media.class%

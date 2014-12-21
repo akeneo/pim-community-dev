@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\MongoObjectsFactory;
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

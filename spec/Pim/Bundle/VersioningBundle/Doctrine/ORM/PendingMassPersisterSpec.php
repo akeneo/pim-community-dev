@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\TableNameBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;

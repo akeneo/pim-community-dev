@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

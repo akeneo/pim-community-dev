@@ -24,8 +24,8 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/stof_doctrine_extensions.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }
 
-akeneo_doctrine_extensions:
-    storage_driver: '%akeneo_doctrine_extensions_storage_driver%'
+akeneo_storage_utils:
+    storage_driver: '%akeneo_storage_utils_storage_driver%'
 
 services:
     oro.cache.abstract:

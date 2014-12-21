@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\MongoObjectsFactory;
 
 /**
  * @require \MongoId

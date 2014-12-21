@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Akeneo\Bundle\DoctrineExtensionsBundle\AkeneoDoctrineExtensionsBundle;
-use Akeneo\Bundle\DoctrineExtensionsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoriesPass;
+use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoriesPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogBundle extends AkeneoDoctrineExtensionsBundle
+class PimCatalogBundle extends AkeneoStorageUtilsBundle
 {
     /**
      * {@inheritdoc}

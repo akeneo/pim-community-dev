@@ -99,15 +99,15 @@ services:
 
     # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entities_type:
-        alias: akeneo_doctrine_extensions.event_subscriber.mongodb.entities_type
+        alias: akeneo_storage_utils.event_subscriber.mongodb.entities_type
 
     # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
-        alias: akeneo_doctrine_extensions.event_subscriber.mongodb.resolve_target_repositories
+        alias: akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repositories
 
     # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entity_type:
-        alias: akeneo_doctrine_extensions.event_subscriber.mongodb.entity_type
+        alias: akeneo_storage_utils.event_subscriber.mongodb.entity_type
 
     # Normalizers
     pim_catalog.mongodb.normalizer.product:
@@ -175,7 +175,7 @@ services:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.mongo_objects_factory:
-        alias: akeneo_doctrine_extensions.mongodb.mongo_objects_factory
+        alias: akeneo_storage_utils.mongodb.mongo_objects_factory
 
     pim_catalog.repository.product:
         class: %pim_catalog.repository.product.class%
@@ -215,7 +215,7 @@ services:
             - '@pim_catalog.repository.product'
 
     pim_catalog.doctrine.smart_manager_registry:
-        alias: akeneo_doctrine_extensions.doctrine.smart_manager_registry
+        alias: akeneo_storage_utils.doctrine.smart_manager_registry
 
     pim_catalog.event_subscriber.mongodb.set_normalized_product_data:
         class: %pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class%

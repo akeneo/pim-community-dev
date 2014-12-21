@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Manager;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;

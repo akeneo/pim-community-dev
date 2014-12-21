@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\Metric;
-use Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\MongoObjectsFactory;
 
 /**
  * @require \MongoId

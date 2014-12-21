@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
-use Akeneo\Bundle\DoctrineExtensionsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass;
 
 /**
  * Resolves doctrine ORM Target entities

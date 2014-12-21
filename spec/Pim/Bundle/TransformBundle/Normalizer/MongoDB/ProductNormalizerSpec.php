@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -9,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Akeneo\Bundle\DoctrineExtensionsBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**

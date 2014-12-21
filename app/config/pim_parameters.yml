@@ -28,7 +28,7 @@ parameters:
     mass_edit_limit:      1000
 
     # Storage driver can be doctrine/orm or doctrine/mongodb-odm
-    akeneo_doctrine_extensions_storage_driver: doctrine/orm
+    akeneo_storage_utils_storage_driver: doctrine/orm
 
     ## Uncomment to configure mongodb
     # mongodb_server: 'mongodb://localhost:27017'

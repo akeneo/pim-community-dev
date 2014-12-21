@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
-use Akeneo\Bundle\DoctrineExtensionsBundle\Doctrine\TableNameBuilder;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;

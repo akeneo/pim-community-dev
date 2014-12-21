@@ -32,7 +32,7 @@ services:
     pim_datagrid.extension.selector.orm_selector:
         class: %pim_datagrid.extension.selector.orm_selector.class%
         arguments:
-            - %akeneo_doctrine_extensions.storage_driver%
+            - %akeneo_storage_utils.storage_driver%
             - '@oro_datagrid.datagrid.request_params'
         calls:
             - [addEligibleDatasource, ['pim_datasource_product']]
