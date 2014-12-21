@@ -4,6 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Form\View;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Form\FormView;
 
@@ -143,6 +145,7 @@ class ProductFormView implements ProductFormViewInterface
             'sortOrder'          => $attribute->getSortOrder(),
             'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes),
             'locale'             => $value->getLocale(),
+            'isInheritedFromVariantGroup' => $this->isInheritedFromVariantGroup($value)
         );
 
         if ($attribute->isScopable()) {
@@ -204,5 +207,34 @@ class ProductFormView implements ProductFormViewInterface
         );
 
         return $attributes;
+    }
+
+    /**
+     * TODO : should be merged with new system, ProductFormView in EE Smart Attr.
+     *
+     * @param ProductValueInterface $value
+     *
+     * @return boolean
+     */
+    protected function isInheritedFromVariantGroup(ProductValueInterface $value)
+    {
+        /** @var ProductInterface $product */
+        $product = $value->getEntity();
+        $groups = $product->getGroups();
+        $variantGroup = null;
+        /** @var GroupInterface $group */
+        foreach ($groups as $group) {
+            if ($group->getType()->isVariant()) {
+                // TODO : will have only one after PIM-2448, add short cut getVariantGroup() ?
+                $variantGroup = $group;
+            }
+        }
+
+        if ($variantGroup) {
+            $template = $variantGroup->getProductTemplate();
+            return ($template) ? $template->hasValue($value) : false;
+        }
+
+        return false;
     }
 }

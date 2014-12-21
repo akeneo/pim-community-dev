@@ -36,7 +36,6 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Fetch the values from the stored template
         $variantGroup = $this->getVariantGroup('akeneo_tshirt');
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
@@ -85,8 +84,9 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
      */
     protected function validateAll($products, OutputInterface $output)
     {
+        $validator = $this->getContainer()->get('pim_validator');
         foreach ($products as $product) {
-            $violations = $this->validateProduct($product);
+            $violations = $validator->validate($product);
             foreach ($violations as $violation) {
                 $output->writeln(sprintf("<error>%s : %s<error>", $violation->getMessage(), $violation->getInvalidValue()));
             }
@@ -96,19 +96,6 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
                 $detacher->detach($product);
             }
         }
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return ConstraintViolationListInterface
-     */
-    protected function validateProduct(ProductInterface $product)
-    {
-        $validator = $this->getContainer()->get('pim_validator');
-        $errors = $validator->validate($product);
-
-        return $errors;
     }
 
     /**
