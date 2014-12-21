@@ -38,7 +38,7 @@ class ProductTemplate implements ProductTemplateInterface
     protected $values;
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -54,7 +54,7 @@ class ProductTemplate implements ProductTemplateInterface
     }
 
     /**
-     * @return json
+     * {@inheritdoc}
      */
     public function getValuesData()
     {
@@ -62,15 +62,17 @@ class ProductTemplate implements ProductTemplateInterface
     }
 
     /**
-     * @param json $valuesData
+     * {@inheritdoc}
      */
     public function setValuesData($valuesData)
     {
         $this->valuesData = $valuesData;
+
+        return $this;
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[]
+     * {@inheritdoc}
      */
     public function getValues()
     {
@@ -80,10 +82,33 @@ class ProductTemplate implements ProductTemplateInterface
     // TODO : validate forbid to add identifier or axis values
 
     /**
-     * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
+     * {@inheritdoc}
      */
     public function setValues($values)
     {
         $this->values = $values;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasValue(ProductValueInterface $value)
+    {
+        // TODO : should be merged
+        $suffix = '';
+
+        if ($value->getAttribute()->isLocalizable()) {
+            $suffix = sprintf('-%s', $value->getLocale());
+        }
+        if ($value->getAttribute()->isScopable()) {
+            $suffix .= sprintf('-%s', $value->getScope());
+        }
+
+        $field = $value->getAttribute()->getCode() . $suffix;
+
+        // TODO : will change with json format
+        return isset($this->valuesData[$field]);
     }
 }
