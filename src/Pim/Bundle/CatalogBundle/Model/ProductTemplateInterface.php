@@ -23,6 +23,8 @@ interface ProductTemplateInterface
 
     /**
      * @param array $valuesData
+     *
+     * @return ProductTemplateInterface
      */
     public function setValuesData($valuesData);
 
@@ -33,6 +35,15 @@ interface ProductTemplateInterface
 
     /**
      * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
+     *
+     * @return ProductTemplateInterface
      */
     public function setValues($values);
+
+    /**
+     * @param ProductValueInterface $value
+     *
+     * @return boolean
+     */
+    public function hasValue(ProductValueInterface $value);
 }
