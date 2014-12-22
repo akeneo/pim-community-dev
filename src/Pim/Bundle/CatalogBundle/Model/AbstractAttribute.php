@@ -169,7 +169,7 @@ abstract class AbstractAttribute implements AttributeInterface
         $this->families            = new ArrayCollection();
         $this->translations        = new ArrayCollection();
         $this->validationRule      = null;
-        $this->properties          = array();
+        $this->properties          = [];
     }
 
     /**
@@ -430,7 +430,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getGroupSequence()
     {
-        $groups = array('Default', $this->getAttributeType());
+        $groups = ['Default', $this->getAttributeType()];
 
         if ($this->isUnique()) {
             $groups[] = 'unique';
@@ -525,11 +525,12 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getAvailableLocaleCodes()
+    public function getLocaleSpecificCodes()
     {
         if ($this->getAvailableLocales() === null) {
-            return null;
+            return [];
         }
+
         $codes = [];
         foreach ($this->getAvailableLocales() as $locale) {
             $codes[] = $locale->getCode();
@@ -1003,5 +1004,15 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocaleSpecific()
+    {
+        $availableLocale = $this->getAvailableLocales();
+
+        return !empty($availableLocale);
     }
 }

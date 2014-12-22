@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -47,12 +47,12 @@ interface ProductRepositoryInterface
     /**
      * Find all products in a variant group (by variant axis attribute values)
      *
-     * @param Group $variantGroup the variant group
-     * @param array $criteria     the criteria
+     * @param GroupInterface $variantGroup the variant group
+     * @param array          $criteria     the criteria
      *
      * @return array
      */
-    public function findAllForVariantGroup(Group $variantGroup, array $criteria = array());
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array());
 
     /**
      * Returns all products that have the given attribute

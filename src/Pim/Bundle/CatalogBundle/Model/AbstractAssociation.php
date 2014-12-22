@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Abstract association entity
@@ -30,7 +29,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var ProductInterface[] */
     protected $products;
 
-    /** @var Group[] */
+    /** @var GroupInterface[] */
     protected $groups;
 
     /** @var array */
@@ -161,7 +160,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function addGroup(Group $group)
+    public function addGroup(GroupInterface $group)
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -173,7 +172,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function removeGroup(Group $group)
+    public function removeGroup(GroupInterface $group)
     {
         $this->groups->removeElement($group);
 

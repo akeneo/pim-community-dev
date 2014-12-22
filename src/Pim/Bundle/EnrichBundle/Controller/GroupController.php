@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
@@ -40,6 +41,9 @@ class GroupController extends AbstractController
     /** @var Form */
     protected $groupForm;
 
+    /** @var GroupFactory */
+    protected $groupFactory;
+
     /**
      * Constructor
      *
@@ -54,6 +58,7 @@ class GroupController extends AbstractController
      * @param GroupManager             $groupManager
      * @param HandlerInterface         $groupHandler
      * @param Form                     $groupForm
+     * @param GroupFactory             $groupFactory
      */
     public function __construct(
         Request $request,
@@ -66,7 +71,8 @@ class GroupController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
-        Form $groupForm
+        Form $groupForm,
+        GroupFactory $groupFactory
     ) {
         parent::__construct(
             $request,
@@ -82,6 +88,7 @@ class GroupController extends AbstractController
         $this->groupManager = $groupManager;
         $this->groupHandler = $groupHandler;
         $this->groupForm    = $groupForm;
+        $this->groupFactory = $groupFactory;
     }
 
     /**
@@ -114,7 +121,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('pim_enrich_group_index');
         }
 
-        $group = new Group();
+        $group = $this->groupFactory->createGroup();
 
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.group.created');
@@ -136,6 +143,8 @@ class GroupController extends AbstractController
     /**
      * Edit a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @Template
@@ -156,6 +165,9 @@ class GroupController extends AbstractController
 
     /**
      * Remove a group
+     *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_remove")
@@ -175,6 +187,8 @@ class GroupController extends AbstractController
     /**
      * Display the products of a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @return array
@@ -189,6 +203,8 @@ class GroupController extends AbstractController
 
     /**
      * History of a group
+     *
+     * TODO : find a way to use param converter with interfaces
      *
      * @param Group $group
      *

@@ -11,6 +11,8 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Psr\Log\LoggerInterface;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -22,7 +24,8 @@ class IndexCreatorSpec extends ObjectBehavior
         ManagerRegistry $managerRegistry,
         DocumentManager $documentManager,
         NamingUtility $namingUtility,
-        Collection $collection
+        Collection $collection,
+        LoggerInterface $logger
     ) {
         $managerRegistry->getManagerForClass('Product')->willReturn($documentManager);
         $documentManager->getDocumentCollection('Product')->willReturn($collection);
@@ -30,7 +33,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $managerRegistry,
             $namingUtility,
-            'Product'
+            'Product',
+            $logger
         );
     }
 
@@ -65,6 +69,8 @@ class IndexCreatorSpec extends ObjectBehavior
             ->getAttributeNormFields($title)
             ->willReturn(['normalizedData.title-ecommerce', 'normalizedData.title-mobile']);
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -107,6 +113,8 @@ class IndexCreatorSpec extends ObjectBehavior
             ->getAttributeNormFields($description)
             ->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -146,6 +154,8 @@ class IndexCreatorSpec extends ObjectBehavior
             ->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
         $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -168,6 +178,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $name->isUseableAsGridFilter()->willReturn(true);
         $name->getAttributeType()->willReturn('pim_catalog_text');
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -193,6 +205,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $ean->isUseableAsGridFilter()->willReturn(false);
         $ean->getAttributeType()->willReturn('pim_catalog_text');
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -217,6 +231,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $sku->isUseableAsGridFilter()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -251,6 +267,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $price->isUseableAsGridFilter()->willReturn(true);
         $price->getAttributeType()->willReturn('pim_catalog_price_collection');
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -274,6 +292,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $color->isUseableAsGridFilter()->willReturn(true);
         $color->getAttributeType()->willReturn('pim_catalog_simpleselect');
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -300,6 +320,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $title->isUseableAsGridFilter()->willReturn(true);
         $title->getAttributeType()->willReturn('pim_catalog_simpleselect');
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -326,6 +348,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $description->isUseableAsGridFilter()->willReturn(true);
         $description->getAttributeType()->willReturn('pim_catalog_simpleselect');
 
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
         $options =  [
             'background' => true,
             'w'          => 0
@@ -361,6 +385,32 @@ class IndexCreatorSpec extends ObjectBehavior
                     'normalizedData.description-en_US-mobile'
                 ]
             );
+
+        $this->ensureIndexesFromAttribute($description);
+    }
+
+    function it_logs_error_when_the_maximum_number_of_indexes_is_reached(
+        $collection,
+        AttributeInterface $description,
+        $namingUtility,
+        $logger
+    ) {
+        $description->getCode()->willReturn('description');
+        $description->getBackendType()->willReturn('varchar');
+        $description->isLocalizable()->willReturn(true);
+        $description->isScopable()->willReturn(false);
+        $description->isUseableAsGridFilter()->willReturn(true);
+        $description->getAttributeType()->willReturn('pim_catalog_textarea');
+
+        $namingUtility
+            ->getAttributeNormFields($description)
+            ->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
+
+        $indexes = array_fill(0, 64, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
+
+        $logger->error(Argument::any())->shouldBeCalled();
+        $collection->ensureIndex(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->ensureIndexesFromAttribute($description);
     }

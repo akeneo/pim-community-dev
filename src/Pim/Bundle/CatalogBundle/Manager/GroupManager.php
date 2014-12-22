@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Pim\Component\Resource\Model\RemoverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
@@ -149,9 +149,9 @@ class GroupManager implements SaverInterface, RemoverInterface
      */
     public function save($group, array $options = [])
     {
-        if (!$group instanceof Group) {
+        if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Entity\Group", "%s" provided.', get_class($group))
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.', get_class($group))
             );
         }
 
@@ -167,9 +167,9 @@ class GroupManager implements SaverInterface, RemoverInterface
      */
     public function remove($group, array $options = [])
     {
-        if (!$group instanceof Group) {
+        if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Entity\Group", "%s" provided.', get_class($group))
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.', get_class($group))
             );
         }
 
@@ -186,12 +186,12 @@ class GroupManager implements SaverInterface, RemoverInterface
     /**
      * Returns an array containing a limited number of product groups, and the total number of products
      *
-     * @param Group   $group
-     * @param integer $maxResults
+     * @param GroupInterface $group
+     * @param integer        $maxResults
      *
      * @return array
      */
-    public function getProductList(Group $group, $maxResults)
+    public function getProductList(GroupInterface $group, $maxResults)
     {
         $manager = $this->doctrine->getManager();
         $products = $manager

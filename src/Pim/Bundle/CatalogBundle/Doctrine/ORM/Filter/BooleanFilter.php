@@ -54,8 +54,7 @@ class BooleanFilter extends AbstractFilter implements AttributeFilterInterface, 
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
         }
 
-        $joinAlias = 'filter'.$attribute->getCode();
-        $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
+        $backendField = sprintf('filter.%s.%s', $attribute->getCode(), $attribute->getBackendType());
 
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Cache;
 
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -109,11 +109,11 @@ class AttributeCache
     /**
      * Returns the attribute codes for a group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return array
      */
-    protected function getGroupAttributeCodes(Group $group)
+    protected function getGroupAttributeCodes(GroupInterface $group)
     {
         $code = $group->getCode();
         if (!isset($this->groupAttributeCodes[$code])) {

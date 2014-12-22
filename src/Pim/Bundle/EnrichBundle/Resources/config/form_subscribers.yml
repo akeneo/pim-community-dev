@@ -4,6 +4,7 @@ parameters:
     pim_enrich.form.subscriber.add_value_field_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddProductValueFieldSubscriber
     pim_enrich.form.subscriber.family_disable_fields_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber
     pim_enrich.form.subscriber.family_attribute_label_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber
+    pim_enrich.form.subscriber.set_attribute_group_sort_order.class: Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
 
 services:
     # Subscribers
@@ -33,3 +34,8 @@ services:
             - %pim_catalog.entity.attribute.class%
             - '@form.factory'
             - '@oro_security.security_facade'
+
+    pim_enrich.form.subscriber.set_attribute_group_sort_order:
+        class: %pim_enrich.form.subscriber.set_attribute_group_sort_order.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_group'

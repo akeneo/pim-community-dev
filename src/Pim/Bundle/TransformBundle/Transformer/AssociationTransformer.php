@@ -23,6 +23,11 @@ class AssociationTransformer extends EntityTransformer
     protected $productClass;
 
     /**
+     * @var string
+     */
+    protected $associationTypeClass;
+
+    /**
      * Constructor
      *
      * @param ManagerRegistry                $doctrine
@@ -30,16 +35,19 @@ class AssociationTransformer extends EntityTransformer
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param string                         $productClass
+     * @param string                         $associationTypeClass
      */
     public function __construct(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $colInfoTransformer,
-        $productClass
+        $productClass,
+        $associationTypeClass
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
-        $this->productClass = $productClass;
+        $this->productClass         = $productClass;
+        $this->associationTypeClass = $associationTypeClass;
     }
 
     /**
@@ -58,6 +66,17 @@ class AssociationTransformer extends EntityTransformer
             throw new InvalidItemException(
                 'Missing association_type for this association.',
                 $data
+            );
+        }
+
+        $associationTypeRepo = $this->doctrine->getManagerForClass($this->associationTypeClass)
+            ->getRepository($this->associationTypeClass);
+        $associationType = $associationTypeRepo->findByReference($data['association_type']);
+        if (!$associationType) {
+            throw new InvalidItemException(
+                'The association type %association_type% does not exist',
+                $data,
+                ['%association_type%' => $data['association_type']]
             );
         }
 

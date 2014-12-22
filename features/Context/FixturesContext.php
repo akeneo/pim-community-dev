@@ -86,10 +86,10 @@ class FixturesContext extends RawMinkContext
      */
     public function resetPlaceholderValues()
     {
-        $this->placeholderValues = array(
+        $this->placeholderValues = [
             '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
             '%fixtures%' => __DIR__ . '/fixtures'
-        );
+        ];
     }
 
     /**
@@ -219,7 +219,7 @@ class FixturesContext extends RawMinkContext
         }
 
         if (gettype($criteria) === 'string' || $criteria === null) {
-            $criteria = array('code' => $criteria);
+            $criteria = ['code' => $criteria];
         }
 
         return $this->getRepository($this->getEntities()[$entityName])->findOneBy($criteria);
@@ -239,7 +239,7 @@ class FixturesContext extends RawMinkContext
 
         if (!$entity) {
             if (is_string($criteria)) {
-                $criteria = array('code' => $criteria);
+                $criteria = ['code' => $criteria];
             }
 
             throw new \InvalidArgumentException(
@@ -264,8 +264,8 @@ class FixturesContext extends RawMinkContext
     public function createProduct($data)
     {
         if (is_string($data)) {
-            $data = array('sku' => $data);
-        } elseif (isset($data['enabled']) && in_array($data['enabled'], array('yes', 'no'))) {
+            $data = ['sku' => $data];
+        } elseif (isset($data['enabled']) && in_array($data['enabled'], ['yes', 'no'])) {
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
@@ -326,10 +326,10 @@ class FixturesContext extends RawMinkContext
     public function anEnabledOrDisabledProduct($status, $sku)
     {
         return $this->createProduct(
-            array(
+            [
                 'sku'     => $sku,
                 'enabled' => $status === 'enabled' ? 'yes' : 'no'
-            )
+            ]
         );
     }
 
@@ -504,7 +504,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->createCategory(array($data));
+            $this->createCategory([$data]);
         }
     }
 
@@ -608,10 +608,10 @@ class FixturesContext extends RawMinkContext
     public function thereShouldBeTheFollowingOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $attribute = $this->getEntityOrException('Attribute', array('code' => $data['attribute']));
+            $attribute = $this->getEntityOrException('Attribute', ['code' => $data['attribute']]);
             $option = $this->getEntityOrException(
                 'AttributeOption',
-                array('code' => $data['code'], 'attribute' => $attribute)
+                ['code' => $data['code'], 'attribute' => $attribute]
             );
             $this->refresh($option);
 
@@ -673,7 +673,7 @@ class FixturesContext extends RawMinkContext
             assertEquals($data['type'], $group->getType()->getCode());
 
             if ($group->getType()->isVariant()) {
-                $attributes = array();
+                $attributes = [];
                 foreach ($group->getAttributes() as $attribute) {
                     $attributes[] = $attribute->getCode();
                 }
@@ -747,7 +747,7 @@ class FixturesContext extends RawMinkContext
 
         foreach ($table->getRowsHash() as $property => $value) {
             $value = $this->replacePlaceholders($value);
-            if (in_array($value, array('yes', 'no'))) {
+            if (in_array($value, ['yes', 'no'])) {
                 $value = 'yes' === $value;
             }
 
@@ -771,9 +771,9 @@ class FixturesContext extends RawMinkContext
             $type = $data['type'];
 
             $attributes = (!isset($data['attributes']) || $data['attributes'] == '')
-                ? array() : explode(', ', $data['attributes']);
+                ? [] : explode(', ', $data['attributes']);
 
-            $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
+            $products = (isset($data['products'])) ? explode(', ', $data['products']) : [];
 
             $this->createProductGroup($code, $label, $type, $attributes, $products);
         }
@@ -1040,10 +1040,10 @@ class FixturesContext extends RawMinkContext
         $data = $table->getRowsHash();
         $columns = join($delimiter, array_keys($data));
 
-        $rows = array();
+        $rows = [];
         foreach ($data as $values) {
             foreach ($values as $index => $value) {
-                $value = in_array($value, array('yes', 'no')) ? (int) $value === 'yes' : $value;
+                $value = in_array($value, ['yes', 'no']) ? (int) $value === 'yes' : $value;
                 $rows[$index][] = $value;
             }
         }
@@ -1221,7 +1221,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getUserGroup($userGroupName)
     {
-        return $this->getEntityOrException('UserGroup', array('name' => $userGroupName));
+        return $this->getEntityOrException('UserGroup', ['name' => $userGroupName]);
     }
 
     /**
@@ -1231,7 +1231,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getRole($roleLabel)
     {
-        return $this->getEntityOrException('Role', array('label' => $roleLabel));
+        return $this->getEntityOrException('Role', ['label' => $roleLabel]);
     }
 
     /**
@@ -1263,7 +1263,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getUser($username)
     {
-        return $this->getEntityOrException('User', array('username' => $username));
+        return $this->getEntityOrException('User', ['username' => $username]);
     }
 
     /**
@@ -1455,20 +1455,20 @@ class FixturesContext extends RawMinkContext
     protected function createAttribute($data)
     {
         if (is_string($data)) {
-            $data = array(
+            $data = [
                 'code' => $data,
                 'group' => 'other',
-            );
+            ];
         }
 
         $data = array_merge(
-            array(
+            [
                 'code'     => null,
                 'label'    => null,
                 'families' => null,
                 'type'     => 'text',
                 'group'    => 'other',
-            ),
+            ],
             $data
         );
 
@@ -1485,7 +1485,7 @@ class FixturesContext extends RawMinkContext
         $data['type'] = $this->getAttributeType($data['type']);
 
         foreach ($data as $key => $element) {
-            if (in_array($element, array('yes', 'no'))) {
+            if (in_array($element, ['yes', 'no'])) {
                 $data[$key] = $element === 'yes';
             }
         }
@@ -1541,7 +1541,7 @@ class FixturesContext extends RawMinkContext
     protected function createCategory($data)
     {
         if (is_string($data)) {
-            $data = array(array('code' => $data));
+            $data = [['code' => $data]];
         }
 
         $categories = $this->loadFixture('categories', $data);
@@ -1615,7 +1615,7 @@ class FixturesContext extends RawMinkContext
      * @param array  $attributes
      * @param array  $products
      */
-    protected function createProductGroup($code, $label, $type, array $attributes, array $products = array())
+    protected function createProductGroup($code, $label, $type, array $attributes, array $products = [])
     {
         $group = new Group();
         $group->setCode($code);
@@ -1692,7 +1692,7 @@ class FixturesContext extends RawMinkContext
     protected function createFamily($data)
     {
         if (is_string($data)) {
-            $data = array('code' => $data);
+            $data = ['code' => $data];
         }
 
         $family = $this->loadFixture('families', $data);
@@ -1712,7 +1712,7 @@ class FixturesContext extends RawMinkContext
     protected function createAttributeGroup($data)
     {
         if (is_string($data)) {
-            $data = array('code' => $data);
+            $data = ['code' => $data];
         }
 
         $attributeGroup = $this->loadFixture('attribute_groups', $data);

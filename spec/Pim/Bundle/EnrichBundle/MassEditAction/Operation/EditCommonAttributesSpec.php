@@ -137,7 +137,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
         $name->getGroup()->willReturn(new AttributeGroup());
-        $name->getAvailableLocaleCodes()->willReturn(null);
+        $name->isLocaleSpecific()->willReturn(false);
 
         $massActionManager->findCommonAttributes([1, 2])->willReturn([$name]);
 

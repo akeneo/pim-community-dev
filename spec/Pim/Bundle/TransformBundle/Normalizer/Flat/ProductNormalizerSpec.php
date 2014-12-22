@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
@@ -95,8 +95,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         AssociationType $crossSell,
         Association $myUpSell,
         AssociationType $upSell,
-        Group $associatedGroup1,
-        Group $associatedGroup2,
+        GroupInterface $associatedGroup1,
+        GroupInterface $associatedGroup2,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
         ProductValueInterface $skuAssocProduct1,

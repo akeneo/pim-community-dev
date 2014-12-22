@@ -106,7 +106,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Get available locales
      *
-     * @deprecated will be removed in 1.4
+     * @deprecated will be removed in 1.4, use getLocaleSpecificCodes
      *
      * @return ArrayCollection|null
      */
@@ -115,9 +115,9 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Get available locale codes
      *
-     * @return array|null
+     * @return array
      */
-    public function getAvailableLocaleCodes();
+    public function getLocaleSpecificCodes();
 
     /**
      * Set entity type
@@ -588,4 +588,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
      * @return AttributeInterface
      */
     public function setMetricFamily($metricFamily);
+
+    /**
+     * Check if attribute is locale specific
+     *
+     * @return bool
+     */
+    public function isLocaleSpecific();
 }

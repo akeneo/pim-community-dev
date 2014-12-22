@@ -2,7 +2,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
@@ -121,20 +120,20 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
     /**
      * Add a group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
-     * @return Group
+     * @return ProductInterface
      */
-    public function addGroup(Group $group);
+    public function addGroup(GroupInterface $group);
 
     /**
      * Remove a group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return ProductInterface
      */
-    public function removeGroup(Group $group);
+    public function removeGroup(GroupInterface $group);
 
     /**
      * Get ordered group

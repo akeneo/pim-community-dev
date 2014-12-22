@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.helper.locale.class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
-    pim_catalog.helper.filter.class: Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolver
+    pim_catalog.helper.filter.class: Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolver
 
 services:
     # Locale helper

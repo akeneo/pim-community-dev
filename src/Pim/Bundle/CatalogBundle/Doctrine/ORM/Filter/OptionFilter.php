@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
@@ -21,18 +21,18 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var array */
     protected $supportedAttributes;
 
-    /** @var EntityIdResolverInterface */
+    /** @var ObjectIdResolverInterface */
     protected $entityIdResolver;
 
     /**
      * Instanciate the base filter
      *
-     * @param EntityIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $entityIdResolver
      * @param array                     $supportedAttributes
      * @param array                     $supportedOperators
      */
     public function __construct(
-        EntityIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $entityIdResolver,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {

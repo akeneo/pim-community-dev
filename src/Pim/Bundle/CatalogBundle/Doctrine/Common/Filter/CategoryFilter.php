@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
@@ -25,7 +25,7 @@ class CategoryFilter implements FieldFilterInterface
     /** @var ProductCategoryRepositoryInterface */
     protected $productRepository;
 
-    /** @var EntityIdResolverInterface */
+    /** @var ObjectIdResolverInterface */
     protected $entityIdResolver;
 
     /** @var QueryBuilder */
@@ -42,14 +42,14 @@ class CategoryFilter implements FieldFilterInterface
      *
      * @param CategoryRepository                 $categoryRepository
      * @param ProductCategoryRepositoryInterface $productRepository
-     * @param EntityIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $entityIdResolver
      * @param array                              $supportedFields
      * @param array                              $supportedOperators
      */
     public function __construct(
         CategoryRepository $categoryRepository,
         ProductCategoryRepositoryInterface $productRepository,
-        EntityIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $entityIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
