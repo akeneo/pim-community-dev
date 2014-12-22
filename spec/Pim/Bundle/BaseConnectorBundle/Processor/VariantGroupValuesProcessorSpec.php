@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\DetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -16,9 +17,20 @@ class VariantGroupValuesProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         DenormalizerInterface $valueDenormalizer,
         FieldNameBuilder $fieldNameBuilder,
-        ValidatorInterface $valueValidator)
-    {
-        $this->beConstructedWith($groupRepository, $valueDenormalizer, $fieldNameBuilder, $valueValidator);
+        ValidatorInterface $valueValidator,
+        DetacherInterface $detacher
+    ) {
+        $valueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
+        $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
+        $this->beConstructedWith(
+            $groupRepository,
+            $valueDenormalizer,
+            $fieldNameBuilder,
+            $valueValidator,
+            $detacher,
+            $valueClass,
+            $templateClass
+        );
         $this->setStepExecution($stepExecution);
     }
 
