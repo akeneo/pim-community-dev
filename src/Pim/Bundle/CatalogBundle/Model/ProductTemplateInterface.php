@@ -3,7 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 /**
- * Product template model, aims to store common product values for different products
+ * Product template model, aims to store common product values for different products in order to copy them to products
+ * later, used by groups of type variant group, may be used linked to other objects or as standalone template
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
