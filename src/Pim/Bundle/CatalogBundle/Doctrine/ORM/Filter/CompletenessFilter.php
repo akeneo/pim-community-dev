@@ -35,7 +35,7 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_string($value)) {
             throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness');

@@ -59,8 +59,14 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
         $this->checkValues($attribute->getCode(), $value);
 
         $joinAlias = 'filter' . $attribute->getCode();
@@ -106,7 +112,7 @@ class DateFilter extends AbstractFilter implements FieldFilterInterface, Attribu
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         $this->checkValues($field, $value);
 
