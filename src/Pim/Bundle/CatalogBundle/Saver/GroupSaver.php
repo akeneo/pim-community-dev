@@ -6,6 +6,7 @@ namespace Pim\Bundle\CatalogBundle\Saver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
@@ -25,18 +26,18 @@ class GroupSaver implements SaverInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var ProductTemplateManager */
+    /** @var ProductTemplateManagerInterface */
     protected $productTemplateManager;
 
     /**
-     * @param ObjectManager          $objectManager
-     * @param BulkSaverInterface     $productSaver
-     * @param ProductTemplateManager $productTemplateManager
+     * @param ObjectManager $objectManager
+     * @param BulkSaverInterface $productSaver
+     * @param ProductTemplateManagerInterface $productTemplateManager
      */
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
-        ProductTemplateManager $productTemplateManager
+        ProductTemplateManagerInterface $productTemplateManager
     ) {
         $this->objectManager   = $objectManager;
         $this->productSaver    = $productSaver;

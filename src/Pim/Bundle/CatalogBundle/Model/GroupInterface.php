@@ -168,5 +168,5 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
     /**
      * @param ProductTemplateInterface $productTemplate
      */
-    public function setProductTemplate($productTemplate);
+    public function setProductTemplate(ProductTemplateInterface $productTemplate);
 }
