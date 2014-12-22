@@ -11,15 +11,14 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 
 /**
- * Product template import processor
- *
- * Allows to bind values data into a product template and validate them
+ * Variant group values import processor, allows to bind values data into a product template linked to a variant group
+ * and validate values
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductTemplateProcessor extends AbstractConfigurableStepElement implements
+class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
     StepExecutionAwareInterface
 {

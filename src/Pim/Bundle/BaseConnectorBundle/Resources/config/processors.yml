@@ -6,7 +6,7 @@ parameters:
     pim_base_connector.processor.transformer.class:                  Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
     pim_base_connector.processor.product.class:                      Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                     Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
-    pim_base_connector.processor.product_template.class:             Pim\Bundle\BaseConnectorBundle\Processor\ProductTemplateProcessor
+    pim_base_connector.processor.variant_group_values.class:         Pim\Bundle\BaseConnectorBundle\Processor\VariantGroupValuesProcessor
 
     pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
@@ -124,7 +124,7 @@ services:
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
 
-    pim_base_connector.processor.product_template:
-        class: %pim_base_connector.processor.product_template.class%
+    pim_base_connector.processor.variant_group_values:
+        class: %pim_base_connector.processor.variant_group_values.class%
         arguments:
             - @pim_catalog.repository.group
