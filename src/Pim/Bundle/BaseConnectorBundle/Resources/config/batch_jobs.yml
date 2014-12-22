@@ -160,19 +160,18 @@ connector:
                         reader:    pim_base_connector.reader.file.csv_group
                         processor: pim_base_connector.processor.group
                         writer:    pim_base_connector.writer.doctrine.group
-        csv_group_template_import:
-            title: pim_base_connector.jobs.csv_group_template_import.title
+        csv_variant_group_values_import:
+            title: pim_base_connector.jobs.csv_variant_group_values_import.title
             type:  import
             steps:
                 validation:
-                    title: pim_base_connector.jobs.csv_group_template_import.validation.title
+                    title: pim_base_connector.jobs.csv_variant_group_values_import.validation.title
                     class: %pim_base_connector.step.validator.class%
                     services:
                         charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
-                    title:     pim_base_connector.jobs.csv_group_template_import.import.title
+                    title:     pim_base_connector.jobs.csv_variant_group_values_import.import.title
                     services:
-                        # TODO use the same class but through another service ?
-                        reader:    pim_base_connector.reader.file.csv_product
-                        processor: pim_base_connector.processor.product_template
-                        writer:    pim_base_connector.writer.doctrine.variant_group
+                        reader:    pim_base_connector.reader.file.csv_variant_group_values
+                        processor: pim_base_connector.processor.variant_group_values
+                        writer:    pim_base_connector.writer.doctrine.variant_group_values

@@ -15,13 +15,13 @@ use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 
 /**
- * Variant group and template writer using ORM method
+ * Variant group writer, also copy variant group values to belonging products
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupWriter extends AbstractConfigurableStepElement implements
+class VariantGroupValuesWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
@@ -35,7 +35,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     protected $cacheClearer;
 
     /** @var boolean */
-    protected $applyOnProducts = true;
+    protected $copyValuesOnProducts = true;
 
     /**
      * @param SaverInterface $groupSaver
@@ -54,9 +54,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     public function write(array $items)
     {
         foreach ($items as $item) {
-            $this->groupSaver->save($item, ['apply_template' => true]);
+            $this->groupSaver->save($item, ['copy_values_to_products' => true]);
             $this->incrementCount($item);
-
             // TODO : how to know skip if no direct call to the template manager ?
         }
 
@@ -69,34 +68,34 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     public function getConfigurationFields()
     {
         return array(
-            'applyOnProducts' => array(
+            'copyValuesOnProducts' => array(
                 'type'    => 'switch',
                 'options' => array(
-                    'label' => 'pim_base_connector.import.applyOnProducts.label',
-                    'help'  => 'pim_base_connector.import.applyOnProducts.help'
+                    'label' => 'pim_base_connector.import.copyValuesOnProducts.label',
+                    'help'  => 'pim_base_connector.import.copyValuesOnProducts.help'
                 )
             )
         );
     }
 
     /**
-     * Apply product template on products
+     * Set copy values on products behavior
      *
      * @param boolean $apply
      */
-    public function setApplyOnProducts($apply)
+    public function setCopyValuesOnProducts($apply)
     {
-        $this->applyOnProducts = $apply;
+        $this->copyValuesOnProducts = $apply;
     }
 
     /**
-     * Is applied on products
+     * Is copy values on products
      *
      * @return boolean
      */
-    public function isApplyOnProducts()
+    public function isCopyValuesOnProducts()
     {
-        return $this->applyOnProducts;
+        return $this->copyValuesOnProducts;
     }
 
 
@@ -114,7 +113,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     protected function incrementCount(GroupInterface $group)
     {
         $this->stepExecution->incrementSummaryInfo('update');
-        if ($this->applyOnProducts) {
+        if ($this->copyValuesOnProducts) {
             // TODO : add a method in batch bundle
             $summary = $this->stepExecution->getSummary();
             $previousAmount = isset($summary['update_products']) ? $summary['update_products'] : 0;
