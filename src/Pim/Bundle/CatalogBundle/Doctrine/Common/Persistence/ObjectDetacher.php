@@ -15,7 +15,7 @@ use Doctrine\Common\Util\ClassUtils;
  *
  * TODO : should be move in storage utils once https://github.com/akeneo/pim-community-dev/pull/1874 merged
  */
-class Detacher implements DetacherInterface
+class ObjectDetacher implements ObjectDetacherInterface
 {
     /** @var ManagerRegistry */
     protected $managerRegistry;
