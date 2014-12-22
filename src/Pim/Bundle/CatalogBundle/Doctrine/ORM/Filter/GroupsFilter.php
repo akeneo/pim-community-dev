@@ -53,7 +53,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
             $value = $this->entityIdResolver->getIdsFromCodes('group', $value);
         }
 
-        $rootAlias  = $this->qb->getRootAlias();
+        $rootAlias = $this->qb->getRootAlias();
         $entityAlias = 'filter' . FieldFilterHelper::getCode($field);
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
