@@ -21,21 +21,21 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     protected $supportedFields;
 
     /** @var ObjectIdResolverInterface */
-    protected $entityIdResolver;
+    protected $objectIdResolver;
 
     /**
      * Instanciate the base filter
      *
-     * @param ObjectIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $objectIdResolver
      * @param array $supportedFields
      * @param array $supportedOperators
      */
     public function __construct(
-        ObjectIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->entityIdResolver   = $entityIdResolver;
+        $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -50,7 +50,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-            $value = $this->entityIdResolver->getIdsFromCodes('group', $value);
+            $value = $this->objectIdResolver->getIdsFromCodes('group', $value);
         }
 
         $rootAlias = $this->qb->getRootAlias();

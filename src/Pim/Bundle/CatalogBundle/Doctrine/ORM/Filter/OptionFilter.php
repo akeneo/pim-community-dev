@@ -22,21 +22,21 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     protected $supportedAttributes;
 
     /** @var ObjectIdResolverInterface */
-    protected $entityIdResolver;
+    protected $objectIdResolver;
 
     /**
      * Instanciate the base filter
      *
-     * @param ObjectIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedAttributes
      * @param array                     $supportedOperators
      */
     public function __construct(
-        ObjectIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $objectIdResolver,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
-        $this->entityIdResolver    = $entityIdResolver;
+        $this->objectIdResolver    = $objectIdResolver;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -77,7 +77,7 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->entityIdResolver->getIdsFromCodes('option', $value);
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
             }
 
             $condition .= ' AND ( '. $this->qb->expr()->in($optionAlias, $value) .' ) ';

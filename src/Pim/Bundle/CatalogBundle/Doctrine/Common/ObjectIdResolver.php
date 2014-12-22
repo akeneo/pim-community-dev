@@ -2,22 +2,22 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class ObjectIdResolver implements ObjectIdResolverInterface
 {
-    /** @var EntityManager */
-    protected $entityManager;
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
 
     /** @var array */
     protected $fieldMapping = [];
 
     /**
-     * @param EntityManager $entityManager
+     * @param ManagerRegistry $managerRegistry
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->entityManager = $entityManager;
+        $this->managerRegistry = $managerRegistry;
     }
 
     /**
@@ -29,7 +29,9 @@ class ObjectIdResolver implements ObjectIdResolverInterface
             throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));
         }
 
-        $repository = $this->entityManager->getRepository($this->fieldMapping[$entityName]);
+        $repository = $this->managerRegistry
+            ->getManagerForClass($this->fieldMapping[$entityName])
+            ->getRepository($this->fieldMapping[$entityName]);
 
         //TODO : do better
         $ids = [];
@@ -38,7 +40,7 @@ class ObjectIdResolver implements ObjectIdResolverInterface
 
             if (!$entity) {
                 throw new EntityNotFoundException(
-                    sprintf('Entity "%s" with code "%s" does not exist', $entityName, $code)
+                    sprintf('Object "%s" with code "%s" does not exist', $entityName, $code)
                 );
             }
 

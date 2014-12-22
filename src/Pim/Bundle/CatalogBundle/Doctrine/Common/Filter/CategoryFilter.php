@@ -26,7 +26,7 @@ class CategoryFilter implements FieldFilterInterface
     protected $productRepository;
 
     /** @var ObjectIdResolverInterface */
-    protected $entityIdResolver;
+    protected $objectIdResolver;
 
     /** @var QueryBuilder */
     protected $qb;
@@ -42,20 +42,20 @@ class CategoryFilter implements FieldFilterInterface
      *
      * @param CategoryRepository                 $categoryRepository
      * @param ProductCategoryRepositoryInterface $productRepository
-     * @param ObjectIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                              $supportedFields
      * @param array                              $supportedOperators
      */
     public function __construct(
         CategoryRepository $categoryRepository,
         ProductCategoryRepositoryInterface $productRepository,
-        ObjectIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->productRepository  = $productRepository;
-        $this->entityIdResolver   = $entityIdResolver;
+        $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -69,10 +69,9 @@ class CategoryFilter implements FieldFilterInterface
             $this->checkValue($field, $value);
         }
 
+        $categoryIds = $value;
         if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-            $categoryIds = $this->entityIdResolver->getIdsFromCodes('category', $value);
-        } else {
-            $categoryIds = $value;
+            $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
         }
 
         switch ($operator) {
@@ -166,17 +165,5 @@ class CategoryFilter implements FieldFilterInterface
         }
 
         return $allChildrenIds;
-    }
-
-    protected function getIdsFromCodes($categoryCodes)
-    {
-        $categoryIds = [];
-
-        foreach ($categoryCodes as $code) {
-            //TODO catch exception if the code does not exists
-            $categoryIds[] = $this->categoryRepository->findOneByCode($code)->getId();
-        }
-
-        return $categoryIds;
     }
 }

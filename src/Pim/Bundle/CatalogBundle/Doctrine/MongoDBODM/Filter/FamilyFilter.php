@@ -22,21 +22,21 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     protected $supportedFields;
 
     /** @var ObjectIdResolverInterface */
-    protected $entityIdResolver;
+    protected $objectIdResolver;
 
     /**
      * Instanciate the filter
      *
-     * @param ObjectIdResolverInterface $entityIdResolver
+     * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
      */
     public function __construct(
-        ObjectIdResolverInterface $entityIdResolver,
+        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->entityIdResolver   = $entityIdResolver;
+        $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -58,7 +58,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->entityIdResolver->getIdsFromCodes('option', $value);
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
             }
         }
 
