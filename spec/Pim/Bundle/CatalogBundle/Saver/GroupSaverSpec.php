@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -14,7 +15,7 @@ use Pim\Component\Resource\Model\BulkSaverInterface;
 
 class GroupSaverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, BulkSaverInterface $productSaver, ProductTemplateManager $templateManager)
+    function let(ObjectManager $objectManager, BulkSaverInterface $productSaver, ProductTemplateManagerInterface $templateManager)
     {
         $this->beConstructedWith($objectManager, $productSaver, $templateManager);
     }

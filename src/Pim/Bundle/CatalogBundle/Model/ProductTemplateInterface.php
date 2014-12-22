@@ -31,6 +31,8 @@ interface ProductTemplateInterface
 
     /**
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[]
+     *
+     * TODO : not used
      */
     public function getValues();
 
@@ -38,6 +40,8 @@ interface ProductTemplateInterface
      * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
      *
      * @return ProductTemplateInterface
+     *
+     * TODO : not used
      */
     public function setValues($values);
 
