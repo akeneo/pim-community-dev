@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Filtering by simple option backend type
@@ -24,6 +25,9 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
+    /** @var OptionsResolver */
+    protected $resolver;
+
     /**
      * Instanciate the base filter
      *
@@ -39,6 +43,9 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         $this->objectIdResolver    = $objectIdResolver;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
     /**
@@ -52,6 +59,8 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
+        $options = $this->resolver->resolve($options);
+
         $field = $options['field'];
 
         if (Operators::IS_EMPTY !== $operator) {
@@ -114,5 +123,14 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, 'option');
         }
+    }
+
+    /**
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('field');
     }
 }

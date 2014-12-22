@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Multi options filter for MongoDB
@@ -25,6 +26,9 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
+    /** @var OptionsResolver */
+    protected $resolver;
+
     /**
      * Instanciate the filter
      *
@@ -40,6 +44,9 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
         $this->objectIdResolver    = $objectIdResolver;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
     /**
@@ -61,6 +68,8 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
+        $options = $this->resolver->resolve($options);
+
         if ($operator != Operators::IS_EMPTY) {
             $this->checkValue($options['field'], $value);
         }
@@ -117,5 +126,14 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
                 $this->qb->addAnd($expr);
             }
         }
+    }
+
+    /**
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('field');
     }
 }

@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Simple option filter for MongoDB implementation
@@ -26,6 +27,9 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
 
+    /** @var OptionsResolver */
+    protected $resolver;
+
     /**
      * Instanciate the filter
      *
@@ -41,6 +45,9 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         $this->objectIdResolver    = $objectIdResolver;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
     /**
@@ -62,6 +69,8 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
+        $options = $this->resolver->resolve($options);
+
         $this->checkValue($options['field'], $value);
 
         if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
@@ -111,5 +120,14 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
             $expr = $this->qb->expr()->field($field)->in($value);
             $this->qb->addAnd($expr);
         }
+    }
+
+    /**
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('field');
     }
 }
