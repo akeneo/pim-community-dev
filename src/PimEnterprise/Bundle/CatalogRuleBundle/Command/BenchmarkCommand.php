@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Command to benchmark the rule system
  *
- * TODO: should we keep or remove it ?
+ * @TODO: delete this test command
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */

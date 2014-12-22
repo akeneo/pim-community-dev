@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
+// TODO Alias 'OroBundleSecurityBundleAnnotationAclAncestor' is never used
+
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
@@ -21,6 +23,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Rule controller
+ *
+ * TODO: this controller should not include attribute references
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -61,6 +65,8 @@ class RuleController
         $this->ruleManager        = $ruleManager;
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->normalizer         = $normalizer;
+
+        // TODO: Should be inejected with an "- calls:" in DI
         $this->attributeClass     = $attributeClass;
     }
 
@@ -75,6 +81,7 @@ class RuleController
      */
     public function indexAction($resourceType, $resourceId)
     {
+        // TODO improvement: Use a class mapping with an addMappedClass and an array to be more extandable
         switch ($resourceType) {
             case 'attribute':
                 $resourceName = $this->attributeClass;
@@ -84,6 +91,7 @@ class RuleController
 
         }
 
+        // TODO: getRulesForResource
         $rules = $this->linkedResManager->getRulesForAttribute($resourceId, $resourceName);
 
         $normalizedRules = $this->normalizer->normalize($rules, 'array');
@@ -93,6 +101,8 @@ class RuleController
 
     /**
      * Delete an rule of a resource
+     *
+     * // TODO : remove unused parameters
      *
      * @param string $resourceType
      * @param int    $resourceId
@@ -105,6 +115,7 @@ class RuleController
     public function deleteAction($resourceType, $resourceId, $ruleId)
     {
         $rule = $this->ruleDefinitionRepo->findOneById($ruleId);
+        //TODO if rule null, throw 404
 
         try {
             $this->ruleManager->remove($rule);

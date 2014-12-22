@@ -1,6 +1,7 @@
 parameters:
     pimee_rule_engine.normalizer.rule_collection.class: PimEnterprise\Bundle\RuleEngineBundle\Normalizer\RuleCollectionNormalizer
     pimee_rule_engine.normalizer.rule_definition.class: PimEnterprise\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer
+
 services:
    pimee_rule_engine.normalizer.rule_collection:
         class: %pimee_rule_engine.normalizer.rule_collection.class%

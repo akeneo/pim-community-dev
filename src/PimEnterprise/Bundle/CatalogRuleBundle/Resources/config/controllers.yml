@@ -1,7 +1,6 @@
 parameters:
     pimee_catalog_rule.controller.rule.class: PimEnterprise\Bundle\CatalogRuleBundle\Controller\RuleController
 
-
 services:
     pimee_catalog_rule.controller.rule:
         scope: request

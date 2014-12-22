@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Filter for the smart property of attribute
+ * @TODO: why in this folder ? to be like CatalogBundle ?
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
@@ -50,6 +51,8 @@ class IsSmartFilter extends BooleanFilter
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
+
+        // TODO: add an option resolver (as we also need to check if $data['value'] exists)
         if (!$data) {
             return false;
         }

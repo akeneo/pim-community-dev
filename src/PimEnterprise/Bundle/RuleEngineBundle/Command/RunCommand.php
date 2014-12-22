@@ -35,6 +35,7 @@ class RunCommand extends ContainerAwareCommand
             ->setName('pim:rule:run')
             ->addArgument('code', InputArgument::OPTIONAL, 'Rule code')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
+            // TODO: should the stop on error be handled directly by the runner ?
             ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
             ->setDescription('Run all rules or only one if a code is provided.')
         ;
@@ -75,6 +76,8 @@ class RunCommand extends ContainerAwareCommand
     }
 
     /**
+     * TODO: phpdoc
+     *
      * Run a single rule
      * @param DryRunnerInterface $runnerRegistry
      * @param OutputInterface    $output

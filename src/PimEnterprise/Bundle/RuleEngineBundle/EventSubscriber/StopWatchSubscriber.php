@@ -20,6 +20,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 /**
  * Log execution time on rules
  *
+ * TODO: not used anymore ?
+ *
  * @author Julien Sanchez <julien@akeneo.com>
  */
 class StopWatchSubscriber implements EventSubscriberInterface

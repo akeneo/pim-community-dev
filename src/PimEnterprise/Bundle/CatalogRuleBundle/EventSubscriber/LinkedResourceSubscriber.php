@@ -27,6 +27,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Linked resource subscriber
  *
+ * TODO: rename to ruleRelation
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class LinkedResourceSubscriber implements EventSubscriberInterface
@@ -89,6 +91,7 @@ class LinkedResourceSubscriber implements EventSubscriberInterface
             $ruleLinkedResources = $this->ruleLinkedResRepo
                 ->findBy(['resourceId' => $entity->getId(), 'resourceName' => ClassUtils::getClass($entity)]);
         }
+        // TODO else InvalidArgumentException
 
         foreach ($ruleLinkedResources as $ruleLinkedResource) {
             $this->linkedResManager->remove($ruleLinkedResource);

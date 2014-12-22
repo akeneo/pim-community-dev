@@ -27,13 +27,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ProductRuleRunner extends AbstractRunner
 {
     /** @var string */
-    protected $productConditionClass;
+    protected $productConditionClass; //TODO : 21 char variable name :/
 
     /**
      * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
-     * @param string            $productConditionClass should implement \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
+     * @param string            $productConditionClass should implement
+     *                          \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
      */
     public function __construct(
         BuilderInterface $builder,
@@ -94,10 +95,10 @@ class ProductRuleRunner extends AbstractRunner
         if (!empty($options['selected_products'])) {
             /** @var ProductConditionInterface $condition */
             $condition = new $this->productConditionClass([
-                    'field' => 'id',
-                    'operator' => 'IN',
-                    'value' => $options['selected_products']
-                ]);
+                'field'    => 'id',
+                'operator' => 'IN',
+                'value'    => $options['selected_products']
+            ]);
             $definition->addCondition($condition);
         }
 

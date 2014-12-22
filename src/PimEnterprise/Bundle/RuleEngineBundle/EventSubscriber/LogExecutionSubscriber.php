@@ -28,7 +28,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     protected $logger;
 
     /** @staticvar string */
-    const NAME_PATTERN = 'Rule event : %s %s';
+    const NAME_PATTERN = 'Rule event: %s %s';
 
     /**
      * @param LoggerInterface $logger
@@ -61,6 +61,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     public function preLoad(RuleEvent $event)
     {
         $ruleDefinition = $event->getDefinition();
+        // TODO : use const instead of 'preLoad'
         $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), 'preLoad');
         $this->logger->info($message);
     }
@@ -73,6 +74,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     public function postLoad(RuleEvent $event)
     {
         $ruleDefinition = $event->getDefinition();
+        // TODO : use const instead of 'postLoad'
         $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), 'postLoad');
         $this->logger->info($message);
     }
@@ -85,6 +87,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     public function preSelect(RuleEvent $event)
     {
         $ruleDefinition = $event->getDefinition();
+        // TODO : use const instead of 'preSelect'
         $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), 'preSelect');
         $this->logger->info($message);
     }
@@ -98,7 +101,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.' : %s items selected';
+        $pattern = static::NAME_PATTERN.' : %s items selected'; //TODO: add to the sprintf
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -117,7 +120,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.' : %s items to update';
+        $pattern = static::NAME_PATTERN.' : %s items to update'; //TODO: add to the sprintf
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -136,7 +139,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.' : %s items updated';
+        $pattern = static::NAME_PATTERN.' : %s items updated'; //TODO: add to the sprintf
         $message = sprintf($pattern, $ruleDefinition->getCode(), 'postApply', count($subjectSet->getSubjects()));
         $this->logger->info($message);
 
@@ -155,11 +158,11 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     protected function logSkippedSubjects($ruleCode, $skippedSubjects)
     {
         if (count($skippedSubjects) > 0) {
-            $pattern = static::NAME_PATTERN . ' : %s subjects skipped';
+            $pattern = static::NAME_PATTERN . ' : %s subjects skipped'; //TODO: add to the sprintf
             $message = sprintf($pattern, $ruleCode, 'postApply', count($skippedSubjects));
             $this->logger->error($message);
 
-            $patternItem = static::NAME_PATTERN . ' : subject "%s" has been skipped due to "%s"';
+            $patternItem = static::NAME_PATTERN . ' : subject "%s" has been skipped due to "%s"'; //TODO: use the sprintf
             foreach ($skippedSubjects as $skippedItem) {
                 $skippedSubject = $skippedItem['subject'];
                 $skippedReasons = implode(', ', $skippedItem['reasons']);

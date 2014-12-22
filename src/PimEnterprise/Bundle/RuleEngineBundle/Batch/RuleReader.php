@@ -18,6 +18,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInt
 /**
  * Get a rule from database with the given rule code
  *
+ * TODO : not used, to delete or keep somewhere in a branch
+ *
  * @author Julien Sanchez <julien@akeneo.com>
  */
 class RuleReader extends AbstractConfigurableStepElement implements RuleReaderInterface

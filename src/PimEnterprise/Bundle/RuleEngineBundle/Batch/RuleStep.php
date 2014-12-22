@@ -19,6 +19,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 /**
  * Batch rule step that allows to run a rule.
  *
+ * TODO : not used, to delete or keep somewhere in a branch
+ *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RuleStep extends AbstractStep

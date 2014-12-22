@@ -17,6 +17,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
  * Link between a rule and a resource to know that the rule if applicable to the resource.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ * TODO: rename to RuleRelationInterface
  */
 interface RuleLinkedResourceInterface
 {

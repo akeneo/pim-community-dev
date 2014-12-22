@@ -18,6 +18,7 @@ use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 
 /**
  * Datagrid extension for attribute grid to select the smart property of attributes
+ * @TODO: why in this folder ? to be like CatalogBundle ?
  *
  * @author Filips Alpe <filips@akeneo.com>
  */

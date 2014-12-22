@@ -19,7 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Command to generate fake rules
  *
- * TODO: delete this test command
+ * @TODO: the command should ask (y/n) if you want do delete rule, --force option to not ask, and add a rule in parameter to delete only one rule
+ * @TODO: delete this test command ?
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */

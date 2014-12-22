@@ -22,6 +22,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
  *
  * TODO: move to base connector once rename and generic ?
  *
+ * TODO: rename it (see comment in connector_steps.yml)
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class RuleDefinitionWriter extends AbstractConfigurableStepElement implements

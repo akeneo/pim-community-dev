@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+// TODO : Alias 'SymfonyComponentEventDispatcherEventDispatcher' is never used
+
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -68,7 +70,7 @@ class ProductRuleSelector implements SelectorInterface
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
         /** @var RuleSubjectSetInterface $subjectSet */
-        $subjectSet = new $this->subjectSetClass();
+        $subjectSet = new $this->subjectSetClass(); //TODO : use a factory ?
         $pqb = $this->productQueryFactory->create();
 
         /** @var \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface $condition */

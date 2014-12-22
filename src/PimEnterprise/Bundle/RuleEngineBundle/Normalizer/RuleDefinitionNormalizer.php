@@ -31,10 +31,10 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     {
         return array_merge(
             [
-                'id'           => $object->getId(),
-                'code'         => $object->getCode(),
-                'type'         => $object->getType(),
-                'priority'     => $object->getPriority()
+                'id'       => $object->getId(),
+                'code'     => $object->getCode(),
+                'type'     => $object->getType(),
+                'priority' => $object->getPriority()
             ],
             json_decode($object->getContent(), true)
         );

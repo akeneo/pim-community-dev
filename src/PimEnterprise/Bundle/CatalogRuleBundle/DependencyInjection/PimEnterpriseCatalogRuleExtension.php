@@ -31,9 +31,9 @@ class PimEnterpriseCatalogRuleExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('connector_steps.yml');
         $loader->load('controllers.yml');
-        $loader->load('datagrid_listeners.yml');
         $loader->load('datagrid_extensions.yml');
         $loader->load('datagrid_filters.yml');
+        $loader->load('datagrid_listeners.yml');
         $loader->load('engine.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');

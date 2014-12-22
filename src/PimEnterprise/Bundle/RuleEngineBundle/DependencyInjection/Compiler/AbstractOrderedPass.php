@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Abstract compiler pass that helps to find and order tagged services by priority.
+ * TODO: this is generic and could be put somewhere else
  *
  * @author Julien Janvier <julien.janvier@gmail.com>
  */

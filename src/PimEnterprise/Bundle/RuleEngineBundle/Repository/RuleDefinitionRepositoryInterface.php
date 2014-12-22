@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Rule repository interface
- * TODO: move ReferableEntityRepositoryInterface to Component/Resource and rename it to XXXRepositoryInterface
+ * @TODO: move ReferableEntityRepositoryInterface to Component/Resource and rename it to XXXRepositoryInterface
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

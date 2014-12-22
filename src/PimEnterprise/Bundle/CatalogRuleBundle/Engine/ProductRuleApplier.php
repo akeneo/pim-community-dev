@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+// TODO : Alias 'SymfonyComponentEventDispatcherEventDispatcher' is never used
+
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -97,6 +99,7 @@ class ProductRuleApplier implements ApplierInterface
 
         $this->updateProducts($subjectSet, $rule->getActions());
         $this->validateProducts($subjectSet);
+        // TODO: This information will be presented to the user. We should translate it
         $this->saveProducts($subjectSet, sprintf('Applied rule "%s"', $rule->getCode()));
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
@@ -112,6 +115,7 @@ class ProductRuleApplier implements ApplierInterface
     protected function updateProducts(RuleSubjectSetInterface $subjectSet, $actions)
     {
         foreach ($actions as $action) {
+            //TODO: use a switch is nicer
             if ($action instanceof ProductSetValueActionInterface) {
                 $this->applySetAction($subjectSet, $action);
             } elseif ($action instanceof ProductCopyValueActionInterface) {
@@ -150,7 +154,7 @@ class ProductRuleApplier implements ApplierInterface
     protected function saveProducts(RuleSubjectSetInterface $subjectSet, $savingContext)
     {
         $versioningState = $this->versionManager->isRealTimeVersioning();
-
+        
         $this->versionManager->setContext($savingContext);
         $this->versionManager->setRealTimeVersioning(false);
         $this->productSaver->saveAll($subjectSet->getSubjects(), ['recalculate' => false, 'schedule' => true]);

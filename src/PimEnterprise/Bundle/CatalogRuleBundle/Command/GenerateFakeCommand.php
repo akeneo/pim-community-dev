@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
 /**
  * Command to generate fake rules
  *
- * TODO: delete this test command
+ * @TODO: delete this test command
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
@@ -194,7 +194,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
             $rule->setPriority(3);
             $rules[] = $rule;
 
-            // TODO image, option, options, metric, add an installer fixtures to add demo rules
+            // @TODO image, option, options, metric, add an installer fixtures to add demo rules
         }
 
         foreach ($rules as $rule) {
@@ -259,6 +259,7 @@ class GenerateFakeCommand extends ContainerAwareCommand
         return $filters;
     }
 
+    // TODO : remove unused parameters
     protected function getValue($operator, $attribute, $value)
     {
         switch ($operator) {

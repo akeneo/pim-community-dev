@@ -15,6 +15,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
  * Serialize and deserialize a product rule content.
+ * TODO: try to get rid of that class
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

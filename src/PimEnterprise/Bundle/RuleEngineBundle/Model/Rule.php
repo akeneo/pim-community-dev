@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Decores a rule to be apply to select its subjects and to be able to apply it.
+ * Decores a rule definition to be able to select its subjects and apply it.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

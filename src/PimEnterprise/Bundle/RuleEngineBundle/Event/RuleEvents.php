@@ -139,6 +139,8 @@ final class RuleEvents
     const POST_SAVE_ALL = 'pim_rule_engine.rule.post_save_all';
 
     /**
+     * TODO: not used
+     *
      * This event is thrown before updating a rule.
      *
      * The event listener receives an
@@ -149,6 +151,8 @@ final class RuleEvents
     const PRE_UPDATE = 'pim_rule_engine.rule.pre_update';
 
     /**
+     * TODO: not used
+     *
      * This event is thrown after updating a rule.
      *
      * The event listener receives an

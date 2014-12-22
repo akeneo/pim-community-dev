@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+// TODO : change the namespace for Akeneo\Bundle\RuleEngineBundle to prepare the use in DAM
 namespace PimEnterprise\Bundle\RuleEngineBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;

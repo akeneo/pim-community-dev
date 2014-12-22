@@ -16,6 +16,8 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 /**
  * Get a rule from database with the given rule code
  *
+ * TODO : not used, to delete or keep somewhere in a branch
+ *
  * @author Julien Sanchez <julien@akeneo.com>
  */
 interface RuleReaderInterface extends StepExecutionAwareInterface

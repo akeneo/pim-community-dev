@@ -12,7 +12,8 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Decores a rule definition to be apply to select its subjects and to be able to apply it.
+ * Decores a rule definition to be able to select its subjects and apply it.
+ *
  * It represents a rule that has been loaded from the database
  * by a \PimEnterprise\Bundle\RuleEngineBundle\Engine\LoaderInterface
  *

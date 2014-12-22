@@ -3,6 +3,8 @@ parameters:
     pimee_catalog_rule.reader.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineReader
 
 services:
+    # TODO: should be in connector_steps.yml
+    # TODO: should be renamed
     pimee_catalog_rule.reader.product:
         class: '%pimee_catalog_rule.reader.product.class%'
         arguments:

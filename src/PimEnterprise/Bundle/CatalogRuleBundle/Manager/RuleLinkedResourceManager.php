@@ -24,6 +24,9 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 /**
  * Class RuleLinkedResourceManager
  *
+ * TODO : this "manager" looks like a Saver + a Remover + shortcuts to repository which is a service and could
+ * be directly injected to avoid to add bunch of mess in this "Manager", let's avoid the systematic "Manager" naming
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
@@ -34,6 +37,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     /** @var AttributeRepository */
     protected $attributeRepository;
 
+    //TODO: use a real interface fir this repo
     /** @var EntityRepository */
     protected $ruleLinkedResRepo;
 
@@ -119,6 +123,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
             }
         }
 
+        // TODO : check memory leak (argument var is the same than result)
         $fields = array_unique($fields);
 
         $impactedAttributes = [];
@@ -132,13 +137,13 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     }
 
     /**
+     * //TODO : phpdoc non-existing argument
      * @param int $attribute
      *
      * @return bool
      */
     public function isAttributeImpacted($attributeId)
     {
-        //TODO: create a proper repo method to get this information
         return $this->ruleLinkedResRepo->isResourceImpactedByRule($attributeId, $this->attributeClass);
     }
 
@@ -146,18 +151,25 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      * @param int $attributeId
      *
      * @return RuleDefinitionInterface[]
+     * TODO: rename it getRulesForResource
+     * TODO: delete it
      */
     public function getRulesForAttribute($attributeId)
     {
+        //TODO: We should do generic methods (not attribute related)
         return $this->getRulesForResource($attributeId, $this->attributeClass);
     }
 
     /**
      * Get rules related to a resource
+     *
      * @param integer $resourceId
      * @param string  $resourceName
      *
      * @return array
+     *
+     * TODO all these things go in a repo !!!
+     * TODO: make it public
      */
     protected function getRulesForResource($resourceId, $resourceName)
     {
@@ -176,11 +188,13 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      * @param string $resourceId
      * @param string $resourceName
      *
+     * TODO: it returns rulerelation[]
+     * TODO: remove this, it's a shortcut to a repo
      * @return PersistentCollection
      */
     protected function getRuleRelationsForResource($resourceId, $resourceName)
     {
-        //TODO: move this in a repository and create a nice method
+        //@TODO: move this in a repository and create a nice method
         return $this->ruleLinkedResRepo->findBy([
             'resourceId'   => $resourceId,
             'resourceName' => $resourceName

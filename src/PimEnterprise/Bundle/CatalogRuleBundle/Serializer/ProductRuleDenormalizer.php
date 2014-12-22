@@ -31,10 +31,10 @@ class ProductRuleDenormalizer implements DenormalizerInterface
     protected $conditionNormalizer;
 
     /** @var ProductSetValueActionNormalizer */
-    protected $setValueActionNormalizer;
+    protected $setValueActionNormalizer; //TODO: name too long
 
     /** @var ProductCopyValueActionNormalizer */
-    protected $copyValueActionNormalizer;
+    protected $copyValueActionNormalizer; //TODO: name too long
 
     /** @var string */
     protected $class;
@@ -56,11 +56,11 @@ class ProductRuleDenormalizer implements DenormalizerInterface
         $class,
         $definitionClass
     ) {
-        $this->conditionNormalizer = $conditionNormalizer;
-        $this->setValueActionNormalizer = $setValueActionNormalizer;
+        $this->conditionNormalizer       = $conditionNormalizer;
+        $this->setValueActionNormalizer  = $setValueActionNormalizer;
         $this->copyValueActionNormalizer = $copyValueActionNormalizer;
-        $this->class = $class;
-        $this->definitionClass = $definitionClass;
+        $this->class                     = $class;
+        $this->definitionClass           = $definitionClass;
     }
 
     /**
@@ -85,7 +85,7 @@ class ProductRuleDenormalizer implements DenormalizerInterface
 
         if (isset($data['conditions'])) {
             foreach ($data['conditions'] as $rawCondition) {
-                //TODO
+                //@TODO
                 $condition = $this->conditionNormalizer->denormalize($rawCondition, 'TODO');
                 $rule->addCondition($condition);
             }
@@ -96,7 +96,7 @@ class ProductRuleDenormalizer implements DenormalizerInterface
                 if (!array_key_exists('type', $rawAction)) {
                     throw new \LogicException(sprintf('Rule content "%s" has an action with no type.', $data['code']));
                 }
-                //TODO
+                //@TODO
                 if (ProductSetValueActionInterface::TYPE === $rawAction['type']) {
                     $action = $this->setValueActionNormalizer->denormalize($rawAction, 'TODO');
                 } elseif (ProductCopyValueActionInterface::TYPE === $rawAction['type']) {

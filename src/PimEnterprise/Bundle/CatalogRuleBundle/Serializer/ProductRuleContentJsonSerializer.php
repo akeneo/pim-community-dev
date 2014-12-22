@@ -18,6 +18,9 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 /**
  * Serialize and deserialize a product rule content that is stored in Json.
  *
+ * TODO : if we use array_json doctrine field type, we'll get rid of this class ? if yes we could split Serializer
+ * folder to 2 folders Normalizer and Denormalizer to be consistent ? (open question)
+ *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerInterface
@@ -26,10 +29,10 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
     protected $conditionNormalizer;
 
     /** @var ProductSetValueActionNormalizer */
-    protected $setValueActionNormalizer;
+    protected $setValueActionNormalizer; //TODO: name is too long
 
     /** @var ProductCopyValueActionNormalizer */
-    protected $copyValueActionNormalizer;
+    protected $copyValueActionNormalizer; //TODO: name is too long
 
     /**
      * @param ProductRuleConditionNormalizer   $conditionNormalizer
@@ -65,8 +68,10 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
                     sprintf('Rule "%s" has an unknown type of action "%s".', $rule->getCode(), get_class($action))
                 );
             }
+            // @TODO and do a switch :)
         }
 
+        // TODO if we use json_array type for the field we get rid of this manual encoding
         return json_encode([
             'conditions' => $conditions,
             'actions' => $actions,
@@ -74,6 +79,8 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
     }
 
     /**
+     * TODO: fix this ugly method
+     *
      * {@inheritdoc}
      */
     public function deserialize($content)
@@ -89,15 +96,17 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
 
         $conditions = $actions = [];
         foreach ($decodedContent['conditions'] as $condition) {
-            // TODO
+            // @TODO
             $conditions[] = $this->conditionNormalizer->denormalize($condition, 'TODO');
         }
         foreach ($decodedContent['actions'] as $action) {
             if (!isset($action['type'])) {
                 throw new \LogicException(sprintf('Rule content "%s" has an action with no type.', $content));
             } elseif (ProductSetValueActionInterface::TYPE === $action['type']) {
+                // @TODO
                 $actions[] = $this->setValueActionNormalizer->denormalize($action, 'TODO');
             } elseif (ProductCopyValueActionInterface::TYPE === $action['type']) {
+                // @TODO
                 $actions[] = $this->copyValueActionNormalizer->denormalize($action, 'TODO');
             } else {
                 throw new \LogicException(

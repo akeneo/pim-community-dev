@@ -1,5 +1,10 @@
 parameters:
+    # TODO : when we'll write a rule export job we'll need a processor object -> array, how to distinguish with this one ?
+    # we don't have issue in BaseConnector because we use TranformProcessor ... I think we need a prefix like
+    # processor.prefix.rule_definition
     pimee_catalog_rule.processor.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionProcessor
+    # TODO : same kind of issue here, we'll have 2 writers, one to a file, one other to DB depending on import or export,
+    # how to distinguish the class RuleDefinitionWriter (DB or File?), we should add an extra folder
     pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionWriter
     pimee_catalog_rule.writer.rule_definition.yaml_file.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlFileWriter
     pimee_catalog_rule.processor.rule_definition.object_to_array.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionObjectToArrayProcessor

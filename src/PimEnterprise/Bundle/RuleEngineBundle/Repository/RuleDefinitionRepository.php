@@ -16,6 +16,8 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Rule repository
  *
+ * TODO: should be moved in a Doctrine repo
+ *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RuleDefinitionRepository extends EntityRepository implements RuleDefinitionRepositoryInterface

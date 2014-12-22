@@ -62,7 +62,7 @@ class ProductRuleBuilder implements BuilderInterface
      */
     public function build(RuleDefinitionInterface $definition)
     {
-        //TODO: change the name of the events PRE_LOAD and POST_LOAD
+        //@TODO: change the name of the events PRE_LOAD and POST_LOAD
         $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($definition));
 
         /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $rule */
@@ -80,6 +80,8 @@ class ProductRuleBuilder implements BuilderInterface
         $rule->setActions($content['actions']);
 
         $errors = $this->validator->validate($rule);
+
+        //TODO could be interresting to display the errors ?
         if (count($errors)) {
             throw new BuilderException(
                 //TODO: improve message

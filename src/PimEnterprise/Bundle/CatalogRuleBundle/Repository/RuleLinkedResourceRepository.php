@@ -16,6 +16,9 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Rule linked resource repository
  *
+ * TODO : to move to Doctrine/ORM/Repository to be consistent
+ * TODO: should be renamed to RuleRelationRepository ?
+ *
  * @author Julien Sanchez <julien@akeneo.com>
  */
 class RuleLinkedResourceRepository extends EntityRepository implements RuleLinkedResourceRepositoryInterface
@@ -42,6 +45,7 @@ class RuleLinkedResourceRepository extends EntityRepository implements RuleLinke
 
         $count = $qb->getQuery()->getScalarResult();
 
+        //TODO: I have a doubt about this
         return count($count) > 0;
     }
 }

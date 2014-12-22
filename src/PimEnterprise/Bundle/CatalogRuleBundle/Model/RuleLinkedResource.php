@@ -17,6 +17,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
  * Link between a rule and a resource to know that the rule if applicable to the resource.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ * TODO: rename to RuleRelation
  */
 class RuleLinkedResource implements RuleLinkedResourceInterface
 {
@@ -28,7 +29,7 @@ class RuleLinkedResource implements RuleLinkedResourceInterface
 
     /**
      * @var string
-     * TODO: we should rename that into resourceType
+     * @TODO: we should rename that into resourceType <- not sure after reflexion :)
      */
     protected $resourceName;
 

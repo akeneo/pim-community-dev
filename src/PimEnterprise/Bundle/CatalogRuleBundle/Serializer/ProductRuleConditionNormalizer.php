@@ -47,6 +47,7 @@ class ProductRuleConditionNormalizer implements NormalizerInterface, Denormalize
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
+        //TODO: use $conditionClass
         return $type === 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition';
     }
 

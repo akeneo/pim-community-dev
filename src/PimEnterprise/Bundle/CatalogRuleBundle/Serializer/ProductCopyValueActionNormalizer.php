@@ -84,7 +84,8 @@ class ProductCopyValueActionNormalizer implements NormalizerInterface, Denormali
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === $this->copyValueActionClass && isset($data['type'])
-               && ProductCopyValueActionInterface::TYPE === $data['type'];
+        return $type === $this->copyValueActionClass &&
+            isset($data['type']) &&
+            ProductCopyValueActionInterface::TYPE === $data['type'];
     }
 }

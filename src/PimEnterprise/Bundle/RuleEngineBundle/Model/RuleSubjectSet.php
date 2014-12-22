@@ -113,6 +113,8 @@ class RuleSubjectSet implements RuleSubjectSetInterface
                 return $skippedSubject['reasons'];
             }
         }
+
+        return [];
     }
 
     /**

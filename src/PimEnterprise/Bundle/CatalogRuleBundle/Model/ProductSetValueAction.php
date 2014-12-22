@@ -39,10 +39,11 @@ class ProductSetValueAction implements ProductSetValueActionInterface
      */
     public function __construct(array $data)
     {
-        $this->field = isset($data['field']) ? $data['field'] : null;
-        $this->value = isset($data['value']) ? $data['value'] : null;
+        //TODO: option Resolver ?
+        $this->field  = isset($data['field']) ? $data['field'] : null;
+        $this->value  = isset($data['value']) ? $data['value'] : null;
         $this->locale = isset($data['locale']) ? $data['locale'] : null;
-        $this->scope = isset($data['scope']) ? $data['scope'] : null;
+        $this->scope  = isset($data['scope']) ? $data['scope'] : null;
     }
 
     /**

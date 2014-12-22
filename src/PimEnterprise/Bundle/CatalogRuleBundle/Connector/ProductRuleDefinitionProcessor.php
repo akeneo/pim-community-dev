@@ -22,6 +22,8 @@ use Symfony\Component\Validator\ValidatorInterface;
  * Processes product rules definition via a batch.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ *
+ * TODO: rename it (see comment in connector_steps.yml)
  */
 class ProductRuleDefinitionProcessor extends AbstractImportProcessor
 {
@@ -97,6 +99,7 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
      */
     protected function updateDefinitionFromRule(RuleInterface $rule, RuleDefinitionInterface $definition = null)
     {
+        // TODO: naming but $ruleDefinition could be more clear
         if (null === $definition) {
             $definition = new $this->class();
         }

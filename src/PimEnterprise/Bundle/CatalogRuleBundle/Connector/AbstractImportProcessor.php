@@ -26,7 +26,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 /**
  * Abstract processor to import data into the PIM
  *
- * TODO: move to base connector ?
+ * @TODO: move to base connector : only if we use it in base connector, but it doesn't seem to be the case
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
@@ -87,6 +87,8 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
      * Try to find an object according to its identifiers from a repository or create an empty object
      * if it does not exist.
      *
+     * //TODO: odd that we don't have this kind of methods already
+     *
      * @param ReferableEntityRepositoryInterface $repository the repository to search inside
      * @param array                              $data       the data that is currently processed
      * @param string                             $class      the class to instanciate in case the
@@ -108,6 +110,8 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
 
     /**
      * Find an object according to its identifiers from a repository.
+     *
+     * //TODO: odd that we don't have this kind of methods already
      *
      * @param ReferableEntityRepositoryInterface $repository the repository to search inside
      * @param array                              $data       the data that is currently processed
@@ -151,6 +155,7 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
     /**
      * Sets an item as skipped and throws an invalid item exception.
      *
+     * // TODO : remove unused parameters
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
      *

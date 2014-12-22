@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\RuleEngineBundle\Model;
 
 /**
- * Rule
+ * Rule definition stored in database
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */

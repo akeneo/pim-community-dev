@@ -24,6 +24,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface;
  */
 interface ProductSetValueActionInterface extends ActionInterface
 {
+    // TODO : should remove constants, as it's an implementation detail
     const TYPE = 'set_value';
 
     /**
