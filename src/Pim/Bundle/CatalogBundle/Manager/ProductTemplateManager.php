@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO ProductTemplateApplier ?
+ * TODO ProductTemplateApplier ? Add an interface ?
  */
 class ProductTemplateManager
 {
@@ -58,30 +58,46 @@ class ProductTemplateManager
      */
     public function apply(ProductTemplateInterface $template, array $products)
     {
+        // TODO dispatch events ?
         $this->templateUpdater->update($template, $products);
 
+        $results = $this->validateProducts($products);
+        $validProducts = $results['products'];
+        $violations    = $results['violations'];
+
+        // TODO update the versioning context, the update come from variant group !
+        $this->productSaver->saveAll($validProducts);
+
+        return $violations;
+    }
+
+    /**
+     * @param ProductInterface[] $products
+     *
+     * @return array ['products' => ProductInterface[], 'violations' => []]
+     */
+    protected function validateProducts(array $products)
+    {
+        $validProducts = $products;
         $productViolations = [];
-        // TODO, perhaps need to extract this part in something more generic,
-        // we have a quite close case in EE
-        foreach ($products as $product) {
+        // TODO extract this part in something more generic,  we have a quite close case in EE
+        foreach ($products as $productIndex => $product) {
             $violations = $this->productValidator->validate($product);
             $productIdentifier = (string) $product->getIdentifier();
             if ($violations->count() !== 0) {
                 $this->productDetacher->detach($product);
+                unset($validProducts[$productIndex]);
                 $productViolations[$productIdentifier] = [];
-            }
-            foreach ($violations as $violation) {
-                $productViolations[$productIdentifier][] = sprintf(
-                    "%s : %s",
-                    $violation->getMessage(),
-                    $violation->getInvalidValue()
-                );
+                foreach ($violations as $violation) {
+                    $productViolations[$productIdentifier][] = sprintf(
+                        "%s : %s",
+                        $violation->getMessage(),
+                        $violation->getInvalidValue()
+                    );
+                }
             }
         }
 
-        // TODO update the versioning context, the update come from variant group !
-        $this->productSaver->saveAll($products);
-
-        return $productViolations;
+        return ['products' => $validProducts, 'violations' => $productViolations];
     }
 }
