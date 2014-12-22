@@ -11,7 +11,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence;
  *
  * TODO : should be move in storage utils once https://github.com/akeneo/pim-community-dev/pull/1874 merged
  */
-interface DetacherInterface
+interface ObjectDetacherInterface
 {
     /**
      * @param object $object
