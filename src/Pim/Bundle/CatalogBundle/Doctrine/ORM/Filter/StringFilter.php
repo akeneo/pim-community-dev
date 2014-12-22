@@ -77,14 +77,6 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getAttributeType(), $this->supportedAttributes);

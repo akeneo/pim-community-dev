@@ -90,7 +90,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $attribute = $this->attributeRepository->findOneByCode(FieldFilterHelper::getCode($field));
+        $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($field)]);
 
         if ($attribute !== null) {
             $filter = $this->filterRegistry->getAttributeFilter($attribute);
