@@ -38,6 +38,12 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
         // Setup the template with an existing product
         $referenceProduct = $this->getProduct('AKNTS_BPS');
         $productValues = $referenceProduct->getValues()->toArray();
+        // TODO HotFix to skip images until we add support
+        foreach ($productValues as $valueIdx => $value) {
+            if (in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_image', 'pim_catalog_file'])) {
+                unset($productValues[$valueIdx]);
+            }
+        }
         $productValuesData = $this->normalizeToDB($productValues);
 
         $variantGroup = $this->getVariantGroup('akeneo_tshirt');
