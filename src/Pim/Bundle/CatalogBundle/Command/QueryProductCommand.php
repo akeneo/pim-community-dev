@@ -70,11 +70,11 @@ class QueryProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $products
+     * @param mixed $products
      *
      * @return \Symfony\Component\Console\Helper\HelperInterface
      */
-    protected function buildTable(array $products, $maxRows)
+    protected function buildTable($products, $maxRows)
     {
         $helperSet = $this->getHelperSet();
         $rows = [];

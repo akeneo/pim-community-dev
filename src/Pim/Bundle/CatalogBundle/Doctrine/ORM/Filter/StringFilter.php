@@ -36,8 +36,14 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
         if (!is_array($value) && !is_string($value)) {
             throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'string');
         }
@@ -66,14 +72,6 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 
     /**

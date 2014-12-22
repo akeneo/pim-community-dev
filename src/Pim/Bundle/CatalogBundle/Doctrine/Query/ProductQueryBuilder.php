@@ -90,7 +90,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFilter($field, $operator, $value, array $context = [])
     {
-        $attribute = $this->attributeRepository->findOneByCode($field);
+        $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($field)]);
 
         //TODO: make this transparent by adding it the filter registry
         if ($attribute !== null) {
@@ -113,9 +113,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         $context = $this->getFinalContext($context);
         if ($attribute !== null) {
+            $context['field'] = $field;
+
             $this->addAttributeFilter($filter, $attribute, $operator, $value, $context);
         } else {
-            $this->addFieldFilter($filter, $field, $operator, $value, $context);
+            $this->addFieldFilter($filter, FieldFilterHelper::getWithProperty($field), $operator, $value, $context);
         }
 
         return $this;
@@ -164,7 +166,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, array $context)
     {
-        $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
         $filter->addFieldFilter($field, $operator, $value, $context['locale'], $context['scope']);
 
@@ -189,9 +190,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $value,
         array $context
     ) {
-        $context = $this->getFinalContext($context);
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addAttributeFilter($attribute, $operator, $value, $context['locale'], $context['scope']);
+        $filter->addAttributeFilter($attribute, $operator, $value, $context['locale'], $context['scope'], $context);
 
         return $this;
     }
@@ -208,7 +208,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction, array $context)
     {
-        $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
         $sorter->addFieldSorter($field, $direction, $context['locale'], $context['scope']);
 
@@ -231,7 +230,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $direction,
         array $context
     ) {
-        $context = $this->getFinalContext($context);
         $sorter->setQueryBuilder($this->getQueryBuilder());
         $sorter->addAttributeSorter($attribute, $direction, $context['locale'], $context['scope']);
 
