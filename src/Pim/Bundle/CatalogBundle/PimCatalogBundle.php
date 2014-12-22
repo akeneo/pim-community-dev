@@ -3,14 +3,14 @@
 namespace Pim\Bundle\CatalogBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoriesPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -28,8 +28,8 @@ class PimCatalogBundle extends AkeneoStorageUtilsBundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelsPass())
-            ->addCompilerPass(new ResolveDoctrineTargetRepositoriesPass('pim_repository'))
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('pim_repository'))
             ->addCompilerPass(new RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new RegisterAttributeTypePass())
             ->addCompilerPass(new RegisterQueryGeneratorsPass())
