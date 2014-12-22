@@ -14,10 +14,10 @@ use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 interface ProductTemplateUpdaterInterface
 {
     /**
-     * @param array                    $products
      * @param ProductTemplateInterface $template
+     * @param ProductInterface[]       $products
      *
      * @return ProductTemplateUpdaterInterface
      */
-    public function update(array $products, ProductTemplateInterface $template);
+    public function update(ProductTemplateInterface $template, array $products);
 }

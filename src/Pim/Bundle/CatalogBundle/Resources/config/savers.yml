@@ -27,3 +27,4 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @pim_catalog.saver.product
+            - @pim_catalog.manager.product_template
