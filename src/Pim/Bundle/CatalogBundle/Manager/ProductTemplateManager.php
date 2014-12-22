@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\Detacher;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\DetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
@@ -35,13 +36,13 @@ class ProductTemplateManager
     /**
      * @param ProductTemplateUpdaterInterface $templateUpdater
      * @param ValidatorInterface              $productValidator
-     * @param Detacher                        $productDetacher
+     * @param DetacherInterface               $productDetacher
      * @param BulkSaverInterface              $productSaver
      */
     public function __construct(
         ProductTemplateUpdaterInterface $templateUpdater,
         ValidatorInterface $productValidator,
-        Detacher $productDetacher,
+        DetacherInterface $productDetacher,
         BulkSaverInterface $productSaver
     ) {
         $this->templateUpdater  = $templateUpdater;
