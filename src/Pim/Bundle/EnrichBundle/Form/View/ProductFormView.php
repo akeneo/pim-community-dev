@@ -145,7 +145,8 @@ class ProductFormView implements ProductFormViewInterface
             'sortOrder'          => $attribute->getSortOrder(),
             'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes),
             'locale'             => $value->getLocale(),
-            'isInheritedFromVariantGroup' => $this->isInheritedFromVariantGroup($value)
+            // TODO will be implemented with PIM-2455
+            //'isInheritedFromVariantGroup' => $this->isInheritedFromVariantGroup($value)
         );
 
         if ($attribute->isScopable()) {
