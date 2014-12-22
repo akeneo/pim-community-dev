@@ -332,7 +332,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductTemplate($productTemplate)
+    public function setProductTemplate(ProductTemplateInterface $productTemplate)
     {
         $this->productTemplate = $productTemplate;
     }
