@@ -274,4 +274,21 @@ class InvalidArgumentException extends \InvalidArgumentException
             )
         );
     }
+
+    /**
+     * @param \Exception $e
+     * @param string     $attribute
+     * @param string     $action
+     * @param string     $type
+     *
+     * @return InvalidArgumentException
+     */
+    public static function expectedFromPreviousException(\Exception $e, $attribute, $action, $type)
+    {
+        return new self(
+            sprintf('Attribute "%s" excepts valid data, scope and locale (for %s %s).', $attribute, $action, $type),
+            $e->getCode(),
+            $e
+        );
+    }
 }

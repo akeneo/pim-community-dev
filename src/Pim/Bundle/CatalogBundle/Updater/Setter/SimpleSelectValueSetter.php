@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -18,23 +19,22 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class SimpleSelectValueSetter extends AbstractValueSetter
 {
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
     /** @var AttributeOptionRepository */
     protected $attrOptionRepository;
 
     /**
-     * @param ProductBuilder            $productBuilder
+     * @param ProductBuilderInterface   $productBuilder
+     * @param AttributeValidatorHelper  $attributeValidatorHelper
      * @param AttributeOptionRepository $attrOptionRepository
      * @param array                     $supportedTypes
      */
     public function __construct(
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
         AttributeOptionRepository $attrOptionRepository,
         array $supportedTypes
     ) {
-        $this->productBuilder       = $productBuilder;
+        parent::__construct($productBuilder, $attributeValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
         $this->supportedTypes       = $supportedTypes;
     }
@@ -44,9 +44,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeValidatorHelper::validateLocale($attribute, $locale);
-        AttributeValidatorHelper::validateScope($attribute, $scope);
-
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'simple select');
         $this->checkData($attribute, $data);
 
         $attributeOption = $this->attrOptionRepository

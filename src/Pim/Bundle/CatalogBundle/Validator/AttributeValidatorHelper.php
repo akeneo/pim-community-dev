@@ -111,10 +111,6 @@ class AttributeValidatorHelper
      */
     public function validateScope(AttributeInterface $attribute, $scope)
     {
-        if (empty(self::$scopeCodes)) {
-            self::$scopeCodes = $this->getScopes();
-        }
-
         if ($attribute->isScopable() && null === $scope) {
             throw new \LogicException(
                 sprintf(

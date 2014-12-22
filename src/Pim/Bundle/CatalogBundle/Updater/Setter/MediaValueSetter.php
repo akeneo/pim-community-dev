@@ -21,9 +21,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class MediaValueSetter extends AbstractValueSetter
 {
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var MediaManager */
     protected $mediaManager;
 
@@ -31,18 +28,20 @@ class MediaValueSetter extends AbstractValueSetter
     protected $mediaFactory;
 
     /**
-     * @param ProductBuilderInterface $builder
-     * @param MediaManager            $manager
-     * @param MediaFactory            $mediaFactory
-     * @param array                   $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param MediaManager             $manager
+     * @param MediaFactory             $mediaFactory
+     * @param array                    $supportedTypes
      */
     public function __construct(
-        ProductBuilderInterface $builder,
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
         MediaManager $manager,
         MediaFactory $mediaFactory,
         array $supportedTypes
     ) {
-        $this->productBuilder = $builder;
+        parent::__construct($productBuilder, $attributeValidatorHelper);
         $this->mediaManager   = $manager;
         $this->mediaFactory   = $mediaFactory;
         $this->supportedTypes = $supportedTypes;
@@ -53,9 +52,7 @@ class MediaValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeValidatorHelper::validateLocale($attribute, $locale);
-        AttributeValidatorHelper::validateScope($attribute, $scope);
-
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
         $this->checkData($attribute, $data);
 
         try {

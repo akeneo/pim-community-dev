@@ -3,17 +3,19 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class TextValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_text', 'pim_catalog_textarea']);
+        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_text', 'pim_catalog_textarea']);
     }
 
     function it_is_a_setter()
@@ -41,17 +43,25 @@ class TextValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_text', 'pim_catalog_textarea']);
     }
 
+    function it_checks_locale_and_scope_when_setting_a_value(
+        $attributeValidatorHelper,
+        AttributeInterface $attribute
+    ) {
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $this->setValue([], $attribute, 'data', 'fr_FR', 'mobile');
+    }
+
     function it_throws_an_error_if_data_is_not_a_string(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 42;
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text value', gettype($data))
+            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -67,8 +77,6 @@ class TextValueSetterSpec extends ObjectBehavior
         $scope = 'mobile';
         $data = 'data';
 
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData($data)->shouldBeCalled();
 

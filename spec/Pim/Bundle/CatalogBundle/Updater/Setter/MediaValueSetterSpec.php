@@ -11,13 +11,24 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class MediaValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, MediaManager $manager, MediaFactory $mediaFactory)
-    {
-        $this->beConstructedWith($builder, $manager, $mediaFactory, ['pim_catalog_file', 'pim_catalog_image']);
+    function let(
+        ProductBuilderInterface $builder,
+        MediaManager $manager,
+        MediaFactory $mediaFactory,
+        AttributeValidatorHelper $attributeValidatorHelper
+    ) {
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            $manager,
+            $mediaFactory,
+            ['pim_catalog_file', 'pim_catalog_image']
+        );
     }
 
     function it_is_a_setter()
@@ -50,11 +61,24 @@ class MediaValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_file', 'pim_catalog_image']);
     }
 
+    function it_checks_locale_and_scope_when_setting_a_value(
+        $attributeValidatorHelper,
+        AttributeInterface $attribute
+    ) {
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $data = [
+            'originalFilename' => 'image.jpg',
+            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+        ];
+
+        $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
+    }
+
     function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = new \stdClass();
@@ -67,8 +91,6 @@ class MediaValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_filepath_is_missing(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
@@ -83,8 +105,6 @@ class MediaValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_original_filename_is_missing(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
@@ -105,8 +125,6 @@ class MediaValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_a_valid_path(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
@@ -132,8 +150,6 @@ class MediaValueSetterSpec extends ObjectBehavior
         ProductValueInterface $value,
         ProductMediaInterface $media
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
         $value->getMedia()->willReturn($media);
@@ -158,8 +174,6 @@ class MediaValueSetterSpec extends ObjectBehavior
         ProductValueInterface $value,
         ProductMediaInterface $media
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
         $value->getMedia()->willReturn(null);
@@ -185,8 +199,6 @@ class MediaValueSetterSpec extends ObjectBehavior
         ProductValueInterface $value,
         ProductMediaInterface $media
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn(null);
         $value->getMedia()->willReturn(null);

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -19,9 +20,6 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
  */
 class MetricValueSetter extends AbstractValueSetter
 {
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
     /** @var MetricFactory */
     protected $metricFactory;
 
@@ -29,18 +27,20 @@ class MetricValueSetter extends AbstractValueSetter
     protected $measureManager;
 
     /**
-     * @param ProductBuilder $productBuilder
-     * @param MetricFactory  $metricFactory
-     * @param MeasureManager $measureManager
-     * @param array          $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param MetricFactory            $metricFactory
+     * @param MeasureManager           $measureManager
+     * @param array                    $supportedTypes
      */
     public function __construct(
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
         MetricFactory $metricFactory,
         MeasureManager $measureManager,
         array $supportedTypes
     ) {
-        $this->productBuilder = $productBuilder;
+        parent::__construct($productBuilder, $attributeValidatorHelper);
         $this->metricFactory  = $metricFactory;
         $this->measureManager = $measureManager;
         $this->supportedTypes = $supportedTypes;
@@ -54,9 +54,7 @@ class MetricValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeValidatorHelper::validateLocale($attribute, $locale);
-        AttributeValidatorHelper::validateScope($attribute, $scope);
-
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
         $this->checkData($attribute, $data);
 
         $unit = $data['unit'];

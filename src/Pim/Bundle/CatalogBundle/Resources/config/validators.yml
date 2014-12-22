@@ -26,6 +26,7 @@ services:
     # Helpers
     pim_catalog.validator.helper.attribute:
         class: %pim_catalog.validator.helper.attribute.class%
+        public: false
         arguments:
             - @pim_catalog.repository.locale
             - @pim_catalog.repository.channel

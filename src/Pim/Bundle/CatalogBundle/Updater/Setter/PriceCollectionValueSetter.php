@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -18,23 +19,22 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class PriceCollectionValueSetter extends AbstractValueSetter
 {
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
     /** @var CurrencyManager */
     protected $currencyManager;
 
     /**
-     * @param ProductBuilder  $productBuilder
-     * @param CurrencyManager $currencyManager
-     * @param array           $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param CurrencyManager          $currencyManager
+     * @param array                    $supportedTypes
      */
     public function __construct(
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
         CurrencyManager $currencyManager,
         array $supportedTypes
     ) {
-        $this->productBuilder  = $productBuilder;
+        parent::__construct($productBuilder, $attributeValidatorHelper);
         $this->currencyManager = $currencyManager;
         $this->supportedTypes  = $supportedTypes;
     }
@@ -44,9 +44,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeValidatorHelper::validateLocale($attribute, $locale);
-        AttributeValidatorHelper::validateScope($attribute, $scope);
-
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'prices collection');
         $this->checkData($attribute, $data);
 
         foreach ($products as $product) {

@@ -4,18 +4,28 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class PriceCollectionValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, CurrencyManager $currencyManager)
-    {
-        $this->beConstructedWith($builder, $currencyManager, ['pim_catalog_price_collection']);
+    function let(
+        ProductBuilderInterface $builder,
+        CurrencyManager $currencyManager,
+        AttributeValidatorHelper $attributeValidatorHelper
+    ) {
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            $currencyManager,
+            ['pim_catalog_price_collection']
+        );
     }
 
     function it_is_a_setter()
@@ -39,11 +49,22 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_price_collection']);
     }
 
+    function it_checks_locale_and_scope_when_setting_a_value(
+        $attributeValidatorHelper,
+        $currencyManager,
+        AttributeInterface $attribute
+    ) {
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
+
+        $data = [['data' => 123.2, 'currency' => 'EUR']];
+        $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
+    }
+
     function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 'not an array';
@@ -56,8 +77,6 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_does_not_contain_an_array(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = ['not an array'];
@@ -75,8 +94,6 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_value_does_not_contain_data_key(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [['not the data key' => 123]];
@@ -95,8 +112,6 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_value_contains_non_numeric_value(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [['data' => 'non numeric value', 'currency' => 'EUR']];
@@ -115,8 +130,6 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_value_does_not_contain_currency_key(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [['data' => 123, 'not the currency key' => 'euro']];
@@ -136,8 +149,6 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $currencyManager,
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
@@ -158,11 +169,11 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
 
     function it_sets_a_price_collection_value_to_a_product_value(
         $builder,
+        $currencyManager,
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        $currencyManager,
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
@@ -171,8 +182,6 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
 
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $builder

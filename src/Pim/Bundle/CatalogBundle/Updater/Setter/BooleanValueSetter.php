@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -17,16 +17,17 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class BooleanValueSetter extends AbstractValueSetter
 {
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
     /**
-     * @param ProductBuilder $productBuilder
-     * @param array          $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param array                    $supportedTypes
      */
-    public function __construct(ProductBuilder $productBuilder, array $supportedTypes)
-    {
-        $this->productBuilder = $productBuilder;
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
+        array $supportedTypes
+    ) {
+        parent::__construct($productBuilder, $attributeValidatorHelper);
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -35,9 +36,7 @@ class BooleanValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeValidatorHelper::validateLocale($attribute, $locale);
-        AttributeValidatorHelper::validateScope($attribute, $scope);
-
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
         $this->checkData($attribute, $data);
 
         foreach ($products as $product) {

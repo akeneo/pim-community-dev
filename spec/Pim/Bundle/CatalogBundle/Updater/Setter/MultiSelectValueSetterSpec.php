@@ -4,19 +4,29 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class MultiSelectValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, AttributeOptionRepository $attrOptionRepository)
-    {
-        $this->beConstructedWith($builder, $attrOptionRepository, ['pim_catalog_multiselect']);
+    function let(
+        ProductBuilderInterface $builder,
+        AttributeOptionRepository $attrOptionRepository,
+        AttributeValidatorHelper $attributeValidatorHelper
+    ) {
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            $attrOptionRepository,
+            ['pim_catalog_multiselect']
+        );
     }
 
     function it_is_a_setter()
@@ -40,11 +50,28 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_multiselect']);
     }
 
+    function it_checks_locale_and_scope_when_setting_a_value(
+        $attributeValidatorHelper,
+        $attrOptionRepository,
+        AttributeInterface $attribute,
+        AttributeOption $attributeOption
+    ) {
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attributeOption->getCode()->willReturn('attributeOptionCode');
+
+        $attrOptionRepository
+            ->findOneBy(['code' => 'attributeOptionCode', 'attribute' => $attribute])
+            ->shouldBeCalledTimes(1)
+            ->willReturn($attributeOption);
+
+        $data = [['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []]];
+        $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
+    }
+
     function it_throws_an_error_if_data_are_not_correctly_normalized(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = ['not a multi select option'];
@@ -62,8 +89,6 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_does_not_contain_attribute_key(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [['not a multi select option']];
@@ -82,8 +107,6 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_does_not_contain_code_key(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [['attribute' => 'attribute value', 'not code key' => 'invalid values']];
@@ -102,8 +125,6 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 'not a multi select option';
@@ -117,8 +138,6 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $attrOptionRepository,
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [['attribute' => 'attribute value', 'code' => 'unknown code']];
@@ -153,8 +172,6 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $locale = 'fr_FR';
         $scope = 'mobile';
 
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $attributeOption->getCode()->willReturn('attributeOptionCode');

@@ -4,17 +4,19 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class DateValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_date']);
+        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_date']);
     }
 
     function it_is_a_setter()
@@ -38,11 +40,19 @@ class DateValueSetterSpec extends ObjectBehavior
         $this->getSupportedTypes()->shouldReturn(['pim_catalog_date']);
     }
 
+    function it_checks_locale_and_scope_when_setting_a_value(
+        $attributeValidatorHelper,
+        AttributeInterface $attribute
+    ) {
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $this->setValue([], $attribute, '1970-01-01', 'fr_FR', 'mobile');
+    }
+
     function it_throws_an_error_if_data_is_not_a_valid_date_format(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 'not a date';
@@ -61,8 +71,6 @@ class DateValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_correctly_formatted(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = '1970-mm-01';
@@ -81,8 +89,6 @@ class DateValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_a_string(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = new \Datetime();
@@ -104,8 +110,6 @@ class DateValueSetterSpec extends ObjectBehavior
         $scope = 'mobile';
         $data = '1970-01-01';
 
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
 
