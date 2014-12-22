@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\DetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -49,22 +50,39 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     /** @var ValidatorInterface */
     protected $valueValidator;
 
+    /** @var DetacherInterface */
+    protected $detacher;
+
+    /** @var string */
+    protected $valueClass;
+
+    /** @var string */
+    protected $templateClass;
+
     /**
      * @param GroupRepository       $groupRepository
      * @param DenormalizerInterface $valueDenormalizer
      * @param FieldNameBuilder      $fieldNameBuilder
      * @param ValidatorInterface    $valueValidator
+     * @param DetacherInterface     $detacher
+     * @param string                $valueClass
+     * @param string                $templateClass
      */
     public function __construct(
         GroupRepository $groupRepository,
         DenormalizerInterface $valueDenormalizer,
         FieldNameBuilder $fieldNameBuilder,
-        ValidatorInterface $valueValidator
+        ValidatorInterface $valueValidator,
+        DetacherInterface $detacher,
+        $valueClass,
+        $templateClass
     ) {
         $this->groupRepository   = $groupRepository;
         $this->valueDenormalizer = $valueDenormalizer;
         $this->fieldNameBuilder  = $fieldNameBuilder;
         $this->valueValidator    = $valueValidator;
+        $this->valueClass        = $valueClass;
+        $this->templateClass     = $templateClass;
     }
 
     /**
@@ -107,6 +125,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function getVariantGroup($item)
     {
+        // TODO detach when skip
         if (!isset($item[self::VARIANT_GROUP_CODE_FIELD])) {
             $this->stepExecution->incrementSummaryInfo('skip');
             throw new InvalidItemException("Variant group code must be provided", $item);
@@ -144,14 +163,11 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function prepareValues(array $rawProductValues)
     {
-        // TODO : inject class
-        $productValueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
         $productValues = [];
-
         foreach ($rawProductValues as $attFieldName => $dataValue) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
             $attribute = $attributeInfos['attribute'];
-            $value = new $productValueClass();
+            $value = new $this->valueClass();
             $value->setAttribute($attribute);
             $value->setLocale($attributeInfos['locale_code']);
             $value->setScope($attributeInfos['scope_code']);
@@ -161,7 +177,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
 
             $productValues[] = $this->valueDenormalizer->denormalize(
                 $dataValue,
-                $productValueClass,
+                $this->valueClass,
                 'csv',
                 ['entity' => $value] + $attributeInfos
             );
@@ -217,8 +233,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
         if ($variantGroup->getProductTemplate()) {
             $template = $variantGroup->getProductTemplate();
         } else {
-            // TODO inject FQCN or Factory
-            $template = new ProductTemplate();
+            $template = new $this->templateClass();
             $variantGroup->setProductTemplate($template);
         }
 
