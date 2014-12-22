@@ -145,5 +145,5 @@ services:
         arguments:
             - @pim_catalog.updater.product_template
             - @pim_validator
-            - @pim_catalog.doctrine.detacher
+            - @pim_catalog.doctrine.object_detacher
             - @pim_catalog.saver.product
