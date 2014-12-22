@@ -92,7 +92,6 @@ pim_base_connector:
       help: Naam van de groepskolom
     filePath:
       label: Bestand
-      help: Het CSV-bestand om te importeren
     uploadAllowed:
       label: Bestanden uploaden toestaan
       help: Of direct uploaden van het bestand is toegestaan
