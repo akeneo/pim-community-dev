@@ -43,12 +43,9 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
     }
 
     /**
-     * @param array                    $products
-     * @param ProductTemplateInterface $template
-     *
-     * @return ProductTemplateUpdaterInterface
+     * {inheritdoc}
      */
-    public function update(array $products, ProductTemplateInterface $template)
+    public function update(ProductTemplateInterface $template, array $products)
     {
         $rawValuesData = $template->getValuesData();
         $values = $this->denormalizeFromDB($rawValuesData);
