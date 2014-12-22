@@ -120,3 +120,14 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    footwear_variant_group_values_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_variant_group_values_import
+        label:     Variant group values import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+            copyValuesOnProducts: true
