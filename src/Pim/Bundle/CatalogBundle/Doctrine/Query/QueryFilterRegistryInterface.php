@@ -21,6 +21,15 @@ interface QueryFilterRegistryInterface
     public function register(FilterInterface $filter);
 
     /**
+     * Get the filter (field or attribute)
+     *
+     * @param string $code the field or the attribute code
+     *
+     * @return FilterInterface|null
+     */
+    public function getFilter($code);
+
+    /**
      * Get the field filter
      *
      * @param string $field the field

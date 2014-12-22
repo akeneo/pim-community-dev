@@ -7,7 +7,7 @@ Feature: Import attributes
   Scenario: Successfully import attributes
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
     pim_catalog_text;shortname;Shortname;info;0;1;1;0;;;
@@ -47,7 +47,7 @@ Feature: Import attributes
   Scenario: Fail to change immutable properties of attributes during the import
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
-    And the following CSV to import:
+    And the following CSV configuration to import:
       | type                   | pim_catalog_date | pim_catalog_metric |
       | code                   | release_date     | weight             |
       | unique                 | no               | no                 |
@@ -68,7 +68,7 @@ Feature: Import attributes
   Scenario: Skip new attributes with invalid data during an import
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
       """
       type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
       pim_catalog_simpleselect;lace_color;"New lace color";colors;0;1;0;0;;;
@@ -90,7 +90,7 @@ Feature: Import attributes
   Scenario: Skip existing attributes with invalid data during an import
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
       """
       type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
       pim_catalog_simpleselect;lace_color;"New lace color";colors;0;1;0;0;;;
@@ -113,7 +113,7 @@ Feature: Import attributes
   Scenario: Skip attributes with empty code
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
       """
       type;code;label-en_US
       pim_catalog_simpleselect;;"New lace color"

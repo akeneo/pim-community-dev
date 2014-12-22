@@ -92,6 +92,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($field)]);
 
+        //TODO: make this transparent by adding it the filter registry
         if ($attribute !== null) {
             $filter = $this->filterRegistry->getAttributeFilter($attribute);
         } else {
@@ -129,6 +130,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
 
+        //TODO: make this transparent by adding it the sorter registry
         if ($attribute !== null) {
             $sorter = $this->sorterRegistry->getAttributeSorter($attribute);
         } else {

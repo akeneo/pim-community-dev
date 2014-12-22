@@ -10,7 +10,7 @@ Feature: Import options
       | code  | label | type         |
       | brand | Brand | simpleselect |
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     attribute;code;label-en_US
     brand;Converse;Converse
@@ -37,7 +37,7 @@ Feature: Import options
       | code  | label | type         |
       | brand | Brand | simpleselect |
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     attribute;code;label-en_US
     brand;;Converse
