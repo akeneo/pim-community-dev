@@ -103,7 +103,7 @@ services:
 
     # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
-        alias: akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repositories
+        alias: akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository
 
     # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entity_type:
