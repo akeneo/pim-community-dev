@@ -1,6 +1,6 @@
 parameters:
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
-    pim_catalog.doctrine.detacher.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\Detacher
+    pim_catalog.doctrine.object_detacher.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\Detacher
 
 services:
     # deprecetad: will be removed in 1.4
@@ -16,7 +16,7 @@ services:
         alias: akeneo_storage_utils.doctrine.table_name_builder
 
     # TODO : new service and class should be move in AkeneoStorageUtils, add specs too
-    pim_catalog.doctrine.detacher:
-        class: %pim_catalog.doctrine.detacher.class%
+    pim_catalog.doctrine.object_detacher:
+        class: %pim_catalog.doctrine.object_detacher.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'

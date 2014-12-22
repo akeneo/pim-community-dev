@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\DetacherInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -50,7 +50,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     /** @var ValidatorInterface */
     protected $valueValidator;
 
-    /** @var DetacherInterface */
+    /** @var ObjectDetacherInterface */
     protected $detacher;
 
     /** @var string */
@@ -64,7 +64,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      * @param DenormalizerInterface $valueDenormalizer
      * @param FieldNameBuilder      $fieldNameBuilder
      * @param ValidatorInterface    $valueValidator
-     * @param DetacherInterface     $detacher
+     * @param ObjectDetacherInterface     $detacher
      * @param string                $valueClass
      * @param string                $templateClass
      */
@@ -73,7 +73,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
         DenormalizerInterface $valueDenormalizer,
         FieldNameBuilder $fieldNameBuilder,
         ValidatorInterface $valueValidator,
-        DetacherInterface $detacher,
+        ObjectDetacherInterface $detacher,
         $valueClass,
         $templateClass
     ) {
