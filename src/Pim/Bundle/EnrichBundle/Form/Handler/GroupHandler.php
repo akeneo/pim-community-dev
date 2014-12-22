@@ -3,8 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use Symfony\Component\Form\FormInterface;

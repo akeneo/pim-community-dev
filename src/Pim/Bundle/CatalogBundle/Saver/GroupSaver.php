@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pim\Bundle\CatalogBundle\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -30,8 +29,8 @@ class GroupSaver implements SaverInterface
     protected $productTemplateManager;
 
     /**
-     * @param ObjectManager $objectManager
-     * @param BulkSaverInterface $productSaver
+     * @param ObjectManager                   $objectManager
+     * @param BulkSaverInterface              $productSaver
      * @param ProductTemplateManagerInterface $productTemplateManager
      */
     public function __construct(

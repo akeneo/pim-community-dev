@@ -16,7 +16,7 @@ interface ProductTemplateManagerInterface
 {
     /**
      * @param ProductTemplateInterface $template
-     * @param ProductInterface[] $products
+     * @param ProductInterface[]       $products
      *
      * @return array $violations
      */
