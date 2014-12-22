@@ -5,12 +5,18 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Prophecy\Argument;
 
 class QueryFilterRegistrySpec extends ObjectBehavior
 {
-    function let(FieldFilterInterface $fieldFilter, AttributeFilterInterface $attributeFilter)
-    {
+    function let(
+        FieldFilterInterface $fieldFilter,
+        AttributeFilterInterface $attributeFilter,
+        AttributeRepository $attributeRepository
+    ) {
+        $this->beConstructedWith($attributeRepository);
         $this->register($fieldFilter);
         $this->register($attributeFilter);
     }
@@ -42,5 +48,13 @@ class QueryFilterRegistrySpec extends ObjectBehavior
     {
         $attributeFilter->supportsAttribute($attribute)->willReturn(false);
         $this->getAttributeFilter($attribute)->shouldReturn(null);
+    }
+
+    function it_returns_a_supported_filter($attributeFilter, $attributeRepository, AttributeInterface $attribute)
+    {
+        $attributeRepository->findOneBy(Argument::any())->willReturn($attribute);
+
+        $attributeFilter->supportsAttribute($attribute)->willReturn(true);
+        $this->getAttributeFilter($attribute)->shouldReturn($attributeFilter);
     }
 }
