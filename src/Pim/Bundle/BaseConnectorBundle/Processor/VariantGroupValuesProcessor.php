@@ -7,16 +7,12 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacherInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -60,13 +56,13 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     protected $templateClass;
 
     /**
-     * @param GroupRepository       $groupRepository
-     * @param DenormalizerInterface $valueDenormalizer
-     * @param FieldNameBuilder      $fieldNameBuilder
-     * @param ValidatorInterface    $valueValidator
-     * @param ObjectDetacherInterface     $detacher
-     * @param string                $valueClass
-     * @param string                $templateClass
+     * @param GroupRepository         $groupRepository
+     * @param DenormalizerInterface   $valueDenormalizer
+     * @param FieldNameBuilder        $fieldNameBuilder
+     * @param ValidatorInterface      $valueValidator
+     * @param ObjectDetacherInterface $detacher
+     * @param string                  $valueClass
+     * @param string                  $templateClass
      */
     public function __construct(
         GroupRepository $groupRepository,

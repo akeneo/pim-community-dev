@@ -31,7 +31,7 @@ class ProductTemplateManager implements ProductTemplateManagerInterface
     /**
      * @param ProductTemplateUpdaterInterface $templateUpdater
      * @param ValidatorInterface              $productValidator
-     * @param ObjectDetacherInterface               $productDetacher
+     * @param ObjectDetacherInterface         $productDetacher
      * @param BulkSaverInterface              $productSaver
      */
     public function __construct(
