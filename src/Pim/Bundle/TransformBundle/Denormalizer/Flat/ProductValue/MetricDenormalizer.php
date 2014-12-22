@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Metric flat denormalizer used for attribute types:
  * - pim_catalog_metric
  *
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -61,6 +61,8 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      */
     protected function configContext(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(['value']);
+        $resolver
+            ->setRequired(['value'])
+            ->setOptional(['entity', 'locale_code', 'product', 'scope_code']);
     }
 }
