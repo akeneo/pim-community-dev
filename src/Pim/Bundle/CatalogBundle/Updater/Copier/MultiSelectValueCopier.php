@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a multi select value attribute in other multi select value attribute
@@ -27,10 +27,10 @@ class MultiSelectValueCopier extends AbstractValueCopier
         $fromScope = null,
         $toScope = null
     ) {
-        AttributeUtility::validateLocale($fromAttribute, $fromLocale);
-        AttributeUtility::validateScope($fromAttribute, $fromScope);
-        AttributeUtility::validateLocale($toAttribute, $toLocale);
-        AttributeUtility::validateScope($toAttribute, $toScope);
+        AttributeValidatorHelper::validateLocale($fromAttribute, $fromLocale);
+        AttributeValidatorHelper::validateScope($fromAttribute, $fromScope);
+        AttributeValidatorHelper::validateLocale($toAttribute, $toLocale);
+        AttributeValidatorHelper::validateScope($toAttribute, $toScope);
 
         foreach ($products as $product) {
             $this->copySingleValue(

@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -53,8 +53,8 @@ class MediaValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeUtility::validateLocale($attribute, $locale);
-        AttributeUtility::validateScope($attribute, $scope);
+        AttributeValidatorHelper::validateLocale($attribute, $locale);
+        AttributeValidatorHelper::validateScope($attribute, $scope);
 
         $this->checkData($attribute, $data);
 

@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Sets a multi select value in many products
@@ -45,8 +45,8 @@ class MultiSelectValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeUtility::validateLocale($attribute, $locale);
-        AttributeUtility::validateScope($attribute, $scope);
+        AttributeValidatorHelper::validateLocale($attribute, $locale);
+        AttributeValidatorHelper::validateScope($attribute, $scope);
 
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(

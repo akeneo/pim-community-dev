@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a metric value attribute in other metric value attribute
@@ -45,11 +45,11 @@ class MetricValueCopier extends AbstractValueCopier
         $fromScope = null,
         $toScope = null
     ) {
-        AttributeUtility::validateLocale($fromAttribute, $fromLocale);
-        AttributeUtility::validateScope($fromAttribute, $fromScope);
-        AttributeUtility::validateLocale($toAttribute, $toLocale);
-        AttributeUtility::validateScope($toAttribute, $toScope);
-        AttributeUtility::validateUnitFamilyFromAttribute($fromAttribute, $toAttribute);
+        AttributeValidatorHelper::validateLocale($fromAttribute, $fromLocale);
+        AttributeValidatorHelper::validateScope($fromAttribute, $fromScope);
+        AttributeValidatorHelper::validateLocale($toAttribute, $toLocale);
+        AttributeValidatorHelper::validateScope($toAttribute, $toScope);
+        AttributeValidatorHelper::validateUnitFamilyFromAttribute($fromAttribute, $toAttribute);
 
         foreach ($products as $product) {
             $this->copySingleValue(
