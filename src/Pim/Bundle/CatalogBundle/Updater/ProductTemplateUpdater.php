@@ -95,7 +95,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
         foreach ($rawProductValues as $attFieldName => $dataValue) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
             $attribute = $attributeInfos['attribute'];
-            $value = new ProductValue();
+            $value = new $productValueClass();
             $value->setAttribute($attribute);
             $value->setLocale($attributeInfos['locale_code']);
             $value->setScope($attributeInfos['scope_code']);
