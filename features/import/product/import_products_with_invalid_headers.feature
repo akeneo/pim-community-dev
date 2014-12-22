@@ -10,7 +10,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3376
   Scenario: Skip import with a not expected locale and channel provided for a global attribute
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;comment-fr_FR-mobile
       SKU-001;"my comment"
@@ -25,7 +25,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3374
   Scenario: Skip import with a not expected channel for a global attribute
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;comment-mobile
       SKU-001;"my comment"
@@ -40,7 +40,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3375
   Scenario: Skip import with a not expected locale for a global attribute
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;comment-fr_FR
       SKU-001;"my comment"
@@ -55,7 +55,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3372
   Scenario: Skip import with a not available locale for a localizable attribute
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;name-fr_CA
       SKU-001;"my name"
@@ -70,7 +70,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3370
   Scenario: Skip import with a not existing channel for a scopable attribute
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;description-en_US-noexistingchannel
       SKU-001;"my description"

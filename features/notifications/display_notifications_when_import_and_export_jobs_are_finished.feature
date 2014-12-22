@@ -36,7 +36,7 @@ Feature: Display notifications for import and export jobs
       | warning | Import Attribute import finished with some warnings |
 
   Scenario: Successfully display a notification when an job fails
-    Given the following file to import:
+    Given the following CSV file to import:
     """
       foo,bar
       baz,qux

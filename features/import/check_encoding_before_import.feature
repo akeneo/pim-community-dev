@@ -15,7 +15,7 @@ Feature:
     Then I should see "The file \"/tmp/product_export_with_non_utf8_characters.csv\" is not correctly encoded in UTF-8. The lines 11, 15 are erroneous."
 
   Scenario: Import a file that contains only UTF-8 characters
-    Given the following file to import:
+    Given the following CSV file to import:
     """
     sku;name-en_US;description-en_US-ecommerce
     SKU-001;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
