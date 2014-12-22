@@ -13,9 +13,9 @@ use Doctrine\Common\Util\ClassUtils;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO : add an interface ?
+ * TODO : should be move in storage utils once https://github.com/akeneo/pim-community-dev/pull/1874 merged
  */
-class Detacher
+class Detacher implements DetacherInterface
 {
     /** @var ManagerRegistry */
     protected $managerRegistry;
@@ -29,7 +29,7 @@ class Detacher
     }
 
     /**
-     * @param object $object
+     * {@inheritdoc}
      */
     public function detach($object)
     {
@@ -42,7 +42,7 @@ class Detacher
      *
      * @return ObjectManager
      */
-    public function getObjectManager($object)
+    protected function getObjectManager($object)
     {
         return $this->managerRegistry->getManagerForClass(ClassUtils::getClass($object));
     }
