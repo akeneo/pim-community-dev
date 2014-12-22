@@ -54,7 +54,6 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
             $variantGroup->setProductTemplate($template);
         }
         $template->setValuesData($productValuesData);
-        // TODO : should use cascade on VG
         $this->saveVariantGroup($variantGroup);
 
         $output->writeln(
