@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\Detacher;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\DetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
@@ -18,7 +19,7 @@ class ProductTemplateManagerSpec extends ObjectBehavior
     function let(
         ProductTemplateUpdaterInterface $templateUpdater,
         ValidatorInterface $productValidator,
-        Detacher $productDetacher,
+        DetacherInterface $productDetacher,
         BulkSaverInterface $productSaver
     ) {
         $this->beConstructedWith(
