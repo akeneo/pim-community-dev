@@ -322,7 +322,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @return ProductTemplateInterface
+     * {@inheritdoc}
      */
     public function getProductTemplate()
     {
@@ -330,9 +330,9 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param ProductTemplateInterface $productTemplate
+     * {@inheritdoc}
      */
-    public function setProductTemplate($productTemplate)
+    public function setProductTemplate(ProductTemplateInterface $productTemplate)
     {
         $this->productTemplate = $productTemplate;
     }

@@ -1,10 +1,11 @@
 <?php
 
-
 namespace Pim\Bundle\CatalogBundle\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
@@ -24,14 +25,22 @@ class GroupSaver implements SaverInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
+    /** @var ProductTemplateManagerInterface */
+    protected $productTemplateManager;
+
     /**
-     * @param ObjectManager      $objectManager
-     * @param BulkSaverInterface $productSaver
+     * @param ObjectManager                   $objectManager
+     * @param BulkSaverInterface              $productSaver
+     * @param ProductTemplateManagerInterface $productTemplateManager
      */
-    public function __construct(ObjectManager $objectManager, BulkSaverInterface $productSaver)
-    {
-        $this->objectManager = $objectManager;
-        $this->productSaver  = $productSaver;
+    public function __construct(
+        ObjectManager $objectManager,
+        BulkSaverInterface $productSaver,
+        ProductTemplateManagerInterface $productTemplateManager
+    ) {
+        $this->objectManager   = $objectManager;
+        $this->productSaver    = $productSaver;
+        $this->productTemplateManager = $productTemplateManager;
     }
 
     /**
@@ -51,8 +60,8 @@ class GroupSaver implements SaverInterface
 
         $defaultOptions = [
             'flush' => true,
-            'apply_template' => false,
-            'append_products' => [],
+            'copy_values_to_products' => false,
+            'add_products' => [],
             'remove_products' => []
         ];
         $options = array_merge($defaultOptions, $options);
@@ -61,16 +70,16 @@ class GroupSaver implements SaverInterface
             $this->objectManager->flush();
         }
 
-        if (count($options['append_products']) > 0) {
-            $this->addProducts($options['append_products']);
+        if (count($options['add_products']) > 0) {
+            $this->addProducts($options['add_products']);
         }
 
         if (count($options['remove_products']) > 0) {
             $this->removeProducts($options['remove_products']);
         }
 
-        if ($group->getType()->isVariant() && true === $options['apply_template']) {
-            $this->applyProductTemplate();
+        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
+            $this->copyVariantGroupValues($group);
         }
     }
 
@@ -79,7 +88,7 @@ class GroupSaver implements SaverInterface
      */
     protected function addProducts(array $products)
     {
-        $this->productManager->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
     }
 
     /**
@@ -87,17 +96,18 @@ class GroupSaver implements SaverInterface
      */
     protected function removeProducts(array $products)
     {
-        $this->productManager->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
     }
 
     /**
-     * Apply the product template values on any products of the variant group
+     * Copy the variant group values on any products belonging in the variant group
+     *
+     * @param GroupInterface $group
      */
-    protected function applyProductTemplate()
+    protected function copyVariantGroupValues(GroupInterface $group)
     {
-        // TODO : apply the template on products
-        // - update
-        // - validate
-        // - save
+        $template = $group->getProductTemplate();
+        $products = $group->getProducts()->toArray();
+        $this->productTemplateManager->apply($template, $products);
     }
 }

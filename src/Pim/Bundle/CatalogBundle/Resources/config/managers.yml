@@ -15,6 +15,7 @@ parameters:
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
     pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
+    pim_catalog.manager.product_template.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager
 
 services:
     # Managers
@@ -138,3 +139,11 @@ services:
             - '@pim_catalog.repository.association_type'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+
+    pim_catalog.manager.product_template:
+        class: %pim_catalog.manager.product_template.class%
+        arguments:
+            - @pim_catalog.updater.product_template
+            - @pim_validator
+            - @pim_catalog.doctrine.object_detacher
+            - @pim_catalog.saver.product

@@ -2,14 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,14 +36,19 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
         $products = $variantGroup->getProducts();
         $products = $products->count() > 0 ? $products->toArray() : [];
 
-        $this->updateAll($products, $template);
-        $this->validateAll($products, $output);
-        $this->saveAll($products);
+        $skipped = $this->apply($template, $products);
+        $nbSkipped = count($skipped);
+        foreach ($skipped as $productIdentifier => $messages) {
+            $output->writeln(sprintf('<error>product "%s" is not valid<error>', $productIdentifier));
+            foreach ($messages as $message) {
+                $output->writeln(sprintf("<error>%s<error>", $message));
+            }
+        }
 
         $output->writeln(
             sprintf(
                 '<info>%d products in variant group "%s" have been updated<error>',
-                count($products),
+                count($products) - $nbSkipped,
                 $variantGroup->getCode()
             )
         );
@@ -68,42 +68,15 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface[]       $products
      * @param ProductTemplateInterface $template
+     * @param ProductInterface[]       $products
+     *
+     * @return array $violations
      */
-    protected function updateAll($products, ProductTemplateInterface $template)
+    protected function apply(ProductTemplateInterface $template, $products)
     {
-        /** @var ProductTemplateUpdaterInterface */
-        $updater = $this->getContainer()->get('pim_catalog.updater.product_template');
-        $updater->update($products, $template);
-    }
+        $updater = $this->getContainer()->get('pim_catalog.manager.product_template');
 
-    /**
-     * @param ProductInterface[] $products
-     * @param OutputInterface    $output
-     */
-    protected function validateAll($products, OutputInterface $output)
-    {
-        $validator = $this->getContainer()->get('pim_validator');
-        foreach ($products as $product) {
-            $violations = $validator->validate($product);
-            foreach ($violations as $violation) {
-                $output->writeln(sprintf("<error>%s : %s<error>", $violation->getMessage(), $violation->getInvalidValue()));
-            }
-            if (0 !== $violations->count()) {
-                $output->writeln(sprintf('<error>product "%s" is not valid<error>', $product->getIdentifier()));
-                $detacher = $this->getContainer()->get('pim_catalog.doctrine.detacher');
-                $detacher->detach($product);
-            }
-        }
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     */
-    protected function saveAll($products)
-    {
-        $saver = $this->getContainer()->get('pim_catalog.saver.product');
-        $saver->saveAll($products);
+        return $updater->apply($template, $products);
     }
 }

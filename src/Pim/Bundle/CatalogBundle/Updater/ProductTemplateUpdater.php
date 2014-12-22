@@ -43,12 +43,9 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
     }
 
     /**
-     * @param array                    $products
-     * @param ProductTemplateInterface $template
-     *
-     * @return ProductTemplateUpdaterInterface
+     * {inheritdoc}
      */
-    public function update(array $products, ProductTemplateInterface $template)
+    public function update(ProductTemplateInterface $template, array $products)
     {
         $rawValuesData = $template->getValuesData();
         $values = $this->denormalizeFromDB($rawValuesData);
@@ -57,7 +54,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
         $updates = $this->normalizeToUpdate($values);
 
         // TODO unset identifier and axis updates and picture (not supported for now)
-        // TODO sould be filtered before to save
+        // TODO should be filtered before to save
         $skippedAttributes = ['sku', 'main_color', 'secondary_color', 'clothing_size', 'picture'];
         foreach ($updates as $indexUpdate => $update) {
             if (in_array($update['attribute'], $skippedAttributes)) {
@@ -86,6 +83,8 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      * @param array $rawProductValues
      *
      * @return ProductValueInterface[]
+     *
+     * TODO : will be re-worked with json format
      */
     protected function denormalizeFromDB(array $rawProductValues)
     {
@@ -96,7 +95,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
         foreach ($rawProductValues as $attFieldName => $dataValue) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
             $attribute = $attributeInfos['attribute'];
-            $value = new ProductValue();
+            $value = new $productValueClass();
             $value->setAttribute($attribute);
             $value->setLocale($attributeInfos['locale_code']);
             $value->setScope($attributeInfos['scope_code']);
@@ -104,11 +103,10 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
             unset($attributeInfos['locale_code']);
             unset($attributeInfos['scope_code']);
 
-            // TODO : as for versionning, we should really change for json/structured format
             $productValues[] = $this->productValueNormalizer->denormalize(
                 $dataValue,
                 $productValueClass,
-                'csv',
+                'csv', // TODO json is coming
                 ['entity' => $value] + $attributeInfos
             );
         }
@@ -125,13 +123,14 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      * @param ArrayCollection $productValues
      *
      * @return array
+     *
+     * TODO : will be re-worked with json format, could become useless (same format to store and apply updates)
      */
     protected function normalizeToUpdate(ArrayCollection $productValues)
     {
         $normalizedValues = [];
         foreach ($productValues as $value) {
             $update = [
-                // TODO : weird result with price
                 'value' => $this->productValueNormalizer->normalize($value->getData(), 'json', ['locales' => []]),
                 'attribute' => $value->getAttribute()->getCode(),
                 'locale' => $value->getLocale(),

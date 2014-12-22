@@ -1,23 +1,24 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Updater;
+namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 /**
- * Update many products at a time from the product template values
+ * Product template manager
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductTemplateUpdaterInterface
+interface ProductTemplateManagerInterface
 {
     /**
      * @param ProductTemplateInterface $template
      * @param ProductInterface[]       $products
      *
-     * @return ProductTemplateUpdaterInterface
+     * @return array $violations
      */
-    public function update(ProductTemplateInterface $template, array $products);
+    public function apply(ProductTemplateInterface $template, array $products);
 }

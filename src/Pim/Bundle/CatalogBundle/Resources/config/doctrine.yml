@@ -5,7 +5,7 @@ parameters:
     pim_catalog.doctrine.smart_manager_registry.class: Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
     pim_catalog.doctrine.table_name_builder.class:     Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder
     pim_catalog.event_subscriber.resolve_target_repository.class: Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber
-    pim_catalog.doctrine.detacher.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\Detacher
+    pim_catalog.doctrine.object_detacher.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacher
 
 services:
     pim_catalog.event_subscriber.resolve_target_repository:
@@ -25,8 +25,8 @@ services:
             - '@service_container'
             - '@pim_catalog.doctrine.smart_manager_registry'
 
-    # TODO : new service and class should be move in AkeneoStorageUtils, add specs too
-    pim_catalog.doctrine.detacher:
-        class: %pim_catalog.doctrine.detacher.class%
+    # TODO : new service and class should be move in AkeneoStorageUtils
+    pim_catalog.doctrine.object_detacher:
+        class: %pim_catalog.doctrine.object_detacher.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'

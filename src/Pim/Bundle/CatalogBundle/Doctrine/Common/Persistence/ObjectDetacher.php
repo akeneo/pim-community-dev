@@ -12,8 +12,10 @@ use Doctrine\Common\Util\ClassUtils;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO : should be move in storage utils once https://github.com/akeneo/pim-community-dev/pull/1874 merged
  */
-class Detacher
+class ObjectDetacher implements ObjectDetacherInterface
 {
     /** @var ManagerRegistry */
     protected $managerRegistry;
@@ -27,7 +29,7 @@ class Detacher
     }
 
     /**
-     * @param object $object
+     * {@inheritdoc}
      */
     public function detach($object)
     {
@@ -40,7 +42,7 @@ class Detacher
      *
      * @return ObjectManager
      */
-    public function getObjectManager($object)
+    protected function getObjectManager($object)
     {
         return $this->managerRegistry->getManagerForClass(ClassUtils::getClass($object));
     }

@@ -3,8 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 use Symfony\Component\Form\FormInterface;
@@ -87,7 +85,7 @@ class GroupHandler implements HandlerInterface
     {
         $appendProducts = $this->form->get('appendProducts')->getData();
         $removeProducts = $this->form->get('removeProducts')->getData();
-        $options = ['append_products' => $appendProducts, 'remove_products' => $removeProducts];
+        $options = ['add_products' => $appendProducts, 'remove_products' => $removeProducts];
         $this->groupSaver->save($group, $options);
     }
 }
