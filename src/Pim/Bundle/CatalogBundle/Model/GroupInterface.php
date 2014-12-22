@@ -159,4 +159,14 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
      * @return GroupInterface
      */
     public function setAttributes(array $attributes = array());
+
+    /**
+     * @return ProductTemplateInterface
+     */
+    public function getProductTemplate();
+
+    /**
+     * @param ProductTemplateInterface $productTemplate
+     */
+    public function setProductTemplate($productTemplate);
 }

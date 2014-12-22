@@ -87,7 +87,7 @@ class GroupHandler implements HandlerInterface
     {
         $appendProducts = $this->form->get('appendProducts')->getData();
         $removeProducts = $this->form->get('removeProducts')->getData();
-        $options = ['append_products' => $appendProducts, 'remove_products' => $removeProducts];
+        $options = ['add_products' => $appendProducts, 'remove_products' => $removeProducts];
         $this->groupSaver->save($group, $options);
     }
 }
