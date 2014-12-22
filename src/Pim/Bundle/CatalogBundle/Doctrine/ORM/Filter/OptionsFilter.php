@@ -132,6 +132,6 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
      */
     protected function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('field');
+        $resolver->setRequired(['field']);
     }
 }
