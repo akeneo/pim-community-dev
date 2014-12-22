@@ -62,6 +62,8 @@ define(
                     };
                 }
 
+                this.resultCache = {};
+
                 TextFilter.prototype.initialize.apply(this, arguments);
             },
 
