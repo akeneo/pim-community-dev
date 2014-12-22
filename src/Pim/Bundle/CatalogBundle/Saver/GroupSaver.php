@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 
@@ -61,8 +60,8 @@ class GroupSaver implements SaverInterface
 
         $defaultOptions = [
             'flush' => true,
-            'apply_template' => false,
-            'append_products' => [],
+            'copy_values_to_products' => false,
+            'add_products' => [],
             'remove_products' => []
         ];
         $options = array_merge($defaultOptions, $options);
@@ -71,16 +70,16 @@ class GroupSaver implements SaverInterface
             $this->objectManager->flush();
         }
 
-        if (count($options['append_products']) > 0) {
-            $this->addProducts($options['append_products']);
+        if (count($options['add_products']) > 0) {
+            $this->addProducts($options['add_products']);
         }
 
         if (count($options['remove_products']) > 0) {
             $this->removeProducts($options['remove_products']);
         }
 
-        if ($group->getType()->isVariant() && true === $options['apply_template']) {
-            $this->applyProductTemplate($group);
+        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
+            $this->copyVariantGroupValues($group);
         }
     }
 
@@ -101,11 +100,11 @@ class GroupSaver implements SaverInterface
     }
 
     /**
-     * Apply the product template values on any products of the variant group
+     * Copy the variant group values on any products belonging in the variant group
      *
      * @param GroupInterface $group
      */
-    protected function applyProductTemplate(GroupInterface $group)
+    protected function copyVariantGroupValues(GroupInterface $group)
     {
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
