@@ -2,11 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-<<<<<<< HEAD:src/Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/GroupsFilter.php
-use Pim\Bundle\CatalogBundle\Doctrine\Common\EntityIdResolverInterface;
-=======
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
->>>>>>> e53d3bc4ebe8ad31be9cd0f16232d06eddbf84f2:src/Pim/Bundle/CatalogBundle/Doctrine/ORM/Filter/GroupsFilter.php
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
