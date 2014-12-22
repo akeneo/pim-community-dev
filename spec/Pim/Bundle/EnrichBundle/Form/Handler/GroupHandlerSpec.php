@@ -46,7 +46,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $addedForm->getData()->willReturn([$addedProduct]);
         $removedForm->getData()->willReturn([]);
 
-        $saver->save($group, ['append_products' => [$addedProduct], 'remove_products' => []])->shouldBeCalled();
+        $saver->save($group, ['add_products' => [$addedProduct], 'remove_products' => []])->shouldBeCalled();
 
         $this->process($group)->shouldReturn(true);
     }

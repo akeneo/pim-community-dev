@@ -61,6 +61,8 @@ class ProductTemplateManager
         $this->templateUpdater->update($template, $products);
 
         $productViolations = [];
+        // TODO, perhaps need to extract this part in something more generic,
+        // we have a quite close case in EE
         foreach ($products as $product) {
             $violations = $this->productValidator->validate($product);
             $productIdentifier = (string) $product->getIdentifier();
