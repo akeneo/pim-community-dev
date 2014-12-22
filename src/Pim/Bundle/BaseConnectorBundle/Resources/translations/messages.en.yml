@@ -45,7 +45,10 @@ pim_base_connector:
             title: Group import in CSV
             validation.title: File validation
             import.title: Group import
-
+        csv_group_template_import:
+            title: Variant group template import in CSV
+            validation.title: File validation
+            import.title: Variant group template import
     steps:
 
         dummy_reader.title:                  Dummy reader
@@ -59,6 +62,7 @@ pim_base_connector:
 
         dummy_processor.title:               Dummy processor
         product_processor.title:             Product creation
+        product_template_processor.title:    Product template creation
         category_processor.title:            Category creation
         association_processor.title:         Association creation
         group_processor.title:               Group creation
@@ -129,3 +133,6 @@ pim_base_connector:
         realTimeVersioning:
             label: Real time history update
             help: Means that the product history is automatically updated, can be switched off to improve performances
+        applyOnProducts:
+            label: Apply on products
+            help: Means that the products are automatically updated, can be switched off to only update template values

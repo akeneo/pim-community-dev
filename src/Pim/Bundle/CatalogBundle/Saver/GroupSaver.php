@@ -5,7 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
 
@@ -24,14 +26,22 @@ class GroupSaver implements SaverInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
+    /** @var ProductTemplateManager */
+    protected $productTemplateManager;
+
     /**
-     * @param ObjectManager      $objectManager
-     * @param BulkSaverInterface $productSaver
+     * @param ObjectManager          $objectManager
+     * @param BulkSaverInterface     $productSaver
+     * @param ProductTemplateManager $productTemplateManager
      */
-    public function __construct(ObjectManager $objectManager, BulkSaverInterface $productSaver)
-    {
-        $this->objectManager = $objectManager;
-        $this->productSaver  = $productSaver;
+    public function __construct(
+        ObjectManager $objectManager,
+        BulkSaverInterface $productSaver,
+        ProductTemplateManager $productTemplateManager
+    ) {
+        $this->objectManager   = $objectManager;
+        $this->productSaver    = $productSaver;
+        $this->productTemplateManager = $productTemplateManager;
     }
 
     /**
@@ -70,7 +80,7 @@ class GroupSaver implements SaverInterface
         }
 
         if ($group->getType()->isVariant() && true === $options['apply_template']) {
-            $this->applyProductTemplate();
+            $this->applyProductTemplate($group);
         }
     }
 
@@ -79,7 +89,7 @@ class GroupSaver implements SaverInterface
      */
     protected function addProducts(array $products)
     {
-        $this->productManager->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
     }
 
     /**
@@ -87,17 +97,18 @@ class GroupSaver implements SaverInterface
      */
     protected function removeProducts(array $products)
     {
-        $this->productManager->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => false]);
     }
 
     /**
      * Apply the product template values on any products of the variant group
+     *
+     * @param GroupInterface $group
      */
-    protected function applyProductTemplate()
+    protected function applyProductTemplate(GroupInterface $group)
     {
-        // TODO : apply the template on products
-        // - update
-        // - validate
-        // - save
+        $template = $group->getProductTemplate();
+        $products = $group->getProducts()->toArray();
+        $this->productTemplateManager->apply($template, $products);
     }
 }
