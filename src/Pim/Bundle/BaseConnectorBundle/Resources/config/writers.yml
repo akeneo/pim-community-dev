@@ -1,6 +1,7 @@
 parameters:
     pim_base_connector.writer.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter
     pim_base_connector.writer.doctrine.product_association.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductAssociationWriter
+    pim_base_connector.writer.doctrine.variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter
     pim_base_connector.writer.doctrine.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
@@ -39,6 +40,12 @@ services:
     pim_base_connector.writer.doctrine.product_association:
         class: %pim_base_connector.writer.doctrine.product_association.class%
         parent: pim_base_connector.writer.doctrine
+
+    pim_base_connector.writer.doctrine.variant_group:
+        class: %pim_base_connector.writer.doctrine.variant_group.class%
+        arguments:
+            - '@pim_catalog.saver.group'
+            - '@pim_transform.cache.product_cache_clearer'
 
     pim_base_connector.writer.doctrine:
         class: %pim_base_connector.writer.doctrine.class%
