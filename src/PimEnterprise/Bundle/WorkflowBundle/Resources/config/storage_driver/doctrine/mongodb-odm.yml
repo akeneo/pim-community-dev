@@ -52,7 +52,7 @@ services:
     pimee_workflow.subscriber.synchronize_product_draft_categories:
         class: %pimee_workflow.subscriber.synchronize_product_draft_categories.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pimee_workflow.model.product_draft.class%'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
