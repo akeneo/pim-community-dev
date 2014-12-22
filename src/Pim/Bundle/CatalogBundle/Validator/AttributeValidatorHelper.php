@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -13,6 +15,28 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class AttributeValidatorHelper
 {
+    /** @var LocaleRepository */
+    protected $localeRepository;
+
+    /** @var ChannelRepository */
+    protected $scopeRepository;
+
+    /** @var array */
+    protected static $localeCodes = [];
+
+    /** @var array */
+    protected static $scopeCodes = [];
+
+    /**
+     * @param LocaleRepository  $localeRepository
+     * @param ChannelRepository $scopeRepository
+     */
+    public function __construct(LocaleRepository $localeRepository, ChannelRepository $scopeRepository)
+    {
+        $this->localeRepository = $localeRepository;
+        $this->scopeRepository = $scopeRepository;
+    }
+
     /**
      * Check if locale data is consistent with the attribute localizable property
      *
@@ -21,13 +45,12 @@ class AttributeValidatorHelper
      *
      * @throws \LogicException
      */
-    public static function validateLocale(AttributeInterface $attribute, $locale)
+    public function validateLocale(AttributeInterface $attribute, $locale)
     {
-        // TODO : check the existence of locale in DB
         if ($attribute->isLocalizable() && null === $locale) {
             throw new \LogicException(
                 sprintf(
-                    'Locale is expected for the attribute "%s".',
+                    'Attribute "%s" expects a locale, none given.',
                     $attribute->getCode()
                 )
             );
@@ -35,8 +58,23 @@ class AttributeValidatorHelper
         if (!$attribute->isLocalizable() && null !== $locale) {
             throw new \LogicException(
                 sprintf(
-                    'Locale is not expected for the attribute "%s".',
-                    $attribute->getCode()
+                    'Attribute "%s" does not expect a locale, "%s" given.',
+                    $attribute->getCode(),
+                    $locale
+                )
+            );
+        }
+
+        if (empty(self::$localeCodes)) {
+            self::$localeCodes = $this->getActivatedLocaleCodes();
+        }
+
+        if (!in_array($locale, self::$localeCodes)) {
+            throw new \LogicException(
+                sprintf(
+                    'Attribute "%s" expects an existing and activated locale, "%s" given.',
+                    $attribute->getCode(),
+                    $locale
                 )
             );
         }
@@ -48,7 +86,7 @@ class AttributeValidatorHelper
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      */
-    public static function validateUnitFamilyFromAttribute(
+    public function validateUnitFamilyFromAttribute(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute
     ) {
@@ -71,13 +109,16 @@ class AttributeValidatorHelper
      *
      * @throws \LogicException
      */
-    public static function validateScope(AttributeInterface $attribute, $scope)
+    public function validateScope(AttributeInterface $attribute, $scope)
     {
-        // TODO : check the existence of scope in DB
+        if (empty(self::$scopeCodes)) {
+            self::$scopeCodes = $this->getScopes();
+        }
+
         if ($attribute->isScopable() && null === $scope) {
             throw new \LogicException(
                 sprintf(
-                    'Scope is expected for the attribute "%s".',
+                    'Attribute "%s" expects a scope, none given.',
                     $attribute->getCode()
                 )
             );
@@ -85,10 +126,41 @@ class AttributeValidatorHelper
         if (!$attribute->isScopable() && null !== $scope) {
             throw new \LogicException(
                 sprintf(
-                    'Scope is not expected for the attribute "%s".',
-                    $attribute->getCode()
+                    'Attribute "%s" does not expect a scope, "%s" given.',
+                    $attribute->getCode(),
+                    $scope
                 )
             );
         }
+
+        if (empty(self::$scopeCodes)) {
+            self::$scopeCodes = $this->getScopeCodes();
+        }
+
+        if (!in_array($scope, self::$scopeCodes)) {
+            throw new \LogicException(
+                sprintf(
+                    'Attribute "%s" expects an existing scope, "%s" given.',
+                    $attribute->getCode(),
+                    $scope
+                )
+            );
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getActivatedLocaleCodes()
+    {
+        return $this->localeRepository->getActivatedLocaleCodes();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getScopeCodes()
+    {
+        return $this->scopeRepository->getChannelCodes();
     }
 }
