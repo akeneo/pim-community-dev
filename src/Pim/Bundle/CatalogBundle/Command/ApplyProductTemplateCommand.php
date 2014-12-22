@@ -2,14 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -81,6 +76,7 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
     protected function apply(ProductTemplateInterface $template, $products)
     {
         $updater = $this->getContainer()->get('pim_catalog.manager.product_template');
+
         return $updater->apply($template, $products);
     }
 }

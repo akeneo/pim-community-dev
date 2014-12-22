@@ -233,6 +233,7 @@ class ProductFormView implements ProductFormViewInterface
 
         if ($variantGroup) {
             $template = $variantGroup->getProductTemplate();
+
             return ($template) ? $template->hasValue($value) : false;
         }
 
