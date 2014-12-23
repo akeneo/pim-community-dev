@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3556: Fix memory leak on versionning
+
 # 1.2.18 (2014-12-23)
 
 ## Bug fixes
