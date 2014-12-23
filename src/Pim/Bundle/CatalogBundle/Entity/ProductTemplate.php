@@ -7,8 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 /**
- * Group product template entity, aims to store common product values for products belonging to a group and copy
- * them to  products
+ * Product template model, contains common product values as raw data
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -25,23 +24,12 @@ class ProductTemplate implements ProductTemplateInterface
     /** @var json */
     protected $valuesData;
 
-    /** @var ProductValueInterface[] */
-    protected $values;
-
     /**
      * {@inheritdoc}
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->values = new ArrayCollection();
     }
 
     /**
@@ -65,29 +53,10 @@ class ProductTemplate implements ProductTemplateInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues()
-    {
-        return $this->values;
-    }
-
-    // TODO : validate forbid to add identifier or axis values
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setValues($values)
-    {
-        $this->values = $values;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasValue(ProductValueInterface $value)
     {
-        // TODO : should be merged
+        // TODO : will change with json format
+        // TODO : should be merged in a class
         $suffix = '';
 
         if ($value->getAttribute()->isLocalizable()) {
@@ -99,7 +68,6 @@ class ProductTemplate implements ProductTemplateInterface
 
         $field = $value->getAttribute()->getCode() . $suffix;
 
-        // TODO : will change with json format
         return isset($this->valuesData[$field]);
     }
 }
