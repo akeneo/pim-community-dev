@@ -91,7 +91,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
         $values = $this->prepareValues($valueData);
         $this->validateValues($values, $item);
         $template = $this->getProductTemplate($variantGroup);
-        $template->setValuesData($valueData); // TODO : will be replaced by json
+        $template->setValuesData($valueData);
 
         return $variantGroup;
     }
@@ -159,6 +159,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function prepareValues(array $rawProductValues)
     {
+        // TODO, will use JSON format here, once implemented
         $productValues = [];
         foreach ($rawProductValues as $attFieldName => $dataValue) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);

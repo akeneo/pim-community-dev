@@ -175,3 +175,5 @@ connector:
                         reader:    pim_base_connector.reader.file.csv_variant_group_values
                         processor: pim_base_connector.processor.variant_group_values
                         writer:    pim_base_connector.writer.doctrine.variant_group_values
+                    parameters:
+                        batchSize: 1
