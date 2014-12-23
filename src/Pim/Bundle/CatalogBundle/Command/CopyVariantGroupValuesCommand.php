@@ -65,7 +65,6 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
             if (in_array($productIdentifier, array_keys($skipped)) === false) {
                 $output->writeln(sprintf('<info> - "%s" has been updated<info>', $productIdentifier));
             }
-
         }
 
         if ($nbSkipped > 0) {
@@ -106,8 +105,8 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
      */
     protected function apply(ProductTemplateInterface $template, $products)
     {
-        $updater = $this->getContainer()->get('pim_catalog.manager.product_template');
+        $applier = $this->getContainer()->get('pim_catalog.applier.product_template');
 
-        return $updater->apply($template, $products);
+        return $applier->apply($template, $products);
     }
 }
