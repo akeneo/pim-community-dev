@@ -80,6 +80,11 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $backendType = $entity->getAttribute()->getBackendType();
             if ('prices' === $backendType && $data instanceof Collection && $data->isEmpty()) {
                 $result = [];
+            } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {
+                $data = $this->sortOptions($data);
+                $context['field_name'] = $fieldName;
+                $result = $this->serializer->normalize($data, $format, $context);
+
             } else {
                 $context['field_name'] = $fieldName;
                 $result = $this->serializer->normalize($data, $format, $context);
@@ -153,5 +158,26 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         return false;
+    }
+
+    /**
+     * Sort the collection of options by their defined sort order in the attribute
+     *
+     * @param Collection $optionsCollection
+     *
+     * @return Collection
+     */
+    protected function sortOptions(Collection $optionsCollection)
+    {
+        $options = $optionsCollection->toArray();
+        usort(
+            $options,
+            function ($first, $second) {
+                return $first->getSortOrder() > $second->getSortOrder();
+            }
+        );
+        $sortedCollection = new ArrayCollection($options);
+
+        return $sortedCollection;
     }
 }
