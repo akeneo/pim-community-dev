@@ -1,4 +1,46 @@
 pim_enrich:
+  product:
+    tab:
+      attribute.title: Attributs
+      category.title: Catégories
+      association.title: Associations
+      completeness.title: Complétude
+    no_comparison_locale_available: "Aucune autre locale n'est disponible pour la comparaison"
+    no_compared_media: Aucun média disponible pour comparaison
+  attribute:
+    tab:
+      parameter.title: Paramètres 
+      value.title: Valeurs
+      history.title: Historique
+  attribute_group:
+    tab:
+      property.title: Propriétés
+      attribute.title: Attributs
+      history.title: Historique
+  family:
+    tab:
+      property.title: Propriétés
+      attribute.title: Attributs
+  association_type:
+    tab:
+      property.title: Propriétés
+  group_type:
+    tab:
+      property.title: Propriétés
+  channel:
+    pick_conversion_unit: "Choisissez une unité de conversion pour chaque métrique. Elle sera utilisé lors de l'exportation du produit"
+    tab:
+      property.title: Propriétés
+  category:
+    tab:
+      property.title: Propriétés
+  group:
+    axis.help: Les axes sont les attributs qui définissent des variantes du groupe. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Il ne peuvent pas être modifiés après la création.
+    type:
+      VARIANT: Variante
+      X_SELL: Vente croisée
+      ADDITIONAL: Additionnel
+      RELATED: Associés
   acl:
     locale:
       index: Liste des locales
