@@ -1,3 +1,8 @@
+# 1.0.x
+
+## Bug fixes
+- PIM-3533: Fix wrong keys being generated for empty price attributes in normalized product snapshots to fix the revert of product versions
+
 # 1.0.9 (2014-12-17)
 
 ## Improvements
