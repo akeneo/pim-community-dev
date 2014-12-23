@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Abstract copier
@@ -14,20 +17,25 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 abstract class AbstractValueCopier implements CopierInterface
 {
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
     /** @var array */
     protected $supportedTypes = [];
 
+    /** @var ProductBuilder */
+    protected $productBuilder;
+
+    /** @var AttributeValidatorHelper */
+    protected $attributeValidatorHelper;
+
     /**
-     * @param ProductBuilder $productBuilder
-     * @param array          $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
      */
-    public function __construct(ProductBuilder $productBuilder, array $supportedTypes)
-    {
-        $this->productBuilder = $productBuilder;
-        $this->supportedTypes = $supportedTypes;
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper
+    ) {
+        $this->productBuilder           = $productBuilder;
+        $this->attributeValidatorHelper = $attributeValidatorHelper;
     }
 
     /**
@@ -47,5 +55,56 @@ abstract class AbstractValueCopier implements CopierInterface
     public function getSupportedTypes()
     {
         return $this->supportedTypes;
+    }
+
+    /**
+     * Check locale and scope are valid
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
+     * @param string             $type
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
+    {
+        try {
+            $this->attributeValidatorHelper->validateLocale($attribute, $locale);
+            $this->attributeValidatorHelper->validateScope($attribute, $scope);
+        } catch (\LogicException $e) {
+            throw InvalidArgumentException::expectedFromPreviousException(
+                $e,
+                $attribute->getCode(),
+                'copier',
+                $type
+            );
+        }
+    }
+
+    /**
+     * Check that unit families of 2 attributes are consistent.
+     *
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
+     * @param string             $type
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function checkUnitFamily(
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $type
+    ) {
+        try {
+            $this->attributeValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
+        } catch (\LogicException $e) {
+            throw InvalidArgumentException::expectedFromPreviousException(
+                $e,
+                $fromAttribute->getCode() . ' && ' . $toAttribute->getCode(),
+                'copier',
+                $type
+            );
+        }
     }
 }

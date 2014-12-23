@@ -27,6 +27,7 @@ interface CopierInterface
      * @param string             $toScope
      *
      * @throws InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function copyValue(
         array $products,

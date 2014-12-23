@@ -18,7 +18,9 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 class DateValueSetter extends AbstractValueSetter
 {
     /**
-     * @param array $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,

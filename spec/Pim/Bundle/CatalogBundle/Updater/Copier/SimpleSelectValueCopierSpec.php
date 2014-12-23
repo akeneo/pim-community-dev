@@ -8,12 +8,14 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class SimpleSelectValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_simpleselect']);
+        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_simpleselect']);
     }
 
     function it_is_a_copier()
@@ -51,6 +53,7 @@ class SimpleSelectValueCopierSpec extends ObjectBehavior
 
     function it_copies_simple_select_value_to_a_product_value(
         $builder,
+        $attributeValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -66,13 +69,11 @@ class SimpleSelectValueCopierSpec extends ObjectBehavior
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn($attributeOption);
         $toProductValue->setOption($attributeOption)->shouldBeCalledTimes(3);

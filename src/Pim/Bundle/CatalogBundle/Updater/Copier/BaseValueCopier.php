@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -15,6 +17,20 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 class BaseValueCopier extends AbstractValueCopier
 {
     /**
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param array                    $supportedTypes
+     */
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
+        array $supportedTypes
+    ) {
+        parent::__construct($productBuilder, $attributeValidatorHelper);
+        $this->supportedTypes = $supportedTypes;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function copyValue(
@@ -26,20 +42,18 @@ class BaseValueCopier extends AbstractValueCopier
         $fromScope = null,
         $toScope = null
     ) {
-        AttributeValidatorHelper::validateLocale($fromAttribute, $fromLocale);
-        AttributeValidatorHelper::validateScope($fromAttribute, $fromScope);
-        AttributeValidatorHelper::validateLocale($toAttribute, $toLocale);
-        AttributeValidatorHelper::validateScope($toAttribute, $toScope);
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
 
         foreach ($products as $product) {
             $this->copySingleValue(
+                $product,
                 $fromAttribute,
                 $toAttribute,
                 $fromLocale,
                 $toLocale,
                 $fromScope,
-                $toScope,
-                $product
+                $toScope
             );
         }
     }
@@ -47,22 +61,22 @@ class BaseValueCopier extends AbstractValueCopier
     /**
      * Copy single value
      *
+     * @param ProductInterface   $product
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
      * @param string             $toLocale
      * @param string             $fromScope
      * @param string             $toScope
-     * @param string             $product
      */
     protected function copySingleValue(
+        ProductInterface $product,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
         $toLocale,
         $fromScope,
-        $toScope,
-        $product
+        $toScope
     ) {
         $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {

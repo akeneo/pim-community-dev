@@ -1,26 +1,27 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
+namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Updater\Setter\AbstractValueSetter;
+use Pim\Bundle\CatalogBundle\Updater\Copier\AbstractValueCopier;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class AbstractValueSetterSpec extends ObjectBehavior
+class AbstractValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Setter\ConcreteValueSetter');
+        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Copier\ConcreteValueCopier');
         $this->beConstructedWith($productBuilder, $attributeValidatorHelper);
     }
 
     function it_is_a_setter()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface');
     }
 
     function it_throws_an_exception_when_locale_is_expected(
@@ -34,8 +35,8 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($attribute, null)->willThrow($e);
 
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
-        )->during('testLocaleAndScope', [$attribute, null, 'ecommerce']);
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
+        )->during('testLocaleAndScope', [$attribute, null, Argument::any()]);
     }
 
     function it_throws_an_exception_when_locale_is_not_expected(
@@ -49,7 +50,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($attribute, 'en_US')->willThrow($e);
 
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
         )->during('testLocaleAndScope', [$attribute, 'en_US', 'ecommerce']);
     }
 
@@ -64,7 +65,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($attribute, 'uz-UZ')->willThrow($e);
 
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
         )->during('testLocaleAndScope', [$attribute, 'uz-UZ', 'ecommerce']);
     }
 
@@ -81,7 +82,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateScope($attribute, null)->willThrow($e);
 
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
         )->during('testLocaleAndScope', [$attribute, null, null]);
     }
 
@@ -98,7 +99,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
 
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
         )->during('testLocaleAndScope', [$attribute, null, 'ecommerce']);
     }
 
@@ -115,20 +116,48 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
 
         $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
+            InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
         )->during('testLocaleAndScope', [$attribute, null, 'ecommerce']);
+    }
+
+    function it_throws_an_exception_when_unit_families_are_not_consistent(
+        $attributeValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute
+    ) {
+        $e = new \LogicException('Metric families are not the same for attributes: "fromCode" and "toCode".');
+
+        $fromAttribute->getCode()->willReturn('fromCode');
+        $toAttribute->getCode()->willReturn('toCode');
+        $attributeValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute)->willThrow($e);
+
+        $this->shouldThrow(
+            InvalidArgumentException::expectedFromPreviousException($e, 'fromCode && toCode', 'copier', 'concrete')
+        )->during('testUnitFamily', [$fromAttribute, $toAttribute]);
     }
 }
 
-class ConcreteValueSetter extends AbstractValueSetter
+class ConcreteValueCopier extends AbstractValueCopier
 {
-    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
-    {
+    public function copyValue(
+        array $products,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        $fromLocale = null,
+        $toLocale = null,
+        $fromScope = null,
+        $toScope = null
+    ) {
         // needs to be implemented
     }
 
     public function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'concrete');
+    }
+
+    public function testUnitFamily(AttributeInterface $from, AttributeInterface $to)
+    {
+        $this->checkUnitFamily($from, $to, 'concrete');
     }
 }

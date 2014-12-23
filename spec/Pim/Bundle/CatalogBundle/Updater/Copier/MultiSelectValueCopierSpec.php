@@ -8,12 +8,14 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class MultiSelectValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_multiselect']);
+        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_multiselect']);
     }
 
     function it_is_a_copier()
@@ -51,6 +53,7 @@ class MultiSelectValueCopierSpec extends ObjectBehavior
 
     function it_copies_multi_select_value_to_a_product_value(
         $builder,
+        $attributeValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -66,13 +69,12 @@ class MultiSelectValueCopierSpec extends ObjectBehavior
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
 
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getOptions()->willReturn([$attributeOption])->shouldBeCalled(3);
 

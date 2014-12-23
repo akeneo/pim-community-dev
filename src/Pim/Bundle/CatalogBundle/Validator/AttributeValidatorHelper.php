@@ -86,14 +86,14 @@ class AttributeValidatorHelper
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      */
-    public function validateUnitFamilyFromAttribute(
+    public function validateUnitFamilies(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute
     ) {
         if ($fromAttribute->getMetricFamily() !== $toAttribute->getMetricFamily()) {
             throw new \LogicException(
                 sprintf(
-                    'Metric families are not the same for attributes: "%s and %s".',
+                    'Metric families are not the same for attributes: "%s" and "%s".',
                     $fromAttribute->getCode(),
                     $toAttribute->getCode()
                 )

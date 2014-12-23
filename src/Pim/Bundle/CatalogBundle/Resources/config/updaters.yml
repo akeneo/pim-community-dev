@@ -13,6 +13,7 @@ parameters:
     pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionValueSetter
     pim_catalog.updater.setter.media_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\MediaValueSetter
 
+    pim_catalog.updater.copier.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Copier\AbstractValueCopier
     pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
     pim_catalog.updater.copier.textarea_value.class:         Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
@@ -123,53 +124,60 @@ services:
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
+    pim_catalog.updater.copier.abstract:
+        class: %pim_catalog.updater.copier.abstract.class%
+        public: false
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.validator.helper.attribute
+
     pim_catalog.updater.copier.registry:
         class: %pim_catalog.updater.copier.registry.class%
 
     pim_catalog.updater.copier.text_value:
         class: %pim_catalog.updater.copier.text_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_text']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.textarea_value:
         class: %pim_catalog.updater.copier.textarea_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_textarea']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.boolean_value:
         class: %pim_catalog.updater.copier.boolean_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_boolean']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.number_value:
         class: %pim_catalog.updater.copier.number_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_number']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.date_value:
         class: %pim_catalog.updater.copier.date_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_date']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.metric_value:
         class: %pim_catalog.updater.copier.metric_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - @pim_catalog.factory.metric
             - ['pim_catalog_metric']
         tags:
@@ -177,24 +185,24 @@ services:
 
     pim_catalog.updater.copier.simpleselect_value:
         class: %pim_catalog.updater.copier.simpleselect_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.multiselect_value:
         class: %pim_catalog.updater.copier.multiselect_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
     pim_catalog.updater.copier.price_collection_value:
         class: %pim_catalog.updater.copier.price_collection_value.class%
+        parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.builder.product
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.copier' }
