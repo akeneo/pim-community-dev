@@ -67,10 +67,10 @@ class CategoryFilter extends BaseCategoryFilter
         $user = $this->securityContext->getToken()->getUser();
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
         if (count($grantedCategoryIds) > 0) {
-            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
+            $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
 
         } else {
-            $this->util->applyFilter($ds, 'categories', 'UNCLASSIFIED', []);
+            $this->util->applyFilter($ds, 'categories.id', 'UNCLASSIFIED', []);
         }
 
         return true;
@@ -90,12 +90,12 @@ class CategoryFilter extends BaseCategoryFilter
         if ($tree) {
             // all categories of this tree (without permissions)
             $currentTreeIds = $categoryRepository->getAllChildrenIds($tree);
-            $this->util->applyFilter($ds, 'categories', 'NOT IN', $currentTreeIds);
+            $this->util->applyFilter($ds, 'categories.id', 'NOT IN', $currentTreeIds);
 
             // we add a filter on granted categories
             $user = $this->securityContext->getToken()->getUser();
             $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-            $this->util->applyFilter($ds, 'categories', 'IN OR UNCLASSIFIED', $grantedIds);
+            $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedIds);
 
             return true;
         }
