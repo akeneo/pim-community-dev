@@ -19,7 +19,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 /**
  * Voter of the product draft ownership attribute
  *
- * TODO 1.3: merge this class with ProductDraftApprovalVoter to have only one voter and rename this voter ProductDrafVoter
+ * TODO 1.3: merge this class with ProductDraftApprovalVoter to have only one voter and rename this voter
+ * ProductDraftVoter
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  */

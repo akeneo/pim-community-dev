@@ -74,10 +74,9 @@ class ProductDraftApprovalVoter implements VoterInterface
 
         foreach ($attributes as $attribute) {
             if ($this->supportsAttribute($attribute)) {
-                return $this->canUserApproveDraft($token->getUser(), $object) ?
-                    VoterInterface::ACCESS_GRANTED :
-                    VoterInterface::ACCESS_DENIED
-                ;
+                $canApprove = $this->canUserApproveDraft($token->getUser(), $object);
+
+                return $canApprove ? VoterInterface::ACCESS_GRANTED : VoterInterface::ACCESS_DENIED;
             }
         }
 
@@ -93,11 +92,12 @@ class ProductDraftApprovalVoter implements VoterInterface
     protected function canUserApproveDraft(UserInterface $user, ProductDraft $draft)
     {
         foreach ($this->getAttributeGroupsImpactedByADraft($draft) as $group) {
-            if (false === $this->attrGroupAccessManager->isUserGranted(
-                    $user,
-                    $group,
-                    Attributes::EDIT_ATTRIBUTES)
-            ) {
+            $isGranted = $this->attrGroupAccessManager->isUserGranted(
+                $user,
+                $group,
+                Attributes::EDIT_ATTRIBUTES
+            );
+            if (false === $isGranted) {
                 return false;
             }
         }
