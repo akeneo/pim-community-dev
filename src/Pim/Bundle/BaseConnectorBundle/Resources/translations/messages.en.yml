@@ -59,6 +59,7 @@ pim_base_connector:
             invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
         csv_product_reader.title:            CSV product reader
         csv_category_reader.title:           CSV category reader
+        csv_variant_group_values.title:      CSV variant group values reader
 
         dummy_processor.title:               Dummy processor
         product_processor.title:             Product creation
@@ -76,6 +77,7 @@ pim_base_connector:
         file_writer.title:                   Output
         product_writer.title:                Product storage
         category_writer.title:               Category storage
+        variant_group_values_writer.title:   Variant group values storage
         writer.title:                        Entity storage
         csv_writer.title:                    Csv Writer
 
@@ -133,6 +135,6 @@ pim_base_connector:
         realTimeVersioning:
             label: Real time history update
             help: Means that the product history is automatically updated, can be switched off to improve performances
-        copyValuesOnProducts:
+        copyValuesToProducts:
             label: Copy values on products
             help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group

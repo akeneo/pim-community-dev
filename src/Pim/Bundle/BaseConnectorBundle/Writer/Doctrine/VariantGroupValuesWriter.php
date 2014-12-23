@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Component\Resource\Model\SaverInterface;
@@ -31,17 +32,25 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     /** @var CacheClearer */
     protected $cacheClearer;
 
+    /** @var ProductTemplateApplierInterface */
+    protected $productTemplateApplier;
+
     /** @var boolean */
-    protected $copyValuesOnProducts = true;
+    protected $copyValuesToProducts = true;
 
     /**
      * @param SaverInterface $groupSaver
-     * @param CacheClearer   $cacheClearer
+     * @param CacheClearer $cacheClearer
+     * @param ProductTemplateApplierInterface $productTemplateApplier
      */
-    public function __construct(SaverInterface $groupSaver, CacheClearer $cacheClearer)
-    {
+    public function __construct(
+        SaverInterface $groupSaver,
+        CacheClearer $cacheClearer,
+        ProductTemplateApplierInterface $productTemplateApplier
+    ) {
         $this->groupSaver   = $groupSaver;
         $this->cacheClearer = $cacheClearer;
+        $this->productTemplateApplier = $productTemplateApplier;
     }
 
     /**
@@ -49,10 +58,11 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      */
     public function write(array $items)
     {
-        foreach ($items as $item) {
-            $this->groupSaver->save($item, ['copy_values_to_products' => true]);
-            $this->incrementCount($item);
-            // TODO : how to know skip if no direct call to the template manager ?
+        foreach ($items as $variantGroup) {
+            $this->saveVariantGroup($variantGroup);
+            if ($this->copyValuesToProducts) {
+                $this->copyValuesToProducts($variantGroup);
+            }
         }
 
         $this->cacheClearer->clear();
@@ -64,11 +74,11 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     public function getConfigurationFields()
     {
         return array(
-            'copyValuesOnProducts' => array(
+            'copyValuesToProducts' => array(
                 'type'    => 'switch',
                 'options' => array(
-                    'label' => 'pim_base_connector.import.copyValuesOnProducts.label',
-                    'help'  => 'pim_base_connector.import.copyValuesOnProducts.help'
+                    'label' => 'pim_base_connector.import.copyValuesToProducts.label',
+                    'help'  => 'pim_base_connector.import.copyValuesToProducts.help'
                 )
             )
         );
@@ -79,9 +89,9 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      *
      * @param boolean $apply
      */
-    public function setCopyValuesOnProducts($apply)
+    public function setCopyValuesToProducts($apply)
     {
-        $this->copyValuesOnProducts = $apply;
+        $this->copyValuesToProducts = $apply;
     }
 
     /**
@@ -89,9 +99,9 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      *
      * @return boolean
      */
-    public function isCopyValuesOnProducts()
+    public function isCopyValuesToProducts()
     {
-        return $this->copyValuesOnProducts;
+        return $this->copyValuesToProducts;
     }
 
     /**
@@ -103,18 +113,78 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     }
 
     /**
-     * @param GroupInterface $group
+     * Save the variant group and related product template
+     *
+     * @param GroupInterface $variantGroup
      */
-    protected function incrementCount(GroupInterface $group)
+    protected function saveVariantGroup(GroupInterface $variantGroup)
+    {
+        $this->groupSaver->save($variantGroup);
+        $this->incrementUpdatedVariantGroupCount($variantGroup);
+    }
+
+    /**
+     * Copy variant group values to products
+     *
+     * @param GroupInterface $variantGroup
+     */
+    protected function copyValuesToProducts(GroupInterface $variantGroup)
+    {
+        $template = $variantGroup->getProductTemplate();
+        $products = $variantGroup->getProducts();
+        if ($template && count($products) > 0) {
+            $products = $products->count() > 0 ? $products->toArray() : [];
+            $skippedMessages = $this->productTemplateApplier->apply($template, $products);
+            $nbSkipped = count($skippedMessages);
+            $nbUpdated = count($products) - $nbSkipped;
+            $this->incrementUpdatedProductsCount($nbUpdated);
+            $this->incrementSkippedProductsCount($nbSkipped, $skippedMessages);
+        }
+    }
+
+    /**
+     *
+     */
+    protected function incrementUpdatedVariantGroupCount()
     {
         $this->stepExecution->incrementSummaryInfo('update');
-        if ($this->copyValuesOnProducts) {
-            // TODO : add a method in batch bundle to know if a summary info is already defined
-            $summary = $this->stepExecution->getSummary();
-            $previousAmount = isset($summary['update_products']) ? $summary['update_products'] : 0;
-            $previousAmount = is_numeric($previousAmount) ? $previousAmount : 0;
-            $total = $previousAmount + count($group->getProducts());
-            $this->stepExecution->addSummaryInfo('update_products', $total);
+    }
+
+    /**
+     * @param integer $nbProducts
+     */
+    protected function incrementUpdatedProductsCount($nbProducts)
+    {
+        // TODO : update the method StepExecution::incrementSummaryInfo to add an optional $incrementNumber arg
+        $summaryKey = 'update_products';
+        $summary = $this->stepExecution->getSummary();
+        $previousAmount = isset($summary[$summaryKey]) ? $summary[$summaryKey] : 0;
+        $previousAmount = is_numeric($previousAmount) ? $previousAmount : 0;
+        $total = $previousAmount + $nbProducts;
+        $this->stepExecution->addSummaryInfo($summaryKey, $total);
+    }
+
+    /**
+     * @param integer $nbSkippedProducts
+     * @param array   $skippedMessages
+     */
+    protected function incrementSkippedProductsCount($nbSkippedProducts, $skippedMessages)
+    {
+        // TODO : update the method StepExecution::incrementSummaryInfo to add an optional $incrementNumber arg
+        $summaryKey = 'skip_products';
+        $summary = $this->stepExecution->getSummary();
+        $previousAmount = isset($summary[$summaryKey]) ? $summary[$summaryKey] : 0;
+        $previousAmount = is_numeric($previousAmount) ? $previousAmount : 0;
+        $total = $previousAmount + $nbSkippedProducts;
+        $this->stepExecution->addSummaryInfo($summaryKey, $total);
+
+        foreach ($skippedMessages as $productIdentifier => $messages) {
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                sprintf('Copy of values to product "%s" skipped.', $productIdentifier),
+                [],
+                $messages
+            );
         }
     }
 

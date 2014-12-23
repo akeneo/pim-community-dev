@@ -4,8 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
@@ -25,22 +24,22 @@ class GroupSaver implements SaverInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var ProductTemplateManagerInterface */
-    protected $productTemplateManager;
+    /** @var ProductTemplateApplierInterface */
+    protected $productTemplateApplier;
 
     /**
      * @param ObjectManager                   $objectManager
      * @param BulkSaverInterface              $productSaver
-     * @param ProductTemplateManagerInterface $productTemplateManager
+     * @param ProductTemplateApplierInterface $productTemplateApplier
      */
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
-        ProductTemplateManagerInterface $productTemplateManager
+        ProductTemplateApplierInterface $productTemplateApplier
     ) {
         $this->objectManager   = $objectManager;
         $this->productSaver    = $productSaver;
-        $this->productTemplateManager = $productTemplateManager;
+        $this->productTemplateApplier = $productTemplateApplier;
     }
 
     /**
@@ -108,6 +107,6 @@ class GroupSaver implements SaverInterface
     {
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
-        $this->productTemplateManager->apply($template, $products);
+        $this->productTemplateApplier->apply($template, $products);
     }
 }
