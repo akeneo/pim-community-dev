@@ -42,7 +42,7 @@ class CategoryFilter implements FieldFilterInterface
      *
      * @param CategoryRepository                 $categoryRepository
      * @param ProductCategoryRepositoryInterface $productRepository
-     * @param ObjectIdResolverInterface $objectIdResolver
+     * @param ObjectIdResolverInterface          $objectIdResolver
      * @param array                              $supportedFields
      * @param array                              $supportedOperators
      */

@@ -59,7 +59,16 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
-        $options = $this->resolver->resolve($options);
+        try {
+            $options = $this->resolver->resolve($options);
+        } catch (\Exception $e) {
+            throw InvalidArgumentException::expectedFromPreviousException(
+                $e,
+                $attribute->getCode(),
+                'filter',
+                'option'
+            );
+        }
 
         $field = $options['field'];
 
@@ -127,6 +136,7 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
 
     /**
      * Configure the option resolver
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)

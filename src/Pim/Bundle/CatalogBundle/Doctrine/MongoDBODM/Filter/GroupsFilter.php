@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
 /**
- * Entity filter
+ * Groups filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

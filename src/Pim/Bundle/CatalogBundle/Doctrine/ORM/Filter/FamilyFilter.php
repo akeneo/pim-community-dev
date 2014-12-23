@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 
 /**
- * Entity filter
+ * Family filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -27,8 +27,8 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
      * Instanciate the base filter
      *
      * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param array                     $supportedFields
+     * @param array                     $supportedOperators
      */
     public function __construct(
         ObjectIdResolverInterface $objectIdResolver,

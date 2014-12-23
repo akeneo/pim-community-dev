@@ -45,7 +45,7 @@ class StringFilterSpec extends ObjectBehavior
         $qb->field('normalizedData.sku')->willReturn($qb);
         $qb->equals(new \MongoRegex('/^My Sku/i'))->willReturn($qb);
 
-        $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku');
+        $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_a_ends_with_attribute_filter_in_the_query($qb, AttributeInterface $sku)
@@ -57,7 +57,7 @@ class StringFilterSpec extends ObjectBehavior
         $qb->field('normalizedData.sku')->willReturn($qb);
         $qb->equals(new \MongoRegex('/My Sku$/i'))->willReturn($qb);
 
-        $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku');
+        $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_a_contains_attribute_filter_in_the_query($qb, AttributeInterface $sku)
@@ -69,7 +69,7 @@ class StringFilterSpec extends ObjectBehavior
         $qb->field('normalizedData.sku')->willReturn($qb);
         $qb->equals(new \MongoRegex('/My Sku/i'))->willReturn($qb);
 
-        $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku');
+        $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_a_does_not_contain_attribute_filter_in_the_query($qb, AttributeInterface $sku)
@@ -81,45 +81,14 @@ class StringFilterSpec extends ObjectBehavior
         $qb->field('normalizedData.sku')->willReturn($qb);
         $qb->equals(new \MongoRegex('/^((?!My Sku).)*$/i'))->willReturn($qb);
 
-        $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku');
-    }
-
-    function it_adds_a_starts_with_field_filter_in_the_query($qb)
-    {
-        $qb->field('normalizedData.field')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/^My Sku/i'))->willReturn($qb);
-
-        $this->addFieldFilter('field', 'STARTS WITH', 'My Sku');
-    }
-
-    function it_adds_a_ends_with_field_filter_in_the_query($qb)
-    {
-        $qb->field('normalizedData.field')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/My Sku$/i'))->willReturn($qb);
-
-        $this->addFieldFilter('field', 'ENDS WITH', 'My Sku');
-    }
-
-    function it_adds_a_contains_field_filter_in_the_query($qb)
-    {
-        $qb->field('normalizedData.field')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/My Sku/i'))->willReturn($qb);
-
-        $this->addFieldFilter('field', 'CONTAINS', 'My Sku');
-    }
-
-    function it_adds_a_does_not_contain_field_filter_in_the_query($qb)
-    {
-        $qb->field('normalizedData.field')->willReturn($qb);
-        $qb->equals(new \MongoRegex('/^((?!My Sku).)*$/i'))->willReturn($qb);
-
-        $this->addFieldFilter('field', 'DOES NOT CONTAIN', 'My Sku');
+        $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_throws_an_exception_if_value_is_not_a_string(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attributeCode');
+
         $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string'))
-            ->during('addAttributeFilter', [$attribute, '=', 123]);
+            ->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
      }
 }

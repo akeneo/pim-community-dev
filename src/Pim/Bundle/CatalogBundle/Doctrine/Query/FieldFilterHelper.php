@@ -4,6 +4,13 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 
+/**
+ * Field filter helper
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class FieldFilterHelper
 {
     /** @var string */
@@ -52,7 +59,6 @@ class FieldFilterHelper
 
     /**
      * Check if value is an array
-     *
      * @param string $field
      * @param mixed  $value
      * @param string $filter
@@ -66,30 +72,21 @@ class FieldFilterHelper
 
     /**
      * Check if value is a valid identifier
-     *
      * @param string $field
      * @param mixed  $value
      * @param string $filter
      */
     public static function checkIdentifier($field, $value, $filter)
     {
-        if ((
-                static::hasProperty($field) &&
-                static::getProperty($field) === 'id' &&
-                !is_numeric($value)
-            ) ||
-            (
-                !static::hasProperty($field) &&
-                !is_numeric($value)
-            )
-        ) {
+        $invalidIdField = static::hasProperty($field) && static::getProperty($field) === 'id' && !is_numeric($value);
+        $invalidDefaultField = !static::hasProperty($field) && !is_numeric($value);
+
+        if ($invalidIdField || $invalidDefaultField) {
             throw InvalidArgumentException::numericExpected(static::getCode($field), 'filter', $filter);
         }
 
-        if (static::hasProperty($field) &&
-            static::getProperty($field) !== 'id' &&
-            !is_string($value)
-        ) {
+        $invalidStringField = static::hasProperty($field) && static::getProperty($field) !== 'id' && !is_string($value);
+        if ($invalidStringField) {
             throw InvalidArgumentException::stringExpected(static::getCode($field), 'filter', $filter);
         }
     }

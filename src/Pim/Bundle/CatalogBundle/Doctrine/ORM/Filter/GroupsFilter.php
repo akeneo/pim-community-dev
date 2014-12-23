@@ -27,8 +27,8 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      * Instanciate the base filter
      *
      * @param ObjectIdResolverInterface $objectIdResolver
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param array                     $supportedFields
+     * @param array                     $supportedOperators
      */
     public function __construct(
         ObjectIdResolverInterface $objectIdResolver,
