@@ -11,6 +11,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * TODO : delete
+ *
  * Temporary command to create variant group product templates
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
