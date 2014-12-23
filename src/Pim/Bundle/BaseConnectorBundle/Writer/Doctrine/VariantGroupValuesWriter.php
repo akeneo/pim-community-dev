@@ -36,7 +36,7 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     protected $productTemplateApplier;
 
     /** @var boolean */
-    protected $copyValuesToProducts = true;
+    protected $copyValues = true;
 
     /**
      * @param SaverInterface $groupSaver
@@ -60,7 +60,7 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     {
         foreach ($items as $variantGroup) {
             $this->saveVariantGroup($variantGroup);
-            if ($this->copyValuesToProducts) {
+            if ($this->isCopyValues()) {
                 $this->copyValuesToProducts($variantGroup);
             }
         }
@@ -74,7 +74,7 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     public function getConfigurationFields()
     {
         return array(
-            'copyValuesToProducts' => array(
+            'copyValues' => array(
                 'type'    => 'switch',
                 'options' => array(
                     'label' => 'pim_base_connector.import.copyValuesToProducts.label',
@@ -89,9 +89,9 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      *
      * @param boolean $apply
      */
-    public function setCopyValuesToProducts($apply)
+    public function setCopyValues($apply)
     {
-        $this->copyValuesToProducts = $apply;
+        $this->copyValues = $apply;
     }
 
     /**
@@ -99,9 +99,9 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      *
      * @return boolean
      */
-    public function isCopyValuesToProducts()
+    public function isCopyValues()
     {
-        return $this->copyValuesToProducts;
+        return $this->copyValues;
     }
 
     /**
@@ -186,13 +186,5 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
                 $messages
             );
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function flush()
-    {
-        $this->cacheClearer->clear(true);
     }
 }

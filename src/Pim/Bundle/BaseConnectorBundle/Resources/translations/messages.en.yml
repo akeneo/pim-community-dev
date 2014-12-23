@@ -136,5 +136,5 @@ pim_base_connector:
             label: Real time history update
             help: Means that the product history is automatically updated, can be switched off to improve performances
         copyValuesToProducts:
-            label: Copy values on products
+            label: Copy variant group values to products
             help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
