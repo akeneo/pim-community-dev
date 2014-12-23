@@ -22,9 +22,9 @@ use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 /**
  * Applies product rules via a batch.
@@ -51,6 +51,12 @@ class ProductRuleApplier implements ApplierInterface
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var CacheClearer */
+    protected $cacheClearer;
+
+    /** @var string */
+    protected $ruleDefinitionClass;
+
     /**
      * @param ProductUpdaterInterface  $productUpdater
      * @param ValidatorInterface       $productValidator
@@ -58,6 +64,8 @@ class ProductRuleApplier implements ApplierInterface
      * @param EventDispatcherInterface $eventDispatcher
      * @param ObjectManager            $objectManager
      * @param VersionManager           $versionManager
+     * @param CacheClearer             $cacheClearer
+     * @param string                   $ruleDefinitionClass
      */
     public function __construct(
         ProductUpdaterInterface $productUpdater,
@@ -65,15 +73,19 @@ class ProductRuleApplier implements ApplierInterface
         BulkSaverInterface $productSaver,
         EventDispatcherInterface $eventDispatcher,
         ObjectManager $objectManager,
-        VersionManager $versionManager
+        VersionManager $versionManager,
+        CacheClearer $cacheClearer,
+        $ruleDefinitionClass
     )
     {
-        $this->productUpdater   = $productUpdater;
-        $this->productValidator = $productValidator;
-        $this->productSaver     = $productSaver;
-        $this->eventDispatcher  = $eventDispatcher;
-        $this->objectManager    = $objectManager;
-        $this->versionManager   = $versionManager;
+        $this->productUpdater      = $productUpdater;
+        $this->productValidator    = $productValidator;
+        $this->productSaver        = $productSaver;
+        $this->eventDispatcher     = $eventDispatcher;
+        $this->objectManager       = $objectManager;
+        $this->versionManager      = $versionManager;
+        $this->cacheClearer        = $cacheClearer;
+        $this->ruleDefinitionClass = $ruleDefinitionClass;
     }
 
     /**
@@ -88,6 +100,9 @@ class ProductRuleApplier implements ApplierInterface
         $this->saveProducts($subjectSet, sprintf('Applied rule "%s"', $rule->getCode()));
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+
+        $this->cacheClearer->addNonClearableEntity($this->ruleDefinitionClass);
+        $this->cacheClearer->clear();
     }
 
     /**
