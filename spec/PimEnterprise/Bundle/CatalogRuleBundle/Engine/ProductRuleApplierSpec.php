@@ -17,16 +17,22 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
+
+    /** @var const string */
+    const RULE_DEFINITION_CLASS = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition';
+
     public function let(
         EventDispatcherInterface $eventDispatcher,
         ProductUpdaterInterface $productUpdater,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         ValidatorInterface $productValidator,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        CacheClearer $cacheClearer
     ) {
         $this->beConstructedWith(
             $productUpdater,
@@ -34,7 +40,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $productSaver,
             $eventDispatcher,
             $objectManager,
-            $versionManager
+            $versionManager,
+            $cacheClearer,
+            self::RULE_DEFINITION_CLASS
         );
     }
 
@@ -54,7 +62,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productValidator,
         $productSaver,
         RuleInterface $rule,
-        RuleSubjectSetInterface $subjectSet
+        RuleSubjectSetInterface $subjectSet,
+        $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -73,6 +82,10 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
         $this->apply($rule, $subjectSet);
+
+        $cacheClearer->addNonClearableEntity(self::RULE_DEFINITION_CLASS)->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
+
     }
 
     public function it_applies_a_rule_which_has_a_set_action(
@@ -85,7 +98,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         RuleSubjectSetInterface $subjectSet,
         ProductSetValueActionInterface $action,
         ProductInterface $selectedProduct,
-        ConstraintViolationList $violationList
+        ConstraintViolationList $violationList,
+        $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -111,6 +125,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);
+
+        $cacheClearer->addNonClearableEntity(self::RULE_DEFINITION_CLASS)->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
     }
 
     public function it_applies_a_rule_which_has_a_copy_action(
@@ -123,7 +140,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         RuleSubjectSetInterface $subjectSet,
         ProductCopyValueAction $action,
         ProductInterface $selectedProduct,
-        ConstraintViolationList $violationList
+        ConstraintViolationList $violationList,
+        $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -153,6 +171,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);
+
+        $cacheClearer->addNonClearableEntity(self::RULE_DEFINITION_CLASS)->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
     }
 
     public function it_applies_a_rule_with_invalid_product(
@@ -166,7 +187,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductInterface $validProduct,
         ProductInterface $invalidProduct,
         ConstraintViolationList $emptyViolationList,
-        ConstraintViolationList $notEmptyViolationList
+        ConstraintViolationList $notEmptyViolationList,
+        $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -199,6 +221,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);
+
+        $cacheClearer->addNonClearableEntity(self::RULE_DEFINITION_CLASS)->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
     }
 
     public function it_applies_a_rule_which_has_an_unknown_action(
