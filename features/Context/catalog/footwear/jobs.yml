@@ -130,4 +130,4 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-            copyValuesOnProducts: true
+            copyValues: true
