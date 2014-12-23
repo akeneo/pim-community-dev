@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManagerInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -15,9 +15,9 @@ use Pim\Component\Resource\Model\BulkSaverInterface;
 
 class GroupSaverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, BulkSaverInterface $productSaver, ProductTemplateManagerInterface $templateManager)
+    function let(ObjectManager $objectManager, BulkSaverInterface $productSaver, ProductTemplateApplierInterface $templateApplier)
     {
-        $this->beConstructedWith($objectManager, $productSaver, $templateManager);
+        $this->beConstructedWith($objectManager, $productSaver, $templateApplier);
     }
 
     function it_is_a_saver()
@@ -59,7 +59,7 @@ class GroupSaverSpec extends ObjectBehavior
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }
 
-    function it_saves_a_variant_group_and_copy_values_to_products($objectManager, GroupInterface $group, GroupType $type, ProductInterface $product, $templateManager, ProductTemplateInterface $template, ArrayCollection $products)
+    function it_saves_a_variant_group_and_copy_values_to_products($objectManager, GroupInterface $group, GroupType $type, ProductInterface $product, $templateApplier, ProductTemplateInterface $template, ArrayCollection $products)
     {
         $group->getType()->willReturn($type);
         $objectManager->persist($group)->shouldBeCalled();
@@ -70,7 +70,7 @@ class GroupSaverSpec extends ObjectBehavior
         $group->getProducts()->willReturn($products);
         $products->toArray()->willReturn([$product]);
 
-        $templateManager
+        $templateApplier
             ->apply($template, [$product])
             ->shouldBeCalled();
 

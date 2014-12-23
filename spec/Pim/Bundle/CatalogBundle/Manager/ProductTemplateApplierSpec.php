@@ -13,7 +13,7 @@ use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 
-class ProductTemplateManagerSpec extends ObjectBehavior
+class ProductTemplateApplierSpec extends ObjectBehavior
 {
     function let(
         ProductTemplateUpdaterInterface $templateUpdater,
