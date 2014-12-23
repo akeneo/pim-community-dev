@@ -1,10 +1,10 @@
 rules:
     camera_set_canon_brand:
         conditions:
-            - field:    family
+            - field:    family.code
               operator: IN
               value:
-                - 4
+                - camcorders
             - field:    name
               operator: CONTAINS
               value:    Canon
@@ -14,20 +14,20 @@ rules:
               value: canon_brand
     camera_copy_name_to_model:
         conditions:
-            - field:    family
+            - field:    family.code
               operator: IN
               value:
-                - 4
+                - camcorders
         actions:
             - type:       copy_value
               from_field: name
               to_field:   camera_model_name
     camera_set_camera_type:
         conditions:
-            - field:    family
+            - field:    family.code
               operator: IN
               value:
-                - 4
+                - camcorders
             - field:    name
               operator: CONTAINS
               value:    Canon
@@ -37,10 +37,10 @@ rules:
               value: compact
     camera_set_autofocus:
         conditions:
-            - field:    family
+            - field:    family.code
               operator: IN
               value:
-                - 4
+                - camcorders
             - field:    name
               operator: CONTAINS
               value:    Canon
@@ -50,10 +50,10 @@ rules:
               value: true
     camera_set_autofocus_point:
         conditions:
-            - field:    family
+            - field:    family.code
               operator: IN
               value:
-                - 4
+                - camcorders
             - field:    name
               operator: CONTAINS
               value:    Canon
@@ -63,10 +63,10 @@ rules:
               value: 4
     copy_description_print_us_to_ecommerce_us:
         conditions:
-            - field:    family
+            - field:    family.code
               operator: IN
               value:
-                - 4
+                - camcorders
         actions:
             - type:        copy_value
               from_field:  description
@@ -81,10 +81,10 @@ rules:
             - field:    sku
               operator: CONTAINS
               value:    AKNTS_PB
-            - field:    main_color
+            - field:    main_color.code
               operator: IN
               value:
-                - 42
+                - purple
         actions:
             - type:   set_value
               field:  description
@@ -128,10 +128,10 @@ rules:
             - field:    sku
               operator: CONTAINS
               value:    AKNTS_PB
-            - field:    main_color
+            - field:    main_color.code
               operator: IN
               value:
-                - 42
+                - purple
         actions:
             - type:   set_value
               field:  picture
