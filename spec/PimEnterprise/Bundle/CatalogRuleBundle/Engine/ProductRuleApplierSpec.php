@@ -105,6 +105,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         // save products
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
+        $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
@@ -146,6 +147,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         // save products
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
+        $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
