@@ -11,7 +11,8 @@ use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Component\Resource\Model\SaverInterface;
 
 /**
- * Variant group writer, also copy variant group values to belonging products
+ * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job
+ * configuration) to avoid to hydrate all products related to all groups
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -39,9 +40,8 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      */
     public function __construct(SaverInterface $groupSaver, CacheClearer $cacheClearer)
     {
-        $this->groupSaver   = $groupSaver; // TODO could use bulk but can have issue when save products too
-        $this->cacheClearer = $cacheClearer; // TODO : useful ?
-        // TODO : versioning of products will be true by default ...
+        $this->groupSaver   = $groupSaver;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -109,7 +109,7 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     {
         $this->stepExecution->incrementSummaryInfo('update');
         if ($this->copyValuesOnProducts) {
-            // TODO : add a method in batch bundle
+            // TODO : add a method in batch bundle to know if a summary info is already defined
             $summary = $this->stepExecution->getSummary();
             $previousAmount = isset($summary['update_products']) ? $summary['update_products'] : 0;
             $previousAmount = is_numeric($previousAmount) ? $previousAmount : 0;
