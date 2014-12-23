@@ -6,24 +6,32 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Temporary command to import product templates
+ * Command to copy values of a variant group to products
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ApplyProductTemplateCommand extends ContainerAwareCommand
+class CopyVariantGroupValuesCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('pim:variant-group:apply-template');
+        $this
+            ->setName('pim:product:copy-variant-group-values')
+            ->setDescription('Copy variant group values in belonging products')
+            ->addArgument(
+                'code',
+                InputArgument::REQUIRED,
+                'Variant group code'
+            );
     }
 
     /**
@@ -31,27 +39,50 @@ class ApplyProductTemplateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $variantGroup = $this->getVariantGroup('akeneo_tshirt');
+        $code = $input->getArgument('code');
+        $variantGroup = $this->getVariantGroup($code);
+        if (!$variantGroup || $variantGroup->getType()->isVariant() === false) {
+            $output->writeln(sprintf('<error>Variant group "%s" is unknown<error>', $code));
+
+            return;
+        }
+
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
         $products = $products->count() > 0 ? $products->toArray() : [];
-
         $skipped = $this->apply($template, $products);
         $nbSkipped = count($skipped);
-        foreach ($skipped as $productIdentifier => $messages) {
-            $output->writeln(sprintf('<error>product "%s" is not valid<error>', $productIdentifier));
-            foreach ($messages as $message) {
-                $output->writeln(sprintf("<error>%s<error>", $message));
-            }
-        }
 
         $output->writeln(
             sprintf(
-                '<info>%d products in variant group "%s" have been updated<error>',
-                count($products) - $nbSkipped,
-                $variantGroup->getCode()
+                '<info>Following %s products have been updated<error>',
+                count($products) - $nbSkipped
             )
         );
+
+        foreach ($products as $product) {
+            $productIdentifier = (string) $product->getIdentifier();
+            if (in_array($productIdentifier, array_keys($skipped)) === false) {
+                $output->writeln(sprintf('<info> - "%s" has been updated<info>', $productIdentifier));
+            }
+
+        }
+
+        if ($nbSkipped > 0) {
+            $output->writeln(
+                sprintf(
+                    '<info>Following %s products have been skipped<error>',
+                    $nbSkipped
+                )
+            );
+        }
+
+        foreach ($skipped as $productIdentifier => $messages) {
+            $output->writeln(sprintf('<error> - "%s" is not valid<error>', $productIdentifier));
+            foreach ($messages as $message) {
+                $output->writeln(sprintf("<error>   - %s<error>", $message));
+            }
+        }
     }
 
     /**
