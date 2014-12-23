@@ -1022,7 +1022,6 @@ class FixturesContext extends RawMinkContext
                 $this->placeholderValues['%tmp%'],
                 substr(md5(rand()), 0, 7),
                 $extension
-
             );
         @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
