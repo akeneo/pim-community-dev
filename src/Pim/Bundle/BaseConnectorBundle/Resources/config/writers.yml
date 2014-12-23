@@ -44,8 +44,9 @@ services:
     pim_base_connector.writer.doctrine.variant_group_values:
         class: %pim_base_connector.writer.doctrine.variant_group_values.class%
         arguments:
-            - '@pim_catalog.saver.group'
-            - '@pim_transform.cache.product_cache_clearer'
+            - @pim_catalog.saver.group
+            - @pim_transform.cache.product_cache_clearer
+            - @pim_catalog.applier.product_template
 
     pim_base_connector.writer.doctrine:
         class: %pim_base_connector.writer.doctrine.class%

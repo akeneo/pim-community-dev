@@ -159,6 +159,7 @@ job_execution.summary:
     create: created
     update: updated
     update_products: updated products
+    skip_products: skipped products
     displayed: first warnings displayed
     charset_validator:
         title: File encoding:
