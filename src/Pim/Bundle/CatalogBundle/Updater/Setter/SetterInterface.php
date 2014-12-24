@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 
 /**
  * Sets a value in many products
@@ -22,6 +23,9 @@ interface SetterInterface
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope
+     *
+     * @throws InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null);
 
@@ -33,11 +37,4 @@ interface SetterInterface
      * @return boolean
      */
     public function supports(AttributeInterface $attribute);
-
-    /**
-     * Return the supported types of the attribute
-     *
-     * @return array
-     */
-    public function getSupportedTypes();
 }

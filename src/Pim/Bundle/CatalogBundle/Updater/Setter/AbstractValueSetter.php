@@ -2,7 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Abstract setter
@@ -16,6 +19,20 @@ abstract class AbstractValueSetter implements SetterInterface
     /** @var array */
     protected $supportedTypes = [];
 
+    /** @var AttributeValidatorHelper */
+    protected $attributeValidatorHelper;
+
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper
+    ) {
+        $this->productBuilder = $productBuilder;
+        $this->attributeValidatorHelper = $attributeValidatorHelper;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,10 +42,27 @@ abstract class AbstractValueSetter implements SetterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Check locale and scope are valid
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
+     * @param string             $type
+     *
+     * @throws InvalidArgumentException
      */
-    public function getSupportedTypes()
+    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {
-        return $this->supportedTypes;
+        try {
+            $this->attributeValidatorHelper->validateLocale($attribute, $locale);
+            $this->attributeValidatorHelper->validateScope($attribute, $scope);
+        } catch (\LogicException $e) {
+            throw InvalidArgumentException::expectedFromPreviousException(
+                $e,
+                $attribute->getCode(),
+                'setter',
+                $type
+            );
+        }
     }
 }

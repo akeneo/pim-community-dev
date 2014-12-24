@@ -5,18 +5,31 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class MetricValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, MetricFactory $factory, MeasureManager $measureManager)
-    {
-        $this->beConstructedWith($builder, $factory, $measureManager, ['pim_catalog_metric']);
+    function let(
+        ProductBuilderInterface $builder,
+        MetricFactory $factory,
+        MeasureManager $measureManager,
+        AttributeValidatorHelper $attributeValidatorHelper
+    ) {
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            $factory,
+            $measureManager,
+            ['pim_catalog_metric']
+        );
     }
 
     function it_is_a_setter()
@@ -35,16 +48,27 @@ class MetricValueSetterSpec extends ObjectBehavior
         $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_returns_supported_attributes_types()
-    {
-        $this->getSupportedTypes()->shouldReturn(['pim_catalog_metric']);
+    function it_checks_locale_and_scope_when_setting_a_value(
+        $attributeValidatorHelper,
+        $measureManager,
+        AttributeInterface $attribute
+    ) {
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attribute->getMetricFamily()->willReturn('Weight');
+
+        $measureManager->getUnitSymbolsForFamily('Weight')
+            ->shouldBeCalled()
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
+        ;
+
+        $data = ['data' => 107, 'unit' => 'KILOGRAM'];
+        $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
     }
 
     function it_throws_an_error_if_data_is_not_array(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 'Not an array';
@@ -57,8 +81,6 @@ class MetricValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_there_is_no_data_key_in_array(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = ['unit' => 'KILOGRAM'];
@@ -71,8 +93,6 @@ class MetricValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_there_is_no_unit_key_in_array(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = ['data' => 'data value'];
@@ -85,8 +105,6 @@ class MetricValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_a_number(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = ['data' => 'text', 'unit' => 'KILOGRAM'];
@@ -105,8 +123,6 @@ class MetricValueSetterSpec extends ObjectBehavior
     function it_throws_an_error_if_unit_is_not_a_string(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = ['data' => 42, 'unit' => 123];
@@ -126,8 +142,6 @@ class MetricValueSetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         $measureManager
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
 
@@ -165,8 +179,6 @@ class MetricValueSetterSpec extends ObjectBehavior
         $scope = 'mobile';
         $data = ['data' => 107, 'unit' => 'KILOGRAM'];
 
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
 

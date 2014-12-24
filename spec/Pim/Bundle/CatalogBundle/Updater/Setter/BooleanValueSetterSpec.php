@@ -4,16 +4,19 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class BooleanValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_boolean']);
+        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_boolean']);
     }
 
     function it_is_a_setter()
@@ -32,16 +35,19 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_returns_supported_attributes_types()
-    {
-        $this->getSupportedTypes()->shouldReturn(['pim_catalog_boolean']);
+    function it_checks_locale_and_scope_when_setting_a_value(
+        $attributeValidatorHelper,
+        AttributeInterface $attribute
+    ) {
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $this->setValue([], $attribute, true, 'fr_FR', 'mobile');
     }
 
     function it_throws_an_error_if_data_is_not_a_boolean(
         AttributeInterface $attribute
     ) {
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = 'not a boolean';
@@ -63,8 +69,6 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $scope = 'mobile';
         $data = true;
 
-        $attribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $attribute->isScopable()->shouldBeCalled()->willReturn(true);
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData($data)->shouldBeCalled();
 

@@ -1,4 +1,5 @@
 parameters:
+    pim_catalog.validator.helper.attribute.class:                    Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper
     pim_catalog.validator.constraint.valid_metric.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
     pim_catalog.validator.constraint.single_identifier.class:        Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
     pim_catalog.validator.constraint.unique_variant_axis.class:      Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
@@ -22,6 +23,14 @@ parameters:
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Bundle\CatalogBundle\Validator\Mapping\ProductValueMetadataFactory
 
 services:
+    # Helpers
+    pim_catalog.validator.helper.attribute:
+        class: %pim_catalog.validator.helper.attribute.class%
+        public: false
+        arguments:
+            - @pim_catalog.repository.locale
+            - @pim_catalog.repository.channel
+
     # Validators
     pim_catalog.validator.constraint.valid_metric:
         class: %pim_catalog.validator.constraint.valid_metric.class%

@@ -8,12 +8,14 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class BaseValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, ['foo', 'bar']);
+        $this->beConstructedWith($builder, $attributeValidatorHelper, ['foo', 'bar'], ['foo', 'bar']);
     }
 
     function it_is_a_copier()
@@ -45,6 +47,8 @@ class BaseValueCopierSpec extends ObjectBehavior
     }
 
     function it_copies_a_boolean_value_to_a_product_value(
+        $builder,
+        $attributeValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -52,21 +56,18 @@ class BaseValueCopierSpec extends ObjectBehavior
         ProductInterface $product3,
         ProductInterface $product4,
         ProductValue $fromProductValue,
-        ProductValue $toProductValue,
-        $builder
+        ProductValue $toProductValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn(true);
         $toProductValue->setData(true)->shouldBeCalledTimes(3);
@@ -91,6 +92,8 @@ class BaseValueCopierSpec extends ObjectBehavior
     }
 
     function it_copies__a_date_value_to_a_product_value(
+        $builder,
+        $attributeValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -98,21 +101,18 @@ class BaseValueCopierSpec extends ObjectBehavior
         ProductInterface $product3,
         ProductInterface $product4,
         ProductValue $fromProductValue,
-        ProductValue $toProductValue,
-        $builder
+        ProductValue $toProductValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn('1970-01-01');
         $toProductValue->setData('1970-01-01')->shouldBeCalledTimes(3);
@@ -137,6 +137,8 @@ class BaseValueCopierSpec extends ObjectBehavior
     }
 
     function it_copies_number_value_to_a_product_value(
+        $builder,
+        $attributeValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -144,21 +146,18 @@ class BaseValueCopierSpec extends ObjectBehavior
         ProductInterface $product3,
         ProductInterface $product4,
         ProductValue $fromProductValue,
-        ProductValue $toProductValue,
-        $builder
+        ProductValue $toProductValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn(123);
         $toProductValue->setData(123)->shouldBeCalledTimes(3);
@@ -183,6 +182,8 @@ class BaseValueCopierSpec extends ObjectBehavior
     }
 
     function it_copies_text_value_to_a_product_value(
+        $attributeValidatorHelper,
+        $builder,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -190,21 +191,18 @@ class BaseValueCopierSpec extends ObjectBehavior
         ProductInterface $product3,
         ProductInterface $product4,
         ProductValue $fromProductValue,
-        ProductValue $toProductValue,
-        $builder
+        ProductValue $toProductValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn('data');
         $toProductValue->setData('data')->shouldBeCalledTimes(3);
@@ -221,7 +219,9 @@ class BaseValueCopierSpec extends ObjectBehavior
         $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)
+            ->shouldBeCalledTimes(1)
+            ->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
 

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 
 /**
  * Copy a value from a field to another in many products
@@ -24,6 +25,9 @@ interface CopierInterface
      * @param string             $toLocale
      * @param string             $fromScope
      * @param string             $toScope
+     *
+     * @throws InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function copyValue(
         array $products,

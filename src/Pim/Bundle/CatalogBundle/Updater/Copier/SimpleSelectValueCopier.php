@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a simple select value attribute in other simple select value attribute
@@ -14,6 +16,23 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
  */
 class SimpleSelectValueCopier extends AbstractValueCopier
 {
+    /**
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param array                    $supportedFromTypes
+     * @param array                    $supportedToTypes
+     */
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
+        array $supportedFromTypes,
+        array $supportedToTypes
+    ) {
+        parent::__construct($productBuilder, $attributeValidatorHelper);
+        $this->supportedFromTypes = $supportedFromTypes;
+        $this->supportedToTypes = $supportedToTypes;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -26,41 +45,39 @@ class SimpleSelectValueCopier extends AbstractValueCopier
         $fromScope = null,
         $toScope = null
     ) {
-        AttributeUtility::validateLocale($fromAttribute, $fromLocale);
-        AttributeUtility::validateScope($fromAttribute, $fromScope);
-        AttributeUtility::validateLocale($toAttribute, $toLocale);
-        AttributeUtility::validateScope($toAttribute, $toScope);
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
 
         foreach ($products as $product) {
             $this->copySingleValue(
+                $product,
                 $fromAttribute,
                 $toAttribute,
                 $fromLocale,
                 $toLocale,
                 $fromScope,
-                $toScope,
-                $product
+                $toScope
             );
         }
     }
 
     /**
+     * @param ProductInterface   $product
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param $fromLocale
      * @param $toLocale
      * @param $fromScope
      * @param $toScope
-     * @param $product
      */
     protected function copySingleValue(
+        ProductInterface $product,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
         $toLocale,
         $fromScope,
-        $toScope,
-        $product
+        $toScope
     ) {
         $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {

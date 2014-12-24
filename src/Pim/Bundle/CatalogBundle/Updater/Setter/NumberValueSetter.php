@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Sets a number value in many products
@@ -17,16 +18,17 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
  */
 class NumberValueSetter extends AbstractValueSetter
 {
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
     /**
-     * @param ProductBuilder $productBuilder
-     * @param array          $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param array                    $supportedTypes
      */
-    public function __construct(ProductBuilder $productBuilder, array $supportedTypes)
-    {
-        $this->productBuilder = $productBuilder;
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
+        array $supportedTypes
+    ) {
+        parent::__construct($productBuilder, $attributeValidatorHelper);
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -35,8 +37,11 @@ class NumberValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeUtility::validateLocale($attribute, $locale);
-        AttributeUtility::validateScope($attribute, $scope);
+        if (null === $this->productBuilder) {
+            throw new \RuntimeException('The product builder should be set.');
+        }
+
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
         if (!is_numeric($data)) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number', gettype($data));

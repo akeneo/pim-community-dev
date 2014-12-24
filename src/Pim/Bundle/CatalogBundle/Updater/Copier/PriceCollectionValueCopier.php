@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a price collection value attribute in other price collection value attribute
@@ -16,6 +17,23 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
  */
 class PriceCollectionValueCopier extends AbstractValueCopier
 {
+    /**
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param array                    $supportedFromTypes
+     * @param array                    $supportedToTypes
+     */
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
+        array $supportedFromTypes,
+        array $supportedToTypes
+    ) {
+        parent::__construct($productBuilder, $attributeValidatorHelper);
+        $this->supportedFromTypes = $supportedFromTypes;
+        $this->supportedToTypes = $supportedToTypes;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,20 +46,18 @@ class PriceCollectionValueCopier extends AbstractValueCopier
         $fromScope = null,
         $toScope = null
     ) {
-        AttributeUtility::validateLocale($fromAttribute, $fromLocale);
-        AttributeUtility::validateScope($fromAttribute, $fromScope);
-        AttributeUtility::validateLocale($toAttribute, $toLocale);
-        AttributeUtility::validateScope($toAttribute, $toScope);
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
 
         foreach ($products as $product) {
             $this->copySingleValue(
+                $product,
                 $fromAttribute,
                 $toAttribute,
                 $fromLocale,
                 $toLocale,
                 $fromScope,
-                $toScope,
-                $product
+                $toScope
             );
         }
     }
@@ -49,22 +65,22 @@ class PriceCollectionValueCopier extends AbstractValueCopier
     /**
      * Copy single value
      *
+     * @param ProductInterface   $product
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
      * @param string             $toLocale
      * @param string             $fromScope
      * @param string             $toScope
-     * @param string             $product
      */
     protected function copySingleValue(
+        ProductInterface $product,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
         $toLocale,
         $fromScope,
-        $toScope,
-        $product
+        $toScope
     ) {
         $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {

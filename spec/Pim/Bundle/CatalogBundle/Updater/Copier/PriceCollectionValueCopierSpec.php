@@ -8,12 +8,19 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class PriceCollectionValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, ['pim_catalog_price_collection']);
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            ['pim_catalog_price_collection'],
+            ['pim_catalog_price_collection']
+        );
     }
 
     function it_is_a_copier()
@@ -42,6 +49,7 @@ class PriceCollectionValueCopierSpec extends ObjectBehavior
 
     function it_copies_a_price_collection_value_to_a_product_value(
         $builder,
+        $attributeValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -57,13 +65,11 @@ class PriceCollectionValueCopierSpec extends ObjectBehavior
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn([$price]);
 

@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Sets a simple select value in many products
@@ -18,23 +19,22 @@ use Pim\Bundle\CatalogBundle\Updater\Util\AttributeUtility;
  */
 class SimpleSelectValueSetter extends AbstractValueSetter
 {
-    /** @var ProductBuilder */
-    protected $productBuilder;
-
     /** @var AttributeOptionRepository */
     protected $attrOptionRepository;
 
     /**
-     * @param ProductBuilder            $productBuilder
+     * @param ProductBuilderInterface   $productBuilder
+     * @param AttributeValidatorHelper  $attributeValidatorHelper
      * @param AttributeOptionRepository $attrOptionRepository
      * @param array                     $supportedTypes
      */
     public function __construct(
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
+        AttributeValidatorHelper $attributeValidatorHelper,
         AttributeOptionRepository $attrOptionRepository,
         array $supportedTypes
     ) {
-        $this->productBuilder       = $productBuilder;
+        parent::__construct($productBuilder, $attributeValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
         $this->supportedTypes       = $supportedTypes;
     }
@@ -44,9 +44,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        AttributeUtility::validateLocale($attribute, $locale);
-        AttributeUtility::validateScope($attribute, $scope);
-
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'simple select');
         $this->checkData($attribute, $data);
 
         $attributeOption = $this->attrOptionRepository

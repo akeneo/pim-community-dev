@@ -9,12 +9,23 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class MetricValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, MetricFactory $metricFactory)
-    {
-        $this->beConstructedWith($builder, $metricFactory, ['pim_catalog_metric']);
+    function let(
+        ProductBuilder $builder,
+        AttributeValidatorHelper $attributeValidatorHelper,
+        MetricFactory $metricFactory
+    ) {
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            $metricFactory,
+            ['pim_catalog_metric'],
+            ['pim_catalog_metric']
+        );
     }
 
     function it_is_a_copier()
@@ -44,6 +55,7 @@ class MetricValueCopierSpec extends ObjectBehavior
     function it_copies_a_metric_value_to_a_product_value(
         $builder,
         $metricFactory,
+        $attributeValidatorHelper,
         MetricInterface $metric,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
@@ -60,15 +72,12 @@ class MetricValueCopierSpec extends ObjectBehavior
         $toScope = 'mobile';
         $fromScope = 'mobile';
 
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
-        $fromAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Weight');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
         $toAttribute->getCode()->willReturn('toAttributeCode');
-        $toAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Weight');
+
+        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attributeValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn($metric);
         $toProductValue->setMetric($metric)->shouldBeCalledTimes(2);
@@ -105,34 +114,5 @@ class MetricValueCopierSpec extends ObjectBehavior
         $products = [$product1, $product2, $product3, $product4];
 
         $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
-    }
-
-    function it_does_not_copy_a_metric_value_to_a_product_value_if_its_not_the_same_familly(
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
-        ProductInterface $product4
-    ) {
-        $fromLocale = 'fr_FR';
-        $toLocale = 'fr_FR';
-        $toScope = 'mobile';
-        $fromScope = 'mobile';
-
-        $fromAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->isScopable()->shouldBeCalled()->willReturn(true);
-        $fromAttribute->getCode()->willReturn('fromAttributeCode');
-        $fromAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Weight');
-
-        $toAttribute->isLocalizable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->isScopable()->shouldBeCalled()->willReturn(true);
-        $toAttribute->getCode()->willReturn('toAttributeCode');
-        $toAttribute->getMetricFamily()->shouldBeCalled()->willReturn('Time');
-
-        $products = [$product1, $product2, $product3, $product4];
-
-        $this->shouldThrow(new \LogicException('Metric families are not the same for attributes: "fromAttributeCode and toAttributeCode"'))
-            ->during('copyValue', [$products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope]);
     }
 }
