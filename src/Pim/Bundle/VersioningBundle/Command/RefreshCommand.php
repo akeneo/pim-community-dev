@@ -66,6 +66,7 @@ class RefreshCommand extends ContainerAwareCommand
 
         $batchSize = $input->getOption('batch-size');
 
+        $cacheClearer = $this->getCacheClearer();
         $om = $this->getObjectManager();
 
         $pendingVersions = $this->getVersionManager()
@@ -75,7 +76,6 @@ class RefreshCommand extends ContainerAwareCommand
         $nbPendings = count($pendingVersions);
 
         while ($nbPendings > 0) {
-
             $previousVersions = [];
             foreach ($pendingVersions as $pending) {
                 $key = sprintf('%s_%s', $pending->getResourceName(), $pending->getResourceId());
@@ -88,10 +88,9 @@ class RefreshCommand extends ContainerAwareCommand
                 }
 
                 $progress->advance();
-
             }
             $om->flush();
-            $om->clear($this->getVersionClass());
+            $cacheClearer->clear();
 
             $pendingVersions = $this->getVersionManager()
                 ->getVersionRepository()
@@ -138,6 +137,14 @@ class RefreshCommand extends ContainerAwareCommand
             ->getContainer()
             ->get('pim_catalog.doctrine.smart_manager_registry')
             ->getManagerForClass($this->getVersionClass());
+    }
+
+    /**
+     * @return CacheClearer
+     */
+    protected function getCacheClearer()
+    {
+        return $this->getContainer()->get('pim_transform.cache.product_cache_clearer');
     }
 
     /**

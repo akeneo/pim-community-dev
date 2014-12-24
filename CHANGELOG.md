@@ -122,6 +122,11 @@
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 
+# 1.2.x
+
+## Bug fixes
+- PIM-3556: Fix memory leak on versionning
+
 # 1.2.18 (2014-12-23)
 
 ## Bug fixes
