@@ -4,6 +4,23 @@ Feature: Execute an import
   As a product manager
   I need to be able to import variant group values in product values
 
+  # what's tested here ?
+  # -----------------------------|-------------|---------------|-------------
+  # TYPE                         | VALID VALID | INVALID VALUE | NULL VALUE
+  # -----------------------------|-------------|---------------|-------------
+  # pim_catalog_boolean          | TODO        | TODO          | TODO
+  # pim_catalog_date             | DONE        | TODO          | TODO
+  # pim_catalog_file             | TODO        | TODO          | TODO
+  # pim_catalog_identifier       | N/A         | N/A           | N/A
+  # pim_catalog_image            | TODO        | TODO          | TODO
+  # pim_catalog_metric           | TODO        | TODO          | TODO
+  # pim_catalog_multiselect      | TODO        | TODO          | TODO
+  # pim_catalog_number           | DONE        | TODO          | TODO
+  # pim_catalog_price_collection | DONE        | TODO          | TODO
+  # pim_catalog_simpleselect     | DONE        | TODO          | TODO
+  # pim_catalog_text             | DONE        | TODO          | TODO
+  # pim_catalog_textarea         | DONE        | TODO          | TODO
+
   Background:
     Given the "footwear" catalog configuration
     And the following products:

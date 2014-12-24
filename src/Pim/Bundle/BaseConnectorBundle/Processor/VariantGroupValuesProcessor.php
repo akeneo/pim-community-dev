@@ -86,12 +86,18 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($item)
     {
+        // extract values from raw data (csv) to validate them
         $variantGroup = $this->getVariantGroup($item);
-        $valueData = $this->prepareValuesData($item);
-        $values = $this->prepareValues($valueData);
+        $itemValuesData = $this->cleanItemData($item);
+        $values = $this->denormalizeValuesFromItemData($itemValuesData);
         $this->validateValues($values, $item);
+
+        // store values as product template format (json)
         $template = $this->getProductTemplate($variantGroup);
-        $template->setValuesData($valueData);
+        // TODO replace following line by $structuredValuesData = $this->normalizeValuesToStructuredData($values);
+        // once json implemented
+        $structuredValuesData = $itemValuesData;
+        $template->setValuesData($structuredValuesData);
 
         return $variantGroup;
     }
@@ -121,7 +127,6 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function getVariantGroup($item)
     {
-        // TODO detach when skip
         if (!isset($item[self::VARIANT_GROUP_CODE_FIELD])) {
             $this->stepExecution->incrementSummaryInfo('skip');
             throw new InvalidItemException("Variant group code must be provided", $item);
@@ -143,7 +148,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      *
      * @return array
      */
-    protected function prepareValuesData($item)
+    protected function cleanItemData($item)
     {
         unset($item[self::VARIANT_GROUP_CODE_FIELD]);
 
@@ -151,15 +156,14 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Prepare product value objects
+     * Prepare product value objects from CSV fields
      *
      * @param array $rawProductValues
      *
      * @return ProductValueInterface[]
      */
-    protected function prepareValues(array $rawProductValues)
+    protected function denormalizeValuesFromItemData(array $rawProductValues)
     {
-        // TODO, will use JSON format here, once implemented
         $productValues = [];
         foreach ($rawProductValues as $attFieldName => $dataValue) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
@@ -200,6 +204,17 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * @param ProductValueInterface[] $values
+     *
+     * @return array
+     */
+    protected function normalizeValuesToStructuredData(array $values)
+    {
+        // TODO: normalize to json once https://github.com/akeneo/pim-community-dev/pull/1934 merged
+        return null;
+    }
+
+    /**
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
      *
@@ -207,7 +222,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function skipItem($item, ConstraintViolationListInterface $violations)
     {
-        // TODO detach when skip
+        // TODO detach when skip ?
         $messages = [];
         foreach ($violations as $violation) {
             $messages[] = sprintf(
