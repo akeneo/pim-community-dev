@@ -47,14 +47,20 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      */
     public function update(ProductTemplateInterface $template, array $products)
     {
+        /**
+         * TODO once we'll use json format to store values, we'll be able to directly update products
+         * product updater uses json format too
+         *
+         * Replace all the following by `$updates = $template->getValuesData();`
+         */
         $rawValuesData = $template->getValuesData();
         $values = $this->denormalizeFromDB($rawValuesData);
-
-        // Apply the update on another products
         $updates = $this->normalizeToUpdate($values);
 
         // TODO unset identifier and axis updates and picture (not supported for now)
         // TODO should be filtered before to save
+        // TODO picture doesn't work
+        // TODO prices doesn't work
         $skippedAttributes = ['sku', 'main_color', 'secondary_color', 'clothing_size', 'picture'];
         foreach ($updates as $indexUpdate => $update) {
             if (in_array($update['attribute'], $skippedAttributes)) {
@@ -65,8 +71,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
             }
         }
 
-        // TODO picture doesnt work
-        // TODO prices doesnt work
+        /** end of stuff to replace, denormalizeFromDB and normalizeToUpdate will be dropped too */
 
         foreach ($updates as $update) {
             $this->productUpdater->setValue(
@@ -84,11 +89,10 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      *
      * @return ProductValueInterface[]
      *
-     * TODO : will be re-worked with json format
+     * TODO : will be dropped once json format used
      */
     protected function denormalizeFromDB(array $rawProductValues)
     {
-        // TODO : inject class
         $productValueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
         $productValues = [];
 
@@ -106,7 +110,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
             $productValues[] = $this->productValueNormalizer->denormalize(
                 $dataValue,
                 $productValueClass,
-                'csv', // TODO json is coming
+                'csv',
                 ['entity' => $value] + $attributeInfos
             );
         }
@@ -124,7 +128,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      *
      * @return array
      *
-     * TODO : will be re-worked with json format, could become useless (same format to store and apply updates)
+     * TODO : will be dropped once json format used
      */
     protected function normalizeToUpdate(ArrayCollection $productValues)
     {
