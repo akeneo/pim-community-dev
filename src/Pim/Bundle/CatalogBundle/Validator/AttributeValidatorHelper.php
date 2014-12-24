@@ -22,10 +22,10 @@ class AttributeValidatorHelper
     protected $scopeRepository;
 
     /** @var array */
-    protected static $localeCodes = [];
+    protected static $localeCodes;
 
     /** @var array */
-    protected static $scopeCodes = [];
+    protected static $scopeCodes;
 
     /**
      * @param LocaleRepository  $localeRepository
@@ -47,6 +47,10 @@ class AttributeValidatorHelper
      */
     public function validateLocale(AttributeInterface $attribute, $locale)
     {
+        if (!$attribute->isLocalizable() && null === $locale) {
+            return;
+        }
+
         if ($attribute->isLocalizable() && null === $locale) {
             throw new \LogicException(
                 sprintf(
@@ -55,6 +59,7 @@ class AttributeValidatorHelper
                 )
             );
         }
+
         if (!$attribute->isLocalizable() && null !== $locale) {
             throw new \LogicException(
                 sprintf(
@@ -65,11 +70,11 @@ class AttributeValidatorHelper
             );
         }
 
-        if (empty(self::$localeCodes)) {
-            self::$localeCodes = $this->getActivatedLocaleCodes();
+        if (null === static::$localeCodes) {
+            static::$localeCodes = $this->getActivatedLocaleCodes();
         }
 
-        if (!in_array($locale, self::$localeCodes)) {
+        if (!in_array($locale, static::$localeCodes)) {
             throw new \LogicException(
                 sprintf(
                     'Attribute "%s" expects an existing and activated locale, "%s" given.',
@@ -111,6 +116,10 @@ class AttributeValidatorHelper
      */
     public function validateScope(AttributeInterface $attribute, $scope)
     {
+        if (!$attribute->isScopable() && null === $scope) {
+            return;
+        }
+
         if ($attribute->isScopable() && null === $scope) {
             throw new \LogicException(
                 sprintf(
@@ -119,6 +128,7 @@ class AttributeValidatorHelper
                 )
             );
         }
+
         if (!$attribute->isScopable() && null !== $scope) {
             throw new \LogicException(
                 sprintf(
@@ -129,11 +139,11 @@ class AttributeValidatorHelper
             );
         }
 
-        if (empty(self::$scopeCodes)) {
-            self::$scopeCodes = $this->getScopeCodes();
+        if (null === static::$scopeCodes) {
+            static::$scopeCodes = $this->getScopeCodes();
         }
 
-        if (!in_array($scope, self::$scopeCodes)) {
+        if (!in_array($scope, static::$scopeCodes)) {
             throw new \LogicException(
                 sprintf(
                     'Attribute "%s" expects an existing scope, "%s" given.',
