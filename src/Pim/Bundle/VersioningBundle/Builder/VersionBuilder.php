@@ -126,21 +126,21 @@ class VersionBuilder
      */
     protected function mergeSnapshots(array $oldSnapshot, array $newSnapshot)
     {
-        $newSnapshot = array_map(
+        $localNewSnapshot = array_map(
             function ($newItem) {
                 return ['new' => $newItem];
             },
             $newSnapshot
         );
 
-        $oldSnapshot = array_map(
+        $localOldSnapshot = array_map(
             function ($oldItem) {
                 return ['old' => $oldItem];
             },
             $oldSnapshot
         );
 
-        $mergedSnapshot = array_merge_recursive($newSnapshot, $oldSnapshot);
+        $mergedSnapshot = array_merge_recursive($localNewSnapshot, $localOldSnapshot);
 
         return array_map(
             function ($mergedItem) {
