@@ -18,11 +18,11 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         CurrencyManager $currencyManager,
-        AttributeValidatorHelper $attributeValidatorHelper
+        AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             $currencyManager,
             ['pim_catalog_price_collection']
         );
@@ -45,12 +45,12 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
     }
 
     function it_checks_locale_and_scope_when_setting_a_value(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         $currencyManager,
         AttributeInterface $attribute
     ) {
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
         $data = [['data' => 123.2, 'currency' => 'EUR']];

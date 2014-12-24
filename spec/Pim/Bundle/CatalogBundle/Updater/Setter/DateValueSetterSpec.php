@@ -14,9 +14,9 @@ use Prophecy\Argument;
 
 class DateValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_date']);
+        $this->beConstructedWith($builder, $attrValidatorHelper, ['pim_catalog_date']);
     }
 
     function it_is_a_setter()
@@ -36,11 +36,11 @@ class DateValueSetterSpec extends ObjectBehavior
     }
 
     function it_checks_locale_and_scope_when_setting_a_value(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $this->setValue([], $attribute, '1970-01-01', 'fr_FR', 'mobile');
     }

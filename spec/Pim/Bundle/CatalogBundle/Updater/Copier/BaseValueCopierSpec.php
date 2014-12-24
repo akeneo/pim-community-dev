@@ -13,9 +13,9 @@ use Prophecy\Argument;
 
 class BaseValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith($builder, $attributeValidatorHelper, ['foo', 'bar'], ['foo', 'bar']);
+        $this->beConstructedWith($builder, $attrValidatorHelper, ['foo', 'bar'], ['foo', 'bar']);
     }
 
     function it_is_a_copier()
@@ -48,7 +48,7 @@ class BaseValueCopierSpec extends ObjectBehavior
 
     function it_copies_a_boolean_value_to_a_product_value(
         $builder,
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -66,8 +66,8 @@ class BaseValueCopierSpec extends ObjectBehavior
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn(true);
         $toProductValue->setData(true)->shouldBeCalledTimes(3);
@@ -93,7 +93,7 @@ class BaseValueCopierSpec extends ObjectBehavior
 
     function it_copies__a_date_value_to_a_product_value(
         $builder,
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -111,8 +111,8 @@ class BaseValueCopierSpec extends ObjectBehavior
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn('1970-01-01');
         $toProductValue->setData('1970-01-01')->shouldBeCalledTimes(3);
@@ -138,7 +138,7 @@ class BaseValueCopierSpec extends ObjectBehavior
 
     function it_copies_number_value_to_a_product_value(
         $builder,
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -156,8 +156,8 @@ class BaseValueCopierSpec extends ObjectBehavior
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn(123);
         $toProductValue->setData(123)->shouldBeCalledTimes(3);
@@ -182,7 +182,7 @@ class BaseValueCopierSpec extends ObjectBehavior
     }
 
     function it_copies_text_value_to_a_product_value(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         $builder,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
@@ -201,8 +201,8 @@ class BaseValueCopierSpec extends ObjectBehavior
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn('data');
         $toProductValue->setData('data')->shouldBeCalledTimes(3);

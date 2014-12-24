@@ -25,17 +25,17 @@ class MultiSelectValueSetter extends AbstractValueSetter
 
     /**
      * @param ProductBuilderInterface   $productBuilder
-     * @param AttributeValidatorHelper  $attributeValidatorHelper
+     * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param AttributeOptionRepository $attrOptionRepository
      * @param array                     $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         AttributeOptionRepository $attrOptionRepository,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attributeValidatorHelper);
+        parent::__construct($productBuilder, $attrValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
         $this->supportedTypes       = $supportedTypes;
     }

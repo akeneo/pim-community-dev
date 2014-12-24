@@ -12,10 +12,10 @@ use Prophecy\Argument;
 
 class AbstractValueSetterSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Setter\ConcreteValueSetter');
-        $this->beConstructedWith($productBuilder, $attributeValidatorHelper);
+        $this->beConstructedWith($productBuilder, $attrValidatorHelper);
     }
 
     function it_is_a_setter()
@@ -24,14 +24,14 @@ class AbstractValueSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_locale_is_expected(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
         $e = new \LogicException('Attribute "attributeCode" expects a locale, none given.');
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->isLocalizable()->willReturn(true);
-        $attributeValidatorHelper->validateLocale($attribute, null)->willThrow($e);
+        $attrValidatorHelper->validateLocale($attribute, null)->willThrow($e);
 
         $this->shouldThrow(
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
@@ -39,14 +39,14 @@ class AbstractValueSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_locale_is_not_expected(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
         $e = new \LogicException('Attribute "attributeCode" does not expect a locale, "en_US" given.');
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->isLocalizable()->willReturn(false);
-        $attributeValidatorHelper->validateLocale($attribute, 'en_US')->willThrow($e);
+        $attrValidatorHelper->validateLocale($attribute, 'en_US')->willThrow($e);
 
         $this->shouldThrow(
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
@@ -54,14 +54,14 @@ class AbstractValueSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_locale_is_expected_but_not_activated(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
         $e = new \LogicException('Attribute "attributeCode" expects an existing and activated locale, "uz-UZ" given.');
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->isLocalizable()->willReturn(true);
-        $attributeValidatorHelper->validateLocale($attribute, 'uz-UZ')->willThrow($e);
+        $attrValidatorHelper->validateLocale($attribute, 'uz-UZ')->willThrow($e);
 
         $this->shouldThrow(
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
@@ -69,7 +69,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_scope_is_expected(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
         $e = new \LogicException('Attribute "attributeCode" expects a scope, none given.');
@@ -77,8 +77,8 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
-        $attributeValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($attribute, null)->willThrow($e);
+        $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, null)->willThrow($e);
 
         $this->shouldThrow(
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
@@ -86,7 +86,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_scope_is_not_expected(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
         $e = new \LogicException('Attribute "attributeCode" does not expect a scope, "ecommerce" given.');
@@ -94,8 +94,8 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-        $attributeValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
+        $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
 
         $this->shouldThrow(
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')
@@ -103,7 +103,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_scope_is_expected_but_not_existing(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
         $e = new \LogicException('Attribute "attributeCode" expects an existing scope, "ecommerce" given.');
@@ -111,8 +111,8 @@ class AbstractValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
-        $attributeValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
-        $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
+        $attrValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, 'ecommerce')->willThrow($e);
 
         $this->shouldThrow(
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'setter', 'concrete')

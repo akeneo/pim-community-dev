@@ -21,11 +21,11 @@ class MetricValueSetterSpec extends ObjectBehavior
         ProductBuilderInterface $builder,
         MetricFactory $factory,
         MeasureManager $measureManager,
-        AttributeValidatorHelper $attributeValidatorHelper
+        AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             $factory,
             $measureManager,
             ['pim_catalog_metric']
@@ -49,12 +49,12 @@ class MetricValueSetterSpec extends ObjectBehavior
     }
 
     function it_checks_locale_and_scope_when_setting_a_value(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         $measureManager,
         AttributeInterface $attribute
     ) {
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
         $attribute->getMetricFamily()->willReturn('Weight');
 
         $measureManager->getUnitSymbolsForFamily('Weight')

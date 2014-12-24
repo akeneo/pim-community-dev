@@ -24,17 +24,17 @@ class PriceCollectionValueSetter extends AbstractValueSetter
 
     /**
      * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param AttributeValidatorHelper $attrValidatorHelper
      * @param CurrencyManager          $currencyManager
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         CurrencyManager $currencyManager,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attributeValidatorHelper);
+        parent::__construct($productBuilder, $attrValidatorHelper);
         $this->currencyManager = $currencyManager;
         $this->supportedTypes  = $supportedTypes;
     }

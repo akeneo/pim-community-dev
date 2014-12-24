@@ -16,12 +16,12 @@ class MetricValueCopierSpec extends ObjectBehavior
 {
     function let(
         ProductBuilder $builder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         MetricFactory $metricFactory
     ) {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             $metricFactory,
             ['pim_catalog_metric'],
             ['pim_catalog_metric']
@@ -55,7 +55,7 @@ class MetricValueCopierSpec extends ObjectBehavior
     function it_copies_a_metric_value_to_a_product_value(
         $builder,
         $metricFactory,
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         MetricInterface $metric,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
@@ -75,9 +75,9 @@ class MetricValueCopierSpec extends ObjectBehavior
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn($metric);
         $toProductValue->setMetric($metric)->shouldBeCalledTimes(2);
