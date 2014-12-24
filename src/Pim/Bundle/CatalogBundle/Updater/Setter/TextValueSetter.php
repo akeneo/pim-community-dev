@@ -36,7 +36,7 @@ class TextValueSetter extends AbstractValueSetter
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'text');
 
-        if (!is_string($data)) {
+        if (null !== $data && !is_string($data)) {
             throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
                 'setter',
