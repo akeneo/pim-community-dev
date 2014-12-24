@@ -34,6 +34,11 @@
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
 - Remove the `is_default` from fixtures for attribute options
 
+# 1.0.10 (2014-12-23)
+
+## Bug fixes
+- PIM-3533: Fix wrong keys being generated for empty price attributes in normalized product snapshots to fix the revert of product versions
+
 # 1.0.9 (2014-12-17)
 
 ## Improvements
@@ -89,14 +94,14 @@
 - Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
 
 ## Improvements
-- Setup relationships of published products with interfaces in order to easy overriding
 
 ## BC breaks
 
 # 1.0.1 (2014-09-10)
 
 ## Bug fixes
-- Fixed problem on view rights on attribute groups which were not displayed on family configuration
+
+## Improvements
 
 ## BC breaks
 
