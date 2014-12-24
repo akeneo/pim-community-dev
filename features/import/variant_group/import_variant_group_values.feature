@@ -121,12 +121,11 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | destocking_date | 2015-12-14T00:00:00+0100 |
 
-  @skip not implemented, waiting for json denormalization #TODO must return a boolean to be use in updater
-  Scenario: Successfully import a csv file of variant group values with booleans
+  Scenario: Successfully import a csv file of variant group values with booleans (to true)
     Given the following CSV file to import:
     """
     variant_group_code;handmade
-    SANDAL;true
+    SANDAL;1
     """
     And the following job "footwear_variant_group_values_import" configuration:
       | filePath | %file to import% |
@@ -135,9 +134,26 @@ Feature: Execute an import
     And I wait for the "footwear_variant_group_values_import" job to finish
     Then there should be 6 products
     And the product "sandal-white-37" should have the following value:
-      | handmade | true |
+      | handmade | 1 |
     And the product "sandal-white-38" should have the following value:
-      | handmade | true |
+      | handmade | 1 |
+
+  Scenario: Successfully import a csv file of variant group values with booleans (to false)
+    Given the following CSV file to import:
+    """
+    variant_group_code;handmade
+    SANDAL;0
+    """
+    And the following job "footwear_variant_group_values_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_variant_group_values_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_variant_group_values_import" job to finish
+    Then there should be 6 products
+    And the product "sandal-white-37" should have the following value:
+      | handmade | |
+    And the product "sandal-white-38" should have the following value:
+      | handmade | |
 
   @skip not implemented, waiting for json denormalization #TODO
   Scenario: Successfully import a csv file of variant group values with prices
