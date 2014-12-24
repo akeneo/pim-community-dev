@@ -124,8 +124,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_ordered_options_with_a_option_collection_data(
-        AbstractProductValue $value,
-        AbstractAttribute $multiColorAttribute,
+        ProductValueInterface $value,
+        AttributeInterface $multiColorAttribute,
         SerializerInterface $serializer,
         AttributeOption $redOption,
         AttributeOption $blueOption,
