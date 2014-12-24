@@ -103,7 +103,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($collection);
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
-        $simpleAttribute->getBackendType()->willReturn('options');
+        $simpleAttribute->getBackendType()->willReturn('prices');
 
         $serializer->normalize($collection, 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
@@ -117,9 +117,42 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($array);
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
-        $simpleAttribute->getBackendType()->willReturn('options');
+        $simpleAttribute->getBackendType()->willReturn('prices');
 
         $serializer->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
+    }
+
+    function it_normalizes_a_value_with_ordered_options_with_a_option_collection_data(
+        ProductValueInterface $value,
+        AttributeInterface $multiColorAttribute,
+        SerializerInterface $serializer,
+        AttributeOption $redOption,
+        AttributeOption $blueOption,
+        ArrayCollection $collection
+    ) {
+        $collection->toArray()->willReturn([$redOption, $blueOption]);
+        $collection->isEmpty()->willReturn(false);
+        $value->getData()->willReturn($collection);
+        $value->getAttribute()->willReturn($multiColorAttribute);
+        $value->getLocale()->willReturn('en_US');
+        $multiColorAttribute->getCode()->willReturn('colors');
+        $multiColorAttribute->isLocaleSpecific()->willReturn(false);
+        $multiColorAttribute->isLocalizable()->willReturn(false);
+        $multiColorAttribute->isScopable()->willReturn(false);
+        $multiColorAttribute->getBackendType()->willReturn('options');
+        $redOption->getSortOrder()->willReturn(10)->shouldBeCalled();
+        $blueOption->getSortOrder()->willReturn(11)->shouldBeCalled();
+
+        // phpspec raises this php bug https://bugs.php.net/bug.php?id=50688,
+        // warning: usort(): Array was modified by the user comparison function in ProductValueNormalizer.php line 178
+        $previousReporting = error_reporting();
+        error_reporting(0);
+        $serializer->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'flat', ['field_name' => 'colors'])
+            ->shouldBeCalled()
+            ->willReturn(['colors' => 'red, blue']);
+
+        $this->normalize($value, 'flat', [])->shouldReturn(['colors' => 'red, blue']);
+        error_reporting($previousReporting);
     }
 }

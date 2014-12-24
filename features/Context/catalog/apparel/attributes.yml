@@ -381,42 +381,49 @@ attributes:
                     en_GB: Black
                     fr_FR: Noir
                     de_DE: Schwarz
+                sortOrder: 1
             additional_white:
                 labels:
                     en_US: White
                     en_GB: White
                     fr_FR: Blanc
                     de_DE: Weiß
+                sortOrder: 2
             additional_gray:
                 labels:
                     en_US: Gray
                     en_GB: Grey
                     fr_FR: Gris
                     de_DE: Grau
+                sortOrder: 3
             additional_red:
                 labels:
                     en_US: Red
                     en_GB: Red
                     fr_FR: Rouge
                     de_DE: Rot
+                sortOrder: 4
             additional_blue:
                 labels:
                     en_US: Blue
                     en_GB: Blue
                     fr_FR: Bleu
                     de_DE: Blau
+                sortOrder: 5
             additional_green:
                 labels:
                     en_US: Green
                     en_GB: Green
                     fr_FR: Vert
                     de_DE: Grün
+                sortOrder: 6
             additional_yellow:
                 labels:
                     en_US: Yellow
                     en_GB: Yellow
                     fr_FR: Jaune
                     de_DE: Gelb
+                sortOrder: 7
     manufacturer:
         labels:
             en_US: Manufacturer
