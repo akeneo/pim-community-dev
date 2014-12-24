@@ -35,11 +35,6 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_returns_supported_attributes_types()
-    {
-        $this->getSupportedTypes()->shouldReturn(['pim_catalog_boolean']);
-    }
-
     function it_checks_locale_and_scope_when_setting_a_value(
         $attributeValidatorHelper,
         AttributeInterface $attribute

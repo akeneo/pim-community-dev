@@ -48,11 +48,6 @@ class MetricValueSetterSpec extends ObjectBehavior
         $this->supports($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_returns_supported_attributes_types()
-    {
-        $this->getSupportedTypes()->shouldReturn(['pim_catalog_metric']);
-    }
-
     function it_checks_locale_and_scope_when_setting_a_value(
         $attributeValidatorHelper,
         $measureManager,

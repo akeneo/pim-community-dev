@@ -42,14 +42,6 @@ abstract class AbstractValueSetter implements SetterInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getSupportedTypes()
-    {
-        return $this->supportedTypes;
-    }
-
-    /**
      * Check locale and scope are valid
      *
      * @param AttributeInterface $attribute
