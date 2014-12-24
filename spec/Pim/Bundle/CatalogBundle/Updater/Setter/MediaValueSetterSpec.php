@@ -20,11 +20,11 @@ class MediaValueSetterSpec extends ObjectBehavior
         ProductBuilderInterface $builder,
         MediaManager $manager,
         MediaFactory $mediaFactory,
-        AttributeValidatorHelper $attributeValidatorHelper
+        AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             $manager,
             $mediaFactory,
             ['pim_catalog_file', 'pim_catalog_image']
@@ -57,11 +57,11 @@ class MediaValueSetterSpec extends ObjectBehavior
     }
 
     function it_checks_locale_and_scope_when_setting_a_value(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $data = [
             'originalFilename' => 'image.jpg',

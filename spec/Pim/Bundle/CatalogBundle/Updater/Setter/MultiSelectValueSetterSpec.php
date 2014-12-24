@@ -19,11 +19,11 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         AttributeOptionRepository $attrOptionRepository,
-        AttributeValidatorHelper $attributeValidatorHelper
+        AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             $attrOptionRepository,
             ['pim_catalog_multiselect']
         );
@@ -46,13 +46,13 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
     }
 
     function it_checks_locale_and_scope_when_setting_a_value(
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         $attrOptionRepository,
         AttributeInterface $attribute,
         AttributeOption $attributeOption
     ) {
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
         $attributeOption->getCode()->willReturn('attributeOptionCode');
 
         $attrOptionRepository

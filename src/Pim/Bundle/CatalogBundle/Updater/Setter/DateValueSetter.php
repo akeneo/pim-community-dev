@@ -19,15 +19,15 @@ class DateValueSetter extends AbstractValueSetter
 {
     /**
      * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param AttributeValidatorHelper $attrValidatorHelper
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attributeValidatorHelper);
+        parent::__construct($productBuilder, $attrValidatorHelper);
         $this->supportedTypes = $supportedTypes;
     }
 

@@ -22,10 +22,10 @@ class TextValueSetter extends AbstractValueSetter
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attributeValidatorHelper);
+        parent::__construct($productBuilder, $attrValidatorHelper);
         $this->supportedTypes = $supportedTypes;
     }
 

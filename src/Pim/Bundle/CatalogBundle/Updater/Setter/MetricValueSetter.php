@@ -28,19 +28,19 @@ class MetricValueSetter extends AbstractValueSetter
 
     /**
      * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MetricFactory            $metricFactory
      * @param MeasureManager           $measureManager
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         MetricFactory $metricFactory,
         MeasureManager $measureManager,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attributeValidatorHelper);
+        parent::__construct($productBuilder, $attrValidatorHelper);
         $this->metricFactory  = $metricFactory;
         $this->measureManager = $measureManager;
         $this->supportedTypes = $supportedTypes;

@@ -13,11 +13,11 @@ use Prophecy\Argument;
 
 class SimpleSelectValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             ['pim_catalog_simpleselect'],
             ['pim_catalog_simpleselect']
         );
@@ -58,7 +58,7 @@ class SimpleSelectValueCopierSpec extends ObjectBehavior
 
     function it_copies_simple_select_value_to_a_product_value(
         $builder,
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -77,8 +77,8 @@ class SimpleSelectValueCopierSpec extends ObjectBehavior
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn($attributeOption);
         $toProductValue->setOption($attributeOption)->shouldBeCalledTimes(3);

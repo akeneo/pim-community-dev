@@ -13,11 +13,11 @@ use Prophecy\Argument;
 
 class MultiSelectValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             ['pim_catalog_multiselect'],
             ['pim_catalog_multiselect']
         );
@@ -58,7 +58,7 @@ class MultiSelectValueCopierSpec extends ObjectBehavior
 
     function it_copies_multi_select_value_to_a_product_value(
         $builder,
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -78,8 +78,8 @@ class MultiSelectValueCopierSpec extends ObjectBehavior
 
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getOptions()->willReturn([$attributeOption])->shouldBeCalled(3);
 

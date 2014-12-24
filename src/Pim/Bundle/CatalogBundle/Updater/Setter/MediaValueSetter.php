@@ -29,19 +29,19 @@ class MediaValueSetter extends AbstractValueSetter
 
     /**
      * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MediaManager             $manager
      * @param MediaFactory             $mediaFactory
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         MediaManager $manager,
         MediaFactory $mediaFactory,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attributeValidatorHelper);
+        parent::__construct($productBuilder, $attrValidatorHelper);
         $this->mediaManager   = $manager;
         $this->mediaFactory   = $mediaFactory;
         $this->supportedTypes = $supportedTypes;

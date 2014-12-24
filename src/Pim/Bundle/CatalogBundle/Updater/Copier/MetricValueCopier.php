@@ -22,19 +22,19 @@ class MetricValueCopier extends AbstractValueCopier
 
     /**
      * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MetricFactory            $metricFactory
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper,
+        AttributeValidatorHelper $attrValidatorHelper,
         MetricFactory $metricFactory,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
-        parent::__construct($productBuilder, $attributeValidatorHelper);
+        parent::__construct($productBuilder, $attrValidatorHelper);
         $this->metricFactory  = $metricFactory;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
@@ -54,7 +54,7 @@ class MetricValueCopier extends AbstractValueCopier
     ) {
         $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
-        $this->attributeValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
+        $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
 
         foreach ($products as $product) {
             $this->copySingleValue(

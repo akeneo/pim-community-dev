@@ -13,11 +13,11 @@ use Prophecy\Argument;
 
 class PriceCollectionValueCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
+    function let(ProductBuilder $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $builder,
-            $attributeValidatorHelper,
+            $attrValidatorHelper,
             ['pim_catalog_price_collection'],
             ['pim_catalog_price_collection']
         );
@@ -49,7 +49,7 @@ class PriceCollectionValueCopierSpec extends ObjectBehavior
 
     function it_copies_a_price_collection_value_to_a_product_value(
         $builder,
-        $attributeValidatorHelper,
+        $attrValidatorHelper,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -68,8 +68,8 @@ class PriceCollectionValueCopierSpec extends ObjectBehavior
         $fromAttribute->getCode()->willReturn('fromAttributeCode');
         $toAttribute->getCode()->willReturn('toAttributeCode');
 
-        $attributeValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attributeValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $fromProductValue->getData()->willReturn([$price]);
 

@@ -27,18 +27,18 @@ abstract class AbstractValueCopier implements CopierInterface
     protected $productBuilder;
 
     /** @var AttributeValidatorHelper */
-    protected $attributeValidatorHelper;
+    protected $attrValidatorHelper;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attributeValidatorHelper
+     * @param AttributeValidatorHelper $attrValidatorHelper
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper
+        AttributeValidatorHelper $attrValidatorHelper
     ) {
-        $this->productBuilder           = $productBuilder;
-        $this->attributeValidatorHelper = $attributeValidatorHelper;
+        $this->productBuilder      = $productBuilder;
+        $this->attrValidatorHelper = $attrValidatorHelper;
     }
 
     /**
@@ -65,8 +65,8 @@ abstract class AbstractValueCopier implements CopierInterface
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {
         try {
-            $this->attributeValidatorHelper->validateLocale($attribute, $locale);
-            $this->attributeValidatorHelper->validateScope($attribute, $scope);
+            $this->attrValidatorHelper->validateLocale($attribute, $locale);
+            $this->attrValidatorHelper->validateScope($attribute, $scope);
         } catch (\LogicException $e) {
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
@@ -92,7 +92,7 @@ abstract class AbstractValueCopier implements CopierInterface
         $type
     ) {
         try {
-            $this->attributeValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
+            $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
         } catch (\LogicException $e) {
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,

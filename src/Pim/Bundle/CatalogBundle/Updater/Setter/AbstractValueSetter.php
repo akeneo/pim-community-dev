@@ -20,17 +20,17 @@ abstract class AbstractValueSetter implements SetterInterface
     protected $supportedTypes = [];
 
     /** @var AttributeValidatorHelper */
-    protected $attributeValidatorHelper;
+    protected $attrValidatorHelper;
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     public function __construct(
         ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attributeValidatorHelper
+        AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->productBuilder = $productBuilder;
-        $this->attributeValidatorHelper = $attributeValidatorHelper;
+        $this->attrValidatorHelper = $attrValidatorHelper;
     }
 
     /**
@@ -54,8 +54,8 @@ abstract class AbstractValueSetter implements SetterInterface
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {
         try {
-            $this->attributeValidatorHelper->validateLocale($attribute, $locale);
-            $this->attributeValidatorHelper->validateScope($attribute, $scope);
+            $this->attrValidatorHelper->validateLocale($attribute, $locale);
+            $this->attrValidatorHelper->validateScope($attribute, $scope);
         } catch (\LogicException $e) {
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
