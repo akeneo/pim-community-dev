@@ -15,7 +15,12 @@ class MultiSelectValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_multiselect']);
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            ['pim_catalog_multiselect'],
+            ['pim_catalog_multiselect']
+        );
     }
 
     function it_is_a_copier()

@@ -15,7 +15,7 @@ class BaseValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, $attributeValidatorHelper, ['foo', 'bar']);
+        $this->beConstructedWith($builder, $attributeValidatorHelper, ['foo', 'bar'], ['foo', 'bar']);
     }
 
     function it_is_a_copier()

@@ -139,6 +139,7 @@ services:
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - ['pim_catalog_text']
+            - ['pim_catalog_text']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
@@ -146,6 +147,7 @@ services:
         class: %pim_catalog.updater.copier.textarea_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - ['pim_catalog_textarea']
             - ['pim_catalog_textarea']
         tags:
             - { name: 'pim_catalog.updater.copier' }
@@ -155,6 +157,7 @@ services:
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - ['pim_catalog_boolean']
+            - ['pim_catalog_boolean']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
@@ -163,6 +166,7 @@ services:
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - ['pim_catalog_number']
+            - ['pim_catalog_number']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
@@ -170,6 +174,7 @@ services:
         class: %pim_catalog.updater.copier.date_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - ['pim_catalog_date']
             - ['pim_catalog_date']
         tags:
             - { name: 'pim_catalog.updater.copier' }
@@ -180,6 +185,7 @@ services:
         arguments:
             - @pim_catalog.factory.metric
             - ['pim_catalog_metric']
+            - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
@@ -187,6 +193,7 @@ services:
         class: %pim_catalog.updater.copier.simpleselect_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - ['pim_catalog_simpleselect']
             - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.copier' }
@@ -196,6 +203,7 @@ services:
         parent: pim_catalog.updater.copier.abstract
         arguments:
             - ['pim_catalog_multiselect']
+            - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
@@ -203,6 +211,7 @@ services:
         class: %pim_catalog.updater.copier.price_collection_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
+            - ['pim_catalog_price_collection']
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.copier' }

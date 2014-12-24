@@ -20,15 +20,18 @@ class MultiSelectValueCopier extends AbstractValueCopier
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attributeValidatorHelper
-     * @param array                    $supportedTypes
+     * @param array                    $supportedFromTypes
+     * @param array                    $supportedToTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attributeValidatorHelper,
-        array $supportedTypes
+        array $supportedFromTypes,
+        array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attributeValidatorHelper);
-        $this->supportedTypes = $supportedTypes;
+        $this->supportedFromTypes = $supportedFromTypes;
+        $this->supportedToTypes = $supportedToTypes;
     }
 
     /**

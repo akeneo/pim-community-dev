@@ -15,7 +15,12 @@ class SimpleSelectValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_simpleselect']);
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            ['pim_catalog_simpleselect'],
+            ['pim_catalog_simpleselect']
+        );
     }
 
     function it_is_a_copier()

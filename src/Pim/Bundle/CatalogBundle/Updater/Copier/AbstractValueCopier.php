@@ -18,7 +18,10 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 abstract class AbstractValueCopier implements CopierInterface
 {
     /** @var array */
-    protected $supportedTypes = [];
+    protected $supportedFromTypes = [];
+
+    /** @var array */
+    protected $supportedToTypes = [];
 
     /** @var ProductBuilder */
     protected $productBuilder;
@@ -43,18 +46,10 @@ abstract class AbstractValueCopier implements CopierInterface
      */
     public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
-        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedTypes);
-        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedTypes);
+        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
+        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
 
         return $supportsFrom && $supportsTo;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedTypes()
-    {
-        return $this->supportedTypes;
     }
 
     /**

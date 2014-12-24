@@ -19,7 +19,13 @@ class MetricValueCopierSpec extends ObjectBehavior
         AttributeValidatorHelper $attributeValidatorHelper,
         MetricFactory $metricFactory
     ) {
-        $this->beConstructedWith($builder, $attributeValidatorHelper, $metricFactory, ['pim_catalog_metric']);
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            $metricFactory,
+            ['pim_catalog_metric'],
+            ['pim_catalog_metric']
+        );
     }
 
     function it_is_a_copier()

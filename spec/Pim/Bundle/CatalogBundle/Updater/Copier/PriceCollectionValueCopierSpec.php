@@ -15,7 +15,12 @@ class PriceCollectionValueCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilder $builder, AttributeValidatorHelper $attributeValidatorHelper)
     {
-        $this->beConstructedWith($builder, $attributeValidatorHelper, ['pim_catalog_price_collection']);
+        $this->beConstructedWith(
+            $builder,
+            $attributeValidatorHelper,
+            ['pim_catalog_price_collection'],
+            ['pim_catalog_price_collection']
+        );
     }
 
     function it_is_a_copier()
