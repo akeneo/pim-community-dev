@@ -12,7 +12,7 @@ Feature: Import groups
       | code           | label       | type    | attributes  |
       | ORO_TSHIRT     | Oro T-shirt | VARIANT | size, color |
       | AKENEO_VARIANT | Akeneo      | VARIANT | size        |
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR;type;attributes
     default;;;RELATED;
@@ -42,7 +42,7 @@ Feature: Import groups
       | code           | label       | type    | attributes |
       | ORO_TSHIRT     | Oro T-shirt | VARIANT | size       |
       | AKENEO_VARIANT | Akeneo      | VARIANT | size       |
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR;type;attributes
     AKENEO_VARIANT;;;RELATED;size
@@ -65,7 +65,7 @@ Feature: Import groups
       | code           | label       | type    | attributes |
       | ORO_TSHIRT     | Oro T-shirt | VARIANT | size       |
       | AKENEO_VARIANT | Akeneo      | VARIANT | size       |
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR;type;attributes
     ORO_TSHIRT;Oro T-shirt;;VARIANT;size,color
@@ -86,7 +86,7 @@ Feature: Import groups
   Scenario: Fail to import products groups with no attributes
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR;type;attributes
     ORO_TSHIRT;Oro T-Shirt;Oro T-Shirt;VARIANT;
@@ -105,7 +105,7 @@ Feature: Import groups
     And the following product groups:
       | code           | label       | type    | attributes  |
       | ORO_TSHIRT     | Oro T-shirt | VARIANT | size, color |
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR;type;attributes
     ;Akeneo T-Shirt;T-Shirt Akeneo;VARIANT;color,size

@@ -3,13 +3,12 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
@@ -55,8 +54,8 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         Channel $ecommerce,
         Channel $mobile,
         AttributeRepository $attributeRepository,
-        AbstractAttribute $name,
-        AbstractAttribute $description,
+        AttributeInterface $name,
+        AttributeInterface $description,
         AttributeRequirementFactory $factory,
         AttributeRequirement $r1,
         AttributeRequirement $r2,

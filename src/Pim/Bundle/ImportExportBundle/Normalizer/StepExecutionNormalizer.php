@@ -138,7 +138,7 @@ class StepExecutionNormalizer implements NormalizerInterface
      *
      * @param integer $status
      *
-     * @return array
+     * @return string
      */
     protected function normalizeStatus($status)
     {

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Attribute group normalizer

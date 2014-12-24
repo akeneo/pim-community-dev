@@ -1,0 +1,61 @@
+datagrid:
+    pim-user-group-grid:
+        options:
+            entityHint: group
+        source:
+            acl_resource: oro_user_group_view
+            type: orm
+            query:
+                select:
+                    - g.id
+                    - g.name
+                from:
+                    - { table: OroUserBundle:Group, alias: g }
+                where:
+                    and:
+                        - g.name <> '%oro_user.entity.class%::GROUP_DEFAULT'
+        columns:
+            name:
+                label: oro.user.grid.groups.columns.name
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_user_group_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_api_delete_group
+                params:
+                    - id
+
+        actions:
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_group_update
+                rowAction:     true
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  oro_user_group_remove
+
+        sorters:
+            columns:
+                name:
+                    data_name: g.name
+            default:
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: g.name

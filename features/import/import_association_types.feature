@@ -7,7 +7,7 @@ Feature: Import association types
   Scenario: Successfully import association types
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR
     default;;
@@ -29,7 +29,7 @@ Feature: Import association types
   Scenario: Skip association types with empty code
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR
     ;label US; label FR

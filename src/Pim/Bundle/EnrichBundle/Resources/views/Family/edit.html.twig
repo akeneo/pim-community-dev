@@ -38,26 +38,13 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_navbar(['Properties', 'Attributes', 'History']) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
         <div class="tab-content">
 
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="properties">
-                {% set generalProperties %}
-                    {{ form_row(form.code) }}
-                    {{ form_row(form.attributeAsLabel) }}
-                {% endset %}
-
-                {{ elements.accordion({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.locale_values': form_row(form.label) }) }}
-            </div>
-
-            <div class="tab-pane" id="attributes">
-                {% include 'PimEnrichBundle:Family:_attributeRequirements.html.twig' %}
-            </div>
-
-            <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_family_history', {id: form.vars.value.id}) }}"></div>
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
 
         </div>
     {{ form_end(form) }}

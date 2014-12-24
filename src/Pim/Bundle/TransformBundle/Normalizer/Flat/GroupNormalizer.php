@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * A normalizer to transform a group entity into a flat array
@@ -22,7 +22,7 @@ class GroupNormalizer extends Structured\GroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(Group $group)
+    protected function normalizeAttributes(GroupInterface $group)
     {
         $attributes = parent::normalizeAttributes($group);
 

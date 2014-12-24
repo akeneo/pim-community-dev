@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Test related class
@@ -17,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
 class GroupTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Group
+     * @var GroupInterface
      */
     protected $group;
 
@@ -206,7 +207,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert entity
      *
-     * @param Group $entity
+     * @param GroupInterface $entity
      */
     protected function assertEntity($entity)
     {

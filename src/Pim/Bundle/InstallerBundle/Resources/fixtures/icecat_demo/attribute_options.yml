@@ -188,7 +188,6 @@ options:
         code: white
         attribute: main_color
         labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
-        default: 1
         sortOrder: 1
     black_main:
         code: black
@@ -350,3 +349,13 @@ options:
         attribute: tshirt_style
         labels: { fr_FR: 'Manches courtes', en_US: 'Short sleeve', de_DE: 'Kurze Ärmel' }
         sortOrder: 6
+    canon_brand:
+        code: canon_brand
+        attribute: camera_brand
+        labels: { fr_FR: 'Canon', en_US: 'Canon', de_DE: 'Canon' }
+        sortOrder: 1
+    nikon_brand:
+        code: nikon_brand
+        attribute: camera_brand
+        labels: { fr_FR: 'Nikon', en_US: 'Nikon', de_DE: 'Nikon' }
+        sortOrder: 2

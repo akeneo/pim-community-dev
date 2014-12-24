@@ -2,12 +2,11 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class LocalizableSubscriberSpec extends ObjectBehavior
 {
@@ -26,7 +25,7 @@ class LocalizableSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn(['postLoad']);
     }
 
-    function it_configures_the_product_locale($context, LifecycleEventArgs $args, AbstractProduct $product)
+    function it_configures_the_product_locale($context, LifecycleEventArgs $args, ProductInterface $product)
     {
         $args->getObject()->willReturn($product);
         $context->hasLocaleCode()->willReturn(true);

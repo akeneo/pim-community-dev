@@ -2,16 +2,15 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 use Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\BaseSelector;
 
 class OptionSelectorSpec extends ObjectBehavior
 {
-     function let(BaseSelector $predecessor)
+    function let(BaseSelector $predecessor)
     {
         $this->beConstructedWith($predecessor);
     }

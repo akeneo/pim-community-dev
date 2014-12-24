@@ -2,12 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Resource\Model\SaverInterface;
+use Pim\Component\Resource\Model\BulkSaverInterface;
+use Pim\Component\Resource\Model\RemoverInterface;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 
 /**
  * Attribute manager
@@ -16,16 +21,10 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager
+class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInterface
 {
     /** @var string */
     protected $attributeClass;
-
-    /** @var string */
-    protected $optionClass;
-
-    /** @var string */
-    protected $optionValueClass;
 
     /** @var string */
     protected $productClass;
@@ -33,8 +32,8 @@ class AttributeManager
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var AttributeTypeFactory */
-    protected $factory;
+    /** @var AttributeTypeRegistry */
+    protected $registry;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -42,30 +41,24 @@ class AttributeManager
     /**
      * Constructor
      *
-     * @param string                   $attributeClass   Attribute class
-     * @param string                   $optionClass      Option class
-     * @param string                   $optionValueClass Option value class
-     * @param string                   $productClass     Product class
-     * @param ObjectManager            $objectManager    Object manager
-     * @param AttributeTypeFactory     $factory          Attribute type factory
-     * @param EventDispatcherInterface $eventDispatcher  Event dispatcher
+     * @param string                   $attributeClass  Attribute class
+     * @param string                   $productClass    Product class
+     * @param ObjectManager            $objectManager   Object manager
+     * @param AttributeTypeRegistry    $registry        Attribute type registry
+     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
     public function __construct(
         $attributeClass,
-        $optionClass,
-        $optionValueClass,
         $productClass,
         ObjectManager $objectManager,
-        AttributeTypeFactory $factory,
+        AttributeTypeRegistry $registry,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->attributeClass   = $attributeClass;
-        $this->optionClass      = $optionClass;
-        $this->optionValueClass = $optionValueClass;
-        $this->productClass     = $productClass;
-        $this->objectManager    = $objectManager;
-        $this->factory          = $factory;
-        $this->eventDispatcher  = $eventDispatcher;
+        $this->attributeClass  = $attributeClass;
+        $this->productClass    = $productClass;
+        $this->objectManager   = $objectManager;
+        $this->registry        = $registry;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -73,7 +66,7 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     public function createAttribute($type = null)
     {
@@ -82,36 +75,12 @@ class AttributeManager
         $attribute->setEntityType($this->productClass);
 
         if ($type) {
-            $attributeType = $this->factory->get($type);
+            $attributeType = $this->registry->get($type);
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setAttributeType($attributeType->getName());
         }
 
         return $attribute;
-    }
-
-    /**
-     * Create an attribute option
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
-     */
-    public function createAttributeOption()
-    {
-        $class = $this->optionClass;
-
-        return new $class();
-    }
-
-    /**
-     * Create an attribute option value
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
-     */
-    public function createAttributeOptionValue()
-    {
-        $class = $this->optionValueClass;
-
-        return new $class();
     }
 
     /**
@@ -125,23 +94,13 @@ class AttributeManager
     }
 
     /**
-     * Get the attribute option FQCN
-     *
-     * @return string
-     */
-    public function getAttributeOptionClass()
-    {
-        return $this->optionClass;
-    }
-
-    /**
      * Get a list of available attribute types
      *
      * @return string[]
      */
     public function getAttributeTypes()
     {
-        $types = $this->factory->getAttributeTypes($this->productClass);
+        $types = $this->registry->getAliases();
         $choices = array();
         foreach ($types as $type) {
             $choices[$type] = $type;
@@ -152,15 +111,102 @@ class AttributeManager
     }
 
     /**
-     * Remove an attribute
-     *
-     * @param AbstractAttribute $attribute
+     * {@inheritdoc}
      */
-    public function remove(AbstractAttribute $attribute)
+    public function save($object, array $options = [])
     {
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($attribute));
+        if (!$object instanceof AttributeInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
 
-        $this->objectManager->remove($attribute);
+        $options = array_merge(['flush' => true], $options);
+        $this->objectManager->persist($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush($object);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $objects, array $options = [])
+    {
+        $options = array_merge(['flush' => true], $options);
+        foreach ($objects as $object) {
+            $this->save($object, ['flush' => false]);
+        }
+
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($object, array $options = [])
+    {
+        if (!$object instanceof AttributeInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($object));
+
+        $this->objectManager->remove($object);
+        if (true === $options['flush']) {
+            $this->objectManager->flush();
+        }
+
+        $this->eventDispatcher->dispatch(AttributeEvents::POST_REMOVE, new GenericEvent($object));
+    }
+
+    /**
+     * Update attribute option sorting
+     *
+     * @param AttributeInterface $attribute
+     * @param array              $sorting
+     */
+    public function updateSorting(AttributeInterface $attribute, array $sorting = [])
+    {
+        foreach ($attribute->getOptions() as $option) {
+            if (isset($sorting[$option->getId()])) {
+                $option->setSortOrder($sorting[$option->getId()]);
+            } else {
+                $option->setSortOrder(0);
+            }
+
+            $this->objectManager->persist($option);
+        }
+
         $this->objectManager->flush();
+    }
+
+    /**
+     * Get an attribute or throw an exception
+     * @param integer $id
+     *
+     * @return AttributeInterface
+     * @throws EntityNotFoundException
+     */
+    public function getAttribute($id)
+    {
+        $attribute = $this->objectManager->find($this->getAttributeClass(), $id);
+
+        if (null === $attribute) {
+            throw new EntityNotFoundException();
+        }
+
+        return $attribute;
     }
 }

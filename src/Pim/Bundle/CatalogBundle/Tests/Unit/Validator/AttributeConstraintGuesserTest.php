@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Symfony\Component\Validator\Constraints;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
+use Symfony\Component\Validator\Constraints;
 
 /**
  * Test related class
@@ -68,7 +68,7 @@ class AttributeConstraintGuesserTest extends \PHPUnit_Framework_TestCase
             $options
         );
 
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\AbstractAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Model\AttributeInterface');
 
         $attribute->expects($this->any())
             ->method('getBackendType')

@@ -7,12 +7,12 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\TransformBundle\Converter\MetricConverter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reads products one by one

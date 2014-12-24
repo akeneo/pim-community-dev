@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
@@ -44,12 +44,12 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     protected $translations;
 
     /**
-     * @var datetime $created
+     * @var \DateTime $created
      */
     protected $created;
 
     /**
-     * @var datetime $updated
+     * @var \DateTime $updated
      */
     protected $updated;
 
@@ -112,7 +112,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     /**
      * Get created datetime
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -122,7 +122,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     /**
      * Set created datetime
      *
-     * @param datetime $created
+     * @param \DateTime $created
      *
      * @return TimestampableInterface
      */
@@ -136,7 +136,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     /**
      * Get updated datetime
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -146,7 +146,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     /**
      * Set updated datetime
      *
-     * @param datetime $updated
+     * @param \DateTime $updated
      *
      * @return TimestampableInterface
      */

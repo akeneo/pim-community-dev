@@ -36,12 +36,21 @@
                 <hr />
             {% endif %}
         </div>
-
-    {% else %}
-
-        {{ 'pim_enrich.mass_edit_action.edit-common-attributes.empty'|trans }}
-
     {% endfor %}
+
+    {% set attributeCount = form.operation.vars.data.commonAttributes|length %}
+    {% if attributeCount == 0 %}
+        {% set alertClass = 'info' %}
+        {% set alertMessage = 'pim_enrich.mass_edit_action.edit-common-attributes.message.warning'|trans %}
+    {% endif %}
+
+    {% if alertClass is defined and alertMessage is defined %}
+        <div class="alert alert-{{ alertClass }}">
+            <div class="message">
+                <ul><li>{{ alertMessage }}</li></ul>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock %}
 

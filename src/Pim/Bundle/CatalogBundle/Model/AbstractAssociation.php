@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Abstract association entity
@@ -16,36 +15,24 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  *
  * @ExclusionPolicy("all")
  */
-abstract class AbstractAssociation implements ReferableInterface
+abstract class AbstractAssociation implements AssociationInterface
 {
-    /**
-     * @var integer
-     */
+    /** @var int|string */
     protected $id;
 
-    /**
-     * @var AssociationType $associationType
-     */
+    /** @var AssociationType */
     protected $associationType;
 
-    /**
-     * @var ProductInterface $owner
-     */
+    /** @var ProductInterface */
     protected $owner;
 
-    /**
-     * @var ProductInterface[] $products
-     */
+    /** @var ProductInterface[] */
     protected $products;
 
-    /**
-     * @var Group[] $groups
-     */
+    /** @var GroupInterface[] */
     protected $groups;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $groupIds = [];
 
     /**
@@ -58,9 +45,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -68,11 +53,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Set association type
-     *
-     * @param AssociationType $associationType
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
     public function setAssociationType(AssociationType $associationType)
     {
@@ -82,9 +63,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Get association type
-     *
-     * @return AssociationType
+     * {@inheritdoc}
      */
     public function getAssociationType()
     {
@@ -92,11 +71,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Set owner
-     *
-     * @param ProductInterface $owner
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
     public function setOwner(ProductInterface $owner)
     {
@@ -109,9 +84,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Get owner
-     *
-     * @return ProductInterface
+     * {@inheritdoc}
      */
     public function getOwner()
     {
@@ -119,11 +92,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Set products
-     *
-     * @param ProductInterface[] $products
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
     public function setProducts($products)
     {
@@ -133,9 +102,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Get products
-     *
-     * @return ProductInterface[]|ArrayCollection
+     * {@inheritdoc}
      */
     public function getProducts()
     {
@@ -143,11 +110,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Add a product
-     *
-     * @param ProductInterface $product
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
     public function addProduct(ProductInterface $product)
     {
@@ -159,11 +122,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Has a product
-     *
-     * @param ProductInterface $product
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasProduct(ProductInterface $product)
     {
@@ -171,11 +130,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Remove a product
-     *
-     * @param ProductInterface $product
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -185,11 +140,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Set groups
-     *
-     * @param Group[] $groups
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
     public function setGroups($groups)
     {
@@ -199,9 +150,7 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Get groups
-     *
-     * @return Group[]
+     * {@inheritdoc}
      */
     public function getGroups()
     {
@@ -209,13 +158,9 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Add a group
-     *
-     * @param Group $group
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
-    public function addGroup(Group $group)
+    public function addGroup(GroupInterface $group)
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -225,13 +170,9 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
-     * Remove a group
-     *
-     * @param Group $group
-     *
-     * @return AbstractAssociation
+     * {@inheritdoc}
      */
-    public function removeGroup(Group $group)
+    public function removeGroup(GroupInterface $group)
     {
         $this->groups->removeElement($group);
 

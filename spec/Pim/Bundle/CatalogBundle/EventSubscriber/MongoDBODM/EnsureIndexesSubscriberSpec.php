@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -36,7 +36,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_unique_attribute_insert(
         $indexCreator,
-        AbstractAttribute $ean,
+        AttributeInterface $ean,
         LifecycleEventArgs $args
     ) {
         $ean->isUseableAsGridFilter()->willReturn(false);
@@ -52,7 +52,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_unique_attribute_update(
         $indexCreator,
-        AbstractAttribute $ean,
+        AttributeInterface $ean,
         LifecycleEventArgs $args
     ) {
         $ean->isUseableAsGridFilter()->willReturn(false);
@@ -68,7 +68,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_identifier_attribute_insert(
         $indexCreator,
-        AbstractAttribute $sku,
+        AttributeInterface $sku,
         LifecycleEventArgs $args
     ) {
         $sku->isUseableAsGridFilter()->willReturn(false);
@@ -84,7 +84,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_identifier_attribute_update(
         $indexCreator,
-        AbstractAttribute $sku,
+        AttributeInterface $sku,
         LifecycleEventArgs $args
     ) {
         $sku->isUseableAsGridFilter()->willReturn(false);
@@ -100,7 +100,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_filterable_attribute_insert(
         $indexCreator,
-        AbstractAttribute $name,
+        AttributeInterface $name,
         LifecycleEventArgs $args
     ) {
         $name->isUseableAsGridFilter()->willReturn(true);
@@ -116,7 +116,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_filterable_attribute_update(
         $indexCreator,
-        AbstractAttribute $name,
+        AttributeInterface $name,
         LifecycleEventArgs $args
     ) {
         $name->isUseableAsGridFilter()->willReturn(true);
@@ -132,7 +132,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_does_not_generates_indexes_for_other_attribute_insert(
         $indexCreator,
-        AbstractAttribute $description,
+        AttributeInterface $description,
         LifecycleEventArgs $args
     ) {
         $description->isUseableAsGridFilter()->willReturn(false);
@@ -148,7 +148,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_does_not_generates_indexes_for_other_attribute_update(
         $indexCreator,
-        AbstractAttribute $description,
+        AttributeInterface $description,
         LifecycleEventArgs $args
     ) {
         $description->isUseableAsGridFilter()->willReturn(false);
@@ -252,7 +252,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_removes_indexes_for_attribute_when_removing_it(
         $indexPurger,
-        AbstractAttribute $name,
+        AttributeInterface $name,
         LifecycleEventArgs $args
     ) {
         $name->isUseableAsGridFilter()->willReturn(true);

@@ -2,19 +2,18 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
-use Doctrine\ORM\EntityManager;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr\From;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Doctrine\ORM\QueryBuilder;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Doctrine\ORM\Query\Expr\From;
+use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 
 class ORMProductReaderSpec extends ObjectBehavior
 {

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Pim Catalog Bundle
@@ -51,11 +51,14 @@ class PimCatalogBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
+            ->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass())
             ->addCompilerPass(new Compiler\ResolveDoctrineTargetRepositoriesPass())
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
-            ->addCompilerPass(new Compiler\AddAttributeTypeCompilerPass())
-            ->addCompilerPass(new Compiler\RegisterQueryGeneratorsPass());
+            ->addCompilerPass(new Compiler\RegisterAttributeTypePass())
+            ->addCompilerPass(new Compiler\RegisterQueryGeneratorsPass())
+            ->addCompilerPass(new Compiler\RegisterProductQueryFilterPass())
+            ->addCompilerPass(new Compiler\RegisterProductQuerySorterPass())
+            ->addCompilerPass(new Compiler\RegisterProductUpdaterPass());
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
