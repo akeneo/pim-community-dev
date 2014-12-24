@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -12,9 +13,9 @@ use Prophecy\Argument;
  */
 class FamilyFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb)
+    function let(Builder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith(['family'], ['IN', 'NOT IN']);
+        $this->beConstructedWith($objectIdResolver, ['family.id', 'family.code'], ['IN', 'NOT IN']);
         $this->setQueryBuilder($qb);
     }
 
@@ -52,7 +53,7 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_content_of_array_is_not_integer_or_empty()
     {
-        $this->shouldThrow(InvalidArgumentException::integerExpected('family', 'filter', 'family'))
+        $this->shouldThrow(InvalidArgumentException::numericExpected('family', 'filter', 'family'))
             ->during('addFieldFilter', ['family', 'IN', [1, 2, 'WRONG']]);
     }
 }

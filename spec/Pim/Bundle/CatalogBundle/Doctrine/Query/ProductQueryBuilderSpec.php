@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {
-    function let(CustomAttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, QueryBuilder $qb)
+    function let(AttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, QueryBuilder $qb)
     {
         $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry, ['locale' => 'en_US', 'scope' => 'print']);
         $this->setQueryBuilder($qb);
@@ -30,7 +30,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
     {
-        $repository->findOneByCode('id')->willReturn(null);
+        $repository->findOneBy(['code' => 'id'])->willReturn(null);
         $filterRegistry->getFieldFilter('id')->willReturn($filter);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
@@ -41,18 +41,18 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_adds_an_attribute_filter($repository, $filterRegistry, AttributeFilterInterface $filter, AttributeInterface $attribute)
     {
-        $repository->findOneByCode('sku')->willReturn($attribute);
+        $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
         $filterRegistry->getAttributeFilter($attribute)->willReturn($filter);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $filter->addAttributeFilter($attribute, '=', '42', 'en_US', 'print')->shouldBeCalled();
+        $filter->addAttributeFilter($attribute, '=', '42', 'en_US', 'print', ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku'])->shouldBeCalled();
 
         $this->addFilter('sku', '=', '42', []);
     }
 
     function it_adds_a_field_sorter($repository, $sorterRegistry, FieldSorterInterface $sorter)
     {
-        $repository->findOneByCode('id')->willReturn(null);
+        $repository->findOneBy(['code' => 'id'])->willReturn(null);
         $sorterRegistry->getFieldSorter('id')->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
         $sorter->addFieldSorter( 'id', 'DESC', 'en_US', 'print')->shouldBeCalled();
@@ -62,7 +62,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_adds_an_attribute_sorter($repository, $sorterRegistry, AttributeSorterInterface $sorter, AttributeInterface $attribute)
     {
-        $repository->findOneByCode('sku')->willReturn($attribute);
+        $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
         $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
         $sorter->addAttributeSorter($attribute, 'DESC', 'en_US', 'print')->shouldBeCalled();
@@ -86,13 +86,5 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $query->execute()->shouldBeCalled();
 
         $this->execute();
-    }
-}
-
-class CustomAttributeRepository extends AttributeRepository
-{
-    public function findOneByCode()
-    {
-        return null;
     }
 }

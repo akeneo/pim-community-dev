@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
@@ -59,14 +60,20 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $this->addFieldFilter($field, $operator, $value, $locale, $scope);
+        $this->addFieldFilter($field, $operator, $value, $locale, $scope, $options);
 
         return $this;
     }
@@ -74,13 +81,13 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean');
         }
 
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, FieldFilterHelper::getCode($field));
 
         $this->qb->field($field)->equals($value);
 

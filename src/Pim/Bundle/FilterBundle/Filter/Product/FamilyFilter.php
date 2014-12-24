@@ -19,7 +19,7 @@ class FamilyFilter extends AjaxChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $dataSource, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -27,9 +27,9 @@ class FamilyFilter extends AjaxChoiceFilter
         }
 
         if (Operators::IS_EMPTY === strtoupper($data['type'])) {
-            $this->util->applyFilter($ds, 'family', Operators::IS_EMPTY, null);
+            $this->util->applyFilter($dataSource, 'family.id', Operators::IS_EMPTY, null);
         } else {
-            $this->util->applyFilter($ds, 'family', Operators::IN_LIST, $data['value']);
+            $this->util->applyFilter($dataSource, 'family.id', Operators::IN_LIST, $data['value']);
         }
 
         return true;

@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Prophecy\Argument;
 
 /**
@@ -14,9 +15,9 @@ use Prophecy\Argument;
  */
 class OptionsFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb)
+    function let(Builder $qb, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith(['pim_catalog_multiselect'], ['IN', 'EMPTY']);
+        $this->beConstructedWith($objectIdResolver, ['pim_catalog_multiselect'], ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -53,7 +54,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
         $qb->addAnd($expr)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'IN', ['118', '270']);
+        $this->addAttributeFilter($attribute, 'IN', ['118', '270'], null, null, ['field' => 'options_code.id']);
     }
 
     function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
@@ -68,7 +69,7 @@ class OptionsFilterSpec extends ObjectBehavior
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $qb->addAnd($expr)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'EMPTY', null);
+        $this->addAttributeFilter($attribute, 'EMPTY', null, null, null, ['field' => 'options_code.id']);
     }
 
     function it_adds_a_not_in_filter_to_the_query($qb, AttributeInterface $attribute, Expr $expr)
@@ -82,20 +83,20 @@ class OptionsFilterSpec extends ObjectBehavior
         $qb->field('normalizedData.options_code')->shouldBeCalled()->willReturn($qb);
         $qb->notIn(['118', '270'])->shouldBeCalled()->willReturn($qb);
 
-        $this->addAttributeFilter($attribute, 'NOT IN', ['118', '270']);
+        $this->addAttributeFilter($attribute, 'NOT IN', ['118', '270'], null, null, ['field' => 'options_code.id']);
     }
 
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)
     {
-        $attribute->getCode()->willReturn('option_code');
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('option_code', 'filter', 'options'))
-            ->during('addAttributeFilter', [$attribute, 'IN', 'WRONG']);
+        $attribute->getCode()->willReturn('options_code');
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('options_code', 'filter', 'options'))
+            ->during('addAttributeFilter', [$attribute, 'IN', 'WRONG', null, null, ['field' => 'options_code.id']]);
     }
 
     function it_throws_an_exception_if_the_content_of_value_are_not_numeric(AttributeInterface $attribute)
     {
-        $attribute->getCode()->willReturn('option_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('option_code', 'filter', 'options'))
-            ->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric']]);
+        $attribute->getCode()->willReturn('options_code');
+        $this->shouldThrow(InvalidArgumentException::numericExpected('options_code', 'filter', 'options'))
+            ->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric'], null, null, ['field' => 'options_code.id']]);
     }
 }

@@ -41,7 +41,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $tree->getId()->willReturn(1);
         $repo->find(1)->willReturn($tree);
         $repo->getAllChildrenIds($tree)->willReturn([2, 3]);
-        $utility->applyFilter($datasource, 'categories', 'NOT IN', [2, 3])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'NOT IN', [2, 3])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => -1, 'treeId' => 1]]);
     }
@@ -56,7 +56,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $manager->getCategoryRepository()->willReturn($repo);
         $repo->find(42)->willReturn($category);
         $category->getId()->willReturn(42);
-        $utility->applyFilter($datasource, 'categories', 'IN', [42])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'IN', [42])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => false]);
     }
@@ -74,7 +74,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $repo->find(42)->willReturn($category);
         $repo->getAllChildrenIds($category)->willReturn([2, 3]);
 
-        $utility->applyFilter($datasource, 'categories', 'IN', [2, 3, 42])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'IN', [2, 3, 42])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => true]);
     }

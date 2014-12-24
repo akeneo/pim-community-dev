@@ -12,24 +12,24 @@ services:
         class: %pim_catalog.doctrine.query.product_query_factory.class%
         arguments:
             - '%pim_catalog.doctrine.query.product_query_builder.class%'
-            - '@pim_catalog.object_manager.product'
+            - @pim_catalog.object_manager.product
             - '%pim_catalog.entity.product.class%'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.doctrine.query.filter_registry'
-            - '@pim_catalog.doctrine.query.sorter_registry'
+            - @pim_catalog.repository.attribute
+            - @pim_catalog.doctrine.query.filter_registry
+            - @pim_catalog.doctrine.query.sorter_registry
 
     # deprecated : will be removed in 1.4
     pim_catalog.doctrine.product_query_builder:
         class: %pim_catalog.doctrine.query.product_query_builder.class%
         arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.doctrine.query.filter_registry'
-            - '@pim_catalog.doctrine.query.sorter_registry'
+            - @pim_catalog.repository.attribute
+            - @pim_catalog.doctrine.query.filter_registry
+            - @pim_catalog.doctrine.query.sorter_registry
 
     pim_catalog.doctrine.query.filter_registry:
         class: %pim_catalog.doctrine.query.filter_registry.class%
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - @pim_catalog.repository.attribute
 
     pim_catalog.doctrine.query.sorter_registry:
         class: %pim_catalog.doctrine.query.sorter_registry.class%
@@ -37,21 +37,22 @@ services:
     pim_catalog.doctrine.query.field_filter_dumper:
         class: %pim_catalog.doctrine.query.field_filter_dumper.class%
         arguments:
-            - '@pim_catalog.doctrine.query.filter_registry'
+            - @pim_catalog.doctrine.query.filter_registry
 
     pim_catalog.doctrine.query.attribute_filter_dumper:
         class: %pim_catalog.doctrine.query.attribute_filter_dumper.class%
         arguments:
-            - '@pim_catalog.doctrine.query.filter_registry'
-            - '@pim_catalog.repository.attribute'
+            - @pim_catalog.doctrine.query.filter_registry
+            - @pim_catalog.repository.attribute
 
     # PQB common filter
     pim_catalog.doctrine.query.filter.category:
         class: %pim_catalog.doctrine.query.filter.category.class%
         arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.repository.product_category'
-            - ['categories']
+            - @pim_catalog.repository.category
+            - @pim_catalog.repository.product_category
+            - @pim_catalog.resolver.object_id
+            - ['categories.id', 'categories.code']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
@@ -102,6 +103,7 @@ services:
     pim_catalog.doctrine.query.filter.option:
         class: %pim_catalog.doctrine.query.filter.option.class%
         arguments:
+            - @pim_catalog.resolver.object_id
             - ['pim_catalog_simpleselect']
             - ['IN', 'EMPTY']
         tags:
@@ -110,6 +112,7 @@ services:
     pim_catalog.doctrine.query.filter.options:
         class: %pim_catalog.doctrine.query.filter.options.class%
         arguments:
+            - @pim_catalog.resolver.object_id
             - ['pim_catalog_multiselect']
             - ['IN', 'EMPTY']
         tags:

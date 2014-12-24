@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * String filter
@@ -20,6 +21,9 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     /** @var array */
     protected $supportedAttributes;
 
+    /** @var OptionsResolver */
+    protected $resolver;
+
     /**
      * Instanciate the filter
      *
@@ -32,6 +36,9 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     ) {
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
     /**
@@ -45,32 +52,54 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AttributeInterface $attribute, $operator, $value, $locale = null, $scope = null)
-    {
-        if (!is_array($value) && !is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'string');
+    public function addAttributeFilter(
+        AttributeInterface $attribute,
+        $operator,
+        $value,
+        $locale = null,
+        $scope = null,
+        $options = []
+    ) {
+        try {
+            $options = $this->resolver->resolve($options);
+        } catch (\Exception $e) {
+            throw InvalidArgumentException::expectedFromPreviousException(
+                $e,
+                $attribute->getCode(),
+                'filter',
+                'string'
+            );
+        }
+
+        if ($operator !== Operators::IS_EMPTY) {
+            $this->checkValue($options['field'], $value);
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
-        $this->addFieldFilter($field, $operator, $value, $locale, $scope);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * Apply the filter to the query with the given operator
+     *
+     * @param string       $field
+     * @param string       $operator
+     * @param string|array $value
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    protected function applyFilter($field, $operator, $value)
     {
-        if (!is_array($value) && !is_string($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
+        if (Operators::IS_EMPTY === $operator) {
+            $this->qb->field($field)->exists(false);
+        } elseif (Operators::IN_LIST === $operator) {
+            $this->qb->field($field)->in($value);
+        } else {
+            $value = $this->prepareValue($operator, $value);
+
+            $this->qb->field($field)->equals($value);
         }
-
-        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-
-        $this->applyFilter($field, $operator, $value);
-
-        return $this;
     }
 
     /**
@@ -104,22 +133,33 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     }
 
     /**
-     * Apply the filter to the query with the given operator
+     * Check if value is valid
      *
-     * @param string       $field
-     * @param string       $operator
-     * @param string|array $value
+     * @param string $field
+     * @param mixed  $value
      */
-    protected function applyFilter($field, $operator, $value)
+    protected function checkValue($field, $value)
     {
-        if (Operators::IS_EMPTY === $operator) {
-            $this->qb->field($field)->exists(false);
-        } elseif (Operators::IN_LIST === $operator) {
-            $this->qb->field($field)->in($value);
-        } else {
-            $value = $this->prepareValue($operator, $value);
-
-            $this->qb->field($field)->equals($value);
+        if (!is_string($value) && !is_array($value)) {
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
         }
+
+        if (is_array($value)) {
+            foreach ($value as $stringValue) {
+                if (!is_string($stringValue)) {
+                    throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
+                }
+            }
+        }
+    }
+
+    /**
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['field']);
+        $resolver->setOptional(['locale', 'scope']);
     }
 }

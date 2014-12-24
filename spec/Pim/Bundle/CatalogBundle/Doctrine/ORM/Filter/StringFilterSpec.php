@@ -42,7 +42,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
-        $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku');
+        $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_a_ends_with_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
@@ -59,7 +59,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
-        $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku');
+        $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_a_contains_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
@@ -76,7 +76,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
-        $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku');
+        $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_a_does_not_contain_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
@@ -93,7 +93,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
-        $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku');
+        $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_a_equal_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
@@ -110,7 +110,7 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
 
-        $this->addAttributeFilter($sku, '=', 'My Sku');
+        $this->addAttributeFilter($sku, '=', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_adds_an_empty_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
@@ -128,12 +128,12 @@ class StringFilterSpec extends ObjectBehavior
         $queryBuilder->leftJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
         $queryBuilder->andWhere('filtersku.varchar IS NULL')->shouldBeCalled();
 
-        $this->addAttributeFilter($sku, 'EMPTY', 'My Sku');
+        $this->addAttributeFilter($sku, 'EMPTY', 'My Sku', null, null, ['field' => 'sku']);
     }
 
     function it_throws_an_exception_if_value_is_not_a_string(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attributeCode');
-        $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string'))->during('addAttributeFilter', [$attribute, '=', 123]);
+        $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string'))->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
     }
 }

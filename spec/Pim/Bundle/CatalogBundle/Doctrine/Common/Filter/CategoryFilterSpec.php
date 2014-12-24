@@ -10,14 +10,15 @@ use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Prophecy\Argument;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CategoryRepository $categoryRepo, ProductCategoryRepositoryInterface $productRepo)
+    function let(QueryBuilder $qb, CategoryRepository $categoryRepo, ProductCategoryRepositoryInterface $productRepo, ObjectIdResolverInterface $objectIdResolver)
     {
         $operators = ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN'];
-        $this->beConstructedWith($categoryRepo, $productRepo, ['categories'], $operators);
+        $this->beConstructedWith($categoryRepo, $productRepo, $objectIdResolver, ['categories'], $operators);
         $this->setQueryBuilder($qb);
     }
 

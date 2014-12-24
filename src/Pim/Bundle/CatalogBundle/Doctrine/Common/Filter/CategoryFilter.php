@@ -2,10 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * Category filter
@@ -22,6 +25,9 @@ class CategoryFilter implements FieldFilterInterface
     /** @var ProductCategoryRepositoryInterface */
     protected $productRepository;
 
+    /** @var ObjectIdResolverInterface */
+    protected $objectIdResolver;
+
     /** @var QueryBuilder */
     protected $qb;
 
@@ -34,49 +40,61 @@ class CategoryFilter implements FieldFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param CategoryRepository                 $categoryRepo
-     * @param ProductCategoryRepositoryInterface $productRepo
+     * @param CategoryRepository                 $categoryRepository
+     * @param ProductCategoryRepositoryInterface $productRepository
+     * @param ObjectIdResolverInterface          $objectIdResolver
      * @param array                              $supportedFields
      * @param array                              $supportedOperators
      */
     public function __construct(
-        CategoryRepository $categoryRepo,
-        ProductCategoryRepositoryInterface $productRepo,
+        CategoryRepository $categoryRepository,
+        ProductCategoryRepositoryInterface $productRepository,
+        ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->categoryRepository = $categoryRepo;
-        $this->productRepository = $productRepo;
-        $this->supportedFields = $supportedFields;
+        $this->categoryRepository = $categoryRepository;
+        $this->productRepository  = $productRepository;
+        $this->objectIdResolver   = $objectIdResolver;
+        $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null)
+    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
+        if ($operator !== Operators::UNCLASSIFIED) {
+            $this->checkValue($field, $value);
+        }
+
         $categoryIds = $value;
+        if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
+            $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
+        }
 
-        if ($operator === 'IN') {
-            $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, true);
-
-        } elseif ($operator === 'NOT IN') {
-            $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, false);
-
-        } elseif ($operator === 'IN CHILDREN') {
-            $categoryIds = $this->getAllChildrenIds($categoryIds);
-            $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, true);
-
-        } elseif ($operator === 'NOT IN CHILDREN') {
-            $categoryIds = $this->getAllChildrenIds($categoryIds);
-            $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, false);
-
-        } elseif ($operator === 'UNCLASSIFIED') {
-            $this->productRepository->applyFilterByUnclassified($this->qb);
-
-        } elseif ($operator === 'IN OR UNCLASSIFIED') {
-            $this->productRepository->applyFilterByCategoryIdsOrUnclassified($this->qb, $categoryIds);
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, true);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, false);
+                break;
+            case Operators::IN_CHILDREN_LIST:
+                $categoryIds = $this->getAllChildrenIds($categoryIds);
+                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, true);
+                break;
+            case Operators::NOT_IN_CHILDREN_LIST:
+                $categoryIds = $this->getAllChildrenIds($categoryIds);
+                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, false);
+                break;
+            case Operators::UNCLASSIFIED:
+                $this->productRepository->applyFilterByUnclassified($this->qb);
+                break;
+            case Operators::IN_LIST_OR_UNCLASSIFIED:
+                $this->productRepository->applyFilterByCategoryIdsOrUnclassified($this->qb, $categoryIds);
+                break;
         }
 
         return $this;
@@ -112,6 +130,21 @@ class CategoryFilter implements FieldFilterInterface
     public function getOperators()
     {
         return $this->supportedOperators;
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param string $field
+     * @param mixed  $values
+     */
+    protected function checkValue($field, $values)
+    {
+        FieldFilterHelper::checkArray($field, $values, 'category');
+
+        foreach ($values as $value) {
+            FieldFilterHelper::checkIdentifier($field, $value, 'category');
+        }
     }
 
     /**

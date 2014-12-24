@@ -31,7 +31,20 @@ class FieldFilterDumper implements DumperInterface
     public function dump(OutputInterface $output, HelperSet $helperSet)
     {
         $output->writeln("<info>Useable field filters...<info>");
-        $fields = ['id', 'created', 'updated', 'enabled', 'completeness', 'family', 'groups', 'categories'];
+        $fields = [
+            'id',
+            'created',
+            'updated',
+            'enabled',
+            'completeness',
+            'family.id',
+            'family.code',
+            'groups.id',
+            'groups.code',
+            'categories.id',
+            'categories.code'
+        ];
+
         $rows = [];
         foreach ($fields as $field) {
             $filter = $this->registry->getFieldFilter($field);
