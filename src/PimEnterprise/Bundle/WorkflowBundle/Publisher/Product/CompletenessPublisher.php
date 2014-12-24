@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractCompleteness;
+use Pim\Bundle\CatalogBundle\Model\CompletenessInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product completeness publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class CompletenessPublisher implements PublisherInterface
 {
@@ -65,6 +65,6 @@ class CompletenessPublisher implements PublisherInterface
      */
     public function supports($object)
     {
-        return $object instanceof AbstractCompleteness;
+        return $object instanceof CompletenessInterface;
     }
 }

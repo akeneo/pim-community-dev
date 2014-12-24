@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
  * Publisher for product related associations.
  * When a product A is published, this class will update all the associations where A is referred.
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RelatedAssociationPublisher implements PublisherInterface
 {
@@ -29,26 +29,26 @@ class RelatedAssociationPublisher implements PublisherInterface
     protected $publishedRepository;
 
     /** @var PublishedAssociationRepositoryInterface */
-    protected $publishedAssociationRepository;
+    protected $publishedAssocRepo;
 
     /** @var AssociationRepositoryInterface */
-    protected $associationRepository;
+    protected $associationRepo;
 
     /**
      * The constructor
      *
      * @param PublishedProductRepositoryInterface     $publishedRepository
-     * @param PublishedAssociationRepositoryInterface $publishedAssociationRepository
-     * @param AssociationRepositoryInterface          $associationRepository
+     * @param PublishedAssociationRepositoryInterface $publishedAssocRepo
+     * @param AssociationRepositoryInterface          $associationRepo
      */
     public function __construct(
         PublishedProductRepositoryInterface $publishedRepository,
-        PublishedAssociationRepositoryInterface $publishedAssociationRepository,
-        AssociationRepositoryInterface $associationRepository
+        PublishedAssociationRepositoryInterface $publishedAssocRepo,
+        AssociationRepositoryInterface $associationRepo
     ) {
         $this->publishedRepository = $publishedRepository;
-        $this->publishedAssociationRepository = $publishedAssociationRepository;
-        $this->associationRepository = $associationRepository;
+        $this->publishedAssocRepo = $publishedAssocRepo;
+        $this->associationRepo = $associationRepo;
     }
 
     /**
@@ -60,13 +60,13 @@ class RelatedAssociationPublisher implements PublisherInterface
         unset($productIds[$object->getOriginalProduct()->getId()]);
 
         if (0 !== count($productIds)) {
-            $associations = $this->associationRepository->findByProductAndOwnerIds(
+            $associations = $this->associationRepo->findByProductAndOwnerIds(
                 $object->getOriginalProduct(),
                 array_keys($productIds)
             );
 
             foreach ($associations as $association) {
-                $publishedAssociation = $this->publishedAssociationRepository->findOneByTypeAndOwner(
+                $publishedAssociation = $this->publishedAssocRepo->findOneByTypeAndOwner(
                     $association->getAssociationType(),
                     $productIds[$association->getOwner()->getId()]
                 );

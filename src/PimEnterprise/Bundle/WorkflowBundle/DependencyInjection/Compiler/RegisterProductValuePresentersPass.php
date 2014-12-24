@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Compiler pass that registers product value presenters into the product value presenter twig extension
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class RegisterProductValuePresentersPass implements CompilerPassInterface
 {

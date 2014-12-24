@@ -2,17 +2,16 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model;
 
 class OptionsComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
     }
@@ -38,7 +37,7 @@ class OptionsComparatorSpec extends ObjectBehavior
         AttributeOption $blue,
         AttributeOption $yellow,
         AttributeOption $green
-    ){
+    ) {
         $submittedData = [
             'options' => '42,24,76',
         ];

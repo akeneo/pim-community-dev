@@ -5,10 +5,8 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
@@ -29,8 +27,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
         UnpublisherInterface $unpublisher
-    )
-    {
+    ) {
         $this->beConstructedWith($manager, $repository, $eventDispatcher, $publisher, $unpublisher);
     }
 
@@ -40,7 +37,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $manager,
         $repository,
         ObjectManager $om,
-        AbstractProduct $product,
+        ProductInterface $product,
         PublishedProductInterface $published
     ) {
         $repository->findOneByOriginalProduct(Argument::any())->willReturn(null);
@@ -48,7 +45,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $publisher->publish($product)->willReturn($published);
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
-        $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::any(), Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::cetera())->shouldBeCalled();
 
         $om->persist($published)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
@@ -63,7 +60,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $manager,
         $repository,
         ObjectManager $om,
-        AbstractProduct $product,
+        ProductInterface $product,
         PublishedProductInterface $alreadyPublished,
         PublishedProductInterface $published
     ) {
@@ -72,7 +69,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $publisher->publish($product)->willReturn($published);
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
-        $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::any(), Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::cetera())->shouldBeCalled();
 
         $unpublisher->unpublish($alreadyPublished)->shouldBeCalled();
         $om->remove($alreadyPublished)->shouldBeCalled();
@@ -94,7 +91,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $published->getOriginalProduct()->willReturn($product);
         $unpublisher->unpublish($published)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::any(), Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(PublishedProductEvents::POST_UNPUBLISH, Argument::any(), null)->shouldBeCalled();
 
         $om->remove($published)->shouldBeCalled();

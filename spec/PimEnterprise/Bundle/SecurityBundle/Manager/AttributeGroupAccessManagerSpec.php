@@ -6,15 +6,18 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use Prophecy\Argument;
 
 class AttributeGroupAccessManagerSpec extends ObjectBehavior
 {
-    function let(SmartManagerRegistry $registry, ObjectManager $objectManager, AttributeGroupAccessRepository $repository)
-    {
+    function let(
+        SmartManagerRegistry $registry,
+        ObjectManager $objectManager,
+        AttributeGroupAccessRepository $repository
+    ) {
         $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
         $registry->getRepository(Argument::any())->willReturn($repository);
 

@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Add the default user group to the entity of the generic event
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
 {

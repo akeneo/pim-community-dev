@@ -1,0 +1,26 @@
+<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {% for group in group_product_values(product.values, dataLocale) %}
+        <div class="row-fluid">
+            <h3>
+                {{ group.groupLabel }}
+            </h3>
+            {% for value in group.values %}
+                <div class="control-group attribute-field{{ value.attribute.localizable ? ' localizable' : '' }}">
+                    <label class="control-label">
+                        {{ value.attribute }}{{ value.attribute.scopable ? ' - ' ~ value.scope : '' }}
+                    </label>
+                    <div class="controls">
+                        <div class="value-field">
+                            {{ present_product_value(value) }}
+                        </div>
+                        <div class="icons-container"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
+        </div>
+    {% endfor %}
+</div>

@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
  * Present two files information side by side
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class FilePresenter implements PresenterInterface
 {
@@ -37,7 +37,7 @@ class FilePresenter implements PresenterInterface
      */
     public function supports($data, array $change)
     {
-        return $data instanceof AbstractProductValue && array_key_exists('media', $change);
+        return $data instanceof ProductValueInterface && array_key_exists('media', $change);
     }
 
     /**
@@ -77,7 +77,7 @@ class FilePresenter implements PresenterInterface
     protected function createFileElement($filename, $originalFilename)
     {
         return sprintf(
-            '<i class="icon-file"></i> <a class="no-hash" href="%s">%s</a>',
+            '<i class="icon-file"></i><a class="no-hash" href="%s">%s</a>',
             $this->generator->generate('pim_enrich_media_show', ['filename' => $filename]),
             $originalFilename
         );

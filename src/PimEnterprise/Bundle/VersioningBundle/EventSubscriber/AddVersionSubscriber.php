@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 /**
  * Disable the versioning of published product in EE
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AddVersionSubscriber extends BaseAddVersionSubscriber
 {

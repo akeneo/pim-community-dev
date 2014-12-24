@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
 /**
  * Attribute Group Access entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AttributeGroupAccess implements AttributeGroupAccessInterface
 {
