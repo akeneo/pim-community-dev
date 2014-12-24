@@ -20,7 +20,7 @@ Feature: Execute a job
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of variant group values
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       variant_group_code;name-en_US;description-en_US-tablet
       SANDAL;My sandal;My sandal description for locale en_US and channel tablet
