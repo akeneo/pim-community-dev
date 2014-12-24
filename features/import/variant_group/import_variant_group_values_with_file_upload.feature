@@ -2,7 +2,7 @@
 Feature: Execute an import
   In order to update existing product information
   As a product manager
-  I need to be able to import variant group values in product values
+  I need to be able to import variant group values in product values through file upload
 
   Background:
     Given the "footwear" catalog configuration
@@ -19,16 +19,17 @@ Feature: Execute an import
       | SANDAL | Sandal | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39, sandal-red-37, sandal-red-38, sandal-red-39 |
     And I am logged in as "Julia"
 
-  Scenario: Successfully import a csv file of variant group values
+  Scenario: Successfully import a csv file of variant group values through file upload
     Given the following CSV file to import:
       """
       variant_group_code;name-en_US;description-en_US-tablet
       SANDAL;My sandal;My sandal description for locale en_US and channel tablet
       """
+
     And the following job "footwear_variant_group_values_import" configuration:
-      | filePath | %file to import% |
+      | uploadAllowed | yes |
     When I am on the "footwear_variant_group_values_import" import job page
-    And I launch the import job
+    And I upload and import the file "%file to import%"
     And I wait for the "footwear_variant_group_values_import" job to finish
     Then there should be 6 products
     And the english tablet name of "sandal-white-37" should be "My sandal"
