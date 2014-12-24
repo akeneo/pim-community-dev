@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Command;
 
 use Monolog\Handler\StreamHandler;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,7 +73,6 @@ class RefreshCommand extends ContainerAwareCommand
         $pendingVersions = $this->getVersionManager()
             ->getVersionRepository()
             ->getPendingVersions($batchSize);
-
         $nbPendings = count($pendingVersions);
 
         while ($nbPendings > 0) {
@@ -95,6 +95,7 @@ class RefreshCommand extends ContainerAwareCommand
             $pendingVersions = $this->getVersionManager()
                 ->getVersionRepository()
                 ->getPendingVersions($batchSize);
+
             $nbPendings = count($pendingVersions);
         }
         $progress->finish();
