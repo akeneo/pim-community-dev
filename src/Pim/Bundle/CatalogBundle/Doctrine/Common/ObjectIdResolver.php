@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityNotFoundException;
 
 /**
  * Object id resolver

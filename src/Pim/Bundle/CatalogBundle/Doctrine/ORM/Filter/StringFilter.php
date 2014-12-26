@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -26,13 +27,16 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributes
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
 
@@ -51,7 +55,19 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
-        $options = $this->resolver->resolve($options);
+        try {
+            $options = $this->resolver->resolve($options);
+        } catch (\Exception $e) {
+            throw InvalidArgumentException::expectedFromPreviousException(
+                $e,
+                $attribute->getCode(),
+                'filter',
+                'string'
+            );
+        }
+
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
+
         if ($operator !== Operators::IS_EMPTY) {
             $this->checkValue($options['field'], $value);
         }

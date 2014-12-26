@@ -8,13 +8,19 @@ use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class OptionFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, ObjectIdResolverInterface $objectIdResolver)
+    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper, ObjectIdResolverInterface $objectIdResolver)
     {
-        $this->beConstructedWith($objectIdResolver, ['pim_catalog_simpleselect'], ['IN', 'EMPTY']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            $objectIdResolver,
+            ['pim_catalog_simpleselect'],
+            ['IN', 'EMPTY']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -39,8 +45,11 @@ class OptionFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_a_filter_to_the_query($qb, AttributeInterface $attribute)
+    function it_adds_a_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
     {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -60,8 +69,11 @@ class OptionFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'IN', ['1', '2'], null, null, ['field' => 'options_code.id']);
     }
 
-    function it_adds_an_empty_filter_to_the_query($qb, AttributeInterface $attribute)
+    function it_adds_an_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
     {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);

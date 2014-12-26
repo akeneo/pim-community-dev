@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -13,9 +14,13 @@ use Prophecy\Argument;
  */
 class StringFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb)
+    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_identifier'], ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            ['pim_catalog_identifier'],
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -36,8 +41,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_starts_with_attribute_filter_in_the_query($qb, AttributeInterface $sku)
+    function it_adds_a_starts_with_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -48,8 +56,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_ends_with_attribute_filter_in_the_query($qb, AttributeInterface $sku)
+    function it_adds_a_ends_with_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -60,8 +71,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_contains_attribute_filter_in_the_query($qb, AttributeInterface $sku)
+    function it_adds_a_contains_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
@@ -72,8 +86,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_does_not_contain_attribute_filter_in_the_query($qb, AttributeInterface $sku)
+    function it_adds_a_does_not_contain_attribute_filter_in_the_query($attrValidatorHelper, $qb, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);

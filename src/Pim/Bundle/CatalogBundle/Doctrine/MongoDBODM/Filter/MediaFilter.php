@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Media filter
@@ -22,13 +23,16 @@ class MediaFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributes
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -52,6 +56,8 @@ class MediaFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
+
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s.originalFilename', ProductQueryUtility::NORMALIZED_FIELD, $field);
 

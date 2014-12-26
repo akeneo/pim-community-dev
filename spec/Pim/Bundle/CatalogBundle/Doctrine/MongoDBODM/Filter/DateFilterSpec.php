@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -13,9 +14,14 @@ use Prophecy\Argument;
  */
 class DateFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder)
+    function let(Builder $queryBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_date'], ['created', 'updated'], ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            ['pim_catalog_date'],
+            ['created', 'updated'],
+            ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']
+        );
         $this->setQueryBuilder($queryBuilder);
 
         $queryBuilder->field(Argument::any())->willReturn($queryBuilder);
@@ -39,8 +45,14 @@ class DateFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_less_than_filter_on_an_attribute_value_in_the_query($queryBuilder, AttributeInterface $date)
-    {
+    function it_adds_a_less_than_filter_on_an_attribute_value_in_the_query(
+        $attrValidatorHelper,
+        $queryBuilder,
+        AttributeInterface $date
+    ) {
+        $attrValidatorHelper->validateLocale($date, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($date, Argument::any())->shouldBeCalled();
+
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(false);
         $date->isScopable()->willReturn(false);
@@ -49,8 +61,14 @@ class DateFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($date, '<', '2014-03-15');
     }
 
-    function it_adds_a_greater_than_filter_on_an_attribute_value_in_the_query($queryBuilder, AttributeInterface $date)
-    {
+    function it_adds_a_greater_than_filter_on_an_attribute_value_in_the_query(
+        $attrValidatorHelper,
+        $queryBuilder,
+        AttributeInterface $date
+    ) {
+        $attrValidatorHelper->validateLocale($date, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($date, Argument::any())->shouldBeCalled();
+
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(false);
         $date->isScopable()->willReturn(false);
@@ -59,8 +77,14 @@ class DateFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($date, '>', '2014-03-15');
     }
 
-    function it_adds_a_between_filter_on_an_attribute_value_in_the_query($queryBuilder, AttributeInterface $date)
-    {
+    function it_adds_a_between_filter_on_an_attribute_value_in_the_query(
+        $attrValidatorHelper,
+        $queryBuilder,
+        AttributeInterface $date
+    ) {
+        $attrValidatorHelper->validateLocale($date, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($date, Argument::any())->shouldBeCalled();
+
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(false);
         $date->isScopable()->willReturn(false);
@@ -70,8 +94,11 @@ class DateFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($date, 'BETWEEN', ['2014-03-15', '2014-03-20']);
     }
 
-    function it_adds_a_not_between_filter_on_an_attribute_value_in_the_query($queryBuilder, AttributeInterface $date)
+    function it_adds_a_not_between_filter_on_an_attribute_value_in_the_query($queryBuilder, $attrValidatorHelper, AttributeInterface $date)
     {
+        $attrValidatorHelper->validateLocale($date, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($date, Argument::any())->shouldBeCalled();
+
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(false);
         $date->isScopable()->willReturn(false);

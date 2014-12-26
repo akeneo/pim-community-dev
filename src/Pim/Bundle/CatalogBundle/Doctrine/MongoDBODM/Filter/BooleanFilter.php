@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Boolean filter
@@ -27,15 +28,18 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
     /**
      * Instanciate the filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributes
+     * @param array                    $supportedFields
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
@@ -68,6 +72,8 @@ class BooleanFilter extends AbstractFilter implements FieldFilterInterface, Attr
         $scope = null,
         $options = []
     ) {
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
+
         if (!is_bool($value)) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
         }

@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -13,9 +14,9 @@ use Prophecy\Argument;
  */
 class BooleanFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb)
+    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_boolean'], ['enabled'], ['=']);
+        $this->beConstructedWith($attrValidatorHelper, ['pim_catalog_boolean'], ['enabled'], ['=']);
         $this->setQueryBuilder($qb);
     }
 
@@ -51,8 +52,12 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_adds_an_equal_filter_on_an_attribute_in_the_query(
         $qb,
+        $attrValidatorHelper,
         AttributeInterface $attribute
     ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
         $attribute->getBackendType()->willReturn('backend_type');
         $attribute->getCode()->willReturn('enabled');
         $attribute->getId()->willReturn(42);

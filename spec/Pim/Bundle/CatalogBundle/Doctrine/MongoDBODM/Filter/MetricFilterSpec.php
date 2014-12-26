@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 /**
@@ -13,9 +14,9 @@ use Prophecy\Argument;
  */
 class MetricFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder)
+    function let(Builder $queryBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_metric'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->beConstructedWith($attrValidatorHelper, ['pim_catalog_metric'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -40,8 +41,11 @@ class MetricFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
+    function it_adds_a_equals_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $metric)
     {
+        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
+
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
@@ -51,8 +55,11 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($metric, '=', '22.5', 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
+    function it_adds_a_greater_than_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $metric)
     {
+        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
+
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
@@ -62,8 +69,11 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($metric, '>', '22.5', 'en_US', 'mobile');
     }
 
-    function it_adds_a_greater_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
+    function it_adds_a_greater_than_or_equals_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $metric)
     {
+        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
+
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
@@ -73,8 +83,11 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($metric, '>=', '22.5', 'en_US', 'mobile');
     }
 
-    function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
+    function it_adds_a_less_than_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $metric)
     {
+        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
+
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);
@@ -84,8 +97,11 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($metric, '<', '22.5', 'en_US', 'mobile');
     }
 
-    function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AttributeInterface $metric)
+    function it_adds_a_less_than_or_equals_filter_in_the_query($attrValidatorHelper, Builder $queryBuilder, AttributeInterface $metric)
     {
+        $attrValidatorHelper->validateLocale($metric, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($metric, Argument::any())->shouldBeCalled();
+
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
         $metric->isScopable()->willReturn(true);

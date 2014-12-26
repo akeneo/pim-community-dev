@@ -43,6 +43,8 @@ class ProductQueryBuilderSpec extends ObjectBehavior
     {
         $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
         $filterRegistry->getAttributeFilter($attribute)->willReturn($filter);
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
         $filter->addAttributeFilter($attribute, '=', '42', 'en_US', 'print', ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku'])->shouldBeCalled();

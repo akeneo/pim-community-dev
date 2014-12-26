@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Number filter
@@ -23,13 +24,16 @@ class NumberFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributes
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -53,6 +57,8 @@ class NumberFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
+
         if (!is_numeric($value) && null !== $value) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number');
         }
