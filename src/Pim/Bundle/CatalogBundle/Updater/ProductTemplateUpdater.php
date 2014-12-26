@@ -56,22 +56,9 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
         $rawValuesData = $template->getValuesData();
         $values = $this->denormalizeFromDB($rawValuesData);
         $updates = $this->normalizeToUpdate($values);
-
         // TODO unset identifier and axis updates and picture (not supported for now)
-        // TODO should be filtered before to save
-        // TODO picture doesn't work
-        // TODO prices doesn't work
-        $skippedAttributes = ['sku', 'main_color', 'secondary_color', 'clothing_size', 'picture'];
-        foreach ($updates as $indexUpdate => $update) {
-            if (in_array($update['attribute'], $skippedAttributes)) {
-                unset($updates[$indexUpdate]);
-            } elseif (null === $update['value']) {
-                // TODO ugly fix on null string
-                $updates[$indexUpdate]['value'] = "";
-            }
-        }
-
         /** end of stuff to replace, denormalizeFromDB and normalizeToUpdate will be dropped too */
+
         foreach ($updates as $update) {
             $this->productUpdater->setValue(
                 $products,
