@@ -1,5 +1,6 @@
 Pim\Bundle\CatalogBundle\Entity\ProductTemplate:
     type: entity
+    # TODO : rename table pim_catalog_product_template
     table: pim_catalog_group_product_template
     # repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
     fields:

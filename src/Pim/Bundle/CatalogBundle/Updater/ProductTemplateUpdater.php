@@ -47,14 +47,20 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      */
     public function update(ProductTemplateInterface $template, array $products)
     {
+        /**
+         * TODO once we'll use json format to store values, we'll be able to directly update products
+         * product updater uses json format too
+         *
+         * Replace all the following by `$updates = $template->getValuesData();`
+         */
         $rawValuesData = $template->getValuesData();
         $values = $this->denormalizeFromDB($rawValuesData);
-
-        // Apply the update on another products
         $updates = $this->normalizeToUpdate($values);
 
         // TODO unset identifier and axis updates and picture (not supported for now)
         // TODO should be filtered before to save
+        // TODO picture doesn't work
+        // TODO prices doesn't work
         $skippedAttributes = ['sku', 'main_color', 'secondary_color', 'clothing_size', 'picture'];
         foreach ($updates as $indexUpdate => $update) {
             if (in_array($update['attribute'], $skippedAttributes)) {
@@ -65,9 +71,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
             }
         }
 
-        // TODO picture doesnt work
-        // TODO prices doesnt work
-
+        /** end of stuff to replace, denormalizeFromDB and normalizeToUpdate will be dropped too */
         foreach ($updates as $update) {
             $this->productUpdater->setValue(
                 $products,
@@ -84,49 +88,56 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      *
      * @return ProductValueInterface[]
      *
-     * TODO : will be re-worked with json format
+     * TODO : will be dropped once json format used
      */
     protected function denormalizeFromDB(array $rawProductValues)
     {
-        // TODO : inject class
-        $productValueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
-        $productValues = [];
+        // TODO extract in a dedicated service to refactor also the VariantGroupValuesProcessor
+        $this->valueDenormalizer = $this->productValueNormalizer;
+        $this->valueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
 
+        $productValues = [];
         foreach ($rawProductValues as $attFieldName => $dataValue) {
+
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
             $attribute = $attributeInfos['attribute'];
-            $value = new $productValueClass();
-            $value->setAttribute($attribute);
-            $value->setLocale($attributeInfos['locale_code']);
-            $value->setScope($attributeInfos['scope_code']);
             unset($attributeInfos['attribute']);
-            unset($attributeInfos['locale_code']);
-            unset($attributeInfos['scope_code']);
 
-            $productValues[] = $this->productValueNormalizer->denormalize(
+            $valueKey = $attribute->getCode();
+            if ($attribute->isLocalizable()) {
+                $valueKey .= '-'.$attributeInfos['locale_code'];
+            }
+            if ($attribute->isScopable()) {
+                $valueKey .= '-'.$attributeInfos['scope_code'];
+            }
+            if (isset($productValues[$valueKey])) {
+                $value = $productValues[$valueKey];
+            } else {
+                $value = new $this->valueClass();
+                $value->setAttribute($attribute);
+                $value->setLocale($attributeInfos['locale_code']);
+                $value->setScope($attributeInfos['scope_code']);
+            }
+
+            $productValues[$valueKey] = $this->valueDenormalizer->denormalize(
                 $dataValue,
-                $productValueClass,
-                'csv', // TODO json is coming
+                $this->valueClass,
+                'csv',
                 ['entity' => $value] + $attributeInfos
             );
         }
 
-        $valuesCollection = new ArrayCollection();
-        foreach ($productValues as $value) {
-            $valuesCollection[ProductValueKeyGenerator::getKey($value)] = $value;
-        }
-
-        return $valuesCollection;
+        return $productValues;
     }
 
     /**
-     * @param ArrayCollection $productValues
+     * @param ProductValueInterface[]
      *
      * @return array
      *
-     * TODO : will be re-worked with json format, could become useless (same format to store and apply updates)
+     * TODO : will be dropped once json format used
      */
-    protected function normalizeToUpdate(ArrayCollection $productValues)
+    protected function normalizeToUpdate($productValues)
     {
         $normalizedValues = [];
         foreach ($productValues as $value) {
