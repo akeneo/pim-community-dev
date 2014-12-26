@@ -14,12 +14,12 @@ Feature: Browse attributes
     And the rows should be sorted ascending by code
     And I should be able to sort the rows by code, label, scopable, localizable and group
     Then I should be able to use the following filters:
-      | filter      | value  | result                                                                                                                                        |
-      | Code        | o      | comment, weather_conditions, description, top_view, color, lace_color and number_in_stock                                                     |
-      | Label       | m      | comment, name, manufacturer and number_in_stock                                                                                               |
-      | Type        | Image  | side_view and top_view                                                                                                                        |
-      | Scopable    | yes    | description                                                                                                                                   |
-      | Scopable    | no     | comment, sku, name, manufacturer, weather_conditions, price, rating, side_view, top_view, size, color, lace_color, length and number_in_stock |
-      | Localizable | yes    | name and description                                                                                                                          |
-      | Localizable | no     | comment, sku, manufacturer, weather_conditions, price, rating, side_view, top_view, size, color, lace_color, length and number_in_stock       |
-      | Group       | Colors | color and lace_color                                                                                                                          |
+      | filter      | value  | result                                                                                                                                                                   |
+      | Code        | o      | comment, weather_conditions, description, destocking_date, top_view, color, lace_color and number_in_stock                                                               |
+      | Label       | m      | comment, handmade, name, manufacturer and number_in_stock                                                                                                                |
+      | Type        | Image  | side_view and top_view                                                                                                                                                   |
+      | Scopable    | yes    | description                                                                                                                                                              |
+      | Scopable    | no     | comment, sku, name, manufacturer, weather_conditions, price, rating, side_view, top_view, size, color, lace_color, length, destocking_date, handmade and number_in_stock |
+      | Localizable | yes    | name and description                                                                                                                                                     |
+      | Localizable | no     | comment, sku, manufacturer, weather_conditions, price, rating, side_view, top_view, size, color, lace_color, length and number_in_stock, destocking_date and handmade    |
+      | Group       | Colors | color and lace_color                                                                                                                                                     |

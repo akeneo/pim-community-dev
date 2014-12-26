@@ -8,13 +8,13 @@ Feature: Execute an import
   # -----------------------------|-------------|---------------|-------------
   # TYPE                         | VALID VALID | INVALID VALUE | NULL VALUE
   # -----------------------------|-------------|---------------|-------------
-  # pim_catalog_boolean          | TODO        | TODO          | TODO
+  # pim_catalog_boolean          | DONE        | TODO          | TODO
   # pim_catalog_date             | DONE        | TODO          | TODO
   # pim_catalog_file             | TODO        | TODO          | TODO
   # pim_catalog_identifier       | N/A         | N/A           | N/A
   # pim_catalog_image            | TODO        | TODO          | TODO
-  # pim_catalog_metric           | TODO        | TODO          | TODO
-  # pim_catalog_multiselect      | TODO        | TODO          | TODO
+  # pim_catalog_metric           | DONE        | TODO          | TODO
+  # pim_catalog_multiselect      | DONE        | TODO          | TODO
   # pim_catalog_number           | DONE        | TODO          | TODO
   # pim_catalog_price_collection | PARTIALLY   | TODO          | TODO
   # pim_catalog_simpleselect     | DONE        | TODO          | TODO
@@ -225,5 +225,29 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | length | 4000.0000 CENTIMETER |
 
-  @skip not implemented, waiting for json denormalization #TODO
-  Scenario: Successfully import a csv file of variant group values with media
+  @javascript @skip not implemented
+  Scenario: Successfully import a csv file of variant group values with medias and files
+    Given the following attributes:
+      | label       | type  | allowed extensions |
+      | Front view  | image | gif, jpg           |
+      | User manual | file  | txt, pdf           |
+    And the following CSV file to import:
+    """
+    variant_group_code;frontView;name-en_US;userManual
+    SANDAL;bic-core-148.gif;"Bic Core 148";bic-core-148.txt
+    """
+    And the following job "footwear_variant_group_values_import" configuration:
+      | filePath | %file to import% |
+    And import directory of "footwear_variant_group_values_import" contains the following media:
+      | bic-core-148.gif        |
+      | bic-core-148.txt        |
+    When I am on the "footwear_variant_group_values_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_variant_group_values_import" job to finish
+    Then there should be 6 products
+    And the product "sandal-white-37" should have the following values:
+      | frontView  | bic-core-148.gif |
+      | userManual | bic-core-148.txt |
+    And the product "sandal-white-38" should have the following values:
+      | frontView  | bic-core-148.gif |
+      | userManual | bic-core-148.txt |
