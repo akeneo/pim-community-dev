@@ -172,7 +172,7 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
 
-  @skip the following format for prices is not supported for now
+  @javascript @skip the following format for prices is not supported for now
   Scenario: Successfully import a csv file of variant group values with prices as one field
     Given the following CSV file to import:
     """
@@ -207,7 +207,7 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | length | 4000.0000 CENTIMETER |
 
-  @skip the following format for metric is not supported for now
+  @javascript @skip the following format for metric is not supported for now
   Scenario: Successfully import a csv file of variant group values with metrics in a single field
     Given the following CSV file to import:
     """
