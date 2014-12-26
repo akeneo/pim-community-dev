@@ -16,7 +16,7 @@ Feature: Execute an import
   # pim_catalog_metric           | TODO        | TODO          | TODO
   # pim_catalog_multiselect      | TODO        | TODO          | TODO
   # pim_catalog_number           | DONE        | TODO          | TODO
-  # pim_catalog_price_collection | DONE        | TODO          | TODO
+  # pim_catalog_price_collection | PARTIALLY   | TODO          | TODO
   # pim_catalog_simpleselect     | DONE        | TODO          | TODO
   # pim_catalog_text             | DONE        | TODO          | TODO
   # pim_catalog_textarea         | DONE        | TODO          | TODO
@@ -155,12 +155,11 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | handmade | |
 
-  @skip not implemented, waiting for json denormalization #TODO
-  Scenario: Successfully import a csv file of variant group values with prices
+  Scenario: Successfully import a csv file of variant group values with prices as many fields
     Given the following CSV file to import:
     """
-    variant_group_code;price
-    SANDAL;"100 EUR, 90 USD"
+    variant_group_code;price-EUR;price-USD
+    SANDAL;100;90
     """
     And the following job "footwear_variant_group_values_import" configuration:
       | filePath | %file to import% |
@@ -173,12 +172,30 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
 
-  @skip not implemented, waiting for json denormalization #TODO
+  @skip following format for prices is not supported for now
+  Scenario: Successfully import a csv file of variant group values with prices as one field
+    Given the following CSV file to import:
+    """
+    variant_group_code;price
+    SANDAL;100 EUR, 90 USD
+    """
+    And the following job "footwear_variant_group_values_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_variant_group_values_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_variant_group_values_import" job to finish
+    Then there should be 6 products
+    And the product "sandal-white-37" should have the following value:
+      | price | 100.00 EUR, 90.00 USD |
+    And the product "sandal-white-38" should have the following value:
+      | price | 100.00 EUR, 90.00 USD |
+
+  @skip not implemented, waiting for json denormalization # TODO : drop the support of data + unit in a single field
   Scenario: Successfully import a csv file of variant group values with metrics
     Given the following CSV file to import:
     """
-    variant_group_code;length
-    SANDAL;4000 CENTIMETER
+    variant_group_code;length;length-unit
+    SANDAL;4000;CENTIMETER
     """
     And the following job "footwear_variant_group_values_import" configuration:
       | filePath | %file to import% |

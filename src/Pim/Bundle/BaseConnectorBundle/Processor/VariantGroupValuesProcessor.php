@@ -166,17 +166,28 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     {
         $productValues = [];
         foreach ($rawProductValues as $attFieldName => $dataValue) {
+
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
             $attribute = $attributeInfos['attribute'];
-            $value = new $this->valueClass();
-            $value->setAttribute($attribute);
-            $value->setLocale($attributeInfos['locale_code']);
-            $value->setScope($attributeInfos['scope_code']);
             unset($attributeInfos['attribute']);
-            unset($attributeInfos['locale_code']);
-            unset($attributeInfos['scope_code']);
 
-            $productValues[] = $this->valueDenormalizer->denormalize(
+            $valueKey = $attribute->getCode();
+            if ($attribute->isLocalizable()) {
+                $valueKey .= '-'.$attributeInfos['locale_code'];
+            }
+            if ($attribute->isScopable()) {
+                $valueKey .= '-'.$attributeInfos['scope_code'];
+            }
+            if (isset($productValues[$valueKey])) {
+                $value = $productValues[$valueKey];
+            } else {
+                $value = new $this->valueClass();
+                $value->setAttribute($attribute);
+                $value->setLocale($attributeInfos['locale_code']);
+                $value->setScope($attributeInfos['scope_code']);
+            }
+
+            $productValues[$valueKey] = $this->valueDenormalizer->denormalize(
                 $dataValue,
                 $this->valueClass,
                 'csv',

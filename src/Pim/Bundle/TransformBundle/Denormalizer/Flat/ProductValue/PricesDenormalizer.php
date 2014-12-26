@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -43,6 +44,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $this->configContext($resolver);
         $context = $resolver->resolve($context);
 
+        /** @var ProductValueInterface $value */
         $value    = $context['value'];
         $currency = $context['price_currency'];
 
@@ -50,7 +52,9 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $priceValue->setCurrency($currency);
         $priceValue->setData($data);
 
-        return $priceValue;
+        $value->addPrice($priceValue);
+
+        return $value->getPrices();
     }
 
     /**
