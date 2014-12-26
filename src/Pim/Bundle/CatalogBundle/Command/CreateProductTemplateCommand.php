@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * TODO : delete
+ * TODO : to delete
  *
  * Temporary command to create variant group product templates
  *
@@ -34,18 +34,28 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $variantGroup = $this->getVariantGroup('akeneo_tshirt');
+
         // Setup the template with an existing product
         $referenceProduct = $this->getProduct('AKNTS_BPS');
         $productValues = $referenceProduct->getValues()->toArray();
         // TODO HotFix to skip images until we add support
+        $skipAttributeTypes = ['pim_catalog_identifier', 'pim_catalog_image', 'pim_catalog_file'];
+        $skipAxisAttributes = [];
+        foreach ($variantGroup->getAttributes() as $axis) {
+            $skipAxisAttributes[]= $axis->getCode();
+        }
+
         foreach ($productValues as $valueIdx => $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_image', 'pim_catalog_file'])) {
+            if (in_array($value->getAttribute()->getAttributeType(), $skipAttributeTypes)) {
+                unset($productValues[$valueIdx]);
+            }
+            if (in_array($value->getAttribute()->getCode(), $skipAxisAttributes)) {
                 unset($productValues[$valueIdx]);
             }
         }
         $productValuesData = $this->normalizeToDB($productValues);
 
-        $variantGroup = $this->getVariantGroup('akeneo_tshirt');
         if ($variantGroup->getProductTemplate()) {
             $template = $variantGroup->getProductTemplate();
         } else {
