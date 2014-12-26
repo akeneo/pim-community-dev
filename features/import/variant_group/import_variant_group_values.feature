@@ -172,7 +172,7 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
 
-  @skip following format for prices is not supported for now
+  @skip the following format for prices is not supported for now
   Scenario: Successfully import a csv file of variant group values with prices as one field
     Given the following CSV file to import:
     """
@@ -190,12 +190,29 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
 
-  @skip not implemented, waiting for json denormalization # TODO : drop the support of data + unit in a single field
-  Scenario: Successfully import a csv file of variant group values with metrics
+  Scenario: Successfully import a csv file of variant group values with metrics in many fields
     Given the following CSV file to import:
     """
     variant_group_code;length;length-unit
     SANDAL;4000;CENTIMETER
+    """
+    And the following job "footwear_variant_group_values_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_variant_group_values_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_variant_group_values_import" job to finish
+    Then there should be 6 products
+    And the product "sandal-white-37" should have the following value:
+      | length | 4000.0000 CENTIMETER |
+    And the product "sandal-white-38" should have the following value:
+      | length | 4000.0000 CENTIMETER |
+
+  @skip the following format for metric is not supported for now
+  Scenario: Successfully import a csv file of variant group values with metrics in a single field
+    Given the following CSV file to import:
+    """
+    variant_group_code;length
+    SANDAL;4000 CENTIMETER
     """
     And the following job "footwear_variant_group_values_import" configuration:
       | filePath | %file to import% |
