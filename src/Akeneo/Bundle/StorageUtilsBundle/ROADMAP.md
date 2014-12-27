@@ -12,7 +12,7 @@
  - [x] rename pim_catalog services to akeneo_storage_utils
  - [ ] continue to load pim_catalog_storage_driver if it exists and deprecate it 
  - [ ] test a migration from CE standard 1.2 to CE standard 1.3 to check that the parameter pim_catalog_storage_driver is still taken into account
- - [ ] rename AbstractResolveDoctrineTargetModelsPass
+ - [x] rename AbstractResolveDoctrineTargetModelsPass
  - [ ] prepare a PR for CE standard https://github.com/akeneo/pim-community-standard/pull/91
  - [x] prepare a PR for EE https://github.com/akeneo/pim-enterprise-dev/pull/481
  - [ ] prepare a PR for EE standard https://github.com/akeneo/pim-enterprise-standard/pull/28
@@ -21,9 +21,9 @@
 
 ## Repositories
  - [x] move work what @fitn did to ease the definition and override of repositories 
- - [ ] be constistent between resolve_target_repository and resolve_target_repositories
- - [ ] be constistent between private and public services
- - [ ] rename ResolveDoctrineTargetRepositoriesPass
+ - [x] be constistent between resolve_target_repository and resolve_target_repositories
+ - [x] be constistent between private and public services
+ - [x] rename ResolveDoctrineTargetRepositoriesPass
 
 # LATER
 ##  Storage
@@ -37,7 +37,7 @@
  - [ ] extract ObjectIdResolver
  - [ ] move what's relevant into a `HybridStorage` directory
  - [ ] a missing orm.yml or mongob.yml file should not make the app crash
- - [ ] extract what can be extracted from AkeneoDoctrineExtensionsExtension et AkeneoStorageUtilsBundle to ease integration (use of simple helper or something like that)
+ - [ ] extract what can be extracted from AkeneoDoctrineExtensionsExtension et AkeneoDoctrineExtensionsBundle to ease integration (use of simple helper or something like that)
  - [ ] make storage_driver/doctrine/storage.yml file loaded for all bundles ? (not sure, maybe too magic)
  - [ ] clean the constant AkeneoDoctrineExtensionsExtension::DOCTRINE_MONGODB which is useless
  - [ ] define the configuration of the interfaces with regular Doctrine configuration ?
