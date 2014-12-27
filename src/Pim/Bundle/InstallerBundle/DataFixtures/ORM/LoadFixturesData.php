@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Bundle\StorageUtilsBundle\Storage;
 use Pim\Bundle\InstallerBundle\DataFixtures\AbstractLoadFixturesData;
 
 /**
@@ -24,7 +24,7 @@ class LoadFixturesData extends AbstractLoadFixturesData
         foreach ($jobs as $key => $job) {
             // Do not load products and associations with the ORM fixtures when MongoDB support is activated
             $storageDriver = $this->container->getParameter('akeneo_storage_utils.storage_driver');
-            if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $storageDriver
+            if (Storage::STORAGE_DOCTRINE_MONGODB_ODM === $storageDriver
                 && 1 === preg_match('#^fixtures_(product|association)_(csv|yml)$#', $job->getCode())) {
                 unset($jobs[$key]);
             }

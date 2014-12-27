@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Bundle\StorageUtilsBundle\Storage;
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -84,7 +84,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->commandExecutor->runCommand('doctrine:database:create');
 
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $driver) {
+        if (Storage::STORAGE_DOCTRINE_MONGODB_ODM === $driver) {
             $this->commandExecutor
                 ->runCommand('doctrine:mongodb:schema:drop')
                 ->runCommand('doctrine:mongodb:schema:create');
@@ -150,7 +150,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
 
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
+        if (Storage::STORAGE_DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
             $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', array('--append' => true));
         }
 

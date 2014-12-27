@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\StorageMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\Storage;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
@@ -12,6 +13,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdater
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Pim Catalog Bundle
@@ -20,13 +22,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogBundle extends AkeneoStorageUtilsBundle
+class PimCatalogBundle extends Bundle
 {
     /**
      * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
+        $mappings = array(
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
+        );
+
+        $ormMappingsPass = StorageMappingsPass::getMappingsPass(Storage::STORAGE_DOCTRINE_ORM, $mappings, true);
+        $mongoMappingsPass = StorageMappingsPass::getMappingsPass(Storage::STORAGE_DOCTRINE_MONGODB_ODM, $mappings, true);
+
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('pim_repository'))
@@ -35,12 +44,9 @@ class PimCatalogBundle extends AkeneoStorageUtilsBundle
             ->addCompilerPass(new RegisterQueryGeneratorsPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass())
             ->addCompilerPass(new RegisterProductQuerySorterPass())
-            ->addCompilerPass(new RegisterProductUpdaterPass());
-
-        $productMappings = array(
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
-        );
-
-        $this->registerDoctrineMappingDriver($container, $productMappings);
+            ->addCompilerPass(new RegisterProductUpdaterPass())
+            ->addCompilerPass($ormMappingsPass)
+            ->addCompilerPass($mongoMappingsPass)
+        ;
     }
 }

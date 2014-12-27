@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Bundle\StorageUtilsBundle\Storage;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -278,6 +278,7 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /**
      * Get product storage (ORM/MongoDBODM)
+     * TODO: try to remove this method
      *
      * @return string
      */
@@ -285,10 +286,10 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $om = $this->productManager->getObjectManager();
         if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
-            return AkeneoStorageUtilsExtension::DOCTRINE_ORM;
+            return Storage::STORAGE_DOCTRINE_ORM;
         }
 
-        return AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM;
+        return Storage::STORAGE_DOCTRINE_MONGODB_ODM;
     }
 
     /**

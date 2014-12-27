@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\StorageMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\Storage;
 use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
 use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,31 +23,18 @@ class PimVersioningBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container
-            ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass())
-            ->addCompilerPass(new SerializerPass('pim_versioning.serializer'));
-
-        $versionMappings = [
+        $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\VersioningBundle\Model'
         ];
 
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $versionMappings,
-                ['doctrine.orm.entity_manager'],
-                'akeneo_storage_utils.storage_driver.doctrine/orm'
-            )
-        );
+        $ormMappingsPass = StorageMappingsPass::getMappingsPass(Storage::STORAGE_DOCTRINE_ORM, $mappings, true);
+        $mongoMappingsPass = StorageMappingsPass::getMappingsPass(Storage::STORAGE_DOCTRINE_MONGODB_ODM, $mappings, true);
 
-        if (class_exists(AkeneoStorageUtilsBundle::DOCTRINE_MONGODB)) {
-            $mongoDBClass = AkeneoStorageUtilsBundle::DOCTRINE_MONGODB;
-            $container->addCompilerPass(
-                $mongoDBClass::createYamlMappingDriver(
-                    $versionMappings,
-                    ['doctrine.odm.mongodb.document_manager'],
-                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
-                )
-            );
-        }
+        $container
+            ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass())
+            ->addCompilerPass(new SerializerPass('pim_versioning.serializer'))
+            ->addCompilerPass($ormMappingsPass)
+            ->addCompilerPass($mongoMappingsPass)
+        ;
     }
 }
