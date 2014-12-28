@@ -7,7 +7,7 @@ Feature: Import categories
   Scenario: Set parent's permissions to new categories
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;parent;label-en_US
     autumn_collection;2014_collection;Autumn collection
@@ -39,7 +39,7 @@ Feature: Import categories
   Scenario: Set default permissions to categories that belongs to a new tree
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;parent;label-en_US
     2015_collection;;2015 collection
