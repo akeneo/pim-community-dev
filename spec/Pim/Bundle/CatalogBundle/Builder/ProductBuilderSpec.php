@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -21,9 +21,9 @@ class ProductBuilderSpec extends ObjectBehavior
     const PRICE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
 
     function let(
-        ChannelManager $channelManager,
-        LocaleManager $localeManager,
-        CurrencyManager $currencyManager
+        ChannelRepository $channelRepository,
+        LocaleRepository $localeRepository,
+        CurrencyRepository $currencyRepository
     ) {
         $entityConfig = array(
             'product' => self::PRODUCT_CLASS,
@@ -32,9 +32,9 @@ class ProductBuilderSpec extends ObjectBehavior
         );
 
         $this->beConstructedWith(
-            $channelManager,
-            $localeManager,
-            $currencyManager,
+            $channelRepository,
+            $localeRepository,
+            $currencyRepository,
             $entityConfig
         );
     }
@@ -45,10 +45,10 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $sku,
         AttributeInterface $name,
         AttributeInterface $desc,
-        $localeManager,
+        $localeRepository,
         Locale $fr,
         Locale $en,
-        $channelManager,
+        $channelRepository,
         Channel $ecom,
         Channel $print,
         ProductValueInterface $skuValue
@@ -79,13 +79,13 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $fr->getCode()->willReturn('fr_FR');
         $en->getCode()->willReturn('fr_FR');
-        $localeManager->getActiveLocales()->willReturn([$fr, $en]);
+        $localeRepository->getActivatedLocales()->willReturn([$fr, $en]);
 
         $ecom->getCode()->willReturn('ecom');
         $ecom->getLocales()->willReturn([$en, $fr]);
         $print->getCode()->willReturn('print');
         $print->getLocales()->willReturn([$en, $fr]);
-        $channelManager->getChannels()->willReturn([$ecom, $print]);
+        $channelRepository->getChannels()->willReturn([$ecom, $print]);
 
         // get existing values
         $skuValue->getAttribute()->willReturn($sku);
