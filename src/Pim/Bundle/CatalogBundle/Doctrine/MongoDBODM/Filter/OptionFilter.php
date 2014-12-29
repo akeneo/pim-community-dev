@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class OptionFilter extends AbstractFilter implements AttributeFilterInterface
+class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /** @var array */
     protected $supportedAttributes;

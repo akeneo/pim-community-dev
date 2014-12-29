@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StringFilter extends AbstractFilter implements AttributeFilterInterface
+class StringFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /** @var array */
     protected $supportedAttributes;
