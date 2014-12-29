@@ -40,7 +40,7 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
         $referenceProduct = $this->getProduct('AKNTS_BPS');
         $productValues = $referenceProduct->getValues()->toArray();
         // TODO HotFix to skip images until we add support
-        $skipAttributeTypes = ['pim_catalog_identifier', 'pim_catalog_image', 'pim_catalog_file'];
+        $skipAttributeTypes = ['pim_catalog_identifier' /*, 'pim_catalog_image', 'pim_catalog_file'*/];
         $skipAxisAttributes = [];
         foreach ($variantGroup->getAttributes() as $axis) {
             $skipAxisAttributes[]= $axis->getCode();
