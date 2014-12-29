@@ -19,6 +19,14 @@ class ChannelRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
+    public function getChannels()
+    {
+        return parent::findBy([]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findBy(array $criteria, array $orderBy = array('label' => 'ASC'), $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);

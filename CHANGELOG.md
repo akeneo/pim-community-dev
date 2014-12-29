@@ -143,6 +143,7 @@
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber`
+- ProductBuilder now takes `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository` and not anymore Managers
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
