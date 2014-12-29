@@ -54,7 +54,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $utility
     ) {
         $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([42, 19]);
-        $utility->applyFilter($datasource, 'categories', 'IN OR UNCLASSIFIED', [42, 19])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'IN OR UNCLASSIFIED', [42, 19])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -73,7 +73,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $utility
     ) {
         $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([]);
-        $utility->applyFilter($datasource, 'categories', 'UNCLASSIFIED', [])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'UNCLASSIFIED', [])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -101,8 +101,8 @@ class CategoryFilterSpec extends ObjectBehavior
         $repo->getAllChildrenIds($tree)->willReturn([2, 3, 4]);
         $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([2, 3, 4, 5, 6, 7]);
 
-        $utility->applyFilter($datasource, 'categories', 'NOT IN', [2, 3, 4])->shouldBeCalled();
-        $utility->applyFilter($datasource, 'categories', 'IN OR UNCLASSIFIED', [2, 3, 4, 5, 6, 7])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'NOT IN', [2, 3, 4])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'IN OR UNCLASSIFIED', [2, 3, 4, 5, 6, 7])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => -1, 'treeId' => 1]]);
     }
@@ -117,7 +117,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $manager->getCategoryRepository()->willReturn($repo);
         $repo->find(42)->willReturn($category);
         $category->getId()->willReturn(42);
-        $utility->applyFilter($datasource, 'categories', 'IN', [42])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'IN', [42])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => false]);
     }
@@ -140,7 +140,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(true);
         $accessRepository->getCategoryIdsWithExistingAccess([], [2, 3])->willReturn([2]);
 
-        $utility->applyFilter($datasource, 'categories', 'IN', [2, 42])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories.id', 'IN', [2, 42])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => true]);
     }
