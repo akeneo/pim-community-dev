@@ -117,6 +117,7 @@
 - Add methods isLocaleSpecific and getLocaleSpecificCodes in AttributeInterface
 - AssociationTransformer constructor now expects a $associationTypeClass as last argument
 - Inject the GroupFactory as las constructor argument in GroupController and VariantGroupController
+- ProductBuilder now takes `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository` and not anymore Managers
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

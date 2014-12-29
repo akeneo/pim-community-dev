@@ -146,26 +146,25 @@ services:
         class: %pim_serializer.filter.flat_product_value.class%
 
     # Denormalizers
-    # TODO circular reference
-    #pim_serializer.denormalizer.flat.product:
-    #    class: %pim_serializer.denormalizer.flat.product.class%
-    #    arguments:
-    #        - '@pim_catalog.doctrine.smart_manager_registry'
-    #        - %pim_catalog.entity.product.class%
-    #        - '@pim_catalog.builder.product'
-    #        - '@pim_transform.builder.field_name'
-    #        - %pim_catalog.entity.association.class%
-    #        - %pim_catalog.entity.category.class%
-    #        - %pim_catalog.entity.family.class%
-    #        - %pim_catalog.entity.group.class%
-    #        - %pim_catalog.entity.product_value.class%
-    #    tags:
-    #        - { name: pim_serializer.normalizer, priority: 90 }
+    pim_serializer.denormalizer.flat.product:
+        class: %pim_serializer.denormalizer.flat.product.class%
+        arguments:
+            - @pim_catalog.doctrine.smart_manager_registry
+            - %pim_catalog.entity.product.class%
+            - @pim_catalog.builder.product
+            - @pim_transform.builder.field_name
+            - %pim_catalog.entity.association.class%
+            - %pim_catalog.entity.category.class%
+            - %pim_catalog.entity.family.class%
+            - %pim_catalog.entity.group.class%
+            - %pim_catalog.entity.product_value.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
 
     pim_serializer.denormalizer.flat.family:
         class: %pim_serializer.denormalizer.flat.family.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.family.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
@@ -173,7 +172,7 @@ services:
     pim_serializer.denormalizer.flat.category:
         class: %pim_serializer.denormalizer.flat.category.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.category.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
@@ -181,7 +180,7 @@ services:
     pim_serializer.denormalizer.flat.group:
         class: %pim_serializer.denormalizer.flat.group.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.group.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
@@ -189,7 +188,7 @@ services:
     pim_serializer.denormalizer.flat.association:
         class: %pim_serializer.denormalizer.flat.association.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.association_type.class%
             - %pim_catalog.entity.product.class%
@@ -200,7 +199,7 @@ services:
     pim_serializer.denormalizer.flat.product_value:
         class: %pim_serializer.denormalizer.flat.product_value.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.product_value.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
@@ -216,7 +215,7 @@ services:
         class: %pim_serializer.denormalizer.flat.attribute_option.class%
         arguments:
             - ['pim_catalog_simpleselect']
-            - '@pim_catalog.repository.attribute_option'
+            - @pim_catalog.repository.attribute_option
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -224,7 +223,7 @@ services:
         class: %pim_serializer.denormalizer.flat.attribute_options.class%
         arguments:
             - ['pim_catalog_multiselect']
-            - '@pim_serializer.denormalizer.flat.attribute_option'
+            - @pim_serializer.denormalizer.flat.attribute_option
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -232,7 +231,7 @@ services:
         class: %pim_serializer.denormalizer.flat.prices.class%
         arguments:
             - ['pim_catalog_price_collection']
-            - '@pim_catalog.builder.product'
+            - @pim_catalog.builder.product
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -240,7 +239,7 @@ services:
         class: %pim_serializer.denormalizer.flat.metric.class%
         arguments:
             - ['pim_catalog_metric']
-            - '@pim_catalog.factory.metric'
+            - @pim_catalog.factory.metric
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -255,7 +254,7 @@ services:
         class: %pim_serializer.denormalizer.flat.media.class%
         arguments:
             - ['pim_catalog_image', 'pim_catalog_file']
-            - '@pim_catalog.manager.media'
+            - @pim_catalog.manager.media
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

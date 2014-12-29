@@ -14,6 +14,24 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 class CurrencyRepository extends ReferableEntityRepository
 {
     /**
+     * Return an array of activated currencies codes
+     *
+     * @return array
+     */
+    public function getActivatedCurrenciesCodes()
+    {
+        $criterias = array('activated' => true);
+        $currencies = $this->findBy($criterias);
+
+        return array_map(
+            function ($value) {
+                return $value->getCode();
+            },
+            $currencies
+        );
+    }
+
+    /**
      * Return an array of activated currencies
      *
      * @return array
