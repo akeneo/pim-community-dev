@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
@@ -89,7 +88,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
      * Check if value is valid
      *
      * @param string $field
-     * @param mixed  $value
+     * @param mixed  $values
      */
     protected function checkValue($field, $values)
     {

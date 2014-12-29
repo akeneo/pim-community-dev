@@ -123,15 +123,15 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Check if value is valid
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $values
+     * @param string $field
+     * @param mixed  $values
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field, $values, 'option');
+        FieldFilterHelper::checkArray($field, $values, 'options');
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field, $value, 'option');
+            FieldFilterHelper::checkIdentifier($field, $value, 'options');
         }
     }
 

@@ -122,8 +122,8 @@ class OptionFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Check if value is valid
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
+     * @param string $field
+     * @param mixed  $values
      */
     protected function checkValue($field, $values)
     {
