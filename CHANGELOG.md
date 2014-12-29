@@ -28,12 +28,33 @@
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
 - Remove the override of MediaManager
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver`. `Doctrine\Common\Persistence\ObjectManager` is now expected as first argument.
+- Move the versioning denormalizers to CE PimTransformBundle, namespaces are changed but the services alias are kept
+- change constructor `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper` which now expects a SecurityContextInterface
+- rename src/PimEnterprise/Bundle/SecurityBundle/Voter/ProductDraftOwnershipVoter.php to ProductDraftVoter
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
 - Remove the `is_default` from fixtures for attribute options
 
-# 1.0.x
+# 1.0.10 (2014-12-23)
+
+## Bug fixes
+- PIM-3533: Fix wrong keys being generated for empty price attributes in normalized product snapshots to fix the revert of product versions
+
+# 1.0.9 (2014-12-17)
+
+## Improvements
+- PIM-3475: Add sort order in options attribute to sample catalog
+
+## Bug fixes
+- PIM-3448: Avoid to allow to approve/refuse/delete a proposal if the user can't edit all values of this proposal
+
+# 1.0.8 (2014-12-10)
+
+## Bug fixes
+- PIM-3449: Fix performance problem on on grid with many categories
+
+# 1.0.7 (2014-12-03)
 
 ## Bug fixes
 - PIM-3444: Fix the enabled flag not published
@@ -42,6 +63,7 @@
 
 ## Bug fixes
 - PIM-3302: Published product page is not well displayed with project via the standard edition. To fix this bug, add `bundles/pimenterpriseui/css/pimee.less` to your stylesheets in `app/Resources/views/base.html.twig`
+- PIM-3385: Fix deleting attributes not linked to published products
 
 # 1.0.5 (2014-11-13)
 
@@ -74,18 +96,18 @@
 - Stabilize composer.json (minimum-stability: stable) and fix monolog version issue
 
 ## Improvements
-- Setup relationships of published products with interfaces in order to easy overriding
 
 ## BC breaks
 
 # 1.0.1 (2014-09-10)
 
 ## Bug fixes
-- Fixed problem on view rights on attribute groups which were not displayed on family configuration
+
+## Improvements
 
 ## BC breaks
 
-# 1.0.0 (2014-08-29) (based on CE 1.2.0, see [changelog](https://github.com/akeneo/pim-community-dev/blob/dd64effbe173f595e4afea08d0e80528fd441741/CHANGELOG.md))
+# 1.0.0 (2014-08-29)
 
 ## Improvements
 

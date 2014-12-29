@@ -18,5 +18,5 @@ attribute_groups_accesses:
         viewAttributes: [IT support, Manager, Redactor]
         editAttributes: [IT support, Manager, Redactor]
     legacy:
-        viewAttributes: []
-        editAttributes: []
+        viewAttributes: [Manager, Redactor]
+        editAttributes: [Redactor]

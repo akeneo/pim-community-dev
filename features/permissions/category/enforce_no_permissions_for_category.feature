@@ -1,4 +1,3 @@
-@javascript
 Feature: Enforce no permissions for a category
   In order to be able to prevent some users from viewing some products
   As an administrator
@@ -25,11 +24,13 @@ Feature: Enforce no permissions for a category
     Then I should be on the homepage
     Then I should see "You don't have access to products in any tree, please contact your administrator"
 
+  @javascript
   Scenario: Display only granted products in products grid, I see all products
     Given I am logged in as "Mary"
     And I am on the products page
     And the grid should contain 3 elements
 
+  @javascript
   Scenario: Display only granted products in products grid, I see a sub set of products
     Given I am logged in as "Mary"
     And I am on the "summer_collection" category page
@@ -42,6 +43,7 @@ Feature: Enforce no permissions for a category
     And I am on the products page
     And the grid should contain 2 elements
 
+  @javascript
   Scenario: Display only granted products in products grid when filtering by unclassified
     Given the following categories:
       | code           | parent         |
@@ -68,12 +70,14 @@ Feature: Enforce no permissions for a category
     Then the grid should contain 4 elements
     And I should see products unclassifiedOne, unclassifiedTwo, inProtectedTree and inProtectedNode
 
+  @javascript
   Scenario: Display only granted products in association products grid, I see all products
     Given I am logged in as "Julia"
     And I edit the "grantedOne" product
     When I visit the "Associations" tab
     Then the grid should contain 2 elements
 
+  @javascript
   Scenario: Display only granted products in association products grid, I see a sub set of products
     Given I am logged in as "Julia"
     And I am on the "summer_collection" category page
@@ -87,6 +91,7 @@ Feature: Enforce no permissions for a category
     When I visit the "Associations" tab
     Then the grid should contain 1 elements
 
+  @javascript
   Scenario: Display only granted products in variant group products grid, I see all products
     Given I am logged in as "Mary"
     And I am on the "hm_jackets" variant group page

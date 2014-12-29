@@ -1,4 +1,3 @@
-@javascript
 Feature: Publish a product
   In order to froze the product data I would use to export
   As a product manager
@@ -8,6 +7,7 @@ Feature: Publish a product
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully publish a product
     Given the following product:
       | sku       | family  | name-en_US |

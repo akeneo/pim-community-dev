@@ -298,7 +298,7 @@ class CategoryAccessRepository extends EntityRepository
         }
         $categoryIds = [];
         foreach ($categories as $category) {
-            $categoryIds[]= $category->getId();
+            $categoryIds[] = $category->getId();
         }
         $qb = $this->createQueryBuilder('ca');
         $qb->where($qb->expr()->in('ca.category', $categoryIds));
@@ -336,6 +336,34 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
+     * Check if categories are granted to user
+     *
+     * @param User   $user
+     * @param string $accessLevel
+     * @param array  $categoryIds
+     *
+     * @throws \LogicException
+     *
+     * @return true
+     */
+    public function isCategoriesGranted(User $user, $accessLevel, array $categoryIds)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('COUNT(c.id)')
+            ->from($this->_entityName, 'ca');
+
+        $qb->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
+            ->setParameter('groups', $user->getGroups()->toArray())
+            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
+            ->andWhere($qb->expr()->in('c.id', $categoryIds))
+            ->innerJoin('ca.category', 'c', 'c.id');
+
+        $count = $qb->getQuery()->getSingleScalarResult();
+
+        return $count > 0;
+    }
+
+    /**
      * Get the access field depending of access level sent
      *
      * @param string $accessLevel
@@ -349,7 +377,7 @@ class CategoryAccessRepository extends EntityRepository
         $mapping = [
             Attributes::OWN_PRODUCTS => 'ownProducts',
             Attributes::EDIT_PRODUCTS => 'editProducts',
-            Attributes::VIEW_PRODUCTS => 'viewProducts'
+            Attributes::VIEW_PRODUCTS => 'viewProducts',
         ];
         if (!isset($mapping[$accessLevel])) {
             throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));
