@@ -54,6 +54,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
 
         $value->addPrice($priceValue);
 
+        // TODO : apply this change to the 1.0.x
         return $value->getPrices();
     }
 
