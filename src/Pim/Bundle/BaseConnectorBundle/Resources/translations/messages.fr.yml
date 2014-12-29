@@ -99,7 +99,6 @@ pim_base_connector:
       help: Nom de la colonne de groupes
     filePath:
       label: Fichier
-      help: Fichier CSV à importer
     uploadAllowed:
       label: "Autoriser l'envoi de fichier sur le serveur"
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
