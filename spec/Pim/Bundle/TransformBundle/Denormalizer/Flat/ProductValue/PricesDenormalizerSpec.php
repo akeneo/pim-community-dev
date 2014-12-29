@@ -57,6 +57,48 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->denormalize('25', 'className', null, $context);
     }
 
+    function it_denormalizes_a_price_collection_from_a_single_field(
+        ProductValueInterface $priceValue,
+        $productBuilder,
+        ProductPriceInterface $productPriceEur,
+        ProductPriceInterface $productPriceUsd
+    ) {
+        $productBuilder->addPriceForCurrency($priceValue, 'EUR')
+            ->willReturn($productPriceEur)
+            ->shouldBeCalled();
+        $productPriceEur->setCurrency('EUR')
+            ->shouldBeCalled();
+        $productPriceEur->setData('120.00')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceEur)
+            ->shouldBeCalled();
+
+        $productBuilder->addPriceForCurrency($priceValue, 'USD')
+            ->willReturn($productPriceUsd)
+            ->shouldBeCalled();
+        $productPriceUsd->setCurrency('USD')
+            ->shouldBeCalled();
+        $productPriceUsd->setData('145.40')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceUsd)
+            ->shouldBeCalled();
+
+        $productBuilder->addPriceForCurrency($priceValue, 'CHF')
+            ->willReturn($productPriceUsd)
+            ->shouldBeCalled();
+        $productPriceUsd->setCurrency('CHF')
+            ->shouldBeCalled();
+        $productPriceUsd->setData('100')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceUsd)
+            ->shouldBeCalled();
+
+        $priceValue->getPrices()->shouldBeCalled();
+
+        $context = ['value' => $priceValue, 'price_currency' => 'WillNotBeUsed'];
+        $this->denormalize('120.00 EUR, 145.40 USD, 100 CHF', 'className', null, $context);
+    }
+
     function it_returns_null_if_the_data_is_empty(ProductValueInterface $productValueInterface)
     {
         $this->denormalize('', 'className', null, [])->shouldReturn(null);

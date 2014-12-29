@@ -57,8 +57,7 @@ class GroupHandler implements HandlerInterface
         $this->form->setData($group);
 
         if ($this->request->isMethod('POST')) {
-            // Load products when ODM storage is used to enable validation
-            // TODO : how to fix this for validation ?
+            // TODO : how to fix this ? Load products when ODM storage is used to enable validation
             if (null === $group->getProducts()) {
                 $products = $this->productRepository->findAllForGroup($group)->toArray();
                 $group->setProducts($products);

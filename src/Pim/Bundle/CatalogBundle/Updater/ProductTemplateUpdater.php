@@ -2,11 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

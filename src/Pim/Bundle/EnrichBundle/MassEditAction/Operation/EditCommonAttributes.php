@@ -321,7 +321,6 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         foreach ($this->values as $value) {
 
-            // TODO : work with collection of data, for instance, prices ?
             $rawData = $this->normalizer->normalize($value->getData(), 'json');
             // if the value is localizable, let's use the locale the user has chosen in the form
             $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
