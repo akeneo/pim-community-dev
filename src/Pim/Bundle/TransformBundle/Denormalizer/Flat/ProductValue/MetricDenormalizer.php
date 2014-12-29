@@ -53,7 +53,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
             $metric = $this->addFromManyFields($value, $data);
 
         } else {
-            $metric = $this->addFromSingleFields($value, $matches['data'], $matches['unit']);
+            $metric = $this->addFromSingleField($value, $matches['data'], $matches['unit']);
         }
 
         return $metric;
@@ -66,7 +66,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      *
      * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
      */
-    protected function addFromSingleFields(ProductValueInterface $value, $data, $unit)
+    protected function addFromSingleField(ProductValueInterface $value, $data, $unit)
     {
         if (null === $metric = $value->getMetric()) {
             $metric = $this->factory->createMetric($value->getAttribute()->getMetricFamily());

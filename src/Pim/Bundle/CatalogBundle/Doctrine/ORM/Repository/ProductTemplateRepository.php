@@ -21,4 +21,4 @@ class ProductTemplateRepository extends EntityRepository implements ProductTempl
     {
         return $this->findBy([]);
     }
-} 
+}

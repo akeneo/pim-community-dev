@@ -10,13 +10,13 @@ Feature: Execute an import
   # -----------------------------|-------------|---------------|-------------
   # pim_catalog_boolean          | DONE        | TODO          | TODO
   # pim_catalog_date             | DONE        | TODO          | TODO
-  # pim_catalog_file             | TODO        | TODO          | TODO
+  # pim_catalog_file             | DONE        | TODO          | TODO
   # pim_catalog_identifier       | N/A         | N/A           | N/A
-  # pim_catalog_image            | TODO        | TODO          | TODO
+  # pim_catalog_image            | DONE        | TODO          | TODO
   # pim_catalog_metric           | DONE        | TODO          | TODO
   # pim_catalog_multiselect      | DONE        | TODO          | TODO
   # pim_catalog_number           | DONE        | TODO          | TODO
-  # pim_catalog_price_collection | PARTIALLY   | TODO          | TODO
+  # pim_catalog_price_collection | DONE        | TODO          | TODO
   # pim_catalog_simpleselect     | DONE        | TODO          | TODO
   # pim_catalog_text             | DONE        | TODO          | TODO
   # pim_catalog_textarea         | DONE        | TODO          | TODO
@@ -223,7 +223,6 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | length | 4000.0000 CENTIMETER |
 
-  @javascript @skip
   Scenario: Successfully import a csv file of variant group values with medias and files
     Given the following attributes:
       | label       | type  | allowed extensions |

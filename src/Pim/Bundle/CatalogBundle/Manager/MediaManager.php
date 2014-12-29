@@ -169,23 +169,32 @@ class MediaManager
     /**
      * Create a media and load file information
      *
-     * @param string $filename
+     * @param string  $filename
+     * @param boolean $appendUploadPath
      *
      * @return ProductMediaInterface
      *
      * @throws \InvalidArgumentException When file does not exist
      */
-    public function createFromFilename($filename)
+    public function createFromFilename($filename, $appendUploadPath = true)
     {
-        $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $filename;
-        if (!$this->filesystem->has($filename)) {
+        // TODO : double check with revert, add specs and behat scenario
+        if ($appendUploadPath) {
+            $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $filename;
+        } else {
+            $filePath = $filename;
+        }
+
+        if ($appendUploadPath && !$this->filesystem->has($filename)) {
             throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $filePath));
         }
         $media = $this->factory->createMedia();
         $media->setOriginalFilename($filename);
         $media->setFilename($filename);
         $media->setFilePath($filePath);
-        $media->setMimeType($this->filesystem->mimeType($filename));
+        if ($appendUploadPath) {
+            $media->setMimeType($this->filesystem->mimeType($filename));
+        }
 
         return $media;
     }
