@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -43,13 +44,55 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         $this->configContext($resolver);
         $context = $resolver->resolve($context);
 
+        /** @var ProductValueInterface */
         $value = $context['value'];
+        $matches = [];
+        $singleFieldPattern = '/(?P<data>\d+(.\d+)?) (?P<unit>\w+)/';
 
+        if (preg_match($singleFieldPattern, $data, $matches) === 0) {
+            $metric = $this->addFromManyFields($value, $data);
+
+        } else {
+            $metric = $this->addFromSingleFields($value, $matches['data'], $matches['unit']);
+        }
+
+        return $metric;
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param string                $data
+     * @param string                $unit
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     */
+    protected function addFromSingleFields(ProductValueInterface $value, $data, $unit)
+    {
         if (null === $metric = $value->getMetric()) {
             $metric = $this->factory->createMetric($value->getAttribute()->getMetricFamily());
-            $metric->setData($data);
+        }
+        $metric->setData($data);
+        $metric->setUnit($unit);
+
+        return $metric;
+    }
+
+    /**
+     * The metric is built by many ordered calls, one for the data column, one for the unit column
+     *
+     * @param ProductValueInterface $value
+     * @param string                $dataOrUnit
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     */
+    protected function addFromManyFields(ProductValueInterface $value, $dataOrUnit)
+    {
+        // TODO come from original implementation, really FRAGIL because depends on many ordered calls
+        if (null === $metric = $value->getMetric()) {
+            $metric = $this->factory->createMetric($value->getAttribute()->getMetricFamily());
+            $metric->setData($dataOrUnit);
         } else {
-            $metric->setUnit($data);
+            $metric->setUnit($dataOrUnit);
         }
 
         return $metric;

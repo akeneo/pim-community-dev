@@ -206,7 +206,6 @@ Feature: Execute an import
     And the product "sandal-white-38" should have the following value:
       | length | 4000.0000 CENTIMETER |
 
-  @javascript @skip
   Scenario: Successfully import a csv file of variant group values with metrics in a single field
     Given the following CSV file to import:
     """
