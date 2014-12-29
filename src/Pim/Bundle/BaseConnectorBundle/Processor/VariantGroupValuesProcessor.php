@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacherInterface
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -19,6 +18,8 @@ use Symfony\Component\Validator\ValidatorInterface;
 /**
  * Variant group values import processor, allows to bind values data into a product template linked to a variant group
  * and validate values, it erases existing values
+ *
+ * TODO : add specs once json format implemented
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -38,10 +39,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     protected $groupRepository;
 
     /** @var DenormalizerInterface */
-    protected $valueDenormalizer;
-
-    /** @var FieldNameBuilder */
-    protected $fieldNameBuilder;
+    protected $groupValuesDenormalizer;
 
     /** @var ValidatorInterface */
     protected $valueValidator;
@@ -50,34 +48,25 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     protected $detacher;
 
     /** @var string */
-    protected $valueClass;
-
-    /** @var string */
     protected $templateClass;
 
     /**
      * @param GroupRepository         $groupRepository
-     * @param DenormalizerInterface   $valueDenormalizer
-     * @param FieldNameBuilder        $fieldNameBuilder
+     * @param DenormalizerInterface   $groupValuesDenormalizer
      * @param ValidatorInterface      $valueValidator
      * @param ObjectDetacherInterface $detacher
-     * @param string                  $valueClass
      * @param string                  $templateClass
      */
     public function __construct(
         GroupRepository $groupRepository,
-        DenormalizerInterface $valueDenormalizer,
-        FieldNameBuilder $fieldNameBuilder,
+        DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $valueValidator,
         ObjectDetacherInterface $detacher,
-        $valueClass,
         $templateClass
     ) {
-        $this->groupRepository   = $groupRepository;
-        $this->valueDenormalizer = $valueDenormalizer;
-        $this->fieldNameBuilder  = $fieldNameBuilder;
+        $this->groupRepository         = $groupRepository;
+        $this->groupValuesDenormalizer = $groupValuesDenormalizer;
         $this->valueValidator    = $valueValidator;
-        $this->valueClass        = $valueClass;
         $this->templateClass     = $templateClass;
     }
 
@@ -164,38 +153,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function denormalizeValuesFromItemData(array $rawProductValues)
     {
-        $productValues = [];
-        foreach ($rawProductValues as $attFieldName => $dataValue) {
-
-            $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
-            $attribute = $attributeInfos['attribute'];
-            unset($attributeInfos['attribute']);
-
-            $valueKey = $attribute->getCode();
-            if ($attribute->isLocalizable()) {
-                $valueKey .= '-'.$attributeInfos['locale_code'];
-            }
-            if ($attribute->isScopable()) {
-                $valueKey .= '-'.$attributeInfos['scope_code'];
-            }
-            if (isset($productValues[$valueKey])) {
-                $value = $productValues[$valueKey];
-            } else {
-                $value = new $this->valueClass();
-                $value->setAttribute($attribute);
-                $value->setLocale($attributeInfos['locale_code']);
-                $value->setScope($attributeInfos['scope_code']);
-            }
-
-            $productValues[$valueKey] = $this->valueDenormalizer->denormalize(
-                $dataValue,
-                $this->valueClass,
-                'csv',
-                ['entity' => $value] + $attributeInfos
-            );
-        }
-
-        return $productValues;
+        return $this->groupValuesDenormalizer->denormalize($rawProductValues, 'variant_group_values', 'csv');
     }
 
     /**
