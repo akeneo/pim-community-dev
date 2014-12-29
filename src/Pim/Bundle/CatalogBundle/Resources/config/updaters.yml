@@ -39,7 +39,7 @@ services:
         arguments:
             - @pim_catalog.updater.product
             - @pim_serializer
-            - @pim_transform.builder.field_name
+            - @pim_serializer
 
     pim_catalog.updater.setter.registry:
         class: %pim_catalog.updater.setter.registry.class%

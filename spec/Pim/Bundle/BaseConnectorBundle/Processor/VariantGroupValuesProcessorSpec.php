@@ -14,21 +14,17 @@ class VariantGroupValuesProcessorSpec extends ObjectBehavior
 {
     function let(
         GroupRepository $groupRepository,
-        StepExecution $stepExecution,
         DenormalizerInterface $valueDenormalizer,
-        FieldNameBuilder $fieldNameBuilder,
         ValidatorInterface $valueValidator,
-        ObjectDetacherInterface $detacher
+        ObjectDetacherInterface $detacher,
+        StepExecution $stepExecution
     ) {
-        $valueClass = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
         $this->beConstructedWith(
             $groupRepository,
             $valueDenormalizer,
-            $fieldNameBuilder,
             $valueValidator,
             $detacher,
-            $valueClass,
             $templateClass
         );
         $this->setStepExecution($stepExecution);
