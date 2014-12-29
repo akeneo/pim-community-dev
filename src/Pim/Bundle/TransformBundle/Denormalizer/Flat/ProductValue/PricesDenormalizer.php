@@ -67,9 +67,9 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     {
         $prices = [];
         $matches = [];
-        $pattern = '/(?P<data>\d+(.\d+)?) (?P<currency>\w+)/';
+        $singleFieldPattern = '/(?P<data>\d+(.\d+)?) (?P<currency>\w+)/';
 
-        if (preg_match_all($pattern, $pricesData, $matches) === 0) {
+        if (preg_match_all($singleFieldPattern, $pricesData, $matches) === 0) {
             $prices[] = ['data' => $pricesData, 'currency' => $context['price_currency']];
         } else {
             foreach ($matches['data'] as $indData => $data) {
