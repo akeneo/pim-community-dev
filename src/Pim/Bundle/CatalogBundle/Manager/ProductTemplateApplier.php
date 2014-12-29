@@ -48,7 +48,6 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
 
     public function apply(ProductTemplateInterface $template, array $products)
     {
-        // TODO dispatch events ?
         $this->templateUpdater->update($template, $products);
 
         $results = $this->validateProducts($products);

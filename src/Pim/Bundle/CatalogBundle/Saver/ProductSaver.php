@@ -81,8 +81,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        // TODO : we could detach objects here, based on a saveAll option + detacher !
-
         $allOptions = array_merge(
             [
                 'recalculate' => false,

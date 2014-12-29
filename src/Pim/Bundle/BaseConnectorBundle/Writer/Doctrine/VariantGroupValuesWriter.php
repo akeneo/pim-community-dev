@@ -39,8 +39,8 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     protected $copyValues = true;
 
     /**
-     * @param SaverInterface $groupSaver
-     * @param CacheClearer $cacheClearer
+     * @param SaverInterface                  $groupSaver
+     * @param CacheClearer                    $cacheClearer
      * @param ProductTemplateApplierInterface $productTemplateApplier
      */
     public function __construct(

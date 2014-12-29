@@ -45,17 +45,52 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $context = $resolver->resolve($context);
 
         /** @var ProductValueInterface $value */
-        $value    = $context['value'];
-        $currency = $context['price_currency'];
-
-        $priceValue = $this->productBuilder->addPriceForCurrency($value, $currency);
-        $priceValue->setCurrency($currency);
-        $priceValue->setData($data);
-
-        $value->addPrice($priceValue);
+        $value  = $context['value'];
+        $prices = $this->extractPrices($data, $context);
+        foreach ($prices as $price) {
+            $this->addPriceForCurrency($value, $price['data'], $price['currency']);
+        }
 
         // TODO : apply this change to the 1.0.x
         return $value->getPrices();
+    }
+
+    /**
+     * Data can contains one price or several
+     *
+     * @param mixed $pricesData
+     * @param array $context
+     *
+     * @return array
+     */
+    protected function extractPrices($pricesData, $context)
+    {
+        $prices = [];
+        $matches = [];
+        $pattern = '/(?P<data>\d+(.\d+)?) (?P<currency>\w+)/';
+
+        if (preg_match_all($pattern, $pricesData, $matches) === 0) {
+            $prices[] = ['data' => $pricesData, 'currency' => $context['price_currency']];
+        } else {
+            foreach ($matches['data'] as $indData => $data) {
+                $prices[] = ['data' => $data, 'currency' => $matches['currency'][$indData]];
+            }
+        }
+
+        return $prices;
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param mixed                 $data
+     * @param string                $currency
+     */
+    protected function addPriceForCurrency(ProductValueInterface $value, $data, $currency)
+    {
+        $priceValue = $this->productBuilder->addPriceForCurrency($value, $currency);
+        $priceValue->setCurrency($currency);
+        $priceValue->setData($data);
+        $value->addPrice($priceValue);
     }
 
     /**
