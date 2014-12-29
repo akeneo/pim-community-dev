@@ -57,7 +57,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+                $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
             }
         }
 
