@@ -49,7 +49,7 @@ class QueryFilterRegistry implements QueryFilterRegistryInterface
      */
     public function getFilter($code)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+        $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($code)]);
 
         if (null !== $attribute) {
             return $this->getAttributeFilter($attribute);
