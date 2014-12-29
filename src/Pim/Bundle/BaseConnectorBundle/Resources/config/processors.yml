@@ -129,8 +129,6 @@ services:
         arguments:
             - @pim_catalog.repository.group
             - @pim_serializer
-            - @pim_transform.builder.field_name
             - @pim_validator
             - @pim_catalog.doctrine.object_detacher
-            - %pim_catalog.entity.product_value.class%
             - %pim_catalog.entity.product_template.class%
