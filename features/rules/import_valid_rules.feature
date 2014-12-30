@@ -106,7 +106,7 @@ Feature: Import rules
     rules:
         canon_beautiful_description:
             conditions:
-                - field:    manufacturer
+                - field:    manufacturer.code
                   operator: IN
                   value:
                       - Volcom
@@ -136,7 +136,7 @@ Feature: Import rules
     rules:
         canon_beautiful_description:
             conditions:
-                - field:    weather_conditions
+                - field:    weather_conditions.code
                   operator: IN
                   value:
                       - dry
@@ -273,7 +273,7 @@ Feature: Import rules
     Then I should see "true"
 
   @javascript
-  Scenario: Import rule with valid values for attribute of type date in conditions
+  Scenario: Import rule with valid values for attribute of type date (with a string for a date) in conditions
     Given the following yaml file to import:
     """
     rules:
@@ -287,6 +287,35 @@ Feature: Import rules
                 - type:  set_value
                   field: release_date
                   value: "1970-01-01"
+                  scope: tablet
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should not see "skipped"
+    And I should see "created 1"
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    When I am on the "release_date" attribute page
+    And I visit the "Rules" tab
+    Then I should see "1970-01-01"
+
+  @javascript
+  Scenario: Import rule with valid values for attribute of type date (with a datetime for date) in conditions
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    release_date
+                  operator: =
+                  value:    1970-01-01
+                  scope: tablet
+            actions:
+                - type:  set_value
+                  field: release_date
+                  value: 1970-01-01
                   scope: tablet
     """
     And the following job "clothing_rule_import" configuration:
@@ -336,11 +365,13 @@ Feature: Import rules
         canon_beautiful_description:
             conditions:
             actions:
-                - type:       copy_value
-                  from_field: description
-                  to_field:   description
-                  from_scope: mobile
-                  to_scope:   tablet
+                - type:        copy_value
+                  from_field:  description
+                  to_field:    description
+                  from_scope:  mobile
+                  to_scope:    tablet
+                  from_locale: en_US
+                  to_locale:   en_US
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -350,7 +381,7 @@ Feature: Import rules
     Then I should not see "skipped"
     And I should see "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
-    When I am on the "name" attribute page
+    When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see "description"
     Then I should see "mobile"
@@ -366,11 +397,11 @@ Feature: Import rules
         canon_beautiful_description:
             conditions:
             actions:
-                - type:       copy_value
-                  from_field: name
-                  to_field:   name
-                  from_scope: mobile
-                  to_scope:   tablet
+                - type:        copy_value
+                  from_field:  name
+                  to_field:    name
+                  from_locale: en_US
+                  to_locale:   en_US
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -383,10 +414,8 @@ Feature: Import rules
     When I am on the "name" attribute page
     And I visit the "Rules" tab
     Then I should see "description"
-    Then I should see "mobile"
+    Then I should see "en"
     Then I should see "is copied into"
-    Then I should see "description"
-    Then I should see "tablet"
 
   @javascript
   Scenario: Import a copy value rule with valid values for attribute of type date in actions
@@ -415,7 +444,6 @@ Feature: Import rules
     Then I should see "release_date"
     Then I should see "mobile"
     Then I should see "is copied into"
-    Then I should see "release_date"
     Then I should see "tablet"
 
   @javascript
@@ -429,8 +457,6 @@ Feature: Import rules
                 - type:        copy_value
                   from_field:  length
                   to_field:    length
-                  from_locale: fr_FR
-                  to_locale:   en_US
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -443,10 +469,7 @@ Feature: Import rules
     When I am on the "length" attribute page
     And I visit the "Rules" tab
     Then I should see "length"
-    Then I should see "fr"
     Then I should see "is copied into"
-    Then I should see "release_date"
-    Then I should see "en"
 
   @javascript
   Scenario: Import a copy value rule with valid values for attribute of type price in actions
@@ -459,8 +482,6 @@ Feature: Import rules
                 - type:       copy_value
                   from_field: price
                   to_field:   price
-                  from_scope: mobile
-                  to_scope:   tablet
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -473,10 +494,7 @@ Feature: Import rules
     When I am on the "price" attribute page
     And I visit the "Rules" tab
     Then I should see "price"
-    Then I should see "mobile"
     Then I should see "is copied into"
-    Then I should see "price"
-    Then I should see "tablet"
 
   @javascript
   Scenario: Import a copy value rule with valid values for attribute of type multi select in actions
@@ -489,8 +507,6 @@ Feature: Import rules
                 - type:       copy_value
                   from_field: weather_conditions
                   to_field:   weather_conditions
-                  from_scope: mobile
-                  to_scope:   tablet
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -503,10 +519,7 @@ Feature: Import rules
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then I should see "weather_conditions"
-    Then I should see "mobile"
     Then I should see "is copied into"
-    Then I should see "weather_conditions"
-    Then I should see "tablet"
 
   @javascript
   Scenario: Import a copy value rule with valid values for attribute of type simple select in actions
@@ -519,8 +532,6 @@ Feature: Import rules
                 - type:       copy_value
                   from_field: manufacturer
                   to_field:   manufacturer
-                  from_scope: mobile
-                  to_scope:   tablet
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -533,10 +544,7 @@ Feature: Import rules
     When I am on the "manufacturer" attribute page
     And I visit the "Rules" tab
     Then I should see "manufacturer"
-    Then I should see "mobile"
     Then I should see "is copied into"
-    Then I should see "manufacturer"
-    Then I should see "tablet"
 
   @javascript
   Scenario: Import a copy value rule with valid values for attribute of type number in actions
@@ -565,7 +573,6 @@ Feature: Import rules
     Then I should see "number_in_stock"
     Then I should see "mobile"
     Then I should see "is copied into"
-    Then I should see "number_in_stock"
     Then I should see "tablet"
 
   @javascript
@@ -576,11 +583,9 @@ Feature: Import rules
         canon_beautiful_description:
             conditions:
             actions:
-                - type:        copy_value
-                  from_field:  handmade
-                  to_field:    handmade
-                  from_locale: fr_FR
-                  to_locale:   en_US
+                - type:       copy_value
+                  from_field: handmade
+                  to_field:   handmade
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -593,10 +598,7 @@ Feature: Import rules
     When I am on the "handmade" attribute page
     And I visit the "Rules" tab
     Then I should see "handmade"
-    Then I should see "fr"
     Then I should see "is copied into"
-    Then I should see "handmade"
-    Then I should see "en"
 
   @javascript
   Scenario: Import a copy value rule with valid values for attribute of type media in actions
@@ -609,8 +611,6 @@ Feature: Import rules
                 - type:        copy_value
                   from_field:  side_view
                   to_field:    side_view
-                  from_locale: fr_FR
-                  to_locale:   en_US
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -623,7 +623,4 @@ Feature: Import rules
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "side_view"
-    Then I should see "fr"
     Then I should see "is copied into"
-    Then I should see "side_view"
-    Then I should see "en"

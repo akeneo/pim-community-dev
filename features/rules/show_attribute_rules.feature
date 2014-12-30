@@ -1,51 +1,55 @@
 @javascript
 Feature: Show all rules related to an attribute
-  In order ease the enrichement of the catalog
+  In order ease the enrichment of the catalog
   As a regular user
   I need to know which rules are linked to an attribute
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "clothing" catalog configuration
     And I am logged in as "Julia"
     And the following product rules:
       | code                       | priority |
-      | copy_description_into_name | 10       |
-      | copy_fallback              | 20       |
+      | copy_description           | 10       |
+      | update_tees_collection     | 20       |
     And the following product rule conditions:
-      | rule                       | field              | operator    | value          | locale | scope  |
-      | copy_description_into_name | name               | =           | My nice tshirt | en_US  |        |
-      | copy_description_into_name | description        | EMPTY       |                |        | mobile |
-      | copy_description_into_name | weather_conditions | CONTAINS    | dry,wet        | fr_FR  | mobile |
-      | copy_description_into_name | comment            | STARTS WITH | promo          | de_DE  | print  |
-      | copy_fallback              | category           | IN          | men            |        |        |
+      | rule                   | field                   | operator    | value          | locale | scope  |
+      | copy_description       | name                    | =           | My nice tshirt | en_US  |        |
+      | copy_description       | weather_conditions.code | IN          | dry, wet       |        |        |
+      | copy_description       | comment                 | STARTS WITH | promo          |        |        |
+      | update_tees_collection | categories.code         | IN          | tees           |        |        |
     And the following product rule setter actions:
-      | rule                       | field         | value                | locale | scope     |
-      | copy_description_into_name | description   | a nice tshirt        | en_US  |           |
-      | copy_fallback              | description   | an other description | fr_FR  | ecommerce |
+      | rule                   | field           | value                 | locale | scope  |
+      | copy_description       | rating.code     | 4                     |        |        |
+      | update_tees_collection | description     | une belle description | fr_FR  | mobile |
+      | update_tees_collection | number_in_stock | 800                   |        | tablet |
+      | update_tees_collection | release_date    | 2015-05-26            |        | mobile |
     And the following product rule copier actions:
-      | rule          | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | copy_fallback | name       | description     | en_US       | en_US     | mobile     | mobile   |
-      | copy_fallback | name       | description     | fr_FR       |           | ecommerce  |          |
-      | copy_fallback | name       | description     | de_DE       | en_US     |            |          |
-      | copy_fallback | name       | description     |             | es_ES     |            | print    |
+      | rule                   | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | copy_description       | description | description     | en_US       | en_US     | mobile     | tablet   |
+      | copy_description       | description | description     | en_US       | fr_FR     | mobile     | mobile   |
+      | copy_description       | description | description     | en_US       | fr_FR     | mobile     | tablet   |
+      | update_tees_collection | name        | name            | en_US       | fr_FR     |            |          |
+      | update_tees_collection | name        | name            | en_US       | de_DE     |            |          |
 
   Scenario: Successfully show rules of an attribute
     Given I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule conditions:
-      | rule                       | field                | operator    | value          | locale | scope  |
-      | copy_description_into_name | name                 | =           | My nice tshirt | en     |        |
-      | copy_description_into_name | description          | EMPTY       |                |        | mobile |
-      | copy_description_into_name | weather_conditions   | CONTAINS    | dry,wet        | fr     | mobile |
-      | copy_description_into_name | comment              | STARTS WITH | promo          | de     | print  |
-      | copy_fallback              | category             | IN          | men            |        |        |
+      | rule                   | field                   | operator    | value          | locale | scope  |
+      | copy_description       | name                    | =           | My nice tshirt | en     |        |
+      | copy_description       | weather_conditions.code | IN          | dry,wet        |        |        |
+      | copy_description       | comment                 | STARTS WITH | promo          |        |        |
+      | update_tees_collection | categories.code         | IN          | tees           |        |        |
     Then I should see the following rule setter actions:
-      | rule                       | field       | value                | locale | scope     |
-      | copy_description_into_name | description | a nice tshirt        | en     |           |
-      | copy_fallback              | description | an other description | fr     | ecommerce |
+      | rule                   | field           | value                 | locale | scope  |
+      | copy_description       | rating          | 4                     |        |        |
+      | update_tees_collection | description     | une belle description | fr     | mobile |
+      | update_tees_collection | number_in_stock | 800                   |        | tablet |
+      | update_tees_collection | release_date    | 2015-05-26            |        | mobile |
     Then I should see the following rule copier actions:
-      | rule          | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | copy_fallback | name       | description     | en          | en        | mobile     | mobile   |
-      | copy_fallback | name       | description     | fr          |           | ecommerce  |          |
-      | copy_fallback | name       | description     | de          | en        |            |          |
-      | copy_fallback | name       | description     |             | es        |            | print    |
+      | rule                   | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | copy_description       | description | description     | en          | en        | mobile     | tablet   |
+      | copy_description       | description | description     | en          | fr        | mobile     | mobile   |
+      | copy_description       | description | description     | en          | fr        | mobile     | tablet   |
+      | update_tees_collection | name        | name            | en          | fr        |            |          |
+      | update_tees_collection | name        | name            | en          | de        |            |          |

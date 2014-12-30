@@ -26,6 +26,7 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    42
+                  locale:   en_US
             actions:
                 - type:  set_value
                   field: name
@@ -36,6 +37,7 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    42
+                  locale:   en_US
             actions:
                 - type:  set_value
                   field: name
@@ -73,6 +75,8 @@ Feature: Import rules
                 - field:    description
                   operator: CONTAINS
                   value:    42
+                  locale:   en_US
+                  scope:    tablet
             actions:
                 - type:  set_value
                   field: description
@@ -84,6 +88,8 @@ Feature: Import rules
                 - field:    description
                   operator: CONTAINS
                   value:    42
+                  locale:   en_US
+                  scope:    tablet
             actions:
                 - type:  set_value
                   field: description
@@ -122,6 +128,7 @@ Feature: Import rules
                 - field:    SKU
                   operator: CONTAINS
                   value:    42
+                  locale:   en_US
             actions:
                 - type:  set_value
                   field: SKU
@@ -133,6 +140,7 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    42
+                  locale:   en_US
             actions:
                 - type:  set_value
                   field: SKU
@@ -403,6 +411,7 @@ Feature: Import rules
                 - field:    number_in_stock
                   operator: =
                   value:    invalid
+                  scope:    tablet
             actions:
                 - type:  set_value
                   field: number_in_stock
@@ -495,6 +504,7 @@ Feature: Import rules
                 - field:    release_date
                   operator: =
                   value:    invalid
+                  scope:    tablet
             actions:
                 - type:  set_value
                   field: release_date
@@ -505,6 +515,7 @@ Feature: Import rules
                 - field:    release_date
                   operator: =
                   value:    invalid
+                  scope:   tablet
             actions:
                 - type:  set_value
                   field: release_date
@@ -584,8 +595,8 @@ Feature: Import rules
       | rule                       | field | operator | value | locale |
       | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
     And the following product rule setter actions:
-      | rule                       | field     | value                                  |
-      | sony_beautiful_description | side_view | SNKRS-1R,Context/fixtures/SNKRS-1R.png |
+      | rule                       | field     | value                                                    |
+      | sony_beautiful_description | side_view | SNKRS-1R,../../../features/Context/fixtures/SNKRS-1R.png |
     And the following yaml file to import:
     """
     rules:
@@ -619,7 +630,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
     And I should see "conditions[0]: Only scalar values are allowed for operators eq, lt, lte, gt, gte, like."
-    And I should see "actions[0]: Attribute \"side_view\" expects an array with the key \"filePath\" as data, \"array\" given (for setter media)."
+    And I should see "actions[0]: Attribute \"side_view\" expects an array with the key"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "Context/fixtures/SNKRS-1R.png"
@@ -826,8 +837,8 @@ Feature: Import rules
       | rule                       | field | operator | value | locale |
       | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
     And the following product rule copier actions:
-      | rule                       | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description     | en_US       | en_US     | mobile     | tablet   |
+      | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description     | en_US       | en_US     | mobile     | tablet   |
     And the following yaml file to import:
     """
     rules:
@@ -860,8 +871,8 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule copier actions:
-      | rule                       | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description     | en          | en        | mobile     | tablet   |
+      | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description     | en          | en        | mobile     | tablet   |
 
   @javascript
   Scenario: Skip rules with missing to_field key for copy action
@@ -872,8 +883,8 @@ Feature: Import rules
       | rule                       | field | operator | value | locale |
       | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
     And the following product rule copier actions:
-      | rule                       | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description     | en_US       | en_US     | mobile     | tablet   |
+      | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description     | en_US       | en_US     | mobile     | tablet   |
     And the following yaml file to import:
     """
     rules:
@@ -906,8 +917,8 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule copier actions:
-      | rule                       | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description     | en          | en        | mobile     | tablet   |
+      | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description     | en          | en        | mobile     | tablet   |
 
   @javascript
   Scenario: Skip rules with missing value key for conditions
@@ -1085,8 +1096,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see "skipped 2"
-    And I should see "conditions[0]: Cannot prepare condition on localizable attribute \"name\" without locale"
-    And I should see "actions[0]: Locale is expected for the attribute \"description\""
+    And I should see "conditions[0]: Attribute or field \"name\" excepts valid data, scope and locale (for filter string). Attribute \"name\" expects a locale, none given."
+    And I should see "actions[0]: Attribute \"description\" expects valid data, scope and locale (for setter text). Attribute \"description\" expects a locale, none given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see "Another good description"
@@ -1138,8 +1149,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     And I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"name\" excepts valid data, scope and locale (for %s %s)."
-    And I should see "actions[0]: Attribute or field \"description\" excepts valid data, scope and locale (for %s %s)."
+    And I should see "conditions[0]: Attribute or field \"name\" excepts valid data, scope and locale (for filter string). Attribute \"name\" expects an existing and activated locale, \"kj_KL\" given."
+    And I should see "actions[0]: Attribute \"description\" expects valid data, scope and locale (for setter text). Attribute \"description\" expects an existing and activated locale, \"kj_KL\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see "Another good description"
@@ -1444,8 +1455,8 @@ Feature: Import rules
       | rule                       | field | operator | value | locale |
       | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
     And the following product rule copier actions:
-      | rule                       | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description     | en_US       | en_US     | mobile     | tablet   |
+      | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description     | en_US       | en_US     | mobile     | tablet   |
     And the following yaml file to import:
     """
     rules:
@@ -1482,8 +1493,8 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule copier actions:
-      | rule                       | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description     | en          | en        | mobile     | tablet   |
+      | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description     | en          | en        | mobile     | tablet   |
 
   @javascript
   Scenario: Skip rules with non existing to_field for copy action
@@ -1494,8 +1505,8 @@ Feature: Import rules
       | rule                       | field | operator | value | locale |
       | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
     And the following product rule copier actions:
-      | rule                       | from_field | to_field        | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description     | en_US       | en_US     | mobile     | tablet   |
+      | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description     | en_US       | en_US     | mobile     | tablet   |
     And the following yaml file to import:
     """
     rules:
@@ -1532,161 +1543,162 @@ Feature: Import rules
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule copier actions:
-      | rule                       | from_field | to_field    | from_locale | to_locale | from_scope | to_scope |
-      | sony_beautiful_description | name       | description | en          | en        | mobile     | tablet   |
+      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
-#  @javascript
-#  Scenario: Skip rules with incompatible fields for copy action
-#    Given the following product rules:
-#      | code                       | priority |
-#      | sony_beautiful_description | 10       |
-#    And the following product rule conditions:
-#      | rule                       | field | operator | value | locale |
-#      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-#    And the following product rule copier actions:
-#      | rule                       | from_field | to_field    | from_locale | to_locale | from_scope | to_scope |
-#      | sony_beautiful_description | name       | description | en_US       | en_US     | mobile     | tablet   |
-#    And the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#                  locale:   en_US
-#            actions:
-#                - type:       copy_value
-#                  from_field: description
-#                  to_field:   side_view
-#        sony_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#                  locale:   en_US
-#            actions:
-#                - type:       copy_value
-#                  from_field: description
-#                  to_field:   side_view
-#
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    Then I should see "skipped 2"
-#    And I should see "actions[0].toField: The field \"wrong\" does not exist."
-#    And I should see "actions[0].toField: The field \"another wrong\" does not exist."
-#    When I am on the "description" attribute page
-#    And I visit the "Rules" tab
-#    Then I should see the following rule copier actions:
-#      | rule                       | from_field | to_field    | from_locale | to_locale | from_scope | to_scope |
-#      | sony_beautiful_description | name       | description | en          | en        | mobile     | tablet   |
+  @javascript
+  Scenario: Skip rules with incompatible fields for copy action
+    Given the following product rules:
+      | code                       | priority |
+      | sony_beautiful_description | 10       |
+    And the following product rule conditions:
+      | rule                       | field | operator | value | locale |
+      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
+    And the following product rule copier actions:
+      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    And the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+                  locale:   en_US
+            actions:
+                - type:       copy_value
+                  from_field: description
+                  to_field:   side_view
+        sony_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+                  locale:   en_US
+            actions:
+                - type:       copy_value
+                  from_field: description
+                  to_field:   side_view
 
-#  @javascript
-#  Scenario: Skip rules with wrong locale fields for copy action
-#    Given the following product rules:
-#      | code                       | priority |
-#      | sony_beautiful_description | 10       |
-#    And the following product rule conditions:
-#      | rule                       | field | operator | value | locale |
-#      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-#    And the following product rule copier actions:
-#      | rule                       | from_field | to_field    | from_locale | to_locale | from_scope | to_scope |
-#      | sony_beautiful_description | name       | description | en_US       | en_US     | mobile     | tablet   |
-#    And the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#                  locale:   en_US
-#            actions:
-#                - type:        copy_value
-#                  from_field:  name
-#                  to_field:    name
-#                  from_locale: wrong
-#                  to_locale:   wrong
-#        sony_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#                  locale:   en_US
-#            actions:
-#                - type:        copy_value
-#                  from_field:  name
-#                  to_field:    name
-#                  from_locale: wrong
-#                  to_locale:   wrong
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    Then I should see "skipped 2"
-#    And I should see "actions[0].toField: The field \"wrong\" does not exist."
-#    And I should see "actions[0].toField: The field \"another wrong\" does not exist."
-#    When I am on the "description" attribute page
-#    And I visit the "Rules" tab
-#    Then I should see the following rule copier actions:
-#      | rule                       | from_field | to_field    | from_locale | to_locale | from_scope | to_scope |
-#      | sony_beautiful_description | name       | description | en          | en        | mobile     | tablet   |
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 2"
+    And I should see "actions[0]: Source and destination attributes \"description\" and \"side_view\" are not supported by any copier"
+    When I am on the "description" attribute page
+    And I visit the "Rules" tab
+    Then I should see the following rule copier actions:
+      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
-#  @javascript
-#  Scenario: Skip rules with wrong scope fields for copy action
-#    Given the following product rules:
-#      | code                       | priority |
-#      | sony_beautiful_description | 10       |
-#    And the following product rule conditions:
-#      | rule                       | field | operator | value | locale |
-#      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
-#    And the following product rule copier actions:
-#      | rule                       | from_field | to_field    | from_locale | to_locale | from_scope | to_scope |
-#      | sony_beautiful_description | name       | description | en_US       | en_US     | mobile     | tablet   |
-#    And the following yaml file to import:
-#    """
-#    rules:
-#        canon_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#                  locale:   en_US
-#            actions:
-#                - type:       copy_value
-#                  from_field: name
-#                  to_field:   name
-#                  from_scope: wrong
-#                  to_scope:   wrong
-#        sony_beautiful_description:
-#            conditions:
-#                - field:    name
-#                  operator: CONTAINS
-#                  value:    Canon
-#                  locale:   en_US
-#            actions:
-#                - type:       copy_value
-#                  from_field: name
-#                  to_field:   name
-#                  from_scope: wrong
-#                  to_scope:   wrong
-#    """
-#    And the following job "clothing_rule_import" configuration:
-#      | filePath | %file to import% |
-#    When I am on the "clothing_rule_import" import job page
-#    And I launch the import job
-#    And I wait for the "clothing_rule_import" job to finish
-#    Then I should see "skipped 2"
-#    And I should see "actions[0].toField: The field \"wrong\" does not exist."
-#    And I should see "actions[0].toField: The field \"another wrong\" does not exist."
-#    When I am on the "description" attribute page
-#    And I visit the "Rules" tab
-#    Then I should see the following rule copier actions:
-#      | rule                       | from_field | to_field    | from_locale | to_locale | from_scope | to_scope |
-#      | sony_beautiful_description | name       | description | en          | en        | mobile     | tablet   |
+  @javascript
+  Scenario: Skip rules with wrong locale fields for copy action
+    Given the following product rules:
+      | code                       | priority |
+      | sony_beautiful_description | 10       |
+    And the following product rule conditions:
+      | rule                       | field | operator | value | locale |
+      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
+    And the following product rule copier actions:
+      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    And the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+                  locale:   en_US
+            actions:
+                - type:        copy_value
+                  from_field:  name
+                  to_field:    name
+                  from_locale: wrong
+                  to_locale:   wrong
+        sony_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+                  locale:   en_US
+            actions:
+                - type:        copy_value
+                  from_field:  name
+                  to_field:    name
+                  from_locale: wrong
+                  to_locale:   wrong
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 2"
+    And I should see "actions[0]: Attribute \"name\" expects valid data, scope and locale (for copier base). Attribute \"name\" expects an existing and activated locale, \"wrong\" given."
+    When I am on the "description" attribute page
+    And I visit the "Rules" tab
+    Then I should see the following rule copier actions:
+      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
+
+  @javascript
+  Scenario: Skip rules with wrong scope fields for copy action
+    Given the following product rules:
+      | code                       | priority |
+      | sony_beautiful_description | 10       |
+    And the following product rule conditions:
+      | rule                       | field | operator | value | locale |
+      | sony_beautiful_description | name  | CONTAINS | Canon | en_US  |
+    And the following product rule copier actions:
+      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description | en_US       | en_US     | mobile     | tablet   |
+    And the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+                  locale:   en_US
+            actions:
+                - type:        copy_value
+                  from_field:  description
+                  to_field:    description
+                  from_locale: en_US
+                  to_locale:   en_US
+                  from_scope:  wrong
+                  to_scope:    wrong
+        sony_beautiful_description:
+            conditions:
+                - field:    name
+                  operator: CONTAINS
+                  value:    Canon
+                  locale:   en_US
+            actions:
+                - type:        copy_value
+                  from_field:  description
+                  to_field:    description
+                  from_locale: en_US
+                  to_locale:   en_US
+                  from_scope:  wrong
+                  to_scope:    wrong
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see "skipped 2"
+    And I should see "actions[0]: Attribute \"description\" expects valid data, scope and locale (for copier base). Attribute \"description\" expects an existing scope, \"wrong\" given."
+    When I am on the "description" attribute page
+    And I visit the "Rules" tab
+    Then I should see the following rule copier actions:
+      | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
+      | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |

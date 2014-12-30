@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
@@ -499,7 +500,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             if ($data['operator'] === 'IN') {
-                $data['value'] = [$data['value']];
+                $data['value'] =  $this->getMainContext()->listToArray($data["value"]);
             }
 
             $condition = [
@@ -547,7 +548,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $content['actions'] = [];
             }
 
-            $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $data['field']]);
+            $code = FieldFilterHelper::getCode($data['field']);
+            $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $code]);
             $attributeType = $attribute->getAttributeType();
 
             // TODO: replace this dirty fix to use the same class than ProductSetValueActionNormalizer
@@ -591,7 +593,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $action = [
                 'type' => 'set_value',
-                'field' => $data['field'],
+                'field' => $code,
                 'value' => $value,
             ];
             if ($data['locale']) {
