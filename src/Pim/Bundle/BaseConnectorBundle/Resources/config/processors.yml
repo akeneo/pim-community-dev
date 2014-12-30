@@ -130,5 +130,5 @@ services:
             - @pim_catalog.repository.group
             - @pim_serializer
             - @pim_validator
-            - @pim_catalog.doctrine.object_detacher
+            - @akeneo_storage_utils.doctrine.object_detacher
             - %pim_catalog.entity.product_template.class%
