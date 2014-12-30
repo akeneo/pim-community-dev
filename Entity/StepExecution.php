@@ -565,14 +565,15 @@ class StepExecution
     /**
      * Increment counter in summary
      *
-     * @param string $key
+     * @param string  $key
+     * @param integer $increment
      */
-    public function incrementSummaryInfo($key)
+    public function incrementSummaryInfo($key, $increment = 1)
     {
         if (!isset($this->summary[$key])) {
-            $this->summary[$key]= 1;
+            $this->summary[$key]= $increment;
         } else {
-            $this->summary[$key]= $this->summary[$key] + 1;
+            $this->summary[$key]= $this->summary[$key] + $increment;
         }
     }
 

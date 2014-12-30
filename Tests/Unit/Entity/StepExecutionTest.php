@@ -258,6 +258,30 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the increment by one (default case)
+     */
+    public function testIncrementSummaryInfoByOne()
+    {
+        $this->stepExecution->incrementSummaryInfo('create');
+        $this->stepExecution->incrementSummaryInfo('create');
+        $this->assertEquals($this->stepExecution->getSummaryInfo('create'), 2);
+        $this->stepExecution->incrementSummaryInfo('create');
+        $this->assertEquals($this->stepExecution->getSummaryInfo('create'), 3);
+    }
+
+    /**
+     * Test the increment by bulk
+     */
+    public function testIncrementSummaryInfoByBulk()
+    {
+        $this->stepExecution->incrementSummaryInfo('create');
+        $this->stepExecution->incrementSummaryInfo('create');
+        $this->assertEquals($this->stepExecution->getSummaryInfo('create'), 2);
+        $this->stepExecution->incrementSummaryInfo('create', 5);
+        $this->assertEquals($this->stepExecution->getSummaryInfo('create'), 7);
+    }
+
+    /**
      * Assert the entity tested
      *
      * @param object $entity
