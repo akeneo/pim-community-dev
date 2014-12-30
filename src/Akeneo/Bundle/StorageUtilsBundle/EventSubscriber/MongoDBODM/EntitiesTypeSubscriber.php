@@ -1,14 +1,14 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
+namespace Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollection;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollectionFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 
 /**
  * Convert identifiers collection into lazy entity collection
@@ -161,7 +161,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     throw new \LogicException(
                         sprintf(
                             'Property "%s" of "%s" should be an instance of ' .
-                            'Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection, got "%s"',
+                            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollection, got "%s"',
                             $field,
                             get_class($document),
                             is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -39,7 +39,7 @@ class ResolverPass implements CompilerPassInterface
         $pagerResolver = $container->getDefinition(self::PAGER_RESOLVER_ID);
         $datasourceResolver = $container->getDefinition(self::DATASOURCE_ADAPTER_RESOLVER_ID);
 
-        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $container->getParameter('pim_catalog.storage_driver')) {
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $container->getParameter('akeneo_storage_utils.storage_driver')) {
             $datasourceResolver->addMethodCall(
                 'setMongodbAdapterClass',
                 [ $container->getParameter(self::MONGO_DATASOURCE_ADAPTER_CLASS) ]

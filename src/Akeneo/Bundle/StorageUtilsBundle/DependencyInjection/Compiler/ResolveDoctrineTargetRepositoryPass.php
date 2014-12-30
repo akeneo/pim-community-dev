@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+namespace Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,8 +12,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ResolveDoctrineTargetRepositoriesPass implements CompilerPassInterface
+class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
 {
+    /** @var string */
+    protected $tag;
+
+    /**
+     * @param array $tag tag of the repositories
+     */
+    public function __construct($tag)
+    {
+        $this->tag = $tag;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -53,7 +64,7 @@ class ResolveDoctrineTargetRepositoriesPass implements CompilerPassInterface
      */
     protected function getParametersMapping(ContainerBuilder $container)
     {
-        $repositoryIds = $container->findTaggedServiceIds('pim_repository');
+        $repositoryIds = $container->findTaggedServiceIds($this->tag);
 
         $mapping = array();
         foreach (array_keys($repositoryIds) as $repositoryId) {

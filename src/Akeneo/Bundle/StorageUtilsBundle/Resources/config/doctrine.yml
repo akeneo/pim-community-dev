@@ -1,0 +1,24 @@
+parameters:
+    doctrine.entity_repository.class:   Doctrine\ORM\EntityRepository
+    doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
+    akeneo_storage_utils.doctrine.smart_manager_registry.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry
+    akeneo_storage_utils.doctrine.table_name_builder.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder
+    akeneo_storage_utils.event_subscriber.resolve_target_repository.class: Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber
+
+services:
+    akeneo_storage_utils.event_subscriber.resolve_target_repository:
+        class: %akeneo_storage_utils.event_subscriber.resolve_target_repository.class%
+        public: false
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    akeneo_storage_utils.doctrine.smart_manager_registry:
+        class: %akeneo_storage_utils.doctrine.smart_manager_registry.class%
+        calls:
+            - [addRegistry, ['@doctrine']]
+
+    akeneo_storage_utils.doctrine.table_name_builder:
+        class: %akeneo_storage_utils.doctrine.table_name_builder.class%
+        arguments:
+            - '@service_container'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'

@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use PhpSpec\ObjectBehavior;
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 
 /**
  * @require \MongoId

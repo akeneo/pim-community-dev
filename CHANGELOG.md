@@ -117,6 +117,32 @@
 - Add methods isLocaleSpecific and getLocaleSpecificCodes in AttributeInterface
 - AssociationTransformer constructor now expects a $associationTypeClass as last argument
 - Inject the GroupFactory as las constructor argument in GroupController and VariantGroupController
+- The following constants have been moved:
+  * `DOCTRINE_ORM` and `DOCTRINE_MONGODB_ODM` from `Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension` are now located in `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
+  * `DOCTRINE_MONGODB`, `ODM_ENTITIES_TYPE` and `ODM_ENTITY_TYPE` from `Pim\Bundle\CatalogBundle\PimCatalogBundle` are now located in `Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle`
+- The container parameter `pim_catalog.storage_driver` has been renamed to `akeneo_storage_utils.storage_driver`
+- The following services have been renamed:
+  * `pim_catalog.event_subscriber.resolve_target_repository` has been renamed to `akeneo_storage_utils.event_subscriber.resolve_target_repository`
+  * `pim_catalog.doctrine.smart_manager_registry` has been renamed to `akeneo_storage_utils.doctrine.smart_manager_registry`
+  * `pim_catalog.doctrine.table_name_builder` has been renamed to `akeneo_storage_utils.doctrine.table_name_builder`
+  * `pim_catalog.factory.referenced_collection` has been renamed to `akeneo_storage_utils.factory.referenced_collection`
+  * `pim_catalog.event_subscriber.mongodb.resolve_target_repositories` has been renamed to `akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository`
+  * `pim_catalog.event_subscriber.mongodb.entities_type` has been renamed to `akeneo_storage_utils.event_subscriber.mongodb.entities_type`
+  * `pim_catalog.event_subscriber.mongodb.entity_type` has been renamed to `akeneo_storage_utils.event_subscriber.mongodb.entity_type`
+  * `pim_catalog.mongodb.mongo_objects_factory` has been renamed to `akeneo_storage_utils.mongodb.mongo_objects_factory`
+- The following classes have been renamed or moved:
+  * `Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory` becomes `Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory`
+  * `Pim\Bundle\CatalogBundle\MongoDB\Type\Entities` becomes `Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entities`
+  * `Pim\Bundle\CatalogBundle\MongoDB\Type\Entity` becomes `Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entity`
+  * `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass` becomes `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass`
+  * `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoriesPass` becomes `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass`
+  * `Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection` becomes `Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollection`
+  * `Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory` becomes `Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollectionFactory`
+  * `Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry` becomes `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry`
+  * `Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder` becomes `Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder`
+  * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber`
+  * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
+  * `Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

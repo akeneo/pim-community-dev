@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\MongoDB;
+namespace Akeneo\Bundle\StorageUtilsBundle\MongoDB;
 
 use MongoDate;
 use MongoDBRef;

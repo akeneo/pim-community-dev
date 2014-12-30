@@ -35,7 +35,7 @@ services:
     pim_datagrid.datasource.support_resolver:
         class: %pim_datagrid.datasource.support_resolver.class%
         arguments:
-            - %pim_catalog.storage_driver%
+            - %akeneo_storage_utils.storage_driver%
         calls:
             - [addSmartDatasource, ['pim_datasource_product']]
             - [addSmartDatasource, ['pim_datasource_smart']]

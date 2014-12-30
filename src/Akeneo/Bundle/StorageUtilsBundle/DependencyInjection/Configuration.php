@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\DependencyInjection;
+namespace Akeneo\Bundle\StorageUtilsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Pim Catalog bundle configuration
+ * Akeneo storage utils bundle configuration
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pim_catalog');
+        $rootNode = $treeBuilder->root('akeneo_storage_utils');
 
         $rootNode
             ->children()

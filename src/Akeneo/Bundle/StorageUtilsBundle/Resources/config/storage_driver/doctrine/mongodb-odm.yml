@@ -1,0 +1,36 @@
+parameters:
+    akeneo_storage_utils.event_subscriber.mongodb.entities_type.class: Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber
+    akeneo_storage_utils.event_subscriber.mongodb.entity_type.class:   Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber
+    akeneo_storage_utils.mongodb.mongo_objects_factory.class:        Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory
+    akeneo_storage_utils.doctrine.smart_manager_registry.class:      Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry
+
+services:
+    akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository:
+        class: %akeneo_storage_utils.event_subscriber.resolve_target_repository.class%
+        public: false
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    akeneo_storage_utils.event_subscriber.mongodb.entities_type:
+        class: %akeneo_storage_utils.event_subscriber.mongodb.entities_type.class%
+        arguments:
+            - '@akeneo_storage_utils.factory.referenced_collection'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    akeneo_storage_utils.event_subscriber.mongodb.entity_type:
+        class: %akeneo_storage_utils.event_subscriber.mongodb.entity_type.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    akeneo_storage_utils.mongodb.mongo_objects_factory:
+        class: %akeneo_storage_utils.mongodb.mongo_objects_factory.class%
+
+    akeneo_storage_utils.doctrine.smart_manager_registry:
+        class: %akeneo_storage_utils.doctrine.smart_manager_registry.class%
+        calls:
+            - [addRegistry, ['@doctrine']]
+            - [addRegistry, ['@doctrine_mongodb']]
+

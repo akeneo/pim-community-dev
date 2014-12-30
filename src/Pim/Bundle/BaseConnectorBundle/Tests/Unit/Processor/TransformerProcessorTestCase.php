@@ -24,7 +24,7 @@ abstract class TransformerProcessorTestCase extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->managerRegistry = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry')
+            ->getMockBuilder('Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry')
             ->disableOriginalConstructor()
             ->getMock();
         $this->managerRegistry->expects($this->any())->method('getManagerForClass')->will($this->returnValue($em));

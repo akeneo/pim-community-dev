@@ -1,7 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollection;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollectionFactory;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
@@ -10,8 +12,6 @@ use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
-use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Prophecy\Argument;
 
 /**

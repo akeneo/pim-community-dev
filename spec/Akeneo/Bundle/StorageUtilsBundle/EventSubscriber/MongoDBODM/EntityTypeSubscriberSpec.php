@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
@@ -103,7 +103,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
             'foo' => ['type' => 'text'],
             'bar' => [
                 'type'         => 'entity',
-                'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\FooStub'
+                'targetEntity' => 'spec\Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\FooStub'
             ],
         ];
 

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Selector;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\From;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
@@ -10,7 +11,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
@@ -63,7 +63,7 @@ class OrmSelectorExtension extends AbstractExtension
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
         if (in_array($datasourceType, $this->eligibleDatasource) &&
-            PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
+            AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->storageDriver) {
             return true;
         }
 

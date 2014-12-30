@@ -1,6 +1,5 @@
 <?php
-
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
@@ -24,9 +23,11 @@ class ReferencedCollectionSpec extends ObjectBehavior
         ClassMetadata $classMetadata,
         MongoDBODMUnitOfWork $uow
     ) {
-        $registry->getManagerForClass(Argument::type('string'))->will(function ($args) use ($em, $dm) {
-            return 'MyItemClass' === $args[0] ? $em : $dm;
-        });
+        $registry->getManagerForClass(Argument::type('string'))->will(
+            function ($args) use ($em, $dm) {
+                return 'MyItemClass' === $args[0] ? $em : $dm;
+            }
+        );
         $registry->getRepository('MyItemClass')->willReturn($repository);
         $em->getClassMetadata('MyItemClass')->willReturn($classMetadata);
         $dm->getUnitOfWork()->willReturn($uow);
