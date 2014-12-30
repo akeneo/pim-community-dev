@@ -3,11 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -81,9 +80,22 @@ class DateValueSetterSpec extends ObjectBehavior
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_string(
-        AttributeInterface $attribute
+    function it_allows_setting_data_to_null(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        ProductValueInterface $value
     ) {
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $product->getValue('attributeCode', null, null)->shouldBeCalled()->willReturn($value);
+
+        $value->setData(null)->shouldBeCalled();
+
+        $this->setValue([$product], $attribute, null);
+    }
+
+    function it_throws_an_error_if_data_is_not_a_string_or_null(AttributeInterface $attribute)
+    {
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = new \Datetime();
@@ -99,7 +111,7 @@ class DateValueSetterSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         $builder,
-        ProductValue $productValue
+        ProductValueInterface $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';

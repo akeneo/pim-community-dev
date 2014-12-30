@@ -45,13 +45,17 @@ class DateValueSetter extends AbstractValueSetter
     }
 
     /**
-     * Check if data are valid
+     * Check if data is valid
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
+        if (null === $data) {
+            return;
+        }
+
         if (!is_string($data)) {
             throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'date', gettype($data));
         }
@@ -88,6 +92,11 @@ class DateValueSetter extends AbstractValueSetter
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
-        $value->setData(new \DateTime($data));
+
+        if (null !== $data) {
+            $data = new \DateTime($data);
+        }
+
+        $value->setData($data);
     }
 }
