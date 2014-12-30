@@ -1,0 +1,8 @@
+parameters:
+    pim_catalog.doctrine.cursor_factory.class: Pim\Bundle\CatalogBundle\Doctrine\Query\CursorFactory
+
+services:
+    pim_catalog.doctrine.query.cursor_factory:
+        class: %pim_catalog.doctrine.cursor_factory.class%
+        arguments:
+            - %pim_catalog.doctrine.product_cursor.class%

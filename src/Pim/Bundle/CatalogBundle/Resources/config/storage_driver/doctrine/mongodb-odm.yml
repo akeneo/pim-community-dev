@@ -7,6 +7,9 @@ parameters:
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
     pim_catalog.doctrine.naming_utility.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility
+    pim_catalog.doctrine.product_cursor.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductCursor
+    pim_catalog.event_subscriber.mongodb.entities_type.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber
+    pim_catalog.event_subscriber.mongodb.entity_type.class:   Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber
     pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
     pim_catalog.mongodb.normalizer.group.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\GroupNormalizer
     pim_catalog.mongodb.normalizer.completeness.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\CompletenessNormalizer
