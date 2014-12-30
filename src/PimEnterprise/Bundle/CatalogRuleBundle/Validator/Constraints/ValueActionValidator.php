@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -37,22 +39,59 @@ class ValueActionValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($productSetAction, Constraint $constraint)
+    public function validate($action, Constraint $constraint)
+    {
+        if ($action instanceof ProductSetValueActionInterface) {
+            $this->validateSetValue($action, $constraint);
+        } if ($action instanceof ProductCopyValueActionInterface) {
+            $this->validateCopyValue($action, $constraint);
+        } else {
+            throw new \LogicException(sprintf('Action of type "%s" can not be validated.', gettype($action)));
+        }
+    }
+
+    /**
+     * @param ProductSetValueActionInterface $action
+     * @param Constraint                     $constraint
+     */
+    protected function validateSetValue(ProductSetValueActionInterface $action, Constraint $constraint)
     {
         try {
             $this->factory->setValue(
                 [],
-                $productSetAction->getField(),
-                $productSetAction->getValue(),
-                $productSetAction->getLocale(),
-                $productSetAction->getScope()
+                $action->getField(),
+                $action->getValue(),
+                $action->getLocale(),
+                $action->getScope()
             );
         } catch (\Exception $e) {
             $this->context->addViolation(
                 $constraint->message,
-                [
-                    '%message%' => $e->getMessage(),
-                ]
+                [ '%message%' => $e->getMessage() ]
+            );
+        }
+    }
+
+    /**
+     * @param ProductCopyValueActionInterface $action
+     * @param Constraint                      $constraint
+     */
+    protected function validateCopyValue(ProductCopyValueActionInterface $action, Constraint $constraint)
+    {
+        try {
+            $this->factory->copyValue(
+                [],
+                $action->getFromField(),
+                $action->getToField(),
+                $action->getFromLocale(),
+                $action->getToLocale(),
+                $action->getFromScope(),
+                $action->getToScope()
+            );
+        } catch (\Exception $e) {
+            $this->context->addViolation(
+                $constraint->message,
+                [ '%message%' => $e->getMessage() ]
             );
         }
     }

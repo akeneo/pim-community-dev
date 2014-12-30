@@ -1,4 +1,6 @@
 PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction:
+    constraints:
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ValueAction: ~
     properties:
         fromField:
            - Type:
