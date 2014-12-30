@@ -76,9 +76,8 @@ class VariantGroupValuesWriterSpec extends ObjectBehavior
         $templateApplier->apply($productTemplate, [$productOne, $productTwo])
             ->willReturn([])
             ->shouldBeCalled();
-        $stepExecution->getSummary()->willReturn([]);
-        $stepExecution->addSummaryInfo('update_products', 2)->shouldBeCalled();
-        $stepExecution->addSummaryInfo('skip_products', 0)->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('update_products', 2)->shouldBeCalled();
 
         $cacheClearer->clear()->shouldBeCalled();
 
@@ -109,9 +108,8 @@ class VariantGroupValuesWriterSpec extends ObjectBehavior
             ->willReturn(['sku-invalid' => ['message error one']])
             ->shouldBeCalled();
 
-        $stepExecution->getSummary()->willReturn([]);
-        $stepExecution->addSummaryInfo('update_products', 1)->shouldBeCalled();
-        $stepExecution->addSummaryInfo('skip_products', 1)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('update_products', 1)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip_products', 1)->shouldBeCalled();
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
         $cacheClearer->clear()->shouldBeCalled();
