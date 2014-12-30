@@ -37,7 +37,7 @@ class DateValueSetter extends AbstractValueSetter
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
-        $this->checkData($attribute, $data);
+        $data = $this->formatData($attribute, $data);
 
         foreach ($products as $product) {
             $this->setData($attribute, $product, $data, $locale, $scope);
@@ -45,36 +45,30 @@ class DateValueSetter extends AbstractValueSetter
     }
 
     /**
-     * Check if data is valid
+     * Format data
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @return string
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function formatData(AttributeInterface $attribute, $data)
     {
-        if (null === $data) {
-            return;
-        }
-
-        if (!is_string($data)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'date', gettype($data));
-        }
-
-        $dateValues = explode('-', $data);
-
-        if (
-            count($dateValues) !== 3
-            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
-            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
-        ) {
+        if ($data instanceof \DateTime) {
+            $data = $data->format('Y-m-d');
+        } elseif (is_string($data)) {
+            $this->validateDateFormat($attribute, $data);
+        } elseif (null !== $data) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
-                'a string with the format yyyy-mm-dd',
+                'datetime or string',
+                gettype($data),
                 'setter',
-                'date',
-                gettype($data)
+                'date'
             );
         }
+
+        return $data;
     }
 
     /**
@@ -98,5 +92,28 @@ class DateValueSetter extends AbstractValueSetter
         }
 
         $value->setData($data);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param                    $data
+     */
+    protected function validateDateFormat(AttributeInterface $attribute, $data)
+    {
+        $dateValues = explode('-', $data);
+
+        if (
+            count($dateValues) !== 3
+            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
+            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
+        ) {
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                'a string with the format yyyy-mm-dd',
+                'setter',
+                'date',
+                gettype($data)
+            );
+        }
     }
 }
