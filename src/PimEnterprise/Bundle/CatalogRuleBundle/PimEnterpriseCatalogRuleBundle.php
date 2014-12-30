@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -31,12 +32,14 @@ class PimEnterpriseCatalogRuleBundle extends Bundle
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\CatalogRuleBundle\Model'
         ];
 
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $versionMappings,
-                ['doctrine.orm.entity_manager'],
-                false
-            )
+        $container
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(
+                DoctrineOrmMappingsPass::createYamlMappingDriver(
+                    $versionMappings,
+                    ['doctrine.orm.entity_manager'],
+                    false
+                )
         );
     }
 }

@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\RuleEngineBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterRunnerPass;
-use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass;
+use PimEnterprise\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -34,7 +34,7 @@ class PimEnterpriseRuleEngineBundle extends Bundle
         );
 
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelsPass())
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
                     $mappings,
