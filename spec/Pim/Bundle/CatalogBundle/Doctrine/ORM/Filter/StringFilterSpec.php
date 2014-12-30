@@ -7,12 +7,18 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class StringFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder)
+    function let(QueryBuilder $queryBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_identifier'], ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            ['pim_catalog_identifier'],
+            ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN']
+        );
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -28,8 +34,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_starts_with_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_starts_with_attribute_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
@@ -45,8 +54,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_ends_with_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_ends_with_attribute_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
@@ -62,8 +74,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_contains_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_contains_attribute_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
@@ -79,8 +94,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_does_not_contain_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_does_not_contain_attribute_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
@@ -96,8 +114,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_a_equal_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_a_equal_attribute_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
@@ -113,8 +134,11 @@ class StringFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($sku, '=', 'My Sku', null, null, ['field' => 'sku']);
     }
 
-    function it_adds_an_empty_attribute_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $sku)
+    function it_adds_an_empty_attribute_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $sku)
     {
+        $attrValidatorHelper->validateLocale($sku, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($sku, Argument::any())->shouldBeCalled();
+
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');

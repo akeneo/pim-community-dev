@@ -190,8 +190,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $value,
         array $context
     ) {
+        $locale = $attribute->isLocalizable() ? $context['locale'] : null;
+        $scope = $attribute->isScopable() ? $context['scope'] : null;
+
         $filter->setQueryBuilder($this->getQueryBuilder());
-        $filter->addAttributeFilter($attribute, $operator, $value, $context['locale'], $context['scope'], $context);
+        $filter->addAttributeFilter($attribute, $operator, $value, $locale, $scope, $context);
 
         return $this;
     }

@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Date filter
@@ -16,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateFilter extends AbstractFilter implements AttributeFilterInterface, FieldFilterInterface
+class DateFilter extends AbstractAttributeFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /** @var array */
     protected $supportedAttributes;
@@ -27,15 +28,18 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
     /**
      * Instanciate the filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedFields
-     * @param array $supportedOperators
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributes
+     * @param array                    $supportedFields
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributes = [],
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedFields     = $supportedFields;
         $this->supportedOperators  = $supportedOperators;
@@ -68,6 +72,7 @@ class DateFilter extends AbstractFilter implements AttributeFilterInterface, Fie
         $scope = null,
         $options = []
     ) {
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
         $this->checkValues($attribute->getCode(), $value);
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);

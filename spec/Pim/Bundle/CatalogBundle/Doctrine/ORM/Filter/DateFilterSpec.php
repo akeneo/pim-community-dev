@@ -7,12 +7,19 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class DateFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb)
+    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_date'], ['created', 'updated'], ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            ['pim_catalog_date'],
+            ['created', 'updated'],
+            ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY']
+        );
         $this->setQueryBuilder($qb);
 
         $qb->getRootAliases()->willReturn(['p']);
@@ -195,10 +202,14 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_an_empty_operator_filter_on_an_attribute_to_the_query(
+        $attrValidatorHelper,
         AttributeInterface $attribute,
         QueryBuilder $qb,
         Expr $expr
     ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
         $qb->getRootAlias()->willReturn('p');
         $attribute->getBackendType()->willReturn('backend_type');
         $attribute->getCode()->willReturn('code');
@@ -220,10 +231,14 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_a_greater_than_filter_on_an_attribute_to_the_query(
         AttributeInterface $attribute,
+        $attrValidatorHelper,
         QueryBuilder $qb,
         Expr $expr,
         Expr\Comparison $comparison
     ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
         $qb->getRootAlias()->willReturn('p');
         $attribute->getBackendType()->willReturn('backend_type');
         $attribute->getCode()->willReturn('code');

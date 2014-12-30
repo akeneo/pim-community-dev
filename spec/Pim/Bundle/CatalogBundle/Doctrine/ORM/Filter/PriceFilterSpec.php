@@ -8,12 +8,18 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder)
+    function let(QueryBuilder $queryBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_price_collection'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            ['pim_catalog_price_collection'],
+            ['<', '<=', '=', '>=', '>', 'EMPTY']
+        );
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -29,8 +35,11 @@ class PriceFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_equals_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
+    function it_adds_a_equals_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $price)
     {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -49,8 +58,11 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '=', '12 EUR');
     }
 
-    function it_adds_a_greater_than_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
+    function it_adds_a_greater_than_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $price)
     {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -69,8 +81,11 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '>', '12 EUR');
     }
 
-    function it_adds_a_greater_than_or_equals_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
+    function it_adds_a_greater_than_or_equals_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $price)
     {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -89,8 +104,11 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '>=', '12 EUR');
     }
 
-    function it_adds_a_less_than_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
+    function it_adds_a_less_than_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $price)
     {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -109,8 +127,11 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '<', '12 EUR');
     }
 
-    function it_adds_a_less_than_or_equals_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $price)
+    function it_adds_a_less_than_or_equals_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $price)
     {
+        $attrValidatorHelper->validateLocale($price, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($price, Argument::any())->shouldBeCalled();
+
         $price->getId()->willReturn(42);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');

@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -16,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StringFilter extends AbstractFilter implements AttributeFilterInterface
+class StringFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /** @var array */
     protected $supportedAttributes;
@@ -27,13 +28,16 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Instanciate the filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributes
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
 
@@ -70,6 +74,8 @@ class StringFilter extends AbstractFilter implements AttributeFilterInterface
                 'string'
             );
         }
+
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'string');
 
         if ($operator !== Operators::IS_EMPTY) {
             $this->checkValue($options['field'], $value);

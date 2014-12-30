@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
  * Metric filter
@@ -14,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricFilter extends AbstractFilter implements AttributeFilterInterface
+class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /** @var array */
     protected $supportedAttributes;
@@ -22,13 +23,16 @@ class MetricFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedAttributes
+     * @param array                    $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -44,6 +48,8 @@ class MetricFilter extends AbstractFilter implements AttributeFilterInterface
         $scope = null,
         $options = []
     ) {
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
+
         if (!is_numeric($value) && null !== $value) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'metric');
         }

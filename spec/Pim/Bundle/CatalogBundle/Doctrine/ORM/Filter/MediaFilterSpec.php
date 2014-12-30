@@ -6,12 +6,15 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class MediaFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, Expr $expr, AttributeInterface $image)
+    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper, Expr $expr, AttributeInterface $image)
     {
         $this->beConstructedWith(
+            $attrValidatorHelper,
             ['pim_catalog_image', 'pim_catalog_file'],
             ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY']
         );
@@ -61,8 +64,11 @@ class MediaFilterSpec extends ObjectBehavior
         $this->supportsAttribute($textAttribute)->shouldReturn(false);
     }
 
-    function it_adds_a_starts_with_filter_on_an_attribute_in_the_query($qb, $expr, $image)
+    function it_adds_a_starts_with_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $expr, $image)
     {
+        $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
+
         $qb->innerJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
             ->shouldBeCalled()
             ->willReturn($qb);
@@ -83,8 +89,11 @@ class MediaFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($image, 'STARTS WITH', 'foo');
     }
 
-    function it_adds_a_ends_with_filter_on_an_attribute_in_the_query($qb, $expr, $image)
+    function it_adds_a_ends_with_filter_on_an_attribute_in_the_query($qb, $attrValidatorHelper, $expr, $image)
     {
+        $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
+
         $qb->innerJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
             ->shouldBeCalled()
             ->willReturn($qb);

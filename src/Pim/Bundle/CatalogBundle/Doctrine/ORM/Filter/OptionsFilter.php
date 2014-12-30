@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -17,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
+class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /** @var array */
     protected $supportedAttributes;
@@ -31,15 +32,18 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
     /**
      * Instanciate the filter
      *
+     * @param AttributeValidatorHelper  $attrValidatorHelper
      * @param ObjectIdResolverInterface $objectIdResolver
      * @param array                     $supportedAttributes
      * @param array                     $supportedOperators
      */
     public function __construct(
+        AttributeValidatorHelper $attrValidatorHelper,
         ObjectIdResolverInterface $objectIdResolver,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
+        $this->attrValidatorHelper = $attrValidatorHelper;
         $this->objectIdResolver    = $objectIdResolver;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
@@ -69,6 +73,8 @@ class OptionsFilter extends AbstractFilter implements AttributeFilterInterface
                 'options'
             );
         }
+
+        $this->checkLocaleAndScope($attribute, $locale, $scope, 'options');
 
         if ($operator != Operators::IS_EMPTY) {
             $this->checkValue($options['field'], $value);

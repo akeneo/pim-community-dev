@@ -7,12 +7,14 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Prophecy\Argument;
 
 class NumberFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder)
+    function let(QueryBuilder $queryBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith(['pim_catalog_number'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
+        $this->beConstructedWith($attrValidatorHelper, ['pim_catalog_number'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
         $this->setQueryBuilder($queryBuilder);
     }
 
@@ -28,8 +30,11 @@ class NumberFilterSpec extends ObjectBehavior
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_binary_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $number)
+    function it_adds_binary_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $number)
     {
+        $attrValidatorHelper->validateLocale($number, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($number, Argument::any())->shouldBeCalled();
+
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
         $number->getBackendType()->willReturn('varchar');
@@ -45,8 +50,11 @@ class NumberFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($number, '=', 12);
     }
 
-    function it_adds_empty_filter_in_the_query(QueryBuilder $queryBuilder, AttributeInterface $number)
+    function it_adds_empty_filter_in_the_query($attrValidatorHelper, QueryBuilder $queryBuilder, AttributeInterface $number)
     {
+        $attrValidatorHelper->validateLocale($number, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($number, Argument::any())->shouldBeCalled();
+
         $number->getId()->willReturn(42);
         $number->getCode()->willReturn('number');
         $number->getBackendType()->willReturn('varchar');
