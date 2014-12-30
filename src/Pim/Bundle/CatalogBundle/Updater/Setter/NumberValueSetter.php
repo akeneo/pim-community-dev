@@ -43,7 +43,7 @@ class NumberValueSetter extends AbstractValueSetter
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
-        if (!is_numeric($data)) {
+        if (!is_numeric($data) && null !== $data) {
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number', gettype($data));
         }
 

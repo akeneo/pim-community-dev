@@ -2038,6 +2038,8 @@ class WebUser extends RawMinkContext
                 return str_repeat('foobar ', 50);
             case 'product edit.longtext':
                 return str_repeat('foobar ', 9500);
+            case 'batch editcommonattributes.comment':
+                return str_repeat('foobar ', 40);
             default:
                 return '!@#-?_'.$this->lorem(250);
         }

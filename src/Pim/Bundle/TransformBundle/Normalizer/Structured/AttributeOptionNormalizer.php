@@ -53,9 +53,10 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     protected function normalizeLabel(AttributeOption $entity, $context)
     {
-        $labels = array_fill_keys($context['locales'], '');
+        $locales = isset($context['locales']) ? $context['locales'] : [];
+        $labels = array_fill_keys($locales, '');
         foreach ($entity->getOptionValues() as $translation) {
-            if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
+            if (empty($locales) || in_array($translation->getLocale(), $locales)) {
                 $labels[$translation->getLocale()] = $translation->getValue();
             }
         }

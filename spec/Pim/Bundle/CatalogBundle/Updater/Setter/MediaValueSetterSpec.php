@@ -72,7 +72,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
     }
 
-    function it_throws_an_error_if_data_is_not_an_array(
+    function it_throws_an_error_if_data_is_not_an_array_or_null(
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('attributeCode');
@@ -137,6 +137,34 @@ class MediaValueSetterSpec extends ObjectBehavior
                 gettype($data)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+    }
+
+    function it_allows_setting_media_to_null(
+        ProductInterface $product,
+        AttributeInterface $file,
+        AttributeInterface $image,
+        ProductValueInterface $fileValue,
+        ProductValueInterface $imageValue,
+        ProductMediaInterface $fileMedia,
+        ProductMediaInterface $imageMedia
+    ) {
+        $file->getCode()->willReturn('file');
+        $image->getCode()->willReturn('image');
+
+        $product->getValue('file', null, null)->shouldBeCalled()->willReturn($fileValue);
+        $product->getValue('image', null, null)->shouldBeCalled()->willReturn($imageValue);
+
+        $fileValue->getMedia()->willReturn($fileMedia);
+        $imageValue->getMedia()->willReturn($imageMedia);
+
+        $fileMedia->setRemoved(true)->shouldBeCalled();
+        $imageMedia->setRemoved(true)->shouldBeCalled();
+
+        $fileValue->setMedia($fileMedia)->shouldBeCalled();
+        $imageValue->setMedia($imageMedia)->shouldBeCalled();
+
+        $this->setValue([$product], $file, null);
+        $this->setValue([$product], $image, ['originalFilename' => null, 'filePath' => null]);
     }
 
     function it_sets_a_media_to_a_product_that_already_has_a_media(
@@ -211,6 +239,4 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $this->setValue([$product], $attribute, $data, 'fr_FR', 'mobile');
     }
-
-
 }

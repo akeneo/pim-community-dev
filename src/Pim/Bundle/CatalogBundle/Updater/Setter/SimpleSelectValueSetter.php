@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -47,22 +48,26 @@ class SimpleSelectValueSetter extends AbstractValueSetter
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'simple select');
         $this->checkData($attribute, $data);
 
-        $attributeOption = $this->attrOptionRepository
-            ->findOneBy(['code' => $data['code'], 'attribute' => $attribute]);
+        if (null === $data) {
+            $option = null;
+        } else {
+            $option = $this->attrOptionRepository
+                ->findOneBy(['code' => $data['code'], 'attribute' => $attribute]);
 
-        if (null === $attributeOption) {
-            throw InvalidArgumentException::arrayInvalidKey(
-                $attribute->getCode(),
-                'code',
-                sprintf('Option with code "%s" does not exist', $data['code']),
-                'setter',
-                'simple select',
-                gettype($data)
-            );
+            if (null === $option) {
+                throw InvalidArgumentException::arrayInvalidKey(
+                    $attribute->getCode(),
+                    'code',
+                    sprintf('Option with code "%s" does not exist', $data['code']),
+                    'setter',
+                    'simple select',
+                    gettype($data)
+                );
+            }
         }
 
         foreach ($products as $product) {
-            $this->setOption($attribute, $product, $attributeOption, $locale, $scope);
+            $this->setOption($attribute, $product, $option, $locale, $scope);
         }
     }
 
@@ -74,6 +79,10 @@ class SimpleSelectValueSetter extends AbstractValueSetter
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
+        if (null === $data) {
+            return;
+        }
+
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
@@ -107,23 +116,23 @@ class SimpleSelectValueSetter extends AbstractValueSetter
     /**
      * Set option into the product value
      *
-     * @param AttributeInterface $attribute
-     * @param ProductInterface   $product
-     * @param array              $attributeOption
-     * @param string             $locale
-     * @param string             $scope
+     * @param AttributeInterface   $attribute
+     * @param ProductInterface     $product
+     * @param AttributeOption|null $option
+     * @param string|null          $locale
+     * @param string|null          $scope
      */
     protected function setOption(
         AttributeInterface $attribute,
         ProductInterface $product,
-        $attributeOption,
-        $locale,
-        $scope
+        AttributeOption $option = null,
+        $locale = null,
+        $scope = null
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
-        $value->setOption($attributeOption);
+        $value->setOption($option);
     }
 }
