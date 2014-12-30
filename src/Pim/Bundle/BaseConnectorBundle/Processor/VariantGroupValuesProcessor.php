@@ -10,6 +10,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -42,7 +43,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     protected $groupValuesDenormalizer;
 
     /** @var ValidatorInterface */
-    protected $valueValidator;
+    protected $validator;
 
     /** @var ObjectDetacherInterface */
     protected $detacher;
@@ -53,21 +54,21 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     /**
      * @param GroupRepository         $groupRepository
      * @param DenormalizerInterface   $groupValuesDenormalizer
-     * @param ValidatorInterface      $valueValidator
+     * @param ValidatorInterface      $validator
      * @param ObjectDetacherInterface $detacher
      * @param string                  $templateClass
      */
     public function __construct(
         GroupRepository $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
-        ValidatorInterface $valueValidator,
+        ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         $templateClass
     ) {
         $this->groupRepository         = $groupRepository;
         $this->groupValuesDenormalizer = $groupValuesDenormalizer;
-        $this->valueValidator    = $valueValidator;
-        $this->templateClass     = $templateClass;
+        $this->validator               = $validator;
+        $this->templateClass           = $templateClass;
     }
 
     /**
@@ -87,6 +88,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
         // once json implemented
         $structuredValuesData = $itemValuesData;
         $template->setValuesData($structuredValuesData);
+        $this->validateVariantGroup($variantGroup, $item);
 
         return $variantGroup;
     }
@@ -162,13 +164,27 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      *
      * @throw InvalidItemException
      */
-    protected function validateValues(array $values, $item)
+    protected function validateValues(array $values, array $item)
     {
         foreach ($values as $value) {
-            $violations = $this->valueValidator->validate($value);
+            $violations = $this->validator->validate($value);
             if ($violations->count() !== 0) {
                 $this->skipItem($item, $violations);
             }
+        }
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $item
+     *
+     * @throws InvalidItemException
+     */
+    protected function validateVariantGroup(GroupInterface $variantGroup, array $item)
+    {
+        $violations = $this->validator->validate($variantGroup);
+        if ($violations->count() !== 0) {
+            $this->skipItem($item, $violations);
         }
     }
 

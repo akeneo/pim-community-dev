@@ -5,21 +5,21 @@ Feature: Execute an import
   I need to be able to import variant group values in product values
 
   # what's tested here ?
-  # -----------------------------|-------------|---------------|-------------
-  # TYPE                         | VALID VALID | INVALID VALUE | NULL VALUE
-  # -----------------------------|-------------|---------------|-------------
-  # pim_catalog_boolean          | DONE        | TODO          | TODO
-  # pim_catalog_date             | DONE        | TODO          | TODO
-  # pim_catalog_file             | DONE        | TODO          | TODO
-  # pim_catalog_identifier       | N/A         | N/A           | N/A
-  # pim_catalog_image            | DONE        | TODO          | TODO
-  # pim_catalog_metric           | DONE        | TODO          | TODO
-  # pim_catalog_multiselect      | DONE        | TODO          | TODO
-  # pim_catalog_number           | DONE        | TODO          | TODO
-  # pim_catalog_price_collection | DONE        | TODO          | TODO
-  # pim_catalog_simpleselect     | DONE        | TODO          | TODO
-  # pim_catalog_text             | DONE        | TODO          | TODO
-  # pim_catalog_textarea         | DONE        | TODO          | TODO
+  # -----------------------------|-------------|
+  # TYPE                         | VALID DATA  |
+  # -----------------------------|-------------|
+  # pim_catalog_boolean          | DONE        |
+  # pim_catalog_date             | DONE        |
+  # pim_catalog_file             | DONE        |
+  # pim_catalog_identifier       | N/A         |
+  # pim_catalog_image            | DONE        |
+  # pim_catalog_metric           | DONE        |
+  # pim_catalog_multiselect      | DONE        |
+  # pim_catalog_number           | DONE        |
+  # pim_catalog_price_collection | DONE        |
+  # pim_catalog_simpleselect     | DONE        |
+  # pim_catalog_text             | DONE        |
+  # pim_catalog_textarea         | DONE        |
 
   Background:
     Given the "footwear" catalog configuration

@@ -33,4 +33,3 @@ services:
         calls:
             - [addRegistry, ['@doctrine']]
             - [addRegistry, ['@doctrine_mongodb']]
-
