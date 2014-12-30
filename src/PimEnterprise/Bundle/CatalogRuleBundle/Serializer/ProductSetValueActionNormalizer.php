@@ -25,19 +25,14 @@ class ProductSetValueActionNormalizer implements NormalizerInterface, Denormaliz
     /** @var string */
     protected $setValueActionClass;
 
-    /** @var ProductSetValueActionValueNormalizer */
-    protected $valueNormalizer;
-
     /**
      * @param string                               $setValueActionClass should implement
      *                                             \PimEnterprise\Bundle\CatalogRuleBundle\Model
      *                                             \ProductSetValueActionInterface
-     * @param ProductSetValueActionValueNormalizer $valueNormalizer
      */
-    public function __construct($setValueActionClass, ProductSetValueActionValueNormalizer $valueNormalizer)
+    public function __construct($setValueActionClass)
     {
         $this->setValueActionClass = $setValueActionClass;
-        $this->valueNormalizer     = $valueNormalizer;
     }
 
     /**
@@ -52,11 +47,7 @@ class ProductSetValueActionNormalizer implements NormalizerInterface, Denormaliz
             $data['field'] = $object->getField();
         }
         if (null !== $object->getValue()) {
-            $data['value'] = $this->valueNormalizer->normalize(
-                $object->getValue(),
-                'array_updater',
-                ['attribute_code' => $object->getField()]
-            );
+            $data['value'] = $object->getValue();
         }
         if (null !== $object->getLocale()) {
             $data['locale'] = $object->getLocale();
