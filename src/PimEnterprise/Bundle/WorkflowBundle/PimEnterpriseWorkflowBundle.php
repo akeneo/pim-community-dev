@@ -41,7 +41,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,
                 array('doctrine.orm.entity_manager'),
-                'pim_catalog.storage_driver.doctrine/orm'
+                'akeneo_storage_utils.storage_driver.doctrine/orm'
             )
         );
 
@@ -51,7 +51,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
                 $mongoDBClass::createYamlMappingDriver(
                     $mappings,
                     array('doctrine.odm.mongodb.document_manager'),
-                    'pim_catalog.storage_driver.doctrine/mongodb-odm'
+                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
                 )
             );
         }

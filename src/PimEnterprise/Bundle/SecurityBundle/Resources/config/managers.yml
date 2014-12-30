@@ -9,13 +9,13 @@ services:
     pimee_security.manager.attribute_group_access:
         class: %pimee_security.manager.attribute_group_access.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pimee_security.entity.attribute_group_access.class%
 
     pimee_security.manager.category_access:
         class: %pimee_security.manager.category_access.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pimee_security.entity.category_access.class%
             - %pim_catalog.entity.category.class%
             - %pim_user.entity.group.class%
@@ -23,13 +23,13 @@ services:
     pimee_security.manager.job_profile_access:
         class: %pimee_security.manager.job_profile_access.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pimee_security.entity.job_profile_access.class%
 
     pimee_security.manager.locale_access:
         class: %pimee_security.manager.locale_access.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pimee_security.entity.locale_access.class%
 
     pimee_security.manager.datagtrid_view_access:

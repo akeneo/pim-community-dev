@@ -32,7 +32,7 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
 
-        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $storageDriver = $container->getParameter('akeneo_storage_utils.storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
         if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
             $loader->load($storageConfig);

@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
  * Resolves doctrine target models mapping
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModelsPass
+class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModelPass
 {
     /**
      * {@inheritdoc}
