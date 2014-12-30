@@ -4,29 +4,12 @@ Feature: Edit common attributes of many products at once
   As a product manager
   I need to be able to edit common attributes of many products at once
 
-  # what's tested here ?
-  # -----------------------------|-------------|---------------|-------------
-  # TYPE                         | VALID VALID | INVALID VALUE | NULL VALUE
-  # -----------------------------|-------------|---------------|-------------
-  # pim_catalog_boolean          | TODO        | N/A           | N/A
-  # pim_catalog_date             | TODO        | TODO          | TODO
-  # pim_catalog_file             | TODO        | N/A           | TODO
-  # pim_catalog_identifier       | N/A         | N/A           | N/A
-  # pim_catalog_image            | done        | N/A           | TODO
-  # pim_catalog_metric           | done        | TODO          | TODO
-  # pim_catalog_multiselect      | done        | N/A           | TODO
-  # pim_catalog_number           | TODO        | TODO          | TODO
-  # pim_catalog_price_collection | done        | TODO          | TODO
-  # pim_catalog_simpleselect     | TODO        | N/A           | TODO
-  # pim_catalog_text             | done        | N/A           | TODO
-  # pim_catalog_textarea         | done        | N/A           | TODO
-
   Background:
     Given a "footwear" catalog configuration
     And the following family:
       | code       | attributes                                                       |
       | high_heels | sku, name, description, price, rating, size, color, manufacturer |
-    And the following attribute:
+    And the following attributes:
       | code        | label       | type   | metric family | default metric unit | families                 |
       | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
       | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
@@ -265,8 +248,8 @@ Feature: Edit common attributes of many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-3426
   Scenario: Successfully update multi-valued value at once where the product have already one of the value
     Given the following product values:
-      | product   | attribute                | value   |
-      | boots     | weather_conditions       | dry,hot |
+      | product | attribute          | value   |
+      | boots   | weather_conditions | dry,hot |
     Given I mass-edit products boots and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
