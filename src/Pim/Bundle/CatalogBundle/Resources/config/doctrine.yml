@@ -1,6 +1,6 @@
 parameters:
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
-    pim_catalog.doctrine.object_detacher.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\Detacher
+    pim_catalog.doctrine.object_detacher.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacher
 
 services:
     # deprecetad: will be removed in 1.4
