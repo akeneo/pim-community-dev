@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;

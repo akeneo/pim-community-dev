@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Resource\Model\BulkSaverInterface;
@@ -22,7 +22,7 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
     /** @var ValidatorInterface */
     protected $productValidator;
 
-    /** @var Detacher */
+    /** @var ObjectDetacherInterface */
     protected $productDetacher;
 
     /** @var BulkSaverInterface */

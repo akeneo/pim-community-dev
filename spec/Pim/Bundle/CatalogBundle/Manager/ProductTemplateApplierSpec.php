@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;

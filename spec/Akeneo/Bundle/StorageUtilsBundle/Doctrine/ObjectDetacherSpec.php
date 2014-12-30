@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;

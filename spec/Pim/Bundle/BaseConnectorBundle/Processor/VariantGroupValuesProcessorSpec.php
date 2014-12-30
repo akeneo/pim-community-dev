@@ -3,10 +3,9 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Persistence\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
