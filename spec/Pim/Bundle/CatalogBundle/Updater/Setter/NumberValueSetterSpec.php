@@ -45,7 +45,7 @@ class NumberValueSetterSpec extends ObjectBehavior
         $this->setValue([], $attribute, 42, 'fr_FR', 'mobile');
     }
 
-    function it_throws_an_error_if_data_is_not_a_number(
+    function it_throws_an_error_if_data_is_not_a_number_or_null(
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('attributeCode');
