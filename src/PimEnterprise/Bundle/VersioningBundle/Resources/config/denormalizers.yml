@@ -11,7 +11,7 @@ services:
     pimee_versioning.denormalizer.product:
         class: %pim_serializer.denormalizer.flat.product.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
             - '@pim_catalog.builder.product'
             - '@pim_transform.builder.field_name'
@@ -26,7 +26,7 @@ services:
     pimee_versioning.denormalizer.family:
         class: %pim_serializer.denormalizer.flat.family.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pim_catalog.entity.family.class%
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
@@ -34,7 +34,7 @@ services:
     pimee_versioning.denormalizer.category:
         class: %pim_serializer.denormalizer.flat.category.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pim_catalog.entity.category.class%
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
@@ -42,7 +42,7 @@ services:
     pimee_versioning.denormalizer.group:
         class: %pim_serializer.denormalizer.flat.group.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pim_catalog.entity.group.class%
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
@@ -50,7 +50,7 @@ services:
     pimee_versioning.denormalizer.association:
         class: %pim_serializer.denormalizer.flat.association.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.association_type.class%
             - %pim_catalog.entity.product.class%
@@ -61,7 +61,7 @@ services:
     pimee_versioning.denormalizer.product_value:
         class: %pim_serializer.denormalizer.flat.product_value.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product_value.class%
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }

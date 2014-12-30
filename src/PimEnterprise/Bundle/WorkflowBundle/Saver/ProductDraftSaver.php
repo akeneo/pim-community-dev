@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Resource\Model\BulkSaverInterface;
 use Pim\Component\Resource\Model\SaverInterface;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -278,7 +278,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      */
     protected function refreshProductValues(ProductInterface $product)
     {
-        if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
+        if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $this->storageDriver) {
             foreach ($product->getValues() as $value) {
                 if (true === $this->objectManager->contains($value)) {
                     $this->objectManager->refresh($value);

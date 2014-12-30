@@ -40,7 +40,7 @@ class PimEnterpriseDataGridExtension extends Extension
         $loader->load('helpers.yml');
         $loader->load('managers.yml');
 
-        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $storageDriver = $container->getParameter('akeneo_storage_utils.storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load(sprintf('storage_driver/%s.yml', $storageDriver));
     }
