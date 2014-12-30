@@ -27,7 +27,8 @@ class MediaValueSetterSpec extends ObjectBehavior
             $attrValidatorHelper,
             $manager,
             $mediaFactory,
-            ['pim_catalog_file', 'pim_catalog_image']
+            ['pim_catalog_file', 'pim_catalog_image'],
+            '../../../../../../app/uploads/product/'
         );
     }
 
@@ -64,7 +65,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $data = [
-            'originalFilename' => 'image.jpg',
+            'originalFilename' => 'akeneo',
             'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
@@ -89,7 +90,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
-            'originalFilename' => 'image.jpg',
+            'originalFilename' => 'image',
         ];
 
         $this->shouldThrow(
@@ -123,14 +124,14 @@ class MediaValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
-            'filePath' => 'path/to/unknown/file',
-            'originalFilename' => 'image.jpg',
+            'filePath'         => 'path/to/unknown/file',
+            'originalFilename' => 'image',
         ];
 
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'attributeCode',
-                'a valid file path ("path/to/unknown/file" given)',
+                'a valid file path ("../../../../../../app/uploads/product/path/to/unknown/file" given)',
                 'setter',
                 'media',
                 gettype($data)
@@ -150,7 +151,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $value->getMedia()->willReturn($media);
 
         $data = [
-            'originalFilename' => 'image.jpg',
+            'originalFilename' => 'akeneo',
             'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
@@ -175,7 +176,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $mediaFactory->createMedia(Argument::any())->shouldBeCalled()->willReturn($media);
 
         $data = [
-            'originalFilename' => 'image.jpg',
+            'originalFilename' => 'akeneo',
             'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
@@ -199,7 +200,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $value->getMedia()->willReturn(null);
 
         $data = [
-            'originalFilename' => 'image.jpg',
+            'originalFilename' => 'akeneo',
             'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
