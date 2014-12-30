@@ -327,3 +327,33 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Context/fixtures/akeneo.jpg"
     Then I should see "akeneo.jpg"
+
+  @javascript
+  Scenario: Import a copy value rule with valid values for attribute of textarea and text in actions
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_description:
+            conditions:
+            actions:
+                - type:       copy_value
+                  from_field: description
+                  to_field:   name
+                  from_scope: mobile
+                  to_scope:   tablet
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should not see "skipped"
+    And I should see "created 1"
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    When I am on the "name" attribute page
+    And I visit the "Rules" tab
+    Then I should see "description"
+    Then I should see "mobile"
+    Then I should see "is copied into"
+    Then I should see "name"
+    Then I should see "tablet"
