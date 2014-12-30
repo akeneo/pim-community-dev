@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
 use Symfony\Component\Form\FormView;
 
 /**
@@ -32,11 +33,25 @@ class ProductFormView implements ProductFormViewInterface
     /** @var FormView|array */
     protected $view = [];
 
+    /** @var ViewUpdaterRegistry */
+    protected $viewUpdaterRegistry;
+
+    public function __construct(ViewUpdaterRegistry $viewUpdaterRegistry)
+    {
+        $this->viewUpdaterRegistry = $viewUpdaterRegistry;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getView()
     {
+        foreach ($this->view as $group) {
+            foreach ($group['attributes'] as $attributeView) {
+                $this->updateView($attributeView);
+            }
+        }
+
         return $this->view;
     }
 
@@ -145,8 +160,6 @@ class ProductFormView implements ProductFormViewInterface
             'sortOrder'          => $attribute->getSortOrder(),
             'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes),
             'locale'             => $value->getLocale(),
-            // TODO will be implemented with PIM-2455, display an icon, + variant group name in popin
-            //'isInheritedFromVariantGroup' => $this->isInheritedFromVariantGroup($value)
         );
 
         if ($attribute->isScopable()) {
@@ -165,6 +178,19 @@ class ProductFormView implements ProductFormViewInterface
         }
 
         return $attributeView;
+    }
+
+    /**
+     * Update the current view with all view updaters
+     * @param array $view
+     */
+    protected function updateView(array $view)
+    {
+        $viewUpdaters = $this->viewUpdaterRegistry->get();
+
+        foreach ($viewUpdaters as $viewUpdater) {
+            $viewUpdater->update($view);
+        }
     }
 
     /**
@@ -208,35 +234,5 @@ class ProductFormView implements ProductFormViewInterface
         );
 
         return $attributes;
-    }
-
-    /**
-     * TODO : should be merged with new system, ProductFormView in EE Smart Attr.
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return boolean
-     */
-    protected function isInheritedFromVariantGroup(ProductValueInterface $value)
-    {
-        /** @var ProductInterface $product */
-        $product = $value->getEntity();
-        $groups = $product->getGroups();
-        $variantGroup = null;
-        /** @var GroupInterface $group */
-        foreach ($groups as $group) {
-            if ($group->getType()->isVariant()) {
-                // TODO : will have only one after PIM-2448, add short cut getVariantGroup() ?
-                $variantGroup = $group;
-            }
-        }
-
-        if ($variantGroup) {
-            $template = $variantGroup->getProductTemplate();
-
-            return ($template) ? $template->hasValue($value) : false;
-        }
-
-        return false;
     }
 }

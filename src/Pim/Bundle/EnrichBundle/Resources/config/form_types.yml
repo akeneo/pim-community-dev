@@ -48,6 +48,8 @@ services:
     pim_enrich.form.type.product.view:
         public: false
         class: %pim_enrich.form.type.product.view.class%
+        arguments:
+            - @pim_enrich.form.view.view_updater.registry
 
     pim_enrich.form.type.product:
         class: %pim_enrich.form.type.product.class%

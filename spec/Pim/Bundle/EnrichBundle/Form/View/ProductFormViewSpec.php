@@ -6,17 +6,25 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormView;
 
 class ProductFormViewSpec extends ObjectBehavior
 {
+    function let(ViewUpdaterRegistry $viewUpdaterRegistry)
+    {
+        $this->beConstructedWith($viewUpdaterRegistry);
+    }
+
     function it_adds_a_product_value_child(
         ProductValueInterface $value,
         AttributeInterface $attribute,
         AttributeGroup $group,
-        FormView $valueFormView
+        FormView $valueFormView,
+        $viewUpdaterRegistry
     ) {
+
         $value->getAttribute()->willReturn($attribute);
         $value->isRemovable()->willReturn(true);
         $value->getLocale()->willReturn(null);
@@ -34,6 +42,8 @@ class ProductFormViewSpec extends ObjectBehavior
         $group->getLabel()->willReturn('General');
 
         $this->addChildren($value, $valueFormView);
+
+        $viewUpdaterRegistry->get()->willReturn([]);
 
         $resultView = [
             1 => [
@@ -61,7 +71,8 @@ class ProductFormViewSpec extends ObjectBehavior
         ProductValueInterface $valueTwo,
         AttributeInterface $attributeTwo,
         AttributeGroup $group,
-        FormView $valueFormView
+        FormView $valueFormView,
+        $viewUpdaterRegistry
     ) {
         $valueOne->getAttribute()->willReturn($attributeOne);
         $valueOne->isRemovable()->willReturn(true);
@@ -95,6 +106,8 @@ class ProductFormViewSpec extends ObjectBehavior
 
         $this->addChildren($valueOne, $valueFormView);
         $this->addChildren($valueTwo, $valueFormView);
+
+        $viewUpdaterRegistry->get()->willReturn([]);
 
         $resultView = [
             1 => [
