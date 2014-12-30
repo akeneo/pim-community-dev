@@ -56,9 +56,10 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(false);
         $date->isScopable()->willReturn(false);
-        $queryBuilder->lt(strtotime('2014-03-15'))->willReturn($queryBuilder);
+        $queryBuilder->lt(strtotime('2014-03-15'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
 
         $this->addAttributeFilter($date, '<', '2014-03-15');
+        $this->addAttributeFilter($date, '<', new \Datetime('2014-03-15'));
     }
 
     function it_adds_a_greater_than_filter_on_an_attribute_value_in_the_query(
@@ -72,9 +73,10 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(false);
         $date->isScopable()->willReturn(false);
-        $queryBuilder->gt(strtotime('2014-03-15 23:59:59'))->willReturn($queryBuilder);
+        $queryBuilder->gt(strtotime('2014-03-15 23:59:59'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
 
         $this->addAttributeFilter($date, '>', '2014-03-15');
+        $this->addAttributeFilter($date, '>', new \Datetime('2014-03-15'));
     }
 
     function it_adds_a_between_filter_on_an_attribute_value_in_the_query(
@@ -88,10 +90,11 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(false);
         $date->isScopable()->willReturn(false);
-        $queryBuilder->gte(strtotime('2014-03-15'))->willReturn($queryBuilder);
-        $queryBuilder->lte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
+        $queryBuilder->gte(strtotime('2014-03-15'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
+        $queryBuilder->lte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
 
         $this->addAttributeFilter($date, 'BETWEEN', ['2014-03-15', '2014-03-20']);
+        $this->addAttributeFilter($date, 'BETWEEN', [new \Datetime('2014-03-15'), new \Datetime('2014-03-20')]);
     }
 
     function it_adds_a_not_between_filter_on_an_attribute_value_in_the_query($queryBuilder, $attrValidatorHelper, AttributeInterface $date)
@@ -106,24 +109,31 @@ class DateFilterSpec extends ObjectBehavior
         $queryBuilder->addAnd($queryBuilder)->willReturn($queryBuilder);
         $queryBuilder->addOr($queryBuilder)->willReturn($queryBuilder);
         $queryBuilder->addOr($queryBuilder)->willReturn($queryBuilder);
-        $queryBuilder->lte(strtotime('2014-03-15'))->willReturn($queryBuilder);
-        $queryBuilder->gte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
+        $queryBuilder->lte(strtotime('2014-03-15'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
+        $queryBuilder->gte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
 
-        $this->addAttributeFilter($date, ['from' => '<', 'to' => '>'], ['2014-03-15', '2014-03-20']);
+        $this->addAttributeFilter($date, 'NOT BETWEEN', ['2014-03-15', '2014-03-20']);
+        $this->addAttributeFilter($date, 'NOT BETWEEN', [new \Datetime('2014-03-15'), new \Datetime('2014-03-20')]);
     }
 
     function it_adds_a_between_filter_on_a_field_in_the_query($queryBuilder)
     {
-        $queryBuilder->gte(strtotime('2014-03-15'))->willReturn($queryBuilder);
-        $queryBuilder->lte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
+        $queryBuilder->gte(strtotime('2014-03-15'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
+        $queryBuilder->lte(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder)->shouldBeCalledTimes(2);
 
         $this->addFieldFilter('created', 'BETWEEN', ['2014-03-15', '2014-03-20']);
+        $this->addFieldFilter('created', 'BETWEEN', [new \Datetime('2014-03-15'), new \Datetime('2014-03-20')]);
     }
 
-    function it_throws_an_exception_if_value_is_not_a_string_or_an_array()
+    function it_throws_an_exception_if_value_is_not_a_string_an_array_or_datetime()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'array or string', 'filter', 'date')
+            InvalidArgumentException::expected(
+                'release_date',
+                'array with 2 elements, string or \Datetime',
+                'filter',
+                'date'
+            )
         )->during('addFieldFilter', ['release_date', '>', 123]);
     }
 
@@ -133,17 +143,27 @@ class DateFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['release_date', '>', ['not a valid date format', 'WRONG']]);
     }
 
-    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings()
+    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings_or_dates()
     {
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+            InvalidArgumentException::expected(
+                'release_date',
+                'array with 2 elements, string or \Datetime',
+                'filter',
+                'date'
+            )
         )->during('addFieldFilter', ['release_date', '>', [123, 123]]);
     }
 
     function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_two_values()
     {
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+            InvalidArgumentException::expected(
+                'release_date',
+                'array with 2 elements, string or \Datetime',
+                'filter',
+                'date'
+            )
         )->during('addFieldFilter', ['release_date', '>', [123, 123, 'three']]);
     }
 }
