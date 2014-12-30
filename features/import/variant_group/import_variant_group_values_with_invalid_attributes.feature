@@ -2,24 +2,7 @@
 Feature: Execute an import
   In order to update existing product information
   As a product manager
-  I need to be able to import variant group values in product values
-
-  # what's tested here ?
-  # -----------------------------|---------------|-------------
-  # TYPE                         | INVALID VALUE | NULL VALUE
-  # -----------------------------|---------------|-------------
-  # pim_catalog_boolean          | TODO          | TODO
-  # pim_catalog_date             | TODO          | TODO
-  # pim_catalog_file             | TODO          | TODO
-  # pim_catalog_identifier       | N/A           | N/A
-  # pim_catalog_image            | TODO          | TODO
-  # pim_catalog_metric           | TODO          | TODO
-  # pim_catalog_multiselect      | TODO          | TODO
-  # pim_catalog_number           | TODO          | TODO
-  # pim_catalog_price_collection | TODO          | TODO
-  # pim_catalog_simpleselect     | TODO          | TODO
-  # pim_catalog_text             | TODO          | TODO
-  # pim_catalog_textarea         | TODO          | TODO
+  I need to be able to be notified when I use not valid attributes as identifier or axis
 
   Background:
     Given the "footwear" catalog configuration
@@ -48,6 +31,7 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_values_import" job to finish
     Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (color) : [SANDAL]"
+    And I should see "Skipped 1"
 
   Scenario: Skip variant group if many axis are used as values
     Given the following CSV file to import:
@@ -61,6 +45,7 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_values_import" job to finish
     Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (size, color) : [SANDAL]"
+    And I should see "Skipped 1"
 
   Scenario: Skip variant group if identifier is used as value
     Given the following CSV file to import:
@@ -74,3 +59,4 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_values_import" job to finish
     Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (sku) : [SANDAL]"
+    And I should see "Skipped 1"

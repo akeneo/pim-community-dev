@@ -119,14 +119,17 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     protected function getVariantGroup($item)
     {
         if (!isset($item[self::VARIANT_GROUP_CODE_FIELD])) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException("Variant group code must be provided", $item);
+            throw new \LogicException('Variant group code must be provided');
         }
 
-        $variantGroup = $this->groupRepository->findOneByCode($item[self::VARIANT_GROUP_CODE_FIELD]);
+        $variantGroupCode = $item[self::VARIANT_GROUP_CODE_FIELD];
+        $variantGroup = $this->groupRepository->findOneByCode($variantGroupCode);
         if (!$variantGroup || !$variantGroup->getType()->isVariant()) {
             $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException("Variant group doesn't exist", $item);
+            throw new InvalidItemException(
+                sprintf('Variant group "%s" does not exist', $variantGroupCode),
+                $item
+            );
         }
 
         return $variantGroup;
@@ -207,7 +210,10 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function skipItem($item, ConstraintViolationListInterface $violations)
     {
+        $this->stepExecution->incrementSummaryInfo('skip');
+
         // TODO detach when skip ?
+
         $messages = [];
         foreach ($violations as $violation) {
             $messages[] = sprintf(

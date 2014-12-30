@@ -138,7 +138,9 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
             $nbSkipped = count($skippedMessages);
             $nbUpdated = count($products) - $nbSkipped;
             $this->incrementUpdatedProductsCount($nbUpdated);
-            $this->incrementSkippedProductsCount($nbSkipped, $skippedMessages);
+            if ($nbSkipped > 0) {
+                $this->incrementSkippedProductsCount($nbSkipped, $skippedMessages);
+            }
         }
     }
 
@@ -155,13 +157,8 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      */
     protected function incrementUpdatedProductsCount($nbProducts)
     {
-        // TODO : update the method StepExecution::incrementSummaryInfo to add an optional $incrementNumber arg
         $summaryKey = 'update_products';
-        $summary = $this->stepExecution->getSummary();
-        $previousAmount = isset($summary[$summaryKey]) ? $summary[$summaryKey] : 0;
-        $previousAmount = is_numeric($previousAmount) ? $previousAmount : 0;
-        $total = $previousAmount + $nbProducts;
-        $this->stepExecution->addSummaryInfo($summaryKey, $total);
+        $this->stepExecution->incrementSummaryInfo($summaryKey, $nbProducts);
     }
 
     /**
@@ -170,13 +167,8 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      */
     protected function incrementSkippedProductsCount($nbSkippedProducts, $skippedMessages)
     {
-        // TODO : update the method StepExecution::incrementSummaryInfo to add an optional $incrementNumber arg
         $summaryKey = 'skip_products';
-        $summary = $this->stepExecution->getSummary();
-        $previousAmount = isset($summary[$summaryKey]) ? $summary[$summaryKey] : 0;
-        $previousAmount = is_numeric($previousAmount) ? $previousAmount : 0;
-        $total = $previousAmount + $nbSkippedProducts;
-        $this->stepExecution->addSummaryInfo($summaryKey, $total);
+        $this->stepExecution->incrementSummaryInfo($summaryKey, $nbSkippedProducts);
 
         foreach ($skippedMessages as $productIdentifier => $messages) {
             $this->stepExecution->addWarning(

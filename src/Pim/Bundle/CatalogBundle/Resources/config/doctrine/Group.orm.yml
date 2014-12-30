@@ -42,7 +42,6 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 - detach
                 - refresh
     oneToOne:
-        # TODO add a custom constraint, only if type is variant group
         productTemplate:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
             cascade:
