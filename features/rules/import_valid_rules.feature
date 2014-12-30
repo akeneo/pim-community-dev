@@ -302,35 +302,6 @@ Feature: Import rules
     Then I should see "1970-01-01"
 
   @javascript
-  Scenario: Import rule with valid values for attribute of type date (with a datetime for date) in conditions
-    Given the following yaml file to import:
-    """
-    rules:
-        canon_beautiful_description:
-            conditions:
-                - field:    release_date
-                  operator: =
-                  value:    1970-01-01
-                  scope: tablet
-            actions:
-                - type:  set_value
-                  field: release_date
-                  value: 1970-01-01
-                  scope: tablet
-    """
-    And the following job "clothing_rule_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "clothing_rule_import" import job page
-    And I launch the import job
-    And I wait for the "clothing_rule_import" job to finish
-    Then I should not see "skipped"
-    And I should see "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
-    When I am on the "release_date" attribute page
-    And I visit the "Rules" tab
-    Then I should see "1970-01-01"
-
-  @javascript
   Scenario: Import rule with valid values for attribute of type media in conditions
     Given the following yaml file to import:
     """

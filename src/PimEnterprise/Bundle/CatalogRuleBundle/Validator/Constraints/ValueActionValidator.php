@@ -43,7 +43,7 @@ class ValueActionValidator extends ConstraintValidator
     {
         if ($action instanceof ProductSetValueActionInterface) {
             $this->validateSetValue($action, $constraint);
-        } if ($action instanceof ProductCopyValueActionInterface) {
+        } elseif ($action instanceof ProductCopyValueActionInterface) {
             $this->validateCopyValue($action, $constraint);
         } else {
             throw new \LogicException(sprintf('Action of type "%s" can not be validated.', gettype($action)));
