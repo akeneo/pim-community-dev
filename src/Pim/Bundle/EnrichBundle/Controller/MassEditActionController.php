@@ -208,17 +208,19 @@ class MassEditActionController extends AbstractDoctrineController
         $form = $this->getOperatorForm($operator);
         $form->submit($this->request);
 
-        // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $operator->performOperation();
-        foreach ($this->validator->validate($operator) as $violation) {
-            $form->addError(
-                new FormError(
-                    $violation->getMessage(),
-                    $violation->getMessageTemplate(),
-                    $violation->getMessageParameters(),
-                    $violation->getMessagePluralization()
-                )
-            );
+        if ($form->isValid()) {
+            $operator->performOperation();
+            // Binding does not actually perform the operation, thus form errors can miss some constraints
+            foreach ($this->validator->validate($operator) as $violation) {
+                $form->addError(
+                    new FormError(
+                        $violation->getMessage(),
+                        $violation->getMessageTemplate(),
+                        $violation->getMessageParameters(),
+                        $violation->getMessagePluralization()
+                    )
+                );
+            }
         }
 
         if ($form->isValid()) {
