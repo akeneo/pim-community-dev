@@ -5,6 +5,7 @@ parameters:
     pim_catalog.validator.constraint.unique_variant_axis.class:      Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
     pim_catalog.validator.constraint.unique_value.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
     pim_catalog.validator.constraint.immutable.class:                Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
+    pim_catalog.validator.constraint.variant_group_values.class:     Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValuesValidator
     pim_catalog.validator.constraint_guesser.chained.class:          Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:            Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:             Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
@@ -67,6 +68,13 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator, alias: pim_immutable_validator }
+
+    pim_catalog.validator.constraint.variant_group_values:
+        class: %pim_catalog.validator.constraint.variant_group_values.class%
+        arguments:
+            - @pim_catalog.repository.attribute
+        tags:
+            - { name: validator.constraint_validator, alias: pim_variant_group_values_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:

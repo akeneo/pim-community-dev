@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
@@ -68,5 +69,15 @@ class ProductTemplate implements ProductTemplateInterface
         $field = $value->getAttribute()->getCode() . $suffix;
 
         return isset($this->valuesData[$field]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasValueForAttribute(AttributeInterface $attribute)
+    {
+        // TODO doesnt work for localizable/scopable but, axis and identifier are global, and it will work when we'll
+        // merge json format
+        return isset($this->valuesData[$attribute->getCode()]);
     }
 }

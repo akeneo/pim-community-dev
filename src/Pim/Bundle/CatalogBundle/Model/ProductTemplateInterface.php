@@ -35,4 +35,11 @@ interface ProductTemplateInterface
      * @return boolean
      */
     public function hasValue(ProductValueInterface $value);
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return boolean
+     */
+    public function hasValueForAttribute(AttributeInterface $attribute);
 }
