@@ -27,24 +27,30 @@ class MediaValueSetter extends AbstractValueSetter
     /** @var MediaFactory */
     protected $mediaFactory;
 
+    /** @var string */
+    protected $uploadDir;
+
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MediaManager             $manager
      * @param MediaFactory             $mediaFactory
      * @param array                    $supportedTypes
+     * @param string                   $uploadDir
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         MediaManager $manager,
         MediaFactory $mediaFactory,
-        array $supportedTypes
+        array $supportedTypes,
+        $uploadDir
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->mediaManager   = $manager;
         $this->mediaFactory   = $mediaFactory;
         $this->supportedTypes = $supportedTypes;
+        $this->uploadDir      = $uploadDir;
     }
 
     /**
@@ -54,6 +60,8 @@ class MediaValueSetter extends AbstractValueSetter
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
         $this->checkData($attribute, $data);
+
+        $data = $this->resolveFilePath($data);
 
         try {
             $file = new UploadedFile($data['filePath'], $data['originalFilename']);
@@ -132,5 +140,29 @@ class MediaValueSetter extends AbstractValueSetter
                 gettype($data)
             );
         }
+    }
+
+    /**
+     * Resolve the file path of a media or an image
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function resolveFilePath(array $data)
+    {
+        $uploadDir = $this->uploadDir;
+        if (file_exists($data['filePath'])) {
+            return $data;
+        }
+
+        if (substr($uploadDir, -1) !== DIRECTORY_SEPARATOR) {
+            $uploadDir = $this->uploadDir . DIRECTORY_SEPARATOR;
+        }
+
+        $path  = $uploadDir . $data['filePath'];
+        $value = ['filePath' => $path, 'originalFilename' => $data['originalFilename']];
+
+        return $value;
     }
 }

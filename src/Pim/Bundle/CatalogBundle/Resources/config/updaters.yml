@@ -121,6 +121,7 @@ services:
             - @pim_catalog.manager.media
             - @pim_catalog.factory.media
             - ['pim_catalog_file', 'pim_catalog_image']
+            - %upload_dir%
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
