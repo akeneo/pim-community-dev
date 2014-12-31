@@ -229,7 +229,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
 
         if (is_array($value)) {
             $tmpValues = [];
-            foreach($value as $tmp) {
+            foreach ($value as $tmp) {
                 $tmpValues[] = $this->formatSingleValue($type, $tmp);
             }
             $value = $tmpValues;

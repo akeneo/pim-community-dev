@@ -39,7 +39,7 @@ class ResolverPass implements CompilerPassInterface
         $pagerResolver = $container->getDefinition(self::PAGER_RESOLVER_ID);
         $datasourceResolver = $container->getDefinition(self::DATASOURCE_ADAPTER_RESOLVER_ID);
 
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === 
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM ===
             $container->getParameter('akeneo_storage_utils.storage_driver')
         ) {
             $datasourceResolver->addMethodCall(
