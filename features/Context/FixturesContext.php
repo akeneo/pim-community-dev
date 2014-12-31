@@ -1350,6 +1350,20 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the history of the product "([^"]*)" has been built$/
+     */
+    public function theHistoryOfTheProductHasBeenBuilt($identifier)
+    {
+        $product = $this->getProduct($identifier);
+        $this->getVersionManager()->setRealTimeVersioning(true);
+        $versions = $this->getVersionManager()->buildPendingVersions($product);
+        foreach ($versions as $version) {
+            $this->persist($version);
+            $this->flush($version);
+        }
+    }
+
+    /**
      * @param string $attributeCode
      * @param string $familyCode
      * @param string $channelCode
@@ -1888,6 +1902,14 @@ class FixturesContext extends RawMinkContext
     protected function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
+    }
+
+    /**
+     * @return VersionManager
+     */
+    protected function getVersionManager()
+    {
+        return $this->getContainer()->get('pim_versioning.manager.version');
     }
 
     /**

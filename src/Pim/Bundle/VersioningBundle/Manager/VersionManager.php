@@ -243,7 +243,7 @@ class VersionManager
      *
      * @return Version[]
      */
-    protected function buildPendingVersions($versionable)
+    public function buildPendingVersions($versionable)
     {
         $createdVersions = [];
 

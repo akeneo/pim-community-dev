@@ -17,14 +17,14 @@ class VersionManagerSpec extends ObjectBehavior
         SmartManagerRegistry $registry,
         VersionBuilder $builder,
         ObjectManager $om,
-        VersionRepositoryInterface $repo
+        VersionRepositoryInterface $versionRepository
     ) {
         $this->beConstructedWith($registry, $builder);
 
         $registry->getManagerForClass(Argument::any())->willReturn($om);
-        $registry->getRepository(Argument::any())->willReturn($repo);
-        $repo->findBy(Argument::cetera())->willReturn([]);
-        $repo->getNewestLogEntry(Argument::cetera())->willReturn(null);
+        $registry->getRepository(Argument::any())->willReturn($versionRepository);
+        $versionRepository->findBy(Argument::cetera())->willReturn([]);
+        $versionRepository->getNewestLogEntry(Argument::cetera())->willReturn(null);
     }
 
     function it_is_aware_of_the_versioning_mode()
@@ -71,7 +71,7 @@ class VersionManagerSpec extends ObjectBehavior
         $version->isPending()->shouldReturn(true);
     }
 
-    function it_builds_pending_versions_when_versioning_an_entity(ProductInterface $product, $builder, $repo)
+    function it_builds_pending_versions_and_last_version_when_versioning_an_entity(ProductInterface $product, $builder, $versionRepository)
     {
         $product->getId()->willReturn(1);
 
@@ -79,13 +79,30 @@ class VersionManagerSpec extends ObjectBehavior
         $pending1->setChangeset(['foo' => 'bar']);
         $pending2 = new Version('Product', 1, 'julia');
         $pending2->setChangeset(['foo' => 'fubar']);
-        $repo->findBy(Argument::cetera())->willReturn([$pending1, $pending2]);
+        $versionRepository->findBy(Argument::cetera())->willReturn([$pending1, $pending2]);
 
-        $builder->buildPendingVersion($pending1, null)->willReturn($pending1);
-        $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2);
-        $builder->buildVersion(Argument::cetera())->willReturn(new Version('Product', 1, 'julia'));
+        $builder->buildPendingVersion($pending1, null)->willReturn($pending1)->shouldBeCalled();
+        $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2)->shouldBeCalled();
+        $builder->buildVersion(Argument::cetera())->willReturn(new Version('Product', 1, 'julia'))->shouldBeCalled();
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(3);
+    }
+
+    function it_builds_pending_versions_for_a_given_entity(ProductInterface $product, $builder, $versionRepository)
+    {
+        $product->getId()->willReturn(1);
+
+        $pending1 = new Version('Product', 1, 'julia');
+        $pending1->setChangeset(['foo' => 'bar']);
+        $pending2 = new Version('Product', 1, 'julia');
+        $pending2->setChangeset(['foo' => 'fubar']);
+        $versionRepository->findBy(Argument::cetera())->willReturn([$pending1, $pending2]);
+
+        $builder->buildPendingVersion($pending1, null)->willReturn($pending1)->shouldBeCalled();
+        $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2)->shouldBeCalled();
+
+        $versions = $this->buildPendingVersions($product);
+        $versions->shouldHaveCount(2);
     }
 }
