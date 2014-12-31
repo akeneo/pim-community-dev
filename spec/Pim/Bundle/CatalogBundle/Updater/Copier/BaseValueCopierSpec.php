@@ -27,6 +27,10 @@ class BaseValueCopierSpec extends ObjectBehavior
         AttributeInterface $fromFooAttribute,
         AttributeInterface $toFooAttribute,
         AttributeInterface $fromTextareaAttribute,
+        AttributeInterface $fromImageAttribute,
+        AttributeInterface $toImageAttribute,
+        AttributeInterface $fromFileAttribute,
+        AttributeInterface $toFileAttribute,
         AttributeInterface $toTextareaAttribute
     ) {
         $fromFooAttribute->getAttributeType()->willReturn('foo');
@@ -35,11 +39,19 @@ class BaseValueCopierSpec extends ObjectBehavior
 
         $fromFooAttribute->getAttributeType()->willReturn('foo');
         $toFooAttribute->getAttributeType()->willReturn('bar');
-        $this->supports($fromFooAttribute, $toFooAttribute)->shouldReturn(true);
+        $this->supports($fromFooAttribute, $toFooAttribute)->shouldReturn(false);
 
         $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
+
+        $fromImageAttribute->getAttributeType()->willReturn('pim_catalog_image');
+        $toImageAttribute->getAttributeType()->willReturn('pim_catalog_image');
+        $this->supports($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
+
+        $fromFileAttribute->getAttributeType()->willReturn('pim_catalog_file');
+        $toFileAttribute->getAttributeType()->willReturn('pim_catalog_file');
+        $this->supports($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
 
         $fromFooAttribute->getAttributeType()->willReturn('foo');
         $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
@@ -206,6 +218,53 @@ class BaseValueCopierSpec extends ObjectBehavior
 
         $fromProductValue->getData()->willReturn('data');
         $toProductValue->setData('data')->shouldBeCalledTimes(3);
+
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+
+        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
+        $product2->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+
+        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product3->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
+
+        $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+
+        $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)
+            ->shouldBeCalledTimes(1)
+            ->willReturn($toProductValue);
+
+        $products = [$product1, $product2, $product3, $product4];
+
+        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+    }
+
+    function it_copies_media_value_to_a_product_value(
+        $attrValidatorHelper,
+        $builder,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
+        ProductValue $fromProductValue,
+        ProductValue $toProductValue
+    ) {
+        $fromLocale = 'fr_FR';
+        $toLocale = 'fr_FR';
+        $toScope = 'mobile';
+        $fromScope = 'mobile';
+
+        $fromAttribute->getCode()->willReturn('fromAttributeCode');
+        $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $fromProductValue->getData()->willReturn(['originalFilename' => 'akeneo', 'filePath' => 'path/to/file']);
+        $toProductValue->setData(['originalFilename' => 'akeneo', 'filePath' => 'path/to/file'])->shouldBeCalledTimes(3);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
