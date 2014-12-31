@@ -1,3 +1,4 @@
+@javascript
 Feature: Import rules
   In order ease the enrichment of the catalog
   As an administrator
@@ -7,7 +8,6 @@ Feature: Import rules
     Given a "clothing" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Successfully import a rule
     Given the following yaml file to import:
     """
@@ -40,7 +40,6 @@ Feature: Import rules
       | rule                        | field       | value                   | locale | scope  |
       | canon_beautiful_description | description | A beautiful description | en     | tablet |
 
-  @javascript
   Scenario: Import rule with valid value for attribute of type text in conditions
     Given the following yaml file to import:
     """
@@ -68,7 +67,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "My new Super Name"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type textarea in conditions
     Given the following yaml file to import:
     """
@@ -99,7 +97,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "My new description"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type simple select in conditions
     Given the following yaml file to import:
     """
@@ -129,7 +126,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Desigual"
 
-  @javascript
   Scenario: Import rule with valid values for the multi select attribute weather_conditions in conditions
     Given the following yaml file to import:
     """
@@ -160,7 +156,6 @@ Feature: Import rules
     Then I should see "dry"
     And I should not see "wet"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type price collection in conditions
     Given the following yaml file to import:
     """
@@ -190,7 +185,6 @@ Feature: Import rules
     Then I should see "3"
     Then I should see "EUR"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type metric in conditions
     Given the following yaml file to import:
     """
@@ -216,7 +210,6 @@ Feature: Import rules
     Then I should see "4"
     Then I should see "CENTIMETER"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type number in conditions
     Given the following yaml file to import:
     """
@@ -245,7 +238,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "5"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type boolean in conditions
     Given the following yaml file to import:
     """
@@ -272,7 +264,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "true"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type date (with a string for a date) in conditions
     Given the following yaml file to import:
     """
@@ -301,7 +292,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "1970-01-01"
 
-  @javascript
   Scenario: Import rule with valid values for attribute of type media in conditions
     Given the following yaml file to import:
     """
@@ -328,7 +318,6 @@ Feature: Import rules
     Then I should see "Context/fixtures/akeneo.jpg"
     Then I should see "akeneo.jpg"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type textarea in actions
     Given the following yaml file to import:
     """
@@ -360,7 +349,6 @@ Feature: Import rules
     Then I should see "description"
     Then I should see "tablet"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type text and text in actions
     Given the following yaml file to import:
     """
@@ -388,7 +376,6 @@ Feature: Import rules
     Then I should see "en"
     Then I should see "is copied into"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type date in actions
     Given the following yaml file to import:
     """
@@ -417,7 +404,6 @@ Feature: Import rules
     Then I should see "is copied into"
     Then I should see "tablet"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type metric in actions
     Given the following yaml file to import:
     """
@@ -442,7 +428,6 @@ Feature: Import rules
     Then I should see "length"
     Then I should see "is copied into"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type price in actions
     Given the following yaml file to import:
     """
@@ -467,7 +452,6 @@ Feature: Import rules
     Then I should see "price"
     Then I should see "is copied into"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type multi select in actions
     Given the following yaml file to import:
     """
@@ -492,7 +476,6 @@ Feature: Import rules
     Then I should see "weather_conditions"
     Then I should see "is copied into"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type simple select in actions
     Given the following yaml file to import:
     """
@@ -517,7 +500,6 @@ Feature: Import rules
     Then I should see "manufacturer"
     Then I should see "is copied into"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type number in actions
     Given the following yaml file to import:
     """
@@ -546,7 +528,6 @@ Feature: Import rules
     Then I should see "is copied into"
     Then I should see "tablet"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type boolean in actions
     Given the following yaml file to import:
     """
@@ -571,7 +552,6 @@ Feature: Import rules
     Then I should see "handmade"
     Then I should see "is copied into"
 
-  @javascript
   Scenario: Import a copy value rule with valid values for attribute of type media in actions
     Given the following yaml file to import:
     """

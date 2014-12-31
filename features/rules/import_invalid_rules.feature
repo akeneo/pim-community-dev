@@ -1,3 +1,4 @@
+@javascript
 Feature: Import rules
   In order ease the enrichment of the catalog
   As an administrator
@@ -7,7 +8,6 @@ Feature: Import rules
     Given a "clothing" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Skip rules with unsupported integer value for attribute name in conditions
     Given the following product rules:
       | code                       | priority |
@@ -56,7 +56,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Super Name"
 
-  @javascript
   Scenario: Skip rules with unsupported integer value for attribute of type textarea in conditions
     Given the following product rules:
       | code                       | priority |
@@ -109,7 +108,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with unsupported integer value for attribute of type identifier in conditions
     Given the following product rules:
       | code                       | priority |
@@ -159,7 +157,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with unsupported string value for attribute of type simple select in conditions
     Given the following product rules:
       | code                       | priority |
@@ -204,7 +201,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Volcom"
 
-  @javascript
   Scenario: Skip rules with unsupported string value for the multi select attribute of type multi select in conditions
     Given the following product rules:
       | code                       | priority |
@@ -250,7 +246,6 @@ Feature: Import rules
     Then I should see "dry"
     And I should see "wet"
 
-  @javascript
   Scenario: Skip rules with unsupported array values for attribute of type multi select in conditions
     Given the following product rules:
       | code                       | priority |
@@ -300,7 +295,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with unsupported values for attribute of type prices collection in conditions
     Given the following product rules:
       | code                       | priority |
@@ -346,7 +340,6 @@ Feature: Import rules
     Then I should see "3"
     Then I should see "EUR"
 
-  @javascript
   Scenario: Skip rules with unsupported values for attribute of type metric in conditions
     Given the following product rules:
       | code                       | priority |
@@ -392,7 +385,6 @@ Feature: Import rules
     Then I should see "3"
     Then I should see "CENTIMETER"
 
-  @javascript
   Scenario: Skip rules with unsupported values for attribute of type number in conditions
     Given the following product rules:
       | code                       | priority |
@@ -440,7 +432,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "42"
 
-  @javascript
   Scenario: Skip rules with unsupported values for attribute of type boolean in conditions
     Given the following product rules:
       | code                       | priority |
@@ -485,7 +476,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "true"
 
-  @javascript
   Scenario: Skip rules with unsupported values for attribute of type date in conditions
     Given the following product rules:
       | code                       | priority |
@@ -534,7 +524,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "1970-01-01"
 
-  @javascript
   Scenario: Skip rules with unsupported values for attribute of type media in conditions
     Given the following product rules:
       | code                       | priority |
@@ -586,7 +575,6 @@ Feature: Import rules
     Then I should see "../../../features/Context/fixtures/SNKRS-1R.png"
     Then I should see "SNKRS-1R"
 
-  @javascript
   Scenario: Skip rules with missing values for attribute of type media in conditions
     Given the following product rules:
       | code                       | priority |
@@ -636,7 +624,6 @@ Feature: Import rules
     Then I should see "Context/fixtures/SNKRS-1R.png"
     Then I should see "SNKRS-1R"
 
-  @javascript
   Scenario: Skip rules with missing conditions key
     Given the following product rules:
       | code                       | priority |
@@ -686,7 +673,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with missing actions key
     Given the following product rules:
       | code                       | priority |
@@ -734,7 +720,6 @@ Feature: Import rules
     Then I should see "sony_beautiful_description"
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with missing operator key for conditions
     Given the following product rules:
       | code                       | priority |
@@ -781,7 +766,6 @@ Feature: Import rules
     Then I should see "sony_beautiful_description"
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with missing field key for conditions
     Given the following product rules:
       | code                       | priority |
@@ -828,7 +812,6 @@ Feature: Import rules
     Then I should see "sony_beautiful_description"
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with missing from_field key for copy action
     Given the following product rules:
       | code                       | priority |
@@ -874,7 +857,6 @@ Feature: Import rules
       | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
       | sony_beautiful_description | description | description     | en          | en        | mobile     | tablet   |
 
-  @javascript
   Scenario: Skip rules with missing to_field key for copy action
     Given the following product rules:
       | code                       | priority |
@@ -920,7 +902,6 @@ Feature: Import rules
       | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
       | sony_beautiful_description | description | description     | en          | en        | mobile     | tablet   |
 
-  @javascript
   Scenario: Skip rules with missing value key for conditions
     Given the following product rules:
       | code                       | priority |
@@ -964,7 +945,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with missing value key for set action
     Given the following product rules:
       | code                       | priority |
@@ -1010,7 +990,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with invalid operator for conditions
     Given the following product rules:
       | code                       | priority |
@@ -1057,7 +1036,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules without locale key for condition and set action
     Given the following product rules:
       | code                       | priority |
@@ -1102,7 +1080,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with nonexistent locale key for condition and set action
     Given the following product rules:
       | code                       | priority |
@@ -1155,7 +1132,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules without scope key for condition and set action
     Given the following product rules:
       | code                       | priority |
@@ -1204,7 +1180,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with nonexistent scope key for condition and set action
     Given the following product rules:
       | code                       | priority |
@@ -1257,7 +1232,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with missing type key for copy or set action
     Given the following product rules:
       | code                       | priority |
@@ -1304,7 +1278,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with invalid type for copy or set action
     Given the following product rules:
       | code                       | priority |
@@ -1351,7 +1324,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with non existing field for conditions
     Given the following product rules:
       | code                       | priority |
@@ -1398,7 +1370,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with non existing field for set action
     Given the following product rules:
       | code                       | priority |
@@ -1446,7 +1417,6 @@ Feature: Import rules
     And I visit the "Rules" tab
     And I should see "Another good description"
 
-  @javascript
   Scenario: Skip rules with non existing from_field for copy action
     Given the following product rules:
       | code                       | priority |
@@ -1496,7 +1466,6 @@ Feature: Import rules
       | rule                       | from_field  | to_field        | from_locale | to_locale | from_scope | to_scope |
       | sony_beautiful_description | description | description     | en          | en        | mobile     | tablet   |
 
-  @javascript
   Scenario: Skip rules with non existing to_field for copy action
     Given the following product rules:
       | code                       | priority |
@@ -1546,7 +1515,6 @@ Feature: Import rules
       | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
-  @javascript
   Scenario: Skip rules with incompatible fields for copy action
     Given the following product rules:
       | code                       | priority |
@@ -1595,7 +1563,6 @@ Feature: Import rules
       | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
-  @javascript
   Scenario: Skip rules with wrong locale fields for copy action
     Given the following product rules:
       | code                       | priority |
@@ -1647,7 +1614,6 @@ Feature: Import rules
       | rule                       | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
       | sony_beautiful_description | description | description | en          | en        | mobile     | tablet   |
 
-  @javascript
   Scenario: Skip rules with wrong scope fields for copy action
     Given the following product rules:
       | code                       | priority |
