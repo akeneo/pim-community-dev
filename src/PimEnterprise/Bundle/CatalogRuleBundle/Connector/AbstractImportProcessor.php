@@ -19,7 +19,6 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -46,9 +45,6 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
 
     /** @var DenormalizerInterface */
     protected $denormalizer;
-
-    /** @var TranslatorInterface */
-    protected $translator;
 
     /** @var string */
     protected $class;
