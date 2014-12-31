@@ -16,15 +16,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AuthorProperty extends FieldProperty
 {
-    /**
-     * @var UserManager
-     */
+    /** @var UserManager */
     protected $userManager;
 
-    /**
-     * @var string[]
-     */
-    protected $cachedResults;
+    /** @var string[] */
+    protected $userCachedResults;
 
     /**
      * @param TranslatorInterface $translator
@@ -46,6 +42,7 @@ class AuthorProperty extends FieldProperty
 
         try {
             $context = $record->getValue('context');
+
         } catch (\LogicException $e) {
             $context = null;
         }
@@ -61,22 +58,23 @@ class AuthorProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
-        if (!isset($this->cachedResults[$value['author']])) {
+        if (!isset($this->userCachedResults[$value['author']])) {
             $user = $this->userManager->findUserByUsername($value['author']);
 
             if (null === $user) {
-                $result = sprintf('%s - %s', $value['author'], $this->translator->trans('Removed user'));
+                $userName = sprintf('%s - %s', $value['author'], $this->translator->trans('Removed user'));
             } else {
-                $result = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
+                $userName = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
             }
 
-            if (!empty($value['context'])) {
-                $result .= sprintf(' (%s)', $value['context']);
-            }
-
-            $this->cachedResults[$value['author']] = $result;
+            $this->userCachedResults[$value['author']] = $userName;
         }
 
-        return $this->cachedResults[$value['author']];
+        $result = $this->userCachedResults[$value['author']];
+        if (!empty($value['context'])) {
+            $result .= sprintf(' (%s)', $value['context']);
+        }
+
+        return $result;
     }
 }
