@@ -59,11 +59,12 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
     public function process($item)
     {
         $definition = $this->findObject($this->repository, $item);
+
         $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
 
         $violations = $this->validator->validate($rule);
         if ($violations->count()) {
-            $this->handleInvalidItem($item, $violations);
+            $this->handleConstraintViolationsOnItem($item, $violations);
             // TODO: detach the $definition ?
         }
 
@@ -74,11 +75,18 @@ class ProductRuleDefinitionProcessor extends AbstractImportProcessor
      * @param array                   $item
      * @param RuleDefinitionInterface $definition
      *
-     * @return RuleInterface
+     * @return RuleInterface|null
      */
     protected function buildRuleFromItemAndDefinition(array $item, RuleDefinitionInterface $definition = null)
     {
-        return $this->denormalizer->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
+        try {
+            $rule = $this->denormalizer
+                ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
+        } catch (\LogicException $e) {
+            $this->handleExceptionOnItem($item, $e);
+        }
+
+        return $rule;
     }
 
     /**

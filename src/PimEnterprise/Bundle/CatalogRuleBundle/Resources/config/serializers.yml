@@ -2,7 +2,6 @@ parameters:
     pimee_catalog_rule.serializer.rule_content.class:                   PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentJsonSerializer
     pimee_catalog_rule.denormalizer.rule.class:                         PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleDenormalizer
     pimee_catalog_rule.normalizer.product_set_value_action.class:       PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionNormalizer
-    pimee_catalog_rule.normalizer.product_set_value_action_value.class: PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionValueNormalizer
     pimee_catalog_rule.normalizer.product_copy_value_action.class:      PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductCopyValueActionNormalizer
     pimee_catalog_rule.normalizer.product_rule_condition.class:         PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleConditionNormalizer
 
@@ -32,12 +31,6 @@ services:
         class: %pimee_catalog_rule.normalizer.product_set_value_action.class%
         arguments:
             - %pimee_catalog_rule.model.set_value_action.class%
-            - @pimee_catalog_rule.normalizer.product_set_value_action_value
-
-    pimee_catalog_rule.normalizer.product_set_value_action_value:
-        class: %pimee_catalog_rule.normalizer.product_set_value_action_value.class%
-        arguments:
-            - @pim_catalog.repository.attribute
 
     pimee_catalog_rule.normalizer.product_copy_value_action:
         class: %pimee_catalog_rule.normalizer.product_copy_value_action.class%

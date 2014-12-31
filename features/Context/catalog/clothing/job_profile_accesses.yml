@@ -36,3 +36,6 @@ job_profile_accesses:
     clothing_product_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+    clothing_rule_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]

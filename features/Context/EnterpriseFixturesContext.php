@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
@@ -499,7 +500,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             if ($data['operator'] === 'IN') {
-                $data['value'] = [$data['value']];
+                $data['value'] =  $this->getMainContext()->listToArray($data["value"]);
             }
 
             $condition = [
@@ -547,7 +548,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $content['actions'] = [];
             }
 
-            $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $data['field']]);
+            $code = FieldFilterHelper::getCode($data['field']);
+            $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $code]);
             $attributeType = $attribute->getAttributeType();
 
             // TODO: replace this dirty fix to use the same class than ProductSetValueActionNormalizer
@@ -562,7 +564,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = (int) $data['value'];
                     break;
                 case 'pim_catalog_metric':
+                    $values = explode(',', $data['value']);
+                    $value = ['unit' => $values[1], 'data' => $values[0]];
+                    break;
                 case 'pim_catalog_multiselect':
+                    $values = explode(',', $data['value']);
+                    $value = [];
+                    foreach ($values as $val) {
+                        $value[] = ['code' => $val, 'attribute' => $attribute->getCode()];
+                    }
+                    break;
                 case 'pim_catalog_price_collection':
                     $values = explode(',', $data['value']);
                     $value = [['data' => $values[0], 'currency' => $values[1]]];
@@ -576,13 +587,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 case 'pim_catalog_image':
                 case 'pim_catalog_file':
                     $values = explode(',', $data['value']);
-                    $value = ['originalFilename' => $values[0], 'filePath' => $values[1]];
+                    $value = ['filePath' => $values[1], 'originalFilename' => $values[0]];
                     break;
             }
 
             $action = [
                 'type' => 'set_value',
-                'field' => $data['field'],
+                'field' => $code,
                 'value' => $value,
             ];
             if ($data['locale']) {

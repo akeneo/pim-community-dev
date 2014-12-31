@@ -21,6 +21,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  * Denormalize product rules.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ *
+ * TODO: use a normalizer registry instead of all those normalizers
+ * TODO: that would also allow to remove he $denormalizer->denormalize($raw, 'TODO')
  */
 class ProductRuleDenormalizer implements DenormalizerInterface
 {
@@ -64,8 +67,10 @@ class ProductRuleDenormalizer implements DenormalizerInterface
      * {@inheritdoc}
      *
      * @return RuleDefinitionInterface
+     *
+     * @throws \LogicException
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         /** @var RuleInterface $rule */
         $rule = $this->getObject($context);
@@ -75,6 +80,8 @@ class ProductRuleDenormalizer implements DenormalizerInterface
         if (isset($data['priority'])) {
             $rule->setPriority((int) $data['priority']);
         }
+
+        $this->checkRuleKeys($data);
 
         if (isset($data['conditions'])) {
             foreach ($data['conditions'] as $rawCondition) {
@@ -86,13 +93,20 @@ class ProductRuleDenormalizer implements DenormalizerInterface
 
         if (isset($data['actions'])) {
             foreach ($data['actions'] as $rawAction) {
+                if (!array_key_exists('type', $rawAction)) {
+                    throw new \LogicException(sprintf('Rule content "%s" has an action with no type.', $data['code']));
+                }
                 //TODO
                 if (ProductSetValueActionInterface::TYPE === $rawAction['type']) {
                     $action = $this->setValueActionNormalizer->denormalize($rawAction, 'TODO');
                 } elseif (ProductCopyValueActionInterface::TYPE === $rawAction['type']) {
                     $action = $this->copyValueActionNormalizer->denormalize($rawAction, 'TODO');
+                } else {
+                    throw new \LogicException(
+                        sprintf('Rule "%s" has an unknown type of action "%s".', $rule->getCode(), $rawAction['type'])
+                    );
                 }
-                // TODO throw exception on else ?
+
                 $rule->addAction($action);
             }
         }
@@ -126,5 +140,21 @@ class ProductRuleDenormalizer implements DenormalizerInterface
         }
 
         return new $this->class($definition);
+    }
+
+    /**
+     * Checks if the rule have a 'conditions' and 'actions' keys
+     *
+     * @param array $data
+     */
+    protected function checkRuleKeys(array $data)
+    {
+        if (!array_key_exists('conditions', $data)) {
+            throw new \LogicException(sprintf('Rule content "%s" should have a "conditions" key.', $data['code']));
+        }
+
+        if (!array_key_exists('actions', $data)) {
+            throw new \LogicException(sprintf('Rule content "%s" should have a "actions" key.', $data['code']));
+        }
     }
 }

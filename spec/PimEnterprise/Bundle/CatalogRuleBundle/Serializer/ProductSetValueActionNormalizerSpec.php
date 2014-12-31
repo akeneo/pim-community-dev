@@ -10,9 +10,9 @@ use Prophecy\Argument;
 
 class ProductSetValueActionNormalizerSpec extends ObjectBehavior
 {
-    public function let(ProductSetValueActionValueNormalizer $valueNormalizer)
+    public function let()
     {
-        $this->beConstructedWith('\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction', $valueNormalizer);
+        $this->beConstructedWith('\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction');
     }
 
     function it_is_initializable()
@@ -26,16 +26,12 @@ class ProductSetValueActionNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_normalizes(ProductSetValueActionInterface $object, $valueNormalizer)
+    function it_normalizes(ProductSetValueActionInterface $object)
     {
         $object->getField()->shouldBeCalled()->willReturn('description');
         $object->getValue()->shouldBeCalled()->willReturn('My beautiful description');
         $object->getLocale()->shouldBeCalled()->willReturn('fr_FR');
         $object->getScope()->shouldBeCalled()->willReturn('mobile');
-
-        $valueNormalizer
-            ->normalize('My beautiful description', 'array_updater', ['attribute_code' => 'description'])
-            ->willReturn('My beautiful description');
 
         $this->normalize($object)->shouldReturn(
             [
