@@ -16,6 +16,7 @@
 - Introduce a `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver` and a `PimEnterprise\Bundle\WorkflowBundle\Saver\DelegatingProductSaver` with corresponding services to allow to save working copy, product draft or save both depending on permissions
 - Add a command to run a rule or all rules in database
 - Add a rule view on attribute edit page
+- Add a form view updater registry to update the attributes form views dynamically
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
@@ -38,6 +39,9 @@
 - Remove the overrides `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`, `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`, `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`
 - Update constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify` to add a `Akeneo\Component\Persistence\BulkSaverInterface` $productSaver argument
 - Update constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add a `Akeneo\Component\Persistence\BulkSaverInterface` $productSaver argument
+- Change constructor `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper` which now expects a `Symfony\Component\Security\Core\SecurityContextInterface`
+- Rename PimEnterprise/Bundle/SecurityBundle/Voter/ProductDraftOwnershipVoter.php to ProductDraftVoter
+- Deleted PimEnterprise/Bundle/WorkflowBundle/Form/View/HighlightModifiedProductFormView.php
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
