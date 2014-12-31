@@ -386,6 +386,6 @@ class EnterpriseFeatureContext extends FeatureContext
     {
         $rule = $this->getSubcontext('fixtures')->getRule($code);
         $runner = $this->getContainer()->get('pimee_rule_engine.runner.chained');
-        $updated = $runner->run($rule);
+        $runner->run($rule);
     }
 }

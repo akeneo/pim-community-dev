@@ -27,6 +27,7 @@ Feature: Update product history when rules are executed
       | rule            | field       | value                        | locale | scope  |
       | set_description | description | Chaussures noires classiques | fr_FR  | mobile |
     When the product rule "set_description" is executed
+    And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
     And I visit the "History" tab
     Then there should be 2 updates
@@ -53,6 +54,7 @@ Feature: Update product history when rules are executed
       | set_name        | name        | Chaussures noires            | fr_FR  |        |
     When the product rule "set_description" is executed
     And the product rule "set_name" is executed
+    And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
     And I visit the "History" tab
     Then there should be 3 updates
