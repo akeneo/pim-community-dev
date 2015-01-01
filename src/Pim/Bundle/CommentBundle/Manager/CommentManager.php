@@ -4,8 +4,8 @@ namespace Pim\Bundle\CommentBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\Resource\Model\SaverInterface;
-use Pim\Component\Resource\Model\RemoverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;

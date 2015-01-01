@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Resource\Model\BulkSaverInterface;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 

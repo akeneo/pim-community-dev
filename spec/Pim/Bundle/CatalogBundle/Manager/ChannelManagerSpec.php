@@ -21,7 +21,7 @@ class ChannelManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Pim\Component\Resource\Model\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
     }
 
     function it_is_initializable()

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 
 /**
  * Channel manager

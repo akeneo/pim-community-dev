@@ -15,7 +15,7 @@ class BaseRemoverSpec extends ObjectBehavior
 
     function it_is_a_remover()
     {
-        $this->shouldHaveType('Pim\Component\Resource\Model\RemoverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\RemoverInterface');
     }
 
     function it_removes_the_object_and_flush_the_unit_of_work($objectManager, GroupType $type)

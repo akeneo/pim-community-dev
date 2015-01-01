@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Remover;
 
-use Pim\Component\Resource\Model\RemoverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 

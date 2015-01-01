@@ -7,8 +7,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Component\Resource\Model\SaverInterface;
-use Pim\Component\Resource\Model\RemoverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
