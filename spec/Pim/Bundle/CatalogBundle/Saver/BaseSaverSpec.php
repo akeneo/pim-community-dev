@@ -15,7 +15,7 @@ class BaseSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Pim\Component\Resource\Model\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
     }
 
     function it_persists_the_object_and_flush_the_unit_of_work($objectManager, GroupType $type)

@@ -27,7 +27,7 @@
 - Move filter transformation to CatalogBundle
 - Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable 
 - Re-work the `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder` to provide a clear and extensible API to query products
-- Normalize the managers by introducing 4 interfaces, `Pim\Component\Resource\Model\SaverInterface`, `Pim\Component\Resource\Model\BulkSaverInterface`, `Pim\Component\Resource\Model\RemoverInterface` and `Pim\Component\Resource\Model\BulkRemoverInterface`
+- Normalize the managers by introducing 4 interfaces, `Akeneo\Component\Persistence\SaverInterface`, `Akeneo\Component\Persistence\BulkSaverInterface`, `Akeneo\Component\Persistence\RemoverInterface` and `Pim\Component\Persistence\BulkRemoverInterface`
 - Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
 - Add a check on passed values in ORM filters
 - Add a requirement regarding the need of the `exec()` function (for job executions)

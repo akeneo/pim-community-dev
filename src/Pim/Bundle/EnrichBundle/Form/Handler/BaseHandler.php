@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

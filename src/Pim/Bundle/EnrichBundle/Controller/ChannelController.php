@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Resource\Model\RemoverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;

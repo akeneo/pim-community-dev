@@ -1,23 +1,23 @@
 <?php
 
-namespace Pim\Component\Resource\Model;
+namespace Akeneo\Component\Persistence;
 
 /**
- * Saver interface, provides a minimal contract to save a single business object
+ * Bulk saver interface, provides a minimal contract to save many business objects
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface SaverInterface
+interface BulkSaverInterface
 {
     /**
-     * Save a single object
+     * Save many objects
      *
-     * @param mixed $object  The object to save
+     * @param array $objects The objects to save
      * @param array $options The saving options
      *
      * @throws \InvalidArgumentException
      */
-    public function save($object, array $options = []);
+    public function saveAll(array $objects, array $options = []);
 }

@@ -37,11 +37,11 @@ class GroupManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Pim\Component\Resource\Model\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
     }
     function it_is_a_remover()
     {
-        $this->shouldHaveType('Pim\Component\Resource\Model\RemoverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\RemoverInterface');
     }
 
     function it_throws_exception_when_save_anything_else_than_a_group()

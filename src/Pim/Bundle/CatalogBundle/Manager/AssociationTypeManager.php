@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Resource\Model\SaverInterface;
-use Pim\Component\Resource\Model\RemoverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
