@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Saver;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\SaverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Base saver, declared as different services for different classes
@@ -46,13 +47,40 @@ class BaseSaver implements SaverInterface
             );
         }
 
-        $options = array_merge(['flush' => true, 'only_object' => false], $options);
+        $options = $this->resolveSaveOptions($options);
         $this->objectManager->persist($object);
-
-        if (true === $options['flush'] && true === $options['only_object']) {
+        if (true === $options['flush'] && true === $options['flush_only_object']) {
             $this->objectManager->flush($object);
         } elseif (true === $options['flush']) {
             $this->objectManager->flush();
         }
+    }
+
+    /**
+     * Resolve options for a single save
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveSaveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setOptional(['flush', 'flush_only_object']);
+        $resolver->setAllowedTypes(
+            [
+                'flush' => 'bool',
+                'flush_only_object' => 'bool'
+            ]
+        );
+        $resolver->setDefaults(
+            [
+                'flush' => true,
+                'flush_only_object' => false,
+            ]
+        );
+        $options = $resolver->resolve($options);
+
+        return $options;
     }
 }
