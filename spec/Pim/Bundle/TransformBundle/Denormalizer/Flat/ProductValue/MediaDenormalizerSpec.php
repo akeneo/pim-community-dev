@@ -43,7 +43,7 @@ class MediaDenormalizerSpec extends ObjectBehavior
 
     function it_dernomalizes_media($manager, $factory, ProductMediaInterface $media)
     {
-        $manager->createFromFilename('preview.jpg')->willReturn($media);
+        $manager->createFromFilepath('preview.jpg')->willReturn($media);
 
         $this->denormalize('preview.jpg', 'pim_catalog_image')->shouldReturn($media);
     }

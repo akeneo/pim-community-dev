@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Gaufrette\Filesystem;
@@ -14,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaManagerSpec extends ObjectBehavior
 {
@@ -148,8 +146,9 @@ class MediaManagerSpec extends ObjectBehavior
 
     function it_loads_file_into_a_media($filesystem, $factory, ProductMediaInterface $media)
     {
-        $filesystem->has('preview.jpg')->willReturn(true);
-        $filesystem->mimeType('preview.jpg')->willReturn('image/jpeg');
+        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
+        $filesystem->has($uploadDirectory . DIRECTORY_SEPARATOR . 'preview.jpg')->willReturn(true);
+        $filesystem->mimeType($uploadDirectory . DIRECTORY_SEPARATOR . 'preview.jpg')->willReturn('image/jpeg');
 
         $factory->createMedia()->willReturn($media);
         $media->setOriginalFilename('preview.jpg')->shouldBeCalled();
@@ -157,15 +156,16 @@ class MediaManagerSpec extends ObjectBehavior
         $media->setFilePath(Argument::any())->shouldBeCalled();
         $media->setMimeType('image/jpeg')->shouldBeCalled();
 
-        $this->createFromFilename('preview.jpg')->shouldReturn($media);
+        $this->createFromFilepath('preview.jpg')->shouldReturn($media);
     }
 
     function its_load_method_throw_exception_when_file_does_not_exist($filesystem, ProductMediaInterface $media)
     {
-        $filesystem->has('readme.md')->willReturn(false);
+        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
+        $filesystem->has($uploadDirectory . DIRECTORY_SEPARATOR . 'readme.md')->willReturn(false);
 
         $this
             ->shouldThrow('\InvalidArgumentException')
-            ->duringCreateFromFilename('readme.md');
+            ->duringCreateFromFilepath('readme.md');
     }
 }

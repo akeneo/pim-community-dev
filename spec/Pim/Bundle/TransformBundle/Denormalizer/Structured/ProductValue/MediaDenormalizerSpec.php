@@ -44,7 +44,7 @@ class MediaDenormalizerSpec extends ObjectBehavior
     function it_denormalizes_data_into_media($manager, ProductMediaInterface $media)
     {
         $manager
-            ->createFromFilename('foo/bar/image.jpg', false)
+            ->createFromFilepath('foo/bar/image.jpg', false)
             ->shouldBeCalled()
             ->willReturn($media);
 

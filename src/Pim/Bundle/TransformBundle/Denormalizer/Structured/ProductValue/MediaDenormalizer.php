@@ -38,7 +38,7 @@ class MediaDenormalizer extends AbstractValueDenormalizer
             return null;
         }
 
-        $media = $this->mediaManager->createFromFilename($data['filePath'], false);
+        $media = $this->mediaManager->createFromFilepath($data['filePath'], false);
         $media->setOriginalFilename($data['originalFilename']);
 
         return $media;
