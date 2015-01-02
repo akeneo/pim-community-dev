@@ -68,10 +68,11 @@ class DateFilterSpec extends ObjectBehavior
         $qb->andWhere("p.release_date < '2014-03-15'")->shouldBeCalled()->willReturn($qb);
         $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $expr->lt('p.release_date', '2014-03-15')->shouldBeCalled()->willReturn("p.release_date < '2014-03-15'");
-        $expr->literal('2014-03-15')->shouldBeCalled()->willReturn('2014-03-15');
+        $expr->lt('p.release_date', '2014-03-15')->shouldBeCalled()->willReturn("p.release_date < '2014-03-15'")->shouldBeCalledTimes(2);
+        $expr->literal('2014-03-15')->shouldBeCalled()->willReturn('2014-03-15')->shouldBeCalledTimes(2);
 
         $this->addFieldFilter('release_date', '<', '2014-03-15');
+        $this->addFieldFilter('release_date', '<', new \Datetime('2014-03-15'));
     }
 
     function it_adds_a_empty_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
@@ -90,16 +91,18 @@ class DateFilterSpec extends ObjectBehavior
 
         $expr->gt('p.release_date', '2014-03-15 23:59:59')
             ->shouldBeCalled()
-            ->willReturn("p.release_date > '2014-03-15 23:59:59'");
-        $expr->literal('2014-03-15 23:59:59')->shouldBeCalled()->willReturn('2014-03-15 23:59:59');
+            ->willReturn("p.release_date > '2014-03-15 23:59:59'")
+            ->shouldBeCalledTimes(2);
+        $expr->literal('2014-03-15 23:59:59')->shouldBeCalled()->willReturn('2014-03-15 23:59:59')->shouldBeCalledTimes(2);
 
         $this->addFieldFilter('release_date', '>', '2014-03-15');
+        $this->addFieldFilter('release_date', '>', new \Datetime('2014-03-15'));
     }
 
-    function it_throws_an_exception_if_value_is_not_a_string_or_an_array()
+    function it_throws_an_exception_if_value_is_not_a_string_an_array_or_a_datetime()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'array or string', 'filter', 'date')
+            InvalidArgumentException::expected('release_date', 'array with 2 elements, string or \Datetime', 'filter', 'date')
         )->during('addFieldFilter', ['release_date', '>', 123]);
     }
 
@@ -109,17 +112,27 @@ class DateFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['release_date', '>', ['not a valid date format', 'WRONG']]);
     }
 
-    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings()
+    function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_strings_or_dates()
     {
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+            InvalidArgumentException::expected(
+                'release_date',
+                'array with 2 elements, string or \Datetime',
+                'filter',
+                'date'
+            )
         )->during('addFieldFilter', ['release_date', '>', [123, 123]]);
     }
 
     function it_throws_an_exception_if_value_is_an_array_but_does_not_contain_two_values()
     {
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('release_date', 'filter', 'date')
+            InvalidArgumentException::expected(
+                'release_date',
+                'array with 2 elements, string or \Datetime',
+                'filter',
+                'date'
+            )
         )->during('addFieldFilter', ['release_date', '>', [123, 123, 'three']]);
     }
 
@@ -127,78 +140,81 @@ class DateFilterSpec extends ObjectBehavior
     {
         $qb
             ->andWhere("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'")
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn($qb);
         $expr
             ->andX("p.release_date > '2014-03-15'", "p.release_date < '2014-03-20 23:59:59'")
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'");
         $qb->expr()->shouldBeCalled()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-15')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date > '2014-03-15'");
         $expr->lt('p.release_date', '2014-03-20 23:59:59')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date < '2014-03-20 23:59:59'");
         $expr->literal('2014-03-15')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn('2014-03-15');
-        $expr->literal('2014-03-20 23:59:59')->shouldBeCalled()->willReturn('2014-03-20 23:59:59');
+        $expr->literal('2014-03-20 23:59:59')->shouldBeCalled()->willReturn('2014-03-20 23:59:59')->shouldBeCalledTimes(2);
 
         $this->addFieldFilter('release_date', 'BETWEEN', ['2014-03-15', '2014-03-20']);
+        $this->addFieldFilter('release_date', 'BETWEEN', [new \Datetime('2014-03-15'), new \Datetime('2014-03-20')]);
     }
 
     function it_adds_an_equal_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
         $qb->andWhere("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'")
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn($qb);
         $expr
             ->andX("p.release_date > '2014-03-20'", "p.release_date < '2014-03-20 23:59:59'")
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'");
         $qb->expr()->shouldBeCalled()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-20')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date > '2014-03-20'");
         $expr->lt('p.release_date', '2014-03-20 23:59:59')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date < '2014-03-20 23:59:59'");
         $expr->literal('2014-03-20')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn('2014-03-20');
         $expr->literal('2014-03-20 23:59:59')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn('2014-03-20 23:59:59');
 
         $this->addFieldFilter('release_date', '=', '2014-03-20');
+        $this->addFieldFilter('release_date', '=', new \Datetime('2014-03-20'));
     }
 
     function it_adds_a_not_between_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
         $qb->andWhere("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'")
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn($qb);
         $expr
             ->orX("p.release_date < '2014-03-15'", "p.release_date > '2014-03-20 23:59:59'")
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'");
         $qb->expr()->shouldBeCalled()->willReturn($expr);
 
-        $expr->lt('p.release_date', '2014-03-15')->shouldBeCalled()->willReturn("p.release_date < '2014-03-15'");
+        $expr->lt('p.release_date', '2014-03-15')->shouldBeCalledTimes(2)->willReturn("p.release_date < '2014-03-15'");
         $expr->gt('p.release_date', '2014-03-20 23:59:59')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date > '2014-03-20 23:59:59'");
         $expr->literal('2014-03-15')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn('2014-03-15');
         $expr->literal('2014-03-20 23:59:59')
-            ->shouldBeCalled()
+            ->shouldBeCalledTimes(2)
             ->willReturn('2014-03-20 23:59:59');
 
         $this->addFieldFilter('release_date', 'NOT BETWEEN', ['2014-03-15', '2014-03-20']);
+        $this->addFieldFilter('release_date', 'NOT BETWEEN', [new \Datetime('2014-03-15'), new \Datetime('2014-03-20')]);
     }
 
     function it_adds_an_empty_operator_filter_on_an_attribute_to_the_query(
@@ -250,7 +266,7 @@ class DateFilterSpec extends ObjectBehavior
         $expr->literal('en_US')->willReturn('code');
         $expr->literal('mobile')->willReturn('code');
 
-        $expr->gt('filtercode.backend_type', 'code')->willReturn($comparison)->shouldBeCalled();
+        $expr->gt('filtercode.backend_type', 'code')->willReturn($comparison)->shouldBeCalledTimes(2);
         $comparison->__toString()->willReturn();
 
         $qb->innerJoin(
@@ -258,8 +274,9 @@ class DateFilterSpec extends ObjectBehavior
             'filtercode',
             'WITH',
             'filtercode.attribute = 42 AND '
-        )->shouldBeCalled();
+        )->shouldBeCalledTimes(2);
 
         $this->addAttributeFilter($attribute, '>', '2014-03-15');
+        $this->addAttributeFilter($attribute, '>', new \DateTime('2014-03-15'));
     }
 }

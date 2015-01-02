@@ -101,7 +101,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                 );
             }
 
-            if (!is_numeric($price['data'])) {
+            if (!is_numeric($price['data']) && null !== $price['data']) {
                 throw InvalidArgumentException::arrayNumericKeyExpected(
                     $attribute->getCode(),
                     'data',

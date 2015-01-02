@@ -8,8 +8,8 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Resource\Model\RemoverInterface;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

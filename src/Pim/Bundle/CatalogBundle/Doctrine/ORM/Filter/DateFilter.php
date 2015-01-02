@@ -72,7 +72,12 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
         $options = []
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'date');
-        $this->checkValues($attribute->getCode(), $value);
+
+        if (Operators::IS_EMPTY === $operator) {
+            $value = null;
+        } else {
+            $value = $this->formatValues($attribute->getCode(), $value);
+        }
 
         $joinAlias = 'filter' . $attribute->getCode();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
@@ -119,7 +124,11 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        $this->checkValues($field, $value);
+        if (Operators::IS_EMPTY === $operator) {
+            $value = null;
+        } else {
+            $value = $this->formatValues($field, $value);
+        }
 
         $field = current($this->qb->getRootAliases()).'.'.$field;
 
@@ -200,32 +209,59 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     }
 
     /**
-     * Check if values are valid
+     * Format values to string or array of strings
      *
      * @param string $type
      * @param mixed  $value
+     *
+     * @return mixed $value
      */
-    protected function checkValues($type, $value)
+    protected function formatValues($type, $value)
     {
-        if (is_array($value)) {
-            if (count($value) !== 2 || (!is_string($value[0]) && !is_string($value[1]))) {
-                throw InvalidArgumentException::stringExpected($type, 'filter', 'date');
-            }
-
-            $this->checkDateFormat($type, $value[0]);
-            $this->checkDateFormat($type, $value[1]);
-        } elseif (is_string($value)) {
-            if ('' !== $value) {
-                $this->checkDateFormat($type, $value);
-            }
-        } elseif (null !== $value) {
+        if (is_array($value) && 2 !== count($value)) {
             throw InvalidArgumentException::expected(
                 $type,
-                'array or string',
+                'array with 2 elements, string or \Datetime',
                 'filter',
                 'date'
             );
         }
+
+        if (is_array($value)) {
+            $tmpValues = [];
+            foreach ($value as $tmp) {
+                $tmpValues[] = $this->formatSingleValue($type, $tmp);
+            }
+            $value = $tmpValues;
+        } else {
+            $value = $this->formatSingleValue($type, $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param $type
+     * @param $value
+     *
+     * @return string
+     */
+    protected function formatSingleValue($type, $value)
+    {
+        if ($value instanceof \DateTime) {
+            $value = $value->format('Y-m-d');
+        } elseif (is_string($value)) {
+            $this->validateDateFormat($type, $value);
+        } elseif (null !== $value) {
+            throw InvalidArgumentException::expected(
+                $type,
+                'array with 2 elements, string or \Datetime',
+                'filter',
+                'date'
+            );
+        }
+
+        return $value;
     }
 
     /**
@@ -234,7 +270,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
      * @param string $type
      * @param string $value
      */
-    protected function checkDateFormat($type, $value)
+    protected function validateDateFormat($type, $value)
     {
         $dateValues = explode('-', $value);
 

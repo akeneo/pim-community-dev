@@ -27,12 +27,12 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
+        $this->shouldImplement('Akeneo\Component\Persistence\SaverInterface');
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+        $this->shouldImplement('Akeneo\Component\Persistence\RemoverInterface');
     }
 
     function it_provides_object_manager($objectManager)

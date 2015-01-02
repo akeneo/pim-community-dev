@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Remover;
 
-use Pim\Component\Resource\Model\RemoverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Base remover, declared as different services for different classes
@@ -46,13 +47,41 @@ class BaseRemover implements RemoverInterface
             );
         }
 
-        $options = array_merge(['flush' => true, 'only_object' => false], $options);
+        $options = $this->resolveRemoveOptions($options);
         $this->objectManager->remove($object);
 
-        if (true === $options['flush'] && true === $options['only_object']) {
+        if (true === $options['flush'] && true === $options['flush_only_object']) {
             $this->objectManager->flush($object);
         } elseif (true === $options['flush']) {
             $this->objectManager->flush();
         }
+    }
+
+    /**
+     * Resolve options for a single remove
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveRemoveOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setOptional(['flush', 'flush_only_object']);
+        $resolver->setAllowedTypes(
+            [
+                'flush' => 'bool',
+                'flush_only_object' => 'bool'
+            ]
+        );
+        $resolver->setDefaults(
+            [
+                'flush' => true,
+                'flush_only_object' => false,
+            ]
+        );
+        $options = $resolver->resolve($options);
+
+        return $options;
     }
 }

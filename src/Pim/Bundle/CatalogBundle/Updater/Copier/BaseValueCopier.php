@@ -62,6 +62,19 @@ class BaseValueCopier extends AbstractValueCopier
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    {
+        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
+        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+
+        $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
+
+        return $supportsFrom && $supportsTo && $sameType;
+    }
+
+    /**
      * Copy single value
      *
      * @param ProductInterface   $product

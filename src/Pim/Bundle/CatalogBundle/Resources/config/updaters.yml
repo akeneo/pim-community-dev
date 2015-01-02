@@ -17,6 +17,7 @@ parameters:
     pim_catalog.updater.copier.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Copier\AbstractValueCopier
     pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
+    pim_catalog.updater.copier.media_value.class:            Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
     pim_catalog.updater.copier.textarea_value.class:         Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
     pim_catalog.updater.copier.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
     pim_catalog.updater.copier.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
@@ -149,6 +150,15 @@ services:
         arguments:
             - ['pim_catalog_text']
             - ['pim_catalog_text']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.media_value:
+        class: %pim_catalog.updater.copier.media_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_image', 'pim_catalog_file']
+            - ['pim_catalog_image', 'pim_catalog_file']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 

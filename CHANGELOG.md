@@ -6,51 +6,53 @@
 - Add the sequential edit for a selected list of products
 - Add comments on a product
 - Load dashboard widgets asynchronously and allow to refresh the data
-- Add copiers and setters
 - Add filters for image and file attributes
 
 ## Improvements
+- Remove deprecated attribute property *Usable as a grid column*
+- Refactor of the attribute options screen to handle more than 100 options
+- Redesign of the loading box
+- Add an information message when there is no common attribute in the mass-edit
+- Add ACL on entity history
+- Improve the UI of the datagrid column configuration popin
+- Load all product grid filters asynchronously
+- Enhance the display of permissions in the role permissions edition
+- Better display on batch warnings
+
+## Technical improvements
 - Remove the fixed mysql socket location
 - Switch to stability stable
 - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
-- Remove deprecated attribute property *Usable as a grid column*
 - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
-- Refactor of the attribute option screen to manage more than 100 options
-- Redesign of the loading box
-- Add an information message when there is no common attribute in mass-edit
 - Move filter transformation to CatalogBundle
-- JobProfileController refactoring
-- Add ACL on entity history
-- Re-work the ProductQueryBuilder to provide a clear and extensible API to query products
-- Improve the UI of the datagrid column configuration popin
-- Normalize the managers by introducing 4 interfaces, SaverInterface, BulkSaverInterface, RemoverInterface, BulkRemoverInterface
-- Load the grid filter choices for simple and multi select attributes asynchronously
-- Modify the display of permissions in the role permissions edition
-- Add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
+- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable 
+- Re-work the `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder` to provide a clear and extensible API to query products
+- Normalize the managers by introducing 4 interfaces, `Akeneo\Component\Persistence\SaverInterface`, `Akeneo\Component\Persistence\BulkSaverInterface`, `Akeneo\Component\Persistence\RemoverInterface` and `Pim\Component\Persistence\BulkRemoverInterface`
+- Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
 - Add a check on passed values in ORM filters
-- Add a requirement regarding the need of the exec() function (for job executions)
+- Add a requirement regarding the need of the `exec()` function (for job executions)
 - Introduce the 'pim_validator' service to be able to validate products and cascade on values with dynamic constraints
-- Introduce commands to ease developer's life (pim:product:query, pim:product:query-help, pim:product:update, pim:product:validate)
-- Use ProductInterface and not AbstractProduct
-- Use ProductValueInterface and not AbstractProductValue
-- Use ProductPriceInterface and not AbstractProductPrice
-- Use ProductMediaInterface and not AbstractMetric
-- Use AttributeInterface and not AbstractAttribute
-- Use CompletenessInterface and not AbstractCompleteness
+- Introduce commands to ease developer's life (`pim:product:query`, `pim:product:query-help`, `pim:product:update`, `pim:product:validate`)
+- Use `Pim\Bundle\CatalogBundle\Model\ProductInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractProduct`
+- Use `Pim\Bundle\CatalogBundle\Model\ProductValueInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractProductValue`
+- Use `Pim\Bundle\CatalogBundle\Model\ProductPriceInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractProductPrice`
+- Use `Pim\Bundle\CatalogBundle\Model\ProductMediaInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractMetric`
+- Use `Pim\Bundle\CatalogBundle\Model\AttributeInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractAttribute`
+- Use `Pim\Bundle\CatalogBundle\Model\CompletenessInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractCompleteness`
 - Allow to generate many versions in a single request
-- Better display on batch warnings
 - Add flat / csv denormalizers for product data
-- Introduce a GroupInterface and use it (to replace Entity\Group)
+- Introduce `Pim\Bundle\CatalogBundle\Model\GroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Group`
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelsPass`
 - Rename `Pim\Bundle\UIBundle\Form\Transformer\IntegerTransformer` to `Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer`
 - Remove useless applySorterByAttribute, applySorterByField from Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
-- Change visibility of ProductQueryBuilder::addAttributeFilter, ProductQueryBuilder::addFieldFilter from public to protected, add a addFilter method in ProductQueryBuilderInterface
-- Change visibility of ProductQueryBuilder::addAttributeSorter, ProductQueryBuilder::addFieldSorter from public to protected, add a addSorter method in ProductQueryBuilderInterface
-- Remove ProductManager from ProductFilterUtility::__construct argument
-- Remove ProductFilterUtility::getAttribute()
+- Introduce ``Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface`
+- Change visibility of `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder::addAttributeFilter`, `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder::addFieldFilter` from public to protected
+- Change visibility of `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder::addAttributeSorter`, `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder::addFieldSorter` from public to protected
+- Remove `ProductManager` from `ProductFilterUtility::__construct` argument
+- Remove `ProductFilterUtility::getAttribute()`
 - Two new methods have been added to `Pim\Bundle\DashboardBundle\Widget\WidgetInterface`: `getAlias` and `getData`
 - Constructor of `Pim\Bundle\DashboardBundle\Controller\WidgetController` has been changed (most dependencies have been removed)
 - Method `Pim\Bundle\DashboardBundle\Controller\WidgetController::showAction()` has been removed in favor of `listAction` to render all widgets and `dataAction` to provide widget data
@@ -161,7 +163,7 @@
 - PIM-3558: Fix order of options for multiselect attribute in product versionning and csv product export
 
 ## BC breaks
-- PIM-3558: in the exported product csv file, we apply the sort order defined by the user to sort the options of a multiselect
+- PIM-3558: In the exported product csv file, we apply the sort order defined by the user to sort the options of a multiselect
 
 # 1.2.17 (2014-12-19)
 - PIM-3550: force the version of "doctrine/annotations" to "v1.2.1" to avoid the BC Break introduced with v1.2.2

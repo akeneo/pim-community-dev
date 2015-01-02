@@ -931,8 +931,9 @@ class FixturesContext extends RawMinkContext
     {
         $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
-            $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            assertEquals($optionCode, $productValue->getOption()->getCode());
+            $value = $this->getProductValue($identifier, strtolower($attribute));
+            $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
+            assertEquals($optionCode, $actualCode);
         }
     }
 
@@ -957,12 +958,20 @@ class FixturesContext extends RawMinkContext
                 }
             );
 
-            assertEquals(count($table->getHash()), $options->count());
-            foreach ($table->getHash() as $data) {
+            $values = array_map(
+                function ($row) {
+                    return $row['value'];
+                },
+                $table->getHash()
+            );
+            $values = array_filter($values);
+
+            assertEquals(count($values), $options->count());
+            foreach ($values as $value) {
                 assertContains(
-                    $data['value'],
+                    $value,
                     $optionCodes,
-                    sprintf('"%s" does not contain "%s"', join(', ', $optionCodes->toArray()), $data['value'])
+                    sprintf('"%s" does not contain "%s"', join(', ', $optionCodes->toArray()), $value)
                 );
             }
         }
@@ -1338,6 +1347,20 @@ class FixturesContext extends RawMinkContext
 
         assertNotNull($requirement);
         assertFalse($requirement->isRequired());
+    }
+
+    /**
+     * @Given /^the history of the product "([^"]*)" has been built$/
+     */
+    public function theHistoryOfTheProductHasBeenBuilt($identifier)
+    {
+        $product = $this->getProduct($identifier);
+        $this->getVersionManager()->setRealTimeVersioning(true);
+        $versions = $this->getVersionManager()->buildPendingVersions($product);
+        foreach ($versions as $version) {
+            $this->persist($version);
+            $this->flush($version);
+        }
     }
 
     /**
@@ -1879,6 +1902,14 @@ class FixturesContext extends RawMinkContext
     protected function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
+    }
+
+    /**
+     * @return VersionManager
+     */
+    protected function getVersionManager()
+    {
+        return $this->getContainer()->get('pim_versioning.manager.version');
     }
 
     /**

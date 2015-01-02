@@ -3,11 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -81,25 +80,45 @@ class DateValueSetterSpec extends ObjectBehavior
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_string(
+    function it_allows_setting_data_to_null(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        ProductValueInterface $value
+    ) {
+        $attribute->getCode()->willReturn('attributeCode');
+
+        $product->getValue('attributeCode', null, null)->shouldBeCalled()->willReturn($value);
+
+        $value->setData(null)->shouldBeCalled();
+
+        $this->setValue([$product], $attribute, null);
+    }
+    
+    function it_throws_an_error_if_data_is_not_a_string_or_datetime_or_null(
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = new \Datetime();
+        $data = 132654;
 
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'date', gettype($data))
+            InvalidArgumentException::expected(
+                'attributeCode',
+                'datetime or string',
+                gettype($data),
+                'setter',
+                'date'
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_sets_date_value_to_a_product_value(
+    function it_sets_date_value_to_a_product_value_with_string(
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
         $builder,
-        ProductValue $productValue
+        ProductValueInterface $productValue
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -118,6 +137,29 @@ class DateValueSetterSpec extends ObjectBehavior
 
         $products = [$product1, $product2, $product3];
 
+        $this->setValue($products, $attribute, $data, $locale, $scope);
+    }
+
+    function it_sets_date_value_to_a_product_value_with_datetime(
+        AttributeInterface $attribute,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        $builder,
+        ProductValueInterface $productValue
+    ) {
+        $locale = 'fr_FR';
+        $scope = 'mobile';
+        $data = new \DateTime();
+        $attribute->getCode()->willReturn('attributeCode');
+        $productValue->setData(Argument::type('\Datetime'))->shouldBeCalled();
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->willReturn($productValue);
+        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $products = [$product1, $product2, $product3];
         $this->setValue($products, $attribute, $data, $locale, $scope);
     }
 }

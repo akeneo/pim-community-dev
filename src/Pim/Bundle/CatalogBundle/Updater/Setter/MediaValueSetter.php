@@ -61,19 +61,7 @@ class MediaValueSetter extends AbstractValueSetter
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
         $this->checkData($attribute, $data);
 
-        $data = $this->resolveFilePath($data);
-
-        try {
-            $file = new UploadedFile($data['filePath'], $data['originalFilename']);
-        } catch (FileNotFoundException $e) {
-            throw InvalidArgumentException::expected(
-                $attribute->getCode(),
-                sprintf('a valid file path ("%s" given)', $data['filePath']),
-                'setter',
-                'media',
-                gettype($data)
-            );
-        }
+        $file = $this->getFileData($attribute, $data);
 
         foreach ($products as $product) {
             $this->setMedia($attribute, $product, $file, $locale, $scope);
@@ -87,16 +75,16 @@ class MediaValueSetter extends AbstractValueSetter
      *
      * @param AttributeInterface $attribute
      * @param ProductInterface   $product
-     * @param UploadedFile       $file
-     * @param string             $locale
-     * @param string             $scope
+     * @param UploadedFile|null  $file
+     * @param string|null        $locale
+     * @param string|null        $scope
      */
     protected function setMedia(
         AttributeInterface $attribute,
         ProductInterface $product,
-        UploadedFile $file,
-        $locale,
-        $scope
+        UploadedFile $file = null,
+        $locale = null,
+        $scope = null
     ) {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
@@ -106,8 +94,13 @@ class MediaValueSetter extends AbstractValueSetter
         if (null === $media = $value->getMedia()) {
             $media = $this->mediaFactory->createMedia($file);
         } else {
-            $media->setFile($file);
+            if (null === $file) {
+                $media->setRemoved(true);
+            } else {
+                $media->setFile($file);
+            }
         }
+
         $value->setMedia($media);
     }
 
@@ -117,6 +110,10 @@ class MediaValueSetter extends AbstractValueSetter
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
+        if (null === $data) {
+            return;
+        }
+
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'setter', 'media', gettype($data));
         }
@@ -135,6 +132,35 @@ class MediaValueSetter extends AbstractValueSetter
             throw InvalidArgumentException::arrayKeyExpected(
                 $attribute->getCode(),
                 'filePath',
+                'setter',
+                'media',
+                gettype($data)
+            );
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @throws InvalidArgumentException If an invalid filePath is provided
+     *
+     * @return UploadedFile|null
+     */
+    protected function getFileData(AttributeInterface $attribute, $data)
+    {
+        if (null === $data || (null === $data['filePath'] && null === $data['originalFilename'])) {
+            return null;
+        }
+
+        $data = $this->resolveFilePath($data);
+
+        try {
+            return new UploadedFile($data['filePath'], $data['originalFilename']);
+        } catch (FileNotFoundException $e) {
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                sprintf('a valid file path ("%s" given)', $data['filePath']),
                 'setter',
                 'media',
                 gettype($data)

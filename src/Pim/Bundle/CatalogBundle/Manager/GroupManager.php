@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Pim\Component\Resource\Model\RemoverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -141,6 +141,24 @@ class GroupManager implements RemoverInterface
     public function getGroupTypeRepository()
     {
         return $this->doctrine->getRepository($this->groupTypeClass);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function save($group, array $options = [])
+    {
+        if (!$group instanceof GroupInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.', get_class($group))
+            );
+        }
+
+        $options = array_merge(['flush' => true], $options);
+        $this->doctrine->getManager()->persist($group);
+        if (true === $options['flush']) {
+            $this->doctrine->getManager()->flush();
+        }
     }
 
     /**

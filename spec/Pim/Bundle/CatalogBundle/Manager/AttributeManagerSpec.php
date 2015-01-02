@@ -31,17 +31,17 @@ class AttributeManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\SaverInterface');
+        $this->shouldImplement('Akeneo\Component\Persistence\SaverInterface');
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\BulkSaverInterface');
+        $this->shouldImplement('Akeneo\Component\Persistence\BulkSaverInterface');
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Pim\Component\Resource\Model\RemoverInterface');
+        $this->shouldImplement('Akeneo\Component\Persistence\RemoverInterface');
     }
 
     function it_instantiates_an_attribute()

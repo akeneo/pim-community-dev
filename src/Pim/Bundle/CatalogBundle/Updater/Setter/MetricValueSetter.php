@@ -97,7 +97,7 @@ class MetricValueSetter extends AbstractValueSetter
             );
         }
 
-        if (!is_numeric($data['data'])) {
+        if (!is_numeric($data['data']) && null !== $data['data']) {
             throw InvalidArgumentException::arrayNumericKeyExpected(
                 $attribute->getCode(),
                 'data',

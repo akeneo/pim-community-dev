@@ -3,13 +3,12 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -64,7 +63,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
     }
 
-    function it_throws_an_error_if_data_is_not_an_array(
+    function it_throws_an_error_if_data_is_not_an_array_or_null(
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('attributeCode');
@@ -143,7 +142,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        ProductValue $productValue,
+        ProductValueInterface $productValue,
         AttributeOption $attributeOption
     ) {
         $locale = 'fr_FR';
@@ -172,5 +171,19 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $products = [$product1, $product2, $product3];
 
         $this->setValue($products, $attribute, $data, $locale, $scope);
+    }
+
+    function it_allows_setting_option_to_null(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        ProductValueInterface $value
+    ) {
+        $attribute->getCode()->willReturn('choice');
+
+        $product->getValue('choice', null, null)->shouldBeCalled()->willReturn($value);
+
+        $value->setOption(null)->shouldBeCalled();
+
+        $this->setValue([$product], $attribute, null);
     }
 }
