@@ -5,6 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Saver;
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Prophecy\Argument;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class BaseSaverSpec extends ObjectBehavior
 {
@@ -36,7 +38,7 @@ class BaseSaverSpec extends ObjectBehavior
     {
         $objectManager->persist($type)->shouldBeCalled();
         $objectManager->flush($type)->shouldBeCalled();
-        $this->save($type, ['only_object' => true]);
+        $this->save($type, ['flush_only_object' => true]);
     }
 
     function it_throws_exception_when_save_anything_else_than_the_expected_class()
@@ -52,5 +54,16 @@ class BaseSaverSpec extends ObjectBehavior
                 )
             )
             ->during('save', [$anythingElse]);
+    }
+
+    function it_throws_an_exception_when_unknown_saving_option_is_used(
+        $objectManager,
+        GroupType $type
+    ) {
+        $objectManager->persist(Argument::any())->shouldNotBeCalled();
+
+        $this
+            ->shouldThrow(new InvalidOptionsException('The option "fake_option" does not exist. Known options are: "flush", "flush_only_object"'))
+            ->duringSave($type, ['fake_option' => true, 'flush' => false, 'flush_only_object' => false]);
     }
 }

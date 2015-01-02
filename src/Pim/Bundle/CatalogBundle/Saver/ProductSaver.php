@@ -8,9 +8,11 @@ use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Product saver, contains custom logic for product saving
+ * Product saver, define custom logic and options for product saving
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -48,14 +50,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $options = array_merge(
-            [
-                'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
+        $options = $this->resolveSaveOptions($options);
 
         $this->objectManager->persist($product);
 
@@ -81,14 +76,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = array_merge(
-            [
-                'recalculate' => false,
-                'flush' => true,
-                'schedule' => true,
-            ],
-            $options
-        );
+        $allOptions = $this->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -99,5 +87,67 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
+    }
+
+    /**
+     * Resolve options for a single save
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveSaveOptions(array $options)
+    {
+        $resolver = $this->createOptionsResolver();
+        $resolver->setDefaults(
+            [
+                'flush' => true,
+                'recalculate' => true,
+                'schedule' => true
+            ]
+        );
+        $options = $resolver->resolve($options);
+
+        return $options;
+    }
+
+    /**
+     * Resolve options for a bulk save
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveSaveAllOptions(array $options)
+    {
+        $resolver = $this->createOptionsResolver();
+        $resolver->setDefaults(
+            [
+                'flush' => true,
+                'recalculate' => false,
+                'schedule' => true,
+            ]
+        );
+        $options = $resolver->resolve($options);
+
+        return $options;
+    }
+
+    /**
+     * @return OptionsResolverInterface
+     */
+    protected function createOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setOptional(['flush', 'recalculate', 'schedule']);
+        $resolver->setAllowedTypes(
+            [
+                'flush' => 'bool',
+                'recalculate' => 'bool',
+                'schedule' => 'bool'
+            ]
+        );
+
+        return $resolver;
     }
 }
