@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Component\Resource\Model\BulkSaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 
 class GroupSaverSpec extends ObjectBehavior
 {
@@ -22,7 +22,7 @@ class GroupSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Pim\Component\Resource\Model\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
     }
 
     function it_saves_a_group_and_flush_by_default($objectManager, GroupInterface $group, GroupType $type)

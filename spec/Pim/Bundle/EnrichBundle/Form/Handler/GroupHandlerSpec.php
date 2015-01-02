@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

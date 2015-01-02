@@ -6,8 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Component\Resource\Model\BulkSaverInterface;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 
 /**
  * Group saver, contains custom logic for variant group products saving

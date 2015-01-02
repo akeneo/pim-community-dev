@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Component\Resource\Model\BulkSaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 

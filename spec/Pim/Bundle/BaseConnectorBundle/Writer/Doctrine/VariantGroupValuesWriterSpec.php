@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Prophecy\Argument;
 
 class VariantGroupValuesWriterSpec extends ObjectBehavior

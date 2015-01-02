@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 
 /**
  * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job
