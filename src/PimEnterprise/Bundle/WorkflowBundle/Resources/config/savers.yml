@@ -13,7 +13,7 @@ services:
             - @pim_catalog.manager.completeness
 
     # this service overrides the community product saver to delegates to draft or working copy savers
-    # TODO I would avoid this and call explicitely the relevant service
+    # TODO I would avoid this and call explicitely the relevant service, only mix of draft and working copy is for mass edit
     pim_catalog.saver.product:
         class: %pim_catalog.saver.product.class%
         arguments:
@@ -23,12 +23,15 @@ services:
             - @security.context
 
     # product working copy saver, it decorates the community saver
+    # TODO : or we could just alias commuity saver if nothing to add there, but alias
+    # TODO : to make the injection explicit
     pim_catalog.saver.product_working_copy:
         class: %pim_catalog.saver.product_working_copy.class%
         arguments:
             - @pim_catalog.saver.product_base
 
     # product draft saver, it deals with product draft saving
+    # TODO : rename to use workflow prefix ?
     pim_catalog.saver.product_draft:
         class: %pim_catalog.saver.product_draft.class%
         arguments:

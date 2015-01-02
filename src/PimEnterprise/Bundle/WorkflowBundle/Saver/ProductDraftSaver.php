@@ -143,7 +143,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 'recalculate' => true,
                 'flush' => true,
                 'schedule' => true,
-                'bypass_product_draft' => false
+                'bypass_product_draft' => false // TODO : to remove
             ]
         );
         $resolver->setAllowedTypes(

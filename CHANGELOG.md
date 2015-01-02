@@ -29,6 +29,7 @@
 - Move the versioning denormalizers to CE PimTransformBundle, namespaces are changed but the services alias are kept
 - change constructor `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper` which now expects a SecurityContextInterface
 - rename src/PimEnterprise/Bundle/SecurityBundle/Voter/ProductDraftOwnershipVoter.php to ProductDraftVoter
+- changes in constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`, ProductManager argument replaced by SaverInterface and MediaManager added as last arg
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options

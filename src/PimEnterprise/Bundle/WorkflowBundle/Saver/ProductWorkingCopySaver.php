@@ -38,7 +38,9 @@ class ProductWorkingCopySaver implements SaverInterface, BulkSaverInterface
      */
     public function save($product, array $options = [])
     {
-        // TODO : resolve option will fail with extra EE option ?
+        // TODO : resolve option fail with extra EE option gonna drop it
+        unset($options['bypass_product_draft']);
+
         return $this->baseProductSaver->save($product, $options);
     }
 
@@ -47,7 +49,9 @@ class ProductWorkingCopySaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $products, array $options = [])
     {
-        // TODO : resolve option will fail with extra EE option ?
+        // TODO : resolve option fail with extra EE option gonna drop it
+        unset($options['bypass_product_draft']);
+
         return $this->baseProductSaver->saveAll($products, $options);
     }
 }
