@@ -28,7 +28,7 @@ services:
         parent: pim_enrich.mass_edit_action.operator
         class: %pim_enrich.mass_edit_action.operator.product.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - @pim_catalog.saver.product
         tags:
             - { name: pim_enrich.mass_edit_action_operator, datagrid: product-grid }
 

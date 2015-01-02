@@ -2,33 +2,32 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
 
 /**
- * A batch operation operator
- * Applies batch operations to products passed in the form of QueryBuilder
+ * A batch operation operator, applies batch operations to products passed in the form of QueryBuilder
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @Exclude
  */
 class ProductMassEditOperator extends AbstractMassEditOperator
 {
-    protected $manager;
+    /** @var BulkSaverInterface */
+    protected $productSaver;
 
     /**
-     * @param SecurityFacade $securityFacade
-     * @param ProductManager $manager
+     * @param SecurityFacade     $securityFacade
+     * @param BulkSaverInterface $productSaver
      */
-    public function __construct(SecurityFacade $securityFacade, ProductManager $manager)
+    public function __construct(SecurityFacade $securityFacade, BulkSaverInterface $productSaver)
     {
         parent::__construct($securityFacade);
 
-        $this->manager = $manager;
+        $this->productSaver = $productSaver;
     }
 
     /**
@@ -53,11 +52,9 @@ class ProductMassEditOperator extends AbstractMassEditOperator
     public function finalizeOperation()
     {
         set_time_limit(0);
-
         $products = $this->operation->getObjectsToMassEdit();
-
         if ($this->operation instanceof ProductMassEditOperation) {
-            $this->manager->saveAll($products, $this->operation->getSavingOptions());
+            $this->productSaver->saveAll($products, $this->operation->getSavingOptions());
         }
     }
 }
