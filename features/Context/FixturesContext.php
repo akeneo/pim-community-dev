@@ -814,7 +814,7 @@ class FixturesContext extends RawMinkContext
      * @param string $attribute
      * @param string $options
      *
-     * @Given /^the following "([^"]*)" attribute options: (.*)$/
+     * @Given /^the following "([^"]*)" attribute options?: (.*)$/
      */
     public function theFollowingAttributeOptions($attribute, $options)
     {
