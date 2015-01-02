@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Resource\Model\BulkSaverInterface;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,8 +23,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Delegating product saver, depending on context it delegates to other savers to deal with drafts or working copies
- *
- * In future version we'll re-work this part to have a more explicit way of saving working copies and drafts
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
@@ -44,7 +42,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ProductWorkingCopySaver $workingCopySaver
-     * @param ProductDraftSaver $draftSaver
+     * @param ProductDraftSaver $productDraftSaver
      * @param ObjectManager $objectManager
      * @param SecurityContextInterface $securityContext
      */
@@ -75,7 +73,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $options = $this->resolveOptions($options);
+        $options = $this->resolveSaveOptions($options);
 
         if (null === $product->getId()) {
             $isOwner = true;
@@ -105,7 +103,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->resolveOptions($options);
+        $allOptions = $this->resolveSaveAllOptions($options);
 
         if (true === $allOptions['bypass_product_draft']) {
             $this->workingCopySaver->saveAll($products, $options);
@@ -125,34 +123,67 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
+     * Resolve options for a single save
+     *
      * @param array $options
      *
      * @return array
      */
-    protected function resolveOptions(array $options)
+    protected function resolveSaveOptions(array $options)
     {
-        // TODO : extract the resolver part that should be shared by savers
-        $resolver = new OptionsResolver();
-
-        // TODO : default options are not the same for single and bulk save !!
+        $resolver = $this->createOptionsResolver();
         $resolver->setDefaults(
             [
-                'recalculate' => true,
                 'flush' => true,
+                'recalculate' => true,
                 'schedule' => true,
-                'bypass_product_draft' => false
-            ]
-        );
-        $resolver->setAllowedTypes(
-            [
-                'recalculate' => 'bool',
-                'flush' => 'bool',
-                'schedule' => 'bool',
-                'bypass_product_draft' => 'bool'
+                'bypass_product_draft' => false // TODO : Should be changed
             ]
         );
         $options = $resolver->resolve($options);
 
         return $options;
+    }
+
+    /**
+     * Resolve options for a bulk save
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveSaveAllOptions(array $options)
+    {
+        $resolver = $this->createOptionsResolver();
+        $resolver->setDefaults(
+            [
+                'flush' => true,
+                'recalculate' => false,
+                'schedule' => true,
+                'bypass_product_draft' => false // TODO : Should be changed
+            ]
+        );
+        $options = $resolver->resolve($options);
+
+        return $options;
+    }
+
+    /**
+     * @return OptionsResolverInterface
+     */
+    protected function createOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setOptional(['flush', 'recalculate', 'schedule', 'bypass_product_draft']);
+        $resolver->setAllowedTypes(
+            [
+                'flush' => 'bool',
+                'recalculate' => 'bool',
+                'schedule' => 'bool',
+                'bypass_product_draft' => 'bool'
+            ]
+        );
+
+        return $resolver;
     }
 }

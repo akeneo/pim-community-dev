@@ -13,6 +13,7 @@ services:
             - @pim_catalog.manager.completeness
 
     # this service overrides the community product saver to delegates to draft or working copy savers
+    # TODO I would avoid this and call explicitely the relevant service
     pim_catalog.saver.product:
         class: %pim_catalog.saver.product.class%
         arguments:
@@ -21,14 +22,13 @@ services:
             - @pim_catalog.object_manager.product
             - @security.context
 
-    # product working copy saver is private and used through the delegating saver, it decorates the community saver
+    # product working copy saver, it decorates the community saver
     pim_catalog.saver.product_working_copy:
         class: %pim_catalog.saver.product_working_copy.class%
         arguments:
             - @pim_catalog.saver.product_base
-        public: false
 
-    # product draft saver is private and used through the delegating saver
+    # product draft saver, it deals with product draft saving
     pim_catalog.saver.product_draft:
         class: %pim_catalog.saver.product_draft.class%
         arguments:
@@ -40,4 +40,3 @@ services:
             - @pimee_workflow.collector.product_submitted_changes
             - @pimee_workflow.change_set_computer
             - %akeneo_storage_utils.storage_driver%
-        public: false

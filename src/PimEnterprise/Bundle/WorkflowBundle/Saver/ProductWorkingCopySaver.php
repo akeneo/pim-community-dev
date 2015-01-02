@@ -12,11 +12,11 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
 
 use Pim\Bundle\CatalogBundle\Saver\ProductSaver;
-use Pim\Component\Resource\Model\BulkSaverInterface;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 
 /**
- * Save a product working copy (a classic product with terminology)
+ * Save a product working copy (a classic product with community edition terminology)
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
@@ -38,6 +38,7 @@ class ProductWorkingCopySaver implements SaverInterface, BulkSaverInterface
      */
     public function save($product, array $options = [])
     {
+        // TODO : resolve option will fail with extra EE option ?
         return $this->baseProductSaver->save($product, $options);
     }
 
@@ -46,6 +47,7 @@ class ProductWorkingCopySaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $products, array $options = [])
     {
+        // TODO : resolve option will fail with extra EE option ?
         return $this->baseProductSaver->saveAll($products, $options);
     }
 }
