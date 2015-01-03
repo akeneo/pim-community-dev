@@ -152,6 +152,8 @@
   * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`
   * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`
   * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`
+- removeAttributesAction and addAttributesAction have been move from `Pim\Bundle\EnrichBundle\Controller\ProductController` to a dedicated `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
+- constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` has been updated and now receives SaverInterface, MediaManager and SequentialEditManager as extra arguments
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

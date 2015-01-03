@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use JMS\Serializer\Annotation\Exclude;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
 
 /**

@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -11,22 +9,13 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Product attribute controller, allows to add and remove optional attributes to a product

@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\Persistence\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
@@ -15,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -62,6 +63,12 @@ class ProductController extends AbstractDoctrineController
     /** @var SecurityFacade */
     protected $securityFacade;
 
+    /** @var SaverInterface */
+    protected $productSaver;
+
+    /** @var MediaManager */
+    protected $mediaManager;
+
     /** @var SequentialEditManager */
     protected $seqEditManager;
 
@@ -107,6 +114,8 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
+     * @param SaverInterface           $productSaver
+     * @param MediaManager             $mediaManager
      * @param SequentialEditManager    $seqEditManager
      */
     public function __construct(
@@ -125,6 +134,8 @@ class ProductController extends AbstractDoctrineController
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
         ProductCategoryManager $prodCatManager,
+        SaverInterface $productSaver,
+        MediaManager $mediaManager,
         SequentialEditManager $seqEditManager
     ) {
         parent::__construct(
@@ -145,6 +156,8 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager    = $versionManager;
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
+        $this->productSaver      = $productSaver;
+        $this->mediaManager      = $mediaManager;
         $this->seqEditManager    = $seqEditManager;
     }
 
@@ -188,7 +201,7 @@ class ProductController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->productManager->save($product);
+                $this->productSaver->save($product);
                 $this->addFlash('success', 'flash.product.created');
 
                 if ($dataLocale === null) {
@@ -258,7 +271,7 @@ class ProductController extends AbstractDoctrineController
 
         $toggledStatus = !$product->isEnabled();
         $product->setEnabled($toggledStatus);
-        $this->productManager->save($product);
+        $this->productSaver->save($product);
 
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
@@ -297,8 +310,8 @@ class ProductController extends AbstractDoctrineController
 
         if ($form->isValid()) {
             try {
-                $this->productManager->handleMedia($product);
-                $this->productManager->save($product);
+                $this->mediaManager->handleProductMedias($product);
+                $this->productSaver->save($product);
 
                 $this->addFlash('success', 'flash.product.updated');
             } catch (MediaManagementException $e) {
