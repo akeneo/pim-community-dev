@@ -6,25 +6,25 @@ services:
     pimee_workflow.manager.published_product:
         class: %pimee_workflow.manager.published_product.class%
         arguments:
-            - '@pim_catalog.manager.product'
-            - '@pimee_workflow.repository.published_product'
-            - '@event_dispatcher'
-            - '@pimee_workflow.publisher.chained'
-            - '@pimee_workflow.unpublisher.product'
+            - @pim_catalog.manager.product
+            - @pimee_workflow.repository.published_product
+            - @event_dispatcher
+            - @pimee_workflow.publisher.chained
+            - @pimee_workflow.unpublisher.product
 
     pimee_workflow.manager.published_product_category:
         class: %pim_catalog.manager.product_category.class%
         arguments:
-            - '@pimee_workflow.repository.published_product_category'
-            - '@pim_catalog.repository.category'
-            - '@security.context'
-            - '@pimee_security.repository.category_access'
+            - @pimee_workflow.repository.published_product_category
+            - @pim_catalog.repository.category
+            - @security.context
+            - @pimee_security.repository.category_access
 
     pimee_workflow.manager.product_draft:
         class: %pimee_workflow.manager.product_draft.class%
         arguments:
             - @akeneo_storage_utils.doctrine.smart_manager_registry
-            - @pim_catalog.saver.product_working_copy
+            - @pimee_workflow.saver.working_copy_product
             - @pim_user.context.user
             - @pimee_workflow.factory.product_draft
             - @pimee_workflow.repository.product_draft

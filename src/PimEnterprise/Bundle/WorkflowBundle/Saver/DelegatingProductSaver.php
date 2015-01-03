@@ -16,6 +16,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Saver\ProductSaver;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -24,11 +25,13 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Delegating product saver, depending on context it delegates to other savers to deal with drafts or working copies
  *
+ * TODO : should implement only SaverInterface ?
+ *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ProductWorkingCopySaver */
+    /** @var ProductSaver */
     protected $workingCopySaver;
 
     /** @var ProductDraftSaver */
@@ -41,18 +44,19 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     protected $securityContext;
 
     /**
-     * @param ProductWorkingCopySaver $workingCopySaver
+     * @param ProductSaver      $workingCopySaver
      * @param ProductDraftSaver $productDraftSaver
      * @param ObjectManager $objectManager
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
-        ProductWorkingCopySaver $workingCopySaver,
+        ProductSaver $workingCopySaver,
         ProductDraftSaver $draftSaver,
         ObjectManager $objectManager,
         SecurityContextInterface $securityContext
 
     ) {
+        # TODO use interfaces for working copy and draft !!
         $this->workingCopySaver = $workingCopySaver;
         $this->draftSaver = $draftSaver;
         $this->objectManager = $objectManager;

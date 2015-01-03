@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -41,6 +42,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
      * @param CatalogContext           $catalogContext
      * @param ProductMassActionManager $massActionManager
      * @param NormalizerInterface      $normalizer
+     * @param BulkSaverInterface       $productSaver
      * @param array                    $classes
      * @param SecurityContextInterface $securityContext
      */
@@ -52,6 +54,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
         NormalizerInterface $normalizer,
+        BulkSaverInterface $productSaver,
         array $classes,
         SecurityContextInterface $securityContext
     ) {
@@ -63,6 +66,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             $catalogContext,
             $massActionManager,
             $normalizer,
+            $productSaver,
             $classes
         );
 

@@ -1,39 +1,15 @@
 parameters:
-    pim_catalog.saver.product.class:              PimEnterprise\Bundle\WorkflowBundle\Saver\DelegatingProductSaver
-    pim_catalog.saver.product_working_copy.class: PimEnterprise\Bundle\WorkflowBundle\Saver\ProductWorkingCopySaver
-    pim_catalog.saver.product_draft.class:        PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver
-    pim_catalog.saver.product_base.class:         Pim\Bundle\CatalogBundle\Saver\ProductSaver
+    pimee_workflow.saver.product_draft.class:      PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver
+    pimee_workflow.saver.product_delegating.class: PimEnterprise\Bundle\WorkflowBundle\Saver\DelegatingProductSaver
 
 services:
-    # declares the base product saver service with another alias to be able to overrides and decorates it
-    pim_catalog.saver.product_base:
-        class: %pim_catalog.saver.product_base.class%
-        arguments:
-            - @pim_catalog.object_manager.product
-            - @pim_catalog.manager.completeness
+    # product working copy saver, we alias the product saver from community edition to make the behavior more explicit
+    pimee_workflow.saver.working_copy_product:
+        alias: pim_catalog.saver.product
 
-    # this service overrides the community product saver to delegates to draft or working copy savers
-    # TODO I would avoid this and call explicitely the relevant service, only mix of draft and working copy is for mass edit
-    pim_catalog.saver.product:
-        class: %pim_catalog.saver.product.class%
-        arguments:
-            - @pim_catalog.saver.product_working_copy
-            - @pim_catalog.saver.product_draft
-            - @pim_catalog.object_manager.product
-            - @security.context
-
-    # product working copy saver, it decorates the community saver
-    # TODO : or we could just alias commuity saver if nothing to add there, but alias
-    # TODO : to make the injection explicit
-    pim_catalog.saver.product_working_copy:
-        class: %pim_catalog.saver.product_working_copy.class%
-        arguments:
-            - @pim_catalog.saver.product_base
-
-    # product draft saver, it deals with product draft saving
-    # TODO : rename to use workflow prefix ?
-    pim_catalog.saver.product_draft:
-        class: %pim_catalog.saver.product_draft.class%
+    # product draft saver
+    pimee_workflow.saver.product_draft:
+        class: %pimee_workflow.saver.product_draft.class%
         arguments:
             - @pim_catalog.object_manager.product
             - @security.context
@@ -43,3 +19,17 @@ services:
             - @pimee_workflow.collector.product_submitted_changes
             - @pimee_workflow.change_set_computer
             - %akeneo_storage_utils.storage_driver%
+
+    # this product saver delegates to draft or working copy savers depending on user permissions
+    # TODO : would avoid this if possible, only used for mass edit which could embed this behavior ?
+    # TODO : what about proposal on non existing product ?
+    # TODO : it now works with mass edit but not anymore with product saving, some controller / handler refactoring to do
+    pimee_workflow.saver.product_delegating:
+        class: %pimee_workflow.saver.product_delegating.class%
+        arguments:
+            - @pimee_workflow.saver.working_copy_product
+            - @pimee_workflow.saver.product_draft
+            - @pim_catalog.object_manager.product # TODO not very used, should check
+            - @security.context
+
+    # TODO : add a saver for published product

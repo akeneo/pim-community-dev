@@ -103,6 +103,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        // TODO : resolve options ? with different options than saveAll
+
         $this->refreshProductValues($product);
         $this->persistProductDraft($product);
     }
