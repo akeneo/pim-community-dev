@@ -22,6 +22,16 @@ class ProductSaverSpec extends ObjectBehavior
         $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver);
     }
 
+    function it_is_a_saver()
+    {
+        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
+    }
+
+    function it_is_a_bulk_saver()
+    {
+        $this->shouldHaveType('Akeneo\Component\Persistence\BulkSaverInterface');
+    }
+
     function it_persists_flushes_schedule_and_recalculate_completeness_of_products_in_database(
         $objectManager,
         $completenessManager,
