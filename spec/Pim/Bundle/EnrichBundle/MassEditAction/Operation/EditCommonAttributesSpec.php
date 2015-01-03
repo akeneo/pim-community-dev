@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -32,7 +33,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
         ProductValueInterface $productValue,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        BulkSaverInterface $productSaver
     ) {
         $en->getCode()->willReturn('en_US');
         $de->getCode()->willReturn('de_DE');
@@ -57,6 +59,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $catalogContext,
             $massActionManager,
             $normalizer,
+            $productSaver,
             [
                 'product_price' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice',
                 'product_media' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia'

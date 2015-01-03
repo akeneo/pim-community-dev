@@ -12,36 +12,16 @@ class ProductMassEditOperatorSpec extends ObjectBehavior
 {
     function let(
         SecurityFacade $securityFacade,
-        BulkSaverInterface $productSaver,
         EditCommonAttributes $commonAttributesOperation
     ) {
-        $this->beConstructedWith($securityFacade, $productSaver);
+        $this->beConstructedWith($securityFacade);
         $this->registerMassEditAction('edit-common-attributes', $commonAttributesOperation);
         $this->setOperationAlias('edit-common-attributes');
     }
 
-    function it_saves_products_when_finalize_operation(
-        ProductInterface $product,
-        $productSaver,
-        $commonAttributesOperation
-    ) {
-        $commonAttributesOperation->getObjectsToMassEdit()->willReturn([$product]);
-        $commonAttributesOperation->getSavingOptions()->willReturn(
-            [
-                'recalculate' => false,
-                'flush'       => true,
-                'schedule'    => true
-            ]
-        );
-
-        $productSaver->saveAll(
-            [$product],
-            [
-                'recalculate' => false,
-                'flush'       => true,
-                'schedule'    => true
-            ]
-        )->shouldBeCalled();
+    function it_finalizes_operation($commonAttributesOperation)
+    {
+        $commonAttributesOperation->finalize()->shouldBeCalled();
 
         $this->finalizeOperation();
     }

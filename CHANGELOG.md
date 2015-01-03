@@ -145,7 +145,13 @@
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber`
-- constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator` has been change BulkSaverInterface replaces ProductManager
+- constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator` to remove ProductManager
+- following constructors have been changed to add BulkSaverInterface as argument :
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

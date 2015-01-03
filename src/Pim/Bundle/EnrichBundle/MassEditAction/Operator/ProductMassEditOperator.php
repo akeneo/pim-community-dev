@@ -16,20 +16,6 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
  */
 class ProductMassEditOperator extends AbstractMassEditOperator
 {
-    /** @var BulkSaverInterface */
-    protected $productSaver;
-
-    /**
-     * @param SecurityFacade     $securityFacade
-     * @param BulkSaverInterface $productSaver
-     */
-    public function __construct(SecurityFacade $securityFacade, BulkSaverInterface $productSaver)
-    {
-        parent::__construct($securityFacade);
-
-        $this->productSaver = $productSaver;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -52,9 +38,8 @@ class ProductMassEditOperator extends AbstractMassEditOperator
     public function finalizeOperation()
     {
         set_time_limit(0);
-        $products = $this->operation->getObjectsToMassEdit();
         if ($this->operation instanceof ProductMassEditOperation) {
-            $this->productSaver->saveAll($products, $this->operation->getSavingOptions());
+            $this->operation->finalize();
         }
     }
 }
