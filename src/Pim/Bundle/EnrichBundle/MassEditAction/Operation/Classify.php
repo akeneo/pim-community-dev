@@ -18,14 +18,10 @@ class Classify extends ProductMassEditOperation
     /** @var CategoryManager $categoryManager */
     protected $categoryManager;
 
-    /**
-     * @var CategoryInterface[]
-     */
+    /** @var CategoryInterface[] */
     protected $trees;
 
-    /**
-     * @var CategoryInterface[]
-     */
+    /** @var CategoryInterface[] */
     protected $categories;
 
     /**

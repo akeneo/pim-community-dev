@@ -382,31 +382,6 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * Add attributes to product
-     *
-     * @param Request $request The request object
-     * @param integer $id      The product id to which add attributes
-     *
-     * @AclAncestor("pim_enrich_product_add_attribute")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function addAttributesAction(Request $request, $id)
-    {
-        $product             = $this->findProductOr404($id);
-        $availableAttributes = new AvailableAttributes();
-        $attributesForm      = $this->getAvailableAttributesForm(
-            $product->getAttributes(),
-            $availableAttributes
-        );
-        $attributesForm->submit($request);
-
-        $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->addFlash('success', 'flash.product.attributes added');
-
-        return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
-    }
-
-    /**
      * Remove product
      *
      * @param Request $request
@@ -423,34 +398,6 @@ class ProductController extends AbstractDoctrineController
             return new Response('', 204);
         } else {
             return $this->redirectToRoute('pim_enrich_product_index');
-        }
-    }
-
-    /**
-     * Remove an attribute form a product
-     *
-     * @param integer $productId
-     * @param integer $attributeId
-     *
-     * @AclAncestor("pim_enrich_product_remove_attribute")
-     * @return RedirectResponse
-     *
-     * @throws NotFoundHttpException
-     */
-    public function removeAttributeAction($productId, $attributeId)
-    {
-        $product   = $this->findProductOr404($productId);
-        $attribute = $this->findOr404($this->productManager->getAttributeName(), $attributeId);
-
-        if ($product->isAttributeRemovable($attribute)) {
-            $this->productManager->removeAttributeFromProduct($product, $attribute);
-        } else {
-            throw new DeleteException($this->getTranslator()->trans('product.attribute not removable'));
-        }
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $productId));
         }
     }
 
