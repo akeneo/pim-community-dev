@@ -17,6 +17,7 @@ use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Saver\ProductSaver;
+use Pim\Bundle\CatalogBundle\Saver\ProductSavingOptionsResolver;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -41,26 +42,31 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
+    /** @var ProductSavingOptionsResolver */
+    protected $optionsResolver;
+
     /** @var SecurityContextInterface */
     protected $securityContext;
 
     /**
-     * @param ProductSaver             $workingCopySaver
-     * @param ProductDraftSaver        $productDraftSaver
-     * @param ObjectManager            $objectManager
-     * @param SecurityContextInterface $securityContext
+     * @param ProductSaver                 $workingCopySaver
+     * @param ProductDraftSaver            $productDraftSaver
+     * @param ObjectManager                $objectManager
+     * @param ProductSavingOptionsResolver $optionsResolver
+     * @param SecurityContextInterface     $securityContext
      */
     public function __construct(
         ProductSaver $workingCopySaver,
         ProductDraftSaver $draftSaver,
         ObjectManager $objectManager,
+        ProductSavingOptionsResolver $optionsResolver,
         SecurityContextInterface $securityContext
 
     ) {
-        # TODO use interfaces for working copy and draft !!
         $this->workingCopySaver = $workingCopySaver;
         $this->draftSaver = $draftSaver;
         $this->objectManager = $objectManager;
+        $this->optionsResolver = $optionsResolver;
         $this->securityContext = $securityContext;
     }
 
@@ -80,21 +86,11 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $options = $this->resolveSaveOptions($options);
+        $options = $this->optionsResolver->resolveSaveOptions($options);
+        $isOwner = $this->isOwner($product);
 
-        // TODO : following can be problematic ... first version of a product is not submitted as a proposal, we should
-        // throw an exception here ! or create a product with only sku and create a proposal on top of that ? in other
-        // hand, create a product not positioned means everybody has permissions on it
-        if (null === $product->getId()) {
-            $isOwner = true;
-        } else {
-            $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
-        }
-
-        // TODO : double check the purpose of the contains check ...
-        if ($isOwner || !$this->objectManager->contains($product)) {
+        if ($isOwner) {
             $this->workingCopySaver->save($product, $options);
-
         } else {
             $this->draftSaver->save($product, $options);
         }
@@ -109,7 +105,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->resolveSaveAllOptions($options);
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -120,6 +116,24 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
+    }
+
+    /**
+     * Returns true if user is owner of the product or if the product does not exist yet
+     *
+     * @param ProductInterface $product
+     *
+     * @return boolean
+     */
+    protected function isOwner(ProductInterface $product)
+    {
+        if (null === $product->getId()) {
+            $isOwner = true;
+        } else {
+            $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
+        }
+
+        return $isOwner;
     }
 
     /**

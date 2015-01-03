@@ -12,6 +12,7 @@ services:
         class: %pimee_workflow.saver.product_draft.class%
         arguments:
             - @pim_catalog.object_manager.product
+            - @pim_catalog.saver.product_options_resolver
             - @security.context
             - @pimee_workflow.factory.product_draft
             - @pimee_workflow.repository.product_draft
@@ -21,15 +22,13 @@ services:
             - %akeneo_storage_utils.storage_driver%
 
     # this product saver delegates to draft or working copy savers depending on user permissions
-    # TODO : would avoid this if possible, only used for mass edit which could embed this behavior ?
-    # TODO : what about proposal on non existing product ?
-    # TODO : it now works with mass edit but not anymore with product saving, some controller / handler refactoring to do
     pimee_workflow.saver.product_delegating:
         class: %pimee_workflow.saver.product_delegating.class%
         arguments:
             - @pimee_workflow.saver.working_copy_product
             - @pimee_workflow.saver.product_draft
-            - @pim_catalog.object_manager.product # TODO not very used, should check
+            - @pim_catalog.object_manager.product
+            - @pim_catalog.saver.product_options_resolver
             - @security.context
 
     # TODO : add a saver for published product

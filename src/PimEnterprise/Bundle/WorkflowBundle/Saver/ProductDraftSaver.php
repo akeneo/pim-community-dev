@@ -17,6 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Saver\ProductSavingOptionsResolver;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
@@ -36,6 +37,9 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
+
+    /** @var ProductSavingOptionsResolver */
+    protected $optionsResolver;
 
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -59,7 +63,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     protected $storageDriver;
 
     /**
-     * @param ObjectManager                   $om
+     * @param ObjectManager                   $objectManager
+     * @param ProductSavingOptionsResolver    $optionsResolver
      * @param SecurityContextInterface        $securityContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
@@ -69,7 +74,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      * @param string                          $storageDriver
      */
     public function __construct(
-        ObjectManager $om,
+        ObjectManager $objectManager,
+        ProductSavingOptionsResolver $optionsResolver,
         SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
@@ -78,7 +84,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         ChangeSetComputerInterface $changeSet,
         $storageDriver
     ) {
-        $this->objectManager = $om;
+        $this->objectManager = $objectManager;
+        $this->optionsResolver = $optionsResolver;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
         $this->repository = $repository;
@@ -102,10 +109,9 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        // TODO : resolve options ? with different options than saveAll
-
+        $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->refreshProductValues($product);
-        $this->persistProductDraft($product);
+        $this->persistProductDraft($product, $options);
     }
 
     /**
@@ -117,7 +123,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->resolveOptions($options);
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -131,43 +137,16 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveOptions(array $options)
-    {
-        // TODO : extract the resolver part that should be shared by savers
-        $resolver = new OptionsResolver();
-        $resolver->setDefaults(
-            [
-                'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
-            ]
-        );
-        $resolver->setAllowedTypes(
-            [
-                'recalculate' => 'bool',
-                'flush' => 'bool',
-                'schedule' => 'bool',
-            ]
-        );
-        $options = $resolver->resolve($options);
-
-        return $options;
-    }
-
-    /**
      * Persist a product draft of the product
      *
      * @param ProductInterface $product
+     * @param array            $options
      *
      * @return null
      *
      * @throws \LogicException
      */
-    protected function persistProductDraft(ProductInterface $product)
+    protected function persistProductDraft(ProductInterface $product, array $options)
     {
         if (null === $submittedData = $this->collector->getData()) {
             throw new \LogicException('No product data were collected');
