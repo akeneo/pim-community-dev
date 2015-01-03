@@ -1,6 +1,7 @@
 parameters:
-    pim_catalog.saver.base.class: Pim\Bundle\CatalogBundle\Saver\BaseSaver
-    pim_catalog.saver.product.class: Pim\Bundle\CatalogBundle\Saver\ProductSaver
+    pim_catalog.saver.base.class:                     Pim\Bundle\CatalogBundle\Saver\BaseSaver
+    pim_catalog.saver.product.class:                  Pim\Bundle\CatalogBundle\Saver\ProductSaver
+    pim_catalog.saver.product_options_resolver.class: Pim\Bundle\CatalogBundle\Saver\ProductSavingOptionsResolver
 
 services:
     pim_catalog.saver.group_type:
@@ -20,3 +21,7 @@ services:
         arguments:
             - @pim_catalog.object_manager.product
             - @pim_catalog.manager.completeness
+            - @pim_catalog.saver.product_options_resolver
+
+    pim_catalog.saver.product_options_resolver:
+        class: %pim_catalog.saver.product_options_resolver.class%
