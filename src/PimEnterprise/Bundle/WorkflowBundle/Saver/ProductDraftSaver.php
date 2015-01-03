@@ -25,7 +25,6 @@ use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -145,7 +144,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 'recalculate' => true,
                 'flush' => true,
                 'schedule' => true,
-                'bypass_product_draft' => false // TODO : to remove
             ]
         );
         $resolver->setAllowedTypes(
@@ -153,7 +151,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 'recalculate' => 'bool',
                 'flush' => 'bool',
                 'schedule' => 'bool',
-                'bypass_product_draft' => 'bool'
             ]
         );
         $options = $resolver->resolve($options);

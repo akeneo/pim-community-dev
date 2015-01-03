@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Akeneo\Component\Persistence\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;

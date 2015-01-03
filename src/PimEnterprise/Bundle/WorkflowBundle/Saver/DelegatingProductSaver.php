@@ -25,7 +25,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Delegating product saver, depending on context it delegates to other savers to deal with drafts or working copies
  *
- * TODO : should implement only SaverInterface ?
+ * CAUTION, it relies on security context to check permissions and collect data from form, it does not work from CLI,
+ * it will be enhanced in a future version
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
@@ -44,9 +45,9 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     protected $securityContext;
 
     /**
-     * @param ProductSaver      $workingCopySaver
-     * @param ProductDraftSaver $productDraftSaver
-     * @param ObjectManager $objectManager
+     * @param ProductSaver             $workingCopySaver
+     * @param ProductDraftSaver        $productDraftSaver
+     * @param ObjectManager            $objectManager
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
@@ -65,6 +66,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException if not authenticated
      */
     public function save($product, array $options = [])
     {
@@ -79,18 +82,17 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->resolveSaveOptions($options);
 
+        // TODO : following can be problematic ... first version of a product is not submitted as a proposal, we should
+        // throw an exception here ! or create a product with only sku and create a proposal on top of that ? in other
+        // hand, create a product not positioned means everybody has permissions on it
         if (null === $product->getId()) {
             $isOwner = true;
         } else {
-            try {
-                $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
-            } catch (AuthenticationCredentialsNotFoundException $e) {
-                // We are probably on a CLI context
-                $isOwner = true;
-            }
+            $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
         }
 
-        if ($isOwner || $options['bypass_product_draft'] || !$this->objectManager->contains($product)) {
+        // TODO : double check the purpose of the contains check ...
+        if ($isOwner || !$this->objectManager->contains($product)) {
             $this->workingCopySaver->save($product, $options);
 
         } else {
@@ -108,21 +110,15 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $allOptions = $this->resolveSaveAllOptions($options);
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
 
-        if (true === $allOptions['bypass_product_draft']) {
-            $this->workingCopySaver->saveAll($products, $options);
+        foreach ($products as $product) {
+            $this->save($product, $itemOptions);
+        }
 
-        } else {
-            $itemOptions = $allOptions;
-            $itemOptions['flush'] = false;
-
-            foreach ($products as $product) {
-                $this->save($product, $itemOptions);
-            }
-
-            if (true === $allOptions['flush']) {
-                $this->objectManager->flush();
-            }
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
         }
     }
 
@@ -141,7 +137,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
                 'flush' => true,
                 'recalculate' => true,
                 'schedule' => true,
-                'bypass_product_draft' => false // TODO : Should be changed
             ]
         );
         $options = $resolver->resolve($options);
@@ -164,7 +159,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
                 'flush' => true,
                 'recalculate' => false,
                 'schedule' => true,
-                'bypass_product_draft' => false // TODO : Should be changed
             ]
         );
         $options = $resolver->resolve($options);
@@ -178,13 +172,12 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'recalculate', 'schedule', 'bypass_product_draft']);
+        $resolver->setOptional(['flush', 'recalculate', 'schedule']);
         $resolver->setAllowedTypes(
             [
                 'flush' => 'bool',
                 'recalculate' => 'bool',
                 'schedule' => 'bool',
-                'bypass_product_draft' => 'bool'
             ]
         );
 

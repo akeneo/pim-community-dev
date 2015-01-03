@@ -13,6 +13,7 @@
 - Use ProductMediaInterface and not AbstractMetric
 - Use AttributeInterface and not AbstractAttribute
 - Use CompletenessInterface and not AbstractCompleteness
+- Introduce a `ProductDraftSaver` and a `DelegatingProductSaver` with corresponding services to allow to save working copy, product draft or save both depending on permissions
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
@@ -25,11 +26,12 @@
 - Add a requirement regarding the need of the exec() function (for job executions)
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
 - Remove the override of MediaManager
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver`. `Doctrine\Common\Persistence\ObjectManager` is now expected as first argument.
 - Move the versioning denormalizers to CE PimTransformBundle, namespaces are changed but the services alias are kept
 - change constructor `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper` which now expects a SecurityContextInterface
 - rename src/PimEnterprise/Bundle/SecurityBundle/Voter/ProductDraftOwnershipVoter.php to ProductDraftVoter
 - changes in constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`, ProductManager argument replaced by SaverInterface and MediaManager added as last arg
+- Drop the `bypass_product_draft` from product saving options
+- Replace the `ProductDraftPersister` by different savers
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
