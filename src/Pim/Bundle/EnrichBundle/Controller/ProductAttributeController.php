@@ -5,21 +5,12 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -30,6 +21,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -42,110 +35,38 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAttributeController extends AbstractDoctrineController
+class ProductAttributeController
 {
+    /** @var RouterInterface */
+    protected $router;
+
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
     /** @var ProductManager */
     protected $productManager;
 
-    /** @var CategoryManager */
-    protected $categoryManager;
-
-    /** @var ProductCategoryManager */
-    protected $productCatManager;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var SequentialEditManager */
-    protected $seqEditManager;
-
-    /**
-     * Constant used to redirect to the datagrid when save edit form
-     * @staticvar string
-     */
-    const BACK_TO_GRID = 'BackGrid';
-
-    /**
-     * Constant used to redirect to create popin when save edit form
-     * @staticvar string
-     */
-    const CREATE = 'Create';
-
-    /**
-     * Constant used to redirect to next product in a sequential edition
-     * @staticvar string
-     */
-    const SAVE_AND_NEXT = 'SaveAndNext';
-
-    /**
-     * Constant used to redirect to the grid once all products are edited in a sequential edition
-     * @staticvar string
-     */
-    const SAVE_AND_FINISH = 'SaveAndFinish';
+    /** @var AttributeRepository */
+    protected $attributeRepository;
 
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param ProductManager           $productManager
-     * @param CategoryManager          $categoryManager
-     * @param UserContext              $userContext
-     * @param VersionManager           $versionManager
-     * @param SecurityFacade           $securityFacade
-     * @param ProductCategoryManager   $prodCatManager
-     * @param SequentialEditManager    $seqEditManager
+     * @param RouterInterface      $router
+     * @param FormFactoryInterface $formFactory
+     * @param ProductManager       $productManager
+     * @param AttributeRepository  $attributeRepository
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
         ProductManager $productManager,
-        CategoryManager $categoryManager,
-        UserContext $userContext,
-        VersionManager $versionManager,
-        SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager,
-        SequentialEditManager $seqEditManager
+        AttributeRepository $attributeRepository
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
-        $this->productManager    = $productManager;
-        $this->categoryManager   = $categoryManager;
-        $this->userContext       = $userContext;
-        $this->versionManager    = $versionManager;
-        $this->securityFacade    = $securityFacade;
-        $this->productCatManager = $prodCatManager;
-        $this->seqEditManager    = $seqEditManager;
+        $this->router          = $router;
+        $this->formFactory     = $formFactory;
+        $this->productManager  = $productManager;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -168,7 +89,7 @@ class ProductAttributeController extends AbstractDoctrineController
         $attributesForm->submit($request);
 
         $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->addFlash('success', 'flash.product.attributes added');
+        $this->addFlash($request, 'success', 'flash.product.attributes added');
 
         return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
     }
@@ -176,25 +97,26 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * Remove an attribute form a product
      *
-     * @param integer $productId
-     * @param integer $attributeId
+     * @param Request $request     The request object
+     * @param integer $productId   The product id
+     * @param integer $attributeId The attribute id
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
      * @return RedirectResponse
      *
      * @throws NotFoundHttpException
      */
-    public function removeAttributeAction($productId, $attributeId)
+    public function removeAttributeAction(Request $request, $productId, $attributeId)
     {
         $product   = $this->findProductOr404($productId);
-        $attribute = $this->findOr404($this->productManager->getAttributeName(), $attributeId);
+        $attribute = $this->findAttributeOr404($attributeId);
 
         if ($product->isAttributeRemovable($attribute)) {
             $this->productManager->removeAttributeFromProduct($product, $attribute);
         } else {
             throw new DeleteException($this->getTranslator()->trans('product.attribute not removable'));
         }
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $productId));
@@ -215,7 +137,7 @@ class ProductAttributeController extends AbstractDoctrineController
         $product = $this->productManager->find($id);
 
         if (!$product) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
@@ -224,7 +146,29 @@ class ProductAttributeController extends AbstractDoctrineController
     }
 
     /**
-     * Get the AvailbleAttributes form
+     * Find an attribute by its id or return a 404 response
+     *
+     * @param integer $id the attribute id
+     *
+     * @return AttributeInterface
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function findAttributeOr404($id)
+    {
+        $attribute = $this->attributeRepository->find($id);
+
+        if (!$attribute) {
+            throw new NotFoundHttpException(
+                sprintf('Attribute with id %s could not be found.', (string) $id)
+            );
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * Get the AvailableAttributes form
      *
      * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
@@ -235,10 +179,68 @@ class ProductAttributeController extends AbstractDoctrineController
         array $attributes = array(),
         AvailableAttributes $availableAttributes = null
     ) {
-        return $this->createForm(
+        return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
             array('attributes' => $attributes)
         );
+    }
+
+    /**
+     * Create a redirection to a given route
+     *
+     * @param string  $route
+     * @param mixed   $parameters
+     * @param integer $status
+     *
+     * @return RedirectResponse
+     */
+    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    {
+        return $this->redirect($this->generateUrl($route, $parameters), $status);
+    }
+
+    /**
+     * Returns a RedirectResponse to the given URL.
+     *
+     * @param string  $url    The URL to redirect to
+     * @param integer $status The status code to use for the Response
+     *
+     * @return RedirectResponse
+     */
+    protected function redirect($url, $status = 302)
+    {
+        return new RedirectResponse($url, $status);
+    }
+
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param string         $route         The name of the route
+     * @param mixed          $parameters    An array of parameters
+     * @param boolean|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     *
+     * @return string The generated URL
+     *
+     * @see UrlGeneratorInterface
+     */
+    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    {
+        return $this->router->generate($route, $parameters, $referenceType);
+    }
+
+    /**
+     * Add flash message
+     *
+     * @param Request $request    the request
+     * @param string  $type       the flash type
+     * @param string  $message    the flash message
+     * @param array   $parameters the flash message parameters
+     *
+     * @return null
+     */
+    protected function addFlash(Request $request, $type, $message, array $parameters = array())
+    {
+        $request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
     }
 }

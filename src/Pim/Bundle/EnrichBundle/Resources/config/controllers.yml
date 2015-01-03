@@ -212,22 +212,18 @@ services:
         scope: request
         class: %pim_enrich.controller.product_comment.class%
         arguments:
-            - '@templating'
-            - '@security.context'
-            - '@form.factory'
-            - '@pim_catalog.manager.product'
-            - '@pim_comment.manager.comment'
-            - '@pim_comment.builder.comment'
+            - @templating
+            - @security.context
+            - @form.factory
+            - @pim_catalog.manager.product
+            - @pim_comment.manager.comment
+            - @pim_comment.builder.comment
 
     pim_enrich.controller.product_attribute:
         scope: request
         class: %pim_enrich.controller.product_attribute.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - @router
+            - @form.factory
             - @pim_catalog.manager.product
-            - @pim_catalog.manager.category
-            - @pim_user.context.user
-            - @pim_versioning.manager.version
-            - @oro_security.security_facade
-            - @pim_catalog.manager.product_category
-            - @pim_enrich.manager.sequential_edit
+            - @pim_catalog.repository.attribute
