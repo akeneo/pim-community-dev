@@ -23,7 +23,7 @@
         "symfony/icu": "1.1.0",
         "akeneo/measure-bundle": "0.2.*",
         "akeneo/batch-bundle": "0.3.*",
-        "oro/platform": "1.0.0-beta14",
+        "oro/platform": "1.0.0-beta15",
         "apy/jsfv-bundle": "2.0.1",
         "doctrine/common": "2.4.*",
         "doctrine/doctrine-bundle": "1.2.*",
