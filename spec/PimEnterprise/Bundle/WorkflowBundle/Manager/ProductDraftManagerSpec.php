@@ -2,9 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Akeneo\Component\Persistence\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -21,28 +23,39 @@ class ProductDraftManagerSpec extends ObjectBehavior
 {
     function let(
         ManagerRegistry $registry,
-        ProductManager $productManager,
+        SaverInterface $workingCopySaver,
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
         ProductDraftChangesApplier $applier,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        MediaManager $mediaManager
     ) {
-        $this->beConstructedWith($registry, $productManager, $userContext, $factory, $repository, $applier, $dispatcher);
+        $this->beConstructedWith(
+            $registry,
+            $workingCopySaver,
+            $userContext,
+            $factory,
+            $repository,
+            $applier,
+            $dispatcher,
+            $mediaManager
+        );
     }
 
     function it_applies_changes_to_the_product_when_approving_a_product_draft(
         $registry,
-        $productManager,
+        $workingCopySaver,
         $applier,
         $dispatcher,
         ProductDraft $productDraft,
         ProductInterface $product,
-        ObjectManager $manager
+        ObjectManager $objectManager,
+        $mediaManager
     ) {
         $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
         $productDraft->getProduct()->willReturn($product);
-        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($objectManager);
 
         $dispatcher
             ->dispatch(
@@ -51,10 +64,10 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
         $applier->apply($product, $productDraft)->shouldBeCalled();
-        $productManager->handleMedia($product)->shouldBeCalled();
-        $productManager->save($product, ['bypass_product_draft' => true])->shouldBeCalled();
-        $manager->remove($productDraft)->shouldBeCalled();
-        $manager->flush()->shouldBeCalled();
+        $mediaManager->handleProductMedias($product)->shouldBeCalled();
+        $workingCopySaver->save($product)->shouldBeCalled();
+        $objectManager->remove($productDraft)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $this->approve($productDraft);
     }
@@ -63,9 +76,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $registry,
         $dispatcher,
         ProductDraft $productDraft,
-        ObjectManager $manager
+        ObjectManager $objectManager
     ) {
-        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($objectManager);
 
         $productDraft->isInProgress()->willReturn(false);
         $dispatcher
@@ -75,20 +88,20 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
         $productDraft->setStatus(ProductDraft::IN_PROGRESS)->shouldBeCalled();
-        $manager->flush()->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $this->refuse($productDraft);
     }
     function it_removes_in_progress_product_draft_when_refusing_it(
         $registry,
         ProductDraft $productDraft,
-        ObjectManager $manager
+        ObjectManager $objectManager
     ) {
-        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($objectManager);
 
         $productDraft->isInProgress()->willReturn(true);
-        $manager->remove($productDraft)->shouldBeCalled();
-        $manager->flush()->shouldBeCalled();
+        $objectManager->remove($productDraft)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $this->refuse($productDraft);
     }
@@ -138,9 +151,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $registry,
         $dispatcher,
         ProductDraft $productDraft,
-        ObjectManager $manager
+        ObjectManager $objectManager
     ) {
-        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($objectManager);
 
         $dispatcher
             ->dispatch(
@@ -149,7 +162,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
         $productDraft->setStatus(ProductDraft::READY)->shouldBeCalled();
-        $manager->flush()->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $this->markAsReady($productDraft);
     }

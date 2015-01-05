@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
@@ -175,29 +174,6 @@ class ProductController extends BaseProductController
                 'dataLocale' => $this->getDataLocaleCode()
             )
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAttributesAction(Request $request, $id)
-    {
-        $product             = $this->findProductOr404($id);
-        $availableAttributes = new AvailableAttributes();
-        $attributesForm      = $this->getAvailableAttributesForm(
-            $product->getAttributes(),
-            $availableAttributes
-        );
-        $attributesForm->submit($request);
-
-        $this->productManager->addAttributesToProduct(
-            $product,
-            $availableAttributes,
-            ['bypass_product_draft' => true]
-        );
-        $this->addFlash('success', 'flash.product.attributes added');
-
-        return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
     }
 
     /**
