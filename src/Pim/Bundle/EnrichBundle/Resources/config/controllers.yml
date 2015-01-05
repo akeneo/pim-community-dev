@@ -122,15 +122,15 @@ services:
         class: %pim_enrich.controller.product.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - @pim_catalog.manager.product
-            - @pim_catalog.manager.category
-            - @pim_user.context.user
-            - @pim_versioning.manager.version
-            - @oro_security.security_facade
-            - @pim_catalog.manager.product_category
-            - @pim_catalog.saver.product
-            - @pim_catalog.manager.media
-            - @pim_enrich.manager.sequential_edit
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.category'
+            - '@pim_user.context.user'
+            - '@pim_versioning.manager.version'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.manager.product_category'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.manager.media'
+            - '@pim_enrich.manager.sequential_edit'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -154,10 +154,10 @@ services:
         class: %pim_enrich.controller.group.class%
         parent: pim_enrich.controller.abstract
         arguments:
-            - @pim_catalog.manager.group
-            - @pim_enrich.form.handler.group
-            - @pim_enrich.form.group
-            - @pim_catalog.factory.group
+            - '@pim_catalog.manager.group'
+            - '@pim_enrich.form.handler.group'
+            - '@pim_enrich.form.group'
+            - '@pim_catalog.factory.group'
 
     pim_enrich.controller.association_type:
         scope: request
@@ -205,27 +205,27 @@ services:
         scope: request
         class: %pim_enrich.controller.sequential_edit.class%
         arguments:
-            - @router
-            - @pim_datagrid.extension.mass_action.dispatcher
-            - @pim_enrich.manager.sequential_edit
-            - @pim_user.context.user
+            - '@router'
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@pim_enrich.manager.sequential_edit'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.product_comment:
         scope: request
         class: %pim_enrich.controller.product_comment.class%
         arguments:
-            - @templating
-            - @security.context
-            - @form.factory
-            - @pim_catalog.manager.product
-            - @pim_comment.manager.comment
-            - @pim_comment.builder.comment
+            - '@templating'
+            - '@security.context'
+            - '@form.factory'
+            - '@pim_catalog.manager.product'
+            - '@pim_comment.manager.comment'
+            - '@pim_comment.builder.comment'
 
     pim_enrich.controller.product_attribute:
         scope: request
         class: %pim_enrich.controller.product_attribute.class%
         arguments:
-            - @router
-            - @form.factory
-            - @pim_catalog.manager.product
-            - @pim_catalog.repository.attribute
+            - '@router'
+            - '@form.factory'
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.attribute'

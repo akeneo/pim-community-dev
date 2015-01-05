@@ -44,7 +44,7 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.change_status.class%
         arguments:
-            - @pim_catalog.saver.product
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -56,14 +56,14 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
-            - @pim_catalog.manager.product
-            - @pim_catalog.updater.product
-            - @pim_user.context.user
-            - @pim_catalog.manager.currency
-            - @pim_catalog.context.catalog
-            - @pim_catalog.manager.product_mass_action
-            - @pim_serializer
-            - @pim_catalog.saver.product
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.context.catalog'
+            - '@pim_catalog.manager.product_mass_action'
+            - '@pim_serializer'
+            - '@pim_catalog.saver.product'
             - {'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
         tags:
             -
@@ -76,8 +76,8 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.classify.class%
         arguments:
-            - @pim_catalog.manager.category
-            - @pim_catalog.saver.product
+            - '@pim_catalog.manager.category'
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -89,7 +89,7 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.change_family.class%
         arguments:
-            - @pim_catalog.saver.product
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -100,8 +100,8 @@ services:
     pim_enrich.mass_edit_action.add_to_groups:
         class: %pim_enrich.mass_edit_action.add_to_groups.class%
         arguments:
-            - @pim_catalog.repository.group
-            - @pim_catalog.saver.product
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
