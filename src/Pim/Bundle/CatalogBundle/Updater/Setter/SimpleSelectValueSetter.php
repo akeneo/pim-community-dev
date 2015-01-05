@@ -52,13 +52,13 @@ class SimpleSelectValueSetter extends AbstractValueSetter
             $option = null;
         } else {
             $option = $this->attrOptionRepository
-                ->findOneBy(['code' => $data['code'], 'attribute' => $attribute]);
+                ->findOneBy(['code' => $data, 'attribute' => $attribute]);
 
             if (null === $option) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'code',
-                    sprintf('Option with code "%s" does not exist', $data['code']),
+                    sprintf('Option with code "%s" does not exist', $data),
                     'setter',
                     'simple select',
                     gettype($data)
@@ -72,7 +72,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
     }
 
     /**
-     * Check if data are valid
+     * Check if data is valid
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
@@ -83,29 +83,9 @@ class SimpleSelectValueSetter extends AbstractValueSetter
             return;
         }
 
-        if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
+        if (!is_string($data)) {
+            throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
-                'setter',
-                'simple select',
-                gettype($data)
-            );
-        }
-
-        if (!array_key_exists('attribute', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
-                $attribute->getCode(),
-                'attribute',
-                'setter',
-                'simple select',
-                gettype($data)
-            );
-        }
-
-        if (!array_key_exists('code', $data)) {
-            throw InvalidArgumentException::arrayKeyExpected(
-                $attribute->getCode(),
-                'code',
                 'setter',
                 'simple select',
                 gettype($data)
