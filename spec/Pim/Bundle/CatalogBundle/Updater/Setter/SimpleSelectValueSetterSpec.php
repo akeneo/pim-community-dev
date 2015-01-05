@@ -59,83 +59,44 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
             ->shouldBeCalledTimes(1)
             ->willReturn($attributeOption);
 
-        $data = ['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []];
-        $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
+        $this->setValue([], $attribute, 'attributeOptionCode', 'fr_FR', 'mobile');
     }
 
-    function it_throws_an_error_if_data_is_not_an_array_or_null(
+    function it_throws_an_error_if_data_is_not_a_string_or_null(
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = 'not a simple select option';
+        $data = ['some', 'random', 'stuff'];
 
-        $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'simple select', gettype($data))
-        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
-    }
-
-    function it_throws_an_error_if_there_is_no_attribute_key(
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = ['no attribute key' => 'value'];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
-                'attributeCode',
-                'attribute',
-                'setter',
-                'simple select',
-                gettype($data)
+        $this
+            ->shouldThrow(
+                InvalidArgumentException::stringExpected('attributeCode', 'setter', 'simple select', gettype($data))
             )
-        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+            ->duringSetValue([], $attribute, $data, 'fr_FR', 'mobile');
     }
 
-    function it_throws_an_error_if_there_is_no_code_key(
-        AttributeInterface $attribute
-    ) {
+    function it_throws_an_error_if_the_option_doesnt_exist(AttributeInterface $attribute)
+    {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['attribute' => 'value', 'no code' => 'value'];
+        $data = 'unknown code';
 
-        $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
-                'attributeCode',
-                'code',
-                'setter',
-                'simple select',
-                gettype($data)
+        $this
+            ->shouldThrow(
+                InvalidArgumentException::arrayInvalidKey(
+                    'attributeCode',
+                    'code',
+                    'Option with code "unknown code" does not exist',
+                    'setter',
+                    'simple select',
+                    gettype($data)
+                )
             )
-        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
+            ->duringSetValue([], $attribute, $data, 'fr_FR', 'mobile');
     }
 
-    function it_throws_an_error_if_there_the_option_is_unknown(
-        $attrOptionRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $attrOptionRepository
-            ->findOneBy(['code' => 'unknown code', 'attribute' => $attribute])
-            ->willReturn(null);
-
-        $data = ['attribute' => 'value', 'code' => 'unknown code'];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayInvalidKey(
-                'attributeCode',
-                'code',
-                'Option with code "unknown code" does not exist',
-                'setter',
-                'simple select',
-                gettype($data)
-            )
-        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
-    }
-
-    function it_sets_simpleselect_value_to_a_product_value(
+    function it_sets_simpleselect_option_to_a_product_value(
         $builder,
         $attrOptionRepository,
         AttributeInterface $attribute,
@@ -157,20 +118,17 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
             ->shouldBeCalledTimes(1)
             ->willReturn($attributeOption);
 
-        $data = ['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []];
-        $productValue->setOption(Argument::any())->shouldBeCalled();
+        $productValue->setOption($attributeOption)->shouldBeCalled();
 
         $builder
             ->addProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn(null);
+        $product3->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
 
-        $products = [$product1, $product2, $product3];
-
-        $this->setValue($products, $attribute, $data, $locale, $scope);
+        $this->setValue([$product1, $product2, $product3], $attribute, 'attributeOptionCode', $locale, $scope);
     }
 
     function it_allows_setting_option_to_null(

@@ -46,28 +46,17 @@ class MultiSelectValueSetter extends AbstractValueSetter
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'multi select');
-
-        if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected(
-                $attribute->getCode(),
-                'setter',
-                'multi select',
-                gettype($data)
-            );
-        }
+        $this->checkData($attribute, $data);
 
         $attributeOptions = [];
-        foreach ($data as $attributeOption) {
-            $this->checkData($attribute, $attributeOption);
-
-            $option = $this->attrOptionRepository->findOneBy(
-                ['code' => $attributeOption['code'], 'attribute' => $attribute]
-            );
+        foreach ($data as $optionCode) {
+            $option = $this->attrOptionRepository
+                ->findOneBy(['code' => $optionCode, 'attribute' => $attribute]);
             if (null === $option) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'code',
-                    sprintf('Option with code "%s" does not exist', $attributeOption['code']),
+                    sprintf('Option with code "%s" does not exist', $optionCode),
                     'setter',
                     'multi select',
                     gettype($data)
@@ -83,40 +72,32 @@ class MultiSelectValueSetter extends AbstractValueSetter
     }
 
     /**
-     * Check if data are valid
+     * Check if data is valid
      *
      * @param AttributeInterface $attribute
-     * @param mixed              $attributeOption
+     * @param mixed              $data
      */
-    protected function checkData(AttributeInterface $attribute, $attributeOption)
+    protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (!is_array($attributeOption)) {
-            throw InvalidArgumentException::arrayOfArraysExpected(
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
                 'setter',
                 'multi select',
-                gettype($attributeOption)
+                gettype($data)
             );
         }
 
-        if (!array_key_exists('attribute', $attributeOption)) {
-            throw InvalidArgumentException::arrayKeyExpected(
-                $attribute->getCode(),
-                'attribute',
-                'setter',
-                'multi select',
-                gettype($attributeOption)
-            );
-        }
-
-        if (!array_key_exists('code', $attributeOption)) {
-            throw InvalidArgumentException::arrayKeyExpected(
-                $attribute->getCode(),
-                'code',
-                'setter',
-                'multi select',
-                gettype($attributeOption)
-            );
+        foreach ($data as $key => $value) {
+            if (!is_string($value)) {
+                throw InvalidArgumentException::arrayStringKeyExpected(
+                    $attribute->getCode(),
+                    $key,
+                    'setter',
+                    'multi select',
+                    gettype($value)
+                );
+            }
         }
     }
 
