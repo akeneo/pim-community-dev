@@ -24,9 +24,6 @@ abstract class AbstractCursor implements CursorInterface
     protected $pageSize = 100;
 
     /** @var int  */
-    protected $offSet = 0;
-
-    /** @var int  */
     protected $currentPage = 0;
 
     /** @var int */
@@ -70,16 +67,11 @@ abstract class AbstractCursor implements CursorInterface
         return $this;
     }
 
-    /**
-     * @param $offSet
-     * @return $this
-     */
-    public function setOffSet($offSet)
+    public function getOffSet()
     {
-        $this->offSet = $offSet;
-
-        return $this;
+        return $this->pageSize*$this->currentPage;
     }
+
 
     /**
      * @return int

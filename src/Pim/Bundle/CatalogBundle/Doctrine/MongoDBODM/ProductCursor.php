@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Doctrine\MongoDB\Query\Query;
-use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Mapping\Builder;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AbstractCursor;
 
 /**
@@ -32,7 +32,7 @@ class ProductCursor extends AbstractCursor
      */
     public function hasNext()
     {
-        return ($this->getCurrentPage()+1)*$this->pageSize<$this->getProductCount();
+        return ($this->getCurrentPage()+1)*$this->getPageSize()<$this->getProductCount();
     }
 
     /**
@@ -40,7 +40,7 @@ class ProductCursor extends AbstractCursor
      */
     public function getNext()
     {
-        $cursor = $this->query->execute()->limit($this->pageSize)->skip($this->offSet*($this->getCurrentPage()));
+        $cursor = $this->query->execute()->limit($this->getPageSize())->skip($this->getOffSet());
 
         $this->currentPage++;
 

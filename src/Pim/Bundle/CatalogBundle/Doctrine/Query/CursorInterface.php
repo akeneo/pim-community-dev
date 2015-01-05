@@ -33,10 +33,9 @@ interface CursorInterface
     public function setPageSize($pageSize);
 
     /**
-     * @param $offSet
-     * @return $this
+     * @return int
      */
-    public function setOffSet($offSet);
+    public function getOffSet();
 
     /**
      * @return int
