@@ -12,9 +12,9 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Resource\Model\BulkSaverInterface;
-use Pim\Component\Resource\Model\RemoverInterface;
-use Pim\Component\Resource\Model\SaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;

@@ -28,8 +28,8 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Resource\Model\SaverInterface');
-        $this->shouldHaveType('Pim\Component\Resource\Model\RemoverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\Persistence\RemoverInterface');
     }
 
     function it_saves_a_rule_linked_resource_object($entityManager, RuleLinkedResource $ruleLinkedResource)

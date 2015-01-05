@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Resource\Model\BulkSaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
@@ -150,7 +150,7 @@ class ProductRuleApplier implements ApplierInterface
     protected function saveProducts(RuleSubjectSetInterface $subjectSet, $savingContext)
     {
         $versioningState = $this->versionManager->isRealTimeVersioning();
-        
+
         $this->versionManager->setContext($savingContext);
         $this->versionManager->setRealTimeVersioning(false);
         $this->productSaver->saveAll($subjectSet->getSubjects(), ['recalculate' => false, 'schedule' => true]);
