@@ -43,7 +43,7 @@ class DeleteRulesCommand extends ContainerAwareCommand
     {
         /** @var EntityManagerInterface $em */
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $rules = $this->getContainer()->get('pimee_rule_engine.repository.rule')->findAll();
+        $rules = $this->getContainer()->get('pimee_rule_engine.repository.rule_definition')->findAll();
         foreach ($rules as $rule) {
             $em->remove($rule);
         }

@@ -8,9 +8,9 @@ services:
     pimee_catalog_rule.reader.product:
         class: '%pimee_catalog_rule.reader.product.class%'
         arguments:
-            - @pimee_rule_engine.repository.rule
+            - @pimee_rule_engine.repository.rule_definition
 
     pimee_catalog_rule.reader.rule_definition.doctrine:
         class: '%pimee_catalog_rule.reader.rule_definition.doctrine.class%'
         arguments:
-            - @pimee_rule_engine.repository.rule
+            - @pimee_rule_engine.repository.rule_definition

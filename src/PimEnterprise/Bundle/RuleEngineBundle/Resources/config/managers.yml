@@ -6,7 +6,7 @@ services:
     pimee_rule_engine.manager.rule_definition:
         class: %pimee_rule_engine.manager.rule_definition.class%
         arguments:
-            - '@pimee_rule_engine.repository.rule'
+            - '@pimee_rule_engine.repository.rule_definition'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pimee_rule_engine.entity.rule.class%'

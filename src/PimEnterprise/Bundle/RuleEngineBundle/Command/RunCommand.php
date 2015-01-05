@@ -46,7 +46,7 @@ class RunCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repo = $this->getContainer()->get('pimee_rule_engine.repository.rule');
+        $repo = $this->getContainer()->get('pimee_rule_engine.repository.rule_definition');
 
         // get rule instances
         if ($code = $input->getArgument('code')) {

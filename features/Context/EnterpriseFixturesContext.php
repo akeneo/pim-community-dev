@@ -679,7 +679,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getRuleDefinitionRepository()
     {
-        return $this->getContainer()->get('pimee_rule_engine.repository.rule');
+        return $this->getContainer()->get('pimee_rule_engine.repository.rule_definition');
     }
 
     /**

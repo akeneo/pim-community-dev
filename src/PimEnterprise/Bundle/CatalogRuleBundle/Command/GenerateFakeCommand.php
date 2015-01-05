@@ -288,6 +288,6 @@ class GenerateFakeCommand extends ContainerAwareCommand
 
     protected function getRuleDefinitionRepository()
     {
-        return $this->getContainer()->get('pimee_rule_engine.repository.rule');
+        return $this->getContainer()->get('pimee_rule_engine.repository.rule_definition');
     }
 }
