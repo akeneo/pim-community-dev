@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Resource\Model\BulkSaverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
