@@ -11,9 +11,7 @@ rules:
         actions:
             - type:  set_value
               field: camera_brand
-              value:
-                  attribute: camera_brand
-                  code:      canon_brand
+              value: canon_brand
     camera_copy_name_to_model:
         conditions:
             - field:    family.code
@@ -36,9 +34,7 @@ rules:
         actions:
             - type:  set_value
               field: camera_type
-              value:
-                  attribute: camera_type
-                  code:      compact
+              value: compact
     camera_set_autofocus:
         conditions:
             - field:    family.code
@@ -126,10 +122,8 @@ rules:
             - type:  set_value
               field: tshirt_style
               value:
-                - code:      sportwear
-                  attribute: tshirt_style
-                - code:      vneck
-                  attribute: tshirt_style
+                - sportwear
+                - vneck
     set_purple_tshirt_picture:
         priority: 90
         conditions:
