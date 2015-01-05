@@ -22,23 +22,23 @@ class ProductValueNormalizerFilter implements NormalizerFilterInterface
         $locales  = isset($context['locales']) ? $context['locales'] : [];
         $channels = isset($context['channels']) ? $context['channels'] : [];
 
-        $objects = $objects->filter(
-            function ($value) use ($channels) {
+        return $objects->filter(
+            function ($value) use ($locales, $channels) {
 
                 if (!$value instanceof ProductValueInterface) {
                     throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
                 }
 
-                return (!$value->getAttribute()->isScopable() || in_array($value->getScope(), $channels));
+                if (!empty($locales) && $value->getAttribute()->isLocalizable() && !in_array($value->getLocale(), $locales)) {
+                    return false;
+                }
+
+                if (!empty($channels) && $value->getAttribute()->isScopable() && !in_array($value->getScope(), $channels)) {
+                    return false;
+                }
+
+                return true;
             }
         );
-
-        $objects = $objects->filter(
-            function ($value) use ($locales) {
-                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $locales));
-            }
-        );
-
-        return $objects;
     }
 }

@@ -40,7 +40,8 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
         $referenceProduct = $this->getProduct('AKNTS_BPS');
         $productValues = $referenceProduct->getValues()->toArray();
         // TODO HotFix to skip images until we add support
-        $skipAttributeTypes = ['pim_catalog_identifier'];
+        // TODO Fix product updater (setters) to be able to use json format to update simple and multiselect values
+        $skipAttributeTypes = ['pim_catalog_identifier', 'pim_catalog_simpleselect', 'pim_catalog_multiselect'];
         $skipAxisAttributes = [];
         foreach ($variantGroup->getAttributes() as $axis) {
             $skipAxisAttributes[]= $axis->getCode();
@@ -54,7 +55,7 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
                 unset($productValues[$valueIdx]);
             }
         }
-        $productValuesData = $this->normalizeToDB($productValues);
+        $productValuesData = $this->normalizeValues($productValues);
 
         if ($variantGroup->getProductTemplate()) {
             $template = $variantGroup->getProductTemplate();
@@ -78,13 +79,13 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
      *
      * @return array
      */
-    protected function normalizeToDB(array $productValues)
+    protected function normalizeValues(array $productValues)
     {
-        // TODO : as for versionning, we should really change for json/structured format
         $normalizer = $this->getContainer()->get('pim_serializer');
         $normalizedValues = [];
+
         foreach ($productValues as $value) {
-            $normalizedValues += $normalizer->normalize($value, 'csv');
+            $normalizedValues[$value->getAttribute()->getCode()][] = $normalizer->normalize($value, 'json', ['entity' => 'product']);
         }
 
         return $normalizedValues;

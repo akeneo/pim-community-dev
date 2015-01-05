@@ -7,20 +7,17 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Variant group values import processor, allows to bind values data into a product template linked to a variant group
  * and validate values, it erases existing values
- *
- * TODO : add specs once json format implemented
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -45,29 +42,30 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
+    /** @var NormalizerInterface */
+    protected $valueNormalizer;
 
     /** @var string */
     protected $templateClass;
 
     /**
-     * @param GroupRepository         $groupRepository
-     * @param DenormalizerInterface   $groupValuesDenormalizer
-     * @param ValidatorInterface      $validator
-     * @param ObjectDetacherInterface $detacher
-     * @param string                  $templateClass
+     * @param GroupRepository       $groupRepository
+     * @param DenormalizerInterface $groupValuesDenormalizer
+     * @param ValidatorInterface    $validator
+     * @param NormalizerInterface   $valueNormalizer
+     * @param string                $templateClass
      */
     public function __construct(
         GroupRepository $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
+        NormalizerInterface $valueNormalizer,
         $templateClass
     ) {
         $this->groupRepository         = $groupRepository;
         $this->groupValuesDenormalizer = $groupValuesDenormalizer;
         $this->validator               = $validator;
+        $this->valueNormalizer         = $valueNormalizer;
         $this->templateClass           = $templateClass;
     }
 
@@ -84,9 +82,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
 
         // store values as product template format (json)
         $template = $this->getProductTemplate($variantGroup);
-        // TODO replace following line by $structuredValuesData = $this->normalizeValuesToStructuredData($values);
-        // once json implemented
-        $structuredValuesData = $itemValuesData;
+        $structuredValuesData = $this->normalizeValuesToStructuredData($values);
         $template->setValuesData($structuredValuesData);
         $this->validateVariantGroup($variantGroup, $item);
 
@@ -198,8 +194,13 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function normalizeValuesToStructuredData(array $values)
     {
-        // TODO: normalize to json once https://github.com/akeneo/pim-community-dev/pull/1934 merged
-        return null;
+        $normalizedValues = [];
+
+        foreach ($values as $value) {
+            $normalizedValues[$value->getAttribute()->getCode()][] = $this->valueNormalizer->normalize($value, 'json', ['entity' => 'product']);
+        }
+
+        return $normalizedValues;
     }
 
     /**
@@ -217,7 +218,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
         $messages = [];
         foreach ($violations as $violation) {
             $messages[] = sprintf(
-                "%s : %s",
+                "%s: %s",
                 $violation->getMessage(),
                 $violation->getInvalidValue()
             );

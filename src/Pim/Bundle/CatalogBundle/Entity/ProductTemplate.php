@@ -21,8 +21,8 @@ class ProductTemplate implements ProductTemplateInterface
     /** @var Group $group */
     protected $group;
 
-    /** @var json */
-    protected $valuesData;
+    /** @var array */
+    protected $valuesData = [];
 
     /**
      * {@inheritdoc}
@@ -43,7 +43,7 @@ class ProductTemplate implements ProductTemplateInterface
     /**
      * {@inheritdoc}
      */
-    public function setValuesData($valuesData)
+    public function setValuesData(array $valuesData)
     {
         $this->valuesData = $valuesData;
 
@@ -55,20 +55,19 @@ class ProductTemplate implements ProductTemplateInterface
      */
     public function hasValue(ProductValueInterface $value)
     {
-        // TODO : will change with json format
-        // TODO : should be merged in a class
-        $suffix = '';
-
-        if ($value->getAttribute()->isLocalizable()) {
-            $suffix = sprintf('-%s', $value->getLocale());
-        }
-        if ($value->getAttribute()->isScopable()) {
-            $suffix .= sprintf('-%s', $value->getScope());
+        $attributeCode = $value->getAttribute()->getCode();
+        if (!isset($this->valuesData[$attributeCode])) {
+            return false;
         }
 
-        $field = $value->getAttribute()->getCode() . $suffix;
+        $valuesData = $this->valuesData[$attributeCode];
+        foreach ($valuesData as $valueData) {
+            if ($valueData['locale'] === $value->getLocale() && $valueData['scope'] === $value->getScope()) {
+                return true;
+            }
+        }
 
-        return isset($this->valuesData[$field]);
+        return false;
     }
 
     /**
@@ -76,8 +75,6 @@ class ProductTemplate implements ProductTemplateInterface
      */
     public function hasValueForAttribute(AttributeInterface $attribute)
     {
-        // TODO doesnt work for localizable/scopable but, axis and identifier are global, and it will work when we'll
-        // merge json format
         return isset($this->valuesData[$attribute->getCode()]);
     }
 }

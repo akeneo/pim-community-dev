@@ -39,8 +39,6 @@ services:
         class: %pim_catalog.updater.product_template.class%
         arguments:
             - @pim_catalog.updater.product
-            - @pim_serializer
-            - @pim_serializer
 
     pim_catalog.updater.setter.registry:
         class: %pim_catalog.updater.setter.registry.class%
