@@ -7,9 +7,9 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -60,72 +60,23 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
             ->shouldBeCalledTimes(1)
             ->willReturn($attributeOption);
 
-        $data = [['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []]];
-        $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
+        $this->setValue([], $attribute, ['attributeOptionCode'], 'fr_FR', 'mobile');
     }
 
-    function it_throws_an_error_if_data_are_not_correctly_normalized(
-        AttributeInterface $attribute
-    ) {
+    function it_throws_an_error_if_data_is_not_an_array_of_option_codes(AttributeInterface $attribute)
+    {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = ['not a multi select option'];
+        $data = ['foo' => ['bar' => 'baz']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayOfArraysExpected(
+            InvalidArgumentException::arrayStringKeyExpected(
                 'attributeCode',
+                'foo',
                 'setter',
                 'multi select',
-                gettype($data[0])
+                'array'
             )
-        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
-    }
-
-    function it_throws_an_error_if_data_does_not_contain_attribute_key(
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = [['not a multi select option']];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
-                'attributeCode',
-                'attribute',
-                'setter',
-                'multi select',
-                gettype($data)
-            )
-        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
-    }
-
-    function it_throws_an_error_if_data_does_not_contain_code_key(
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = [['attribute' => 'attribute value', 'not code key' => 'invalid values']];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected(
-                'attributeCode',
-                'code',
-                'setter',
-                'multi select',
-                gettype($data)
-            )
-        )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
-    }
-
-    function it_throws_an_error_if_data_is_not_an_array(
-        AttributeInterface $attribute
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = 'not a multi select option';
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayExpected('attributeCode', 'setter', 'multi select', gettype($data))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -135,7 +86,7 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = [['attribute' => 'attribute value', 'code' => 'unknown code']];
+        $data = ['unknown code'];
 
         $attrOptionRepository
             ->findOneBy(['code' => 'unknown code', 'attribute' => $attribute])
@@ -161,8 +112,9 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        ProductValue $productValue,
-        AttributeOption $attributeOption
+        ProductValueInterface $productValue,
+        AttributeOption $attributeOption,
+        AttributeOption $oldOption
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -176,9 +128,8 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
             ->shouldBeCalledTimes(1)
             ->willReturn($attributeOption);
 
-        $data = [['attribute' => $attribute, 'code' => 'attributeOptionCode', 'label' => []]];
-        $productValue->getOptions()->willReturn([$attributeOption]);
-        $productValue->removeOption($attributeOption)->shouldBeCalled();
+        $productValue->getOptions()->willReturn([$oldOption]);
+        $productValue->removeOption($oldOption)->shouldBeCalled();
         $productValue->addOption($attributeOption)->shouldBeCalled();
 
         $builder
@@ -186,11 +137,9 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
             ->willReturn($productValue);
 
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn(null);
+        $product3->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
 
-        $products = [$product1, $product2, $product3];
-
-        $this->setValue($products, $attribute, $data, $locale, $scope);
+        $this->setValue([$product1, $product2, $product3], $attribute, ['attributeOptionCode'], $locale, $scope);
     }
 }
