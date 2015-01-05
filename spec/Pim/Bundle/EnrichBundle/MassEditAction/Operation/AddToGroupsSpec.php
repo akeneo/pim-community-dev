@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -12,10 +13,11 @@ class AddToGroupsSpec extends ObjectBehavior
 {
     function let(
         GroupRepository $groupRepository,
+        BulkSaverInterface $productSaver,
         GroupInterface $shirts,
         GroupInterface $pants
     ) {
-        $this->beConstructedWith($groupRepository);
+        $this->beConstructedWith($groupRepository, $productSaver);
     }
 
     function it_is_a_mass_edit_action()

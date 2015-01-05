@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -75,6 +76,7 @@ class EditCommonAttributes extends ProductMassEditOperation
      * @param CatalogContext           $catalogContext
      * @param ProductMassActionManager $massActionManager
      * @param NormalizerInterface      $normalizer
+     * @param BulkSaverInterface       $productSaver
      * @param array                    $classes
      */
     public function __construct(
@@ -85,8 +87,10 @@ class EditCommonAttributes extends ProductMassEditOperation
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
         NormalizerInterface $normalizer,
+        BulkSaverInterface $productSaver,
         array $classes
     ) {
+        parent::__construct($productSaver);
         $this->productManager = $productManager;
         $this->productUpdater = $productUpdater;
         $this->userContext = $userContext;

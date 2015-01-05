@@ -9,7 +9,6 @@ use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Product saver, define custom logic and options for product saving
@@ -26,14 +25,22 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var CompletenessManager */
     protected $completenessManager;
 
+    /** @var ProductSavingOptionsResolver */
+    protected $optionsResolver;
+
     /**
-     * @param ObjectManager       $om
-     * @param CompletenessManager $completenessManager
+     * @param ObjectManager                $om
+     * @param CompletenessManager          $completenessManager
+     * @param ProductSavingOptionsResolver $optionsResolver
      */
-    public function __construct(ObjectManager $om, CompletenessManager $completenessManager)
-    {
+    public function __construct(
+        ObjectManager $om,
+        CompletenessManager $completenessManager,
+        ProductSavingOptionsResolver $optionsResolver
+    ) {
         $this->objectManager       = $om;
         $this->completenessManager = $completenessManager;
+        $this->optionsResolver     = $optionsResolver;
     }
 
     /**
@@ -50,7 +57,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $options = $this->resolveSaveOptions($options);
+        $options = $this->optionsResolver->resolveSaveOptions($options);
 
         $this->objectManager->persist($product);
 
@@ -76,7 +83,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $allOptions = $this->resolveSaveAllOptions($options);
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
 
@@ -87,67 +94,5 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
-    }
-
-    /**
-     * Resolve options for a single save
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveSaveOptions(array $options)
-    {
-        $resolver = $this->createOptionsResolver();
-        $resolver->setDefaults(
-            [
-                'flush' => true,
-                'recalculate' => true,
-                'schedule' => true
-            ]
-        );
-        $options = $resolver->resolve($options);
-
-        return $options;
-    }
-
-    /**
-     * Resolve options for a bulk save
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveSaveAllOptions(array $options)
-    {
-        $resolver = $this->createOptionsResolver();
-        $resolver->setDefaults(
-            [
-                'flush' => true,
-                'recalculate' => false,
-                'schedule' => true,
-            ]
-        );
-        $options = $resolver->resolve($options);
-
-        return $options;
-    }
-
-    /**
-     * @return OptionsResolverInterface
-     */
-    protected function createOptionsResolver()
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'recalculate', 'schedule']);
-        $resolver->setAllowedTypes(
-            [
-                'flush' => 'bool',
-                'recalculate' => 'bool',
-                'schedule' => 'bool'
-            ]
-        );
-
-        return $resolver;
     }
 }

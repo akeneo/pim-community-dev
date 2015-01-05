@@ -2,12 +2,18 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class ChangeStatusSpec extends ObjectBehavior
 {
+    function let(BulkSaverInterface $productSaver)
+    {
+        $this->beConstructedWith($productSaver);
+    }
+
     function it_is_a_mass_edit_action()
     {
         $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
