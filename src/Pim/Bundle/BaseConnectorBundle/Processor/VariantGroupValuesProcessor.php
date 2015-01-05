@@ -7,10 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -50,46 +47,27 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     /** @var NormalizerInterface */
     protected $valueNormalizer;
 
-    /** @var LocaleManager */
-    protected $localeManager;
-
-    /** @var ChannelManager */
-    protected $channelManager;
-
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
-
     /** @var string */
     protected $templateClass;
 
     /**
-     * @param GroupRepository         $groupRepository
-     * @param DenormalizerInterface   $groupValuesDenormalizer
-     * @param ValidatorInterface      $validator
-     * @param NormalizerInterface     $valueNormalizer
-     * @param LocaleManager           $localeManager
-     * @param ChannelManager          $channelManager
-     * @param ObjectDetacherInterface $detacher
-     * @param string                  $templateClass
+     * @param GroupRepository       $groupRepository
+     * @param DenormalizerInterface $groupValuesDenormalizer
+     * @param ValidatorInterface    $validator
+     * @param NormalizerInterface   $valueNormalizer
+     * @param string                $templateClass
      */
     public function __construct(
         GroupRepository $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $validator,
         NormalizerInterface $valueNormalizer,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
-        ObjectDetacherInterface $detacher,
         $templateClass
     ) {
         $this->groupRepository         = $groupRepository;
         $this->groupValuesDenormalizer = $groupValuesDenormalizer;
         $this->validator               = $validator;
         $this->valueNormalizer         = $valueNormalizer;
-        // TODO: Update Pim/Bundle/TransformBundle/Normalizer/Filter/ProductValueNormalizerFilter
-        // not to filter out values for locales and channels if a list is not passed in the context
-        $this->localeManager           = $localeManager;
-        $this->channelManager          = $channelManager;
         $this->templateClass           = $templateClass;
     }
 
@@ -220,14 +198,8 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     {
         $normalizedValues = [];
 
-        $context = [
-            'locales'  => $this->localeManager->getActiveCodes(),
-            'channels' => array_keys($this->channelManager->getChannelChoices()),
-            'entity'   => 'product'
-        ];
-
         foreach ($values as $value) {
-            $normalizedValues[$value->getAttribute()->getCode()][] = $this->valueNormalizer->normalize($value, 'json', $context);
+            $normalizedValues[$value->getAttribute()->getCode()][] = $this->valueNormalizer->normalize($value, 'json', ['entity' => 'product']);
         }
 
         return $normalizedValues;

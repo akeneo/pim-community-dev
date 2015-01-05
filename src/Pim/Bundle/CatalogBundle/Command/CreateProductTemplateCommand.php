@@ -84,14 +84,8 @@ class CreateProductTemplateCommand extends ContainerAwareCommand
         $normalizer = $this->getContainer()->get('pim_serializer');
         $normalizedValues = [];
 
-        $context = [
-            'locales'  => $this->getContainer()->get('pim_catalog.manager.locale')->getActiveCodes(),
-            'channels' => array_keys($this->getContainer()->get('pim_catalog.manager.channel')->getChannelChoices()),
-            'entity'   => 'product'
-        ];
-
         foreach ($productValues as $value) {
-            $normalizedValues[$value->getAttribute()->getCode()][] = $normalizer->normalize($value, 'json', $context);
+            $normalizedValues[$value->getAttribute()->getCode()][] = $normalizer->normalize($value, 'json', ['entity' => 'product']);
         }
 
         return $normalizedValues;

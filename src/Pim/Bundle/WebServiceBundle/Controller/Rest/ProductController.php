@@ -50,8 +50,6 @@ class ProductController extends FOSRestController
                     return new Response(sprintf('Channel "%s" does not exist or is not available', $channel), 403);
                 }
             }
-        } else {
-            $channels = $availableChannels;
         }
 
         $locales = $request->get('locales', $request->get('locale', null));
@@ -63,8 +61,6 @@ class ProductController extends FOSRestController
                     return new Response(sprintf('Locale "%s" does not exist or is not available', $locale), 403);
                 }
             }
-        } else {
-            $locales = $availableLocales;
         }
 
         return $this->handleGetRequest($identifier, $channels, $locales);

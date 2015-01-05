@@ -22,14 +22,10 @@ class TechnicalContext extends RawMinkContext
     {
         $identifiers = $this->getMainContext()->listToArray($identifiers);
         $serializer = $this->getContainer()->get('pim_serializer');
-        $context = [
-            'locales'  => $this->getContainer()->get('pim_catalog.manager.locale')->getActiveCodes(),
-            'channels' => array_keys($this->getContainer()->get('pim_catalog.manager.channel')->getChannelChoices()),
-        ];
 
         foreach ($identifiers as $identifier) {
             $product = $this->getFixturesContext()->getProduct($identifier);
-            $data = $serializer->normalize($product, 'json', $context);
+            $data = $serializer->normalize($product, 'json');
             $values = $data['values'];
 
             foreach ($values as $attributeCode => $valuesData) {
@@ -40,9 +36,9 @@ class TechnicalContext extends RawMinkContext
                         $valueData,
                         'Pim\Bundle\CatalogBundle\Model\ProductValue',
                         'json',
-                        $context + ['attribute' => $attribute]
+                        ['attribute' => $attribute]
                     );
-                    $newData = $serializer->normalize($createdValue, 'json', $context + ['entity' => 'product']);
+                    $newData = $serializer->normalize($createdValue, 'json', ['entity' => 'product']);
 
                     assertSame(
                         $valueData,
