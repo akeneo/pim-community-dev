@@ -43,7 +43,7 @@ class ProductTemplate implements ProductTemplateInterface
     /**
      * {@inheritdoc}
      */
-    public function setValuesData($valuesData)
+    public function setValuesData(array $valuesData)
     {
         $this->valuesData = $valuesData;
 

@@ -27,7 +27,7 @@ interface ProductTemplateInterface
      *
      * @return ProductTemplateInterface
      */
-    public function setValuesData($valuesData);
+    public function setValuesData(array $valuesData);
 
     /**
      * @param ProductValueInterface $value

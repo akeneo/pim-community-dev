@@ -19,8 +19,6 @@ use Symfony\Component\Validator\ValidatorInterface;
  * Variant group values import processor, allows to bind values data into a product template linked to a variant group
  * and validate values, it erases existing values
  *
- * TODO : add specs once json format implemented
- *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -220,7 +218,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
         $messages = [];
         foreach ($violations as $violation) {
             $messages[] = sprintf(
-                "%s : %s",
+                "%s: %s",
                 $violation->getMessage(),
                 $violation->getInvalidValue()
             );
