@@ -129,6 +129,7 @@ job_execution.summary:
   skip: übersprungen
   create: erstellt
   update: aktualisiert
+  displayed: Die ersten Warnungen angezeigt
   charset_validator:
     title: 'Datei Zeichenkodierung:'
     skipped: übersprungen, Erweiterung in der Whitelist
