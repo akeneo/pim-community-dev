@@ -23,13 +23,13 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInt
  */
 class RuleReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
-    /** @var $ruleRepository RuleDefinitionRepositoryInterface */
+    /** @var RuleDefinitionRepositoryInterface */
     protected $ruleRepository;
 
-    /** @var $stepExecution StepExecution */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var bool $allProductsSent Checks if all products are sent to the processor */
+    /** @var bool Checks if all products are sent to the processor */
     protected $allProductsSent = false;
 
     /**

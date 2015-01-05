@@ -25,9 +25,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
  */
 class YamlProcessor extends DummyProcessor
 {
-    /**
-     * @var $serializer ProductRuleContentSerializerInterface
-     */
+    /** @var ProductRuleContentSerializerInterface */
     protected $serializer;
 
     /**
@@ -45,20 +43,25 @@ class YamlProcessor extends DummyProcessor
     {
         $data = [];
         foreach ($item as $ruleDefinition) {
-            /** @var $ruleDefinition RuleDefinition */
+            /** @var RuleDefinition $ruleDefinition */
             if (null === $ruleDefinition) {
                 return null;
             }
-            $deserializedData = $this->serializer->deserialize($ruleDefinition->getContent());
+
+            $ruleContent = $this->serializer->deserialize($ruleDefinition->getContent());
 
             $conditions = [];
             $actions = [];
 
-            $conditions = $this->normalizeConditions($deserializedData, $conditions);
-            $actions = $this->normalizeActions($deserializedData, $actions);
+            $conditions = $this->normalizeConditions($ruleContent, $conditions);
+            $actions = $this->normalizeActions($ruleContent, $actions);
+
+            if (null !== $ruleDefinition->getPriority() && 0 !== $ruleDefinition->getPriority()) {
+                $data[$ruleDefinition->getCode()]['priority'] = $ruleDefinition->getPriority();
+            }
 
             $data[$ruleDefinition->getCode()]['conditions'] = $conditions;
-            $data[$ruleDefinition->getCode()]['actions'] = $actions;
+            $data[$ruleDefinition->getCode()]['actions']    = $actions;
         }
 
         return ['rules' => $data];
@@ -75,15 +78,15 @@ class YamlProcessor extends DummyProcessor
     /**
      * Normalize conditions
      *
-     * @param array $deserializedData
+     * @param array $ruleContent
      * @param array $conditions
      *
      * @return array
      */
-    protected function normalizeConditions(array $deserializedData, array $conditions)
+    protected function normalizeConditions(array $ruleContent, array $conditions)
     {
-        foreach ($deserializedData['conditions'] as $conditionDefinition) {
-            /** @var $conditionDefinition ProductConditionInterface */
+        foreach ($ruleContent['conditions'] as $conditionDefinition) {
+            /** @var ProductConditionInterface $conditionDefinition */
             $condition = [
                 'field' => $conditionDefinition->getField(),
                 'operator' => $conditionDefinition->getOperator(),
@@ -107,14 +110,14 @@ class YamlProcessor extends DummyProcessor
     /**
      * Normalize actions
      *
-     * @param array $deserializedData
+     * @param array $ruleContent
      * @param array $actions
      *
      * @return array
      */
-    protected function normalizeActions(array $deserializedData, array $actions)
+    protected function normalizeActions(array $ruleContent, array $actions)
     {
-        foreach ($deserializedData['actions'] as $actionDefinition) {
+        foreach ($ruleContent['actions'] as $actionDefinition) {
             $action = [];
             if ($actionDefinition instanceof ProductCopyValueActionInterface) {
                 $action = $this->normalizeCopyValueAction($actionDefinition);
@@ -125,7 +128,6 @@ class YamlProcessor extends DummyProcessor
                 $action = $this->normalizeProductSetValueAction($actionDefinition);
             }
 
-            ksort($action);
             $actions[] = $action;
         }
 
