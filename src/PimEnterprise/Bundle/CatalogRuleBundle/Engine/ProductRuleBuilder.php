@@ -62,8 +62,7 @@ class ProductRuleBuilder implements BuilderInterface
      */
     public function build(RuleDefinitionInterface $definition)
     {
-        //@TODO: change the name of the events PRE_LOAD and POST_LOAD
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($definition));
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_BUILD, new RuleEvent($definition));
 
         /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $rule */
         $rule = new $this->ruleClass($definition);
@@ -89,7 +88,7 @@ class ProductRuleBuilder implements BuilderInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($definition));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_BUILD, new RuleEvent($definition));
 
         return $rule;
     }

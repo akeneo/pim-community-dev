@@ -46,8 +46,8 @@ class StopWatchSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::PRE_LOAD    => 'preLoad',
-            RuleEvents::POST_LOAD   => 'postLoad',
+            RuleEvents::PRE_BUILD   => 'preBuild',
+            RuleEvents::POST_BUILD  => 'postBuild',
             RuleEvents::PRE_SELECT  => 'preSelect',
             RuleEvents::POST_SELECT => 'postSelect',
             RuleEvents::PRE_APPLY   => 'preApply',
@@ -60,29 +60,29 @@ class StopWatchSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Track preLoad events
+     * Track preBuild events
      *
      * @param RuleEvent $event
      */
-    public function preLoad(RuleEvent $event)
+    public function preBuild(RuleEvent $event)
     {
         if ($this->stopWatch) {
             $this->stopWatch->start(
                 sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'load'),
-                'rule_loading'
+                'rule_building'
             );
         }
     }
 
     /**
-     * Track postLoad events
+     * Track postBuild events
      *
      * @param RuleEvent $event
      */
-    public function postLoad(RuleEvent $event)
+    public function postBuild(RuleEvent $event)
     {
         if ($this->stopWatch) {
-            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'load'));
+            $this->stopWatch->stop(sprintf(static::NAME_PATTERN, $event->getDefinition()->getCode(), 'build'));
         }
     }
 

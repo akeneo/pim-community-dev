@@ -46,8 +46,8 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $definition->getContent()->shouldBeCalled()->willReturn($strContent);
         $serializer->deserialize($strContent)->shouldBeCalled()->willReturn($content);
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_LOAD, Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch(RuleEvents::POST_LOAD, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(RuleEvents::POST_BUILD, Argument::any())->shouldBeCalled();
         $validator->validate(Argument::any())->shouldBeCalled()->willReturn([]);
 
         $this->build($definition)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface');
@@ -64,7 +64,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $definition->getContent()->shouldBeCalled()->willReturn($strContent);
         $serializer->deserialize($strContent)->willThrow(new \LogicException('Bad content!'));
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_LOAD, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
 
         $this
             ->shouldThrow(new BuilderException('Impossible to build the rule "rule1". Bad content!'))
@@ -85,7 +85,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $definition->getContent()->shouldBeCalled()->willReturn($strContent);
         $serializer->deserialize($strContent)->shouldBeCalled()->willReturn($content);
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_LOAD, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
 
         $validator->validate(Argument::any())->willReturn(['errors']);
 

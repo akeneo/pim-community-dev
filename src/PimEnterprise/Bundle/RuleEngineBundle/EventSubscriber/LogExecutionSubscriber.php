@@ -44,8 +44,8 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::PRE_LOAD    => 'preLoad',
-            RuleEvents::POST_LOAD   => 'postLoad',
+            RuleEvents::PRE_BUILD   => 'preBuild',
+            RuleEvents::POST_BUILD  => 'postBuild',
             RuleEvents::PRE_SELECT  => 'preSelect',
             RuleEvents::POST_SELECT => 'postSelect',
             RuleEvents::PRE_APPLY   => 'preApply',
@@ -54,28 +54,28 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Track preLoad events
+     * Track preBuild events
      *
      * @param RuleEvent $event
      */
-    public function preLoad(RuleEvent $event)
+    public function preBuild(RuleEvent $event)
     {
         $ruleDefinition = $event->getDefinition();
-        // TODO : use const instead of 'preLoad'
-        $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), 'preLoad');
+        // TODO : use const instead of 'preBuild'
+        $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), 'preBuild');
         $this->logger->info($message);
     }
 
     /**
-     * Track postLoad events
+     * Track postBuild events
      *
      * @param RuleEvent $event
      */
-    public function postLoad(RuleEvent $event)
+    public function postBuild(RuleEvent $event)
     {
         $ruleDefinition = $event->getDefinition();
-        // TODO : use const instead of 'postLoad'
-        $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), 'postLoad');
+        // TODO : use const instead of 'postBuild'
+        $message = sprintf(static::NAME_PATTERN, $ruleDefinition->getCode(), 'postBuild');
         $this->logger->info($message);
     }
 

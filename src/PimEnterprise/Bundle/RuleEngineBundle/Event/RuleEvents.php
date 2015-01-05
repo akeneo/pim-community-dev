@@ -19,24 +19,24 @@ namespace PimEnterprise\Bundle\RuleEngineBundle\Event;
 final class RuleEvents
 {
     /**
-     * This event is thrown before executing rule loading.
+     * This event is thrown before executing rule building.
      *
      * The event listener receives an
      * PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent instance.
      *
      * @staticvar string
      */
-    const PRE_LOAD = 'pim_rule_engine.rule.pre_load';
+    const PRE_BUILD = 'pim_rule_engine.rule.pre_build';
 
     /**
-     * This event is thrown after executing rule loading.
+     * This event is thrown after executing rule building.
      *
      * The event listener receives an
      * PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent instance.
      *
      * @staticvar string
      */
-    const POST_LOAD = 'pim_rule_engine.rule.post_load';
+    const POST_BUILD = 'pim_rule_engine.rule.post_build';
 
     /**
      * This event is thrown before executing rule selection.
