@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Gaufrette\Filesystem;
@@ -14,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaManagerSpec extends ObjectBehavior
 {
@@ -167,5 +165,14 @@ class MediaManagerSpec extends ObjectBehavior
         $this
             ->shouldThrow('\InvalidArgumentException')
             ->duringCreateFromFilename('readme.md');
+    }
+
+    function it_can_create_media_from_the_file_path($factory, ProductMediaInterface $media)
+    {
+        $factory->createMedia()->willReturn($media);
+        $media->setFilePath('/uploads/preview.jpg')->shouldBeCalled();
+        $media->setFilename('preview.jpg')->shouldBeCalled();
+
+        $this->createFromFilePath('/uploads/preview.jpg')->shouldReturn($media);
     }
 }
