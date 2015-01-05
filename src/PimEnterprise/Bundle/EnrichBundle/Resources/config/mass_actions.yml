@@ -12,7 +12,7 @@ services:
         parent: pim_enrich.mass_edit_action.operator
         class: %pimee_enrich.mass_edit_action.operator.published_product.class%
         arguments:
-            - @pimee_workflow.manager.published_product
+            - '@pimee_workflow.manager.published_product'
         tags:
             - { name: pim_enrich.mass_edit_action_operator, datagrid: published-product-grid }
 
@@ -35,8 +35,8 @@ services:
         public: false
         class: %pimee_enrich.mass_edit_action.publish.class%
         arguments:
-            - @pimee_workflow.manager.published_product
-            - @security.context
+            - '@pimee_workflow.manager.published_product'
+            - '@security.context'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -49,14 +49,14 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
-            - @pim_catalog.manager.product
-            - @pim_catalog.updater.product
-            - @pim_user.context.user
-            - @pim_catalog.manager.currency
-            - @pim_catalog.context.catalog
-            - @pim_catalog.manager.product_mass_action
-            - @pim_serializer
-            - @pimee_workflow.saver.product_delegating
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.context.catalog'
+            - '@pim_catalog.manager.product_mass_action'
+            - '@pim_serializer'
+            - '@pimee_workflow.saver.product_delegating'
             - {'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
             - @security.context
         tags:
@@ -71,9 +71,9 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.classify.class%
         arguments:
-            - @pim_catalog.manager.category
-            - @pimee_workflow.saver.working_copy_product
-            - @security.context
+            - '@pim_catalog.manager.category'
+            - '@pimee_workflow.saver.working_copy_product'
+            - '@security.context'
         tags:
             -
                 name: pim_enrich.mass_edit_action
