@@ -9,10 +9,12 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -45,6 +47,15 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var NormalizerInterface */
+    protected $valueNormalizer;
+
+    /** @var LocaleManager */
+    protected $localeManager;
+
+    /** @var ChannelManager */
+    protected $channelManager;
+
     /** @var ObjectDetacherInterface */
     protected $detacher;
 
@@ -55,6 +66,9 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      * @param GroupRepository         $groupRepository
      * @param DenormalizerInterface   $groupValuesDenormalizer
      * @param ValidatorInterface      $validator
+     * @param NormalizerInterface     $valueNormalizer
+     * @param LocaleManager           $localeManager
+     * @param ChannelManager          $channelManager
      * @param ObjectDetacherInterface $detacher
      * @param string                  $templateClass
      */
@@ -62,12 +76,20 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
         GroupRepository $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $validator,
+        NormalizerInterface $valueNormalizer,
+        LocaleManager $localeManager,
+        ChannelManager $channelManager,
         ObjectDetacherInterface $detacher,
         $templateClass
     ) {
         $this->groupRepository         = $groupRepository;
         $this->groupValuesDenormalizer = $groupValuesDenormalizer;
         $this->validator               = $validator;
+        $this->valueNormalizer         = $valueNormalizer;
+        // TODO: Update Pim/Bundle/TransformBundle/Normalizer/Filter/ProductValueNormalizerFilter
+        // not to filter out values for locales and channels if a list is not passed in the context
+        $this->localeManager           = $localeManager;
+        $this->channelManager          = $channelManager;
         $this->templateClass           = $templateClass;
     }
 
@@ -84,9 +106,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
 
         // store values as product template format (json)
         $template = $this->getProductTemplate($variantGroup);
-        // TODO replace following line by $structuredValuesData = $this->normalizeValuesToStructuredData($values);
-        // once json implemented
-        $structuredValuesData = $itemValuesData;
+        $structuredValuesData = $this->normalizeValuesToStructuredData($values);
         $template->setValuesData($structuredValuesData);
         $this->validateVariantGroup($variantGroup, $item);
 
@@ -198,8 +218,19 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function normalizeValuesToStructuredData(array $values)
     {
-        // TODO: normalize to json once https://github.com/akeneo/pim-community-dev/pull/1934 merged
-        return null;
+        $normalizedValues = [];
+
+        $context = [
+            'locales'  => $this->localeManager->getActiveCodes(),
+            'channels' => array_keys($this->channelManager->getChannelChoices()),
+            'entity'   => 'product'
+        ];
+
+        foreach ($values as $value) {
+            $normalizedValues[$value->getAttribute()->getCode()][] = $this->valueNormalizer->normalize($value, 'json', $context);
+        }
+
+        return $normalizedValues;
     }
 
     /**
