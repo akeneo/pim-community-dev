@@ -6,14 +6,14 @@
 - switch to minimum-stability:stable in composer.json
 - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - remove BaseFilter usage
-- add a view manager to help integrators to override and add elements to the UI (bat, buttons, etc)
+- add a view manager to help integrators to override and add elements to the UI (tab, buttons, etc)
 - Use ProductInterface and not AbstractProduct
 - Use ProductValueInterface and not AbstractProductValue
 - Use ProductPriceInterface and not AbstractProductPrice
 - Use ProductMediaInterface and not AbstractMetric
 - Use AttributeInterface and not AbstractAttribute
 - Use CompletenessInterface and not AbstractCompleteness
-- Introduce a `ProductDraftSaver` and a `DelegatingProductSaver` with corresponding services to allow to save working copy, product draft or save both depending on permissions
+- Introduce a `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver` and a `PimEnterprise\Bundle\WorkflowBundle\Saver\DelegatingProductSaver` with corresponding services to allow to save working copy, product draft or save both depending on permissions
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
@@ -25,13 +25,16 @@
 - Change of constructor `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove arguments `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` and  `Pim\Bundle\CatalogBundle\Factory\MetricFactory`. `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface` is expected as second argument and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` is expected as seventh argument.
 - Add a requirement regarding the need of the exec() function (for job executions)
 - `PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` has been renamed to `ResolveDoctrineTargetModelsPass`
-- Remove the override of MediaManager
+- Remove the override of `PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager`
 - Move the versioning denormalizers to CE PimTransformBundle, namespaces are changed but the services alias are kept
 - change constructor `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper` which now expects a SecurityContextInterface
 - rename src/PimEnterprise/Bundle/SecurityBundle/Voter/ProductDraftOwnershipVoter.php to ProductDraftVoter
-- changes in constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`, ProductManager argument replaced by SaverInterface and MediaManager added as last arg
+- changes in constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`, ProductManager argument replaced by `Akeneo\Component\Persistence\SaverInterface` and `Pim\Bundle\CatalogBundle\Manager\MediaManager` added as last argument
 - Drop the `bypass_product_draft` from product saving options
 - Replace the `ProductDraftPersister` by different savers
+- Remove the overrides `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`, `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`, `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`
+- Update constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify` to add a `Akeneo\Component\Persistence\BulkSaverInterface` $productSaver argument
+- Update constructor of `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add a `Akeneo\Component\Persistence\BulkSaverInterface` $productSaver argument
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options

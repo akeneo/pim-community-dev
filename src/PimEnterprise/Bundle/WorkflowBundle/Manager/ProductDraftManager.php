@@ -96,7 +96,6 @@ class ProductDraftManager
 
         $product = $productDraft->getProduct();
         $this->applier->apply($product, $productDraft);
-        // TODO : this should be included in the saving process, we inject MediaManager everywhere
         $this->mediaManager->handleProductMedias($product);
 
         $objectManager = $this->registry->getManagerForClass(get_class($productDraft));

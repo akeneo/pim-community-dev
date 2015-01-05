@@ -30,5 +30,3 @@ services:
             - @pim_catalog.object_manager.product
             - @pim_catalog.saver.product_options_resolver
             - @security.context
-
-    # TODO : add a saver for published product
