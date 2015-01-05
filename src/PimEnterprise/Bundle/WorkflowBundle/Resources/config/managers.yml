@@ -24,9 +24,10 @@ services:
         class: %pimee_workflow.manager.product_draft.class%
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.product'
+            - '@pimee_workflow.saver.working_copy_product'
             - '@pim_user.context.user'
             - '@pimee_workflow.factory.product_draft'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.applier.product_draft_changes_applier'
             - '@event_dispatcher'
+            - '@pim_catalog.manager.media'

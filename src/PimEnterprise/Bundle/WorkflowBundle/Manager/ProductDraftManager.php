@@ -11,8 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Akeneo\Component\Persistence\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
@@ -33,8 +34,8 @@ class ProductDraftManager
     /** @var ManagerRegistry */
     protected $registry;
 
-    /** @var ProductManager */
-    protected $manager;
+    /** @var SaverInterface */
+    protected $workingCopySaver;
 
     /** @var UserContext */
     protected $userContext;
@@ -53,29 +54,32 @@ class ProductDraftManager
 
     /**
      * @param ManagerRegistry                 $registry
-     * @param ProductManager                  $manager
+     * @param SaverInterface                  $workingCopySaver
      * @param UserContext                     $userContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftChangesApplier      $applier
      * @param EventDispatcherInterface        $dispatcher
+     * @param MediaManager                    $mediaManager
      */
     public function __construct(
         ManagerRegistry $registry,
-        ProductManager $manager,
+        SaverInterface $workingCopySaver,
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
         ProductDraftChangesApplier $applier,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        MediaManager $mediaManager
     ) {
         $this->registry = $registry;
-        $this->manager = $manager;
+        $this->workingCopySaver = $workingCopySaver;
         $this->userContext = $userContext;
         $this->factory = $factory;
         $this->repository = $repository;
         $this->applier = $applier;
         $this->dispatcher = $dispatcher;
+        $this->mediaManager = $mediaManager;
     }
 
     /**
@@ -92,14 +96,13 @@ class ProductDraftManager
 
         $product = $productDraft->getProduct();
         $this->applier->apply($product, $productDraft);
+        $this->mediaManager->handleProductMedias($product);
 
-        $this->manager->handleMedia($product);
+        $objectManager = $this->registry->getManagerForClass(get_class($productDraft));
+        $objectManager->remove($productDraft);
+        $objectManager->flush();
 
-        $manager = $this->registry->getManagerForClass(get_class($productDraft));
-        $manager->remove($productDraft);
-        $manager->flush();
-
-        $this->manager->save($product, ['bypass_product_draft' => true]);
+        $this->workingCopySaver->save($product);
     }
 
     /**
@@ -109,12 +112,12 @@ class ProductDraftManager
      */
     public function refuse(ProductDraft $productDraft)
     {
-        $manager = $this->registry->getManagerForClass(get_class($productDraft));
+        $objectManager = $this->registry->getManagerForClass(get_class($productDraft));
 
         if (!$productDraft->isInProgress()) {
             $productDraft->setStatus(ProductDraft::IN_PROGRESS);
         } else {
-            $manager->remove($productDraft);
+            $objectManager->remove($productDraft);
         }
 
         $this->dispatcher->dispatch(
@@ -122,7 +125,7 @@ class ProductDraftManager
             new ProductDraftEvent($productDraft)
         );
 
-        $manager->flush();
+        $objectManager->flush();
     }
 
     /**

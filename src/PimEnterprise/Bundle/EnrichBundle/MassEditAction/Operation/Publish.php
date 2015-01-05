@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -22,16 +22,12 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class Publish extends ProductMassEditOperation
+class Publish extends AbstractMassEditAction
 {
-    /**
-     * @var PublishedProductManager
-     */
+    /** @var PublishedProductManager */
     protected $manager;
 
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
     /**
@@ -80,6 +76,31 @@ class Publish extends ProductMassEditOperation
     public function setNotGrantedIdentifiers($notGranted)
     {
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function perform()
+    {
+        foreach ($this->objects as $key => $object) {
+            if (!$object instanceof ProductInterface) {
+                throw new \LogicException(
+                    sprintf(
+                        'Cannot perform mass edit action "%s" on object of type "%s", '.
+                        'expecting "Pim\Bundle\CatalogBundle\Model\ProductInterface"',
+                        __CLASS__,
+                        get_class($object)
+                    )
+                );
+            }
+
+            try {
+                $this->doPerform($object);
+            } catch (\RuntimeException $e) {
+                unset($this->objects[$key]);
+            }
+        }
     }
 
     /**
