@@ -17,6 +17,15 @@ parameters:
     pim_serializer.normalizer.product_value.class:          Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValueNormalizer
     pim_serializer.filter.product_value.class:              Pim\Bundle\TransformBundle\Normalizer\Filter\ProductValueNormalizerFilter
 
+    pim_serializer.denormalizer.product_value.class:     Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValueDenormalizer
+    pim_serializer.denormalizer.base_value.class:        Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BaseValueDenormalizer
+    pim_serializer.denormalizer.attribute_option.class:  Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\AttributeOptionDenormalizer
+    pim_serializer.denormalizer.attribute_options.class: Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\AttributeOptionsDenormalizer
+    pim_serializer.denormalizer.prices.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\PricesDenormalizer
+    pim_serializer.denormalizer.metric.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer
+    pim_serializer.denormalizer.datetime.class:          Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
+    pim_serializer.denormalizer.media.class:             Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MediaDenormalizer
+
 services:
     # Normalizers
     pim_serializer.normalizer.product:
@@ -116,3 +125,64 @@ services:
     # Filters
     pim_serializer.filter.product_value:
         class: %pim_serializer.filter.product_value.class%
+
+    # Denormalizers
+    pim_serializer.denormalizer.product_value:
+        class: %pim_serializer.denormalizer.product_value.class%
+        arguments:
+            - %pim_catalog.entity.product_value.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.base_value:
+        class: %pim_serializer.denormalizer.base_value.class%
+        arguments:
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number', 'pim_catalog_boolean']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.attribute_option:
+        class: %pim_serializer.denormalizer.attribute_option.class%
+        arguments:
+            - ['pim_catalog_simpleselect']
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.attribute_options:
+        class: %pim_serializer.denormalizer.attribute_options.class%
+        arguments:
+            - ['pim_catalog_multiselect']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.prices:
+        class: %pim_serializer.denormalizer.prices.class%
+        arguments:
+            - ['pim_catalog_price_collection']
+            - %pim_catalog.entity.product_price.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.metric:
+        class: %pim_serializer.denormalizer.metric.class%
+        arguments:
+            - ['pim_catalog_metric']
+            - '@pim_catalog.factory.metric'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.datetime:
+        class: %pim_serializer.denormalizer.datetime.class%
+        arguments:
+            - ['pim_catalog_date']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.media:
+        class: %pim_serializer.denormalizer.media.class%
+        arguments:
+            - ['pim_catalog_image', 'pim_catalog_file']
+            - '@pim_catalog.manager.media'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
