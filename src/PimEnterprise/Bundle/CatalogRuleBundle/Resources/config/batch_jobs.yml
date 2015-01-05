@@ -21,3 +21,13 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_catalog_rule.processor.rule_definition
                         writer:    pimee_catalog_rule.writer.doctrine.rule_definition
+        yml_rule_export:
+            title: pimee_catalog_rule.jobs.yml_rule_export.title
+            type:  export
+            steps:
+                export:
+                    title: pimee_catalog_rule.jobs.yml_rule_export.export.title
+                    services:
+                        reader:    pimee_catalog_rule.reader
+                        processor: pimee_catalog_rule.processor.yaml.rule_definition
+                        writer:    pimee_catalog_rule.writer.yaml.rule_definition
