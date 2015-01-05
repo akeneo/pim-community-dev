@@ -200,6 +200,22 @@ class MediaManager
     }
 
     /**
+     * Create a media from file path
+     *
+     * @param string $filePath
+     *
+     * @return ProductMediaInterface
+     */
+    public function createFromFilePath($filePath)
+    {
+        $media = $this->factory->createMedia();
+        $media->setFilename(pathinfo($filePath, PATHINFO_BASENAME));
+        $media->setFilePath($filePath);
+
+        return $media;
+    }
+
+    /**
      * Get the export path of the media
      *
      * Examples:
