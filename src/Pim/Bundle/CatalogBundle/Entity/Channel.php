@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Channel entity
@@ -180,7 +181,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function addLocale(Locale $locale)
+    public function addLocale(LocaleInterface $locale)
     {
         if (!$this->hasLocale($locale)) {
             $this->locales[] = $locale;
@@ -193,7 +194,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeLocale(Locale $locale)
+    public function removeLocale(LocaleInterface $locale)
     {
         $this->locales->removeElement($locale);
         $locale->removeChannel($this);
@@ -204,7 +205,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function hasLocale(Locale $locale)
+    public function hasLocale(LocaleInterface $locale)
     {
         return $this->locales->contains($locale);
     }

@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 
 class CompletenessNormalizerSpec extends ObjectBehavior
@@ -24,7 +24,7 @@ class CompletenessNormalizerSpec extends ObjectBehavior
     function it_normalizes_completeness(
         Completeness $completeness,
         Channel $channel,
-        Locale $locale
+        LocaleInterface $locale
     ) {
         $channel->getCode()->willReturn('ecommerce');
         $locale->getCode()->willReturn('en_US');

@@ -26,7 +26,7 @@ class AttributeOptionValue
     protected $option;
 
     /**
-     * Locale scope
+     * LocaleInterface scope
      * @var string $locale
      */
     protected $locale;
