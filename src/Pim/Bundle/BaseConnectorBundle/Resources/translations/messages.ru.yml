@@ -92,7 +92,6 @@ pim_base_connector:
       help: Название колонки групп
     filePath:
       label: Файл
-      help: CSV-файл для импорта
     uploadAllowed:
       label: Разрешить загрузку файлов
       help: Разрешить загрузку файлов
