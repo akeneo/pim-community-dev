@@ -13,10 +13,10 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 // TODO : Alias 'SymfonyComponentEventDispatcherEventDispatcher' is never used
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Component\Persistence\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;

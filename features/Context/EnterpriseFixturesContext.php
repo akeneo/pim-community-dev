@@ -660,13 +660,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
      *
      * @throws \InvalidArgumentException
      */
     public function getRule($code)
     {
-        $rule = $this->getRuleRepository()->findOneByCode($code);
+        $rule = $this->getRuleDefinitionRepository()->findOneByCode($code);
         if (!$rule) {
             throw new \InvalidArgumentException(sprintf('Could not find a rule with code "%s"', $code));
         }
@@ -677,7 +677,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @return RuleDefinitionRepositoryInterface
      */
-    protected function getRuleRepository()
+    protected function getRuleDefinitionRepository()
     {
         return $this->getContainer()->get('pimee_rule_engine.repository.rule');
     }

@@ -55,7 +55,6 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
         $this->postApply($event);
     }
 
-
     function it_logs_post_apply_rule_error(
         $logger,
         SelectedRuleEvent $event,

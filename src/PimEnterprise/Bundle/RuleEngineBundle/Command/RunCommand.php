@@ -76,14 +76,15 @@ class RunCommand extends ContainerAwareCommand
     }
 
     /**
-     * TODO: phpdoc
-     *
      * Run a single rule
+     *
      * @param DryRunnerInterface $runnerRegistry
      * @param OutputInterface    $output
-     * @param RuleInterface      $rule
-     * @param boolean            $dryRun
-     * @param boolean            $stopOnError
+     * @param RuleDefinition     $rule
+     * @param bool               $dryRun
+     * @param bool               $stopOnError
+     *
+     * @throws \Exception
      */
     protected function runRule(
         DryRunnerInterface $runnerRegistry,

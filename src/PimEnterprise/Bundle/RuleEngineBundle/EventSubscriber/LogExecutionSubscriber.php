@@ -101,7 +101,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.' : %s items selected'; //TODO: add to the sprintf
+        $pattern = static::NAME_PATTERN.' : %s items selected'; 
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -120,7 +120,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.' : %s items to update'; //TODO: add to the sprintf
+        $pattern = static::NAME_PATTERN.' : %s items to update'; 
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -139,7 +139,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.' : %s items updated'; //TODO: add to the sprintf
+        $pattern = static::NAME_PATTERN.' : %s items updated'; 
         $message = sprintf($pattern, $ruleDefinition->getCode(), 'postApply', count($subjectSet->getSubjects()));
         $this->logger->info($message);
 
@@ -158,11 +158,11 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     protected function logSkippedSubjects($ruleCode, $skippedSubjects)
     {
         if (count($skippedSubjects) > 0) {
-            $pattern = static::NAME_PATTERN . ' : %s subjects skipped'; //TODO: add to the sprintf
+            $pattern = static::NAME_PATTERN . ' : %s subjects skipped'; 
             $message = sprintf($pattern, $ruleCode, 'postApply', count($skippedSubjects));
             $this->logger->error($message);
 
-            $patternItem = static::NAME_PATTERN . ' : subject "%s" has been skipped due to "%s"'; //TODO: use the sprintf
+            $patternItem = static::NAME_PATTERN . ' : subject "%s" has been skipped due to "%s"';
             foreach ($skippedSubjects as $skippedItem) {
                 $skippedSubject = $skippedItem['subject'];
                 $skippedReasons = implode(', ', $skippedItem['reasons']);

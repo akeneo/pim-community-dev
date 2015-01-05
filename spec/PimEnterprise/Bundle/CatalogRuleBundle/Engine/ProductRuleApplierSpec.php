@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Component\Persistence\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -21,8 +21,6 @@ use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
-
-    /** @var const string */
     const RULE_DEFINITION_CLASS = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition';
 
     public function let(

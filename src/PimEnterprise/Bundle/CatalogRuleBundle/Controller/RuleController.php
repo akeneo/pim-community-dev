@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
-// TODO Alias 'OroBundleSecurityBundleAnnotationAclAncestor' is never used
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
