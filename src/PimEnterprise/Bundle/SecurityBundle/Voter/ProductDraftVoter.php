@@ -77,7 +77,6 @@ class ProductDraftVoter implements VoterInterface
                     return $this->canApprove($token->getUser(), $object) ?
                         VoterInterface::ACCESS_GRANTED :
                         VoterInterface::ACCESS_DENIED;
-
                 } elseif (Attributes::OWN === $attribute) {
                     return $this->isOwner($token->getUser(), $object) ?
                         VoterInterface::ACCESS_GRANTED :

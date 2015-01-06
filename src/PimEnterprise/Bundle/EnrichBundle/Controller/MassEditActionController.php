@@ -33,7 +33,6 @@ class MassEditActionController extends BaseMassEditActionController
         $isValid = parent::isExecutable();
         if ($gridName !== 'product-grid') {
             return $isValid;
-
         } else {
             return $this->editableProducts();
         }
