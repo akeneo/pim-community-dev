@@ -5,14 +5,15 @@ namespace spec\Pim\Bundle\CatalogBundle\Saver;
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
 use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class BaseSaverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager)
+    function let(ObjectManager $objectManager, BaseSavingOptionsResolver $optionsResolver)
     {
-        $this->beConstructedWith($objectManager, 'Pim\Bundle\CatalogBundle\Entity\GroupType');
+        $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Entity\GroupType');
     }
 
     function it_is_a_saver()
@@ -20,22 +21,34 @@ class BaseSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
     }
 
-    function it_persists_the_object_and_flush_the_unit_of_work($objectManager, GroupType $type)
+    function it_persists_the_object_and_flush_the_unit_of_work($objectManager, $optionsResolver, GroupType $type)
     {
+        $optionsResolver->resolveSaveOptions([])
+            ->shouldBeCalled()
+            ->willReturn(['flush' => true, 'flush_only_object' => false]);
+
         $objectManager->persist($type)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $this->save($type);
     }
 
-    function it_persists_the_object_and_dont_flush($objectManager, GroupType $type)
+    function it_persists_the_object_and_dont_flush($objectManager, $optionsResolver, GroupType $type)
     {
+        $optionsResolver->resolveSaveOptions(['flush' => false])
+            ->shouldBeCalled()
+            ->willReturn(['flush' => false, 'flush_only_object' => false]);
+
         $objectManager->persist($type)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
         $this->save($type, ['flush' => false]);
     }
 
-    function it_persists_the_object_and_flush_only_the_object($objectManager, GroupType $type)
+    function it_persists_the_object_and_flush_only_the_object($objectManager, $optionsResolver, GroupType $type)
     {
+        $optionsResolver->resolveSaveOptions(['flush_only_object' => true])
+            ->shouldBeCalled()
+            ->willReturn(['flush' => true, 'flush_only_object' => true]);
+
         $objectManager->persist($type)->shouldBeCalled();
         $objectManager->flush($type)->shouldBeCalled();
         $this->save($type, ['flush_only_object' => true]);
@@ -54,16 +67,5 @@ class BaseSaverSpec extends ObjectBehavior
                 )
             )
             ->during('save', [$anythingElse]);
-    }
-
-    function it_throws_an_exception_when_unknown_saving_option_is_used(
-        $objectManager,
-        GroupType $type
-    ) {
-        $objectManager->persist(Argument::any())->shouldNotBeCalled();
-
-        $this
-            ->shouldThrow(new InvalidOptionsException('The option "fake_option" does not exist. Known options are: "flush", "flush_only_object"'))
-            ->duringSave($type, ['fake_option' => true, 'flush' => false, 'flush_only_object' => false]);
     }
 }
