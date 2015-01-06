@@ -34,7 +34,7 @@ class ViewUpdaterRegistry
      *
      * @return ViewUpdaterInterface[]
      */
-    public function get()
+    public function getUpdaters()
     {
         ksort($this->updaters);
 

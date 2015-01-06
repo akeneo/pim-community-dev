@@ -36,6 +36,9 @@ class ProductFormView implements ProductFormViewInterface
     /** @var ViewUpdaterRegistry */
     protected $viewUpdaterRegistry;
 
+    /**
+     * @param ViewUpdaterRegistry $viewUpdaterRegistry
+     */
     public function __construct(ViewUpdaterRegistry $viewUpdaterRegistry)
     {
         $this->viewUpdaterRegistry = $viewUpdaterRegistry;
@@ -186,7 +189,7 @@ class ProductFormView implements ProductFormViewInterface
      */
     protected function updateView(array $view)
     {
-        $viewUpdaters = $this->viewUpdaterRegistry->get();
+        $viewUpdaters = $this->viewUpdaterRegistry->getUpdaters();
 
         foreach ($viewUpdaters as $viewUpdater) {
             $viewUpdater->update($view);

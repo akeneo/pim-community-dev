@@ -8,10 +8,21 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
+/**
+ * View updater for variant groups
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class VariantViewUpdater implements ViewUpdaterInterface
 {
+    /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
+    /**
+     * @param PropertyAccessorInterface $propertyAccessor
+     */
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {
         $this->propertyAccessor = $propertyAccessor;
@@ -32,7 +43,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
             try {
                 $productValue = $this->propertyAccessor->getValue($valueFormView, 'vars[value]');
             } catch (NoSuchPropertyException $e) {
-                throw $e;
+                throw new \LogicException($e->getMessage(), $e->getCode(), $e);
             }
 
             if ($this->isUpdatedByVariant($productValue)) {
@@ -44,7 +55,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
     /**
      * Check if an attribute is updated by a variant group or not
      *
-     * @param array  $views
+     * @param ProductValueInterface $productValue
      */
     protected function isUpdatedByVariant(ProductValueInterface $productValue)
     {
@@ -77,6 +88,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
 
     /**
      * Mark attribute as variant
+     *
      * @param FormView $view
      */
     protected function markAttributeAsUpdatedByVariant(FormView $view, $value)
