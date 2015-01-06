@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 
 /**
-* Abstract query generator
+ * Abstract query generator
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

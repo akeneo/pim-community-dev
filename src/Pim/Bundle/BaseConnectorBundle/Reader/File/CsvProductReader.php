@@ -42,7 +42,7 @@ class CsvProductReader extends CsvReader
      * Constructor
      *
      * @param EntityManager    $entityManager
-     * @param FieldNameBuilder $fieldNameBuilder,
+     * @param FieldNameBuilder $fieldNameBuilder
      * @param string           $attributeClass
      * @param string           $channelClass
      * @param string           $localeClass

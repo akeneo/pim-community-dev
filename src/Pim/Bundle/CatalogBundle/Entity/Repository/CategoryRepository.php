@@ -233,7 +233,6 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         } else {
             $selectNode = $this->findOneBy(array('id' => $selectNodeId));
             if ($selectNode != null) {
-
                 $meta = $this->getClassMetadata();
                 $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
@@ -313,7 +312,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
             // the node present itself in the set
             $nodeIt = 0;
             $foundItemLess = false;
-            $nodeIds= array_keys($vectorMap);
+            $nodeIds = array_keys($vectorMap);
             $nodesByLevel = array();
 
             while ($nodeIt < count($nodeIds) && !$foundItemLess) {

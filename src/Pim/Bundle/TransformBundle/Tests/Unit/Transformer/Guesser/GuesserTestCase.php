@@ -31,6 +31,5 @@ class GuesserTestCase extends \PHPUnit_Framework_TestCase
         $this->columnInfo->expects($this->any())
             ->method('getPropertyPath')
             ->will($this->returnValue($this->propertyPath));
-
     }
 }

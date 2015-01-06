@@ -24,9 +24,9 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     protected $form;
 
     protected $localeConfig = array(
-        'locales'=>array(
-            'fr_FR' => array('label'=>'fr_FR'),
-            'en_US' => array('label'=>'en_US')
+        'locales' => array(
+            'fr_FR' => array('label' => 'fr_FR'),
+            'en_US' => array('label' => 'en_US')
         )
     );
 

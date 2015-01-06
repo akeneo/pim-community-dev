@@ -14,5 +14,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimCommentBundle extends Bundle
 {
-
 }

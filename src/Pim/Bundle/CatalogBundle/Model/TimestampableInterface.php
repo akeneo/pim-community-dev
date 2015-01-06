@@ -40,6 +40,6 @@ interface TimestampableInterface
      * @param \Datetime $updated
      *
      * @return TimestampableInterface
-    */
+     */
     public function setUpdated($updated);
 }

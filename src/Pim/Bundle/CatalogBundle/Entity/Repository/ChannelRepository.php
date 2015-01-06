@@ -27,7 +27,7 @@ class ChannelRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('label' =>'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = array('label' => 'ASC'))
     {
         return parent::findOneBy($criteria, $orderBy);
     }

@@ -43,7 +43,7 @@ class ChannelManager implements SaverInterface
     }
 
     /**
-     * '@inheritdoc}
+     * {@inheritdoc}
      */
     public function save($channel, array $options = [])
     {

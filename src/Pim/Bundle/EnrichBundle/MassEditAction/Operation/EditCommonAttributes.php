@@ -324,7 +324,6 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
-
             $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
             // if the value is localizable, let's use the locale the user has chosen in the form
             $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;

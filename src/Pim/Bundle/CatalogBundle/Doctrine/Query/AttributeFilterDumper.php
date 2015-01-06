@@ -49,7 +49,7 @@ class AttributeFilterDumper implements DumperInterface
                 $class = 'Not supported';
                 $operators = '';
             }
-            $rows[]= [
+            $rows[] = [
                 $field,
                 $attribute->isLocalizable() ? 'yes' : 'no',
                 $attribute->isScopable() ? 'yes' : 'no',

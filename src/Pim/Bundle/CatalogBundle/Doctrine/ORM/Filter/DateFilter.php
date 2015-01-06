@@ -90,7 +90,6 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
-
         } elseif ($operator === Operators::NOT_BETWEEN) {
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.values',
@@ -104,7 +103,6 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                     $this->qb->expr()->gt($backendField, $this->getDateLiteralExpr($value[1], true))
                 )
             );
-
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
@@ -241,8 +239,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     }
 
     /**
-     * @param $type
-     * @param $value
+     * @param string $type
+     * @param mixed  $value
      *
      * @return string
      */

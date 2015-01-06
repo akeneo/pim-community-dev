@@ -51,7 +51,7 @@ interface ProductQueryBuilderInterface
     /**
      * Set query builder
      *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
      *
      * @return ProductQueryBuilderInterface
      */

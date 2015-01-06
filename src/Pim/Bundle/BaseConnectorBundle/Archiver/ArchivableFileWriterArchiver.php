@@ -48,10 +48,10 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
             }
             $writer = $step->getWriter();
             if ($this->isWriterUsable($writer)) {
-                    $filesystem = $this->getZipFilesystem(
-                        $jobExecution,
-                        sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
-                    );
+                $filesystem = $this->getZipFilesystem(
+                    $jobExecution,
+                    sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
+                );
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
                     $filesystem->write($localPath, file_get_contents($fullPath), true);

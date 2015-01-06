@@ -37,10 +37,10 @@ class QueryFilterRegistry implements QueryFilterRegistryInterface
     public function register(FilterInterface $filter)
     {
         if ($filter instanceof FieldFilterInterface) {
-            $this->fieldFilters[]= $filter;
+            $this->fieldFilters[] = $filter;
         }
         if ($filter instanceof AttributeFilterInterface) {
-            $this->attributeFilters[]= $filter;
+            $this->attributeFilters[] = $filter;
         }
     }
 

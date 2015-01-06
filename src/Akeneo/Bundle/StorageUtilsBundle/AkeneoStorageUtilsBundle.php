@@ -31,7 +31,6 @@ class AkeneoStorageUtilsBundle extends Bundle
     public function __construct()
     {
         if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
-
             \Doctrine\ODM\MongoDB\Types\Type::registerType(
                 self::ODM_ENTITIES_TYPE,
                 'Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entities'
@@ -60,6 +59,10 @@ class AkeneoStorageUtilsBundle extends Bundle
         }
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param array            $mappings
+     */
     protected function registerDoctrineMappingDriver(ContainerBuilder $container, array $mappings)
     {
         $container->addCompilerPass(

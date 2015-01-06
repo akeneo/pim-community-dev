@@ -49,7 +49,8 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'prePersist', 'preUpdate'
+            'prePersist',
+            'preUpdate'
         );
     }
 

@@ -155,8 +155,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     }
 
     /**
-     * @param $type
-     * @param $value
+     * @param string $type
+     * @param mixed  $value
      *
      * @return string
      */

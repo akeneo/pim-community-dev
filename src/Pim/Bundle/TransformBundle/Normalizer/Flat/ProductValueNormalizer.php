@@ -83,7 +83,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $data = $this->sortOptions($data);
                 $context['field_name'] = $fieldName;
                 $result = $this->serializer->normalize($data, $format, $context);
-
             } else {
                 $context['field_name'] = $fieldName;
                 $result = $this->serializer->normalize($data, $format, $context);

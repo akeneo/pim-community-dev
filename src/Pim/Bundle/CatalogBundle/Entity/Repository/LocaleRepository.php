@@ -26,7 +26,7 @@ class LocaleRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('code' =>'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = array('code' => 'ASC'))
     {
         return parent::findOneBy($criteria, $orderBy);
     }
