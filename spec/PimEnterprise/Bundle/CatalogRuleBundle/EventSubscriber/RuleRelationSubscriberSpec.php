@@ -8,26 +8,26 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
-use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class LinkedResourceSubscriberSpec extends ObjectBehavior
+class RuleRelationSubscriberSpec extends ObjectBehavior
 {
     function let(
-        RuleLinkedResourceManager $linkedResManager,
-        EntityRepository          $ruleLinkedResRepo,
-        ProductRuleBuilder        $productRuleBuilder
+        RuleRelationManager $ruleRelationManager,
+        EntityRepository $ruleRelationRepo,
+        ProductRuleBuilder $productRuleBuilder
     ) {
         $this->beConstructedWith(
-            $linkedResManager,
-            $ruleLinkedResRepo,
+            $ruleRelationManager,
+            $ruleRelationRepo,
             $productRuleBuilder,
-            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource'
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation'
         );
     }
 
@@ -36,64 +36,64 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
-    function it_deletes_a_rule_linked_resource(
-        $ruleLinkedResRepo,
-        $linkedResManager,
+    function it_deletes_a_rule_relation(
+        $ruleRelationRepo,
+        $ruleRelationManager,
         GenericEvent $event,
         AttributeInterface $attribute,
-        RuleLinkedResourceInterface $ruleLinkedResource
+        RuleRelationInterface $ruleRelation
     ) {
         $event->getSubject()->shouldBeCalled()->willReturn($attribute);
 
         $attribute->getId()->willReturn(42);
 
 
-        $ruleLinkedResRepo->findBy(
+        $ruleRelationRepo->findBy(
             Argument::any()
-        )->shouldBeCalled()->willReturn([$ruleLinkedResource]);
+        )->shouldBeCalled()->willReturn([$ruleRelation]);
 
-        $linkedResManager->remove($ruleLinkedResource)->shouldBeCalled();
+        $ruleRelationManager->remove($ruleRelation)->shouldBeCalled();
 
         $this->removeAttribute($event);
     }
 
-    function it_does_not_delete_a_rule_linked_resource_when_argument_is_not_the_required_type(
-        $linkedResManager,
+    function it_does_not_delete_a_rule_relation_when_argument_is_not_the_required_type(
+        $ruleRelationManager,
         GenericEvent $event,
         ProductInterface $product
     ) {
         $event->getSubject()->shouldBeCalled()->willReturn($product);
-        $linkedResManager->remove(Argument::any())->shouldNotBeCalled();
+        $ruleRelationManager->remove(Argument::any())->shouldNotBeCalled();
 
         $this->removeAttribute($event);
     }
 
-    function it_saves_a_new_rule_linked_resource(
+    function it_saves_a_new_rule_relation(
         $productRuleBuilder,
-        $linkedResManager,
-        $ruleLinkedResRepo,
+        $ruleRelationManager,
+        $ruleRelationRepo,
         RuleEvent $event,
         Rule $rule,
         AbstractAttribute $attribute1,
         AbstractAttribute $attribute2,
         RuleDefinitionInterface $definition,
-        RuleLinkedResourceInterface $oldResource1,
-        RuleLinkedResourceInterface $oldResource2
+        RuleRelationInterface $oldResource1,
+        RuleRelationInterface $oldResource2
     ) {
         $event->getDefinition()->shouldBeCalled()->willReturn($definition);
         $definition->getId()->willReturn(42);
 
         // delete old resources
-        $ruleLinkedResRepo->findBy(['rule' => 42])->willReturn([$oldResource1, $oldResource2]);
-        $linkedResManager->remove($oldResource1)->shouldBeCalled();
-        $linkedResManager->remove($oldResource2)->shouldBeCalled();
+        $ruleRelationRepo->findBy(['rule' => 42])->willReturn([$oldResource1, $oldResource2]);
+        $ruleRelationManager->remove($oldResource1)->shouldBeCalled();
+        $ruleRelationManager->remove($oldResource2)->shouldBeCalled();
 
         // add new resources
         $productRuleBuilder->build($definition)->shouldBeCalled()->willReturn($rule);
 
         $rule->getActions()->shouldBeCalled()->willReturn([['field' => 'name', 'to_field' => 'description']]);
 
-        $linkedResManager->getImpactedAttributes([['field' => 'name', 'to_field' => 'description']])
+        $ruleRelationManager->getImpactedAttributes([['field' => 'name', 'to_field' => 'description']])
             ->shouldBeCalled()->willReturn([$attribute1, $attribute2]);
 
         $attribute1->__toString()->willReturn('name');
@@ -102,7 +102,7 @@ class LinkedResourceSubscriberSpec extends ObjectBehavior
         $attribute2->__toString()->willReturn('description');
         $attribute2->getId()->willReturn(43);
 
-        $linkedResManager->save(Argument::type('PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource'))
+        $ruleRelationManager->save(Argument::type('PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation'))
             ->shouldBeCalledTimes(2);
 
         $this->saveRule($event);

@@ -1,6 +1,6 @@
-PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource:
+PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation:
     type: entity
-    table: pimee_catalog_rule_rule_linked_resource
+    table: pimee_catalog_rule_rule_relation
     indexes:
         resource_name_resource_id_idx:
             columns:

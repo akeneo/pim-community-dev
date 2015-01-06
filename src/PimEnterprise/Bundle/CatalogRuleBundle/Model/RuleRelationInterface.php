@@ -17,9 +17,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
  * Link between a rule and a resource to know that the rule if applicable to the resource.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
- * TODO: rename to RuleRelationInterface
  */
-interface RuleLinkedResourceInterface
+interface RuleRelationInterface
 {
     /**
      * @return RuleDefinitionInterface
@@ -39,21 +38,21 @@ interface RuleLinkedResourceInterface
     /**
      * @param RuleDefinitionInterface $rule
      *
-     * @return RuleLinkedResourceInterface
+     * @return RuleRelationInterface
      */
     public function setRule(RuleDefinitionInterface $rule);
 
     /**
      * @param string $resourceName
      *
-     * @return RuleLinkedResourceInterface
+     * @return RuleRelationInterface
      */
     public function setResourceName($resourceName);
 
     /**
      * @param mixed $resourceId
      *
-     * @return RuleLinkedResourceInterface
+     * @return RuleRelationInterface
      */
     public function setResourceId($resourceId);
 }

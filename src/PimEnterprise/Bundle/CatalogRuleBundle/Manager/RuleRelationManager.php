@@ -18,18 +18,18 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
- * Class RuleLinkedResourceManager
+ * Class RuleRelationManager
  *
  * TODO : this "manager" looks like a Saver + a Remover + shortcuts to repository which is a service and could
  * be directly injected to avoid to add bunch of mess in this "Manager", let's avoid the systematic "Manager" naming
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
+class RuleRelationManager implements SaverInterface, RemoverInterface
 {
     /** @var EntityManager */
     protected $entityManager;
@@ -39,7 +39,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
 
     //TODO: use a real interface fir this repo
     /** @var EntityRepository */
-    protected $ruleLinkedResRepo;
+    protected $ruleRelationRepo;
 
     /** @var string */
     protected $attributeClass;
@@ -49,19 +49,19 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      *
      * @param EntityManager       $entityManager
      * @param AttributeRepository $attributeRepository
-     * @param EntityRepository    $ruleLinkedResRepo
+     * @param EntityRepository    $ruleRelationRepo
      * @param string              $attributeClass
      */
     public function __construct(
         EntityManager $entityManager,
         AttributeRepository $attributeRepository,
-        EntityRepository $ruleLinkedResRepo,
+        EntityRepository $ruleRelationRepo,
         $attributeClass
     ) {
-        $this->entityManager       = $entityManager;
+        $this->entityManager = $entityManager;
         $this->attributeRepository = $attributeRepository;
-        $this->ruleLinkedResRepo   = $ruleLinkedResRepo;
-        $this->attributeClass      = $attributeClass;
+        $this->ruleRelationRepo = $ruleRelationRepo;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -69,10 +69,10 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof RuleLinkedResourceInterface) {
+        if (!$object instanceof RuleRelationInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface,
+                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface,
                     "%s" provided',
                     ClassUtils::getClass($object)
                 )
@@ -92,10 +92,10 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof RuleLinkedResourceInterface) {
+        if (!$object instanceof RuleRelationInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResourceInterface,
+                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface,
                     "%s" provided',
                     ClassUtils::getClass($object)
                 )
@@ -144,7 +144,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
      */
     public function isAttributeImpacted($attributeId)
     {
-        return $this->ruleLinkedResRepo->isResourceImpactedByRule($attributeId, $this->attributeClass);
+        return $this->ruleRelationRepo->isResourceImpactedByRule($attributeId, $this->attributeClass);
     }
 
     /**
@@ -195,7 +195,7 @@ class RuleLinkedResourceManager implements SaverInterface, RemoverInterface
     protected function getRuleRelationsForResource($resourceId, $resourceName)
     {
         //@TODO: move this in a repository and create a nice method
-        return $this->ruleLinkedResRepo->findBy([
+        return $this->ruleRelationRepo->findBy([
             'resourceId'   => $resourceId,
             'resourceName' => $resourceName
         ]);

@@ -11,17 +11,17 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation;
 use Prophecy\Argument;
 
-class RuleLinkedResourceManagerSpec extends ObjectBehavior
+class RuleRelationManagerSpec extends ObjectBehavior
 {
     function let(
         EntityManager $entityManager,
         AttributeRepository $attributeRepository,
-        EntityRepository $ruleLinkedResRepo
+        EntityRepository $ruleRelationRepo
     ) {
-        $this->beConstructedWith($entityManager, $attributeRepository, $ruleLinkedResRepo, 'AttributeClass');
+        $this->beConstructedWith($entityManager, $attributeRepository, $ruleRelationRepo, 'AttributeClass');
     }
 
     function it_is_initializable()
@@ -30,15 +30,15 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\Persistence\RemoverInterface');
     }
 
-    function it_saves_a_rule_linked_resource_object($entityManager, RuleLinkedResource $ruleLinkedResource)
+    function it_saves_a_rule_relation_object($entityManager, RuleRelation $ruleRelation)
     {
-        $entityManager->persist($ruleLinkedResource)->shouldBeCalled();
+        $entityManager->persist($ruleRelation)->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
 
-        $this->save($ruleLinkedResource);
+        $this->save($ruleRelation);
     }
 
-    function it_throws_an_exception_if_object_is_not_a_rule_linked_resource_on_save(
+    function it_throws_an_exception_if_object_is_not_a_rule_relation_on_save(
         $entityManager,
         ProductInterface $productInterface
     ) {
@@ -48,15 +48,15 @@ class RuleLinkedResourceManagerSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->during('save', [$productInterface]);
     }
 
-    function it_removes_a_rule_linked_resource_object($entityManager, RuleLinkedResource $ruleLinkedResource)
+    function it_removes_a_rule_relation_object($entityManager, RuleRelation $ruleRelation)
     {
-        $entityManager->remove($ruleLinkedResource)->shouldBeCalled();
+        $entityManager->remove($ruleRelation)->shouldBeCalled();
         $entityManager->flush()->shouldNotBeCalled();
 
-        $this->remove($ruleLinkedResource);
+        $this->remove($ruleRelation);
     }
 
-    function it_throws_an_exception_if_object_is_not_a_rule_linked_resource_on_remove(
+    function it_throws_an_exception_if_object_is_not_a_rule_relation_on_remove(
         $entityManager,
         AbstractProduct $abstractProduct
     ) {

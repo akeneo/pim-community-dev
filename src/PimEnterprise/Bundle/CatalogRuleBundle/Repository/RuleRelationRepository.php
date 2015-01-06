@@ -14,17 +14,16 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Rule linked resource repository
+ * Rule relation repository
  *
  * TODO : to move to Doctrine/ORM/Repository to be consistent
- * TODO: should be renamed to RuleRelationRepository ?
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class RuleLinkedResourceRepository extends EntityRepository implements RuleLinkedResourceRepositoryInterface
+class RuleRelationRepository extends EntityRepository implements RuleRelationRepositoryInterface
 {
     /** @var string */
-    protected $ruleLinkedResClass;
+    protected $ruleRelationClass;
 
     /**
      * {@inheritdoc}

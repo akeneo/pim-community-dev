@@ -17,10 +17,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * Rule repository interface
  *
  * @author Julien Sanchez <julien@akeneo.com>
- *
- * TODO: should be renamed to RuleRelationRepositoryInterface
  */
-interface RuleLinkedResourceRepositoryInterface extends ObjectRepository
+interface RuleRelationRepositoryInterface extends ObjectRepository
 {
     /**
      * Query the database to test if a resource is impacted by at least one rule

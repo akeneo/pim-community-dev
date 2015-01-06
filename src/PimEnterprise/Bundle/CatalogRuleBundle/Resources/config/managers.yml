@@ -1,12 +1,12 @@
 parameters:
-    pimee_catalog_rule.manager.rule_linked_resource.class: PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager
+    pimee_catalog_rule.manager.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager
 
 services:
     # Managers
-    pimee_catalog_rule.manager.rule_linked_resource:
-        class: %pimee_catalog_rule.manager.rule_linked_resource.class%
+    pimee_catalog_rule.manager.rule_relation:
+        class: %pimee_catalog_rule.manager.rule_relation.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.repository.attribute'
-            - '@pimee_catalog_rule.repository.rule_linked_resource'
+            - '@pimee_catalog_rule.repository.rule_relation'
             - '%pim_catalog.entity.attribute.class%'

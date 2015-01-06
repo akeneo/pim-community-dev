@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
+use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -23,16 +23,22 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class SmartViewUpdater implements ViewUpdaterInterface
 {
+    /** @var RuleRelationManager */
+    protected $ruleRelationManager;
+
+    /** @var UrlGeneratorInterface */
+    protected $urlGenerator;
+
     /**
-     * @param RuleLinkedResourceManager $ruleLinkedResManager
-     * @param UrlGeneratorInterface     $urlGenerator
+     * @param RuleRelationManager   $ruleRelationManager
+     * @param UrlGeneratorInterface $urlGenerator
      */
     public function __construct(
-        RuleLinkedResourceManager $ruleLinkedResManager,
+        RuleRelationManager $ruleRelationManager,
         UrlGeneratorInterface $urlGenerator
     ) {
-        $this->ruleLinkedResManager = $ruleLinkedResManager;
-        $this->urlGenerator         = $urlGenerator;
+        $this->ruleRelationManager = $ruleRelationManager;
+        $this->urlGenerator        = $urlGenerator;
     }
 
     /**
@@ -79,7 +85,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
     protected function checkIfSmartAttribute(array $views, $key, $name)
     {
         if ((isset($views[$key]['attributes'][$name]['value'])
-            && $this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name]['id']))
+            && $this->ruleRelationManager->isAttributeImpacted($views[$key]['attributes'][$name]['id']))
         ) {
             $this->markAttributeAsSmart(
                 $views[$key]['attributes'][$name]['value'],
@@ -87,7 +93,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
             );
         } elseif (isset($views[$key]['attributes'][$name]['values'])) {
             foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
-                if ($this->ruleLinkedResManager->isAttributeImpacted($views[$key]['attributes'][$name]['id'])) {
+                if ($this->ruleRelationManager->isAttributeImpacted($views[$key]['attributes'][$name]['id'])) {
                     $this->markAttributeAsSmart(
                         $views[$key]['attributes'][$name]['values'][$scope],
                         $views[$key]['attributes'][$name]['id']

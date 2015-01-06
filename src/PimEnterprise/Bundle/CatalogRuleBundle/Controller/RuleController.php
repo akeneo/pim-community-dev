@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
+use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,8 +28,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class RuleController
 {
-    /** @var RuleLinkedResourceManager */
-    protected $linkedResManager;
+    /** @var RuleRelationManager */
+    protected $ruleRelationManager;
 
     /** @var RuleDefinitionManager */
     protected $ruleManager;
@@ -46,20 +46,20 @@ class RuleController
     /**
      * Constructor
      *
-     * @param RuleLinkedResourceManager         $linkedResManager
+     * @param RuleRelationManager               $ruleRelationManager
      * @param RuleDefinitionManager             $ruleManager
      * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
      * @param NormalizerInterface               $normalizer
      * @param string                            $attributeClass
      */
     public function __construct(
-        RuleLinkedResourceManager $linkedResManager,
+        RuleRelationManager $ruleRelationManager,
         RuleDefinitionManager $ruleManager,
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         NormalizerInterface $normalizer,
         $attributeClass
     ) {
-        $this->linkedResManager   = $linkedResManager;
+        $this->ruleRelationManager = $ruleRelationManager;
         $this->ruleManager        = $ruleManager;
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->normalizer         = $normalizer;
@@ -90,7 +90,7 @@ class RuleController
         }
 
         // TODO: getRulesForResource
-        $rules = $this->linkedResManager->getRulesForAttribute($resourceId, $resourceName);
+        $rules = $this->ruleRelationManager->getRulesForAttribute($resourceId, $resourceName);
 
         $normalizedRules = $this->normalizer->normalize($rules, 'array');
 
