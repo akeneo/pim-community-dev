@@ -116,6 +116,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $violationList->count()->willReturn(0);
 
         // save products
+        $versionManager->isRealTimeVersioning()->willReturn(false);
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
@@ -162,6 +163,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $violationList->count()->willReturn(0);
 
         // save products
+        $versionManager->isRealTimeVersioning()->willReturn(false);
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
