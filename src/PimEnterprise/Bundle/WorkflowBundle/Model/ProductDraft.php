@@ -109,7 +109,7 @@ class ProductDraft
     /**
      * @param \DateTime $createdAt
      *
-    * @return ProductDraft
+     * @return ProductDraft
      */
     public function setCreatedAt(\DateTime $createdAt)
     {

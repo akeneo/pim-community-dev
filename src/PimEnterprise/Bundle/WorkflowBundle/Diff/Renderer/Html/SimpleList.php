@@ -38,7 +38,6 @@ class SimpleList extends \Diff_Renderer_Html_Array
             }
 
             foreach ($blocks as $change) {
-
                 foreach ($change['base']['lines'] as $line) {
                     $html .= sprintf('<li class="base %s">%s</li>', $change['tag'], $line);
                 }
@@ -46,7 +45,6 @@ class SimpleList extends \Diff_Renderer_Html_Array
                 foreach ($change['changed']['lines'] as $line) {
                     $html .= sprintf('<li class="changed %s">%s</li>', $change['tag'], $line);
                 }
-
             }
         }
         $html .= '</ul>';

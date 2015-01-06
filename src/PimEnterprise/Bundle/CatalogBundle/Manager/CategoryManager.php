@@ -128,13 +128,11 @@ class CategoryManager extends BaseCategoryManager
     protected function filterGrantedFilledTree(&$filledTree)
     {
         foreach ($filledTree as $categoryIdx => &$categoryData) {
-
             $isLeaf = is_object($categoryData);
             $category = $isLeaf ? $categoryData : $categoryData['item'];
 
             if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
                 unset($filledTree[$categoryIdx]);
-
             } elseif (!$isLeaf) {
                 $this->filterGrantedFilledTree($categoryData['__children']);
             }

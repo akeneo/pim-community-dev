@@ -26,7 +26,7 @@ class ChainedPublisher implements PublisherInterface
      */
     public function addPublisher(PublisherInterface $publisher)
     {
-        $this->publishers[]= $publisher;
+        $this->publishers[] = $publisher;
     }
 
     /**
