@@ -19,7 +19,7 @@ interface LocaleInterface extends ReferableInterface
     public function getId();
 
     /**
-     * @param int id
+     * @param int $id
      *
      * @return LocaleInterface
      */

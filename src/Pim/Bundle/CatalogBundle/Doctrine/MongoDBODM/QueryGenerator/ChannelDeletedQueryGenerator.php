@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
-* Channel deleted query generator
+ * Channel deleted query generator
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +22,6 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
         $queries = [];
 
         foreach ($attributes as $attribute) {
-
             $attributeNormFields = [
                 sprintf(
                     ProductQueryUtility::NORMALIZED_FIELD . '.%s',

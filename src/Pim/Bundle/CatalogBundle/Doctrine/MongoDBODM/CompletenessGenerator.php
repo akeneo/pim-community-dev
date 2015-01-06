@@ -127,7 +127,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $allCompletenesses = false;
 
         if ((!isset($normalizedData['completenesses'])) ||
-            (null === $normalizedData['completenesses'])||
+            (null === $normalizedData['completenesses']) ||
             (0 === count($normalizedData['completenesses']))
         ) {
             $missingComps = array_keys($normalizedReqs);
@@ -217,7 +217,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $collection->update($query, $normalizedComp, $options);
         } else {
             foreach ($completenesses as $key => $value) {
-
                 $compObject = array('$push' => array('completenesses' => $value['object']));
 
                 $collection->update($query, $compObject, $options);

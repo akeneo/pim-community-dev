@@ -71,7 +71,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     public function hasAttribute(AttributeInterface $attribute);
 
     /**
-     * @param $attributeAsLabel
+     * @param AttributeInterface $attributeAsLabel
      *
      * @return FamilyInterface
      */

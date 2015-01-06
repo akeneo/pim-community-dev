@@ -83,6 +83,8 @@ class AclGroupsExtension extends \Twig_Extension
     }
 
     /**
+     * @param array $config
+     *
      * @return array
      */
     protected function getGroups(array $config)

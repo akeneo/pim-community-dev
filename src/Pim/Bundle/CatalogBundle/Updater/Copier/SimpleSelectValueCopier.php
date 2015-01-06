@@ -65,10 +65,10 @@ class SimpleSelectValueCopier extends AbstractValueCopier
      * @param ProductInterface   $product
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
-     * @param $fromLocale
-     * @param $toLocale
-     * @param $fromScope
-     * @param $toScope
+     * @param string|null        $fromLocale
+     * @param string|null        $toLocale
+     * @param string|null        $fromScope
+     * @param string|null        $toScope
      */
     protected function copySingleValue(
         ProductInterface $product,

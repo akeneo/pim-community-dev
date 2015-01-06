@@ -18,7 +18,9 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 class TextValueSetter extends AbstractValueSetter
 {
     /**
-     * @param array $supportedTypes
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,

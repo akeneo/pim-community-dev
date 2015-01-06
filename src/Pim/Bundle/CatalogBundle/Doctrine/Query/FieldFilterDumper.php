@@ -55,7 +55,7 @@ class FieldFilterDumper implements DumperInterface
                 $class = 'Not supported';
                 $operators = '';
             }
-            $rows[]= [$field, $class, $operators];
+            $rows[] = [$field, $class, $operators];
         }
         $headers = ['field', 'filter_class', 'operators'];
         $table = $helperSet->get('table');

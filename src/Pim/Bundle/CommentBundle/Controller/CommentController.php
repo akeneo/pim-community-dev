@@ -46,9 +46,9 @@ class CommentController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ManagerRegistry          $doctrine
+     * @param CommentManager           $commentManager
      * @param CommentBuilder           $commentBuilder
      * @param string                   $commentClassName
-     * @param CommentManager           $commentManager
      */
     public function __construct(
         EngineInterface $templating,

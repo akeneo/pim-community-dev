@@ -68,7 +68,6 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         }
 
         if (is_null($data->getId()) === false) {
-
             $form = $event->getForm();
 
             $this->disableField($form, 'code');

@@ -31,7 +31,7 @@ class AddLocaleCodeToGridListener
 
     /**
      * Add locale parameter to the querybuilder
-    *
+     *
      * @param BuildAfter $event
      */
     public function onBuildAfter(BuildAfter $event)

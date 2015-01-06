@@ -25,10 +25,10 @@ class QuerySorterRegistry implements QuerySorterRegistryInterface
     public function register(SorterInterface $sorter)
     {
         if ($sorter instanceof FieldSorterInterface) {
-            $this->fieldSorters[]= $sorter;
+            $this->fieldSorters[] = $sorter;
         }
         if ($sorter instanceof AttributeSorterInterface) {
-            $this->attributeSorters[]= $sorter;
+            $this->attributeSorters[] = $sorter;
         }
     }
 

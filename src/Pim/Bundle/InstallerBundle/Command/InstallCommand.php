@@ -71,7 +71,6 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         try {
-
             $this->cleanDirectory($this->getContainer()->getParameter('upload_dir'));
             $this->cleanDirectory($this->getContainer()->getParameter('archive_dir'));
 

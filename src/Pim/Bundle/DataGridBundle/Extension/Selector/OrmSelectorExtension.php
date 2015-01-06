@@ -118,7 +118,7 @@ class OrmSelectorExtension extends AbstractExtension
     /**
      * @param string $datasource
      *
-    * @return OrmSelectorExtension
+     * @return OrmSelectorExtension
      */
     public function addEligibleDatasource($datasource)
     {

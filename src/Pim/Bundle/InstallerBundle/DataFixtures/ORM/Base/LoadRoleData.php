@@ -36,9 +36,9 @@ class LoadRoleData extends AbstractInstallerFixture
         $manager->persist($roleAnonymous);
 
         foreach ($dataRoles['user_roles'] as $code => $dataRole) {
-            $dataRole['role']= $code;
+            $dataRole['role'] = $code;
             $role = $this->buildRole($dataRole);
-            $roles[]= $role;
+            $roles[] = $role;
             $manager->persist($role);
         }
         $manager->flush();

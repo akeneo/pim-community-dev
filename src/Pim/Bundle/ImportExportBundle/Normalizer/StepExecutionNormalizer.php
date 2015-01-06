@@ -99,7 +99,6 @@ class StepExecutionNormalizer implements NormalizerInterface
 
         if (isset($context['limit_warnings']) && $context['limit_warnings'] > 0) {
             $selectedWarnings = $warnings->slice(0, $context['limit_warnings']);
-
         } else {
             $selectedWarnings = $warnings;
         }
