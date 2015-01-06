@@ -23,7 +23,7 @@ class BaseRemover implements RemoverInterface
     protected $removedClass;
 
     /**
-     * @param ObjectManager $manager
+     * @param ObjectManager $objectManager
      * @param string        $removedClass
      */
     public function __construct(ObjectManager $objectManager, $removedClass)

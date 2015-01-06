@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Abstract product completeness entity
@@ -20,7 +19,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /** @var int|string */
     protected $id;
 
-    /** @var Locale */
+    /** @var LocaleInterface */
     protected $locale;
 
     /** @var Channel */
@@ -49,7 +48,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale(Locale $locale)
+    public function setLocale(LocaleInterface $locale)
     {
         $this->locale = $locale;
 

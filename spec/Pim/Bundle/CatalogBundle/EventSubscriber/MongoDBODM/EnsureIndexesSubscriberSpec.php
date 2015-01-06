@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -200,7 +200,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_locale_when_enabling_it(
         $indexCreator,
-        Locale $en_US,
+        LocaleInterface $en_US,
         LifecycleEventArgs $args
     ) {
         $en_US->isActivated()->willReturn(true);
@@ -213,7 +213,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_removes_indexes_for_locale_when_disabling_it(
         $indexPurger,
-        Locale $en_US,
+        LocaleInterface $en_US,
         LifecycleEventArgs $args
     ) {
         $en_US->isActivated()->willReturn(false);

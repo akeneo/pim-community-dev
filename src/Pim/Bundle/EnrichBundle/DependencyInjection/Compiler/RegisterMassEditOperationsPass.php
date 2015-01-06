@@ -32,7 +32,6 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         foreach ($container->findTaggedServiceIds('pim_enrich.mass_edit_action') as $id => $config) {
-
             // Mass Edit Action was originally used by the product grid
             // so, in order not to break BC, we fallback operator to the product one.
             // We may deprecate this behaviour in the future and enforce operator parameter

@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
@@ -32,7 +33,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     /** @var ArrayCollection */
     protected $displayedAttributes;
 
-    /** @var Locale */
+    /** @var LocaleInterface */
     protected $locale;
 
     /** @var ProductManager */
@@ -75,6 +76,7 @@ class EditCommonAttributes extends ProductMassEditOperation
      * @param CatalogContext           $catalogContext
      * @param ProductMassActionManager $massActionManager
      * @param NormalizerInterface      $normalizer
+     * @param BulkSaverInterface       $productSaver
      * @param array                    $classes
      */
     public function __construct(
@@ -85,8 +87,10 @@ class EditCommonAttributes extends ProductMassEditOperation
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
         NormalizerInterface $normalizer,
+        BulkSaverInterface $productSaver,
         array $classes
     ) {
+        parent::__construct($productSaver);
         $this->productManager = $productManager;
         $this->productUpdater = $productUpdater;
         $this->userContext = $userContext;
@@ -135,11 +139,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     /**
      * Set locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return EditCommonAttributes
      */
-    public function setLocale(Locale $locale)
+    public function setLocale(LocaleInterface $locale)
     {
         $this->locale = $locale;
 
@@ -149,11 +153,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     /**
      * Get locale
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getLocale()
     {
-        if ($this->locale instanceof Locale) {
+        if ($this->locale instanceof LocaleInterface) {
             return $this->locale;
         }
 
@@ -320,8 +324,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
-
-            $rawData = $this->normalizer->normalize($value->getData(), 'json');
+            $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
             // if the value is localizable, let's use the locale the user has chosen in the form
             $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
 

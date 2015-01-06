@@ -242,7 +242,7 @@ class AttributeController extends AbstractDoctrineController
     {
         $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id'=> $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
         }
 
         $option = $this->optionManager->createAttributeOption();

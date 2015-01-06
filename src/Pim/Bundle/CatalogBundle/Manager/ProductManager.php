@@ -339,6 +339,8 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /**
      * @param ProductInterface $product
      *
+     * @return null
+     *
      * @deprecated will be removed in 1.4, replaced by MediaManager::handleProductMedias
      */
     public function handleMedia(ProductInterface $product)
@@ -348,6 +350,8 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
 
     /**
      * @param ProductInterface[] $products
+     *
+     * @return null
      *
      * @deprecated will be removed in 1.4, replaced by MediaManager::handleAllProductsMedias
      */

@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -46,8 +46,8 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeInterface $name,
         AttributeInterface $desc,
         $localeRepository,
-        Locale $fr,
-        Locale $en,
+        LocaleInterface $fr,
+        LocaleInterface $en,
         $channelRepository,
         Channel $ecom,
         Channel $print,

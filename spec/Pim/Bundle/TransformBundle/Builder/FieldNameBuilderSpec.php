@@ -6,7 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -82,7 +82,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         ReferableEntityRepositoryInterface $channelRepository,
         ReferableEntityRepositoryInterface $localeRepository,
         AttributeInterface $attribute,
-        Locale $locale,
+        LocaleInterface $locale,
         Channel $channel
     ) {
         $attribute->getCode()->willReturn('foo');
@@ -265,7 +265,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         AttributeInterface $attribute,
         ReferableEntityRepositoryInterface $channelRepository,
         ReferableEntityRepositoryInterface $localeRepository,
-        Locale $locale,
+        LocaleInterface $locale,
         Channel $channel
     ) {
         // localizable without the associated locale not in the channel

@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -40,9 +40,9 @@ class IndexPurger
     /**
      * Remove indexes associated with the provided locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      */
-    public function purgeIndexesFromLocale(Locale $locale)
+    public function purgeIndexesFromLocale(LocaleInterface $locale)
     {
         $localePattern = sprintf(
             '/^%s\..+-%s/',

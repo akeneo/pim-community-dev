@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 
 class LocaleManagerSpec extends ObjectBehavior
@@ -13,35 +13,35 @@ class LocaleManagerSpec extends ObjectBehavior
         $this->beConstructedWith($repository);
     }
 
-    function it_provides_active_locales(Locale $en, Locale $fr, $repository)
+    function it_provides_active_locales(LocaleInterface $en, LocaleInterface $fr, $repository)
     {
         $repository->getActivatedLocales()->willReturn([$en, $fr]);
 
         $this->getActiveLocales()->shouldReturn([$en, $fr]);
     }
 
-    function it_provides_deactivated_locales(Locale $de, $repository)
+    function it_provides_deactivated_locales(LocaleInterface $de, $repository)
     {
         $repository->findBy(['activated' => false])->willReturn([$de]);
 
         $this->getDisabledLocales()->shouldReturn([$de]);
     }
 
-    function it_provides_locales_by_criteria(Locale $fr, $repository)
+    function it_provides_locales_by_criteria(LocaleInterface $fr, $repository)
     {
         $repository->findBy(['foo' => 'bar'])->willReturn([$fr]);
 
         $this->getLocales(['foo' => 'bar'])->shouldReturn([$fr]);
     }
 
-    function it_provides_a_locale_by_its_code(Locale $pl, $repository)
+    function it_provides_a_locale_by_its_code(LocaleInterface $pl, $repository)
     {
         $repository->findOneBy(['code' => 'pl'])->willReturn($pl);
 
         $this->getLocaleByCode('pl')->shouldReturn($pl);
     }
 
-    function it_provides_active_locales_codes($repository, Locale $fr, Locale $be)
+    function it_provides_active_locales_codes($repository, LocaleInterface $fr, LocaleInterface $be)
     {
         $fr->getCode()->willReturn('fr_FR');
         $be->getCode()->willReturn('fr_BE');

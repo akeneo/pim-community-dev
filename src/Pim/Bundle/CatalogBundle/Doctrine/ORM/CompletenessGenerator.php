@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -202,7 +202,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 GROUP BY l.id, c.id, v.id
                 HAVING COUNT(price.data) = COUNT(price.id)
 COMPLETE_PRICES_SQL;
-
     }
 
     /**
@@ -235,7 +234,6 @@ COMPLETE_PRICES_SQL;
                 AND co.locale_id = l.id
             WHERE co.id IS NULL
 MISSING_SQL;
-
     }
 
     /**
@@ -636,7 +634,7 @@ MAIN_SQL;
     /**
      * {@inheritdoc}
      */
-    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    public function scheduleForChannelAndLocale(Channel $channel, LocaleInterface $locale)
     {
         $sql = <<<SQL
             DELETE c FROM pim_catalog_completeness c

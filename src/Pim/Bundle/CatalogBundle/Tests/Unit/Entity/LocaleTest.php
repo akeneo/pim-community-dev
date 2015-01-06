@@ -93,7 +93,7 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert an entity
      *
-     * @param Locale $entity
+     * @param LocaleInterface $entity
      */
     protected function assertEntity($entity)
     {

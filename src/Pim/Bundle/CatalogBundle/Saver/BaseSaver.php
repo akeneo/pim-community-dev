@@ -23,7 +23,7 @@ class BaseSaver implements SaverInterface
     protected $savedClass;
 
     /**
-     * @param ObjectManager $manager
+     * @param ObjectManager $objectManager
      * @param string        $savedClass
      */
     public function __construct(ObjectManager $objectManager, $savedClass)

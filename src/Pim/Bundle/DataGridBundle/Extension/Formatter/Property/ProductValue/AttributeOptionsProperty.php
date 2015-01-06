@@ -27,7 +27,6 @@ class AttributeOptionsProperty extends FieldProperty
                     $value = '['.$option['code'].']';
                 }
                 $optionValues[] = $value;
-
             } else {
                 $optionValues[] = '['.$option['code'].']';
             }

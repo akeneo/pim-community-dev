@@ -70,7 +70,7 @@ class ValidateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface
+     * @param ProductInterface $product
      *
      * @return ConstraintViolationListInterface
      */

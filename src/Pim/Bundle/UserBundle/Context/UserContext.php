@@ -3,7 +3,7 @@
 namespace Pim\Bundle\UserBundle\Context;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -238,11 +238,11 @@ class UserContext
     /**
      * Checks if a locale is activated
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return boolean
      */
-    protected function isLocaleAvailable(Locale $locale)
+    protected function isLocaleAvailable(LocaleInterface $locale)
     {
         return $locale->isActivated();
     }

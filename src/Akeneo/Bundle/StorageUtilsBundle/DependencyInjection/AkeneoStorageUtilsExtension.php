@@ -44,6 +44,9 @@ class AkeneoStorageUtilsExtension extends Extension
         $this->loadStorageDriver($container, __DIR__);
     }
 
+    /**
+     * @return string
+     */
     public static function getStorageDriver()
     {
         return self::$storageDriver;
@@ -63,6 +66,7 @@ class AkeneoStorageUtilsExtension extends Extension
      *
      * TODO: rename this method
      * @param ContainerBuilder $container
+     * @param string           $path
      */
     protected function loadStorageDriver(ContainerBuilder $container, $path)
     {

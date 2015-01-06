@@ -37,7 +37,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param CatalogContext    $catalogContext The catalog context
      * @param UserContext       $userContext    User context
      * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
-    */
+     */
     public function __construct(
         $paramNames,
         RequestParameters $requestParams,

@@ -2,10 +2,12 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -26,13 +28,14 @@ class EditCommonAttributesSpec extends ObjectBehavior
         ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
         CurrencyManager $currencyManager,
-        Locale $en,
-        Locale $de,
+        LocaleInterface $en,
+        LocaleInterface $de,
         AttributeRepository $attributeRepository,
         ProductValueInterface $productValue,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        BulkSaverInterface $productSaver
     ) {
         $en->getCode()->willReturn('en_US');
         $de->getCode()->willReturn('de_DE');
@@ -57,6 +60,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $catalogContext,
             $massActionManager,
             $normalizer,
+            $productSaver,
             [
                 'product_price' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice',
                 'product_media' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia'
@@ -79,9 +83,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getValues()->shouldHaveCount(2);
     }
 
-    function it_stores_the_locale_the_product_is_being_edited_in($en, Locale $fr)
+    function it_stores_the_locale_the_product_is_being_edited_in($en, LocaleInterface $fr)
     {
-        $this->getLocale()->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\Locale');
         $this->getLocale()->shouldReturn($en);
 
         $this->setLocale($fr);

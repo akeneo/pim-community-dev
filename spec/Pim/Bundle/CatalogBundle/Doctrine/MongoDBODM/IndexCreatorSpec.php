@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
 use Prophecy\Argument;
@@ -42,8 +42,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $collection,
         $namingUtility,
         AttributeInterface $title,
-        Locale $en_US,
-        Locale $de_DE,
+        LocaleInterface $en_US,
+        LocaleInterface $de_DE,
         Channel $ecommerce,
         Channel $mobile
     ) {
@@ -88,8 +88,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $collection,
         $namingUtility,
         AttributeInterface $description,
-        Locale $en_US,
-        Locale $de_DE,
+        LocaleInterface $en_US,
+        LocaleInterface $de_DE,
         Channel $ecommerce
     ) {
         $description->getCode()->willReturn('description');

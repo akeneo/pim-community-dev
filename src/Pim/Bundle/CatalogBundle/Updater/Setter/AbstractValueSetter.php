@@ -25,6 +25,10 @@ abstract class AbstractValueSetter implements SetterInterface
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /**
+     * @param ProductBuilderInterface  $productBuilder
+     * @param AttributeValidatorHelper $attrValidatorHelper
+     */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper

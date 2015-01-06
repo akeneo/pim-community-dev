@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -497,7 +496,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function addAvailableLocale(Locale $availableLocale)
+    public function addAvailableLocale(LocaleInterface $availableLocale)
     {
         $this->availableLocales[] = $availableLocale;
 
@@ -507,7 +506,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAvailableLocale(Locale $availableLocale)
+    public function removeAvailableLocale(LocaleInterface $availableLocale)
     {
         $this->availableLocales->removeElement($availableLocale);
 

@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class UserContextListener implements EventSubscriberInterface
 {
-     /**
+    /**
      * @var SecurityContextInterface
      */
     protected $securityContext;

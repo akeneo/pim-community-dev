@@ -96,7 +96,7 @@ class DateValueSetter extends AbstractValueSetter
 
     /**
      * @param AttributeInterface $attribute
-     * @param                    $data
+     * @param string             $data
      */
     protected function validateDateFormat(AttributeInterface $attribute, $data)
     {

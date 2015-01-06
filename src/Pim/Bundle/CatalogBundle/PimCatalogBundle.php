@@ -36,7 +36,6 @@ class PimCatalogBundle extends AkeneoStorageUtilsBundle
             ->addCompilerPass(new RegisterProductQueryFilterPass())
             ->addCompilerPass(new RegisterProductQuerySorterPass())
             ->addCompilerPass(new RegisterProductUpdaterPass());
-        ;
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'

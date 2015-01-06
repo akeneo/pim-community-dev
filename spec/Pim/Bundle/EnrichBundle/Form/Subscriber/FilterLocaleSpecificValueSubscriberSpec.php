@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormInterface;
 use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 

@@ -1,7 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -23,11 +22,11 @@ interface CompletenessInterface
     /**
      * Setter locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return CompletenessInterface
      */
-    public function setLocale(Locale $locale);
+    public function setLocale(LocaleInterface $locale);
 
     /**
      * Getter ratio

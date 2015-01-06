@@ -146,6 +146,15 @@
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber`
 - ProductBuilder now takes `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository` and not anymore Managers
+- constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator` to remove ProductManager
+- following constructors have been changed to add `Akeneo\Component\Persistence\BulkSaverInterface` as argument:
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`
+  * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`
+- removeAttributesAction and addAttributesAction have been move from `Pim\Bundle\EnrichBundle\Controller\ProductController` to a dedicated `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
+- constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` has been updated and now receives `Akeneo\Component\Persistence\SaverInterface`, `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` as extra arguments
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

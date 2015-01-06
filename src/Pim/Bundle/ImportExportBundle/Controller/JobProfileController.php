@@ -344,7 +344,6 @@ class JobProfileController extends AbstractDoctrineController
         }
 
         if ($this->validateUpload($jobInstance)) {
-
             $jobExecution = $this->launchJob(true, $jobInstance);
 
             return $this->redirectToReportView($jobExecution->getId());
@@ -371,7 +370,6 @@ class JobProfileController extends AbstractDoctrineController
         }
 
         if ($this->validate($jobInstance)) {
-
             $jobExecution = $this->launchJob(false, $jobInstance);
 
             return $this->redirectToReportView($jobExecution->getId());

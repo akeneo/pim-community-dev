@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
@@ -126,7 +126,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function preUpdate($entity)
     {
-        if ($entity instanceof Locale && !$entity->isActivated()) {
+        if ($entity instanceof LocaleInterface && !$entity->isActivated()) {
             $changeset = $this->uow->getEntityChangeSet($entity);
             if (isset($changeset['activated'])) {
                 $this->deactivatedLocales[] = $entity->getCode();

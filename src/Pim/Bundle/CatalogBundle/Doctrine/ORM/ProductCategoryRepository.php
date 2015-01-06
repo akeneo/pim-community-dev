@@ -132,7 +132,6 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($include) {
             $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
-
         } else {
             $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
@@ -168,8 +167,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
                 ->select($rootAliasIn.'.id')
                 ->from($rootEntity, $rootAliasIn, $rootAliasIn.'.id')
                 ->leftJoin($rootAliasIn.'.categories', $alias)
-                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'))
-            ;
+                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'));
 
             $qb->andWhere($qb->expr()->notIn($rootAlias.'.id', $qbIn->getDQL()));
         }

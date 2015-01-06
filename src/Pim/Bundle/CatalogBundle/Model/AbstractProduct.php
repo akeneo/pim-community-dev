@@ -389,7 +389,6 @@ abstract class AbstractProduct implements ProductInterface
     public function getFamilyId()
     {
         return $this->familyId;
-
     }
 
     /**

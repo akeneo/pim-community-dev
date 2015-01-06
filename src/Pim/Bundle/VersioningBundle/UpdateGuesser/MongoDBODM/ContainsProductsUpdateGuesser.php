@@ -51,7 +51,6 @@ class ContainsProductsUpdateGuesser extends BaseContainsProductsUpdateGuesser
             foreach ($products as $product) {
                 $pendings[] = $product;
             }
-
         } elseif ($entity instanceof CategoryInterface && $entity->getId()) {
             $products = $this->registry->getRepository($this->productClass)->findAllForCategory($entity);
             foreach ($products as $product) {

@@ -174,7 +174,6 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
         unset($validData['leaf'], $validData['subleaf']);
         $this->assertCategoriesData($validData, $categories);
         $this->assertSame($categories['root'], $categories['leaf2']->parent);
-
     }
 
     public function testTransformWithCircularReferences()
@@ -227,7 +226,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
                     function () use (&$iteration) {
                         $iteration++;
 
-                        return ($iteration==2)
+                        return ($iteration == 2)
                             ? array('key1' => array(array('Error')))
                             : array();
                     }
@@ -273,7 +272,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
                     function () use (&$iteration) {
                         $iteration++;
 
-                        return ($iteration==2)
+                        return ($iteration == 2)
                             ? array('key1' => array(array('Error')))
                             : array();
                     }
@@ -303,7 +302,6 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
                     }
                 )
             );
-
     }
 
     protected function assertCategoriesData($data, $categories)
