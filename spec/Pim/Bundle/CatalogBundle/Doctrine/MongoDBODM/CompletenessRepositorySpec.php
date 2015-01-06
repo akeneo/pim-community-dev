@@ -10,7 +10,7 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -25,8 +25,8 @@ class CompletenessRepositorySpec extends ObjectBehavior
         DocumentManager $manager,
         Channel $ecommerce,
         Channel $mobile,
-        Locale $enUs,
-        Locale $frFr,
+        LocaleInterface $enUs,
+        LocaleInterface $frFr,
         CategoryInterface $category,
         ChannelManager $channelManager,
         CategoryRepository $categoryRepository,

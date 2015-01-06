@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -314,11 +314,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param AttributeInterface $attribute
      * @param Channel            $channel
-     * @param Locale             $locale
+     * @param LocaleInterface    $locale
      *
      * @return string
      */
-    protected function getNormalizedFieldName(AttributeInterface $attribute, Channel $channel, Locale $locale)
+    protected function getNormalizedFieldName(AttributeInterface $attribute, Channel $channel, LocaleInterface $locale)
     {
         $suffix = '';
 
@@ -419,7 +419,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    public function scheduleForChannelAndLocale(Channel $channel, LocaleInterface $locale)
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 

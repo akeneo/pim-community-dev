@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -246,7 +246,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_obsolete_localizable_indexes_when_locale_is_disabled(
         $collection,
-        Locale $en_US
+        LocaleInterface $en_US
     ) {
         $en_US->getCode()->willReturn('en_US');
         $en_US->isActivated()->willReturn(false);

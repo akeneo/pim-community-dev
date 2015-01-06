@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\UserBundle\Context;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -22,9 +22,9 @@ class UserContextSpec extends ObjectBehavior
         CategoryManager $categoryManager,
         TokenInterface $token,
         User $user,
-        Locale $en,
-        Locale $fr,
-        Locale $de,
+        LocaleInterface $en,
+        LocaleInterface $fr,
+        LocaleInterface $de,
         Channel $ecommerce,
         Channel $mobile,
         CategoryInterface $firstTree,

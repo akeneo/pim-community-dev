@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -634,7 +634,7 @@ MAIN_SQL;
     /**
      * {@inheritdoc}
      */
-    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    public function scheduleForChannelAndLocale(Channel $channel, LocaleInterface $locale)
     {
         $sql = <<<SQL
             DELETE c FROM pim_catalog_completeness c

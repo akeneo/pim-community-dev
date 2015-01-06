@@ -6,7 +6,7 @@ use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
@@ -33,7 +33,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     /** @var ArrayCollection */
     protected $displayedAttributes;
 
-    /** @var Locale */
+    /** @var LocaleInterface */
     protected $locale;
 
     /** @var ProductManager */
@@ -139,11 +139,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     /**
      * Set locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return EditCommonAttributes
      */
-    public function setLocale(Locale $locale)
+    public function setLocale(LocaleInterface $locale)
     {
         $this->locale = $locale;
 
@@ -153,11 +153,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     /**
      * Get locale
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getLocale()
     {
-        if ($this->locale instanceof Locale) {
+        if ($this->locale instanceof LocaleInterface) {
             return $this->locale;
         }
 

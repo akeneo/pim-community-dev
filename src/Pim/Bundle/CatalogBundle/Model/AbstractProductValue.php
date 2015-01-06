@@ -31,7 +31,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $entity;
 
     /**
-     * Locale code
+     * LocaleInterface code
      * @var string $locale
      */
     protected $locale;
