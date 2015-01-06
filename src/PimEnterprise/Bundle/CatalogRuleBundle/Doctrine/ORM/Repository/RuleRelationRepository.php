@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Repository;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
 
 /**
  * Rule relation repository
- *
- * TODO : to move to Doctrine/ORM/Repository to be consistent
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */

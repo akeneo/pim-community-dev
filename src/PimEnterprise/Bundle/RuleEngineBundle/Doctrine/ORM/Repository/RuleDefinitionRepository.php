@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RuleEngineBundle\Repository;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 
 /**
  * Rule repository
- *
- * TODO: should be moved in a Doctrine repo
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

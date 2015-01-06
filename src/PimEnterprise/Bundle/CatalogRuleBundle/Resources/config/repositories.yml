@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.repository.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepository
+    pimee_catalog_rule.repository.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\Doctrine\ORM\Repository\RuleRelationRepository
 
 services:
     pimee_catalog_rule.repository.rule_relation:

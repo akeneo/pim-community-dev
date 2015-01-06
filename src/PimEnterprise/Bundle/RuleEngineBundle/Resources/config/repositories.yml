@@ -1,5 +1,5 @@
 parameters:
-    pimee_rule_engine.repository.rule_definition.class: PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepository
+    pimee_rule_engine.repository.rule_definition.class: PimEnterprise\Bundle\RuleEngineBundle\Doctrine\ORM\Repository\RuleDefinitionRepository
 
 services:
     pimee_rule_engine.repository.rule_definition:
