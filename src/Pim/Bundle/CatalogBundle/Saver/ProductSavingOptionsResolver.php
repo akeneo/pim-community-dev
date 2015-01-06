@@ -1,6 +1,7 @@
 <?php
 
 namespace Pim\Bundle\CatalogBundle\Saver;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
