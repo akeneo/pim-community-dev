@@ -19,17 +19,25 @@ class BaseSaver implements SaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
+    /** @var BaseSavingOptionsResolver */
+    protected $optionsResolver;
+
     /** @var string */
     protected $savedClass;
 
     /**
-     * @param ObjectManager $objectManager
-     * @param string        $savedClass
+     * @param ObjectManager             $objectManager
+     * @param BaseSavingOptionsResolver $optionsResolver
+     * @param string                    $savedClass
      */
-    public function __construct(ObjectManager $objectManager, $savedClass)
-    {
+    public function __construct(
+        ObjectManager $objectManager,
+        BaseSavingOptionsResolver $optionsResolver,
+        $savedClass
+    ) {
         $this->objectManager = $objectManager;
-        $this->savedClass    = $savedClass;
+        $this->optionsResolver = $optionsResolver;
+        $this->savedClass = $savedClass;
     }
 
     /**
@@ -47,40 +55,13 @@ class BaseSaver implements SaverInterface
             );
         }
 
-        $options = $this->resolveSaveOptions($options);
+        $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($object);
+
         if (true === $options['flush'] && true === $options['flush_only_object']) {
             $this->objectManager->flush($object);
         } elseif (true === $options['flush']) {
             $this->objectManager->flush();
         }
-    }
-
-    /**
-     * Resolve options for a single save
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function resolveSaveOptions(array $options)
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'flush_only_object']);
-        $resolver->setAllowedTypes(
-            [
-                'flush' => 'bool',
-                'flush_only_object' => 'bool'
-            ]
-        );
-        $resolver->setDefaults(
-            [
-                'flush' => true,
-                'flush_only_object' => false,
-            ]
-        );
-        $options = $resolver->resolve($options);
-
-        return $options;
     }
 }
