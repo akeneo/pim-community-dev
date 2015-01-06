@@ -50,6 +50,12 @@ class VariantViewUpdater implements ViewUpdaterInterface
     {
         /** @var ProductInterface $product */
         $product = $productValue->getEntity();
+
+        //In case of mass edit the product is null
+        if (null === $product) {
+            return false;
+        }
+
         $groups  = $product->getGroups();
         $variantGroup = null;
         /** @var GroupInterface $group */
