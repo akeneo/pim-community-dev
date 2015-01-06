@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 
 /**
- * Rule repository
+ * Rule definition repository
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */

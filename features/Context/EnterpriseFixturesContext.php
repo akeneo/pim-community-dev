@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
@@ -520,7 +522,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $content['actions'] = [];
 
             $rule->setContent(json_encode($content));
-            $manager = $this->getRuleManager();
+            $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
     }
@@ -605,7 +607,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $content['actions'][] = $action;
 
             $rule->setContent(json_encode($content));
-            $manager = $this->getRuleManager();
+            $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
     }
@@ -652,7 +654,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $content['actions'][] = $action;
 
             $rule->setContent(json_encode($content));
-            $manager = $this->getRuleManager();
+            $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
     }
@@ -683,10 +685,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return RuleDefinitionManager
+     * @return SaverInterface
      */
-    protected function getRuleManager()
+    protected function getRuleSaver()
     {
-        return $this->getContainer()->get('pimee_rule_engine.manager.rule_definition');
+        return $this->getContainer()->get('pimee_rule_engine.saver.rule_definition');
     }
 }

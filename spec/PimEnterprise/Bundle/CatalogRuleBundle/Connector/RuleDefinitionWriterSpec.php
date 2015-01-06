@@ -3,17 +3,17 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Prophecy\Argument;
 
 class RuleDefinitionWriterSpec extends ObjectBehavior
 {
     public function let(
-        RuleDefinitionManager $ruleDefManager
+        BulkSaverInterface $saver
     ) {
-        $this->beConstructedWith($ruleDefManager);
+        $this->beConstructedWith($saver);
     }
 
     function it_implements()
@@ -23,10 +23,10 @@ class RuleDefinitionWriterSpec extends ObjectBehavior
     }
 
     function it_writes_a_rule_definition(
+        $saver,
         RuleDefinition $rule1,
         RuleDefinition $rule2,
-        StepExecution $stepExecution,
-        RuleDefinitionManager $ruleDefManager
+        StepExecution $stepExecution
     ) {
         $rule1->getId()->willReturn(42);
         $items = [$rule1, $rule2];
@@ -36,7 +36,7 @@ class RuleDefinitionWriterSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
 
-        $ruleDefManager->saveAll($items)->shouldBeCalled();
+        $saver->saveAll($items)->shouldBeCalled();
 
         $this->write($items);
     }

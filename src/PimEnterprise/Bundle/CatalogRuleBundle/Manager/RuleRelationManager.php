@@ -10,26 +10,23 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
-use Akeneo\Component\Persistence\RemoverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Class RuleRelationManager
  *
- * TODO : this "manager" looks like a Saver + a Remover + shortcuts to repository which is a service and could
+ * TODO : this "manager"  shortcuts to repository which is a service and could
  * be directly injected to avoid to add bunch of mess in this "Manager", let's avoid the systematic "Manager" naming
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleRelationManager implements SaverInterface, RemoverInterface
+class RuleRelationManager
 {
     /** @var EntityManager */
     protected $entityManager;
@@ -62,47 +59,6 @@ class RuleRelationManager implements SaverInterface, RemoverInterface
         $this->attributeRepository = $attributeRepository;
         $this->ruleRelationRepo = $ruleRelationRepo;
         $this->attributeClass = $attributeClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        if (!$object instanceof RuleRelationInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface,
-                    "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->entityManager->persist($object);
-
-        if (true === $options['flush']) {
-            $this->entityManager->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof RuleRelationInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface,
-                    "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $this->entityManager->remove($object);
     }
 
     /**

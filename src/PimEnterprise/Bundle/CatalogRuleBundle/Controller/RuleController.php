@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
+use Akeneo\Component\Persistence\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,8 +31,8 @@ class RuleController
     /** @var RuleRelationManager */
     protected $ruleRelationManager;
 
-    /** @var RuleDefinitionManager */
-    protected $ruleManager;
+    /** @var RemoverInterface */
+    protected $ruleRemover;
 
     /** @var RuleDefinitionRepositoryInterface */
     protected $ruleDefinitionRepo;
@@ -47,20 +47,20 @@ class RuleController
      * Constructor
      *
      * @param RuleRelationManager               $ruleRelationManager
-     * @param RuleDefinitionManager             $ruleManager
+     * @param RemoverInterface                  $ruleRemover
      * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
      * @param NormalizerInterface               $normalizer
      * @param string                            $attributeClass
      */
     public function __construct(
         RuleRelationManager $ruleRelationManager,
-        RuleDefinitionManager $ruleManager,
+        RemoverInterface $ruleRemover,
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         NormalizerInterface $normalizer,
         $attributeClass
     ) {
         $this->ruleRelationManager = $ruleRelationManager;
-        $this->ruleManager        = $ruleManager;
+        $this->ruleRemover        = $ruleRemover;
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->normalizer         = $normalizer;
 
@@ -116,7 +116,7 @@ class RuleController
         //TODO if rule null, throw 404
 
         try {
-            $this->ruleManager->remove($rule);
+            $this->ruleRemover->remove($rule);
         } catch (\Exception $e) {
             return new JsonResponse(['message' => 'An error occured during the deletion of the rule.'], 500);
         }

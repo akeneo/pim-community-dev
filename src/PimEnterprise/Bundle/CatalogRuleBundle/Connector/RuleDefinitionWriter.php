@@ -15,7 +15,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 
 /**
  * Writer for rules definitions
@@ -30,20 +30,18 @@ class RuleDefinitionWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /** @var RuleDefinitionManager */
-    protected $ruleDefManager;
+    /** @var BulkSaverInterface */
+    protected $saver;
 
     /** @var StepExecution */
     protected $stepExecution;
 
     /**
-     * @param RuleDefinitionManager $ruleDefManager
-     *
-     * TODO: expect a BulkSaverInterface and rename this class to make it generic
+     * @param BulkSaverInterface $saver
      */
-    public function __construct(RuleDefinitionManager $ruleDefManager)
+    public function __construct(BulkSaverInterface $saver)
     {
-        $this->ruleDefManager = $ruleDefManager;
+        $this->saver = $saver;
     }
 
     /**
@@ -54,7 +52,7 @@ class RuleDefinitionWriter extends AbstractConfigurableStepElement implements
         foreach ($items as $item) {
             $this->incrementCount($item);
         }
-        $this->ruleDefManager->saveAll($items);
+        $this->saver->saveAll($items);
     }
 
     /**

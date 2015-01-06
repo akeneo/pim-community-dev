@@ -24,48 +24,6 @@ class RuleRelationManagerSpec extends ObjectBehavior
         $this->beConstructedWith($entityManager, $attributeRepository, $ruleRelationRepo, 'AttributeClass');
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
-        $this->shouldHaveType('Akeneo\Component\Persistence\RemoverInterface');
-    }
-
-    function it_saves_a_rule_relation_object($entityManager, RuleRelation $ruleRelation)
-    {
-        $entityManager->persist($ruleRelation)->shouldBeCalled();
-        $entityManager->flush()->shouldBeCalled();
-
-        $this->save($ruleRelation);
-    }
-
-    function it_throws_an_exception_if_object_is_not_a_rule_relation_on_save(
-        $entityManager,
-        ProductInterface $productInterface
-    ) {
-        $entityManager->persist($productInterface)->shouldNotBeCalled();
-        $entityManager->flush()->shouldNotBeCalled();
-
-        $this->shouldThrow('\InvalidArgumentException')->during('save', [$productInterface]);
-    }
-
-    function it_removes_a_rule_relation_object($entityManager, RuleRelation $ruleRelation)
-    {
-        $entityManager->remove($ruleRelation)->shouldBeCalled();
-        $entityManager->flush()->shouldNotBeCalled();
-
-        $this->remove($ruleRelation);
-    }
-
-    function it_throws_an_exception_if_object_is_not_a_rule_relation_on_remove(
-        $entityManager,
-        AbstractProduct $abstractProduct
-    ) {
-        $entityManager->remove($abstractProduct)->shouldNotBeCalled();
-        $entityManager->flush()->shouldNotBeCalled();
-
-        $this->shouldThrow('\InvalidArgumentException')->during('remove', [$abstractProduct]);
-    }
-
     function it_returns_impacted_attributes(
         $attributeRepository,
         ProductCopyValueActionInterface $action1,
