@@ -61,7 +61,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         ObjectManager $objectManager,
         ProductSavingOptionsResolver $optionsResolver,
         SecurityContextInterface $securityContext
-
     ) {
         $this->workingCopySaver = $workingCopySaver;
         $this->draftSaver = $draftSaver;
