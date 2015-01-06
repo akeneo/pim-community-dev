@@ -122,7 +122,7 @@ jobs:
             withHeader: true
     footwear_variant_group_values_import:
         connector: Akeneo CSV Connector
-        alias:     csv_variant_group_values_import
+        alias:     csv_variant_group_import
         label:     Variant group values import
         type:      import
         configuration:

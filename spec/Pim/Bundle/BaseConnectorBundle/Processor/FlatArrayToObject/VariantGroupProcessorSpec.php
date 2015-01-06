@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\FlatArrayToObject;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 
-class VariantGroupValuesProcessorSpec extends ObjectBehavior
+class VariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
         GroupRepository $groupRepository,

@@ -16,7 +16,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Persistence\SaverInterface;
 use Prophecy\Argument;
 
-class VariantGroupValuesWriterSpec extends ObjectBehavior
+class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
         SaverInterface $groupSaver,

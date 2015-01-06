@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\FlatArrayToObject;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -16,14 +16,16 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Variant group values import processor, allows to bind values data into a product template linked to a variant group
- * and validate values, it erases existing values
+ * Variant group import processor, allows to,
+ *  - create / update variant groups
+ *  - bind values data into a product template linked to a variant group
+ *  - validate values and save values in template (it erases existing values)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implements
+class VariantGroupProcessor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
     StepExecutionAwareInterface
 {

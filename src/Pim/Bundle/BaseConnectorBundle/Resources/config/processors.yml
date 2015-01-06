@@ -3,10 +3,10 @@ parameters:
     pim_base_connector.processor.csv_serializer.heterogeneous.class: Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor
     pim_base_connector.processor.csv_serializer.product.class:       Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor
 
-    pim_base_connector.processor.transformer.class:                  Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
-    pim_base_connector.processor.product.class:                      Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
-    pim_base_connector.processor.category.class:                     Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
-    pim_base_connector.processor.variant_group_values.class:         Pim\Bundle\BaseConnectorBundle\Processor\VariantGroupValuesProcessor
+    pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
+    pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
+    pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.flat_array_to_object.variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\FlatArrayToObject\VariantGroupProcessor
 
     pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
@@ -124,8 +124,8 @@ services:
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
 
-    pim_base_connector.processor.variant_group_values:
-        class: %pim_base_connector.processor.variant_group_values.class%
+    pim_base_connector.processor.flat_array_to_object.variant_group:
+        class: %pim_base_connector.processor.flat_array_to_object.variant_group.class%
         arguments:
             - @pim_catalog.repository.group
             - @pim_serializer
