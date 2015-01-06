@@ -20,8 +20,9 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionYamlWriter extends FileWriter
+class RuleDefinitionYamlFileWriter extends FileWriter
 {
+    /** @var string */
     protected $filePath = '/tmp/rule_export_%datetime%.yml';
 
     /**

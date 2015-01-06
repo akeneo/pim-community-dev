@@ -1,8 +1,8 @@
 parameters:
     pimee_catalog_rule.processor.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionProcessor
     pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionWriter
-    pimee_catalog_rule.writer.yaml.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlWriter
-    pimee_catalog_rule.processor.yaml.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\YamlProcessor
+    pimee_catalog_rule.writer.rule_definition.yaml_file.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlFileWriter
+    pimee_catalog_rule.processor.rule_definition.object_to_array.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionObjectToArrayProcessor
 
 services:
     pimee_catalog_rule.writer.doctrine.rule_definition:
@@ -10,8 +10,8 @@ services:
         arguments:
           - '@pimee_rule_engine.manager.rule_definition'
 
-    pimee_catalog_rule.writer.yaml.rule_definition:
-        class: %pimee_catalog_rule.writer.yaml.rule_definition.class%
+    pimee_catalog_rule.writer.rule_definition.yaml_file:
+        class: %pimee_catalog_rule.writer.rule_definition.yaml_file.class%
 
     pimee_catalog_rule.processor.rule_definition:
         class: %pimee_catalog_rule.processor.rule_definition.class%
@@ -23,8 +23,7 @@ services:
             - @pimee_catalog_rule.serializer.rule_content
             - %pimee_rule_engine.entity.rule.class%
 
-    pimee_catalog_rule.processor.yaml.rule_definition:
-        class: %pimee_catalog_rule.processor.yaml.rule_definition.class%
+    pimee_catalog_rule.processor.rule_definition.object_to_array:
+        class: %pimee_catalog_rule.processor.rule_definition.object_to_array.class%
         arguments:
-            - @pimee_catalog_rule.serializer.rule_content
-
+            - @pimee_catalog_rule.normalizer.rule

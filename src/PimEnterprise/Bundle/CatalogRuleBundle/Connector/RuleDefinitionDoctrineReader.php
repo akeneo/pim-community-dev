@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInt
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class RuleDefinitionDoctrineReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
     /** @var RuleDefinitionRepositoryInterface */
     protected $ruleRepository;
@@ -29,8 +29,8 @@ class RuleReader extends AbstractConfigurableStepElement implements ItemReaderIn
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var bool Checks if all products are sent to the processor */
-    protected $allProductsSent = false;
+    /** @var bool Checks if all rules are sent to the processor */
+    protected $allRulesRead = false;
 
     /**
      * @param RuleDefinitionRepositoryInterface $ruleRepository
@@ -45,10 +45,11 @@ class RuleReader extends AbstractConfigurableStepElement implements ItemReaderIn
      */
     public function read()
     {
-        if ($this->allProductsSent) {
+        if ($this->allRulesRead) {
             return null;
         }
-        $this->allProductsSent = true;
+
+        $this->allRulesRead = true;
 
         return $this->ruleRepository->findAll();
     }

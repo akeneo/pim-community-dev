@@ -12,7 +12,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Prophecy\Argument;
 
-class RuleReaderSpec extends ObjectBehavior
+class RuleDefinitionDoctrineReaderSpec extends ObjectBehavior
 {
     public function let(RuleDefinitionRepositoryInterface $ruleRepository)
     {

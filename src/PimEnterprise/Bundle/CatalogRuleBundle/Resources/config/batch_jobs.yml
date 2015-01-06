@@ -28,6 +28,6 @@ connector:
                 export:
                     title: pimee_catalog_rule.jobs.yml_rule_export.export.title
                     services:
-                        reader:    pimee_catalog_rule.reader
-                        processor: pimee_catalog_rule.processor.yaml.rule_definition
-                        writer:    pimee_catalog_rule.writer.yaml.rule_definition
+                        reader:    pimee_catalog_rule.reader.rule_definition.doctrine
+                        processor: pimee_catalog_rule.processor.rule_definition.object_to_array
+                        writer:    pimee_catalog_rule.writer.rule_definition.yaml_file
