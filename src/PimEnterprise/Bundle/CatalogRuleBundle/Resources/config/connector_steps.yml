@@ -24,9 +24,9 @@ services:
             - @pimee_rule_engine.repository.rule_definition
             - @pimee_catalog_rule.denormalizer.rule
             - @validator
-            - %pimee_rule_engine.entity.rule_definition.class%
+            - %pimee_rule_engine.model.rule_definition.class%
             - @pimee_catalog_rule.serializer.rule_content
-            - %pimee_rule_engine.entity.rule.class%
+            - %pimee_rule_engine.model.rule.class%
 
     pimee_catalog_rule.processor.rule_definition.object_to_array:
         class: %pimee_catalog_rule.processor.rule_definition.object_to_array.class%

@@ -13,7 +13,7 @@ services:
             - @event_dispatcher
             - @validator
             - @pimee_catalog_rule.serializer.rule_content
-            - %pimee_rule_engine.entity.rule.class%
+            - %pimee_rule_engine.model.rule.class%
 
     pimee_catalog_rule.selector.product:
         class: %pimee_catalog_rule.selector.product.class%
@@ -21,7 +21,7 @@ services:
             - @pim_catalog.doctrine.query.product_query_factory
             - @pim_catalog.repository.product
             - @event_dispatcher
-            - %pimee_rule_engine.entity.rule_subject_set.class%
+            - %pimee_rule_engine.model.rule_subject_set.class%
 
     pimee_catalog_rule.applier.product:
         class: %pimee_catalog_rule.applier.product.class%
@@ -33,4 +33,4 @@ services:
             - @pim_catalog.object_manager.product
             - @pim_versioning.manager.version
             - @pim_transform.cache.product_cache_clearer
-            - %pimee_rule_engine.entity.rule_definition.class%
+            - %pimee_rule_engine.model.rule_definition.class%

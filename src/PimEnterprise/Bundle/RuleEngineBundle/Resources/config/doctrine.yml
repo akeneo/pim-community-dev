@@ -8,10 +8,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
             - '@event_dispatcher'
-            - %pimee_rule_engine.entity.rule_definition.class%
+            - %pimee_rule_engine.model.rule_definition.class%
 
     pimee_rule_engine.remover.rule_definition:
         class: %pim_catalog.remover.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - %pimee_rule_engine.entity.rule_definition.class%
+            - %pimee_rule_engine.model.rule_definition.class%

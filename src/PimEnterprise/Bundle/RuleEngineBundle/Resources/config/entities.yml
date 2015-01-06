@@ -1,4 +1,0 @@
-parameters:
-    pimee_rule_engine.entity.rule_definition.class:  PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition
-    pimee_rule_engine.entity.rule.class:             PimEnterprise\Bundle\RuleEngineBundle\Model\Rule
-    pimee_rule_engine.entity.rule_subject_set.class: PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSet

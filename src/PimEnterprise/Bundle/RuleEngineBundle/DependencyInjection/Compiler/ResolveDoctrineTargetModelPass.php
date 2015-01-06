@@ -28,7 +28,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     {
         return [
             'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface'
-                => 'pimee_rule_engine.entity.rule_definition.class',
+                => 'pimee_rule_engine.model.rule_definition.class',
         ];
     }
 }

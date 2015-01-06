@@ -1,2 +1,0 @@
-parameters:
-    pimee_catalog_rule.entity.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation

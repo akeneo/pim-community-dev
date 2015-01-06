@@ -30,8 +30,8 @@ class PimEnterpriseRuleEngineExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('doctrine.yml');
-        $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('models.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
         $loader->load('runners.yml');

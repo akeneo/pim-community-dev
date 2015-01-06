@@ -7,6 +7,6 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_catalog_rule.entity.rule_relation.class%
+            - %pimee_catalog_rule.model.rule_relation.class%
         tags:
             - { name: 'pim_repository' }
