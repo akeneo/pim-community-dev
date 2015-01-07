@@ -30,7 +30,7 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (color) : [SANDAL]"
+    Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (color): [SANDAL]"
     And I should see "Skipped 1"
 
   Scenario: Skip variant group if many axis are used as values
@@ -44,7 +44,7 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (size, color) : [SANDAL]"
+    Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (size, color): [SANDAL]"
     And I should see "Skipped 1"
 
   Scenario: Skip variant group if identifier is used as value
@@ -58,5 +58,5 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (sku) : [SANDAL]"
+    Then I should see "Variant group \"SANDAL\" cannot contains axis or identifier as values (sku): [SANDAL]"
     And I should see "Skipped 1"

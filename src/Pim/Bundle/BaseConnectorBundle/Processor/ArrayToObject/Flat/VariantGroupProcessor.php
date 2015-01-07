@@ -112,7 +112,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * Update the variant group values
      *
      * @param GroupInterface $variantGroup
-     * @param array $item
+     * @param array          $item
      */
     protected function updateVariantGroupValues(GroupInterface $variantGroup, array $item)
     {
@@ -130,7 +130,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
      *
      * @param array $item
-     * @param bool $keepOnlyFields if true keep only code, axis, labels, else keep only values
+     * @param bool  $keepOnlyFields if true keep only code, axis, labels, else keep only values
      *
      * @return array
      */

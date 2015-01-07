@@ -12,4 +12,3 @@ services:
             - @property_accessor
         tags:
             - { name: 'pim_enrich.form.view_updater' }
-
