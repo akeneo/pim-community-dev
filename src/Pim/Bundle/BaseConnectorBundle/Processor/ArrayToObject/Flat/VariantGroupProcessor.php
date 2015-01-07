@@ -127,7 +127,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Filters the item data to keep only fields to update variant group or template values
+     * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
      *
      * @param array $item
      * @param bool $keepOnlyFields if true keep only code, axis, labels, else keep only values
