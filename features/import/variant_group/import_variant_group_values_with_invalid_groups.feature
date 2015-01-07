@@ -36,7 +36,7 @@ Feature: Execute an import
   Scenario: Skip a variant group if it doesn't exist
     Given the following CSV file to import:
       """
-      variant_group_code;name-en_US;description-en_US-tablet;color
+      code;name-en_US;description-en_US-tablet;color
       UNKNOW;My sandal;My sandal description for locale en_US and channel tablet;white
       """
     And the following job "footwear_variant_group_values_import" configuration:

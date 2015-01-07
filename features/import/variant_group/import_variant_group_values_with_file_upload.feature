@@ -22,7 +22,7 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values through file upload
     Given the following CSV file to import:
       """
-      variant_group_code;name-en_US;description-en_US-tablet
+      code;name-en_US;description-en_US-tablet
       SANDAL;My sandal;My sandal description for locale en_US and channel tablet
       """
 
