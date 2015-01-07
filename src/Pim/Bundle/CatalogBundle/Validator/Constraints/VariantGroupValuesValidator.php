@@ -49,7 +49,9 @@ class VariantGroupValuesValidator extends ConstraintValidator
     protected function validateProductValues(GroupInterface $variantGroup, Constraint $constraint)
     {
         $template = $variantGroup->getProductTemplate();
-        $forbiddenAttributes = $variantGroup->getAttributes()->toArray();
+        $forbiddenAttributes = is_array($variantGroup->getAttributes()) ?
+            $variantGroup->getAttributes() :
+            $variantGroup->getAttributes()->toArray();
         $forbiddenAttributes[] = $this->attributeRepository->getIdentifier();
 
         $notValidAttributes = [];

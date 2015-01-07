@@ -180,8 +180,10 @@ services:
     pim_serializer.denormalizer.flat.group:
         class: %pim_serializer.denormalizer.flat.group.class%
         arguments:
-            - @pim_catalog.doctrine.smart_manager_registry
+            - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.group.class%
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

@@ -6,7 +6,7 @@ parameters:
     pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
     pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
-    pim_base_connector.processor.flat_array_to_object.variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\FlatArrayToObject\VariantGroupProcessor
+    pim_base_connector.processor.flat_array_to_object.variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat\VariantGroupProcessor
 
     pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
@@ -127,8 +127,9 @@ services:
     pim_base_connector.processor.flat_array_to_object.variant_group:
         class: %pim_base_connector.processor.flat_array_to_object.variant_group.class%
         arguments:
-            - @pim_catalog.repository.group
-            - @pim_serializer
-            - @pim_validator
-            - @pim_serializer
+            - '@pim_catalog.repository.group'
+            - '@pim_serializer'
+            - '@pim_validator'
+            - '@pim_serializer'
+            - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.product_template.class%
