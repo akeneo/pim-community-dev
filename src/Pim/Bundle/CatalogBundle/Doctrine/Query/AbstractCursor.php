@@ -104,4 +104,15 @@ abstract class AbstractCursor implements CursorInterface
     {
         $this->currentPage = $currentPage;
     }
+
+    /**
+     * @return int
+     */
+    public function getPageSize()
+    {
+        return $this->pageSize;
+    }
+
+
+
 }
