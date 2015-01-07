@@ -39,6 +39,7 @@ class PimCatalogExtension extends AkeneoStorageUtilsExtension
         $loader->load('query_builders.yml');
         $loader->load('updaters.yml');
         $loader->load('resolvers.yml');
+        $loader->load('cursors.yml');
 
         $this->loadValidationFiles($container);
         $this->loadStorageDriver($container, __DIR__);
