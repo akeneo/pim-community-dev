@@ -119,8 +119,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
      */
     protected function saveVariantGroup(GroupInterface $variantGroup)
     {
-        $this->groupSaver->save($variantGroup);
         $this->incrementUpdatedVariantGroupCount($variantGroup);
+        $this->groupSaver->save($variantGroup);
     }
 
     /**
@@ -145,11 +145,15 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     *
+     * @param GroupInterface $group
      */
-    protected function incrementUpdatedVariantGroupCount()
+    protected function incrementUpdatedVariantGroupCount(GroupInterface $group)
     {
-        $this->stepExecution->incrementSummaryInfo('update');
+        if (null === $group->getId()) {
+            $this->stepExecution->incrementSummaryInfo('create');
+        } else {
+            $this->stepExecution->incrementSummaryInfo('update');
+        }
     }
 
     /**
