@@ -12,6 +12,56 @@ CHANGELOG
 
  - Database schema has changed. Please read UPGRADE.md
 
+0.2.7 (2015-01-07)
+-----
+
+### Bug fixes
+
+- PIM-3562: Added a UOW clear in order to prevent the job instance to be flushed
+
+0.2.6
+-----
+
+### Bug fixes
+
+- PIM-3446: Fix memory issue when loading a lot of warning
+
+0.2.5
+-----
+
+### Bug fixes
+
+- Fix/verify pid
+
+0.2.4
+-----
+
+### Bug fixes
+
+- Add a jobExecutionManager allowing to check if a job is still running
+
+0.2.3
+-----
+
+### Bug fixes
+
+- Fix the deprecated call to getEntityManager to avoid warnings during batch runs.
+
+0.2.2
+-----
+
+### Bug fixes
+
+- Add a new case to deal with an object item in addWarning
+
+
+0.2.1
+-----
+
+### Bug fixes
+
+- Adding the name of the job to the message at the end of the execution.
+
 0.2.0
 -----
 
