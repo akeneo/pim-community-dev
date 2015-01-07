@@ -22,28 +22,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Product rule runner
  *
+ *  TODO: implement dry runner interface
+ *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductRuleRunner extends AbstractRunner
 {
     /** @var string */
-    protected $productConditionClass; //TODO : 21 char variable name :/
+    protected $productCondClass;
 
     /**
      * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
-     * @param string            $productConditionClass should implement
+     * @param string            $productCondClass should implement
      *                          \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
      */
     public function __construct(
         BuilderInterface $builder,
         SelectorInterface $selector,
         ApplierInterface $applier,
-        $productConditionClass
+        $productCondClass
     ) {
         parent::__construct($builder, $selector, $applier);
-        $this->productConditionClass = $productConditionClass;
+        $this->productCondClass = $productCondClass;
     }
 
     /**
@@ -94,7 +96,7 @@ class ProductRuleRunner extends AbstractRunner
         $definition = $this->builder->build($definition);
         if (!empty($options['selected_products'])) {
             /** @var ProductConditionInterface $condition */
-            $condition = new $this->productConditionClass([
+            $condition = new $this->productCondClass([
                 'field'    => 'id',
                 'operator' => 'IN',
                 'value'    => $options['selected_products']

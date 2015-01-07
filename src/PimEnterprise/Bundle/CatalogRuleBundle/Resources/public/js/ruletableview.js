@@ -69,7 +69,7 @@ define(
                     'pimee_catalog_rule_index',
                     {
                         resourceId: $element.data('attribute-id'),
-                        resourceType: 'attribute'
+                        resourceName: 'attribute'
                     }
                 ),
                 collectionClass: ItemCollection,

@@ -29,24 +29,24 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
     protected $conditionNormalizer;
 
     /** @var ProductSetValueActionNormalizer */
-    protected $setValueActionNormalizer; //TODO: name is too long
+    protected $setValueNormalizer;
 
     /** @var ProductCopyValueActionNormalizer */
-    protected $copyValueActionNormalizer; //TODO: name is too long
+    protected $copyValueNormalizer;
 
     /**
      * @param ProductRuleConditionNormalizer   $conditionNormalizer
-     * @param ProductSetValueActionNormalizer  $setValueActionNormalizer
-     * @param ProductCopyValueActionNormalizer $copyValueActionNormalizer
+     * @param ProductSetValueActionNormalizer  $setValueNormalizer
+     * @param ProductCopyValueActionNormalizer $copyValueNormalizer
      */
     public function __construct(
         ProductRuleConditionNormalizer $conditionNormalizer,
-        ProductSetValueActionNormalizer $setValueActionNormalizer,
-        ProductCopyValueActionNormalizer $copyValueActionNormalizer
+        ProductSetValueActionNormalizer $setValueNormalizer,
+        ProductCopyValueActionNormalizer $copyValueNormalizer
     ) {
         $this->conditionNormalizer = $conditionNormalizer;
-        $this->setValueActionNormalizer = $setValueActionNormalizer;
-        $this->copyValueActionNormalizer = $copyValueActionNormalizer;
+        $this->setValueNormalizer = $setValueNormalizer;
+        $this->copyValueNormalizer = $copyValueNormalizer;
     }
 
     /**
@@ -60,9 +60,9 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
         }
         foreach ($rule->getActions() as $action) {
             if ($action instanceof ProductSetValueActionInterface) {
-                $actions[] = $this->setValueActionNormalizer->normalize($action);
+                $actions[] = $this->setValueNormalizer->normalize($action);
             } elseif ($action instanceof ProductCopyValueActionInterface) {
-                $actions[] = $this->copyValueActionNormalizer->normalize($action);
+                $actions[] = $this->copyValueNormalizer->normalize($action);
             } else {
                 throw new \LogicException(
                     sprintf('Rule "%s" has an unknown type of action "%s".', $rule->getCode(), get_class($action))
@@ -104,10 +104,10 @@ class ProductRuleContentJsonSerializer implements ProductRuleContentSerializerIn
                 throw new \LogicException(sprintf('Rule content "%s" has an action with no type.', $content));
             } elseif (ProductSetValueActionInterface::TYPE === $action['type']) {
                 // @TODO
-                $actions[] = $this->setValueActionNormalizer->denormalize($action, 'TODO');
+                $actions[] = $this->setValueNormalizer->denormalize($action, 'TODO');
             } elseif (ProductCopyValueActionInterface::TYPE === $action['type']) {
                 // @TODO
-                $actions[] = $this->copyValueActionNormalizer->denormalize($action, 'TODO');
+                $actions[] = $this->copyValueNormalizer->denormalize($action, 'TODO');
             } else {
                 throw new \LogicException(
                     sprintf('Rule content "%s" has an unknown type of action "%s".', $content, $action['type'])

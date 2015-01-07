@@ -7,11 +7,9 @@ use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation;
+use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
 use Prophecy\Argument;
 
 class RuleRelationManagerSpec extends ObjectBehavior
@@ -19,7 +17,7 @@ class RuleRelationManagerSpec extends ObjectBehavior
     function let(
         EntityManager $entityManager,
         AttributeRepository $attributeRepository,
-        EntityRepository $ruleRelationRepo
+        RuleRelationRepositoryInterface $ruleRelationRepo
     ) {
         $this->beConstructedWith($entityManager, $attributeRepository, $ruleRelationRepo, 'AttributeClass');
     }

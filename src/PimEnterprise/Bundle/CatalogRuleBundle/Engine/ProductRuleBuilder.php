@@ -18,6 +18,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
 use PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -78,18 +80,36 @@ class ProductRuleBuilder implements BuilderInterface
         $rule->setConditions($content['conditions']);
         $rule->setActions($content['actions']);
 
-        $errors = $this->validator->validate($rule);
+        $violations = $this->validator->validate($rule);
 
-        //TODO could be interresting to display the errors ?
-        if (count($errors)) {
+        if (count($violations)) {
             throw new BuilderException(
-                //TODO: improve message
-                sprintf('Impossible to build the rule "%s" as it does not appear to be valid.', $definition->getCode())
+                sprintf(
+                    'Impossible to build the rule "%s" as it does not appear to be valid (%s).',
+                    $definition->getCode(),
+                    $this->violationsToMessage($violations)
+                )
             );
         }
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_BUILD, new RuleEvent($definition));
 
         return $rule;
+    }
+
+    /**
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @return string
+     */
+    protected function violationsToMessage(ConstraintViolationListInterface $violations)
+    {
+        $errors = [];
+        /** @var ConstraintViolationInterface $violation */
+        foreach ($violations as $violation) {
+            $errors[] = sprintf("%s: %s", $violation->getPropertyPath(), $violation->getMessage());
+        }
+
+        return implode(', ', $errors);
     }
 }

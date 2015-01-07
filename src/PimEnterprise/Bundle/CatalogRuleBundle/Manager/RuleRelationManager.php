@@ -16,6 +16,8 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
@@ -34,8 +36,7 @@ class RuleRelationManager
     /** @var AttributeRepository */
     protected $attributeRepository;
 
-    //TODO: use a real interface fir this repo
-    /** @var EntityRepository */
+    /** @var RuleRelationRepositoryInterface */
     protected $ruleRelationRepo;
 
     /** @var string */
@@ -44,15 +45,15 @@ class RuleRelationManager
     /**
      * Constructor
      *
-     * @param EntityManager       $entityManager
-     * @param AttributeRepository $attributeRepository
-     * @param EntityRepository    $ruleRelationRepo
-     * @param string              $attributeClass
+     * @param EntityManager                   $entityManager
+     * @param AttributeRepository             $attributeRepository
+     * @param RuleRelationRepositoryInterface $ruleRelationRepo
+     * @param string                          $attributeClass
      */
     public function __construct(
         EntityManager $entityManager,
         AttributeRepository $attributeRepository,
-        EntityRepository $ruleRelationRepo,
+        RuleRelationRepositoryInterface $ruleRelationRepo,
         $attributeClass
     ) {
         $this->entityManager = $entityManager;
@@ -93,8 +94,7 @@ class RuleRelationManager
     }
 
     /**
-     * //TODO : phpdoc non-existing argument
-     * @param int $attribute
+     * @param int $attributeId
      *
      * @return bool
      */
@@ -144,9 +144,8 @@ class RuleRelationManager
      * @param string $resourceId
      * @param string $resourceName
      *
-     * TODO: it returns rulerelation[]
      * TODO: remove this, it's a shortcut to a repo
-     * @return PersistentCollection
+     * @return RuleRelationInterface[]
      */
     protected function getRuleRelationsForResource($resourceId, $resourceName)
     {

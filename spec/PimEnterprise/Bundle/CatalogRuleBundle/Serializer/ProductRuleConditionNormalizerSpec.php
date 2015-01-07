@@ -11,7 +11,7 @@ class ProductRuleConditionNormalizerSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition');
+        $this->beConstructedWith('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition');
     }
 
     function it_is_initializable()

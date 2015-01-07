@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-// TODO : Alias 'SymfonyComponentEventDispatcherEventDispatcher' is never used
-
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -25,6 +23,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
@@ -56,6 +55,9 @@ class ProductRuleApplier implements ApplierInterface
     /** @var CacheClearer */
     protected $cacheClearer;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var string */
     protected $ruleDefinitionClass;
 
@@ -67,6 +69,7 @@ class ProductRuleApplier implements ApplierInterface
      * @param ObjectManager            $objectManager
      * @param VersionManager           $versionManager
      * @param CacheClearer             $cacheClearer
+     * @oaram TranslatorInterface      $translator
      * @param string                   $ruleDefinitionClass
      */
     public function __construct(
@@ -77,6 +80,7 @@ class ProductRuleApplier implements ApplierInterface
         ObjectManager $objectManager,
         VersionManager $versionManager,
         CacheClearer $cacheClearer,
+        TranslatorInterface $translator,
         $ruleDefinitionClass
     )
     {
@@ -87,6 +91,7 @@ class ProductRuleApplier implements ApplierInterface
         $this->objectManager       = $objectManager;
         $this->versionManager      = $versionManager;
         $this->cacheClearer        = $cacheClearer;
+        $this->translator          = $translator;
         $this->ruleDefinitionClass = $ruleDefinitionClass;
     }
 
@@ -99,8 +104,14 @@ class ProductRuleApplier implements ApplierInterface
 
         $this->updateProducts($subjectSet, $rule->getActions());
         $this->validateProducts($subjectSet);
-        // TODO: This information will be presented to the user. We should translate it
-        $this->saveProducts($subjectSet, sprintf('Applied rule "%s"', $rule->getCode()));
+
+        $savingContext = $this->translator->trans(
+            'pimee_catalog_rule.product.history',
+            ['%rule%' => $rule->getCode()],
+            null,
+            'en'
+        );
+        $this->saveProducts($subjectSet, $savingContext);
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
@@ -115,7 +126,6 @@ class ProductRuleApplier implements ApplierInterface
     protected function updateProducts(RuleSubjectSetInterface $subjectSet, $actions)
     {
         foreach ($actions as $action) {
-            //TODO: use a switch is nicer
             if ($action instanceof ProductSetValueActionInterface) {
                 $this->applySetAction($subjectSet, $action);
             } elseif ($action instanceof ProductCopyValueActionInterface) {
@@ -136,6 +146,7 @@ class ProductRuleApplier implements ApplierInterface
         foreach ($subjectSet->getSubjects() as $product) {
             $violations = $this->productValidator->validate($product);
             if ($violations->count() > 0) {
+                //TODO: use the detacher
                 $this->objectManager->detach($product);
                 $reasons = [];
                 /** @var \Symfony\Component\Validator\ConstraintViolation $violation */

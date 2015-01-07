@@ -19,6 +19,8 @@ use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -42,8 +44,7 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     /** @var RemoverInterface */
     protected $ruleRelationRemover;
 
-    //TODO: use a real interface here
-    /** @var EntityRepository */
+    /** @var RuleRelationRepositoryInterface */
     protected $ruleRelationRepo;
 
     /** @var ProductRuleBuilder */
@@ -55,18 +56,18 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     /**
      * Constructor
      *
-     * @param RuleRelationManager $ruleRelationManager
-     * @param SaverInterface      $ruleRelationSaver
-     * @param RemoverInterface    $ruleRelationRemover
-     * @param EntityRepository    $ruleRelationRepo
-     * @param ProductRuleBuilder  $productRuleBuilder
-     * @param string              $ruleRelationClass
+     * @param RuleRelationManager             $ruleRelationManager
+     * @param SaverInterface                  $ruleRelationSaver
+     * @param RemoverInterface                $ruleRelationRemover
+     * @param RuleRelationRepositoryInterface $ruleRelationRepo
+     * @param ProductRuleBuilder              $productRuleBuilder
+     * @param string                          $ruleRelationClass
      */
     public function __construct(
         RuleRelationManager $ruleRelationManager,
         SaverInterface $ruleRelationSaver,
         RemoverInterface $ruleRelationRemover,
-        EntityRepository $ruleRelationRepo,
+        RuleRelationRepositoryInterface $ruleRelationRepo,
         ProductRuleBuilder $productRuleBuilder,
         $ruleRelationClass
     ) {
@@ -98,13 +99,12 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     public function removeAttribute(GenericEvent $event)
     {
         $entity = $event->getSubject();
-        $ruleRelations = [];
 
-        if ($entity instanceof AttributeInterface) {
-            $ruleRelations = $this->ruleRelationRepo
-                ->findBy(['resourceId' => $entity->getId(), 'resourceName' => ClassUtils::getClass($entity)]);
+        if (!$entity instanceof AttributeInterface) {
+            return;
         }
-        // TODO else InvalidArgumentException
+        $ruleRelations = $this->ruleRelationRepo
+            ->findBy(['resourceId' => $entity->getId(), 'resourceName' => ClassUtils::getClass($entity)]);
 
         // TODO: use a bulk
         foreach ($ruleRelations as $ruleRelation) {
@@ -161,8 +161,9 @@ class RuleRelationSubscriber implements EventSubscriberInterface
         $relatedAttributes = $this->ruleRelationManager->getImpactedAttributes($actions);
 
         foreach ($relatedAttributes as $relatedAttribute) {
+            /** @var RuleRelationInterface $ruleRelation */
             $ruleRelation = new $this->ruleRelationClass();
-            $ruleRelation->setRule($definition);
+            $ruleRelation->setRuleDefinition($definition);
             $ruleRelation->setResourceName(ClassUtils::getClass($relatedAttribute));
             $ruleRelation->setResourceId($relatedAttribute->getId());
 

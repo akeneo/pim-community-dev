@@ -9,6 +9,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -76,7 +77,8 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $eventDispatcher,
         $validator,
         $serializer,
-        RuleDefinitionInterface $definition
+        RuleDefinitionInterface $definition,
+        ConstraintViolationListInterface $violations
     ) {
         $strContent = $this->buildRuleContent(true);
         $content = $this->buildRuleContent();
@@ -87,12 +89,13 @@ class ProductRuleBuilderSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
 
-        $validator->validate(Argument::any())->willReturn(['errors']);
+        $violations->count()->willReturn(2);
+        $violations->rewind()->willReturn(null);
+        $violations->valid()->shouldBeCalled();
+        $validator->validate(Argument::any())->willReturn($violations);
 
         $this
-            ->shouldThrow(
-                new BuilderException('Impossible to build the rule "rule1" as it does not appear to be valid.')
-            )
+            ->shouldThrow('PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException')
             ->during('build', [$definition])
         ;
     }

@@ -85,7 +85,7 @@ class RuleController
                 $resourceName = $this->attributeClass;
                 break;
             default:
-                throw new NotFoundHttpException(sprintf('Resource type %s is unknown', $resourceType));
+                throw new NotFoundHttpException(sprintf('Resource type "%s" is unknown.', $resourceType));
 
         }
 
@@ -100,9 +100,7 @@ class RuleController
     /**
      * Delete an rule of a resource
      *
-     * // TODO : remove unused parameters
-     *
-     * @param string $resourceType
+     * @param string $resourceName
      * @param int    $resourceId
      * @param int    $ruleId
      *
@@ -110,10 +108,13 @@ class RuleController
      *
      * @return JsonResponse
      */
-    public function deleteAction($resourceType, $resourceId, $ruleId)
+    public function deleteAction($resourceName, $resourceId, $ruleId)
     {
-        $rule = $this->ruleDefinitionRepo->findOneById($ruleId);
-        //TODO if rule null, throw 404
+        if (null === $rule = $this->ruleDefinitionRepo->find($ruleId)) {
+            throw new NotFoundHttpException(
+                sprintf('Rule definition with id "%s" can not be found.', (string) $ruleId)
+            );
+        }
 
         try {
             $this->ruleRemover->remove($rule);

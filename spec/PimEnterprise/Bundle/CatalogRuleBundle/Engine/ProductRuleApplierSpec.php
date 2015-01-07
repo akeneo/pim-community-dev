@@ -15,6 +15,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
@@ -30,7 +31,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         BulkSaverInterface $productSaver,
         ValidatorInterface $productValidator,
         ObjectManager $objectManager,
-        CacheClearer $cacheClearer
+        CacheClearer $cacheClearer,
+        TranslatorInterface $translator
     ) {
         $this->beConstructedWith(
             $productUpdater,
@@ -40,6 +42,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $objectManager,
             $versionManager,
             $cacheClearer,
+            $translator,
             self::RULE_DEFINITION_CLASS
         );
     }
@@ -97,6 +100,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductSetValueActionInterface $action,
         ProductInterface $selectedProduct,
         ConstraintViolationList $violationList,
+        $translator,
         $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
@@ -114,6 +118,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $rule->getCode()->willReturn('rule_one');
         $productValidator->validate($selectedProduct)->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
+
+        $translator->trans(Argument::cetera())->willReturn('Applied rule "rule_one"');
 
         // save products
         $versionManager->isRealTimeVersioning()->willReturn(false);
@@ -140,7 +146,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductCopyValueAction $action,
         ProductInterface $selectedProduct,
         ConstraintViolationList $violationList,
-        $cacheClearer
+        $cacheClearer,
+        $translator
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -161,6 +168,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $rule->getCode()->willReturn('rule_one');
         $productValidator->validate($selectedProduct)->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
+
+        $translator->trans(Argument::cetera())->willReturn('Applied rule "rule_one"');
 
         // save products
         $versionManager->isRealTimeVersioning()->willReturn(false);

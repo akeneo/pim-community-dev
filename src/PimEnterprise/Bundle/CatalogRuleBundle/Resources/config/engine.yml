@@ -33,4 +33,5 @@ services:
             - @pim_catalog.object_manager.product
             - @pim_versioning.manager.version
             - @pim_transform.cache.product_cache_clearer
+            - @translator
             - %pimee_rule_engine.model.rule_definition.class%

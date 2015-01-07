@@ -39,7 +39,6 @@ class ProductSetValueAction implements ProductSetValueActionInterface
      */
     public function __construct(array $data)
     {
-        //TODO: option Resolver ?
         $this->field  = isset($data['field']) ? $data['field'] : null;
         $this->value  = isset($data['value']) ? $data['value'] : null;
         $this->locale = isset($data['locale']) ? $data['locale'] : null;

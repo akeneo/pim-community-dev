@@ -42,7 +42,6 @@ class ProductCondition implements ProductConditionInterface
      */
     public function __construct(array $data)
     {
-        //TODO: option resolver ?
         $this->field    = isset($data['field']) ? $data['field'] : null;
         $this->operator = isset($data['operator']) ? $data['operator'] : null;
         $this->value    = isset($data['value']) ? $data['value'] : null;

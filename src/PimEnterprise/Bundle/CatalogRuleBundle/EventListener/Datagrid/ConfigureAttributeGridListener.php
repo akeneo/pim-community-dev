@@ -19,9 +19,6 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 /**
  * Grid listener to configure the columns of attribute grid
  *
- * TODO : we should move the EventListener folder to the Datagrid folder (same level than Extension) to keep datagrid
- * stuff together and avoid to mess the bundle
- *
  * @author Filips Alpe <filips@akeneo.com>
  */
 class ConfigureAttributeGridListener

@@ -70,8 +70,8 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
 
         $definition->getCode()->willReturn('rule_code');
         $subject->getId()->willReturn(42);
-        $logger->error('Rule event: rule_code postApply : 1 subjects skipped')->shouldBeCalled();
-        $logger->error('Rule event: rule_code postApply : subject "42" has been skipped due to "My name should be shorter"')->shouldBeCalled();
+        $logger->warning('Rule "rule_code", event "pim_rule_engine.rule.post_apply": 1 subjects skipped.')->shouldBeCalled();
+        $logger->warning('Rule "rule_code", event "pim_rule_engine.rule.post_apply": subject "42" has been skipped due to "My name should be shorter".')->shouldBeCalled();
 
         $this->postApply($event);
     }

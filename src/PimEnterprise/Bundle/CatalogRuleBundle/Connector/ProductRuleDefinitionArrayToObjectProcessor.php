@@ -91,24 +91,23 @@ class ProductRuleDefinitionArrayToObjectProcessor extends AbstractImportProcesso
 
     /**
      * @param RuleInterface           $rule
-     * @param RuleDefinitionInterface $definition
+     * @param RuleDefinitionInterface $ruleDefinition
      *
      * @return RuleDefinitionInterface
      */
-    protected function updateDefinitionFromRule(RuleInterface $rule, RuleDefinitionInterface $definition = null)
+    protected function updateDefinitionFromRule(RuleInterface $rule, RuleDefinitionInterface $ruleDefinition = null)
     {
-        // TODO: naming but $ruleDefinition could be more clear
-        if (null === $definition) {
-            $definition = new $this->class();
+        if (null === $ruleDefinition) {
+            $ruleDefinition = new $this->class();
         }
 
         $content = $this->contentSerializer->serialize($rule);
 
-        $definition->setCode($rule->getCode());
-        $definition->setPriority($rule->getPriority());
-        $definition->setType($rule->getType());
-        $definition->setContent($content);
+        $ruleDefinition->setCode($rule->getCode());
+        $ruleDefinition->setPriority($rule->getPriority());
+        $ruleDefinition->setType($rule->getType());
+        $ruleDefinition->setContent($content);
 
-        return $definition;
+        return $ruleDefinition;
     }
 }

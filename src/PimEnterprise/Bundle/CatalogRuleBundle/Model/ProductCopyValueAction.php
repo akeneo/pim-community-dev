@@ -44,7 +44,6 @@ class ProductCopyValueAction implements ProductCopyValueActionInterface
      */
     public function __construct(array $data)
     {
-        //TODO: option resolver ?
         $this->fromField  = isset($data['from_field']) ? $data['from_field'] : null;
         $this->fromLocale = isset($data['from_locale']) ? $data['from_locale'] : null;
         $this->fromScope  = isset($data['from_scope']) ? $data['from_scope'] : null;

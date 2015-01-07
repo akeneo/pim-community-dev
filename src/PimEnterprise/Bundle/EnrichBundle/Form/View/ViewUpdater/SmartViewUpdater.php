@@ -66,7 +66,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
             'pimee_catalog_rule_index',
             [
                 'resourceId'   => $attributeId,
-                'resourceType' => 'attribute',
+                'resourceName' => 'attribute',
             ]
         );
 

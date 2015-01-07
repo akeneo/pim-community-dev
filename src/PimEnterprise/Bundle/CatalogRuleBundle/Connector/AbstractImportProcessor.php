@@ -87,8 +87,6 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
      * Try to find an object according to its identifiers from a repository or create an empty object
      * if it does not exist.
      *
-     * //TODO: odd that we don't have this kind of methods already
-     *
      * @param ReferableEntityRepositoryInterface $repository the repository to search inside
      * @param array                              $data       the data that is currently processed
      * @param string                             $class      the class to instanciate in case the
@@ -110,8 +108,6 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
 
     /**
      * Find an object according to its identifiers from a repository.
-     *
-     * //TODO: odd that we don't have this kind of methods already
      *
      * @param ReferableEntityRepositoryInterface $repository the repository to search inside
      * @param array                              $data       the data that is currently processed
@@ -155,7 +151,6 @@ abstract class AbstractImportProcessor extends AbstractConfigurableStepElement i
     /**
      * Sets an item as skipped and throws an invalid item exception.
      *
-     * // TODO : remove unused parameters
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
      *

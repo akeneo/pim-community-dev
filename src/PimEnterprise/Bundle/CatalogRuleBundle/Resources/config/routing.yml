@@ -1,5 +1,5 @@
 pimee_catalog_rule_index:
-    path: /rules/{resourceType}/{resourceId}
+    path: /rules/{resourceName}/{resourceId}
     defaults: { _controller: pimee_catalog_rule.controller.rule:indexAction }
     requirements:
         resourceType: '[0-9a-z]+'
@@ -7,10 +7,10 @@ pimee_catalog_rule_index:
     methods: [GET]
 
 pimee_catalog_rule_delete:
-    path: /rules/{resourceType}/{resourceId}/{ruleId}
+    path: /rules/{resourceName}/{resourceId}/{ruleId}
     defaults: { _controller: pimee_catalog_rule.controller.rule:deleteAction }
     requirements:
-        resourceType: '[0-9a-z]+'
+        resourceName: '[0-9a-z]+'
         resourceId: '\d+'
         ruleId: '\d+'
     methods: [DELETE]

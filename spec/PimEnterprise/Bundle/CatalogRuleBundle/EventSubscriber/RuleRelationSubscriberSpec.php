@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -24,7 +25,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
         RuleRelationManager $ruleRelationManager,
         SaverInterface $ruleRelationSaver,
         RemoverInterface $ruleRelationRemover,
-        EntityRepository $ruleRelationRepo,
+        RuleRelationRepositoryInterface $ruleRelationRepo,
         ProductRuleBuilder $productRuleBuilder
     ) {
         $this->beConstructedWith(

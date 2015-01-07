@@ -31,10 +31,10 @@ class ProductRuleDenormalizer implements DenormalizerInterface
     protected $conditionNormalizer;
 
     /** @var ProductSetValueActionNormalizer */
-    protected $setValueActionNormalizer; //TODO: name too long
+    protected $setValueNormalizer;
 
     /** @var ProductCopyValueActionNormalizer */
-    protected $copyValueActionNormalizer; //TODO: name too long
+    protected $copyValueNormalizer;
 
     /** @var string */
     protected $class;
@@ -44,23 +44,23 @@ class ProductRuleDenormalizer implements DenormalizerInterface
 
     /**
      * @param ProductRuleConditionNormalizer   $conditionNormalizer
-     * @param ProductSetValueActionNormalizer  $setValueActionNormalizer
-     * @param ProductCopyValueActionNormalizer $copyValueActionNormalizer
+     * @param ProductSetValueActionNormalizer  $setValueNormalizer
+     * @param ProductCopyValueActionNormalizer $copyValueNormalizer
      * @param string                           $class
      * @param string                           $definitionClass
      */
     public function __construct(
         ProductRuleConditionNormalizer $conditionNormalizer,
-        ProductSetValueActionNormalizer $setValueActionNormalizer,
-        ProductCopyValueActionNormalizer $copyValueActionNormalizer,
+        ProductSetValueActionNormalizer $setValueNormalizer,
+        ProductCopyValueActionNormalizer $copyValueNormalizer,
         $class,
         $definitionClass
     ) {
-        $this->conditionNormalizer       = $conditionNormalizer;
-        $this->setValueActionNormalizer  = $setValueActionNormalizer;
-        $this->copyValueActionNormalizer = $copyValueActionNormalizer;
-        $this->class                     = $class;
-        $this->definitionClass           = $definitionClass;
+        $this->conditionNormalizer = $conditionNormalizer;
+        $this->setValueNormalizer  = $setValueNormalizer;
+        $this->copyValueNormalizer = $copyValueNormalizer;
+        $this->class               = $class;
+        $this->definitionClass     = $definitionClass;
     }
 
     /**
@@ -98,9 +98,9 @@ class ProductRuleDenormalizer implements DenormalizerInterface
                 }
                 //@TODO
                 if (ProductSetValueActionInterface::TYPE === $rawAction['type']) {
-                    $action = $this->setValueActionNormalizer->denormalize($rawAction, 'TODO');
+                    $action = $this->setValueNormalizer->denormalize($rawAction, 'TODO');
                 } elseif (ProductCopyValueActionInterface::TYPE === $rawAction['type']) {
-                    $action = $this->copyValueActionNormalizer->denormalize($rawAction, 'TODO');
+                    $action = $this->copyValueNormalizer->denormalize($rawAction, 'TODO');
                 } else {
                     throw new \LogicException(
                         sprintf('Rule "%s" has an unknown type of action "%s".', $rule->getCode(), $rawAction['type'])

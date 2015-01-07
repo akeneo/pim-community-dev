@@ -23,7 +23,7 @@ interface RuleRelationInterface
     /**
      * @return RuleDefinitionInterface
      */
-    public function getRule();
+    public function getRuleDefinition();
 
     /**
      * @return string
@@ -40,7 +40,7 @@ interface RuleRelationInterface
      *
      * @return RuleRelationInterface
      */
-    public function setRule(RuleDefinitionInterface $rule);
+    public function setRuleDefinition(RuleDefinitionInterface $rule);
 
     /**
      * @param string $resourceName

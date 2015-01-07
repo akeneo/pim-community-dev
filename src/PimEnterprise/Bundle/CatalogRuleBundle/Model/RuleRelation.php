@@ -28,7 +28,6 @@ class RuleRelation implements RuleRelationInterface
 
     /**
      * @var string
-     * @TODO: we should rename that into resourceType <- not sure after reflexion :)
      */
     protected $resourceName;
 
@@ -46,7 +45,7 @@ class RuleRelation implements RuleRelationInterface
     /**
      * {@inheritdoc}
      */
-    public function getRule()
+    public function getRuleDefinition()
     {
         return $this->rule;
     }
@@ -70,7 +69,7 @@ class RuleRelation implements RuleRelationInterface
     /**
      * {@inheritdoc}
      */
-    public function setRule(RuleDefinitionInterface $rule)
+    public function setRuleDefinition(RuleDefinitionInterface $rule)
     {
         $this->rule = $rule;
 
