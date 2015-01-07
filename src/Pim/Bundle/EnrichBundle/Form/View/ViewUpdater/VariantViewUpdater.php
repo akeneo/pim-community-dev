@@ -69,16 +69,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
             return false;
         }
 
-        $groups = $product->getGroups();
-        $variantGroup = null;
-        /** @var GroupInterface $group */
-        foreach ($groups as $group) {
-            if ($group->getType()->isVariant()) {
-                // TODO : will have only one after PIM-2448, add short cut getVariantGroup() ?
-                $variantGroup = $group;
-            }
-        }
-
+        $variantGroup = $product->getVariantGroup();
         if ($variantGroup) {
             $template = $variantGroup->getProductTemplate();
 
@@ -96,13 +87,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
      */
     protected function markAttributeAsUpdatedByVariant(FormView $view, ProductValueInterface $value)
     {
-        // TODO : will have only one after PIM-2448, add shortcut getVariantGroup() ?
-        foreach ($value->getEntity()->getGroups() as $group) {
-            if ($group->getType()->isVariant()) {
-                $view->vars['from_variant'] = $group;
-            }
-        }
-
+        $view->vars['from_variant'] = $value->getEntity()->getVariantGroup();
         $view->vars['disabled']  = true;
         $view->vars['read_only'] = true;
 
