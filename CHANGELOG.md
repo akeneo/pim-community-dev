@@ -1,26 +1,37 @@
 CHANGELOG
 =========
 
-0.3.2
-------------------
+0.3.4
+-----
 
 ### Bug fixes
 
 - Added a UOW clear in order to prevent job instance to be flushed
 
-=========
+0.3.3
+-----
+
+### Bug fixes
+
+- Add an optional parameter in StepExecution::incrementSummaryInfo
+
+
+0.3.2
+-----
+
+### Bug fixes
+
+- SQL errors on PostgreSQL due to reserved keyword
 
 0.3.1
-------------------
+-----
 
 ### Bug fixes
 
 - Fix the memory overflow with warnings
 
-=========
-
 0.3.0
-------------------
+-----
 
 ### Features
 
@@ -31,7 +42,7 @@ CHANGELOG
  - Database schema has changed. Please read UPGRADE.md
 
 0.2.7 (2015-01-07)
------
+------------------
 
 ### Bug fixes
 
