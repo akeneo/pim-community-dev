@@ -10,10 +10,3 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    #TODO: remove it ?
-    pimee_rule_engine.event_subscriber.stop_watch:
-        class: %pimee_rule_engine.event_subscriber.stop_watch.class%
-        arguments:
-            - @?debug.stopwatch
-        tags:
-            - { name: kernel.event_subscriber }
