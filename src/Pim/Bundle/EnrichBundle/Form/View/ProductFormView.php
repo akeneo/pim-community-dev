@@ -25,7 +25,7 @@ class ProductFormView implements ProductFormViewInterface
      *
      * @var array
      */
-    private $choiceAttributeTypes = array(
+    protected $choiceAttributeTypes = array(
         'pim_catalog_multiselect',
         'pim_catalog_simpleselect'
     );

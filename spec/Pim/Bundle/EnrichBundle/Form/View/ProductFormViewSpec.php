@@ -45,7 +45,7 @@ class ProductFormViewSpec extends ObjectBehavior
 
         $this->addChildren($value, $valueFormView);
 
-        $viewUpdaterRegistry->get()->willReturn([$variantViewUpdater]);
+        $viewUpdaterRegistry->getUpdater()->willReturn([$variantViewUpdater]);
 
         $nameAttributeView = [
             'id'                 => 42,
@@ -113,7 +113,7 @@ class ProductFormViewSpec extends ObjectBehavior
         $this->addChildren($valueOne, $valueFormView);
         $this->addChildren($valueTwo, $valueFormView);
 
-        $viewUpdaterRegistry->get()->willReturn([]);
+        $viewUpdaterRegistry->getUpdater()->willReturn([]);
 
         $resultView = [
             1 => [

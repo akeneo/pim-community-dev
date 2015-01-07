@@ -66,7 +66,7 @@ class RegisterViewUpdatersPass implements CompilerPassInterface
     {
         $position = isset($tag['position']) ? $tag['position'] : static::DEFAULT_POSITION;
         $registryDefinition->addMethodCall(
-            'add',
+            'addViewUpdater',
             [
                 $this->factory->createReference($serviceId),
                 $position

@@ -37,6 +37,8 @@ class VariantViewUpdater implements ViewUpdaterInterface
             $valueFormViews = [$view['value']];
         } elseif (isset($view['values'])) {
             $valueFormViews = $view['values'];
+        } else {
+            throw new \LogicException('A product form view should be passed with at least one value');
         }
 
         foreach ($valueFormViews as $valueFormView) {
@@ -67,7 +69,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
             return false;
         }
 
-        $groups  = $product->getGroups();
+        $groups = $product->getGroups();
         $variantGroup = null;
         /** @var GroupInterface $group */
         foreach ($groups as $group) {
