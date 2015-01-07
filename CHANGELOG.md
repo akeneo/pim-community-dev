@@ -1,6 +1,24 @@
 CHANGELOG
 =========
 
+0.3.2
+------------------
+
+### Bug fixes
+
+- Added a UOW clear in order to prevent job instance to be flushed
+
+=========
+
+0.3.1
+------------------
+
+### Bug fixes
+
+- Fix the memory overflow with warnings
+
+=========
+
 0.3.0
 ------------------
 
