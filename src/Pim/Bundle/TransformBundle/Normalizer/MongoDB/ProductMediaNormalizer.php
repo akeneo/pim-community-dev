@@ -43,6 +43,7 @@ class ProductMediaNormalizer implements NormalizerInterface
         $data = [];
         $data['_id']              = $this->mongoFactory->createMongoId();
         $data['filename']         = $media->getFilename();
+        // @deprecated will be removed in 1.3
         $data['filePath']         = $media->getFilePath();
         $data['originalFilename'] = $media->getOriginalFilename();
         $data['mimeType']         = $media->getMimeType();

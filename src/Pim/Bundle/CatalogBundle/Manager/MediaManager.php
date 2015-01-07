@@ -71,7 +71,11 @@ class MediaManager
      */
     public function duplicate(AbstractProductMedia $source, AbstractProductMedia $target, $filenamePrefix)
     {
-        $target->setFile(new File($source->getFilePath()));
+        if (null === $path = $this->getFilePath($source)) {
+            return;
+        }
+
+        $target->setFile(new File($path));
         $this->upload(
             $target,
             $this->generateFilename(
@@ -86,11 +90,11 @@ class MediaManager
      * @param AbstractProductMedia $media
      * @param string               $targetDir
      *
-     * @return boolean true on success, false on failure
+     * @return bool true on success, false on failure
      */
     public function copy(AbstractProductMedia $media, $targetDir)
     {
-        if ($media->getFilePath() === null) {
+        if (null === $path = $this->getFilePath($media)) {
             return false;
         }
 
@@ -100,7 +104,7 @@ class MediaManager
             mkdir(dirname($targetDir), 0777, true);
         }
 
-        return copy($media->getFilePath(), $targetDir);
+        return copy($path, $targetDir);
     }
 
     /**
@@ -118,7 +122,7 @@ class MediaManager
      */
     public function getExportPath(AbstractProductMedia $media)
     {
-        if ($media->getFilePath() === null) {
+        if (null === $this->getFilePath($media)) {
             return '';
         }
 
@@ -216,7 +220,7 @@ class MediaManager
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
-    protected function getFilePath(AbstractProductMedia $media)
+    public function getFilePath(AbstractProductMedia $media)
     {
         if ($this->fileExists($media)) {
             $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();

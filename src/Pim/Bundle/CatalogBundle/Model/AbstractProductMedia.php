@@ -36,6 +36,8 @@ abstract class AbstractProductMedia
      * File path
      *
      * @var string $filePath
+     *
+     * @deprecated will be removed in 1.3
      */
     protected $filePath;
 
@@ -144,6 +146,8 @@ abstract class AbstractProductMedia
      * Get file path
      *
      * @return string
+     *
+     * @deprecated will be removed in 1.3
      */
     public function getFilePath()
     {
@@ -156,6 +160,8 @@ abstract class AbstractProductMedia
      * @param string $filePath
      *
      * @return AbstractProductMedia
+     *
+     * @deprecated will be removed in 1.3
      */
     public function setFilePath($filePath)
     {
