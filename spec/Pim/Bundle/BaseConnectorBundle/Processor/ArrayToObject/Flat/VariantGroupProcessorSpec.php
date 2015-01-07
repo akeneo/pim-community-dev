@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\FlatArrayToObject;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
