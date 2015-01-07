@@ -38,7 +38,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
 
         $nameValue->getEntity()->willReturn($mug);
 
-        $mug->getGroups()->willReturn([$mugGroup]);
+        $mug->getVariantGroup()->willReturn($mugGroup);
         $mugGroup->getType()->willReturn($variantGroupType);
         $variantGroupType->isVariant()->willReturn(true);
 
@@ -114,9 +114,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
 
         $nameValue->getEntity()->willReturn($mug);
 
-        $mug->getGroups()->willReturn([$mugGroup]);
-        $mugGroup->getType()->willReturn($variantGroupType);
-        $variantGroupType->isVariant()->willReturn(false);
+        $mug->getVariantGroup()->willReturn(null);
 
         $this->update($view);
 
@@ -138,7 +136,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
 
         $nameValue->getEntity()->willReturn($mug);
 
-        $mug->getGroups()->willReturn([$mugGroup]);
+        $mug->getVariantGroup()->willReturn($mugGroup);
         $mugGroup->getType()->willReturn($variantGroupType);
         $variantGroupType->isVariant()->willReturn(true);
 
@@ -164,7 +162,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
 
         $nameValue->getEntity()->willReturn($mug);
 
-        $mug->getGroups()->willReturn([$mugGroup]);
+        $mug->getVariantGroup()->willReturn($mugGroup);
         $mugGroup->getType()->willReturn($variantGroupType);
         $variantGroupType->isVariant()->willReturn(true);
 
