@@ -33,7 +33,7 @@ class RegisterViewElementsPass implements CompilerPassInterface
      */
     public function __construct(ReferenceFactory $factory)
     {
-        $this->factory = $factory;
+        $this->factory = $factory; //TODO :remove this factory
     }
 
     /**

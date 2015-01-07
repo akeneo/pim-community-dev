@@ -91,9 +91,10 @@ class VariantViewUpdater implements ViewUpdaterInterface
     /**
      * Mark attribute as variant
      *
-     * @param FormView $view
+     * @param FormView              $view
+     * @param ProductValueInterface $value
      */
-    protected function markAttributeAsUpdatedByVariant(FormView $view, $value)
+    protected function markAttributeAsUpdatedByVariant(FormView $view, ProductValueInterface $value)
     {
         // TODO : will have only one after PIM-2448, add shortcut getVariantGroup() ?
         foreach ($value->getEntity()->getGroups() as $group) {

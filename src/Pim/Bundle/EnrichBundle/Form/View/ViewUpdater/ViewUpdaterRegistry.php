@@ -20,12 +20,12 @@ class ViewUpdaterRegistry
      * @param ViewUpdaterInterface $updater
      * @param integer              $position
      */
-    public function addViewUpdater(ViewUpdaterInterface $updater, $position)
+    public function registerUpdater(ViewUpdaterInterface $updater, $position)
     {
         if (!isset($this->updaters[$position])) {
             $this->updaters[$position] = $updater;
         } else {
-            $this->addViewUpdater($updater, ++$position);
+            $this->addUpdater($updater, ++$position);
         }
     }
 

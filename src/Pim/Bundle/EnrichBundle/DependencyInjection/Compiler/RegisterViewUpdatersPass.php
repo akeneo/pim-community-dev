@@ -34,7 +34,7 @@ class RegisterViewUpdatersPass implements CompilerPassInterface
      */
     public function __construct(ReferenceFactory $factory)
     {
-        $this->factory = $factory;
+        $this->factory = $factory; //TODO :remove this factory
     }
 
     /**
@@ -50,7 +50,7 @@ class RegisterViewUpdatersPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds(static::VIEW_UPDATER_TAG) as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $this->registerViewElement($registryDefinition, $serviceId, $tag);
+                $this->registerViewUpdater($registryDefinition, $serviceId, $tag);
             }
         }
     }
@@ -62,11 +62,11 @@ class RegisterViewUpdatersPass implements CompilerPassInterface
      * @param string     $serviceId
      * @param array      $tag
      */
-    protected function registerViewElement($registryDefinition, $serviceId, $tag)
+    protected function registerViewUpdater(Definition $registryDefinition, $serviceId, $tag)
     {
         $position = isset($tag['position']) ? $tag['position'] : static::DEFAULT_POSITION;
         $registryDefinition->addMethodCall(
-            'addViewUpdater',
+            'registerUpdater',
             [
                 $this->factory->createReference($serviceId),
                 $position

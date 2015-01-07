@@ -27,7 +27,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\VariantViewUpdater');
     }
 
-    function it_updates_the_given_view(FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, ProductTemplateInterface $mugTemplate, AttributeInterface $nameAttribute, $propertyAccessor)
+    function it_updates_the_given_view($propertyAccessor, FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, ProductTemplateInterface $mugTemplate, AttributeInterface $nameAttribute)
     {
         $view = [
             'value' => $nameFormView,
@@ -71,7 +71,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
         $this->shouldThrow('\LogicException')->during('update', [$view]);
     }
 
-    function it_throws_an_exception_if_no_product_value_are_setted(FormView $nameFormView, $propertyAccessor)
+    function it_throws_an_exception_if_no_product_value_are_setted($propertyAccessor, FormView $nameFormView)
     {
         $view = [
             'value' => $nameFormView,
@@ -83,7 +83,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
         $this->shouldThrow('\LogicException')->during('update', [$view]);
     }
 
-    function it_doesnt_update_the_view_if_there_is_no_product_attached_to_the_view(FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, ProductTemplateInterface $mugTemplate, AttributeInterface $nameAttribute, $propertyAccessor)
+    function it_doesnt_update_the_view_if_there_is_no_product_attached_to_the_view($propertyAccessor, FormView $nameFormView, AbstractProductValue $nameValue)
     {
         $view = [
             'value' => $nameFormView,
@@ -103,7 +103,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_doesnt_update_the_view_if_there_is_no_variant_group_attached_to_the_product(FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, ProductTemplateInterface $mugTemplate, AttributeInterface $nameAttribute, $propertyAccessor)
+    function it_doesnt_update_the_view_if_there_is_no_variant_group_attached_to_the_product($propertyAccessor, FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType)
     {
         $view = [
             'value' => $nameFormView,
@@ -127,7 +127,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_doesnt_update_the_view_if_there_is_no_template_attached_to_the_group(FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, ProductTemplateInterface $mugTemplate, AttributeInterface $nameAttribute, $propertyAccessor)
+    function it_doesnt_update_the_view_if_there_is_no_template_attached_to_the_group($propertyAccessor, FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, AttributeInterface $nameAttribute)
     {
         $view = [
             'value' => $nameFormView,
@@ -153,7 +153,7 @@ class VariantViewUpdaterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_doesnt_update_the_view_if_there_is_no_attribute_in_the_template(FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, ProductTemplateInterface $mugTemplate, AttributeInterface $nameAttribute, $propertyAccessor)
+    function it_doesnt_update_the_view_if_there_is_no_attribute_in_the_template($propertyAccessor, FormView $nameFormView, AbstractProductValue $nameValue, AbstractProduct $mug, GroupInterface $mugGroup, GroupType $variantGroupType, ProductTemplateInterface $mugTemplate, AttributeInterface $nameAttribute)
     {
         $view = [
             'value' => $nameFormView,

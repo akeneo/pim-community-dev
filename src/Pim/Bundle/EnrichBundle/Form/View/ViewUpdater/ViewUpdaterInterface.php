@@ -12,11 +12,9 @@ namespace Pim\Bundle\EnrichBundle\Form\View\ViewUpdater;
 interface ViewUpdaterInterface
 {
     /**
-     * Update the form view
+     * Update the given form view
      *
-     * @param array  $views
-     * @param string $key
-     * @param string $name
+     * @param array $view
      */
-    public function update($attributeView);
+    public function update($view);
 }
