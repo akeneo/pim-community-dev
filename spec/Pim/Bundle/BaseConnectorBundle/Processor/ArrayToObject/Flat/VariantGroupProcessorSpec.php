@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository as BaseGroupRepos
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,31 +23,22 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
         GroupRepository $groupRepository,
-        DenormalizerInterface $valueDenormalizer,
+        DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         NormalizerInterface $valueNormalizer,
-        StepExecution $stepExecution,
-        Group $variant,
-        GroupType $variantType
+        StepExecution $stepExecution
     ) {
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
+        $groupClass = 'Pim\Bundle\CatalogBundle\Entity\Group';
         $this->beConstructedWith(
             $groupRepository,
-            $valueDenormalizer,
+            $denormalizer,
             $validator,
             $valueNormalizer,
+            $groupClass,
             $templateClass
         );
         $this->setStepExecution($stepExecution);
-
-        $groupRepository->findOneByCode('variant')->willReturn($variant);
-        $variant->getType()->willReturn($variantType);
-        $variantType->isVariant()->willReturn(true);
-        $variant->getProductTemplate()->willReturn([]);
-        $variant
-            ->setProductTemplate(Argument::type('Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface'))
-            ->willReturn($variant);
-
         $validator->validate(Argument::any())->willReturn(new ConstraintViolationList());
     }
 
@@ -62,132 +54,109 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $this->getConfigurationFields()->shouldReturn([]);
     }
 
-    function it_requires_variant_group_code_in_the_data()
+    function it_requires_variant_group_code_in_the_data($groupRepository)
     {
+        $groupRepository->getReferenceProperties()->willReturn(['code']);
         $this
-            ->shouldThrow(new \LogicException('Variant group code must be provided'))
+            ->shouldThrow(new MissingIdentifierException('No identifier column.'))
             ->duringProcess([]);
     }
 
-    function it_requires_an_existing_variant_group($groupRepository, Group $group, GroupType $crossSell)
+    function it_throws_exception_when_try_to_update_standard_group($groupRepository, Group $group, GroupType $crossSell)
     {
-        $groupRepository->findOneByCode('foo')->willReturn(null);
-        $groupRepository->findOneByCode('bar')->willReturn($group);
-
+        $groupRepository->getReferenceProperties()->willReturn(['code']);
+        $groupRepository->findByReference('bar')->willReturn($group);
+        $group->getId()->willReturn(42);
         $group->getType()->willReturn($crossSell);
         $crossSell->isVariant()->willReturn(false);
-
-        $this
-            ->shouldThrow(
-                new InvalidItemException(
-                    'Variant group "foo" does not exist',
-                    ['variant_group_code' => 'foo']
-                )
-            )
-            ->duringProcess(['variant_group_code' => 'foo']);
         $this
             ->shouldThrow(
                 new InvalidItemException(
                     'Variant group "bar" does not exist',
-                    ['variant_group_code' => 'bar']
+                    ['code' => 'bar']
                 )
             )
-            ->duringProcess(['variant_group_code' => 'bar']);
+            ->duringProcess(['code' => 'bar']);
     }
 
-    function it_denormalizes_the_passed_values_into_product_value_objects($valueDenormalizer)
-    {
-        $valueDenormalizer
-            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
-            ->shouldBeCalled()
-            ->willReturn([]);
-
-        $this->process(['variant_group_code' => 'variant', 'name' => 'Nice product']);
-    }
-
-    function it_validates_the_denormalized_values(
-        $valueDenormalizer,
-        ProductValueInterface $value,
-        AttributeInterface $attribute,
-        $validator
-    ) {
-        $valueDenormalizer
-            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
-            ->shouldBeCalled()
-            ->willReturn([$value]);
-
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('name');
-
-        $validator->validate($value)->shouldBeCalled()->willReturn(new ConstraintViolationList());
-
-        $this->process(['variant_group_code' => 'variant', 'name' => 'Nice product']);
-    }
-
-    function it_skips_invalid_values(
-        $valueDenormalizer,
-        ProductValueInterface $value,
-        AttributeInterface $attribute,
+    function it_updates_a_variant_group_fields(
+        $groupRepository,
+        $denormalizer,
         $validator,
-        $stepExecution
+        Group $variantGroup,
+        GroupType $type
     ) {
-        $valueDenormalizer
-            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
+        $groupRepository->getReferenceProperties()->willReturn(['code']);
+        $groupRepository->findByReference('tshirt')->willReturn($variantGroup);
+        $variantGroup->getId()->willReturn(42);
+        $variantGroup->getType()->willReturn($type);
+        $type->isVariant()->willReturn(true);
+
+        $denormalizer->denormalize(
+            [
+                'code' => 'tshirt',
+                'axis' => 'color',
+                'label-en_US' => 'Tshirt',
+                'type' => 'VARIANT'
+            ],
+            'Pim\Bundle\CatalogBundle\Entity\Group',
+            'csv',
+            ['entity' => $variantGroup]
+        )->shouldBeCalled()->willReturn($variantGroup);
+
+        $validator
+            ->validate($variantGroup)
             ->shouldBeCalled()
-            ->willReturn([$value]);
+            ->willReturn(new ConstraintViolationList());
 
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('name');
-
-        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'baz', 'Nice product');
-        $violations = new ConstraintViolationList([$violation]);
-        $validator->validate($value)->shouldBeCalled()->willReturn($violations);
-
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-        $this
-            ->shouldThrow(
-                new InvalidItemException(
-                    'There is a small problem: Nice product',
-                    ['variant_group_code' => 'variant', 'name' => 'Nice product']
-                )
-            )
-            ->duringProcess(['variant_group_code' => 'variant', 'name' => 'Nice product']);
+        $this->process(
+            [
+                'code' => 'tshirt',
+                'axis' => 'color',
+                'label-en_US' => 'Tshirt'
+            ]
+        );
     }
 
-    function it_normalizes_the_values_into_json(
-        $valueDenormalizer,
+    function it_updates_a_variant_group_and_its_values(
+        $groupRepository,
+        $denormalizer,
+        $validator,
         $valueNormalizer,
+        Group $variantGroup,
+        GroupType $type,
+        ProductTemplateInterface $template,
         ProductValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $valueDenormalizer
+        $groupRepository->getReferenceProperties()->willReturn(['code']);
+        $groupRepository->findByReference('tshirt')->willReturn($variantGroup);
+        $variantGroup->getId()->willReturn(42);
+        $variantGroup->getType()->willReturn($type);
+        $type->isVariant()->willReturn(true);
+
+        $denormalizer->denormalize(
+            [
+                'code' => 'tshirt',
+                'axis' => 'color',
+                'label-en_US' => 'Tshirt',
+                'type' => 'VARIANT'
+            ],
+            'Pim\Bundle\CatalogBundle\Entity\Group',
+            'csv',
+            ['entity' => $variantGroup]
+        )->shouldBeCalled()->willReturn($variantGroup);
+
+        $variantGroup->getProductTemplate()->willReturn($template);
+
+        $denormalizer
             ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
             ->shouldBeCalled()
             ->willReturn([$value]);
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
-
-        $valueNormalizer->normalize($value, 'json', ['entity' => 'product'])->shouldBeCalled();
-
-        $this->process(['variant_group_code' => 'variant', 'name' => 'Nice product']);
-    }
-
-    function it_updates_group_template_with_the_normalized_data(
-        $valueDenormalizer,
-        $valueNormalizer,
-        ProductValueInterface $value,
-        AttributeInterface $attribute,
-        $variant,
-        ProductTemplateInterface $template
-    ) {
-        $valueDenormalizer
-            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
-            ->shouldBeCalled()
-            ->willReturn([$value]);
-
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('name');
+        $validator->validate($value)->shouldBeCalled()->willReturn(new ConstraintViolationList());
 
         $valueNormalizer
             ->normalize($value, 'json', ['entity' => 'product'])
@@ -200,7 +169,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                 ]
             );
 
-        $variant->getProductTemplate()->willReturn($template);
+        $variantGroup->getProductTemplate()->willReturn($template);
         $template
             ->setValuesData(
                 [
@@ -211,21 +180,86 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $this->process(['variant_group_code' => 'variant', 'name' => 'Nice product']);
-    }
-
-    function it_validates_the_variant_group($valueDenormalizer, $variant, $validator)
-    {
-        $valueDenormalizer
-            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
-            ->willReturn([]);
-
         $validator
-            ->validate($variant)
+            ->validate($variantGroup)
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList());
 
-        $this->process(['variant_group_code' => 'variant', 'name' => 'Nice product']);
+        $this->process(
+            [
+                'code' => 'tshirt',
+                'axis' => 'color',
+                'label-en_US' => 'Tshirt',
+                'name' => 'Nice product'
+            ]
+        );
+    }
+
+    function it_updates_a_variant_group_and_skip_invalid_values(
+        $groupRepository,
+        $denormalizer,
+        $validator,
+        $valueNormalizer,
+        $stepExecution,
+        Group $variantGroup,
+        GroupType $type,
+        ProductTemplateInterface $template,
+        ProductValueInterface $value,
+        AttributeInterface $attribute
+    ) {
+        $groupRepository->getReferenceProperties()->willReturn(['code']);
+        $groupRepository->findByReference('tshirt')->willReturn($variantGroup);
+        $variantGroup->getId()->willReturn(42);
+        $variantGroup->getType()->willReturn($type);
+        $type->isVariant()->willReturn(true);
+
+        $denormalizer->denormalize(
+            [
+                'code' => 'tshirt',
+                'axis' => 'color',
+                'label-en_US' => 'Tshirt',
+                'type' => 'VARIANT'
+            ],
+            'Pim\Bundle\CatalogBundle\Entity\Group',
+            'csv',
+            ['entity' => $variantGroup]
+        )->shouldBeCalled()->willReturn($variantGroup);
+
+        $variantGroup->getProductTemplate()->willReturn($template);
+
+        $denormalizer
+            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
+            ->shouldBeCalled()
+            ->willReturn([$value]);
+
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getCode()->willReturn('name');
+
+        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'baz', 'Nice product');
+        $violations = new ConstraintViolationList([$violation]);
+        $validator->validate($value)->shouldBeCalled()->willReturn($violations);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+
+        $this
+            ->shouldThrow(
+                new InvalidItemException(
+                    'There is a small problem: Nice product',
+                    [
+                        'code' => 'tshirt',
+                        'axis' => 'color',
+                        'label-en_US' => 'Tshirt',
+                        'name' => 'Nice product'
+                    ]
+                )
+            )
+            ->duringProcess(
+                [
+                    'code' => 'tshirt',
+                    'axis' => 'color',
+                    'label-en_US' => 'Tshirt',
+                    'name' => 'Nice product'
+                ]
+            );
     }
 }
 

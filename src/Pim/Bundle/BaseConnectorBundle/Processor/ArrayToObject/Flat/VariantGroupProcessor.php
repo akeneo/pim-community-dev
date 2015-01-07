@@ -73,6 +73,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $variantGroup = $this->findOrCreateObject($this->repository, $item, $this->class);
         $this->updateVariantGroup($variantGroup, $item);
         $this->updateVariantGroupValues($variantGroup, $item);
+        $this->validateVariantGroup($variantGroup, $item);
 
         return $variantGroup;
     }
@@ -115,16 +116,14 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function updateVariantGroupValues(GroupInterface $variantGroup, array $item)
     {
-        // denormalize (csv) and validate values
         $valuesData = $this->filterVariantGroupData($item, false);
-        $values = $this->denormalizeValuesFromItemData($valuesData);
-        $this->validateValues($values, $item);
-
-        // store values as product template format (json)
-        $template = $this->getProductTemplate($variantGroup);
-        $structuredValuesData = $this->normalizeValuesToStructuredData($values);
-        $template->setValuesData($structuredValuesData);
-        $this->validateVariantGroup($variantGroup, $item);
+        if (!empty($valuesData)) {
+            $values = $this->denormalizeValuesFromItemData($valuesData);
+            $this->validateValues($values, $item);
+            $template = $this->getProductTemplate($variantGroup);
+            $structuredValuesData = $this->normalizeValuesToStructuredData($values);
+            $template->setValuesData($structuredValuesData);
+        }
     }
 
     /**
