@@ -1,17 +1,6 @@
 connector:
     name: Akeneo Rule Engine Connector
     jobs:
-        #TODO: delete it as we don't use batch to launch rules
-        rule_engine:
-            title: Rule engine
-            type: rule_engine
-            steps:
-                rule_engine:
-                    class: PimEnterprise\Bundle\RuleEngineBundle\Batch\RuleStep
-                    title: Rule runner
-                    services:
-                        reader: pimee_catalog_rule.reader.product
-                        runner: pimee_catalog_rule.runner.product
         yml_rule_import:
             title: pimee_catalog_rule.jobs.yml_rule_import.title
             type:  import
