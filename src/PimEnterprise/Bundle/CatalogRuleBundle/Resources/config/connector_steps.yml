@@ -1,25 +1,16 @@
 parameters:
-    # TODO : when we'll write a rule export job we'll need a processor object -> array, how to distinguish with this one ?
-    # we don't have issue in BaseConnector because we use TranformProcessor ... I think we need a prefix like
-    # processor.prefix.rule_definition
-    pimee_catalog_rule.processor.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionProcessor
-    # TODO : same kind of issue here, we'll have 2 writers, one to a file, one other to DB depending on import or export,
-    # how to distinguish the class RuleDefinitionWriter (DB or File?), we should add an extra folder
-    pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionWriter
-    pimee_catalog_rule.writer.rule_definition.yaml_file.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlFileWriter
+    # import rules
+    pimee_catalog_rule.processor.rule_definition.array_to_object.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionArrayToObjectProcessor
+    pimee_catalog_rule.writer.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineWriter
+    # export rules
+    pimee_catalog_rule.reader.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineReader
     pimee_catalog_rule.processor.rule_definition.object_to_array.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionObjectToArrayProcessor
+    pimee_catalog_rule.writer.rule_definition.yaml_file.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlFileWriter
 
 services:
-    pimee_catalog_rule.writer.doctrine.rule_definition:
-        class: %pimee_catalog_rule.writer.doctrine.rule_definition.class%
-        arguments:
-          - '@pimee_rule_engine.manager.rule_definition'
-
-    pimee_catalog_rule.writer.rule_definition.yaml_file:
-        class: %pimee_catalog_rule.writer.rule_definition.yaml_file.class%
-
-    pimee_catalog_rule.processor.rule_definition:
-        class: %pimee_catalog_rule.processor.rule_definition.class%
+    # import rules
+    pimee_catalog_rule.processor.rule_definition.array_to_object:
+        class: %pimee_catalog_rule.processor.rule_definition.array_to_object.class%
         arguments:
             - @pimee_rule_engine.repository.rule_definition
             - @pimee_catalog_rule.denormalizer.rule
@@ -28,7 +19,21 @@ services:
             - @pimee_catalog_rule.serializer.rule_content
             - %pimee_rule_engine.model.rule.class%
 
+    pimee_catalog_rule.writer.rule_definition.doctrine:
+        class: %pimee_catalog_rule.writer.rule_definition.doctrine.class%
+        arguments:
+          - '@pimee_rule_engine.saver.rule_definition'
+
+    # export rules
+    pimee_catalog_rule.reader.rule_definition.doctrine:
+        class: %pimee_catalog_rule.reader.rule_definition.doctrine.class%
+        arguments:
+            - @pimee_rule_engine.repository.rule_definition
+
     pimee_catalog_rule.processor.rule_definition.object_to_array:
         class: %pimee_catalog_rule.processor.rule_definition.object_to_array.class%
         arguments:
             - @pimee_catalog_rule.normalizer.rule
+
+    pimee_catalog_rule.writer.rule_definition.yaml_file:
+        class: %pimee_catalog_rule.writer.rule_definition.yaml_file.class%

@@ -20,6 +20,8 @@ use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInt
  * Get rules definition
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ *
+ * TODO: make generic, move to base connector and rename it ObjectDoctrineReader ?
  */
 class RuleDefinitionDoctrineReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {

@@ -20,13 +20,11 @@ use Akeneo\Component\Persistence\BulkSaverInterface;
 /**
  * Writer for rules definitions
  *
- * TODO: move to base connector once rename and generic ?
- *
- * TODO: rename it (see comment in connector_steps.yml)
+ * TODO: move to base connector and rename it ObjectDoctrineWriter ?
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionWriter extends AbstractConfigurableStepElement implements
+class RuleDefinitionDoctrineWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {

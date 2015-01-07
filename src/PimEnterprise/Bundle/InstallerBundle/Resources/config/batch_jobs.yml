@@ -53,5 +53,5 @@ connector:
                     title:     pim_installer.jobs.fixtures_rule_yml.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
-                        processor: pimee_catalog_rule.processor.rule_definition
-                        writer:    pimee_catalog_rule.writer.doctrine.rule_definition
+                        processor: pimee_catalog_rule.processor.rule_definition.array_to_object
+                        writer:    pimee_catalog_rule.writer.rule_definition.doctrine

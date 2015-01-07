@@ -1,6 +1,7 @@
 connector:
     name: Akeneo Rule Engine Connector
     jobs:
+        #TODO: delete it as we don't use batch to launch rules
         rule_engine:
             title: Rule engine
             type: rule_engine
@@ -19,8 +20,8 @@ connector:
                     title: pimee_catalog_rule.jobs.yml_rule_import.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
-                        processor: pimee_catalog_rule.processor.rule_definition
-                        writer:    pimee_catalog_rule.writer.doctrine.rule_definition
+                        processor: pimee_catalog_rule.processor.rule_definition.array_to_object
+                        writer:    pimee_catalog_rule.writer.rule_definition.doctrine
         yml_rule_export:
             title: pimee_catalog_rule.jobs.yml_rule_export.title
             type:  export

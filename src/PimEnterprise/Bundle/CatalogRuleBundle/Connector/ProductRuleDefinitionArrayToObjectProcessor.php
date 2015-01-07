@@ -19,13 +19,11 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Processes product rules definition via a batch.
+ * Processes product rules definition
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
- *
- * TODO: rename it (see comment in connector_steps.yml)
  */
-class ProductRuleDefinitionProcessor extends AbstractImportProcessor
+class ProductRuleDefinitionArrayToObjectProcessor extends AbstractImportProcessor
 {
     /** @var ProductRuleContentSerializerInterface */
     protected $contentSerializer;

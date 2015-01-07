@@ -1,8 +1,8 @@
 parameters:
     pimee_catalog_rule.reader.product.class: PimEnterprise\Bundle\RuleEngineBundle\Batch\RuleReader
-    pimee_catalog_rule.reader.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineReader
 
 services:
+    # TODO: should be put in another branch, it's used only for batch
     # TODO: should be in connector_steps.yml
     # TODO: should be renamed
     pimee_catalog_rule.reader.product:
@@ -10,7 +10,3 @@ services:
         arguments:
             - @pimee_rule_engine.repository.rule_definition
 
-    pimee_catalog_rule.reader.rule_definition.doctrine:
-        class: '%pimee_catalog_rule.reader.rule_definition.doctrine.class%'
-        arguments:
-            - @pimee_rule_engine.repository.rule_definition

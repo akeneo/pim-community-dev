@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Prophecy\Argument;
 
-class RuleDefinitionWriterSpec extends ObjectBehavior
+class RuleDefinitionDoctrineWriterSpec extends ObjectBehavior
 {
     public function let(
         BulkSaverInterface $saver

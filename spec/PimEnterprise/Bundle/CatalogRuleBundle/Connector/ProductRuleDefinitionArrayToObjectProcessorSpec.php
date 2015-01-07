@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
-class ProductRuleDefinitionProcessorSpec extends ObjectBehavior
+class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
 {
     function let(
         ReferableEntityRepositoryInterface $repository,
@@ -38,7 +38,7 @@ class ProductRuleDefinitionProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionProcessor');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionArrayToObjectProcessor');
     }
 
     function it_is_an_import_processor()
