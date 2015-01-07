@@ -104,6 +104,8 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
+        $this->getDefaultEntityManager()->clear(get_class($jobInstance));
+
         $executionId = $input->getArgument('execution');
         if ($executionId) {
             $jobExecution = $this->getJobManager()->getRepository('AkeneoBatchBundle:JobExecution')->find($executionId);
