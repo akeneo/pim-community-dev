@@ -569,6 +569,10 @@ abstract class AbstractProduct implements ProductInterface
                 if ($group->getAttributes()->contains($attribute)) {
                     return false;
                 }
+
+                if ($group->getProductTemplate()->hasValueForAttribute($attribute)) {
+                    return false;
+                }
             }
         }
 

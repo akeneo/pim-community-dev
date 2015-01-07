@@ -5,25 +5,26 @@ namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Compiler pass to register tagged view elements in the view element registry
+ * Compiler pass to register tagged view updaters in the view updater registry
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterViewElementsPass implements CompilerPassInterface
+class RegisterViewUpdatersPass implements CompilerPassInterface
 {
-    /** @staticvar int The default view element position */
+    /** @staticvar int The default view updater position */
     const DEFAULT_POSITION = 100;
 
     /** @staticvar string The registry id */
-    const REGISTRY_ID = 'pim_enrich.view_element.registry';
+    const REGISTRY_ID = 'pim_enrich.form.view.view_updater.registry';
 
     /** @staticvar string */
-    const VIEW_ELEMENT_TAG = 'pim_enrich.view_element';
+    const VIEW_UPDATER_TAG = 'pim_enrich.form.view_updater';
 
     /** @var ReferenceFactory */
     protected $factory;
@@ -47,9 +48,9 @@ class RegisterViewElementsPass implements CompilerPassInterface
 
         $registryDefinition = $container->getDefinition(static::REGISTRY_ID);
 
-        foreach ($container->findTaggedServiceIds(static::VIEW_ELEMENT_TAG) as $serviceId => $tags) {
+        foreach ($container->findTaggedServiceIds(static::VIEW_UPDATER_TAG) as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $this->registerViewElement($registryDefinition, $serviceId, $tag);
+                $this->registerViewUpdater($registryDefinition, $serviceId, $tag);
             }
         }
     }
@@ -61,17 +62,13 @@ class RegisterViewElementsPass implements CompilerPassInterface
      * @param string     $serviceId
      * @param array      $tag
      */
-    protected function registerViewElement($registryDefinition, $serviceId, $tag)
+    protected function registerViewUpdater(Definition $registryDefinition, $serviceId, $tag)
     {
-        if (!isset($tag['type'])) {
-            throw new \LogicException(sprintf('No type provided for the "%s" view element', $serviceId));
-        }
         $position = isset($tag['position']) ? $tag['position'] : static::DEFAULT_POSITION;
         $registryDefinition->addMethodCall(
-            'add',
+            'registerUpdater',
             [
                 $this->factory->createReference($serviceId),
-                $tag['type'],
                 $position
             ]
         );

@@ -1,5 +1,7 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Repository;
+
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 /**

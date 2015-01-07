@@ -20,7 +20,11 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->formView = new ProductFormView();
+        $viewUpdaterRegistry = $this->getMock('Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry');
+        $viewUpdaterRegistry->expects($this->any())
+            ->method('getUpdaters')
+            ->will($this->returnValue([]));
+        $this->formView = new ProductFormView($viewUpdaterRegistry);
     }
 
     /**

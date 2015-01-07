@@ -224,6 +224,11 @@ pim_enrich:
         group_type: Group types
         locale: Locales
         product: Products
+    product_value:
+        tooltip:
+            from_variant:
+                title: Updated by a variant group
+                content: This field is updated from the following variant group
 
 # Entity and page header titles
 attribute:

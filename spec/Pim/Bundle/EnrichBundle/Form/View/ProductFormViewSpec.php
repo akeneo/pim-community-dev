@@ -6,17 +6,27 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\VariantViewUpdater;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormView;
 
 class ProductFormViewSpec extends ObjectBehavior
 {
+    function let(ViewUpdaterRegistry $viewUpdaterRegistry)
+    {
+        $this->beConstructedWith($viewUpdaterRegistry);
+    }
+
     function it_adds_a_product_value_child(
         ProductValueInterface $value,
         AttributeInterface $attribute,
         AttributeGroup $group,
-        FormView $valueFormView
+        FormView $valueFormView,
+        $viewUpdaterRegistry,
+        VariantViewUpdater $variantViewUpdater
     ) {
+
         $value->getAttribute()->willReturn($attribute);
         $value->isRemovable()->willReturn(true);
         $value->getLocale()->willReturn(null);
@@ -35,20 +45,26 @@ class ProductFormViewSpec extends ObjectBehavior
 
         $this->addChildren($value, $valueFormView);
 
+        $viewUpdaterRegistry->getUpdaters()->willReturn([$variantViewUpdater]);
+
+        $nameAttributeView = [
+            'id'                 => 42,
+            'isRemovable'        => true,
+            'code'               => 'name',
+            'label'              => 'Name',
+            'sortOrder'          => 10,
+            'allowValueCreation' => false,
+            'locale'             => null,
+            'value'              => $valueFormView,
+        ];
+
+        $variantViewUpdater->update($nameAttributeView)->shouldBeCalled();
+
         $resultView = [
             1 => [
                 'label'      => 'General',
                 'attributes' => [
-                    'name' => [
-                        'id'                 => 42,
-                        'isRemovable'        => true,
-                        'code'               => 'name',
-                        'label'              => 'Name',
-                        'sortOrder'          => 10,
-                        'allowValueCreation' => false,
-                        'locale'             => null,
-                        'value'              => $valueFormView,
-                    ]
+                    'name' => $nameAttributeView
                 ]
             ]
         ];
@@ -61,7 +77,8 @@ class ProductFormViewSpec extends ObjectBehavior
         ProductValueInterface $valueTwo,
         AttributeInterface $attributeTwo,
         AttributeGroup $group,
-        FormView $valueFormView
+        FormView $valueFormView,
+        $viewUpdaterRegistry
     ) {
         $valueOne->getAttribute()->willReturn($attributeOne);
         $valueOne->isRemovable()->willReturn(true);
@@ -95,6 +112,8 @@ class ProductFormViewSpec extends ObjectBehavior
 
         $this->addChildren($valueOne, $valueFormView);
         $this->addChildren($valueTwo, $valueFormView);
+
+        $viewUpdaterRegistry->getUpdaters()->willReturn([]);
 
         $resultView = [
             1 => [

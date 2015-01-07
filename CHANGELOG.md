@@ -25,7 +25,7 @@
 - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
 - Move filter transformation to CatalogBundle
-- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable 
+- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable
 - Re-work the `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder` to provide a clear and extensible API to query products
 - Normalize the managers by introducing 4 interfaces, `Akeneo\Component\Persistence\SaverInterface`, `Akeneo\Component\Persistence\BulkSaverInterface`, `Akeneo\Component\Persistence\RemoverInterface` and `Pim\Component\Persistence\BulkRemoverInterface`
 - Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
@@ -42,6 +42,7 @@
 - Allow to generate many versions in a single request
 - Add flat / csv denormalizers for product data
 - Introduce `Pim\Bundle\CatalogBundle\Model\GroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Group`
+- Add a form view updater to ease update of form views
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -155,6 +156,7 @@
   * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`
 - removeAttributesAction and addAttributesAction have been move from `Pim\Bundle\EnrichBundle\Controller\ProductController` to a dedicated `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 - constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` has been updated and now receives `Akeneo\Component\Persistence\SaverInterface`, `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` as extra arguments
+- constructor of `Pim\Bundle\EnrichBundle\Form\View\ProductFormView` has been updated and now receives `Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
