@@ -53,11 +53,11 @@ Feature: Execute an import
       code;custom_desc
       SANDAL;"My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "This value is too long. It should have 255 characters or less. : My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
     And I should see "Skipped 1"
 
@@ -67,11 +67,11 @@ Feature: Execute an import
       code;title
       SANDAL;"My title is soooo long, soooo long, soooo long."
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "This value is too long. It should have 22 characters or less. : My title is soooo long, soooo long, soooo long."
     And I should see "Skipped 1"
 
@@ -81,11 +81,11 @@ Feature: Execute an import
       code;barcode
       SANDAL;"ThisIsNotABarcode"
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "This value is not valid. : ThisIsNotABarcode"
     And I should see "Skipped 1"
 
@@ -95,10 +95,10 @@ Feature: Execute an import
       code;link
       SANDAL;"ThisIsNotAnUrl"
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "This value is not a valid URL. : ThisIsNotAnUrl"
     And I should see "Skipped 1"

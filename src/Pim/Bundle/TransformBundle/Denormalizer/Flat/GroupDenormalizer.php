@@ -93,6 +93,11 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     protected function setAxis(GroupInterface $group, $data)
     {
         if (isset($data['axis'])) {
+            if (trim($data['axis']) == "") {
+                throw new \LogicException(
+                    sprintf('Axis must be provided for the new variant group "%s"', $data['code'])
+                );
+            }
             $axisCodes = explode(',', $data['axis']);
             $attributes = [];
             foreach ($axisCodes as $code) {

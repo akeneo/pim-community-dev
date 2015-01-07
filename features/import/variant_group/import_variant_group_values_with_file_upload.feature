@@ -26,11 +26,11 @@ Feature: Execute an import
       SANDAL;My sandal;My sandal description for locale en_US and channel tablet
       """
 
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | uploadAllowed | yes |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I upload and import the file "%file to import%"
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And the english tablet name of "sandal-white-37" should be "My sandal"
     And the english tablet description of "sandal-white-37" should be "My sandal description for locale en_US and channel tablet"

@@ -25,11 +25,11 @@ Feature: Execute an import
       name-en_US;description-en_US-tablet;color
       My sandal;My sandal description for locale en_US and channel tablet;white
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Status: FAILED"
     And I should see "Variant group code must be provided"
 
@@ -39,10 +39,10 @@ Feature: Execute an import
       code;name-en_US;description-en_US-tablet;color
       UNKNOW;My sandal;My sandal description for locale en_US and channel tablet;white
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Variant group \"UNKNOW\" does not exist"
     And I should see "Skipped 1"
