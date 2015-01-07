@@ -10,4 +10,3 @@ services:
             - '@pimee_rule_engine.remover.rule_definition'
             - '@pimee_rule_engine.repository.rule_definition'
             - '@pim_internal_api_serializer'
-            - '%pim_catalog.entity.attribute.class%'

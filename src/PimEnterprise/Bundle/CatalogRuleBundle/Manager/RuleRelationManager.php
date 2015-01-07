@@ -11,7 +11,6 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
@@ -23,16 +22,10 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 /**
  * Class RuleRelationManager
  *
- * TODO : this "manager"  shortcuts to repository which is a service and could
- * be directly injected to avoid to add bunch of mess in this "Manager", let's avoid the systematic "Manager" naming
- *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class RuleRelationManager
 {
-    /** @var EntityManager */
-    protected $entityManager;
-
     /** @var AttributeRepository */
     protected $attributeRepository;
 
@@ -45,20 +38,17 @@ class RuleRelationManager
     /**
      * Constructor
      *
-     * @param EntityManager                   $entityManager
-     * @param AttributeRepository             $attributeRepository
      * @param RuleRelationRepositoryInterface $ruleRelationRepo
+     * @param AttributeRepository             $attributeRepository
      * @param string                          $attributeClass
      */
     public function __construct(
-        EntityManager $entityManager,
-        AttributeRepository $attributeRepository,
         RuleRelationRepositoryInterface $ruleRelationRepo,
+        AttributeRepository $attributeRepository,
         $attributeClass
     ) {
-        $this->entityManager = $entityManager;
-        $this->attributeRepository = $attributeRepository;
         $this->ruleRelationRepo = $ruleRelationRepo;
+        $this->attributeRepository = $attributeRepository;
         $this->attributeClass = $attributeClass;
     }
 
@@ -80,7 +70,7 @@ class RuleRelationManager
             }
         }
 
-        // TODO : check memory leak (argument var is the same than result)
+        // TODO : check memory leak (argument var is the sam&e than result)
         $fields = array_unique($fields);
 
         $impactedAttributes = [];
@@ -94,25 +84,35 @@ class RuleRelationManager
     }
 
     /**
-     * @param int $attributeId
+     * @param mixed $attributeId
      *
      * @return bool
      */
     public function isAttributeImpacted($attributeId)
     {
-        return $this->ruleRelationRepo->isResourceImpactedByRule($attributeId, $this->attributeClass);
+        return $this->isResourceImpacted($attributeId, $this->attributeClass);
+    }
+
+    /**
+     * @param mixed  $resourceId
+     * @param string $resourceName
+     *
+     * @return bool
+     */
+    public function isResourceImpacted($resourceId, $resourceName)
+    {
+        $resourceName = $this->resolveResourceName($resourceName);
+
+        return $this->ruleRelationRepo->isResourceImpactedByRule($resourceId, $resourceName);
     }
 
     /**
      * @param int $attributeId
      *
      * @return RuleDefinitionInterface[]
-     * TODO: rename it getRulesForResource
-     * TODO: delete it
      */
     public function getRulesForAttribute($attributeId)
     {
-        //TODO: We should do generic methods (not attribute related)
         return $this->getRulesForResource($attributeId, $this->attributeClass);
     }
 
@@ -122,18 +122,16 @@ class RuleRelationManager
      * @param integer $resourceId
      * @param string  $resourceName
      *
-     * @return array
-     *
-     * TODO all these things go in a repo !!!
-     * TODO: make it public
+     * @return RuleDefinitionInterface[]
      */
-    protected function getRulesForResource($resourceId, $resourceName)
+    public function getRulesForResource($resourceId, $resourceName)
     {
+        $resourceName = $this->resolveResourceName($resourceName);
         $ruleRelations = $this->getRuleRelationsForResource($resourceId, $resourceName);
 
         $rules = [];
         foreach ($ruleRelations as $ruleRelation) {
-            $rules[] = $ruleRelation->getRule();
+            $rules[] = $ruleRelation->getRuleDefinition();
         }
 
         return $rules;
@@ -141,18 +139,42 @@ class RuleRelationManager
 
     /**
      * Get rules relations
+     *
      * @param string $resourceId
      * @param string $resourceName
      *
-     * TODO: remove this, it's a shortcut to a repo
      * @return RuleRelationInterface[]
      */
     protected function getRuleRelationsForResource($resourceId, $resourceName)
     {
-        //@TODO: move this in a repository and create a nice method
         return $this->ruleRelationRepo->findBy([
             'resourceId'   => $resourceId,
             'resourceName' => $resourceName
         ]);
+    }
+
+    /**
+     * @param $resourceName
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function resolveResourceName($resourceName)
+    {
+        switch ($resourceName) {
+            case 'attribute':
+            case $this->attributeClass:
+                $type = $this->attributeClass;
+                break;
+            default:
+                $type = null;
+        }
+
+        if (null === $type) {
+            throw new \InvalidArgumentException(sprintf('The resource name "%s" can not be resolved.', $resourceName));
+        }
+
+        return $type;
     }
 }

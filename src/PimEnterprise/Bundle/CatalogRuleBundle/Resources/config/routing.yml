@@ -2,7 +2,7 @@ pimee_catalog_rule_index:
     path: /rules/{resourceName}/{resourceId}
     defaults: { _controller: pimee_catalog_rule.controller.rule:indexAction }
     requirements:
-        resourceType: '[0-9a-z]+'
+        resourceName: '[0-9a-z]+'
         resourceId: '\d+'
     methods: [GET]
 

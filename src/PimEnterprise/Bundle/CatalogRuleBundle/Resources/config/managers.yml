@@ -6,7 +6,6 @@ services:
     pimee_catalog_rule.manager.rule_relation:
         class: %pimee_catalog_rule.manager.rule_relation.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.repository.attribute'
             - '@pimee_catalog_rule.repository.rule_relation'
-            - '%pim_catalog.entity.attribute.class%'
+            - '@pim_catalog.repository.attribute'
+            - %pim_catalog.entity.attribute.class%

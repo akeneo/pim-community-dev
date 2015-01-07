@@ -22,8 +22,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * Rule controller
  *
- * TODO: this controller should not include attribute references
- *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class RuleController
@@ -40,9 +38,6 @@ class RuleController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var string */
-    protected $attributeClass;
-
     /**
      * Constructor
      *
@@ -50,48 +45,31 @@ class RuleController
      * @param RemoverInterface                  $ruleRemover
      * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
      * @param NormalizerInterface               $normalizer
-     * @param string                            $attributeClass
      */
     public function __construct(
         RuleRelationManager $ruleRelationManager,
         RemoverInterface $ruleRemover,
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
-        NormalizerInterface $normalizer,
-        $attributeClass
+        NormalizerInterface $normalizer
     ) {
         $this->ruleRelationManager = $ruleRelationManager;
         $this->ruleRemover        = $ruleRemover;
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->normalizer         = $normalizer;
-
-        // TODO: Should be inejected with an "- calls:" in DI
-        $this->attributeClass     = $attributeClass;
     }
 
     /**
      * List all rules for the given resource
-     * @param string $resourceType
+     * @param string $resourceName
      * @param int    $resourceId
      *
      * @return JsonResponse
      *
      * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
      */
-    public function indexAction($resourceType, $resourceId)
+    public function indexAction($resourceName, $resourceId)
     {
-        // TODO improvement: Use a class mapping with an addMappedClass and an array to be more extandable
-        switch ($resourceType) {
-            case 'attribute':
-                $resourceName = $this->attributeClass;
-                break;
-            default:
-                throw new NotFoundHttpException(sprintf('Resource type "%s" is unknown.', $resourceType));
-
-        }
-
-        // TODO: getRulesForResource
-        $rules = $this->ruleRelationManager->getRulesForAttribute($resourceId, $resourceName);
-
+        $rules = $this->ruleRelationManager->getRulesForResource($resourceId, $resourceName);
         $normalizedRules = $this->normalizer->normalize($rules, 'array');
 
         return new JsonResponse($normalizedRules);
