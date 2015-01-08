@@ -17,17 +17,25 @@ use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
+use PimEnterprise\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Product rule runner
  *
- *  TODO: implement dry runner interface
- *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleRunner extends AbstractRunner
+class ProductRuleRunner implements DryRunnerInterface
 {
+    /** @var BuilderInterface */
+    protected $builder;
+
+    /** @var SelectorInterface */
+    protected $selector;
+
+    /** @var ApplierInterface */
+    protected $applier;
+
     /** @var string */
     protected $productCondClass;
 
@@ -44,7 +52,9 @@ class ProductRuleRunner extends AbstractRunner
         ApplierInterface $applier,
         $productCondClass
     ) {
-        parent::__construct($builder, $selector, $applier);
+        $this->builder = $builder;
+        $this->selector = $selector;
+        $this->applier = $applier;
         $this->productCondClass = $productCondClass;
     }
 
@@ -60,6 +70,16 @@ class ProductRuleRunner extends AbstractRunner
         if (!empty($subjects)) {
             $this->applier->apply($definition, $subjects);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dryRun(RuleDefinitionInterface $definition, array $options = [])
+    {
+        $options = $this->resolveOptions($options);
+        $definition = $this->loadRule($definition, $options);
+        $this->selector->select($definition);
     }
 
     /**
