@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.remover.base.class:                  Pim\Bundle\CatalogBundle\Remover\BaseRemover
-    pim_catalog.remover.base_options_resolver.class: Pim\Bundle\CatalogBundle\remover\BaseRemovingOptionsResolver
+    pim_catalog.remover.base_options_resolver.class: Pim\Bundle\CatalogBundle\Remover\BaseRemovingOptionsResolver
 
 services:
     pim_catalog.remover.group_type:
