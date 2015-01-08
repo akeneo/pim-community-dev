@@ -73,6 +73,6 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
             'description-ecommerce-en_US' => 'My en_US desc',
             'description-ecommerce-fr_FR' => 'My fr_FR desc',
         ];
-        $this->denormalize($csvData, 'variant_group_values', 'csv');
+        $this->denormalize($csvData, 'ProductValue[]', 'csv');
     }
 }

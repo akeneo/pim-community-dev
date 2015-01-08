@@ -150,7 +150,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($template);
 
         $denormalizer
-            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
+            ->denormalize(['name' => 'Nice product'], 'ProductValue[]', 'csv')
             ->shouldBeCalled()
             ->willReturn([$value]);
 
@@ -228,7 +228,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($template);
 
         $denormalizer
-            ->denormalize(['name' => 'Nice product'], 'variant_group_values', 'csv')
+            ->denormalize(['name' => 'Nice product'], 'ProductValue[]', 'csv')
             ->shouldBeCalled()
             ->willReturn([$value]);
 
