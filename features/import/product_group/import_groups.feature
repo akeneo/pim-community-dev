@@ -33,7 +33,7 @@ Feature: Import groups
     And I should see "Updated 2"
     And I should not see "Skip"
     Then there should be the following groups:
-      | code           | label-en_US    | label-fr_FR          | type    | attributes |
+      | code           | label-en_US    | label-fr_FR          | type    | axis       |
       | ORO_TSHIRT     | Oro T-shirt    |                      | VARIANT | color,size |
       | AKENEO_TSHIRT  | Akeneo T-shirt |                      | VARIANT | size       |
       | ORO_XSELL      | Oro X          |                      | XSELL   |            |
@@ -56,7 +56,7 @@ Feature: Import groups
     And I should see "Read 1"
     And I should see "Skipped 1"
     Then there should be the following groups:
-      | code           | label-en_US    | label-fr_FR          | type    | attributes |
+      | code           | label-en_US    | label-fr_FR          | type    | axis       |
       | ORO_TSHIRT     | Oro T-shirt    |                      | VARIANT | color,size |
       | AKENEO_TSHIRT  | Akeneo T-shirt |                      | VARIANT | size       |
       | ORO_XSELL      | Oro X          |                      | XSELL   |            |

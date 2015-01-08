@@ -27,7 +27,7 @@ Feature: Execute an import
     Then I should see "Read 2"
     And I should see "Created 2"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | attributes | type    |
+      | code    | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL  | Sandal      |             | color,size | VARIANT |
       | NOT_VG  | Not VG      |             |            | RELATED |
       | NEW_ONE | My new VG 1 |             | color,size | VARIANT |
@@ -47,6 +47,6 @@ Feature: Execute an import
     Then I should see "Read 1"
     And I should see "Updated 1"
     And there should be the following groups:
-      | code    | label-en_US  | label-fr_FR | attributes | type    |
+      | code    | label-en_US  | label-fr_FR | axis       | type    |
       | SANDAL  | My new label |             | color,size | VARIANT |
       | NOT_VG  | Not VG       |             |            | RELATED |

@@ -40,7 +40,7 @@ Feature: Execute an import
     Then I should see "Read 1"
     And I should see "Updated 1"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | attributes | type    |
+      | code    | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL  | Sandal      |             | color,size | VARIANT |
       | NOT_VG  | Not VG      |             |            | RELATED |
 
@@ -59,7 +59,7 @@ Feature: Execute an import
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | attributes | type    |
+      | code    | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL  | Sandal      |             | color,size | VARIANT |
       | NOT_VG  | Not VG      |             |            | RELATED |
 
@@ -78,6 +78,6 @@ Feature: Execute an import
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | attributes | type    |
+      | code    | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL  | Sandal      |             | color,size | VARIANT |
       | NOT_VG  | Not VG      |             |            | RELATED |

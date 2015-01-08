@@ -21,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
@@ -797,6 +798,7 @@ class FixturesContext extends RawMinkContext
     {
         $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
+            /** @var GroupInterface $group */
             $group = $this->getProductGroup($data['code']);
             $this->refresh($group);
 
@@ -806,12 +808,12 @@ class FixturesContext extends RawMinkContext
 
             if ($group->getType()->isVariant()) {
                 $attributes = [];
-                foreach ($group->getAttributes() as $attribute) {
+                foreach ($group->getAxisAttributes() as $attribute) {
                     $attributes[] = $attribute->getCode();
                 }
                 asort($attributes);
                 $attributes = implode(',', $attributes);
-                assertEquals($data['attributes'], $attributes);
+                assertEquals($data['axis'], $attributes);
             }
         }
     }
@@ -1345,6 +1347,7 @@ class FixturesContext extends RawMinkContext
      */
     public function groupShouldContain($group, $products)
     {
+        /** @var GroupInterface $group */
         $group = $this->getProductGroup($group);
         $this->refresh($group);
         $groupProducts = $group->getProducts();
