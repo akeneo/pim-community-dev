@@ -28,10 +28,10 @@ Feature: Filter products
       | POST-2 | furniture | 15 EUR     |       |
       | POST-3 | furniture | 30 EUR     |       |
     And the following product groups:
-      | code   | label  | attributes          | type    | products                           |
-      | MUG    | Mug    | margin, transport   | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5  |
-      | POSTIT | Postit | transport           | X_SELL  | POST-1, POST-2, POST-3             |
-      | EMPTY  | Empty  |                     | X_SELL  |                                    |
+      | code   | label  | axis              | type    | products                           |
+      | MUG    | Mug    | margin, transport | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5  |
+      | POSTIT | Postit | transport         | X_SELL  | POST-1, POST-2, POST-3             |
+      | EMPTY  | Empty  |                   | X_SELL  |                                    |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes

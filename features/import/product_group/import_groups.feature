@@ -4,12 +4,12 @@ Feature: Import groups
   As a product manager
   I need to be able to import groups
 
-  Scenario: Successfully import groups
+  Scenario: Successfully import standard groups
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
       | RELATED |
     And the following product groups:
-      | code           | label       | type    | attributes  |
+      | code           | label       | type    | axis        |
       | ORO_TSHIRT     | Oro T-shirt | VARIANT | size, color |
       | AKENEO_VARIANT | Akeneo      | VARIANT | size        |
     And the following CSV file to import:
@@ -39,9 +39,9 @@ Feature: Import groups
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following product groups:
-      | code           | label       | type    | attributes |
-      | ORO_TSHIRT     | Oro T-shirt | VARIANT | size       |
-      | AKENEO_VARIANT | Akeneo      | VARIANT | size       |
+      | code           | label       | type    | axis |
+      | ORO_TSHIRT     | Oro T-shirt | VARIANT | size |
+      | AKENEO_VARIANT | Akeneo      | VARIANT | size |
     And the following CSV file to import:
     """
     code;label-en_US;label-fr_FR;type;attributes
@@ -63,7 +63,7 @@ Feature: Import groups
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following product groups:
-      | code           | label       | type    | attributes  |
+      | code           | label       | type    | axis        |
       | ORO_TSHIRT     | Oro T-shirt | VARIANT | size, color |
     And the following CSV file to import:
     """

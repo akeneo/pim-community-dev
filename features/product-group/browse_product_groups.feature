@@ -12,7 +12,7 @@ Feature: Browse product groups
       | color | Color | simpleselect |
       | size  | Size  | simpleselect |
     And the following product groups:
-      | code          | label          | attributes  | type    |
+      | code          | label          | axis        | type    |
       | tshirt_akeneo | Akeneo T-Shirt | size, color | VARIANT |
       | mug_akeneo    | Akeneo Mug     | color       | VARIANT |
       | CROSS_SELL_1  | Cross Sell     |             | X_SELL  |

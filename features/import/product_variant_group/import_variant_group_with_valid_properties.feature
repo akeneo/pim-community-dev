@@ -7,7 +7,7 @@ Feature: Execute an import
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code   | label  | attributes  | type    |
+      | code   | label  | axis        | type    |
       | SANDAL | Sandal | color, size | VARIANT |
       | NOT_VG | Not VG | color, size | RELATED |
     And I am logged in as "Julia"
