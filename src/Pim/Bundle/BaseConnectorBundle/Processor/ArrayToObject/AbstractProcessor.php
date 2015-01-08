@@ -120,20 +120,39 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     }
 
     /**
-     * Sets an item as skipped and throws an invalid item exception.
+     * Sets an item as skipped and throws an invalid item exception with the message.
      *
-     * @param array      $item
-     * @param \Exception $e
+     * @param array  $item
+     * @param string $message
      *
      * @throws InvalidItemException
      */
-    protected function handleExceptionOnItem(array $item, \Exception $e)
+    protected function skipItemWithMessage(array $item, $message)
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($e->getMessage(), $item);
+        throw new InvalidItemException($message, $item);
+    }
+
+    /**
+     * Sets an item as skipped and throws an invalid item exception.
+     *
+     * @param array      $item
+     * @param \Exception $e
+     *
+     * TODO : replace handleExceptionOnItem by this one
+     *
+     * @throws InvalidItemException
+     */
+    protected function skipItemWithPreviousException(array $item, \Exception $e)
+    {
+        if ($this->stepExecution) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+
+        throw new InvalidItemException($e->getMessage(), $item, [], 0, $e);
     }
 
     /**
@@ -142,9 +161,11 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
      *
+     * TODO : replace handleConstraintViolationsOnItem by this one
+     *
      * @throws InvalidItemException
      */
-    protected function handleConstraintViolationsOnItem(array $item, ConstraintViolationListInterface $violations)
+    protected function skipItemWithConstraintViolations(array $item, ConstraintViolationListInterface $violations)
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
@@ -153,7 +174,12 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         $errors = [];
         /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
-            $errors[] = sprintf("%s: %s\n", $violation->getPropertyPath(), $violation->getMessage());
+            $errors[] = sprintf(
+                "%s: %s: %s\n",
+                $violation->getPropertyPath(),
+                $violation->getMessage(),
+                $violation->getInvalidValue()
+            );
         }
 
         throw new InvalidItemException(implode("\n", $errors), $item);

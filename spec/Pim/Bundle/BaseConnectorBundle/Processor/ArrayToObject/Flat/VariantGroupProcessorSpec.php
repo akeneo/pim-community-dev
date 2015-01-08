@@ -235,7 +235,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
 
-        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'baz', 'Nice product');
+        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'name', 'Nice product');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($value)->shouldBeCalled()->willReturn($violations);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
@@ -243,7 +243,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new InvalidItemException(
-                    'There is a small problem: Nice product',
+                    "name: There is a small problem: Nice product\n",
                     [
                         'code' => 'tshirt',
                         'axis' => 'color',

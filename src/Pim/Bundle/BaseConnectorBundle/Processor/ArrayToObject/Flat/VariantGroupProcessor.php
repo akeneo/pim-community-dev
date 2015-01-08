@@ -34,9 +34,6 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const LABEL_FIELD = 'label';
 
-    /** @var ReferableEntityRepositoryInterface */
-    protected $groupTypeRepository;
-
     /** @var NormalizerInterface */
     protected $valueNormalizer;
 
@@ -69,11 +66,31 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        /** @var GroupInterface $variantGroup */
-        $variantGroup = $this->findOrCreateObject($this->repository, $item, $this->class);
+        $variantGroup = $this->findOrCreateVariantGroup($item);
         $this->updateVariantGroup($variantGroup, $item);
         $this->updateVariantGroupValues($variantGroup, $item);
         $this->validateVariantGroup($variantGroup, $item);
+
+        return $variantGroup;
+    }
+
+    /**
+     * Find or create the variant group
+     *
+     * @param array $groupData
+     *
+     * @return GroupInterface
+     */
+    protected function findOrCreateVariantGroup(array $groupData)
+    {
+        $variantGroup = $this->findOrCreateObject($this->repository, $groupData, $this->class);
+
+        if (null !== $variantGroup->getId() && !$variantGroup->getType()->isVariant()) {
+            $this->skipItemWithMessage(
+                $groupData,
+                sprintf('Variant group "%s" does not exist', $groupData[self::CODE_FIELD])
+            );
+        }
 
         return $variantGroup;
     }
@@ -85,17 +102,9 @@ class VariantGroupProcessor extends AbstractProcessor
      * @param array          $item
      *
      * @return GroupInterface
-     * @throws InvalidItemException
      */
     protected function updateVariantGroup(GroupInterface $variantGroup, array $item)
     {
-        if (null !== $variantGroup->getId() && !$variantGroup->getType()->isVariant()) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-            throw new InvalidItemException(
-                sprintf('Variant group "%s" does not exist', $item[self::CODE_FIELD]),
-                $item
-            );
-        }
         $variantGroupData = $this->filterVariantGroupData($item, true);
         $variantGroupData['type'] = 'VARIANT';
         $variantGroup = $this->denormalizer->denormalize(
@@ -172,7 +181,7 @@ class VariantGroupProcessor extends AbstractProcessor
         foreach ($values as $value) {
             $violations = $this->validator->validate($value);
             if ($violations->count() !== 0) {
-                $this->skipItem($item, $violations);
+                $this->skipItemWithConstraintViolations($item, $violations);
             }
         }
     }
@@ -187,7 +196,7 @@ class VariantGroupProcessor extends AbstractProcessor
     {
         $violations = $this->validator->validate($variantGroup);
         if ($violations->count() !== 0) {
-            $this->skipItem($item, $violations);
+            $this->skipItemWithConstraintViolations($item, $violations);
         }
     }
 
@@ -201,34 +210,15 @@ class VariantGroupProcessor extends AbstractProcessor
         $normalizedValues = [];
 
         foreach ($values as $value) {
-            $normalizedValues[$value->getAttribute()->getCode()][] = $this->valueNormalizer->normalize($value, 'json', ['entity' => 'product']);
-        }
-
-        return $normalizedValues;
-    }
-
-    /**
-     * @param array                            $item
-     * @param ConstraintViolationListInterface $violations
-     *
-     * @throws InvalidItemException
-     */
-    protected function skipItem($item, ConstraintViolationListInterface $violations)
-    {
-        $this->stepExecution->incrementSummaryInfo('skip');
-
-        // TODO detach when skip ?
-
-        $messages = [];
-        foreach ($violations as $violation) {
-            $messages[] = sprintf(
-                "%s: %s",
-                $violation->getMessage(),
-                $violation->getInvalidValue()
+            $attributeCode = $value->getAttribute()->getCode();
+            $normalizedValues[$attributeCode][] = $this->valueNormalizer->normalize(
+                $value,
+                'json',
+                ['entity' => 'product']
             );
         }
 
-        throw new InvalidItemException(implode(', ', $messages), $item);
+        return $normalizedValues;
     }
 
     /**
