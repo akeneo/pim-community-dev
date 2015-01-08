@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
+use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleDefinitionArrayToObjectProcessor extends AbstractImportProcessor
+class ProductRuleDefinitionArrayToObjectProcessor extends AbstractProcessor
 {
     /** @var ProductRuleContentSerializerInterface */
     protected $contentSerializer;

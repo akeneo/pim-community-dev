@@ -43,7 +43,7 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
 
     function it_is_an_import_processor()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Connector\AbstractImportProcessor');
+        $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor');
     }
 
     function it_processes_a_new_valid_item(

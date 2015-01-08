@@ -20,7 +20,7 @@ use Akeneo\Component\Persistence\BulkSaverInterface;
 /**
  * Writer for rules definitions
  *
- * TODO: move to base connector and rename it ObjectDoctrineWriter ?
+ * TODO: make generic, move to base connector and rename it ObjectDoctrineWriter ?
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
