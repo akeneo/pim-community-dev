@@ -74,7 +74,7 @@ services:
             - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.currency.class%
 
-    pim_base_connector.reader.file.csv_variant_group_values:
+    pim_base_connector.reader.file.csv_variant_group:
         alias: pim_base_connector.reader.file.csv_product
 
     pim_base_connector.reader.file.csv_attribute_option:

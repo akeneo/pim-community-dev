@@ -50,55 +50,55 @@ Feature: Execute an import
   Scenario: Skip variant group when a text value is too long (default max_characters to 255)
     Given the following CSV file to import:
       """
-      variant_group_code;custom_desc
+      code;custom_desc
       SANDAL;"My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
-    Then I should see "This value is too long. It should have 255 characters or less. : My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
+    And I wait for the "footwear_variant_group_import" job to finish
+    Then I should see "This value is too long. It should have 255 characters or less.: My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
     And I should see "Skipped 1"
 
   Scenario: Skip variant group when a text value is too long (max_characters to 22)
     Given the following CSV file to import:
       """
-      variant_group_code;title
+      code;title
       SANDAL;"My title is soooo long, soooo long, soooo long."
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
-    Then I should see "This value is too long. It should have 22 characters or less. : My title is soooo long, soooo long, soooo long."
+    And I wait for the "footwear_variant_group_import" job to finish
+    Then I should see "This value is too long. It should have 22 characters or less.: My title is soooo long, soooo long, soooo long."
     And I should see "Skipped 1"
 
   Scenario: Skip variant group when a text value does not match the expected regex
     Given the following CSV file to import:
       """
-      variant_group_code;barcode
+      code;barcode
       SANDAL;"ThisIsNotABarcode"
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
-    Then I should see "This value is not valid. : ThisIsNotABarcode"
+    And I wait for the "footwear_variant_group_import" job to finish
+    Then I should see "This value is not valid.: ThisIsNotABarcode"
     And I should see "Skipped 1"
 
   Scenario: Skip variant group when a text value is not an url as expected
     Given the following CSV file to import:
       """
-      variant_group_code;link
+      code;link
       SANDAL;"ThisIsNotAnUrl"
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
-    Then I should see "This value is not a valid URL. : ThisIsNotAnUrl"
+    And I wait for the "footwear_variant_group_import" job to finish
+    Then I should see "This value is not a valid URL.: ThisIsNotAnUrl"
     And I should see "Skipped 1"

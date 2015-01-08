@@ -19,7 +19,7 @@ use Akeneo\Component\Persistence\SaverInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupValuesWriter extends AbstractConfigurableStepElement implements
+class VariantGroupWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
@@ -119,8 +119,8 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
      */
     protected function saveVariantGroup(GroupInterface $variantGroup)
     {
-        $this->groupSaver->save($variantGroup);
         $this->incrementUpdatedVariantGroupCount($variantGroup);
+        $this->groupSaver->save($variantGroup);
     }
 
     /**
@@ -145,11 +145,15 @@ class VariantGroupValuesWriter extends AbstractConfigurableStepElement implement
     }
 
     /**
-     *
+     * @param GroupInterface $group
      */
-    protected function incrementUpdatedVariantGroupCount()
+    protected function incrementUpdatedVariantGroupCount(GroupInterface $group)
     {
-        $this->stepExecution->incrementSummaryInfo('update');
+        if (null === $group->getId()) {
+            $this->stepExecution->incrementSummaryInfo('create');
+        } else {
+            $this->stepExecution->incrementSummaryInfo('update');
+        }
     }
 
     /**

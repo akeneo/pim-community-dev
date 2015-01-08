@@ -58,46 +58,6 @@ Feature: Import groups
       | ORO_TSHIRT     | Oro T-shirt    |                | VARIANT | size       |
       | AKENEO_VARIANT | Akeneo         |                | VARIANT | size       |
 
-  Scenario: Fail to import product group with updated axis
-    Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
-    And the following product groups:
-      | code           | label       | type    | attributes |
-      | ORO_TSHIRT     | Oro T-shirt | VARIANT | size       |
-      | AKENEO_VARIANT | Akeneo      | VARIANT | size       |
-    And the following CSV file to import:
-    """
-    code;label-en_US;label-fr_FR;type;attributes
-    ORO_TSHIRT;Oro T-shirt;;VARIANT;size,color
-    ORO_MUG;Oro mug;;VARIANT;size,color
-    """
-    And the following job "footwear_group_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
-    And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
-    And I should see "This property cannot be changed"
-    Then there should be the following groups:
-      | code           | label-en_US | label-fr_FR | type    | attributes |
-      | ORO_TSHIRT     | Oro T-shirt |             | VARIANT | size       |
-      | AKENEO_VARIANT | Akeneo      |             | VARIANT | size       |
-      | ORO_MUG        | Oro mug     |             | VARIANT | color,size |
-
-  Scenario: Fail to import products groups with no attributes
-    Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
-    And the following CSV file to import:
-    """
-    code;label-en_US;label-fr_FR;type;attributes
-    ORO_TSHIRT;Oro T-Shirt;Oro T-Shirt;VARIANT;
-    """
-    And the following job "footwear_group_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "footwear_group_import" import job page
-    And I launch the import job
-    And I wait for the "footwear_group_import" job to finish
-    And I should see "This collection should contain 1 element or more."
-
   @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip groups with empty code
     Given the "footwear" catalog configuration

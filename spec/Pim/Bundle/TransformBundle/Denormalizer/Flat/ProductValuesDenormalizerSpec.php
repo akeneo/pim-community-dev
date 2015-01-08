@@ -8,11 +8,11 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
-use Pim\Bundle\TransformBundle\Denormalizer\Flat\VariantGroupValuesDenormalizer;
+use Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValuesDenormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class VariantGroupValuesDenormalizerSpec extends ObjectBehavior
+class ProductValuesDenormalizerSpec extends ObjectBehavior
 {
     const FORMAT_CSV  = 'csv';
     const VALUE_CLASS = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
@@ -31,7 +31,7 @@ class VariantGroupValuesDenormalizerSpec extends ObjectBehavior
     {
         $this->supportsDenormalization(
             [],
-            VariantGroupValuesDenormalizer::VARIANT_GROUP_VALUES_TYPE,
+            ProductValuesDenormalizer::PRODUCT_VALUES_TYPE,
             self::FORMAT_CSV
         )->shouldBe(true);
 

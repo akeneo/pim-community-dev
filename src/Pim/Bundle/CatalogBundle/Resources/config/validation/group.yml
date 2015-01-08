@@ -8,6 +8,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 - type
                 - attributes
         - Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValues: ~
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxis: ~
     properties:
         code:
             - NotBlank: ~

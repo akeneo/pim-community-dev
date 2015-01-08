@@ -40,4 +40,4 @@ Feature: Variant group creation
     Given I fill in the following information in the popin:
       | Code | MUG |
     And I press the "Save" button
-    Then I should see validation error "This collection should contain 1 element or more."
+    Then I should see "Variant group \"MUG\" must define axis"

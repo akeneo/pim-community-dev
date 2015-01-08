@@ -45,10 +45,10 @@ pim_base_connector:
             title: Group import in CSV
             validation.title: File validation
             import.title: Group import
-        csv_variant_group_values_import:
-            title: Variant group values import in CSV
+        csv_variant_group_import:
+            title: Variant group import in CSV
             validation.title: File validation
-            import.title: Variant group values import
+            import.title: Variant group import
     steps:
 
         dummy_reader.title:                  Dummy reader
@@ -59,25 +59,25 @@ pim_base_connector:
             invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
         csv_product_reader.title:            CSV product reader
         csv_category_reader.title:           CSV category reader
-        csv_variant_group_values.title:      CSV variant group values reader
+        csv_variant_group .title:            CSV variant group reader
 
-        dummy_processor.title:               Dummy processor
-        product_processor.title:             Product creation
-        variant_group_values_processor.title: Variant group values creation
-        category_processor.title:            Category creation
-        association_processor.title:         Association creation
-        group_processor.title:               Group creation
-        attribute_processor.title:           Attribute creation
-        attribute_option_processor.title:    Attribute option creation
-        heterogeneous_processor.title:       CSV product serializer
-        homogeneous_processor.title:         CSV entity serializer
-        transformer_processor.title:         Transformation
+        dummy_processor.title:            Dummy processor
+        product_processor.title:          Product creation
+        variant_group_processor.title:    Variant group creation / update
+        category_processor.title:         Category creation
+        association_processor.title:      Association creation
+        group_processor.title:            Group creation
+        attribute_processor.title:        Attribute creation
+        attribute_option_processor.title: Attribute option creation
+        heterogeneous_processor.title:    CSV product serializer
+        homogeneous_processor.title:      CSV entity serializer
+        transformer_processor.title:      Transformation
 
         dummy_writer.title:                  Dummy writer
         file_writer.title:                   Output
         product_writer.title:                Product storage
         category_writer.title:               Category storage
-        variant_group_values_writer.title:   Variant group values storage
+        variant_group_writer.title:          Variant group storage
         writer.title:                        Entity storage
         csv_writer.title:                    Csv Writer
 

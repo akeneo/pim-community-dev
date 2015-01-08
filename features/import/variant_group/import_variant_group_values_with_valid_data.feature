@@ -39,14 +39,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with localizable, scopable textarea
     Given the following CSV file to import:
       """
-      variant_group_code;name-en_US;description-en_US-tablet
+      code;name-en_US;description-en_US-tablet
       SANDAL;My sandal;My sandal description for locale en_US and channel tablet
       """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -59,14 +59,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with numbers
     Given the following CSV file to import:
     """
-    variant_group_code;number_in_stock
+    code;number_in_stock
     SANDAL;44
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -79,14 +79,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with simple select
     Given the following CSV file to import:
     """
-    variant_group_code;manufacturer
+    code;manufacturer
     SANDAL;Converse
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -99,14 +99,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with multi select
     Given the following CSV file to import:
     """
-    variant_group_code;weather_conditions
+    code;weather_conditions
     SANDAL;dry,wet
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -119,14 +119,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with dates
     Given the following CSV file to import:
     """
-    variant_group_code;destocking_date
+    code;destocking_date
     SANDAL;2015-12-14
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -139,14 +139,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with booleans (to true)
     Given the following CSV file to import:
     """
-    variant_group_code;handmade
+    code;handmade
     SANDAL;1
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -159,14 +159,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with booleans (to false)
     Given the following CSV file to import:
     """
-    variant_group_code;handmade
+    code;handmade
     SANDAL;0
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -179,14 +179,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with prices as many fields
     Given the following CSV file to import:
     """
-    variant_group_code;price-EUR;price-USD
+    code;price-EUR;price-USD
     SANDAL;100;90
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -199,14 +199,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with prices as one field
     Given the following CSV file to import:
     """
-    variant_group_code;price
+    code;price
     SANDAL;100 EUR, 90 USD
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -219,14 +219,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with metrics in many fields
     Given the following CSV file to import:
     """
-    variant_group_code;length;length-unit
+    code;length;length-unit
     SANDAL;4000;CENTIMETER
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -239,14 +239,14 @@ Feature: Execute an import
   Scenario: Successfully import a csv file of variant group values with metrics in a single field
     Given the following CSV file to import:
     """
-    variant_group_code;length
+    code;length
     SANDAL;4000 CENTIMETER
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"
@@ -263,17 +263,17 @@ Feature: Execute an import
       | User manual | file  | txt, pdf           |
     And the following CSV file to import:
     """
-    variant_group_code;frontView;name-en_US;userManual
+    code;frontView;name-en_US;userManual
     SANDAL;bic-core-148.gif;"Bic Core 148";bic-core-148.txt
     """
-    And the following job "footwear_variant_group_values_import" configuration:
+    And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
-    And import directory of "footwear_variant_group_values_import" contains the following media:
+    And import directory of "footwear_variant_group_import" contains the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |
-    When I am on the "footwear_variant_group_values_import" import job page
+    When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
-    And I wait for the "footwear_variant_group_values_import" job to finish
+    And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "Read 1"
     And I should see "Updated 1"

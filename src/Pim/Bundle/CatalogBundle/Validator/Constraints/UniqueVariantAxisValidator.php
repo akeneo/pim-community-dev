@@ -60,7 +60,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         }
         foreach ($products as $product) {
             $values = array();
-            foreach ($variantGroup->getAttributes() as $attribute) {
+            foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
                 $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : '';
                 $values[] = sprintf('%s: %s', $code, $option);
@@ -119,7 +119,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $entity)
     {
         $criteria = array();
-        foreach ($variantGroup->getAttributes() as $attribute) {
+        foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $entity->getValue($attribute->getCode());
             $criteria[] = array(
                 'attribute' => $attribute,

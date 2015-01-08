@@ -16,7 +16,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Persistence\SaverInterface;
 use Prophecy\Argument;
 
-class VariantGroupValuesWriterSpec extends ObjectBehavior
+class VariantGroupWriterSpec extends ObjectBehavior
 {
     function let(
         SaverInterface $groupSaver,
@@ -42,11 +42,18 @@ class VariantGroupValuesWriterSpec extends ObjectBehavior
         $cacheClearer,
         $stepExecution
     ) {
+        $variantGroupOne->getId()->willReturn(null);
+        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
         $groupSaver->save($variantGroupOne)->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
 
-        $groupSaver->save($variantGroupTwo)->shouldBeCalled();
+        $variantGroupTwo->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $groupSaver->save($variantGroupTwo)->shouldBeCalled();
+
+        $variantGroupOne->getProductTemplate()->willReturn(null);
+        $variantGroupOne->getProducts()->willReturn([]);
+        $variantGroupTwo->getProductTemplate()->willReturn(null);
+        $variantGroupTwo->getProducts()->willReturn([]);
 
         $cacheClearer->clear()->shouldBeCalled();
 
@@ -64,8 +71,9 @@ class VariantGroupValuesWriterSpec extends ObjectBehavior
         $templateApplier,
         $stepExecution
     ) {
-        $groupSaver->save($variantGroup)->shouldBeCalled();
+        $variantGroup->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $groupSaver->save($variantGroup)->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getProducts()->willReturn($productCollection);
@@ -95,8 +103,9 @@ class VariantGroupValuesWriterSpec extends ObjectBehavior
         $templateApplier,
         $stepExecution
     ) {
-        $groupSaver->save($variantGroup)->shouldBeCalled();
+        $variantGroup->getId()->willReturn(42);
         $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $groupSaver->save($variantGroup)->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->getProducts()->willReturn($productCollection);

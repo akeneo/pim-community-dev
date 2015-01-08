@@ -1,46 +1,41 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Variant group values import processor, allows to bind values data into a product template linked to a variant group
- * and validate values, it erases existing values
+ * Variant group import processor, allows to,
+ *  - create / update variant groups
+ *  - bind values data into a product template linked to a variant group
+ *  - validate values and save values in template (it erases existing values)
+ *  - return the valid variant groups, throw exceptions to skip invalid ones
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+class VariantGroupProcessor extends AbstractProcessor
 {
     /** @staticvar string */
-    const VARIANT_GROUP_CODE_FIELD = 'variant_group_code';
+    const CODE_FIELD = 'code';
 
-    /** @var StepExecution */
-    protected $stepExecution;
+    /** @staticvar string */
+    const AXIS_FIELD = 'axis';
 
-    /** @var GroupRepository */
-    protected $groupRepository;
+    /** @staticvar string */
+    const LABEL_FIELD = 'label';
 
-    /** @var DenormalizerInterface */
-    protected $groupValuesDenormalizer;
-
-    /** @var ValidatorInterface */
-    protected $validator;
+    /** @var ReferableEntityRepositoryInterface */
+    protected $groupTypeRepository;
 
     /** @var NormalizerInterface */
     protected $valueNormalizer;
@@ -49,24 +44,24 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
     protected $templateClass;
 
     /**
-     * @param GroupRepository       $groupRepository
-     * @param DenormalizerInterface $groupValuesDenormalizer
-     * @param ValidatorInterface    $validator
-     * @param NormalizerInterface   $valueNormalizer
-     * @param string                $templateClass
+     * @param ReferableEntityRepositoryInterface $groupRepository
+     * @param DenormalizerInterface              $groupValuesDenormalizer
+     * @param ValidatorInterface                 $validator
+     * @param NormalizerInterface                $valueNormalizer
+     * @param string                             $groupClass
+     * @param string                             $templateClass
      */
     public function __construct(
-        GroupRepository $groupRepository,
+        ReferableEntityRepositoryInterface $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $validator,
         NormalizerInterface $valueNormalizer,
+        $groupClass,
         $templateClass
     ) {
-        $this->groupRepository         = $groupRepository;
-        $this->groupValuesDenormalizer = $groupValuesDenormalizer;
-        $this->validator               = $validator;
-        $this->valueNormalizer         = $valueNormalizer;
-        $this->templateClass           = $templateClass;
+        parent::__construct($groupRepository, $groupValuesDenormalizer, $validator, $groupClass);
+        $this->valueNormalizer = $valueNormalizer;
+        $this->templateClass   = $templateClass;
     }
 
     /**
@@ -74,73 +69,82 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     public function process($item)
     {
-        // extract values from raw data (csv) to validate them
-        $variantGroup = $this->getVariantGroup($item);
-        $itemValuesData = $this->cleanItemData($item);
-        $values = $this->denormalizeValuesFromItemData($itemValuesData);
-        $this->validateValues($values, $item);
-
-        // store values as product template format (json)
-        $template = $this->getProductTemplate($variantGroup);
-        $structuredValuesData = $this->normalizeValuesToStructuredData($values);
-        $template->setValuesData($structuredValuesData);
+        /** @var GroupInterface $variantGroup */
+        $variantGroup = $this->findOrCreateObject($this->repository, $item, $this->class);
+        $this->updateVariantGroup($variantGroup, $item);
+        $this->updateVariantGroupValues($variantGroup, $item);
         $this->validateVariantGroup($variantGroup, $item);
 
         return $variantGroup;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
-     * @param array $item
+     * Update the variant group fields
+     *
+     * @param GroupInterface $variantGroup
+     * @param array          $item
      *
      * @return GroupInterface
-     *
      * @throws InvalidItemException
      */
-    protected function getVariantGroup($item)
+    protected function updateVariantGroup(GroupInterface $variantGroup, array $item)
     {
-        if (!isset($item[self::VARIANT_GROUP_CODE_FIELD])) {
-            throw new \LogicException('Variant group code must be provided');
-        }
-
-        $variantGroupCode = $item[self::VARIANT_GROUP_CODE_FIELD];
-        $variantGroup = $this->groupRepository->findOneByCode($variantGroupCode);
-        if (!$variantGroup || !$variantGroup->getType()->isVariant()) {
+        if (null !== $variantGroup->getId() && !$variantGroup->getType()->isVariant()) {
             $this->stepExecution->incrementSummaryInfo('skip');
             throw new InvalidItemException(
-                sprintf('Variant group "%s" does not exist', $variantGroupCode),
+                sprintf('Variant group "%s" does not exist', $item[self::CODE_FIELD]),
                 $item
             );
         }
+        $variantGroupData = $this->filterVariantGroupData($item, true);
+        $variantGroupData['type'] = 'VARIANT';
+        $variantGroup = $this->denormalizer->denormalize(
+            $variantGroupData,
+            $this->class,
+            'csv',
+            ['entity' => $variantGroup]
+        );
 
         return $variantGroup;
     }
 
     /**
-     * Prepare value raw data
+     * Update the variant group values
+     *
+     * @param GroupInterface $variantGroup
+     * @param array          $item
+     */
+    protected function updateVariantGroupValues(GroupInterface $variantGroup, array $item)
+    {
+        $valuesData = $this->filterVariantGroupData($item, false);
+        if (!empty($valuesData)) {
+            $values = $this->denormalizeValuesFromItemData($valuesData);
+            $this->validateValues($values, $item);
+            $template = $this->getProductTemplate($variantGroup);
+            $structuredValuesData = $this->normalizeValuesToStructuredData($values);
+            $template->setValuesData($structuredValuesData);
+        }
+    }
+
+    /**
+     * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
      *
      * @param array $item
+     * @param bool  $keepOnlyFields if true keep only code, axis, labels, else keep only values
      *
      * @return array
      */
-    protected function cleanItemData($item)
+    protected function filterVariantGroupData(array $item, $keepOnlyFields = true)
     {
-        unset($item[self::VARIANT_GROUP_CODE_FIELD]);
+        foreach (array_keys($item) as $field) {
+            $isCodeOrAxis = in_array($field, [self::CODE_FIELD, self::AXIS_FIELD]);
+            $isLabel = false !== strpos($field, self::LABEL_FIELD, 0);
+            if ($keepOnlyFields && !$isCodeOrAxis && !$isLabel) {
+                unset($item[$field]);
+            } elseif (!$keepOnlyFields && ($isCodeOrAxis || $isLabel)) {
+                unset($item[$field]);
+            }
+        }
 
         return $item;
     }
@@ -154,7 +158,7 @@ class VariantGroupValuesProcessor extends AbstractConfigurableStepElement implem
      */
     protected function denormalizeValuesFromItemData(array $rawProductValues)
     {
-        return $this->groupValuesDenormalizer->denormalize($rawProductValues, 'variant_group_values', 'csv');
+        return $this->denormalizer->denormalize($rawProductValues, 'ProductValue[]', 'csv');
     }
 
     /**
