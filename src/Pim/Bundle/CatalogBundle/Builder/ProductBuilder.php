@@ -79,7 +79,7 @@ class ProductBuilder implements ProductBuilderInterface
             $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
         }
 
-        $this->addMissingPrices($product);
+        $this->addMissingPricesToProduct($product);
     }
 
     /**
@@ -152,7 +152,21 @@ class ProductBuilder implements ProductBuilderInterface
         $locale = null,
         $scope = null
     ) {
-        $value = $this->createProductValue();
+        $value = $this->createProductValue($attribute, $locale, $scope);
+
+        $product->addValue($value);
+
+        return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
+    {
+        $class = $this->getProductValueClass();
+
+        $value = new $class();
         $value->setAttribute($attribute);
         if ($attribute->isLocalizable()) {
             if ($locale !== null) {
@@ -166,6 +180,7 @@ class ProductBuilder implements ProductBuilderInterface
                 );
             }
         }
+
         if ($attribute->isScopable()) {
             if ($scope !== null) {
                 $value->setScope($scope);
@@ -178,9 +193,38 @@ class ProductBuilder implements ProductBuilderInterface
                 );
             }
         }
-        $product->addValue($value);
 
         return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addMissingPrices(ProductValueInterface $value)
+    {
+        $activeCurrencies = $this->currencyRepository->getActivatedCurrenciesCodes();
+
+        if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+            $prices = $value->getPrices();
+
+            foreach ($activeCurrencies as $activeCurrency) {
+                $hasPrice = $prices->filter(
+                    function ($price) use ($activeCurrency) {
+                        return $activeCurrency === $price->getCurrency();
+                    }
+                )->count() > 0;
+
+                if (!$hasPrice) {
+                    $this->addPriceForCurrency($value, $activeCurrency);
+                }
+            }
+
+            foreach ($prices as $price) {
+                if (!in_array($price->getCurrency(), $activeCurrencies)) {
+                    $value->removePrice($price);
+                }
+            }
+        }
     }
 
     /**
@@ -237,18 +281,6 @@ class ProductBuilder implements ProductBuilderInterface
         }
 
         return $attributes;
-    }
-
-    /**
-     * Create a product value
-     *
-     * @return ProductValueInterface
-     */
-    protected function createProductValue()
-    {
-        $class = $this->getProductValueClass();
-
-        return new $class();
     }
 
     /**
@@ -340,32 +372,10 @@ class ProductBuilder implements ProductBuilderInterface
      *
      * @return null
      */
-    protected function addMissingPrices(ProductInterface $product)
+    protected function addMissingPricesToProduct(ProductInterface $product)
     {
-        $activeCurrencies = $this->currencyRepository->getActivatedCurrenciesCodes();
-
         foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $prices = $value->getPrices();
-
-                foreach ($activeCurrencies as $activeCurrency) {
-                    $hasPrice = $prices->filter(
-                        function ($price) use ($activeCurrency) {
-                            return $activeCurrency === $price->getCurrency();
-                        }
-                    )->count() > 0;
-
-                    if (!$hasPrice) {
-                        $this->addPriceForCurrency($value, $activeCurrency);
-                    }
-                }
-
-                foreach ($prices as $price) {
-                    if (!in_array($price->getCurrency(), $activeCurrencies)) {
-                        $value->removePrice($price);
-                    }
-                }
-            }
+            $this->addMissingPrices($value);
         }
     }
 

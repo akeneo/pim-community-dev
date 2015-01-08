@@ -42,4 +42,9 @@ interface ProductTemplateInterface
      * @return boolean
      */
     public function hasValueForAttribute(AttributeInterface $attribute);
+
+    /**
+     * @return array
+     */
+    public function getAttributes();
 }

@@ -77,4 +77,14 @@ class ProductTemplate implements ProductTemplateInterface
     {
         return isset($this->valuesData[$attribute->getCode()]);
     }
+
+    /**
+     * Get attributes of the product template
+     * TODO: this method could be optimized by storing the attributes appart in db
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return array_keys($this->valuesData);
+    }
 }
