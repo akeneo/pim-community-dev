@@ -26,7 +26,7 @@ parameters:
     pim_serializer.denormalizer.flat.group.class:                Pim\Bundle\TransformBundle\Denormalizer\Flat\GroupDenormalizer
     pim_serializer.denormalizer.flat.association.class:          Pim\Bundle\TransformBundle\Denormalizer\Flat\AssociationDenormalizer
     pim_serializer.denormalizer.flat.product_value.class:        Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValueDenormalizer
-    pim_serializer.denormalizer.flat.variant_group_values.class: Pim\Bundle\TransformBundle\Denormalizer\Flat\VariantGroupValuesDenormalizer
+    pim_serializer.denormalizer.flat.product_values.class:       Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValuesDenormalizer
     pim_serializer.denormalizer.flat.base_value.class:           Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\BaseValueDenormalizer
     pim_serializer.denormalizer.flat.attribute_option.class:     Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer
     pim_serializer.denormalizer.flat.attribute_options.class:    Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer
@@ -260,8 +260,8 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_serializer.denormalizer.flat.variant_group_values:
-        class: %pim_serializer.denormalizer.flat.variant_group_values.class%
+    pim_serializer.denormalizer.flat.product_values:
+        class: %pim_serializer.denormalizer.flat.product_values.class%
         arguments:
             - @pim_serializer.denormalizer.flat.product_value
             - @pim_transform.builder.field_name

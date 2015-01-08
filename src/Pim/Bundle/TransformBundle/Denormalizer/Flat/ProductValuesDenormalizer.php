@@ -8,19 +8,17 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 /**
  * Denormalizer for variant group values
  *
- * TODO : should be merged with ProductDenormalizer::denormalizeValues, + add an option to update products or create
- * new values (variant groups), then change the type to use a naming less variant group tinted
- *
- * TODO : to re-work
+ * TODO : Should be re-worked to be used by ProductDenormalizer::denormalizeValues, to do so, it must be able to
+ * create / update existing values related to a product
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupValuesDenormalizer implements DenormalizerInterface
+class ProductValuesDenormalizer implements DenormalizerInterface
 {
     /** @staticvar string */
-    const VARIANT_GROUP_VALUES_TYPE = 'variant_group_values';
+    const PRODUCT_VALUES_TYPE = 'ProductValue[]';
 
     /** @var DenormalizerInterface */
     protected $valueDenormalizer;
@@ -97,6 +95,6 @@ class VariantGroupValuesDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === self::VARIANT_GROUP_VALUES_TYPE && in_array($format, $this->supportedFormats);
+        return $type === self::PRODUCT_VALUES_TYPE && in_array($format, $this->supportedFormats);
     }
 }

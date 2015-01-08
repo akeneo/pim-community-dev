@@ -158,7 +158,7 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function denormalizeValuesFromItemData(array $rawProductValues)
     {
-        return $this->denormalizer->denormalize($rawProductValues, 'variant_group_values', 'csv');
+        return $this->denormalizer->denormalize($rawProductValues, 'ProductValue[]', 'csv');
     }
 
     /**
