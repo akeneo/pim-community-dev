@@ -44,7 +44,7 @@ Feature: Execute an import
       | SANDAL  | Sandal      |             | color,size | VARIANT |
       | NOT_VG  | Not VG      |             |            | RELATED |
 
-  Scenario: Stop the import when encounter a new variant group with no axis
+  Scenario: Skip the line when encounter a new variant group with no axis
     Given the following CSV file to import:
     """
     code;axis;label-en_US
@@ -55,9 +55,9 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Status: Failed"
-    And I should see "Axis must be provided for the new variant group \"NO_AXIS\""
+    Then I should see "Variant group \"NO_AXIS\" must define axis"
     And I should see "Read 1"
+    And I should see "Skipped 1"
     And there should be the following groups:
       | code    | label-en_US | label-fr_FR | attributes | type    |
       | SANDAL  | Sandal      |             | color,size | VARIANT |
