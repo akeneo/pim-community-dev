@@ -1,3 +1,8 @@
+# 1.0.x
+
+## Bug fixes
+- PIM-3548: Do not rely on the absolute file path of a media
+
 # 1.0.10 (2014-12-23)
 
 ## Bug fixes
