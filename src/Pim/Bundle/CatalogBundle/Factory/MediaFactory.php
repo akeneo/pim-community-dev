@@ -27,7 +27,7 @@ class MediaFactory
     /**
      * @param File|null $file
      *
-     * @return Media
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractProductMedia
      */
     public function createMedia(File $file = null)
     {
