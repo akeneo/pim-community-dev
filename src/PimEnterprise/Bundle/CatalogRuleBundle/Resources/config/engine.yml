@@ -30,7 +30,7 @@ services:
             - @pim_validator
             - @pim_catalog.saver.product
             - @event_dispatcher
-            - @pim_catalog.object_manager.product
+            - @akeneo_storage_utils.doctrine.object_detacher
             - @pim_versioning.manager.version
             - @pim_transform.cache.product_cache_clearer
             - @translator

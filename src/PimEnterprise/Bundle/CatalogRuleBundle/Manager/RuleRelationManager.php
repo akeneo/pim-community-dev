@@ -70,7 +70,6 @@ class RuleRelationManager
             }
         }
 
-        // TODO : check memory leak (argument var is the sam&e than result)
         $fields = array_unique($fields);
 
         $impactedAttributes = [];

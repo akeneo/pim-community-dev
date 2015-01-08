@@ -11,8 +11,9 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacher;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
@@ -46,8 +47,8 @@ class ProductRuleApplier implements ApplierInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
 
     /** @var VersionManager */
     protected $versionManager;
@@ -66,7 +67,7 @@ class ProductRuleApplier implements ApplierInterface
      * @param ValidatorInterface       $productValidator
      * @param BulkSaverInterface       $productSaver
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ObjectManager            $objectManager
+     * @param ObjectDetacherInterface  $objectDetacher
      * @param VersionManager           $versionManager
      * @param CacheClearer             $cacheClearer
      * @oaram TranslatorInterface      $translator
@@ -77,7 +78,7 @@ class ProductRuleApplier implements ApplierInterface
         ValidatorInterface $productValidator,
         BulkSaverInterface $productSaver,
         EventDispatcherInterface $eventDispatcher,
-        ObjectManager $objectManager,
+        ObjectDetacherInterface $objectDetacher,
         VersionManager $versionManager,
         CacheClearer $cacheClearer,
         TranslatorInterface $translator,
@@ -88,7 +89,7 @@ class ProductRuleApplier implements ApplierInterface
         $this->productValidator    = $productValidator;
         $this->productSaver        = $productSaver;
         $this->eventDispatcher     = $eventDispatcher;
-        $this->objectManager       = $objectManager;
+        $this->objectDetacher      = $objectDetacher;
         $this->versionManager      = $versionManager;
         $this->cacheClearer        = $cacheClearer;
         $this->translator          = $translator;
@@ -146,8 +147,7 @@ class ProductRuleApplier implements ApplierInterface
         foreach ($subjectSet->getSubjects() as $product) {
             $violations = $this->productValidator->validate($product);
             if ($violations->count() > 0) {
-                //TODO: use the detacher
-                $this->objectManager->detach($product);
+                $this->objectDetacher->detach($product);
                 $reasons = [];
                 /** @var \Symfony\Component\Validator\ConstraintViolation $violation */
                 foreach ($violations as $violation) {

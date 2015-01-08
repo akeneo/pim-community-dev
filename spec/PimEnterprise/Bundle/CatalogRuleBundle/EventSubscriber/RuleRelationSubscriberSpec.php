@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Akeneo\Component\Persistence\RemoverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\Persistence\BulkRemoverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -23,8 +23,8 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
 {
     function let(
         RuleRelationManager $ruleRelationManager,
-        SaverInterface $ruleRelationSaver,
-        RemoverInterface $ruleRelationRemover,
+        BulkSaverInterface $ruleRelationSaver,
+        BulkRemoverInterface $ruleRelationRemover,
         RuleRelationRepositoryInterface $ruleRelationRepo,
         ProductRuleBuilder $productRuleBuilder
     ) {
@@ -54,12 +54,11 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
 
         $attribute->getId()->willReturn(42);
 
-
         $ruleRelationRepo->findBy(
             Argument::any()
         )->shouldBeCalled()->willReturn([$ruleRelation]);
 
-        $ruleRelationRemover->remove($ruleRelation)->shouldBeCalled();
+        $ruleRelationRemover->removeAll([$ruleRelation])->shouldBeCalled();
 
         $this->removeAttribute($event);
     }
@@ -70,7 +69,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $event->getSubject()->shouldBeCalled()->willReturn($product);
-        $ruleRelationRemover->remove(Argument::any())->shouldNotBeCalled();
+        $ruleRelationRemover->removeAll(Argument::any())->shouldNotBeCalled();
 
         $this->removeAttribute($event);
     }
@@ -94,8 +93,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
 
         // delete old resources
         $ruleRelationRepo->findBy(['rule' => 42])->willReturn([$oldResource1, $oldResource2]);
-        $ruleRelationRemover->remove($oldResource1)->shouldBeCalled();
-        $ruleRelationRemover->remove($oldResource2)->shouldBeCalled();
+        $ruleRelationRemover->removeAll([$oldResource1, $oldResource2])->shouldBeCalled();
 
         // add new resources
         $productRuleBuilder->build($definition)->shouldBeCalled()->willReturn($rule);
@@ -105,14 +103,8 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
         $ruleRelationManager->getImpactedAttributes([['field' => 'name', 'to_field' => 'description']])
             ->shouldBeCalled()->willReturn([$attribute1, $attribute2]);
 
-        $attribute1->__toString()->willReturn('name');
-        $attribute1->getId()->willReturn(42);
-
-        $attribute2->__toString()->willReturn('description');
-        $attribute2->getId()->willReturn(43);
-
-        $ruleRelationSaver->save(Argument::type('PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation'))
-            ->shouldBeCalledTimes(2);
+        $ruleRelationSaver->saveAll(Argument::any())
+            ->shouldBeCalled();
 
         $this->saveRule($event);
     }

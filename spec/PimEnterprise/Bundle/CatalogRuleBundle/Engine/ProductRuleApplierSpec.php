@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -30,7 +31,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         ValidatorInterface $productValidator,
-        ObjectManager $objectManager,
+        ObjectDetacherInterface $objectDetacher,
         CacheClearer $cacheClearer,
         TranslatorInterface $translator
     ) {
@@ -39,7 +40,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $productValidator,
             $productSaver,
             $eventDispatcher,
-            $objectManager,
+            $objectDetacher,
             $versionManager,
             $cacheClearer,
             $translator,
@@ -189,7 +190,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $eventDispatcher,
         $productUpdater,
         $productValidator,
-        $objectManager,
+        $objectDetacher,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductCopyValueAction $action,
@@ -223,7 +224,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $notEmptyViolationList->count()->willReturn(1);
         $notEmptyViolationList->getIterator()->willReturn(new \ArrayIterator([]));
 
-        $objectManager->detach($invalidProduct)->shouldBeCalled();
+        $objectDetacher->detach($invalidProduct)->shouldBeCalled();
         $subjectSet->skipSubject($invalidProduct, Argument::any())->shouldBeCalled();
         $subjectSet->skipSubject($validProduct, Argument::any())->shouldNotBeCalled();
 

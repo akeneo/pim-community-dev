@@ -10,8 +10,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Akeneo\Component\Persistence\RemoverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\Persistence\BulkRemoverInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Event;
@@ -38,10 +38,10 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     /** @var RuleRelationManager */
     protected $ruleRelationManager;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     protected $ruleRelationSaver;
 
-    /** @var RemoverInterface */
+    /** @var BulkRemoverInterface */
     protected $ruleRelationRemover;
 
     /** @var RuleRelationRepositoryInterface */
@@ -57,16 +57,16 @@ class RuleRelationSubscriber implements EventSubscriberInterface
      * Constructor
      *
      * @param RuleRelationManager             $ruleRelationManager
-     * @param SaverInterface                  $ruleRelationSaver
-     * @param RemoverInterface                $ruleRelationRemover
+     * @param BulkSaverInterface              $ruleRelationSaver
+     * @param BulkRemoverInterface            $ruleRelationRemover
      * @param RuleRelationRepositoryInterface $ruleRelationRepo
      * @param ProductRuleBuilder              $productRuleBuilder
      * @param string                          $ruleRelationClass
      */
     public function __construct(
         RuleRelationManager $ruleRelationManager,
-        SaverInterface $ruleRelationSaver,
-        RemoverInterface $ruleRelationRemover,
+        BulkSaverInterface $ruleRelationSaver,
+        BulkRemoverInterface $ruleRelationRemover,
         RuleRelationRepositoryInterface $ruleRelationRepo,
         ProductRuleBuilder $productRuleBuilder,
         $ruleRelationClass
@@ -103,13 +103,11 @@ class RuleRelationSubscriber implements EventSubscriberInterface
         if (!$entity instanceof AttributeInterface) {
             return;
         }
+
         $ruleRelations = $this->ruleRelationRepo
             ->findBy(['resourceId' => $entity->getId(), 'resourceName' => ClassUtils::getClass($entity)]);
 
-        // TODO: use a bulk
-        foreach ($ruleRelations as $ruleRelation) {
-            $this->ruleRelationRemover->remove($ruleRelation);
-        }
+        $this->ruleRelationRemover->removeAll($ruleRelations);
     }
 
     /**
@@ -160,6 +158,7 @@ class RuleRelationSubscriber implements EventSubscriberInterface
         $actions = $rule->getActions();
         $relatedAttributes = $this->ruleRelationManager->getImpactedAttributes($actions);
 
+        $ruleRelations = [];
         foreach ($relatedAttributes as $relatedAttribute) {
             /** @var RuleRelationInterface $ruleRelation */
             $ruleRelation = new $this->ruleRelationClass();
@@ -167,8 +166,10 @@ class RuleRelationSubscriber implements EventSubscriberInterface
             $ruleRelation->setResourceName(ClassUtils::getClass($relatedAttribute));
             $ruleRelation->setResourceId($relatedAttribute->getId());
 
-            $this->ruleRelationSaver->save($ruleRelation);
+            $ruleRelations[] = $ruleRelation;
         }
+
+        $this->ruleRelationSaver->saveAll($ruleRelations);
     }
 
     /**
@@ -177,10 +178,6 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     protected function removeRuleRelations(RuleDefinitionInterface $definition)
     {
         $ruleRelations = $this->ruleRelationRepo->findBy(['rule' => $definition->getId()]);
-
-        //TODO: use a bulk
-        foreach ($ruleRelations as $resource) {
-            $this->ruleRelationRemover->remove($resource);
-        }
+        $this->ruleRelationRemover->removeAll($ruleRelations);
     }
 }
