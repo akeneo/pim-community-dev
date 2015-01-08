@@ -37,11 +37,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEntity($this->group);
 
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->group->getAttributes());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->group->getAxisAttributes());
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->group->getProducts());
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->group->getTranslations());
 
-        $this->assertCount(0, $this->group->getAttributes());
+        $this->assertCount(0, $this->group->getAxisAttributes());
         $this->assertCount(0, $this->group->getProducts());
         $this->assertCount(0, $this->group->getTranslations());
     }
@@ -124,33 +124,18 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     {
         // Change value and assert new
         $newAttribute = new Attribute();
-        $this->assertEntity($this->group->addAttribute($newAttribute));
+        $this->assertEntity($this->group->addAxisAttribute($newAttribute));
         $this->assertInstanceOf(
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            $this->group->getAttributes()->first()
+            $this->group->getAxisAttributes()->first()
         );
 
-        $this->assertEntity($this->group->removeAttribute($newAttribute));
+        $this->assertEntity($this->group->removeAxisAttribute($newAttribute));
         $this->assertNotInstanceOf(
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            $this->group->getAttributes()->first()
+            $this->group->getAxisAttributes()->first()
         );
-        $this->assertCount(0, $this->group->getAttributes());
-    }
-
-    /**
-     * Test getter for attribute ids
-     */
-    public function testGetAttributeIds()
-    {
-        $expectedIds = array(1, 4, 6);
-        foreach ($expectedIds as $id) {
-            $attribute = new Attribute();
-            $attribute->setId($id);
-            $this->group->addAttribute($attribute);
-        }
-
-        $this->assertEquals($expectedIds, $this->group->getAttributeIds());
+        $this->assertCount(0, $this->group->getAxisAttributes());
     }
 
     /**

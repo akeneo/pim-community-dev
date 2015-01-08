@@ -109,7 +109,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
                 }
                 $attributes[] = $attribute;
             }
-            $group->setAttributes($attributes);
+            $group->setAxisAttributes($attributes);
         }
     }
 

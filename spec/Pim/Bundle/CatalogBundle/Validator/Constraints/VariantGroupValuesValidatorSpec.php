@@ -41,7 +41,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
         $variantGroup->getProductTemplate()->willReturn(null);
-        $variantGroup->getAttributes()->shouldNotBeCalled();
+        $variantGroup->getAxisAttributes()->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
     }
@@ -61,7 +61,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         $type->isVariant()->willReturn(true);
 
         $variantGroup->getProductTemplate()->willReturn($template);
-        $variantGroup->getAttributes()->willReturn($axisCollection);
+        $variantGroup->getAxisAttributes()->willReturn($axisCollection);
         $axisCollection->toArray()->willReturn([$axisAttribute]);
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
 
@@ -89,7 +89,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         $type->isVariant()->willReturn(true);
 
         $variantGroup->getProductTemplate()->willReturn($template);
-        $variantGroup->getAttributes()->willReturn($axisCollection);
+        $variantGroup->getAxisAttributes()->willReturn($axisCollection);
         $axisCollection->toArray()->willReturn([$axisAttribute]);
         $axisAttribute->getCode()->willReturn('size');
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
@@ -122,7 +122,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         $type->isVariant()->willReturn(true);
 
         $variantGroup->getProductTemplate()->willReturn($template);
-        $variantGroup->getAttributes()->willReturn($axisCollection);
+        $variantGroup->getAxisAttributes()->willReturn($axisCollection);
         $axisCollection->toArray()->willReturn([$axisAttribute]);
         $axisAttribute->getCode()->willReturn('size');
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
