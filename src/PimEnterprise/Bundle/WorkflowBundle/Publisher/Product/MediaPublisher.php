@@ -56,7 +56,7 @@ class MediaPublisher implements PublisherInterface
         $value = $options['value'];
         $copiedMedia = $this->createNewPublishedProductMedia();
 
-        if ($value->getData() && $this->mediaManager->getFilePath($value->getData())) {
+        if ($value->getData() &&  $value->getData()->getFilename()) {
             $prefix = sprintf(
                 '%s-%s',
                 self::PREFIX_FILE,
