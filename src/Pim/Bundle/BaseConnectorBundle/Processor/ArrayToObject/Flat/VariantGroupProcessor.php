@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -27,6 +26,9 @@ class VariantGroupProcessor extends AbstractProcessor
 {
     /** @staticvar string */
     const CODE_FIELD = 'code';
+
+    /** @staticvar string */
+    const TYPE_FIELD = 'type';
 
     /** @staticvar string */
     const AXIS_FIELD = 'axis';
@@ -66,6 +68,7 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     public function process($item)
     {
+        $item[self::TYPE_FIELD] = 'VARIANT';
         $variantGroup = $this->findOrCreateVariantGroup($item);
         $this->updateVariantGroup($variantGroup, $item);
         $this->updateVariantGroupValues($variantGroup, $item);
@@ -84,11 +87,11 @@ class VariantGroupProcessor extends AbstractProcessor
     protected function findOrCreateVariantGroup(array $groupData)
     {
         $variantGroup = $this->findOrCreateObject($this->repository, $groupData, $this->class);
-
-        if (null !== $variantGroup->getId() && !$variantGroup->getType()->isVariant()) {
+        $isExistingGroup = $variantGroup->getId() !== null && $variantGroup->getType()->isVariant() === false;
+        if ($isExistingGroup) {
             $this->skipItemWithMessage(
                 $groupData,
-                sprintf('Variant group "%s" does not exist', $groupData[self::CODE_FIELD])
+                sprintf('Cannot process group "%s", only variant groups are accepted', $groupData[self::CODE_FIELD])
             );
         }
 
@@ -106,7 +109,6 @@ class VariantGroupProcessor extends AbstractProcessor
     protected function updateVariantGroup(GroupInterface $variantGroup, array $item)
     {
         $variantGroupData = $this->filterVariantGroupData($item, true);
-        $variantGroupData['type'] = 'VARIANT';
         $variantGroup = $this->denormalizer->denormalize(
             $variantGroupData,
             $this->class,
@@ -136,6 +138,20 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
+     * @param GroupInterface $variantGroup
+     * @param array          $item
+     *
+     * @throws InvalidItemException
+     */
+    protected function validateVariantGroup(GroupInterface $variantGroup, array $item)
+    {
+        $violations = $this->validator->validate($variantGroup);
+        if ($violations->count() !== 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
+    }
+
+    /**
      * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
      *
      * @param array $item
@@ -146,7 +162,7 @@ class VariantGroupProcessor extends AbstractProcessor
     protected function filterVariantGroupData(array $item, $keepOnlyFields = true)
     {
         foreach (array_keys($item) as $field) {
-            $isCodeOrAxis = in_array($field, [self::CODE_FIELD, self::AXIS_FIELD]);
+            $isCodeOrAxis = in_array($field, [self::CODE_FIELD, self::TYPE_FIELD, self::AXIS_FIELD]);
             $isLabel = false !== strpos($field, self::LABEL_FIELD, 0);
             if ($keepOnlyFields && !$isCodeOrAxis && !$isLabel) {
                 unset($item[$field]);
@@ -156,18 +172,6 @@ class VariantGroupProcessor extends AbstractProcessor
         }
 
         return $item;
-    }
-
-    /**
-     * Prepare product value objects from CSV fields
-     *
-     * @param array $rawProductValues
-     *
-     * @return ProductValueInterface[]
-     */
-    protected function denormalizeValuesFromItemData(array $rawProductValues)
-    {
-        return $this->denormalizer->denormalize($rawProductValues, 'ProductValue[]', 'csv');
     }
 
     /**
@@ -187,20 +191,20 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * @param GroupInterface $variantGroup
-     * @param array          $item
+     * Denormalize product values objects from CSV fields
      *
-     * @throws InvalidItemException
+     * @param array $rawProductValues
+     *
+     * @return ProductValueInterface[]
      */
-    protected function validateVariantGroup(GroupInterface $variantGroup, array $item)
+    protected function denormalizeValuesFromItemData(array $rawProductValues)
     {
-        $violations = $this->validator->validate($variantGroup);
-        if ($violations->count() !== 0) {
-            $this->skipItemWithConstraintViolations($item, $violations);
-        }
+        return $this->denormalizer->denormalize($rawProductValues, 'ProductValue[]', 'csv');
     }
 
     /**
+     * Normalize product values objects to JSON format
+     *
      * @param ProductValueInterface[] $values
      *
      * @return array

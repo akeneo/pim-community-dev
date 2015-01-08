@@ -123,7 +123,7 @@ jobs:
     footwear_variant_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_variant_group_import
-        label:     Variant group import
+        label:     Footwear variant group import
         type:      import
         configuration:
             uploadAllowed: true

@@ -37,7 +37,7 @@ Feature: Execute an import
     Given the following CSV file to import:
     """
     code;axis;label-en_US
-    SANDAL;size,color;"My new label"
+    SANDAL;color,size;"My new label"
     """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |

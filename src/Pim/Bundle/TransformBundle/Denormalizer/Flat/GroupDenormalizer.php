@@ -46,11 +46,9 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     {
         /** @var GroupInterface $group */
         $group = $this->getEntity($data, $context);
-        if (null === $group->getId()) {
-            $this->setCode($group, $data);
-            $this->setGroupType($group, $data);
-            $this->setAxis($group, $data);
-        }
+        $this->setCode($group, $data);
+        $this->setGroupType($group, $data);
+        $this->setAxis($group, $data);
         $this->setLabels($group, $data);
 
         return $group;
@@ -92,7 +90,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
      */
     protected function setAxis(GroupInterface $group, $data)
     {
-        if (isset($data['axis']) && !empty($data['axis'])) {
+        if (isset($data['axis']) && !empty($data['axis']) && $group->getId() === null) {
             $axisCodes = explode(',', $data['axis']);
             $attributes = [];
             foreach ($axisCodes as $code) {

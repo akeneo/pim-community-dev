@@ -26,7 +26,7 @@ Feature: Execute an import
     Then I should see "Status: FAILED"
     And I should see "No identifier column"
 
-  Scenario: Fail to import variant group with updated axis (here we try to change color and size to color)
+  Scenario: Skip the line when encounter a line with updated axis (here we try to change color and size to color)
     Given the following CSV file to import:
     """
     code;axis;label-en_US
@@ -37,8 +37,9 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Read 1"
-    And I should see "Updated 1"
+    Then I should see "Attributes: This property cannot be changed."
+    And I should see "Read 1"
+    And I should see "Skipped 1"
     And there should be the following groups:
       | code    | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL  | Sandal      |             | color,size | VARIANT |
@@ -55,7 +56,7 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Variant group \"NO_AXIS\" must define axis"
+    Then I should see "Variant group \"NO_AXIS\" must be defined with axis"
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:
@@ -74,7 +75,7 @@ Feature: Execute an import
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
-    Then I should see "Variant group \"NOT_VG\" does not exist"
+    Then I should see "Cannot process group \"NOT_VG\", only variant groups are accepted"
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:

@@ -83,8 +83,29 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $violationData = [
             '%variant group%' => 'tshirt'
         ];
-        $context->addViolation($constraint->message, $violationData)->shouldBeCalled();
+        $context->addViolation($constraint->expectedAxisMessage, $violationData)->shouldBeCalled();
 
         $this->validate($variantGroup, $constraint);
+    }
+
+    function it_adds_a_violation_if_a_group_contains_axis_attributes(
+        $context,
+        GroupInterface $group,
+        GroupType $type,
+        VariantGroupAxis $constraint,
+        AttributeInterface $axis
+    ) {
+        $group->getId()->willReturn(null);
+        $group->getType()->willReturn($type);
+        $group->getCode()->willReturn('xsell');
+        $type->isVariant()->willReturn(false);
+        $group->getAxisAttributes()->willReturn([$axis]);
+
+        $violationData = [
+            '%group%' => 'xsell'
+        ];
+        $context->addViolation($constraint->unexpectedAxisMessage, $violationData)->shouldBeCalled();
+
+        $this->validate($group, $constraint);
     }
 }

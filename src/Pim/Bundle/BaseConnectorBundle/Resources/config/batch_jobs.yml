@@ -158,7 +158,7 @@ connector:
                     title:     pim_base_connector.jobs.csv_group_import.import.title
                     services:
                         reader:    pim_base_connector.reader.file.csv_group
-                        processor: pim_base_connector.processor.group
+                        processor: pim_base_connector.processor.array_to_object.flat.group
                         writer:    pim_base_connector.writer.doctrine.group
         csv_variant_group_import:
             title: pim_base_connector.jobs.csv_variant_group_import.title

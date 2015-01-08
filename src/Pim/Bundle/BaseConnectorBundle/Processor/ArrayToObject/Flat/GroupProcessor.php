@@ -2,15 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Group import processor, allows to,
@@ -38,11 +31,22 @@ class GroupProcessor extends AbstractProcessor
     public function process($item)
     {
         /** @var GroupInterface $group */
+        $this->checkItemData($item);
         $group = $this->findOrCreateGroup($item);
         $this->updateGroup($group, $item);
         $this->validateGroup($group, $item);
 
         return $group;
+    }
+
+    /**
+     * @param array $groupData
+     */
+    protected function checkItemData(array $groupData)
+    {
+        if (!isset($groupData[self::CODE_FIELD]) || empty($groupData[self::CODE_FIELD])) {
+            $this->skipItemWithMessage($groupData, 'Code must be provided');
+        }
     }
 
     /**
@@ -55,16 +59,12 @@ class GroupProcessor extends AbstractProcessor
     protected function findOrCreateGroup(array $groupData)
     {
         $group = $this->findOrCreateObject($this->repository, $groupData, $this->class);
-
-        if (null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT') {
+        $isNewVariantGroup = null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT';
+        $isExistingVariantGroup = null !== $group->getId() && $group->getType()->isVariant();
+        if ($isNewVariantGroup || $isExistingVariantGroup) {
             $this->skipItemWithMessage(
                 $groupData,
                 sprintf('Cannot process variant group "%s", only groups are accepted', $groupData[self::CODE_FIELD])
-            );
-        } elseif (null !== $group->getId() && $group->getType()->isVariant()) {
-            $this->skipItemWithMessage(
-                $groupData,
-                sprintf('Group "%s" does not exist', $groupData[self::CODE_FIELD])
             );
         }
 
@@ -98,6 +98,8 @@ class GroupProcessor extends AbstractProcessor
     protected function validateGroup(GroupInterface $group, array $item)
     {
         $violations = $this->validator->validate($group);
-        $this->skipItemWithConstraintViolations($item, $violations);
+        if ($violations->count() !== 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
     }
 }

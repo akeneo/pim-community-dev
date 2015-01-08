@@ -52,7 +52,7 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    And I should see "This property cannot be changed"
+    Then I should see "This property cannot be changed"
     And I should see "Read 1"
     And I should see "Skipped 1"
     Then there should be the following groups:
@@ -63,21 +63,62 @@ Feature: Import groups
       | AKENEO_XSELL   | Akeneo X       |                      | XSELL   |            |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
-  Scenario: Skip groups with empty code
+  Scenario: Skip the line when encounter an empty code
     Given the following CSV file to import:
     """
-    code;label-en_US;label-fr_FR;type;attributes
-    ;Akeneo T-Shirt;T-Shirt Akeneo;VARIANT;color,size
+    code;label-en_US;label-fr_FR;type
+    ;;;RELATED
     """
     And the following job "footwear_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "code: This value should not be blank"
+    Then I should see "Read 1"
+    And I should see "skipped 1"
+    And I should see "Code must be provided"
 
+  Scenario: Skip the line if we encounter a new variant group
+    Given the following CSV file to import:
+    """
+    code;label-en_US;label-fr_FR;type;axis
+    New_VG;Akeneo VG;Akeneo VG;VARIANT;color,size
+    """
+    And the following job "footwear_group_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_group_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_group_import" job to finish
+    Then I should see "Read 1"
+    And I should see "skipped 1"
+    And I should see "Cannot process variant group \"New_VG\", only groups are accepted"
 
-  # skip variant group type is provided
-  # skip when we try to update variant group
-  # fail when axis column is provided
+  Scenario: Skip the line if we encounter an existing variant group
+    Given the following CSV file to import:
+    """
+    code;label-en_US;label-fr_FR;type;axis
+    AKENEO_TSHIRT;Akeneo T-Shirt;T-Shirt Akeneo;VARIANT;size
+    """
+    And the following job "footwear_group_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_group_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_group_import" job to finish
+    Then I should see "Read 1"
+    And I should see "skipped 1"
+    And I should see "Cannot process variant group \"AKENEO_TSHIRT\", only groups are accepted"
+
+  Scenario: Skip the line if we try to set axis on a standard group
+    Given the following CSV file to import:
+    """
+    code;label-en_US;label-fr_FR;type;axis
+    STANDARD_WITH_AXIS;;;RELATED;size
+    """
+    And the following job "footwear_group_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_group_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_group_import" job to finish
+    Then I should see "Read 1"
+    And I should see "skipped 1"
+    And I should see "Group \"STANDARD_WITH_AXIS\" cannot be defined with axis (only for variant group)"

@@ -129,6 +129,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function skipItemWithMessage(array $item, $message)
     {
+        // TODO : detach when skip ?
+
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -148,6 +150,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function skipItemWithPreviousException(array $item, \Exception $e)
     {
+        // TODO : detach when skip ?
+
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -167,6 +171,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function skipItemWithConstraintViolations(array $item, ConstraintViolationListInterface $violations)
     {
+        // TODO : detach when skip ?
+
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -178,7 +184,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 "%s: %s: %s\n",
                 $violation->getPropertyPath(),
                 $violation->getMessage(),
-                $violation->getInvalidValue()
+                $violation->getInvalidValue() // TODO only useful for product value ?
+                // TODO re-format the message sometimes, property path doesnot exist for class constraint for instance cf VariantGroupAxis
             );
         }
 
