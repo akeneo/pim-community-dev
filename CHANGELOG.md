@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.3.5
+-----
+
+### Features
+
+- Added optional arguments $code and $previous in the constructor of InvalidItemException
+
 0.3.4
 -----
 
@@ -11,7 +18,7 @@ CHANGELOG
 0.3.3
 -----
 
-### Bug fixes
+### Features
 
 - Add an optional parameter in StepExecution::incrementSummaryInfo
 
