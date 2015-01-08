@@ -27,14 +27,14 @@ class BaseSavingOptionsResolverSpec extends ObjectBehavior
 
     function it_resolves_bulk_save_options() {
         $this
-            ->resolveSaveAllOptions(['flush' => true, 'flush_only_object' => true])
-            ->shouldReturn(['flush' => true, 'flush_only_object' => true]);
+            ->resolveSaveAllOptions(['flush' => true])
+            ->shouldReturn(['flush' => true]);
     }
 
     function it_resolves_default_values_for_bulk_save_options() {
         $this
             ->resolveSaveAllOptions([])
-            ->shouldReturn(['flush' => true, 'flush_only_object' => false]);
+            ->shouldReturn(['flush' => true]);
     }
 
     function it_throws_an_exception_when_resolve_unknown_saving_option() {
