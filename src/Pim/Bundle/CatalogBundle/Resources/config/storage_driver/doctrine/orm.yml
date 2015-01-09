@@ -22,6 +22,8 @@ parameters:
     pim_catalog.doctrine.query.filter.options.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter
     pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter
 
+    pim_catalog.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Cursor\ORM\ORMCursor
+
     pim_catalog.doctrine.query.sorter.base.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter
     pim_catalog.doctrine.query.sorter.entity.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter
     pim_catalog.doctrine.query.sorter.family.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter

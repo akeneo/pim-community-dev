@@ -14,6 +14,17 @@ abstract class AbstractCursor implements CursorInterface
     /** @type int */
     protected $position;
 
+    /** @var  Query */
+    protected $queryBuilder;
+
+    /**
+     * @param $query
+     */
+    public function __construct($queryBuilder)
+    {
+        $this->queryBuilder = $queryBuilder;
+    }
+
     /**
      * {@inheritdoc}
      */

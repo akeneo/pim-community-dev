@@ -1,6 +1,5 @@
 parameters:
     akeneo_storage_utils.factory.referenced_collection.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollectionFactory
-    akeneo_storage_utils.factory.cursor_factory.class: Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactory
 
 services:
     akeneo_storage_utils.factory.referenced_collection:

@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
 /**
  * Builds a product query builder by using  shortcuts to easily select, filter or sort products
@@ -32,23 +33,29 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var array */
     protected $defaultContext;
 
+    /** CursorFactoryInterface */
+    protected $cursorFactory;
+
     /**
      * Constructor
      *
      * @param AttributeRepository          $attributeRepository
      * @param QueryFilterRegistryInterface $filterRegistry
      * @param QuerySorterRegistryInterface $sorterRegistry
+     * @param CursorFactoryInterface       $cursorFactory
      * @param array                        $defaultContext
      */
     public function __construct(
         AttributeRepository $attributeRepository,
         QueryFilterRegistryInterface $filterRegistry,
         QuerySorterRegistryInterface $sorterRegistry,
+        CursorFactoryInterface $cursorFactory,
         array $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
+        $this->cursorFactory = $cursorFactory;
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -60,7 +67,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        return $this->getQueryBuilder()->getQuery()->execute();
+        return $this->cursorFactory->createCursor($this->getQueryBuilder());
     }
 
     /**

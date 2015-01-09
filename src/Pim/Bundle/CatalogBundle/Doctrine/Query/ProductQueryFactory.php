@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
 
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -34,13 +35,17 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     /** QuerySorterRegistryInterface */
     protected $sorterRegistry;
 
+    /** CursorFactoryInterface */
+    protected $cursorFactory;
+
     /**
-     * @param string                       $pqbClass
-     * @param ObjectManager                $om
-     * @param string                       $productClass
-     * @param AttributeRepository          $attributeRepository
+     * @param string $pqbClass
+     * @param ObjectManager $om
+     * @param string $productClass
+     * @param AttributeRepository $attributeRepository
      * @param QueryFilterRegistryInterface $filterRegistry
      * @param QuerySorterRegistryInterface $sorterRegistry
+     * @param CursorFactoryInterface $cursorFactory
      */
     public function __construct(
         $pqbClass,
@@ -48,7 +53,8 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         $productClass,
         AttributeRepository $attributeRepository,
         QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry
+        QuerySorterRegistryInterface $sorterRegistry,
+        CursorFactoryInterface $cursorFactory
     ) {
         $this->pqbClass = $pqbClass;
         $this->om = $om;
@@ -56,6 +62,7 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
+        $this->cursorFactory = $cursorFactory;
     }
 
     /**
@@ -91,6 +98,7 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
             $this->attributeRepository,
             $this->filterRegistry,
             $this->sorterRegistry,
+            $this->cursorFactory,
             $options
         );
 
