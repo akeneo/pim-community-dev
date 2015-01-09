@@ -20,7 +20,7 @@ PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition:
                 max: 100
         content:
             - Type:
-                type: string
+                type: array
         priority:
             - Type:
                 type: int

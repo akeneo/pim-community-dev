@@ -62,7 +62,7 @@ class RuleDefinition implements RuleDefinitionInterface
     /**
      * {@inheritdoc}
      */
-    public function setContent($content)
+    public function setContent(array $content)
     {
         $this->content = $content;
 

@@ -48,20 +48,19 @@ interface RuleDefinitionInterface
     public function setType($type);
 
     /**
-     * Get rule content. For example, a JSON encoded string
-     * that contains the whole configuration or a simple string
-     * that is a rule expression.
+     * Get rule content. In default implementation, the content
+     * is stored in JSON but is transformed to array when loaded.
      *
-     * @return string
+     * @return array
      */
     public function getContent();
 
     /**
-     * @param mixed $content
+     * @param array $content
      *
      * @return RuleDefinitionInterface
      */
-    public function setContent($content);
+    public function setContent(array $content);
 
     /**
      * @return int

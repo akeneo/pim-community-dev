@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
 
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -20,47 +18,35 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 /**
  * Denormalize product rules.
  *
- * @author Julien Janvier <julien.janvier@akeneo.com>
+ * TODO: should be renamed rule denormalizer
+ * TODO: should be moved in RuleEngine
  *
- * TODO: use a normalizer registry instead of all those normalizers
- * TODO: that would also allow to remove he $denormalizer->denormalize($raw, 'TODO')
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductRuleDenormalizer implements DenormalizerInterface
 {
-    /** @var ProductRuleConditionNormalizer */
-    protected $conditionNormalizer;
-
-    /** @var ProductSetValueActionNormalizer */
-    protected $setValueNormalizer;
-
-    /** @var ProductCopyValueActionNormalizer */
-    protected $copyValueNormalizer;
+    /** @var DenormalizerInterface */
+    protected $contentDernomalizer;
 
     /** @var string */
-    protected $class;
+    protected $ruleClass;
 
     /** @var string */
     protected $definitionClass;
 
     /**
-     * @param ProductRuleConditionNormalizer   $conditionNormalizer
-     * @param ProductSetValueActionNormalizer  $setValueNormalizer
-     * @param ProductCopyValueActionNormalizer $copyValueNormalizer
-     * @param string                           $class
-     * @param string                           $definitionClass
+     * @param DenormalizerInterface $contentDernomalizer
+     * @param string                $ruleClass
+     * @param string                $definitionClass
      */
     public function __construct(
-        ProductRuleConditionNormalizer $conditionNormalizer,
-        ProductSetValueActionNormalizer $setValueNormalizer,
-        ProductCopyValueActionNormalizer $copyValueNormalizer,
-        $class,
+        DenormalizerInterface $contentDernomalizer,
+        $ruleClass,
         $definitionClass
     ) {
-        $this->conditionNormalizer = $conditionNormalizer;
-        $this->setValueNormalizer  = $setValueNormalizer;
-        $this->copyValueNormalizer = $copyValueNormalizer;
-        $this->class               = $class;
-        $this->definitionClass     = $definitionClass;
+        $this->contentDernomalizer = $contentDernomalizer;
+        $this->ruleClass = $ruleClass;
+        $this->definitionClass = $definitionClass;
     }
 
     /**
@@ -81,34 +67,13 @@ class ProductRuleDenormalizer implements DenormalizerInterface
             $rule->setPriority((int) $data['priority']);
         }
 
-        $this->checkRuleKeys($data);
+        $content = $this->contentDernomalizer->denormalize($rule->getContent(), $format, $context);
 
-        if (isset($data['conditions'])) {
-            foreach ($data['conditions'] as $rawCondition) {
-                //@TODO
-                $condition = $this->conditionNormalizer->denormalize($rawCondition, 'TODO');
-                $rule->addCondition($condition);
-            }
+        foreach ($content['conditions'] as $condition) {
+            $rule->addCondition($condition);
         }
-
-        if (isset($data['actions'])) {
-            foreach ($data['actions'] as $rawAction) {
-                if (!array_key_exists('type', $rawAction)) {
-                    throw new \LogicException(sprintf('Rule content "%s" has an action with no type.', $data['code']));
-                }
-                //@TODO
-                if (ProductSetValueActionInterface::TYPE === $rawAction['type']) {
-                    $action = $this->setValueNormalizer->denormalize($rawAction, 'TODO');
-                } elseif (ProductCopyValueActionInterface::TYPE === $rawAction['type']) {
-                    $action = $this->copyValueNormalizer->denormalize($rawAction, 'TODO');
-                } else {
-                    throw new \LogicException(
-                        sprintf('Rule "%s" has an unknown type of action "%s".', $rule->getCode(), $rawAction['type'])
-                    );
-                }
-
-                $rule->addAction($action);
-            }
+        foreach ($content['actions'] as $action) {
+            $rule->addAction($action);
         }
 
         return $rule;
@@ -119,7 +84,7 @@ class ProductRuleDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $this->class === $type;
+        return $this->ruleClass === $type;
     }
 
     /**
@@ -139,22 +104,6 @@ class ProductRuleDenormalizer implements DenormalizerInterface
             $definition = new $this->definitionClass();
         }
 
-        return new $this->class($definition);
-    }
-
-    /**
-     * Checks if the rule have a 'conditions' and 'actions' keys
-     *
-     * @param array $data
-     */
-    protected function checkRuleKeys(array $data)
-    {
-        if (!array_key_exists('conditions', $data)) {
-            throw new \LogicException(sprintf('Rule content "%s" should have a "conditions" key.', $data['code']));
-        }
-
-        if (!array_key_exists('actions', $data)) {
-            throw new \LogicException(sprintf('Rule content "%s" should have a "actions" key.', $data['code']));
-        }
+        return new $this->ruleClass($definition);
     }
 }

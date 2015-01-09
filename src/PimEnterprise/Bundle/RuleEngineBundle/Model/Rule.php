@@ -150,7 +150,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function setContent($content)
+    public function setContent(array $content)
     {
         $this->definition->setContent($content);
 

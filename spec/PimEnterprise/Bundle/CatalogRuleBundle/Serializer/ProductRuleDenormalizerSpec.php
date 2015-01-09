@@ -3,22 +3,18 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductCopyValueActionNormalizer;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleConditionNormalizer;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionNormalizer;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\ConditionInterface;
+use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ProductRuleDenormalizerSpec extends ObjectBehavior
 {
-    public function let(
-        ProductRuleConditionNormalizer $conditionNormalizer,
-        ProductSetValueActionNormalizer $setValueActionNormalizer,
-        ProductCopyValueActionNormalizer $copyValueActionNormalizer
-    ) {
+    public function let(DenormalizerInterface $contentDernomalizer) {
         $this->beConstructedWith(
-            $conditionNormalizer,
-            $setValueActionNormalizer,
-            $copyValueActionNormalizer,
+            $contentDernomalizer,
             'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule',
             'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition'
         );
@@ -29,11 +25,39 @@ class ProductRuleDenormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleDenormalizer');
     }
 
-    function it_denormalizes()
+    function it_denormalizes_a_rule($contentDernomalizer)
     {
-        // TODO: really spec it...
+        $contentDernomalizer->denormalize(Argument::cetera())->willReturn(['conditions' => [], 'actions' => []]);
+
         $this->denormalize(['code' => 'discharge_fr_description', 'conditions' => [], 'actions' => []], Argument::any())
             ->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\Rule');
+    }
+
+    function it_denormalizes_a_rule_provided_in_the_context(
+        $contentDernomalizer,
+        RuleInterface $rule,
+        ConditionInterface $condition,
+        ProductSetValueActionInterface $setValueAction,
+        ProductCopyValueActionInterface $copyValueAction
+
+    ) {
+        $rule->getContent()->willReturn([]);
+        $rule->setCode('discharge_fr_description')->shouldBeCalled();
+        $rule->setType('product')->shouldBeCalled();
+        $rule->setPriority(10)->shouldBeCalled();
+        $rule->addCondition($condition)->shouldBeCalled();
+        $rule->addAction($setValueAction)->shouldBeCalled();
+        $rule->addAction($copyValueAction)->shouldBeCalled();
+
+        $contentDernomalizer->denormalize(Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setValueAction, $copyValueAction]]);
+
+        // TODO: really spec it...
+        $this->denormalize(
+            ['code' => 'discharge_fr_description', 'priority' => 10, 'conditions' => [], 'actions' => []],
+            Argument::any(),
+            Argument::any(),
+            ['object' => $rule]
+        );
     }
 
     function it_supports_denormalization()
@@ -48,76 +72,5 @@ class ProductRuleDenormalizerSpec extends ObjectBehavior
         $type = 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition';
 
         $this->supportsDenormalization(Argument::any(), $type)->shouldReturn(false);
-    }
-
-    function it_throws_an_exception_when_denormalizing_a_rule_with_an_unknow_action()
-    {
-        $rule = [
-            'code' => 'discharge_fr_description',
-            'conditions' => [],
-            'actions' => [
-                ['type' => 'unknown_action'],
-            ]
-        ];
-
-        $this->shouldThrow(
-            new \LogicException('Rule "discharge_fr_description" has an unknown type of action "unknown_action".')
-        )->during('denormalize', [$rule, Argument::any()]);
-    }
-
-    function it_throws_an_exception_when_denormalizing_a_rule_with_no_conditions_key()
-    {
-        $rule = [
-            'code' => 'discharge_fr_description',
-            'actions' => [
-                ['type' => 'set_value'],
-            ]
-        ];
-
-        $this->shouldThrow(
-            new \LogicException('Rule content "discharge_fr_description" should have a "conditions" key.')
-        )->during('denormalize', [$rule, Argument::any()]);
-    }
-
-    function it_throws_an_exception_when_denormalizing_a_rule_with_no_actions_key()
-    {
-        $rule = [
-            'code' => 'discharge_fr_description',
-            'conditions' => [],
-        ];
-
-        $this->shouldThrow(
-            new \LogicException('Rule content "discharge_fr_description" should have a "actions" key.')
-        )->during('denormalize', [$rule, Argument::any()]);
-    }
-
-    function it_throws_an_exception_when_denormalizing_a_rule_with_no_actions_type_key()
-    {
-        $rule = [
-            'code' => 'discharge_fr_description',
-            'conditions' => [],
-            'actions' => [
-                ['wrong' => 'set_value'],
-            ]
-        ];
-
-        $this->shouldThrow(
-            new \LogicException('Rule content "discharge_fr_description" has an action with no type.')
-        )->during('denormalize', [$rule, Argument::any()]);
-    }
-
-    function it_throws_an_exception_when_denormalizing_a_rule_with_invalid_type_key()
-    {
-        $rule = [
-            'code' => 'discharge_fr_description',
-            'conditions' => [],
-            'actions' => [
-                ['type' => 'invalid'],
-            ]
-        ];
-
-        $this->shouldThrow(
-            new \LogicException('Rule "discharge_fr_description" has an unknown type of action "invalid".')
-        )->during('denormalize', [$rule, Argument::any()]);
     }
 }

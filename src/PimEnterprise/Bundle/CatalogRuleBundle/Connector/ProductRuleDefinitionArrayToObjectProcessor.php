@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -26,31 +25,25 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductRuleDefinitionArrayToObjectProcessor extends AbstractProcessor
 {
-    /** @var ProductRuleContentSerializerInterface */
-    protected $contentSerializer;
-
     /** @var string rule class*/
     protected $ruleClass;
 
     /**
-     * @param ReferableEntityRepositoryInterface    $repository
-     * @param DenormalizerInterface                 $denormalizer
-     * @param ValidatorInterface                    $validator
-     * @param string                                $ruleDefinitionClass
-     * @param ProductRuleContentSerializerInterface $contentSerializer
-     * @param string                                $ruleClass
+     * @param ReferableEntityRepositoryInterface $repository
+     * @param DenormalizerInterface              $denormalizer
+     * @param ValidatorInterface                 $validator
+     * @param string                             $ruleDefinitionClass
+     * @param string                             $ruleClass
      */
     public function __construct(
         ReferableEntityRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         $ruleDefinitionClass,
-        ProductRuleContentSerializerInterface $contentSerializer,
         $ruleClass
     ) {
         parent::__construct($repository, $denormalizer, $validator, $ruleDefinitionClass);
 
-        $this->contentSerializer = $contentSerializer;
         $this->ruleClass = $ruleClass;
     }
 
@@ -102,12 +95,10 @@ class ProductRuleDefinitionArrayToObjectProcessor extends AbstractProcessor
             $ruleDefinition = new $this->class();
         }
 
-        $content = $this->contentSerializer->serialize($rule);
-
         $ruleDefinition->setCode($rule->getCode());
         $ruleDefinition->setPriority($rule->getPriority());
         $ruleDefinition->setType($rule->getType());
-        $ruleDefinition->setContent($content);
+        $ruleDefinition->setContent($rule->getContent());
 
         return $ruleDefinition;
     }

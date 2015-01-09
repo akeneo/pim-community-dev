@@ -494,7 +494,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();
-            $content = json_decode($content, true);
             if (!isset($content['conditions'])) {
                 $content['conditions'] = [];
             }
@@ -519,7 +518,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $content['actions'] = [];
 
-            $rule->setContent(json_encode($content));
+            $rule->setContent($content);
             $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
@@ -543,7 +542,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();
-            $content = json_decode($content, true);
             if (!isset($content['actions'])) {
                 $content['actions'] = [];
             }
@@ -600,7 +598,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
             $content['actions'][] = $action;
 
-            $rule->setContent(json_encode($content));
+            $rule->setContent($content);
             $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
@@ -624,7 +622,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();
-            $content = json_decode($content, true);
             if (!isset($content['actions'])) {
                 $content['actions'] = [];
             }
@@ -647,7 +644,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
             $content['actions'][] = $action;
 
-            $rule->setContent(json_encode($content));
+            $rule->setContent($content);
             $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
