@@ -19,5 +19,5 @@ interface BulkRemoverInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function removeAll(array $objects, $options = []);
+    public function removeAll(array $objects, array $options = []);
 }

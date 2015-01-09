@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Remover;
 
+use Akeneo\Component\Persistence\BulkRemoverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Base remover, declared as different services for different classes
@@ -14,22 +14,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseRemover implements RemoverInterface
+class BaseRemover implements RemoverInterface, BulkRemoverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
+
+    /** @var BaseRemovingOptionsResolver */
+    protected $optionsResolver;
 
     /** @var string */
     protected $removedClass;
 
     /**
-     * @param ObjectManager $objectManager
-     * @param string        $removedClass
+     * @param ObjectManager               $objectManager
+     * @param BaseRemovingOptionsResolver $optionsResolver
+     * @param string                      $removedClass
      */
-    public function __construct(ObjectManager $objectManager, $removedClass)
-    {
+    public function __construct(
+        ObjectManager $objectManager,
+        BaseRemovingOptionsResolver $optionsResolver,
+        $removedClass
+    ) {
         $this->objectManager = $objectManager;
-        $this->removedClass  = $removedClass;
+        $this->optionsResolver = $optionsResolver;
+        $this->removedClass = $removedClass;
     }
 
     /**
@@ -47,7 +55,7 @@ class BaseRemover implements RemoverInterface
             );
         }
 
-        $options = $this->resolveRemoveOptions($options);
+        $options = $this->optionsResolver->resolveRemoveOptions($options);
         $this->objectManager->remove($object);
 
         if (true === $options['flush'] && true === $options['flush_only_object']) {
@@ -58,30 +66,24 @@ class BaseRemover implements RemoverInterface
     }
 
     /**
-     * Resolve options for a single remove
-     *
-     * @param array $options
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function resolveRemoveOptions(array $options)
+    public function removeAll(array $objects, array $options = [])
     {
-        $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'flush_only_object']);
-        $resolver->setAllowedTypes(
-            [
-                'flush' => 'bool',
-                'flush_only_object' => 'bool'
-            ]
-        );
-        $resolver->setDefaults(
-            [
-                'flush' => true,
-                'flush_only_object' => false,
-            ]
-        );
-        $options = $resolver->resolve($options);
+        if (empty($objects)) {
+            return;
+        }
 
-        return $options;
+        $allOptions = $this->optionsResolver->resolveRemoveAllOptions($options);
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
+
+        foreach ($objects as $object) {
+            $this->remove($object, $itemOptions);
+        }
+
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
+        }
     }
 }
