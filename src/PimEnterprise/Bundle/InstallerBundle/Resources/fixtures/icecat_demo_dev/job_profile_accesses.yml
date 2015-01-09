@@ -23,6 +23,9 @@ job_profile_accesses:
     csv_group_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+    csv_variant_group_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     csv_group_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
