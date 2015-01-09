@@ -77,4 +77,18 @@ class MetricTypeSpec extends ObjectBehavior
         $value->getData()->willReturn($metric);
         $this->prepareValueFormData($value)->shouldReturn($metric);
     }
+
+    function it_prepares_default_product_value_form_data($value, $metricFactory, $size)
+    {
+        $value->getData()->willReturn(null);
+        $size->getMetricFamily()->willReturn('Weight');
+        $metricFactory->createMetric('Weight')->willReturn('W');
+
+        $this->prepareValueFormData($value)->shouldReturn('W');
+    }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn('pim_catalog_metric');
+    }
 }

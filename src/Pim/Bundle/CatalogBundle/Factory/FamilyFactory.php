@@ -61,9 +61,8 @@ class FamilyFactory
         $family->setAttributeAsLabel($identifier);
 
         foreach ($this->getChannels() as $channel) {
-            $family->addAttributeRequirement(
-                $this->factory->createAttributeRequirement($identifier, $channel, true)
-            );
+            $requirement = $this->factory->createAttributeRequirement($identifier, $channel, true);
+            $family->addAttributeRequirement($requirement);
         }
 
         return $family;

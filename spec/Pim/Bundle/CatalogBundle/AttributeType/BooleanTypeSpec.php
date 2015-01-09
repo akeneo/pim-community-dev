@@ -59,4 +59,9 @@ class BooleanTypeSpec extends ObjectBehavior
         $value->getData()->willReturn(true);
         $this->prepareValueFormData($value)->shouldReturn(true);
     }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn('pim_catalog_boolean');
+    }
 }
