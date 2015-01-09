@@ -139,7 +139,11 @@ class MediaManager
      */
     public function duplicate(ProductMediaInterface $source, ProductMediaInterface $target, $filenamePrefix)
     {
-        $target->setFile(new File($source->getFilePath()));
+        if (null === $path = $this->getFilePath($source)) {
+            return;
+        }
+
+        $target->setFile(new File($path));
         $filename = $this->generateFilename($source->getOriginalFilename(), $filenamePrefix);
         $this->upload($target, $filename);
         $target->setOriginalFilename($source->getOriginalFilename());
@@ -149,11 +153,11 @@ class MediaManager
      * @param ProductMediaInterface $media
      * @param string                $targetDir
      *
-     * @return boolean true on success, false on failure
+     * @return bool true on success, false on failure
      */
     public function copy(ProductMediaInterface $media, $targetDir)
     {
-        if ($media->getFilePath() === null) {
+        if (null === $path = $this->getFilePath($media)) {
             return false;
         }
 
@@ -163,7 +167,7 @@ class MediaManager
             mkdir(dirname($targetDir), 0777, true);
         }
 
-        return copy($media->getFilePath(), $targetDir);
+        return copy($path, $targetDir);
     }
 
     /**
@@ -184,7 +188,6 @@ class MediaManager
         $media = $this->factory->createMedia();
         $media->setOriginalFilename($filename);
         $media->setFilename($filename);
-        $media->setFilePath($filePath);
         $media->setMimeType($this->filesystem->mimeType($filename));
 
         return $media;
@@ -201,7 +204,6 @@ class MediaManager
     {
         $media = $this->factory->createMedia();
         $media->setFilename(pathinfo($filePath, PATHINFO_BASENAME));
-        $media->setFilePath($filePath);
 
         return $media;
     }
@@ -221,7 +223,7 @@ class MediaManager
      */
     public function getExportPath(ProductMediaInterface $media)
     {
-        if ($media->getFilePath() === null) {
+        if (null === $this->getFilePath($media)) {
             return '';
         }
 
@@ -310,7 +312,6 @@ class MediaManager
 
             $media->setOriginalFilename($originalFilename);
             $media->setFilename($filename);
-            $media->setFilePath($this->getFilePath($media));
             $media->setMimeType($file->getMimeType());
             $media->resetFile();
         }
@@ -337,7 +338,7 @@ class MediaManager
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
-    protected function getFilePath(ProductMediaInterface $media)
+    public function getFilePath(ProductMediaInterface $media)
     {
         if ($this->fileExists($media)) {
             $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
@@ -360,7 +361,6 @@ class MediaManager
     {
         $media->setOriginalFilename(null);
         $media->setFilename(null);
-        $media->setFilepath(null);
         $media->setMimeType(null);
     }
 
@@ -373,6 +373,10 @@ class MediaManager
      */
     protected function fileExists(ProductMediaInterface $media)
     {
+        if (null === $media->getFilename()) {
+            return false;
+        }
+
         return $this->filesystem->has($media->getFilename());
     }
 }

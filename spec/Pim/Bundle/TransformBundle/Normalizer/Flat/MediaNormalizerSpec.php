@@ -65,8 +65,8 @@ class MediaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_media_by_using_file_and_export_path_to_prepare_the_copy(ProductMediaInterface $media, $manager)
     {
-        $media->getFilePath()->willReturn('/tmp/file/foo.jpg');
         $manager->getExportPath($media)->willReturn('files/sku/attribute/foo.jpg');
+        $manager->getFilePath($media)->willReturn('/tmp/file/foo.jpg');
 
         $this
             ->normalize($media, null, ['field_name' => 'media', 'prepare_copy' => true])
