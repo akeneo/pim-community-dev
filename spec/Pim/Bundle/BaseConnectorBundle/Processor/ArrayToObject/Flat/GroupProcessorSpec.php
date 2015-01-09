@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
@@ -25,6 +26,7 @@ class GroupProcessorSpec extends ObjectBehavior
         GroupRepository $groupRepository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
         StepExecution $stepExecution
     ) {
         $groupClass = 'Pim\Bundle\CatalogBundle\Entity\Group';
@@ -32,6 +34,7 @@ class GroupProcessorSpec extends ObjectBehavior
             $groupRepository,
             $denormalizer,
             $validator,
+            $detacher,
             $groupClass
         );
         $this->setStepExecution($stepExecution);
@@ -155,6 +158,7 @@ class GroupProcessorSpec extends ObjectBehavior
         $groupRepository,
         $denormalizer,
         $validator,
+        $detacher,
         $stepExecution,
         Group $group,
         GroupType $type
@@ -184,6 +188,7 @@ class GroupProcessorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violations);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $detacher->detach($group)->shouldBeCalled();
 
         $this
             ->shouldThrow(

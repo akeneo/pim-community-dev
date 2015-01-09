@@ -132,6 +132,7 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'
             - '@pim_validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
             - %pim_catalog.entity.group.class%
 
     pim_base_connector.processor.array_to_object.flat.variant_group:
@@ -141,5 +142,6 @@ services:
             - '@pim_serializer'
             - '@pim_validator'
             - '@pim_serializer'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
             - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.product_template.class%

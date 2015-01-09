@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -37,6 +38,9 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var string */
     protected $class;
 
@@ -44,17 +48,20 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param ReferableEntityRepositoryInterface $repository   repository to search the object in
      * @param ValidatorInterface                 $validator    validator of the object
      * @param DenormalizerInterface              $denormalizer denormalizer used to transform array to object
+     * @param ObjectDetacherInterface            $detacher
      * @param string                             $class        class of the object to instanciate in case if need
      */
     public function __construct(
         ReferableEntityRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
         $class
     ) {
         $this->repository = $repository;
         $this->denormalizer = $denormalizer;
         $this->validator = $validator;
+        $this->detacher = $detacher;
         $this->class = $class;
     }
 
@@ -119,6 +126,17 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         return $repository->findByReference(implode('.', $references));
     }
 
+
+    /**
+     * Detaches the object from the unit of work
+     *
+     * @param mixed $object
+     */
+    protected function detachObject($object)
+    {
+        $this->detacher->detach($object);
+    }
+
     /**
      * Sets an item as skipped and throws an invalid item exception with the message.
      *
@@ -129,8 +147,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function skipItemWithMessage(array $item, $message)
     {
-        // TODO : detach when skip ?
-
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -150,8 +166,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function skipItemWithPreviousException(array $item, \Exception $e)
     {
-        // TODO : detach when skip ?
-
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -171,8 +185,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     protected function skipItemWithConstraintViolations(array $item, ConstraintViolationListInterface $violations)
     {
-        // TODO : detach when skip ?
-
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -185,7 +197,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 $violation->getPropertyPath(),
                 $violation->getMessage(),
                 $violation->getInvalidValue() // TODO only useful for product value ?
-                // TODO re-format the message sometimes, property path doesnot exist for class constraint for instance cf VariantGroupAxis
+                // TODO re-format the message sometimes, property path doesnt exist for class constraint for instance cf VariantGroupAxis
             );
         }
 

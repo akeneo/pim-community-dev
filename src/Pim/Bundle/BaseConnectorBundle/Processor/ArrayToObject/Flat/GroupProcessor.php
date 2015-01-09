@@ -101,6 +101,7 @@ class GroupProcessor extends AbstractProcessor
     {
         $violations = $this->validator->validate($group);
         if ($violations->count() !== 0) {
+            $this->detachObject($group);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
     }
