@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\StorageUtilsBundle;
 
 //TODO: should be trashed
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -48,14 +49,16 @@ class AkeneoStorageUtilsBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        if (class_exists(self::DOCTRINE_MONGODB)) {
-            // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
-            // https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged
-            $definition = $container->register(
-                'doctrine_mongodb.odm.listeners.resolve_target_document',
-                'Doctrine\ODM\MongoDB\Tools\ResolveTargetDocumentListener'
+        $interfaces = $this->getModelInterfaces();
+        if (!empty($interfaces)) {
+            $container->addCompilerPass(
+                new ResolveDoctrineTargetModelPass($interfaces)
             );
-            $definition->addTag('doctrine_mongodb.odm.event_listener', array('event' => 'loadClassMetadata'));
+        }
+
+        $doctrineMapping = $this->getDoctrineMappingDriverConfig();
+        if (!empty($doctrineMapping)) {
+            $this->registerDoctrineMappingDriver($container, $doctrineMapping);
         }
     }
 
@@ -83,5 +86,39 @@ class AkeneoStorageUtilsBundle extends Bundle
                 )
             );
         }
+    }
+
+    /**
+     * Return the absolute path where are stored the doctrine mapping.
+     *
+     * @return string
+     */
+    protected function getDoctrineMappingDriverDirectory($directory)
+    {
+        return sprintf(
+            '%s/Resources/config/%s',
+            $this->getPath(),
+            $directory
+        );
+    }
+
+    /**
+     * Return the doctrine driver configuration (Directory - Namespace)
+     *
+     * @return array
+     */
+    protected function getDoctrineMappingDriverConfig()
+    {
+        return [];
+    }
+
+    /**
+     * Target entities resolver configuration (Interface - Model).
+     *
+     * @return array
+     */
+    protected function getModelInterfaces()
+    {
+        return [];
     }
 }
