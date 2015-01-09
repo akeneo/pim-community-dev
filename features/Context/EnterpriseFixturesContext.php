@@ -2,20 +2,18 @@
 
 namespace Context;
 
-use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\Persistence\SaverInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Behat\Behat\Context\Step;
 
 /**
@@ -560,6 +558,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 case 'pim_catalog_textarea':
                 case 'pim_catalog_date':
                 case 'pim_catalog_identifier':
+                case 'pim_catalog_simpleselect':
                     $value = (string) $data['value'];
                     break;
                 case 'pim_catalog_number':
@@ -570,18 +569,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = ['unit' => $values[1], 'data' => $values[0]];
                     break;
                 case 'pim_catalog_multiselect':
-                    $values = explode(',', $data['value']);
-                    $value = [];
-                    foreach ($values as $val) {
-                        $value[] = ['code' => $val, 'attribute' => $attribute->getCode()];
-                    }
+                    $value = explode(',', $data['value']);
                     break;
                 case 'pim_catalog_price_collection':
                     $values = explode(',', $data['value']);
                     $value = [['data' => $values[0], 'currency' => $values[1]]];
-                    break;
-                case 'pim_catalog_simpleselect':
-                    $value = ['code' => $data['value'], 'attribute' => $attribute->getCode()];
                     break;
                 case 'pim_catalog_boolean':
                     $value = (bool) $data['value'];
@@ -591,6 +583,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $values = explode(',', $data['value']);
                     $value = ['filePath' => $values[1], 'originalFilename' => $values[0]];
                     break;
+                default:
+                    throw new \LogicException(sprintf('Unknown attribute type "%s".', $attributeType));
             }
 
             $action = [
@@ -662,7 +656,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      *
-     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
      *
      * @throws \InvalidArgumentException
      */
