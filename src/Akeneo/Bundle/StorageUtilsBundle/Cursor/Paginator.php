@@ -48,7 +48,14 @@ class Paginator implements PaginatorInterface
             $result = [];
 
             for ($i = 0; $i<$this->pageSize; $i++) {
-                $result[] = $this->cursor->getNext();
+                $this->cursor->next();
+                $current = $this->cursor->current();
+                if ($current !=null) {
+                    $result[] = $current;
+                }
+                else {
+                    break;
+                }
             }
 
             $this->currentPage++;

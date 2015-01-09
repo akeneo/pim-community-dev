@@ -2,11 +2,12 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM;
 
-use Doctrine\MongoDB\Query\Query;
+use Doctrine\Bundle\MongoDBBundle\Cursor;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
 
 /**
- * Class CursorORM to iterate entities from Builder
+ * Class MongoDBODMCursor to iterate entities from Builder
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -83,7 +84,7 @@ class MongoDBODMCursor extends AbstractCursor
     protected function getCursor()
     {
         if ($this->cursor === null) {
-            $this->cursor = $this->query->execute();
+            $this->cursor = $this->queryBuilder->getQuery()->execute();
             if ($this->batchSize !== null) {
                 $this->cursor->setBatchSize($this->batchSize);
             }

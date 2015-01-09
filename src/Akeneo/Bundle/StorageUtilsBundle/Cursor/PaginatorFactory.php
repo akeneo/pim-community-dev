@@ -9,7 +9,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PaginatorFactory implements PaginatorFactoryInterface, PaginatorFactoryInterface
+class PaginatorFactory implements PaginatorFactoryInterface
 {
     /** @var string */
     private $paginatorClass = null;

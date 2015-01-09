@@ -6,9 +6,10 @@ use ArrayIterator;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
 
 /**
- * Class CursorORM to iterate entities from QueryBuilder
+ * Class ORMCursor to iterate entities from QueryBuilder
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -23,7 +24,7 @@ class ORMCursor extends AbstractCursor
     protected $entitiesIds = null;
 
     /** @type int */
-    protected $count;
+    protected $count = null;
 
     /** @type \ArrayIterator */
     protected $entitiesPage;
