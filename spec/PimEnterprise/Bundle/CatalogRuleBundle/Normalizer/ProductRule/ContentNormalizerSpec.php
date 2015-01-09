@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

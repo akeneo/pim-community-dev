@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 
 /**
  * Get rules definition

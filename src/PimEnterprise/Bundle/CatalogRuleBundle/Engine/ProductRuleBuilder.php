@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -46,7 +46,7 @@ class ProductRuleBuilder implements BuilderInterface
      * @param EventDispatcherInterface $eventDispatcher
      * @param ValidatorInterface       $validator
      * @param string                   $ruleClass       should implement
-     *                                                  \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     *                                                  \Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface
      */
     public function __construct(
         DenormalizerInterface $ruleContentDenormalizer,
@@ -67,7 +67,7 @@ class ProductRuleBuilder implements BuilderInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_BUILD, new RuleEvent($definition));
 
-        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $rule */
+        /** @var \Akeneo\Bundle\RuleEngineBundle\Model\Rule $rule */
         $rule = new $this->ruleClass($definition);
 
         try {

@@ -18,11 +18,11 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -122,7 +122,7 @@ class ProductRuleApplier implements ApplierInterface
 
     /**
      * @param RuleSubjectSetInterface                                        $subjectSet
-     * @param \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
+     * @param \Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
      */
     protected function updateProducts(RuleSubjectSetInterface $subjectSet, $actions)
     {

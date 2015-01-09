@@ -12,22 +12,22 @@ services:
     pimee_catalog_rule.processor.rule_definition.array_to_object:
         class: %pimee_catalog_rule.processor.rule_definition.array_to_object.class%
         arguments:
-            - @pimee_rule_engine.repository.rule_definition
-            - @pimee_rule_engine.denormalizer.rule
+            - @akeneo_rule_engine.repository.rule_definition
+            - @akeneo_rule_engine.denormalizer.rule
             - @validator
-            - %pimee_rule_engine.model.rule_definition.class%
-            - %pimee_rule_engine.model.rule.class%
+            - %akeneo_rule_engine.model.rule_definition.class%
+            - %akeneo_rule_engine.model.rule.class%
 
     pimee_catalog_rule.writer.rule_definition.doctrine:
         class: %pimee_catalog_rule.writer.rule_definition.doctrine.class%
         arguments:
-          - '@pimee_rule_engine.saver.rule_definition'
+          - '@akeneo_rule_engine.saver.rule_definition'
 
     # export rules
     pimee_catalog_rule.reader.rule_definition.doctrine:
         class: %pimee_catalog_rule.reader.rule_definition.doctrine.class%
         arguments:
-            - @pimee_rule_engine.repository.rule_definition
+            - @akeneo_rule_engine.repository.rule_definition
 
     pimee_catalog_rule.processor.rule_definition.object_to_array:
         class: %pimee_catalog_rule.processor.rule_definition.object_to_array.class%

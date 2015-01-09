@@ -3,12 +3,12 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Prophecy\Argument;
 
 class ProductRuleRunnerSpec extends ObjectBehavior
@@ -30,7 +30,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
 
     public function it_is_a_runner()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Runner\RunnerInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface');
     }
 
     public function it_supports_product_rule(RuleDefinitionInterface $definition1, RuleDefinitionInterface $definition2)

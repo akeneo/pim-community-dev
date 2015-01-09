@@ -18,7 +18,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
             $conditionNormalizer,
             $setValueActionNormalizer,
             $copyValueActionNormalizer,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule'
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
         );
     }
 
@@ -37,7 +37,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
         $content = $this->buildRuleContent();
 
         // TODO: use a custom matcher to test it
-        $this->denormalize($content, 'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule');
+        $this->denormalize($content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule');
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_conditions_key()
@@ -51,7 +51,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" can not be denormalized.', json_encode($content)))
-        )->during('denormalize', [$content, 'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_actions_key()
@@ -65,7 +65,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" can not be denormalized.', json_encode($content)))
-        )->during('denormalize', [$content, 'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_action_type()
@@ -83,7 +83,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an action with no type.', json_encode($content)))
-        )->during('denormalize', [$content, 'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_an_invalid_action_type()
@@ -101,7 +101,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an unknown type of action "unknown_action".', json_encode($content)))
-        )->during('denormalize', [$content, 'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
     }
 
     /**

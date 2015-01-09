@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 

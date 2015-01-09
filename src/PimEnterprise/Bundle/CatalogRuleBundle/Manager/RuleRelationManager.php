@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Class RuleRelationManager

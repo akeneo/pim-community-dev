@@ -21,10 +21,10 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

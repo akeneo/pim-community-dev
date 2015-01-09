@@ -1,0 +1,10 @@
+parameters:
+    akeneo_rule_engine.denormalizer.rule.class: Akeneo\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
+
+services:
+    akeneo_rule_engine.denormalizer.rule:
+        class: %akeneo_rule_engine.denormalizer.rule.class%
+        arguments:
+            - @pimee_catalog_rule.denormalizer.rule_content
+            - %akeneo_rule_engine.model.rule.class%
+            - %akeneo_rule_engine.model.rule_definition.class%

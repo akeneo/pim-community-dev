@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Link between a rule and a resource to know that the rule if applicable to the resource.

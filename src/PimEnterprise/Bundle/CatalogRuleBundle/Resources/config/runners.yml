@@ -10,4 +10,4 @@ services:
             - @pimee_catalog_rule.applier.product
             - %pimee_catalog_rule.model.product_condition.class%
         tags:
-            - { name: pimee_rule_engine.runner }
+            - { name: akeneo_rule_engine.runner }

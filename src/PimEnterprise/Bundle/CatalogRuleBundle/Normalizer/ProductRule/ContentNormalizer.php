@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -14,12 +14,12 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -45,7 +45,7 @@ class ProductRuleSelector implements SelectorInterface
      * @param ProductQueryFactoryInterface $productQueryFactory
      * @param ProductRepositoryInterface   $repo
      * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $subjectSetClass     should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
+     * @param string                       $subjectSetClass     should implement \Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
      */
     public function __construct(
         ProductQueryFactoryInterface $productQueryFactory,

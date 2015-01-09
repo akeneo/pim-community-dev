@@ -16,7 +16,7 @@ services:
             - @pimee_catalog_rule.denormalizer.product_rule_condition
             - @pimee_catalog_rule.denormalizer.product_set_value_action
             - @pimee_catalog_rule.denormalizer.product_copy_value_action
-            - %pimee_rule_engine.model.rule.class%
+            - %akeneo_rule_engine.model.rule.class%
 
     pimee_catalog_rule.normalizer.rule_content:
         class: %pimee_catalog_rule.normalizer.rule_content.class%

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 use Akeneo\Component\Persistence\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

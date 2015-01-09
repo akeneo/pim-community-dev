@@ -1,0 +1,10 @@
+Akeneo\Bundle\RuleEngineBundle\Model\Rule:
+    properties:
+        definition:
+            - Valid: ~
+        conditions:
+            - Valid:
+                traverse: true
+        actions:
+            - Valid:
+                traverse: true

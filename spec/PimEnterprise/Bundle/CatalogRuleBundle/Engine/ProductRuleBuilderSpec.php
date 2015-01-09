@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -26,7 +26,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
             $ruleContentDenormalizer,
             $eventDispatcher,
             $validator,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule'
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
         );
     }
 
@@ -37,7 +37,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
 
     public function it_is_a_rule_builder()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface');
     }
 
     public function it_builds_a_rule($eventDispatcher, $validator, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
@@ -51,7 +51,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::POST_BUILD, Argument::any())->shouldBeCalled();
         $validator->validate(Argument::any())->shouldBeCalled()->willReturn([]);
 
-        $this->build($definition)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface');
+        $this->build($definition)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface');
     }
 
     public function it_does_not_build_a_rule_with_bad_content(
@@ -92,7 +92,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $validator->validate(Argument::any())->willReturn($violations);
 
         $this
-            ->shouldThrow('PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException')
+            ->shouldThrow('Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException')
             ->during('build', [$definition])
         ;
     }

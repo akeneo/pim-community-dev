@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Model;
 
-use PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 
 /**
  * Set action used in product rules.

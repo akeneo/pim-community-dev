@@ -27,7 +27,7 @@ class ProductSetValueActionSpec extends ObjectBehavior
 
     public function it_is_an_action()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface');
     }
 
     public function it_is_a_product_set_value_action()

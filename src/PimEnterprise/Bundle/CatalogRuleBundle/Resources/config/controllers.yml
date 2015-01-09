@@ -7,6 +7,6 @@ services:
         class: %pimee_catalog_rule.controller.rule.class%
         arguments:
             - '@pimee_catalog_rule.manager.rule_relation'
-            - '@pimee_rule_engine.remover.rule_definition'
-            - '@pimee_rule_engine.repository.rule_definition'
+            - '@akeneo_rule_engine.remover.rule_definition'
+            - '@akeneo_rule_engine.repository.rule_definition'
             - '@pim_internal_api_serializer'

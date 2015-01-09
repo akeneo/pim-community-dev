@@ -11,9 +11,9 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -23,7 +23,7 @@ use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
-    const RULE_DEFINITION_CLASS = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition';
+    const RULE_DEFINITION_CLASS = 'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition';
 
     public function let(
         EventDispatcherInterface $eventDispatcher,
@@ -55,7 +55,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
     public function it_is_a_rule_applier()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
     public function it_applies_a_rule_which_does_not_update_products(

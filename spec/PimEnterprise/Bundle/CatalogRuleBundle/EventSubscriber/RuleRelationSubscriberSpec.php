@@ -13,9 +13,9 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\Rule;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Model\Rule;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

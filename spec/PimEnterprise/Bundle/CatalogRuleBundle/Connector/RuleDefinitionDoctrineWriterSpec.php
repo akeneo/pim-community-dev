@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Prophecy\Argument;
 
 class RuleDefinitionDoctrineWriterSpec extends ObjectBehavior

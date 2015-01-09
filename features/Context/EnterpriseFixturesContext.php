@@ -672,7 +672,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getRuleDefinitionRepository()
     {
-        return $this->getContainer()->get('pimee_rule_engine.repository.rule_definition');
+        return $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
     }
 
     /**
@@ -680,6 +680,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getRuleSaver()
     {
-        return $this->getContainer()->get('pimee_rule_engine.saver.rule_definition');
+        return $this->getContainer()->get('akeneo_rule_engine.saver.rule_definition');
     }
 }

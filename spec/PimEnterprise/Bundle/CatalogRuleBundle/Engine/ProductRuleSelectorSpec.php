@@ -8,8 +8,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -24,7 +24,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
             $productQueryFactory,
             $repo,
             $eventDispatcher,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSet'
+            'Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet'
         );
     }
 
@@ -35,7 +35,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
 
     public function it_should_be_a_selector()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface');
     }
 
     public function it_selects_subjects_of_a_rule(
@@ -59,7 +59,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
 
-        $this->select($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
+        $this->select($rule)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }
 
     public function it_selects_subject_of_a_rule_that_has_conditions(
@@ -83,6 +83,6 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
 
-        $this->select($rule)->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
+        $this->select($rule)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }
 }

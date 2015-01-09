@@ -6,9 +6,9 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -27,8 +27,8 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
             $repository,
             $denormalizer,
             $validator,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition',
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule'
+            'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition',
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
         );
 
         $repository->getReferenceProperties()->willReturn(['code']);
@@ -56,7 +56,7 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule',
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);
@@ -99,7 +99,7 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn($definition);
         $denormalizer->denormalize(
             $item,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule',
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
             null,
             ['definitionObject' => $definition]
         )->shouldBeCalled()->willReturn($rule);
@@ -123,7 +123,7 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule',
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);

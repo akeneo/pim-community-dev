@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

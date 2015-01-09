@@ -12,12 +12,12 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
-use PimEnterprise\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Runner\AbstractRunner;
+use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -109,7 +109,7 @@ class ProductRuleRunner implements DryRunnerInterface
      * @param RuleDefinitionInterface $definition
      * @param array                   $options
      *
-     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface
      */
     protected function loadRule(RuleDefinitionInterface $definition, array $options)
     {
