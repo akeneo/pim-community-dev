@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RuleDefinitionSaverSpec extends ObjectBehavior

@@ -58,8 +58,8 @@ class ContentDenormalizer implements DenormalizerInterface
      * {@inheritdoc}
      *
      * @return array with keys
-     *                  "conditions" which is an array of ConditionInterface
-     *                  "actions" which is an array of ConditionInterface
+     *               "conditions" which is an array of ConditionInterface
+     *               "actions" which is an array of ConditionInterface
      */
     public function denormalize($ruleContent, $class, $format = null, array $context = array())
     {
@@ -107,12 +107,6 @@ class ContentDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($ruleContent, $type, $format = null)
     {
-        /*
-        if ($this->ruleClass === $type && empty($ruleContent)) {
-            return true;
-        }
-        */
-
         return $this->ruleClass === $type &&
             isset($ruleContent['conditions']) &&
             is_array($ruleContent['conditions']) &&

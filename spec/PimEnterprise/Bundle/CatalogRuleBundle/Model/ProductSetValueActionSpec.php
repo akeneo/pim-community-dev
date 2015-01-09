@@ -7,7 +7,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 
 class ProductSetValueActionSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith(
             [
@@ -20,22 +20,22 @@ class ProductSetValueActionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction');
     }
 
-    public function it_is_an_action()
+    function it_is_an_action()
     {
         $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface');
     }
 
-    public function it_is_a_product_set_value_action()
+    function it_is_a_product_set_value_action()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface');
     }
 
-    public function it_constructs_a_product_action()
+    function it_constructs_a_product_action()
     {
         $this->getField()->shouldReturn('sku');
         $this->getValue()->shouldReturn('RATM-NIN-001');

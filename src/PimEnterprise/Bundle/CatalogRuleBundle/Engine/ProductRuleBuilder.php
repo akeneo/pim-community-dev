@@ -42,11 +42,10 @@ class ProductRuleBuilder implements BuilderInterface
     protected $ruleClass;
 
     /**
-     * @param DenormalizerInterface    $ruleContentDenormalizer,
+     * @param DenormalizerInterface    $ruleContentDenormalizer
      * @param EventDispatcherInterface $eventDispatcher
      * @param ValidatorInterface       $validator
-     * @param string                   $ruleClass       should implement
-     *                                                  \Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @param string                   $ruleClass               should implement
      */
     public function __construct(
         DenormalizerInterface $ruleContentDenormalizer,

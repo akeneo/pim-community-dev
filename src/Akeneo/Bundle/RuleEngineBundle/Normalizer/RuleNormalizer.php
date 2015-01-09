@@ -15,28 +15,33 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Rule definition normalizer for internal api
+ * Transforms a RuleDefinition object to a normalized Rule (ie: content is replace by actions + conditions)
  *
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class RuleDefinitionNormalizer implements NormalizerInterface
+class RuleNormalizer implements NormalizerInterface
 {
-    /** @var string[] */
-    protected $supportedFormats = ['array'];
-
     /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        return [
-                'id'       => $object->getId(),
+        $data = [
                 'code'     => $object->getCode(),
                 'type'     => $object->getType(),
                 'priority' => $object->getPriority(),
-                'content'  => $object->getContent(),
             ]
         ;
+
+        $content = $object->getContent();
+        if (isset($content['conditions'])) {
+            $data['conditions'] = $content['conditions'];
+        }
+        if (isset($content['actions'])) {
+            $data['actions'] = $content['actions'];
+        }
+
+        return $data;
     }
 
     /**
@@ -44,7 +49,6 @@ class RuleDefinitionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof RuleDefinitionInterface &&
-            in_array($format, $this->supportedFormats);
+        return $data instanceof RuleDefinitionInterface;
     }
 }

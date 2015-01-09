@@ -13,7 +13,7 @@ use Prophecy\Argument;
 
 class ProductRuleRunnerSpec extends ObjectBehavior
 {
-    public function let(BuilderInterface $builder, SelectorInterface $selector, ApplierInterface $applier)
+    function let(BuilderInterface $builder, SelectorInterface $selector, ApplierInterface $applier)
     {
         $this->beConstructedWith(
             $builder,
@@ -23,17 +23,17 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Runner\ProductRuleRunner');
     }
 
-    public function it_is_a_runner()
+    function it_is_a_runner()
     {
         $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface');
     }
 
-    public function it_supports_product_rule(RuleDefinitionInterface $definition1, RuleDefinitionInterface $definition2)
+    function it_supports_product_rule(RuleDefinitionInterface $definition1, RuleDefinitionInterface $definition2)
     {
         $definition1->getType()->willReturn('product');
         $definition2->getType()->willReturn('foo');
@@ -42,7 +42,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->supports($definition2)->shouldReturn(false);
     }
 
-    public function it_runs_a_rule(
+    function it_runs_a_rule(
         $builder,
         $selector,
         $applier,
@@ -57,7 +57,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->run($definition);
     }
 
-    public function it_dries_run_a_rule(
+    function it_dries_run_a_rule(
         $builder,
         $selector,
         $applier,
@@ -72,7 +72,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->dryRun($definition);
     }
 
-    public function it_runs_a_rule_on_a_subset_of_products(
+    function it_runs_a_rule_on_a_subset_of_products(
         $builder,
         $selector,
         $applier,
@@ -88,7 +88,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->run($definition, ['selected_products' => [1, 2, 3]]);
     }
 
-    public function it_dries_run_a_rule_on_a_subset_of_products(
+    function it_dries_run_a_rule_on_a_subset_of_products(
         $builder,
         $selector,
         $applier,

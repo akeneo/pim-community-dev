@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Denormalize product copy value rule actions

@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Denormalize product rule conditions.

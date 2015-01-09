@@ -1,9 +1,11 @@
 parameters:
     # import rules
+    #TODO: rename array_to_object
     pimee_catalog_rule.processor.rule_definition.array_to_object.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionArrayToObjectProcessor
     pimee_catalog_rule.writer.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineWriter
     # export rules
     pimee_catalog_rule.reader.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineReader
+    #TODO: rename object_to_array
     pimee_catalog_rule.processor.rule_definition.object_to_array.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionObjectToArrayProcessor
     pimee_catalog_rule.writer.rule_definition.yaml_file.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlFileWriter
 
@@ -12,9 +14,9 @@ services:
     pimee_catalog_rule.processor.rule_definition.array_to_object:
         class: %pimee_catalog_rule.processor.rule_definition.array_to_object.class%
         arguments:
-            - @akeneo_rule_engine.repository.rule_definition
-            - @pimee_catalog_rule.denormalizer.product_rule
-            - @validator
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@pimee_catalog_rule.denormalizer.product_rule'
+            - '@validator'
             - %akeneo_rule_engine.model.rule_definition.class%
             - %akeneo_rule_engine.model.rule.class%
 
@@ -27,12 +29,12 @@ services:
     pimee_catalog_rule.reader.rule_definition.doctrine:
         class: %pimee_catalog_rule.reader.rule_definition.doctrine.class%
         arguments:
-            - @akeneo_rule_engine.repository.rule_definition
+            - '@akeneo_rule_engine.repository.rule_definition'
 
     pimee_catalog_rule.processor.rule_definition.object_to_array:
         class: %pimee_catalog_rule.processor.rule_definition.object_to_array.class%
         arguments:
-            - @pimee_catalog_rule.normalizer.product_rule.content
+            - '@akeneo_rule_engine.normalizer.rule'
 
     pimee_catalog_rule.writer.rule_definition.yaml_file:
         class: %pimee_catalog_rule.writer.rule_definition.yaml_file.class%

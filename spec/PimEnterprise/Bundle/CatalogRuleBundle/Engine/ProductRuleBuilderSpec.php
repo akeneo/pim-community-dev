@@ -3,21 +3,18 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class ProductRuleBuilderSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         DenormalizerInterface $ruleContentDenormalizer,
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator
@@ -30,17 +27,17 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder');
     }
 
-    public function it_is_a_rule_builder()
+    function it_is_a_rule_builder()
     {
         $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface');
     }
 
-    public function it_builds_a_rule($eventDispatcher, $validator, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
+    function it_builds_a_rule($eventDispatcher, $validator, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
     {
         $content = $this->buildRuleContent();
 
@@ -54,7 +51,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $this->build($definition)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface');
     }
 
-    public function it_does_not_build_a_rule_with_bad_content(
+    function it_does_not_build_a_rule_with_bad_content(
         $eventDispatcher,
         $ruleContentDenormalizer,
         RuleDefinitionInterface $definition
@@ -71,7 +68,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         ;
     }
 
-    public function it_does_not_build_a_rule_with_a_content_that_is_not_valid(
+    function it_does_not_build_a_rule_with_a_content_that_is_not_valid(
         $eventDispatcher,
         $validator,
         $ruleContentDenormalizer,

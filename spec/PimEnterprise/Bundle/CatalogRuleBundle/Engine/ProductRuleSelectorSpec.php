@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductRuleSelectorSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ProductQueryFactoryInterface $productQueryFactory,
         ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher
@@ -28,17 +28,17 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector');
     }
 
-    public function it_should_be_a_selector()
+    function it_should_be_a_selector()
     {
         $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface');
     }
 
-    public function it_selects_subjects_of_a_rule(
+    function it_selects_subjects_of_a_rule(
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
@@ -62,7 +62,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $this->select($rule)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }
 
-    public function it_selects_subject_of_a_rule_that_has_conditions(
+    function it_selects_subject_of_a_rule_that_has_conditions(
         $eventDispatcher,
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,

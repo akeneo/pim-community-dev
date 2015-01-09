@@ -4,11 +4,10 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use Prophecy\Argument;
 
 class CopyValueActionDenormalizerSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith('\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction');
     }

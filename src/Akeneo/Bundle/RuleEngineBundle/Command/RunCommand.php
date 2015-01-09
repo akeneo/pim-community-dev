@@ -118,7 +118,6 @@ class RunCommand extends ContainerAwareCommand
         }
     }
 
-
     /**
      * @return RuleDefinitionRepositoryInterface
      */

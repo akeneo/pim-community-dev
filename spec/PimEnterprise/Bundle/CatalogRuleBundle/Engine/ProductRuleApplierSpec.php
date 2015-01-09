@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -25,7 +24,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 {
     const RULE_DEFINITION_CLASS = 'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition';
 
-    public function let(
+    function let(
         EventDispatcherInterface $eventDispatcher,
         ProductUpdaterInterface $productUpdater,
         VersionManager $versionManager,
@@ -48,17 +47,17 @@ class ProductRuleApplierSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier');
     }
 
-    public function it_is_a_rule_applier()
+    function it_is_a_rule_applier()
     {
         $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
-    public function it_applies_a_rule_which_does_not_update_products(
+    function it_applies_a_rule_which_does_not_update_products(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
@@ -90,7 +89,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
     }
 
-    public function it_applies_a_rule_which_has_a_set_action(
+    function it_applies_a_rule_which_has_a_set_action(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
@@ -136,7 +135,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $cacheClearer->clear()->shouldBeCalled();
     }
 
-    public function it_applies_a_rule_which_has_a_copy_action(
+    function it_applies_a_rule_which_has_a_copy_action(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
@@ -186,7 +185,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $cacheClearer->clear()->shouldBeCalled();
     }
 
-    public function it_applies_a_rule_with_invalid_product(
+    function it_applies_a_rule_with_invalid_product(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
@@ -236,7 +235,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $cacheClearer->clear()->shouldBeCalled();
     }
 
-    public function it_applies_a_rule_which_has_an_unknown_action(
+    function it_applies_a_rule_which_has_an_unknown_action(
         $eventDispatcher,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet

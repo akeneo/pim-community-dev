@@ -11,11 +11,12 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Processes and transform rules definition
+ * Processes and transforms rules definition to array of rules
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -38,12 +39,14 @@ class RuleDefinitionObjectToArrayProcessor extends DummyProcessor
     public function process($item)
     {
         $rules = [];
+        /** @var RuleDefinitionInterface $ruleDefinition */
         foreach ($item as $ruleDefinition) {
             $normalizedRule = $this->ruleNormalizer->normalize($ruleDefinition);
 
-            $rules[$ruleDefinition->getCode()]['priority']   = $ruleDefinition->getPriority();
-            $rules[$ruleDefinition->getCode()]['conditions'] = $normalizedRule['conditions'];
-            $rules[$ruleDefinition->getCode()]['actions']    = $normalizedRule['actions'];
+            unset($normalizedRule['code']);
+            unset($normalizedRule['type']);
+
+            $rules[$ruleDefinition->getCode()] = $normalizedRule;
         }
 
         return ['rules' => $rules];

@@ -12,7 +12,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class RuleDenormalizerSpec extends ObjectBehavior
 {
-    public function let(DenormalizerInterface $contentDernomalizer) {
+    function let(DenormalizerInterface $contentDernomalizer)
+    {
         $this->beConstructedWith(
             $contentDernomalizer,
             'Akeneo\Bundle\RuleEngineBundle\Model\Rule',

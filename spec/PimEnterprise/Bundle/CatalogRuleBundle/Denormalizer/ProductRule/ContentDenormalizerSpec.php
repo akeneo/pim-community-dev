@@ -3,13 +3,11 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ContentDenormalizerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         DenormalizerInterface $conditionNormalizer,
         DenormalizerInterface $setValueActionNormalizer,
         DenormalizerInterface $copyValueActionNormalizer

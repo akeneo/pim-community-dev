@@ -10,8 +10,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;

@@ -5,14 +5,11 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -132,12 +129,13 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('process', [$item]);
     }
 
-    public function getMatchers()
+    function getMatchers()
     {
         return [
-            'beValidRuleDefinition' => function($subject, $expected) {
+            'beValidRuleDefinition' => function ($subject, $expected) {
                 /** @var RuleDefinitionInterface $expected */
                 /** @var RuleDefinitionInterface $subject */
+
                 return $subject->getCode() === $expected->getCode() &&
                     $subject->getPriority() === $expected->getPriority() &&
                     $subject->getType() === $expected->getType() &&

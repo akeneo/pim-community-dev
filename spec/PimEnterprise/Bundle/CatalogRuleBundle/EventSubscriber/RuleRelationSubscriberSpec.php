@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
 use Akeneo\Component\Persistence\BulkRemoverInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
-use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

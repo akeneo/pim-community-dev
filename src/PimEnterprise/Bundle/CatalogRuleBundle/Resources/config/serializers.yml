@@ -14,7 +14,7 @@ services:
     pimee_catalog_rule.denormalizer.product_rule:
         class: %pimee_catalog_rule.denormalizer.product_rule.class%
         arguments:
-            - @pimee_catalog_rule.denormalizer.product_rule.content
+            - '@pimee_catalog_rule.denormalizer.product_rule.content'
             - %akeneo_rule_engine.model.rule.class%
             - %akeneo_rule_engine.model.rule_definition.class%
             - 'product'
@@ -22,17 +22,17 @@ services:
     pimee_catalog_rule.denormalizer.product_rule.content:
         class: %pimee_catalog_rule.denormalizer.product_rule.content.class%
         arguments:
-            - @pimee_catalog_rule.denormalizer.product_rule.condition
-            - @pimee_catalog_rule.denormalizer.product_rule.set_value_action
-            - @pimee_catalog_rule.denormalizer.product_rule.copy_value_action
+            - '@pimee_catalog_rule.denormalizer.product_rule.condition'
+            - '@pimee_catalog_rule.denormalizer.product_rule.set_value_action'
+            - '@pimee_catalog_rule.denormalizer.product_rule.copy_value_action'
             - %akeneo_rule_engine.model.rule.class%
 
     pimee_catalog_rule.normalizer.product_rule.content:
         class: %pimee_catalog_rule.normalizer.product_rule.content.class%
         arguments:
-            - @pimee_catalog_rule.normalizer.product_rule_condition
-            - @pimee_catalog_rule.normalizer.product_rule.set_value_action
-            - @pimee_catalog_rule.normalizer.product_rule.copy_value_action
+            - '@pimee_catalog_rule.normalizer.product_rule_condition'
+            - '@pimee_catalog_rule.normalizer.product_rule.set_value_action'
+            - '@pimee_catalog_rule.normalizer.product_rule.copy_value_action'
 
     pimee_catalog_rule.normalizer.product_rule_condition:
         class: %pimee_catalog_rule.normalizer.product_rule_condition.class%

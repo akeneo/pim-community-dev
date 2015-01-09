@@ -12,7 +12,8 @@ use Psr\Log\LoggerInterface;
 
 class LogExecutionSubscriberSpec extends ObjectBehavior
 {
-    public function let(LoggerInterface $logger) {
+    function let(LoggerInterface $logger)
+    {
         $this->beConstructedWith($logger);
     }
 

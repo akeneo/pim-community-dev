@@ -121,7 +121,7 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
-     * @param RuleSubjectSetInterface                                        $subjectSet
+     * @param RuleSubjectSetInterface                                 $subjectSet
      * @param \Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
      */
     protected function updateProducts(RuleSubjectSetInterface $subjectSet, $actions)
@@ -165,7 +165,7 @@ class ProductRuleApplier implements ApplierInterface
     protected function saveProducts(RuleSubjectSetInterface $subjectSet, $savingContext)
     {
         $versioningState = $this->versionManager->isRealTimeVersioning();
-        
+
         $this->versionManager->setContext($savingContext);
         $this->versionManager->setRealTimeVersioning(false);
         $this->productSaver->saveAll($subjectSet->getSubjects(), ['recalculate' => false, 'schedule' => true]);

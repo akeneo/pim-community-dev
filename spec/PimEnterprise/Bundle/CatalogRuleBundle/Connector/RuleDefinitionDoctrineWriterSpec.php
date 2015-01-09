@@ -6,11 +6,10 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Prophecy\Argument;
 
 class RuleDefinitionDoctrineWriterSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         BulkSaverInterface $saver
     ) {
         $this->beConstructedWith($saver);
