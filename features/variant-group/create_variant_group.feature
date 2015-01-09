@@ -40,4 +40,4 @@ Feature: Variant group creation
     Given I fill in the following information in the popin:
       | Code | MUG |
     And I press the "Save" button
-    Then I should see "Variant group \"MUG\" must define axis"
+    Then I should see "Variant group \"MUG\" must be defined with axis"

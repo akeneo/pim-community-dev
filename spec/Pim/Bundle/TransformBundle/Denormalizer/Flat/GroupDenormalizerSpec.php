@@ -108,8 +108,6 @@ class GroupDenormalizerSpec extends ObjectBehavior
 
     function it_denormalizes_an_existing_group_with_properties(
         $groupRepository,
-        $groupTypeRepository,
-        $attributeRepository,
         Group $group,
         GroupType $type,
         AttributeInterface $size,
@@ -119,7 +117,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
         $groupRepository->findByReference('tshirt')->willReturn(null);
 
         $group->getId()->willReturn(42);
-        $group->setCode('tshirt')->shouldNotBeCalled();
+        $group->setCode('tshirt')->shouldBeCalled();
         $group->setType(Argument::any())->shouldNotBeCalled();
         $group->setAttributes(Argument::any())->shouldNotBeCalled();
 
@@ -130,8 +128,6 @@ class GroupDenormalizerSpec extends ObjectBehavior
         $this->denormalize(
             [
                 'code' => 'tshirt',
-                'type' => 'VARIANT',
-                'axis' => 'color,size',
                 'label-en_US' => 'My T-shirt'
             ],
             self::ENTITY_CLASS,

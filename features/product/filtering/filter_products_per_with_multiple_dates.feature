@@ -28,7 +28,7 @@ Feature: Filter products
       | POST-2 | furniture | 2014-08-01 |            |
       | POST-3 | furniture | 2014-09-01 |            |
     And the following product groups:
-      | code   | label  | attributes       | type    | products                           |
+      | code   | label  | axis             | type    | products                           |
       | MUG    | Mug    | delivery, supply | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5  |
       | POSTIT | Postit | supply           | X_SELL  | POST-1, POST-2, POST-3             |
       | EMPTY  | Empty  |                  | X_SELL  |                                    |

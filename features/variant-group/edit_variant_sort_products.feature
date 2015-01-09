@@ -21,7 +21,7 @@ Feature: Sort available products for a variant group
       | MUG_1  | mug       | Red   | M    |
       | POSTIT | furniture | Blue  | XL   |
     And the following product groups:
-      | code   | label  | attributes  | products | type    |
+      | code   | label  | axis        | products | type    |
       | POSTIT | Postit | color, size | POSTIT   | VARIANT |
     And I am logged in as "Julia"
 

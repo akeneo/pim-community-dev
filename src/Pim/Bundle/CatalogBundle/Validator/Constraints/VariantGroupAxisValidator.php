@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validator for variant group axis consraint
+ * Validator for variant group axis constraint
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -25,13 +25,21 @@ class VariantGroupAxisValidator extends ConstraintValidator
     {
         /** @var GroupInterface */
         if ($variantGroup instanceof GroupInterface) {
-            $isNewVariantGroup = $variantGroup->getType()->isVariant() && $variantGroup->getId() === null;
-            $hasNoAxis = count($variantGroup->getAxisAttributes()) === 0;
-            if ($isNewVariantGroup && $hasNoAxis) {
+            $isNew = $variantGroup->getId() === null;
+            $isVariantGroup = $variantGroup->getType()->isVariant();
+            $hasAxis = count($variantGroup->getAxisAttributes()) > 0;
+            if ($isNew && $isVariantGroup && !$hasAxis) {
                 $this->context->addViolation(
-                    $constraint->message,
+                    $constraint->expectedAxisMessage,
                     array(
                         '%variant group%' => $variantGroup->getCode()
+                    )
+                );
+            } elseif (!$isVariantGroup && $hasAxis) {
+                $this->context->addViolation(
+                    $constraint->unexpectedAxisMessage,
+                    array(
+                        '%group%' => $variantGroup->getCode()
                     )
                 );
             }

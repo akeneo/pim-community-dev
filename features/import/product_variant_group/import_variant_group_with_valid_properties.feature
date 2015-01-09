@@ -7,7 +7,7 @@ Feature: Execute an import
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code   | label  | attributes  | type    |
+      | code   | label  | axis        | type    |
       | SANDAL | Sandal | color, size | VARIANT |
       | NOT_VG | Not VG | color, size | RELATED |
     And I am logged in as "Julia"
@@ -27,7 +27,7 @@ Feature: Execute an import
     Then I should see "Read 2"
     And I should see "Created 2"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | attributes | type    |
+      | code    | label-en_US | label-fr_FR | axis       | type    |
       | SANDAL  | Sandal      |             | color,size | VARIANT |
       | NOT_VG  | Not VG      |             |            | RELATED |
       | NEW_ONE | My new VG 1 |             | color,size | VARIANT |
@@ -37,7 +37,7 @@ Feature: Execute an import
     Given the following CSV file to import:
     """
     code;axis;label-en_US
-    SANDAL;size,color;"My new label"
+    SANDAL;color,size;"My new label"
     """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -47,6 +47,6 @@ Feature: Execute an import
     Then I should see "Read 1"
     And I should see "Updated 1"
     And there should be the following groups:
-      | code    | label-en_US  | label-fr_FR | attributes | type    |
+      | code    | label-en_US  | label-fr_FR | axis       | type    |
       | SANDAL  | My new label |             | color,size | VARIANT |
       | NOT_VG  | Not VG       |             |            | RELATED |

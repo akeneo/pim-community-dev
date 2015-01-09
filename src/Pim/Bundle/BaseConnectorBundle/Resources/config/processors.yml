@@ -6,7 +6,8 @@ parameters:
     pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
     pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
-    pim_base_connector.processor.flat_array_to_object.variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat\VariantGroupProcessor
+    pim_base_connector.processor.array_to_object.flat.group.class:         Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat\GroupProcessor
+    pim_base_connector.processor.array_to_object.flat.variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat\VariantGroupProcessor
 
     pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
@@ -88,11 +89,6 @@ services:
         arguments:
             - %pim_catalog.entity.association_type.class%
 
-    pim_base_connector.processor.group:
-        parent: pim_base_connector.processor.transformer
-        arguments:
-            - %pim_catalog.entity.group.class%
-
     pim_base_connector.processor.attribute_group:
         parent: pim_base_connector.processor.transformer
         arguments:
@@ -124,8 +120,22 @@ services:
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
 
-    pim_base_connector.processor.flat_array_to_object.variant_group:
-        class: %pim_base_connector.processor.flat_array_to_object.variant_group.class%
+    # deprecated, will be dropped in 1.4, use pim_base_connector.processor.array_to_object.flat.group or variant_group
+    pim_base_connector.processor.group:
+        parent: pim_base_connector.processor.transformer
+        arguments:
+            - %pim_catalog.entity.group.class%
+
+    pim_base_connector.processor.array_to_object.flat.group:
+        class: %pim_base_connector.processor.array_to_object.flat.group.class%
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_serializer'
+            - '@pim_validator'
+            - %pim_catalog.entity.group.class%
+
+    pim_base_connector.processor.array_to_object.flat.variant_group:
+        class: %pim_base_connector.processor.array_to_object.flat.variant_group.class%
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'

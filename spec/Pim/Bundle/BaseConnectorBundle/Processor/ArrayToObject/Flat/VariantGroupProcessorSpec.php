@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -72,8 +72,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new InvalidItemException(
-                    'Variant group "bar" does not exist',
-                    ['code' => 'bar']
+                    'Cannot process group "bar", only variant groups are accepted',
+                    ['code' => 'bar', 'type' => 'VARIANT']
                 )
             )
             ->duringProcess(['code' => 'bar']);
@@ -199,7 +199,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $groupRepository,
         $denormalizer,
         $validator,
-        $valueNormalizer,
         $stepExecution,
         Group $variantGroup,
         GroupType $type,
@@ -235,7 +234,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
 
-        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'baz', 'Nice product');
+        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'name', 'Nice product');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($value)->shouldBeCalled()->willReturn($violations);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
@@ -243,12 +242,13 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new InvalidItemException(
-                    'There is a small problem: Nice product',
+                    "name: There is a small problem: Nice product\n",
                     [
                         'code' => 'tshirt',
                         'axis' => 'color',
                         'label-en_US' => 'Tshirt',
-                        'name' => 'Nice product'
+                        'name' => 'Nice product',
+                        'type' => 'VARIANT'
                     ]
                 )
             )
@@ -263,10 +263,3 @@ class VariantGroupProcessorSpec extends ObjectBehavior
     }
 }
 
-class GroupRepository extends BaseGroupRepository
-{
-    public function findOneByCode($code)
-    {
-        return $this->findOneBy(['code' => $code]);
-    }
-}
