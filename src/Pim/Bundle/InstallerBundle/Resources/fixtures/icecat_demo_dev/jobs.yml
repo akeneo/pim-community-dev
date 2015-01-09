@@ -80,6 +80,17 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_variant_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_variant_group_import
+        label:     Demo variant group import
+        type:      import
+        configuration:
+            filePath:      /tmp/variant-group.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     csv_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
