@@ -18,6 +18,21 @@ interface ProductTemplateInterface
     public function getId();
 
     /**
+     * This property is not mapped to a column in the database and exists just to
+     * be able to bind the normalized values to the form
+     *
+     * @return ProductValueInterface[]
+     */
+    public function getValues();
+
+    /**
+     * @param ProductValueInterface[] $values
+     *
+     * @return ProductTemplateInterface
+     */
+    public function setValues($values);
+
+    /**
      * @return array
      */
     public function getValuesData();

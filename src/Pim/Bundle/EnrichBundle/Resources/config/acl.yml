@@ -228,6 +228,10 @@ pim_enrich_group_history:
     type: action
     label: pim_enrich.acl.group.history
     group_name: pim_enrich.acl_group.group
+pim_enrich_group_edit_attributes:
+    type: action
+    label: pim_enrich.acl.group.edit_attributes
+    group_name: pim_enrich.acl_group.group
 
 # Group type
 pim_enrich_group_type_index:

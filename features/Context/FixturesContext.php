@@ -558,6 +558,8 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingVariantGroupValues(TableNode $table)
     {
+        $groups = [];
+
         foreach ($table->getHash() as $row) {
             $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
 
@@ -568,12 +570,11 @@ class FixturesContext extends RawMinkContext
             if ($row['scope']) {
                 $attributeCode .= '-' . $row['scope'];
             }
-            $data = [
-                'code'         => $row['group'],
-                $attributeCode => $this->replacePlaceholders($row['value'])
-            ];
+            $groups[$row['group']][$attributeCode] = $this->replacePlaceholders($row['value']);
+        }
 
-            $this->createVariantGroup($data);
+        foreach ($groups as $code => $data) {
+            $this->createVariantGroup(['code' => $code] + $data);
         }
 
         $this->flush();

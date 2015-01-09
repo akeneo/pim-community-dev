@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.form.type.product.class:                        Pim\Bundle\EnrichBundle\Form\Type\ProductType
+    pim_enrich.form.type.product_template.class:               Pim\Bundle\EnrichBundle\Form\Type\ProductTemplateType
     pim_enrich.form.type.product_edit.class:                   Pim\Bundle\EnrichBundle\Form\Type\ProductEditType
     pim_enrich.form.type.product_create.class:                 Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType
     pim_enrich.form.type.product.view.class:                   Pim\Bundle\EnrichBundle\Form\View\ProductFormView
@@ -55,6 +56,19 @@ services:
         class: %pim_enrich.form.type.product.class%
         tags:
             - { name: form.type, alias: pim_product }
+
+    pim_enrich.form.type.product_template:
+        class: %pim_enrich.form.type.product_template.class%
+        scope: request
+        arguments:
+            -  %pim_catalog.entity.product_template.class%
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_enrich.form.subscriber.transform_product_template_values'
+            - '@pim_user.context.user'
+            - '@pim_catalog.manager.channel'
+            - '@request'
+        tags:
+            - { name: form.type, alias: pim_enrich_product_template }
 
     pim_enrich.form.type.product_edit:
         class: %pim_enrich.form.type.product_edit.class%
@@ -185,6 +199,8 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - %pim_catalog.entity.attribute.class%
+        calls:
+            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
         tags:
             - { name: form.type, alias: pim_enrich_group }
 
