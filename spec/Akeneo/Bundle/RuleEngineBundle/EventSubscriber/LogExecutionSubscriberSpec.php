@@ -50,7 +50,7 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
         $event->getDefinition()->willReturn($definition);
         $event->getSubjectSet()->willReturn($subjectSet);
         $logger->info(Argument::any())->shouldBeCalled();
-        $subjectSet->getSubjects()->willReturn([$subject]);
+        $subjectSet->getSubjectsCursor()->willReturn([$subject]);
         $subjectSet->getSkippedSubjects()->willReturn([]);
 
         $this->postApply($event);
@@ -66,7 +66,7 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
         $event->getDefinition()->willReturn($definition);
         $event->getSubjectSet()->willReturn($subjectSet);
         $logger->info(Argument::any())->shouldBeCalled();
-        $subjectSet->getSubjects()->willReturn([$subject]);
+        $subjectSet->getSubjectsCursor()->willReturn([$subject]);
         $subjectSet->getSkippedSubjects()->willReturn([['subject' => $subject, 'reasons' => ['My name should be shorter']]]);
 
         $definition->getCode()->willReturn('rule_code');

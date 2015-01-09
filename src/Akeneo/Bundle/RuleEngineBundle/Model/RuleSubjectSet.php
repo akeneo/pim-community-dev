@@ -11,6 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+
 /**
  * Subjects set that will be impacted by a rule.
  *
@@ -25,7 +27,7 @@ class RuleSubjectSet implements RuleSubjectSetInterface
     protected $type;
 
     /** @var array */
-    protected $subjects = [];
+    protected $subjectsCursor;
 
     /** @var array */
     protected $skippedSubjects = [];
@@ -69,17 +71,17 @@ class RuleSubjectSet implements RuleSubjectSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getSubjects()
+    public function getSubjectsCursor()
     {
-        return $this->subjects;
+        return $this->subjectsCursor;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setSubjects(array $subjects)
+    public function setSubjectsCursor(CursorInterface $subjectsCursor)
     {
-        $this->subjects = $subjects;
+        $this->subjectsCursor = $subjectsCursor;
 
         return $this;
     }
