@@ -70,6 +70,7 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
         $validProducts = $products;
         $productViolations = [];
         // TODO extract this part in something more generic,  we have a quite close case in EE
+        // TODO add a service to format violation constraint in the same way
         foreach ($products as $productIndex => $product) {
             $violations = $this->productValidator->validate($product);
             $productIdentifier = (string) $product->getIdentifier();

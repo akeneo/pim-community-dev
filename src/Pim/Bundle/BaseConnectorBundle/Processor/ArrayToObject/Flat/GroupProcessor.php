@@ -6,6 +6,8 @@ use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 
 /**
+ * TODO : not sure about Flat folder cause we could "just" change the normalizer to use flat or structured
+ *
  * Group import processor, allows to,
  *  - create / update groups (except variant group)
  *  - return the valid groups, throw exceptions to skip invalid ones
