@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace spec\PimEnterprise\Bundle\RuleEngineBundle\Denormalizer;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
@@ -10,19 +10,20 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class ProductRuleDenormalizerSpec extends ObjectBehavior
+class RuleDenormalizerSpec extends ObjectBehavior
 {
     public function let(DenormalizerInterface $contentDernomalizer) {
         $this->beConstructedWith(
             $contentDernomalizer,
             'PimEnterprise\Bundle\RuleEngineBundle\Model\Rule',
-            'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition'
+            'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition',
+            'foo'
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleDenormalizer');
+        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer');
     }
 
     function it_denormalizes_a_rule($contentDernomalizer)
@@ -43,7 +44,7 @@ class ProductRuleDenormalizerSpec extends ObjectBehavior
     ) {
         $rule->getContent()->willReturn([]);
         $rule->setCode('discharge_fr_description')->shouldBeCalled();
-        $rule->setType('product')->shouldBeCalled();
+        $rule->setType('foo')->shouldBeCalled();
         $rule->setPriority(10)->shouldBeCalled();
         $rule->addCondition($condition)->shouldBeCalled();
         $rule->addAction($setValueAction)->shouldBeCalled();

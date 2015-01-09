@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -10,7 +10,7 @@ use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductRuleContentNormalizerSpec extends ObjectBehavior
+class ContentNormalizerSpec extends ObjectBehavior
 {
     public function let(
         NormalizerInterface $conditionNormalizer,
@@ -26,7 +26,7 @@ class ProductRuleContentNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentNormalizer');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule\ContentNormalizer');
     }
 
     function it_implements()

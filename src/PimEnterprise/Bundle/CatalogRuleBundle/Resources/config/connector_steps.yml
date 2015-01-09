@@ -13,7 +13,7 @@ services:
         class: %pimee_catalog_rule.processor.rule_definition.array_to_object.class%
         arguments:
             - @pimee_rule_engine.repository.rule_definition
-            - @pimee_catalog_rule.denormalizer.rule
+            - @pimee_rule_engine.denormalizer.rule
             - @validator
             - %pimee_rule_engine.model.rule_definition.class%
             - %pimee_rule_engine.model.rule.class%

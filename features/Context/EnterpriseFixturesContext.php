@@ -505,7 +505,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $condition = [
                 'field' => $data['field'],
                 'operator' => $data['operator'],
-                // TODO: replace this dirty fix to use the same class than ProductRuleConditionNormalizer
+                // TODO: replace this dirty fix to use the same class than ConditionNormalizer
                 'value' => $data['value'],
             ];
             if ($data['locale']) {
@@ -550,7 +550,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $code]);
             $attributeType = $attribute->getAttributeType();
 
-            // TODO: replace this dirty fix to use the same class than ProductSetValueActionNormalizer
+            // TODO: replace this dirty fix to use the same class than SetValueActionNormalizer
             switch ($attributeType) {
                 case 'pim_catalog_text':
                 case 'pim_catalog_textarea':

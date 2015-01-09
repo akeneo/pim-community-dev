@@ -1,0 +1,10 @@
+parameters:
+    pimee_rule_engine.denormalizer.rule.class: PimEnterprise\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
+
+services:
+    pimee_rule_engine.denormalizer.rule:
+        class: %pimee_rule_engine.denormalizer.rule.class%
+        arguments:
+            - @pimee_rule_engine.denormalizer.rule_content
+            - %pimee_rule_engine.model.rule.class%
+            - %pimee_rule_engine.model.rule_definition.class%

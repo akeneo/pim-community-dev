@@ -9,47 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize and denormalize product rule conditions.
+ * Normalize product rule conditions.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleConditionNormalizer implements NormalizerInterface, DenormalizerInterface
+class ConditionNormalizer implements NormalizerInterface
 {
-    /** @var string */
-    protected $conditionClass;
-
-    /**
-     * @param string $conditionClass should implement
-     *                               \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
-     */
-    public function __construct($conditionClass)
-    {
-        $this->conditionClass = $conditionClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function denormalize($data, $class, $format = null, array $context = [])
-    {
-        return new $this->conditionClass($data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsDenormalization($data, $type, $format = null)
-    {
-        return $type === $this->conditionClass;
-    }
-
     /**
      * {@inheritdoc}
      */

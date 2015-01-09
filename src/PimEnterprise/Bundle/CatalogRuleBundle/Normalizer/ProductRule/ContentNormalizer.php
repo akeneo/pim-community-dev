@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
@@ -19,11 +19,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * Normalize product rules.
  *
- * TODO: should be renamed ruleContentNormalizer
- *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ProductRuleContentNormalizer implements NormalizerInterface
+class ContentNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     protected $conditionNormalizer;

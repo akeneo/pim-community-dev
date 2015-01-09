@@ -9,21 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace PimEnterprise\Bundle\RuleEngineBundle\Denormalizer;
 
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
- * Denormalize product rules.
- *
- * TODO: should be renamed rule denormalizer
- * TODO: should be moved in RuleEngine
+ * Denormalize rules.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleDenormalizer implements DenormalizerInterface
+class RuleDenormalizer implements DenormalizerInterface
 {
     /** @var DenormalizerInterface */
     protected $contentDernomalizer;
@@ -34,19 +31,25 @@ class ProductRuleDenormalizer implements DenormalizerInterface
     /** @var string */
     protected $definitionClass;
 
+    /** @var string */
+    protected $type;
+
     /**
      * @param DenormalizerInterface $contentDernomalizer
      * @param string                $ruleClass
      * @param string                $definitionClass
+     * @param string                $type
      */
     public function __construct(
         DenormalizerInterface $contentDernomalizer,
         $ruleClass,
-        $definitionClass
+        $definitionClass,
+        $type
     ) {
         $this->contentDernomalizer = $contentDernomalizer;
         $this->ruleClass = $ruleClass;
         $this->definitionClass = $definitionClass;
+        $this->type = $type;
     }
 
     /**
@@ -61,7 +64,7 @@ class ProductRuleDenormalizer implements DenormalizerInterface
         /** @var RuleInterface $rule */
         $rule = $this->getObject($context);
         $rule->setCode($data['code']);
-        $rule->setType('product');
+        $rule->setType($this->type);
 
         if (isset($data['priority'])) {
             $rule->setPriority((int) $data['priority']);

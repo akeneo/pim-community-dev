@@ -1,19 +1,18 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductCopyValueActionNormalizer;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleConditionNormalizer;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionNormalizer;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductRuleContentDenormalizerSpec extends ObjectBehavior
+class ContentDenormalizerSpec extends ObjectBehavior
 {
     public function let(
-        ProductRuleConditionNormalizer $conditionNormalizer,
-        ProductSetValueActionNormalizer $setValueActionNormalizer,
-        ProductCopyValueActionNormalizer $copyValueActionNormalizer
+        DenormalizerInterface $conditionNormalizer,
+        DenormalizerInterface $setValueActionNormalizer,
+        DenormalizerInterface $copyValueActionNormalizer
     ) {
         $this->beConstructedWith(
             $conditionNormalizer,
@@ -25,7 +24,7 @@ class ProductRuleContentDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentDenormalizer');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer');
     }
 
     function it_is_a_denormalizer()

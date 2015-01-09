@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -22,30 +20,30 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleContentDenormalizer implements DenormalizerInterface
+class ContentDenormalizer implements DenormalizerInterface
 {
-    /** @var ProductRuleConditionNormalizer */
+    /** @var DenormalizerInterface */
     protected $conditionNormalizer;
 
-    /** @var ProductSetValueActionNormalizer */
+    /** @var DenormalizerInterface */
     protected $setValueNormalizer;
 
-    /** @var ProductCopyValueActionNormalizer */
+    /** @var DenormalizerInterface */
     protected $copyValueNormalizer;
 
     /** @var string */
     protected $ruleClass;
 
     /**
-     * @param ProductRuleConditionNormalizer   $conditionNormalizer
-     * @param ProductSetValueActionNormalizer  $setValueNormalizer
-     * @param ProductCopyValueActionNormalizer $copyValueNormalizer
-     * @param string                           $ruleClass
+     * @param DenormalizerInterface $conditionNormalizer
+     * @param DenormalizerInterface $setValueNormalizer
+     * @param DenormalizerInterface $copyValueNormalizer
+     * @param string                $ruleClass
      */
     public function __construct(
-        ProductRuleConditionNormalizer $conditionNormalizer,
-        ProductSetValueActionNormalizer $setValueNormalizer,
-        ProductCopyValueActionNormalizer $copyValueNormalizer,
+        DenormalizerInterface $conditionNormalizer,
+        DenormalizerInterface $setValueNormalizer,
+        DenormalizerInterface $copyValueNormalizer,
         $ruleClass
     ) {
         $this->conditionNormalizer = $conditionNormalizer;

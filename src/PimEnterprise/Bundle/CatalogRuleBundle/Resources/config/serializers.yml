@@ -1,27 +1,22 @@
-#TODO: split into normalizer/denormalizer
 parameters:
-    pimee_catalog_rule.denormalizer.rule_content.class:            PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentDenormalizer
-    pimee_catalog_rule.denormalizer.rule.class:                    PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleDenormalizer
-    pimee_catalog_rule.normalizer.rule_content.class:              PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentNormalizer
-    pimee_catalog_rule.normalizer.product_set_value_action.class:  PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductSetValueActionNormalizer
-    pimee_catalog_rule.normalizer.product_copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductCopyValueActionNormalizer
-    pimee_catalog_rule.normalizer.product_rule_condition.class:    PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleConditionNormalizer
+    pimee_catalog_rule.denormalizer.rule_content.class:              PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer
+    pimee_catalog_rule.denormalizer.product_set_value_action.class:  PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\SetValueActionDenormalizer
+    pimee_catalog_rule.denormalizer.product_copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\CopyValueActionDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule_condition.class:    PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ConditionNormalizer
+
+    pimee_catalog_rule.normalizer.rule_content.class:                PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule\ContentNormalizer
+    pimee_catalog_rule.normalizer.product_set_value_action.class:    PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule\SetValueActionNormalizer
+    pimee_catalog_rule.normalizer.product_copy_value_action.class:   PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\CopyValueActionNormalizer
+    pimee_catalog_rule.normalizer.product_rule_condition.class:      PimEnterprise\Bundle\CatalogRuleBundle\Normalizer\ProductRule\ConditionNormalizer
 
 services:
     pimee_catalog_rule.denormalizer.rule_content:
         class: %pimee_catalog_rule.denormalizer.rule_content.class%
         arguments:
-            - @pimee_catalog_rule.normalizer.product_rule_condition
-            - @pimee_catalog_rule.normalizer.product_set_value_action
-            - @pimee_catalog_rule.normalizer.product_copy_value_action
+            - @pimee_catalog_rule.denormalizer.product_rule_condition
+            - @pimee_catalog_rule.denormalizer.product_set_value_action
+            - @pimee_catalog_rule.denormalizer.product_copy_value_action
             - %pimee_rule_engine.model.rule.class%
-
-    pimee_catalog_rule.denormalizer.rule:
-        class: %pimee_catalog_rule.denormalizer.rule.class%
-        arguments:
-            - @pimee_catalog_rule.denormalizer.rule_content
-            - %pimee_rule_engine.model.rule.class%
-            - %pimee_rule_engine.model.rule_definition.class%
 
     pimee_catalog_rule.normalizer.rule_content:
         class: %pimee_catalog_rule.normalizer.rule_content.class%
@@ -32,15 +27,24 @@ services:
 
     pimee_catalog_rule.normalizer.product_rule_condition:
         class: %pimee_catalog_rule.normalizer.product_rule_condition.class%
+
+    pimee_catalog_rule.denormalizer.product_rule_condition:
+        class: %pimee_catalog_rule.denormalizer.product_rule_condition.class%
         arguments:
             - %pimee_catalog_rule.model.product_condition.class%
 
     pimee_catalog_rule.normalizer.product_set_value_action:
         class: %pimee_catalog_rule.normalizer.product_set_value_action.class%
+
+    pimee_catalog_rule.denormalizer.product_set_value_action:
+        class: %pimee_catalog_rule.denormalizer.product_set_value_action.class%
         arguments:
             - %pimee_catalog_rule.model.set_value_action.class%
 
     pimee_catalog_rule.normalizer.product_copy_value_action:
         class: %pimee_catalog_rule.normalizer.product_copy_value_action.class%
+
+    pimee_catalog_rule.denormalizer.product_copy_value_action:
+        class: %pimee_catalog_rule.denormalizer.product_copy_value_action.class%
         arguments:
             - %pimee_catalog_rule.model.copy_value_action.class%

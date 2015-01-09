@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Serializer;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize and denormalize product set value rule actions.
+ * Denormalize product set value rule actions.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductSetValueActionNormalizer implements NormalizerInterface, DenormalizerInterface
+class SetValueActionDenormalizer implements DenormalizerInterface
 {
     /** @var string */
     protected $setValueActionClass;
@@ -34,39 +34,6 @@ class ProductSetValueActionNormalizer implements NormalizerInterface, Denormaliz
     {
         $this->setValueActionClass = $setValueActionClass;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function normalize($object, $format = null, array $context = [])
-    {
-        $data = [];
-        $data['type'] = ProductSetValueActionInterface::TYPE;
-
-        if (null !== $object->getField()) {
-            $data['field'] = $object->getField();
-        }
-        if (null !== $object->getValue()) {
-            $data['value'] = $object->getValue();
-        }
-        if (null !== $object->getLocale()) {
-            $data['locale'] = $object->getLocale();
-        }
-        if (null !== $object->getScope()) {
-            $data['scope'] = $object->getScope();
-        }
-
-        return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $data instanceof ProductSetValueActionInterface;
-    }
-
     /**
      * {@inheritdoc}
      */
