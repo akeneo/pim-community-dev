@@ -130,6 +130,10 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /**
      * Detaches the object from the unit of work
      *
+     * Detach an object from theUOW is the responsibility of the writer, but to do so, it should knows the
+     * skipped items, another valid option could be to use explicit persist strategy, means no persist,
+     * no flush
+     *
      * @param mixed $object
      */
     protected function detachObject($object)
@@ -138,39 +142,25 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     }
 
     /**
-     * Sets an item as skipped and throws an invalid item exception with the message.
-     *
-     * @param array  $item
-     * @param string $message
-     *
-     * @throws InvalidItemException
-     */
-    protected function skipItemWithMessage(array $item, $message)
-    {
-        if ($this->stepExecution) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-        }
-
-        throw new InvalidItemException($message, $item);
-    }
-
-    /**
-     * Sets an item as skipped and throws an invalid item exception.
+     * Sets an item as skipped and throws an invalid item exception
      *
      * @param array      $item
-     * @param \Exception $e
+     * @param \Exception $previousException
+     * @param string     $message
      *
+     * TODO previous optional !
+     * TODO naming from Batch ?
      * TODO : replace handleExceptionOnItem by this one
      *
      * @throws InvalidItemException
      */
-    protected function skipItemWithPreviousException(array $item, \Exception $e)
+    protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($e->getMessage(), $item, [], 0, $e);
+        throw new InvalidItemException($message, $item, [], 0, $previousException);
     }
 
     /**
@@ -178,13 +168,17 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      *
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
+     * @param \Exception                       $previousException
      *
      * TODO : replace handleConstraintViolationsOnItem by this one
      *
      * @throws InvalidItemException
      */
-    protected function skipItemWithConstraintViolations(array $item, ConstraintViolationListInterface $violations)
-    {
+    protected function skipItemWithConstraintViolations(
+        array $item,
+        ConstraintViolationListInterface $violations,
+        \Exception $previousException = null
+    ) {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -201,6 +195,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             );
         }
 
-        throw new InvalidItemException(implode("\n", $errors), $item);
+        throw new InvalidItemException(implode("\n", $errors), $item, [], 0, $previousException);
     }
 }
