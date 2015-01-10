@@ -1,6 +1,6 @@
 PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ValueAction: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueAction: ~
     properties:
         field:
            - Type:

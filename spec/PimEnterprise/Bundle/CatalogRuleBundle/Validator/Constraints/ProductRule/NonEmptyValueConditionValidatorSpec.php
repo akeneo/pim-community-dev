@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule ;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\NonEmptyValueCondition;
+use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ExecutionContextInterface;
 
@@ -18,7 +18,7 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\NonEmptyValueConditionValidator');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueConditionValidator');
     }
 
     function it_is_a_constraint_validator()

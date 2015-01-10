@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -43,7 +42,6 @@ class ExistingFieldValidator extends ConstraintValidator
             return;
         }
 
-        /** @var ProductConditionInterface $productCondition */
         $filter = $this->registry->getFilter($fieldName);
 
         if (null === $filter) {

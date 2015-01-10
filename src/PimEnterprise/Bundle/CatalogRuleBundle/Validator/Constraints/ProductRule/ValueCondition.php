@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint on an operator condition.
+ * Validation constraint on a value.
  *
- * @author Julien Janvier <julien.janvier@akeneo.com>
+ * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class SupportedOperatorCondition extends Constraint
+class ValueCondition extends Constraint
 {
     /** @var string */
-    public $message = 'The operator "%operator%" is not supported by the field "%field%".';
+    public $message = '%message%';
 
     /**
      * {@inheritdoc}
@@ -31,11 +31,11 @@ class SupportedOperatorCondition extends Constraint
         return self::CLASS_CONSTRAINT;
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pimee_supported_operator_condition_validator';
+        return 'pimee_constraint_value_condition_validator';
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\SupportedOperatorCondition;
+use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ExecutionContextInterface;
 
@@ -20,7 +20,7 @@ class SupportedOperatorConditionValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\SupportedOperatorConditionValidator');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator');
     }
 
     function it_is_a_constraint_validator()
@@ -33,7 +33,7 @@ class SupportedOperatorConditionValidatorSpec extends ObjectBehavior
         $context,
         ProductConditionInterface $condition,
         FilterInterface $filter,
-        SupportedOperatorCondition $constraint
+        \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition $constraint
     ) {
         $condition->getField()->willReturn('description');
         $condition->getOperator()->willReturn('NOT SUPPORTED');

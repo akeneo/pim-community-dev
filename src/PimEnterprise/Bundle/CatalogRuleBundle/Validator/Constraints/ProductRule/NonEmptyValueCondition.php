@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint on a value.
+ * Validation constraint to check that the value is not empty (except for EMPTY operator)
  *
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ValueAction extends Constraint
+class NonEmptyValueCondition extends Constraint
 {
     /** @var string */
-    public $message = '%message%';
+    public $message = 'The key "value" is missing or empty.';
 
     /**
      * {@inheritdoc}
@@ -29,13 +29,5 @@ class ValueAction extends Constraint
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
-    {
-        return 'pimee_constraint_value_action_validator';
     }
 }

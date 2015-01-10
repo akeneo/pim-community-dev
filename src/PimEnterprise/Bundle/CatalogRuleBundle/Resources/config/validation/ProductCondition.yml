@@ -1,10 +1,10 @@
 PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\SupportedOperatorCondition: ~
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\NonEmptyValueCondition: ~
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ValueCondition: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueCondition: ~
     properties:
-        # value is checked with \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\NonEmptyValueCondition
+        # value is checked with \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition
         field:
            - Type:
                 type: string

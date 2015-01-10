@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ValueCondition extends Constraint
+class ValueAction extends Constraint
 {
     /** @var string */
     public $message = '%message%';
@@ -36,6 +36,6 @@ class ValueCondition extends Constraint
      */
     public function validatedBy()
     {
-        return 'pimee_constraint_value_condition_validator';
+        return 'pimee_constraint_value_action_validator';
     }
 }

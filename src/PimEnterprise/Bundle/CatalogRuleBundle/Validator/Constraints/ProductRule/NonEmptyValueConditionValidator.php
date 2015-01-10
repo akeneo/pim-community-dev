@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;

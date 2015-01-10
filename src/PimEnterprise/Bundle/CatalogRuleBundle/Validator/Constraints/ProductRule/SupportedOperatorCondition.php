@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint to check that the value is not empty (except for EMPTY operator)
+ * Validation constraint on an operator condition.
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class NonEmptyValueCondition extends Constraint
+class SupportedOperatorCondition extends Constraint
 {
     /** @var string */
-    public $message = 'The key "value" is missing or empty.';
+    public $message = 'The operator "%operator%" is not supported by the field "%field%".';
 
     /**
      * {@inheritdoc}
@@ -29,5 +29,13 @@ class NonEmptyValueCondition extends Constraint
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function validatedBy()
+    {
+        return 'pimee_supported_operator_condition_validator';
     }
 }
