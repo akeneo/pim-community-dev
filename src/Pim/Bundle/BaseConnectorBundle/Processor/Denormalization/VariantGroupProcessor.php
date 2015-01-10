@@ -1,10 +1,9 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
-use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -13,8 +12,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * TODO : not sure about Flat folder cause we could "just" change the normalizer to use flat or structured
- *
  * Variant group import processor, allows to,
  *  - create / update variant groups
  *  - bind values data into a product template linked to a variant group
@@ -45,6 +42,9 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @var string */
     protected $templateClass;
 
+    /** @var string */
+    protected $format;
+
     /**
      * @param ReferableEntityRepositoryInterface $groupRepository
      * @param DenormalizerInterface              $groupValuesDenormalizer
@@ -53,6 +53,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface            $detacher
      * @param string                             $groupClass
      * @param string                             $templateClass
+     * @param string                             $format
      */
     public function __construct(
         ReferableEntityRepositoryInterface $groupRepository,
@@ -61,11 +62,13 @@ class VariantGroupProcessor extends AbstractProcessor
         NormalizerInterface $valueNormalizer,
         ObjectDetacherInterface $detacher,
         $groupClass,
-        $templateClass
+        $templateClass,
+        $format
     ) {
         parent::__construct($groupRepository, $groupValuesDenormalizer, $validator, $detacher, $groupClass);
         $this->valueNormalizer = $valueNormalizer;
         $this->templateClass   = $templateClass;
+        $this->format = $format;
     }
 
     /**
@@ -117,7 +120,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $variantGroup = $this->denormalizer->denormalize(
             $variantGroupData,
             $this->class,
-            'csv',
+            $this->format,
             ['entity' => $variantGroup]
         );
 

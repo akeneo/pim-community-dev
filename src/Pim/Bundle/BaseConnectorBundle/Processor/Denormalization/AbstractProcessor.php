@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -16,7 +16,11 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Abstract processor to transform array data to object
+ * Abstract processor to provide a way to denormalize array data to object by,
+ * - fetch an existing object or create it
+ * - denormalize item to update the object
+ * - validate the object
+ * - skip the object it contains invalid data
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

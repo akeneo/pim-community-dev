@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
@@ -35,7 +35,8 @@ class GroupProcessorSpec extends ObjectBehavior
             $denormalizer,
             $validator,
             $detacher,
-            $groupClass
+            $groupClass,
+            'csv'
         );
         $this->setStepExecution($stepExecution);
         $validator->validate(Argument::any())->willReturn(new ConstraintViolationList());
