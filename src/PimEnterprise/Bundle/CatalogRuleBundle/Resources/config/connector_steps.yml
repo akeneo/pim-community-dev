@@ -13,7 +13,7 @@ services:
         class: %pimee_catalog_rule.processor.rule_definition.array_to_object.class%
         arguments:
             - @akeneo_rule_engine.repository.rule_definition
-            - @akeneo_rule_engine.denormalizer.rule
+            - @pimee_catalog_rule.denormalizer.product_rule
             - @validator
             - %akeneo_rule_engine.model.rule_definition.class%
             - %akeneo_rule_engine.model.rule.class%
@@ -32,7 +32,7 @@ services:
     pimee_catalog_rule.processor.rule_definition.object_to_array:
         class: %pimee_catalog_rule.processor.rule_definition.object_to_array.class%
         arguments:
-            - @pimee_catalog_rule.normalizer.rule_content
+            - @pimee_catalog_rule.normalizer.product_rule.content
 
     pimee_catalog_rule.writer.rule_definition.yaml_file:
         class: %pimee_catalog_rule.writer.rule_definition.yaml_file.class%
