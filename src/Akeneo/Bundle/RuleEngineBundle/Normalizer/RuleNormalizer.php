@@ -27,11 +27,10 @@ class RuleNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         $data = [
-                'code'     => $object->getCode(),
-                'type'     => $object->getType(),
-                'priority' => $object->getPriority(),
-            ]
-        ;
+            'code'     => $object->getCode(),
+            'type'     => $object->getType(),
+            'priority' => $object->getPriority(),
+        ];
 
         $content = $object->getContent();
         if (isset($content['conditions'])) {

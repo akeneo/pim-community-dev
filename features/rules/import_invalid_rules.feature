@@ -178,7 +178,7 @@ Feature: Import rules
             actions:
                 - type:  set_value
                   field: manufacturer
-                  value: not an array
+                  value: Desigual
         sony_beautiful_description:
             conditions:
                 - field:    manufacturer
@@ -187,7 +187,7 @@ Feature: Import rules
             actions:
                 - type:  set_value
                   field: manufacturer
-                  value: not an array
+                  value: Desigual
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -196,7 +196,6 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
     And I should see "conditions[0]: Attribute or field \"manufacturer\" expects an array as data (for filter option)."
-    And I should see "actions[0]: Attribute \"manufacturer\" expects an array as data, \"string\" given (for setter simple select)."
     When I am on the "manufacturer" attribute page
     And I visit the "Rules" tab
     Then I should see "Volcom"
@@ -1272,8 +1271,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "Rule content \"canon_beautiful_description\" has an action with no type."
-    And I should see "Rule content \"sony_beautiful_description\" has an action with no type."
+    And I should see "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\",\"locale\":\"en_US\"}],\"actions\":[{\"wrong\":\"set_value\",\"field\":\"description\",\"value\":\"A beautiful description\"}]}\" has an action with no type."
+    And I should see "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\"}],\"actions\":[{\"wrong\":\"set_value\",\"field\":\"description\",\"value\":\"The new Sony description\"}]}\" has an action with no type."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see "Another good description"
@@ -1306,8 +1305,9 @@ Feature: Import rules
                 - field:    name
                   operator: CONTAINS
                   value:    Canon
+                  locale:   en_US
             actions:
-                - type:  wrong
+                - type:  another wrong
                   field: description
                   value: The new Sony description
 
@@ -1318,8 +1318,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "Rule \"canon_beautiful_description\" has an unknown type of action \"wrong\"."
-    And I should see "Rule \"sony_beautiful_description\" has an unknown type of action \"wrong\"."
+    And I should see "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\",\"locale\":\"en_US\"}],\"actions\":[{\"type\":\"wrong\",\"field\":\"description\",\"value\":\"A beautiful description\"}]}\" has an unknown type of action \"wrong\"."
+    And I should see "Rule content \"{\"conditions\":[{\"field\":\"name\",\"operator\":\"CONTAINS\",\"value\":\"Canon\",\"locale\":\"en_US\"}],\"actions\":[{\"type\":\"another wrong\",\"field\":\"description\",\"value\":\"The new Sony description\"}]}\" has an unknown type of action \"another wrong\"."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see "Another good description"

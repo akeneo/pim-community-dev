@@ -23,5 +23,5 @@ pimee_catalog_rule:
             export.title: Rule export
     steps:
         product_rule_definition_reader.title: Product rule import reader
-        product_rule_definition_processor.title: Product rule import processor
+        product_rule_definition_array_to_object_processor.title: Product rule import processor
         product_rule_definition_writer.title: Product rule import writer

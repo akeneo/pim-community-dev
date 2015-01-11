@@ -30,13 +30,12 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         return [
-                'id'       => $object->getId(),
-                'code'     => $object->getCode(),
-                'type'     => $object->getType(),
-                'priority' => $object->getPriority(),
-                'content'  => $object->getContent(),
-            ]
-        ;
+            'id'       => $object->getId(),
+            'code'     => $object->getCode(),
+            'type'     => $object->getType(),
+            'priority' => $object->getPriority(),
+            'content'  => $object->getContent(),
+        ];
     }
 
     /**

@@ -61,6 +61,8 @@ class RuleDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
+        $this->checkRuleKeys($data);
+
         /** @var RuleInterface $rule */
         $rule = $this->getObject($context);
         $rule->setCode($data['code']);
@@ -111,5 +113,21 @@ class RuleDenormalizer implements DenormalizerInterface
         }
 
         return new $this->ruleClass($definition);
+    }
+
+    /**
+     * Checks if the rule have a 'conditions' and 'actions' keys
+     *
+     * @param array $data
+     */
+    protected function checkRuleKeys(array $data)
+    {
+        if (!array_key_exists('conditions', $data)) {
+            throw new \LogicException(sprintf('Rule content "%s" should have a "conditions" key.', $data['code']));
+        }
+
+        if (!array_key_exists('actions', $data)) {
+            throw new \LogicException(sprintf('Rule content "%s" should have a "actions" key.', $data['code']));
+        }
     }
 }
