@@ -12,6 +12,7 @@
 namespace Akeneo\Bundle\RuleEngineBundle\Command;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command to run a rule
+ * TODO: review the dry run so that something actually happens
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
@@ -33,10 +35,10 @@ class RunCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:rule:run')
-            ->addArgument('code', InputArgument::OPTIONAL, 'Rule code')
+            ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to run')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
             ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
-            ->setDescription('Run all rules or only one if a code is provided.')
+            ->setDescription('Runs all the rules or only one if a code is provided.')
         ;
     }
 
@@ -45,11 +47,11 @@ class RunCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repo = $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
+        $repository = $this->getRuleDefinitionRepository();
 
         // get rule instances
         if ($code = $input->getArgument('code')) {
-            $rule = $repo->findOneByCode($code);
+            $rule = $repository->findOneBy(['code' => $code]);
 
             if (null === $rule) {
                 throw new \InvalidArgumentException(sprintf('The rule %s does not exists', $code));
@@ -57,13 +59,14 @@ class RunCommand extends ContainerAwareCommand
 
             $rules = [$rule];
         } else {
-            $rules = $repo->findAll();
+            $rules = $repository->findAll();
         }
 
         // run the rules
-        $runnerRegistry = $this->getContainer()->get('akeneo_rule_engine.runner.chained');
+        $runnerRegistry = $this->getRuleRunner();
 
         foreach ($rules as $rule) {
+            $output->writeln(sprintf('Running rule <info>%s</info>...', $rule->getCode()));
             $this->runRule(
                 $runnerRegistry,
                 $output,
@@ -72,6 +75,8 @@ class RunCommand extends ContainerAwareCommand
                 $input->getOption('stop-on-error')
             );
         }
+
+        $output->writeln('<info>Done !</info>');
     }
 
     /**
@@ -111,5 +116,22 @@ class RunCommand extends ContainerAwareCommand
                 );
             }
         }
+    }
+
+
+    /**
+     * @return RuleDefinitionRepositoryInterface
+     */
+    protected function getRuleDefinitionRepository()
+    {
+        return $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
+    }
+
+    /**
+     * @return DryRunnerInterface
+     */
+    protected function getRuleRunner()
+    {
+        return $this->getContainer()->get('akeneo_rule_engine.runner.chained');
     }
 }
