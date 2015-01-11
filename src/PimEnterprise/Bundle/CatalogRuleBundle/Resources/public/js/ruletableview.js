@@ -6,8 +6,7 @@ define(
         var RuleItem = Backbone.Model.extend({
             defaults: {
                 priority: 0,
-                conditions: [],
-                actions: []
+                content: []
             }
         });
 

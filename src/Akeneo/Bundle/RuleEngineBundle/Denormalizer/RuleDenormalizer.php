@@ -70,7 +70,10 @@ class RuleDenormalizer implements DenormalizerInterface
             $rule->setPriority((int) $data['priority']);
         }
 
-        $content = $this->contentDernomalizer->denormalize($rule->getContent(), $format, $context);
+        $rawContent = ['conditions' => $data['conditions'], 'actions' => $data['actions']];
+        $rule->setContent($rawContent);
+
+        $content = $this->contentDernomalizer->denormalize($rawContent, $class, $context);
 
         foreach ($content['conditions'] as $condition) {
             $rule->addCondition($condition);

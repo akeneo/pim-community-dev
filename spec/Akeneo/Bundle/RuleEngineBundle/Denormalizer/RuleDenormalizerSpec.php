@@ -42,19 +42,22 @@ class RuleDenormalizerSpec extends ObjectBehavior
         ProductCopyValueActionInterface $copyValueAction
 
     ) {
+        $rawContent = ['conditions' => ['my conditions are here'], 'actions' => ['my actions are there']];
+
         $rule->getContent()->willReturn([]);
         $rule->setCode('discharge_fr_description')->shouldBeCalled();
         $rule->setType('foo')->shouldBeCalled();
         $rule->setPriority(10)->shouldBeCalled();
+        $rule->setContent($rawContent)->shouldBeCalled();
         $rule->addCondition($condition)->shouldBeCalled();
         $rule->addAction($setValueAction)->shouldBeCalled();
         $rule->addAction($copyValueAction)->shouldBeCalled();
 
-        $contentDernomalizer->denormalize(Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setValueAction, $copyValueAction]]);
+        $contentDernomalizer->denormalize($rawContent, Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setValueAction, $copyValueAction]]);
 
         // TODO: really spec it...
         $this->denormalize(
-            ['code' => 'discharge_fr_description', 'priority' => 10, 'conditions' => [], 'actions' => []],
+            ['code' => 'discharge_fr_description', 'priority' => 10] + $rawContent,
             Argument::any(),
             Argument::any(),
             ['object' => $rule]

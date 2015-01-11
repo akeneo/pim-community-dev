@@ -22,22 +22,21 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class RuleDefinitionNormalizer implements NormalizerInterface
 {
     /** @var string[] */
-    protected $supportedFormats = array('array');
+    protected $supportedFormats = ['array'];
 
     /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        return array_merge(
-            [
+        return [
                 'id'       => $object->getId(),
                 'code'     => $object->getCode(),
                 'type'     => $object->getType(),
-                'priority' => $object->getPriority()
-            ],
-            json_decode($object->getContent(), true)
-        );
+                'priority' => $object->getPriority(),
+                'content'  => $object->getContent(),
+            ]
+        ;
     }
 
     /**
