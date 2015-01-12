@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Builder;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
@@ -83,7 +83,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         ReferableEntityRepositoryInterface $localeRepository,
         AttributeInterface $attribute,
         LocaleInterface $locale,
-        Channel $channel
+        ChannelInterface $channel
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(true);
@@ -266,7 +266,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         ReferableEntityRepositoryInterface $channelRepository,
         ReferableEntityRepositoryInterface $localeRepository,
         LocaleInterface $locale,
-        Channel $channel
+        ChannelInterface $channel
     ) {
         // localizable without the associated locale not in the channel
         $attribute->getCode()->willReturn('description');

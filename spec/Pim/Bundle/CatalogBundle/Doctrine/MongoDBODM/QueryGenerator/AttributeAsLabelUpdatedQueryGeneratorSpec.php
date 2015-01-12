@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
@@ -16,7 +16,7 @@ class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
 
     function it_filters_updates_on_attribute_class_and_attribute_as_label_field(
         AttributeInterface $price,
-        Channel $mobile
+        ChannelInterface $mobile
     ) {
         $this->supports($price, 'attributeAsLabel')->shouldReturn(true);
         $this->supports($price, '')->shouldReturn(false);

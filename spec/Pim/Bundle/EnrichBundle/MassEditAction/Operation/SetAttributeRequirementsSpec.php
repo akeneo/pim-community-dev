@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
@@ -51,8 +51,8 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
 
     function it_initializes_attribute_requirements_with_all_channels_and_attributes_in_the_PIM(
         ChannelRepository $channelRepository,
-        Channel $ecommerce,
-        Channel $mobile,
+        ChannelInterface $ecommerce,
+        ChannelInterface $mobile,
         AttributeRepository $attributeRepository,
         AttributeInterface $name,
         AttributeInterface $description,

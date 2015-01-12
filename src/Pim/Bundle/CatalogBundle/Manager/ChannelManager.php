@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Akeneo\Component\Persistence\SaverInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
  * Channel manager
@@ -47,9 +48,9 @@ class ChannelManager implements SaverInterface
      */
     public function save($channel, array $options = [])
     {
-        if (!$channel instanceof Channel) {
+        if (!$channel instanceof ChannelInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Entity\Channel", "%s" provided.', get_class($channel))
+                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\ChannelInterface", "%s" provided.', get_class($channel))
             );
         }
 

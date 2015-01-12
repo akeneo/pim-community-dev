@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -211,7 +211,7 @@ class IndexPurgerSpec extends ObjectBehavior
 
     function it_removes_obsolete_scopable_indexes_when_channel_removed(
         $collection,
-        Channel $ecommerce
+        ChannelInterface $ecommerce
     ) {
         $ecommerce->getCode()->willReturn('ecommerce');
 

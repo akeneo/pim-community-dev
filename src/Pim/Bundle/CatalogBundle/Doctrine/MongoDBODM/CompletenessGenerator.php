@@ -6,7 +6,7 @@ use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
@@ -72,7 +72,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMissingForChannel(Channel $channel)
+    public function generateMissingForChannel(ChannelInterface $channel)
     {
         $this->generate(null, $channel);
     }
@@ -90,9 +90,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * if provided. CAUTION: the product must be already flushed to the DB
      *
      * @param ProductInterface $product
-     * @param Channel          $channel
+     * @param ChannelInterface $channel
      */
-    protected function generate(ProductInterface $product = null, Channel $channel = null)
+    protected function generate(ProductInterface $product = null, ChannelInterface $channel = null)
     {
         $productsQb = $this->documentManager->createQueryBuilder($this->productClass);
 
@@ -232,11 +232,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * calculate completenesses.
      *
      * @param ProductInterface $product
-     * @param Channel          $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function getFamilyRequirements(ProductInterface $product = null, Channel $channel = null)
+    protected function getFamilyRequirements(ProductInterface $product = null, ChannelInterface $channel = null)
     {
         $selectFamily = null;
 
@@ -313,13 +313,16 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Get the name of a normalized data field
      *
      * @param AttributeInterface $attribute
-     * @param Channel            $channel
+     * @param ChannelInterface   $channel
      * @param LocaleInterface    $locale
      *
      * @return string
      */
-    protected function getNormalizedFieldName(AttributeInterface $attribute, Channel $channel, LocaleInterface $locale)
-    {
+    protected function getNormalizedFieldName(
+        AttributeInterface $attribute,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
         $suffix = '';
 
         if ($attribute->isLocalizable()) {
@@ -338,12 +341,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param Builder          $productsQb
      * @param ProductInterface $product
-     * @param Channel          $channel
+     * @param ChannelInterface $channel
      */
     protected function applyFindMissingQuery(
         Builder $productsQb,
         ProductInterface $product = null,
-        Channel $channel = null
+        ChannelInterface $channel = null
     ) {
         if (null !== $product) {
             $productsQb->field('_id')->equals($product->getId());
@@ -366,11 +369,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Generate a list of potential completeness value from existing channel
      * or from the provided channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function getChannelLocaleCombinations(Channel $channel = null)
+    protected function getChannelLocaleCombinations(ChannelInterface $channel = null)
     {
         $channels = array();
         $combinations = array();
@@ -419,7 +422,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function scheduleForChannelAndLocale(Channel $channel, LocaleInterface $locale)
+    public function scheduleForChannelAndLocale(ChannelInterface $channel, LocaleInterface $locale)
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 

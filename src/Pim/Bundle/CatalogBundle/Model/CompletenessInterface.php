@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-
 /**
  * Product completeness interface
  *
@@ -47,11 +45,11 @@ interface CompletenessInterface
     /**
      * Setter channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return CompletenessInterface
      */
-    public function setChannel(Channel $channel);
+    public function setChannel(ChannelInterface $channel);
 
     /**
      * Setter product
@@ -72,7 +70,7 @@ interface CompletenessInterface
     /**
      * Getter channel
      *
-     * @return Channel
+     * @return ChannelInterface
      */
     public function getChannel();
 

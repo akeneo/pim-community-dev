@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\UserBundle\Context;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -25,8 +25,8 @@ class UserContextSpec extends ObjectBehavior
         LocaleInterface $en,
         LocaleInterface $fr,
         LocaleInterface $de,
-        Channel $ecommerce,
-        Channel $mobile,
+        ChannelInterface $ecommerce,
+        ChannelInterface $mobile,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree
     ) {

@@ -6,7 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -164,7 +164,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_channel_insert(
         $indexCreator,
-        Channel $ecommerce,
+        ChannelInterface $ecommerce,
         LifecycleEventArgs $args
     ) {
         $args->getEntity()->willReturn($ecommerce);
@@ -176,7 +176,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_generates_indexes_for_channel_update(
         $indexCreator,
-        Channel $ecommerce,
+        ChannelInterface $ecommerce,
         LifecycleEventArgs $args
     ) {
         $args->getEntity()->willReturn($ecommerce);
@@ -188,7 +188,7 @@ class EnsureIndexesSubscriberSpec extends ObjectBehavior
 
     function it_removes_indexes_for_channel_when_removing_it(
         $indexPurger,
-        Channel $ecommerce,
+        ChannelInterface $ecommerce,
         LifecycleEventArgs $args
     ) {
         $args->getEntity()->willReturn($ecommerce);
