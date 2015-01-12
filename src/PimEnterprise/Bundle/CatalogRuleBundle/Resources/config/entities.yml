@@ -1,2 +1,0 @@
-parameters:
-    pimee_catalog_rule.entity.rule_linked_resource.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleLinkedResource

@@ -11,18 +11,20 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacher;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Component\Persistence\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
@@ -45,14 +47,17 @@ class ProductRuleApplier implements ApplierInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
 
     /** @var VersionManager */
     protected $versionManager;
 
     /** @var CacheClearer */
     protected $cacheClearer;
+
+    /** @var TranslatorInterface */
+    protected $translator;
 
     /** @var string */
     protected $ruleDefinitionClass;
@@ -62,9 +67,10 @@ class ProductRuleApplier implements ApplierInterface
      * @param ValidatorInterface       $productValidator
      * @param BulkSaverInterface       $productSaver
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ObjectManager            $objectManager
+     * @param ObjectDetacherInterface  $objectDetacher
      * @param VersionManager           $versionManager
      * @param CacheClearer             $cacheClearer
+     * @oaram TranslatorInterface      $translator
      * @param string                   $ruleDefinitionClass
      */
     public function __construct(
@@ -72,9 +78,10 @@ class ProductRuleApplier implements ApplierInterface
         ValidatorInterface $productValidator,
         BulkSaverInterface $productSaver,
         EventDispatcherInterface $eventDispatcher,
-        ObjectManager $objectManager,
+        ObjectDetacherInterface $objectDetacher,
         VersionManager $versionManager,
         CacheClearer $cacheClearer,
+        TranslatorInterface $translator,
         $ruleDefinitionClass
     )
     {
@@ -82,9 +89,10 @@ class ProductRuleApplier implements ApplierInterface
         $this->productValidator    = $productValidator;
         $this->productSaver        = $productSaver;
         $this->eventDispatcher     = $eventDispatcher;
-        $this->objectManager       = $objectManager;
+        $this->objectDetacher      = $objectDetacher;
         $this->versionManager      = $versionManager;
         $this->cacheClearer        = $cacheClearer;
+        $this->translator          = $translator;
         $this->ruleDefinitionClass = $ruleDefinitionClass;
     }
 
@@ -97,7 +105,14 @@ class ProductRuleApplier implements ApplierInterface
 
         $this->updateProducts($subjectSet, $rule->getActions());
         $this->validateProducts($subjectSet);
-        $this->saveProducts($subjectSet, sprintf('Applied rule "%s"', $rule->getCode()));
+
+        $savingContext = $this->translator->trans(
+            'pimee_catalog_rule.product.history',
+            ['%rule%' => $rule->getCode()],
+            null,
+            'en'
+        );
+        $this->saveProducts($subjectSet, $savingContext);
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
@@ -106,8 +121,8 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
-     * @param RuleSubjectSetInterface                                        $subjectSet
-     * @param \PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
+     * @param RuleSubjectSetInterface                                 $subjectSet
+     * @param \Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
      */
     protected function updateProducts(RuleSubjectSetInterface $subjectSet, $actions)
     {
@@ -132,7 +147,7 @@ class ProductRuleApplier implements ApplierInterface
         foreach ($subjectSet->getSubjects() as $product) {
             $violations = $this->productValidator->validate($product);
             if ($violations->count() > 0) {
-                $this->objectManager->detach($product);
+                $this->objectDetacher->detach($product);
                 $reasons = [];
                 /** @var \Symfony\Component\Validator\ConstraintViolation $violation */
                 foreach ($violations as $violation) {

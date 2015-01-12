@@ -1,29 +1,40 @@
 parameters:
-    pimee_catalog_rule.processor.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionProcessor
-    pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionWriter
-    pimee_catalog_rule.writer.rule_definition.yaml_file.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlFileWriter
+    # import rules
+    #TODO: rename array_to_object
+    pimee_catalog_rule.processor.rule_definition.array_to_object.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionArrayToObjectProcessor
+    pimee_catalog_rule.writer.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineWriter
+    # export rules
+    pimee_catalog_rule.reader.rule_definition.doctrine.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionDoctrineReader
+    #TODO: rename object_to_array
     pimee_catalog_rule.processor.rule_definition.object_to_array.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionObjectToArrayProcessor
+    pimee_catalog_rule.writer.rule_definition.yaml_file.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\RuleDefinitionYamlFileWriter
 
 services:
-    pimee_catalog_rule.writer.doctrine.rule_definition:
-        class: %pimee_catalog_rule.writer.doctrine.rule_definition.class%
+    # import rules
+    pimee_catalog_rule.processor.rule_definition.array_to_object:
+        class: %pimee_catalog_rule.processor.rule_definition.array_to_object.class%
         arguments:
-          - '@pimee_rule_engine.manager.rule_definition'
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@pimee_catalog_rule.denormalizer.product_rule'
+            - '@validator'
+            - %akeneo_rule_engine.model.rule_definition.class%
+            - %akeneo_rule_engine.model.rule.class%
 
-    pimee_catalog_rule.writer.rule_definition.yaml_file:
-        class: %pimee_catalog_rule.writer.rule_definition.yaml_file.class%
-
-    pimee_catalog_rule.processor.rule_definition:
-        class: %pimee_catalog_rule.processor.rule_definition.class%
+    pimee_catalog_rule.writer.rule_definition.doctrine:
+        class: %pimee_catalog_rule.writer.rule_definition.doctrine.class%
         arguments:
-            - @pimee_rule_engine.repository.rule
-            - @pimee_catalog_rule.denormalizer.rule
-            - @validator
-            - %pimee_rule_engine.entity.rule_definition.class%
-            - @pimee_catalog_rule.serializer.rule_content
-            - %pimee_rule_engine.entity.rule.class%
+          - '@akeneo_rule_engine.saver.rule_definition'
+
+    # export rules
+    pimee_catalog_rule.reader.rule_definition.doctrine:
+        class: %pimee_catalog_rule.reader.rule_definition.doctrine.class%
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'
 
     pimee_catalog_rule.processor.rule_definition.object_to_array:
         class: %pimee_catalog_rule.processor.rule_definition.object_to_array.class%
         arguments:
-            - @pimee_catalog_rule.normalizer.rule
+            - '@akeneo_rule_engine.normalizer.rule'
+
+    pimee_catalog_rule.writer.rule_definition.yaml_file:
+        class: %pimee_catalog_rule.writer.rule_definition.yaml_file.class%

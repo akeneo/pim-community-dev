@@ -3,18 +3,12 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Prophecy\Argument;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 
 class RuleDefinitionDoctrineReaderSpec extends ObjectBehavior
 {
-    public function let(RuleDefinitionRepositoryInterface $ruleRepository)
+    function let(RuleDefinitionRepositoryInterface $ruleRepository)
     {
         $this->beConstructedWith($ruleRepository);
     }

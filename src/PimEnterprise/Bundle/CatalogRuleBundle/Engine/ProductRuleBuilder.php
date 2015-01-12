@@ -11,13 +11,15 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use PimEnterprise\Bundle\CatalogRuleBundle\Serializer\ProductRuleContentSerializerInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvent;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Exception\BuilderException;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -27,6 +29,9 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductRuleBuilder implements BuilderInterface
 {
+    /** @var DenormalizerInterface */
+    protected $ruleContentDenormalizer;
+
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -36,24 +41,21 @@ class ProductRuleBuilder implements BuilderInterface
     /** @var string */
     protected $ruleClass;
 
-    /** @var ProductRuleContentSerializerInterface */
-    protected $ruleContentSerializer;
-
     /**
-     * @param EventDispatcherInterface              $eventDispatcher
-     * @param ValidatorInterface                    $validator
-     * @param ProductRuleContentSerializerInterface $ruleContentSerializer
-     * @param string                                $ruleClass             should implement \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @param DenormalizerInterface    $ruleContentDenormalizer
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ValidatorInterface       $validator
+     * @param string                   $ruleClass               should implement
      */
     public function __construct(
+        DenormalizerInterface $ruleContentDenormalizer,
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
-        ProductRuleContentSerializerInterface $ruleContentSerializer,
         $ruleClass
     ) {
+        $this->ruleContentDenormalizer = $ruleContentDenormalizer;
         $this->eventDispatcher = $eventDispatcher;
         $this->validator = $validator;
-        $this->ruleContentSerializer = $ruleContentSerializer;
         $this->ruleClass = $ruleClass;
     }
 
@@ -62,14 +64,13 @@ class ProductRuleBuilder implements BuilderInterface
      */
     public function build(RuleDefinitionInterface $definition)
     {
-        //TODO: change the name of the events PRE_LOAD and POST_LOAD
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_LOAD, new RuleEvent($definition));
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_BUILD, new RuleEvent($definition));
 
-        /** @var \PimEnterprise\Bundle\RuleEngineBundle\Model\Rule $rule */
+        /** @var \Akeneo\Bundle\RuleEngineBundle\Model\Rule $rule */
         $rule = new $this->ruleClass($definition);
 
         try {
-            $content = $this->ruleContentSerializer->deserialize($definition->getContent());
+            $content = $this->ruleContentDenormalizer->denormalize($definition->getContent(), $this->ruleClass);
         } catch (\LogicException $e) {
             throw new BuilderException(
                 sprintf('Impossible to build the rule "%s". %s', $definition->getCode(), $e->getMessage())
@@ -79,16 +80,36 @@ class ProductRuleBuilder implements BuilderInterface
         $rule->setConditions($content['conditions']);
         $rule->setActions($content['actions']);
 
-        $errors = $this->validator->validate($rule);
-        if (count($errors)) {
+        $violations = $this->validator->validate($rule);
+
+        if (count($violations)) {
             throw new BuilderException(
-                //TODO: improve message
-                sprintf('Impossible to build the rule "%s" as it does not appear to be valid.', $definition->getCode())
+                sprintf(
+                    'Impossible to build the rule "%s" as it does not appear to be valid (%s).',
+                    $definition->getCode(),
+                    $this->violationsToMessage($violations)
+                )
             );
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_LOAD, new RuleEvent($definition));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_BUILD, new RuleEvent($definition));
 
         return $rule;
+    }
+
+    /**
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @return string
+     */
+    protected function violationsToMessage(ConstraintViolationListInterface $violations)
+    {
+        $errors = [];
+        /** @var ConstraintViolationInterface $violation */
+        foreach ($violations as $violation) {
+            $errors[] = sprintf("%s: %s", $violation->getPropertyPath(), $violation->getMessage());
+        }
+
+        return implode(', ', $errors);
     }
 }

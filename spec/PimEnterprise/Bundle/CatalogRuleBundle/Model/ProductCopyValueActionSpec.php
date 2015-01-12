@@ -7,7 +7,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface
 
 class ProductCopyValueActionSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith(
             [
@@ -22,22 +22,22 @@ class ProductCopyValueActionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction');
     }
 
-    public function it_is_an_action()
+    function it_is_an_action()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\ActionInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface');
     }
 
-    public function it_is_a_product_copy_value_action()
+    function it_is_a_product_copy_value_action()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface');
     }
 
-    public function it_constructs_a_product_action()
+    function it_constructs_a_product_action()
     {
         $this->getFromField()->shouldReturn('sku');
         $this->getToField()->shouldReturn('description');

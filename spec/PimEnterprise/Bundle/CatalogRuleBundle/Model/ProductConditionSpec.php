@@ -6,29 +6,29 @@ use PhpSpec\ObjectBehavior;
 
 class ProductConditionSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith(
             ['field' => 'sku', 'operator' => 'EQUALS', 'value' => 'RATM-001', 'locale' => 'fr_FR', 'scope' => 'print']
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition');
     }
 
-    public function it_is_a_condidtion()
+    function it_is_a_condidtion()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Model\ConditionInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\ConditionInterface');
     }
 
-    public function it_is_a_product_condidtion()
+    function it_is_a_product_condidtion()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface');
     }
 
-    public function it_constructs_a_product_condition()
+    function it_constructs_a_product_condition()
     {
         $this->getField()->shouldReturn('sku');
         $this->getOperator()->shouldReturn('EQUALS');

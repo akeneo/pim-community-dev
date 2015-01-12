@@ -2,61 +2,62 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Component\Persistence\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Event\RuleEvents;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
+    const RULE_DEFINITION_CLASS = 'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition';
 
-    /** @var const string */
-    const RULE_DEFINITION_CLASS = 'PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition';
-
-    public function let(
+    function let(
         EventDispatcherInterface $eventDispatcher,
         ProductUpdaterInterface $productUpdater,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         ValidatorInterface $productValidator,
-        ObjectManager $objectManager,
-        CacheClearer $cacheClearer
+        ObjectDetacherInterface $objectDetacher,
+        CacheClearer $cacheClearer,
+        TranslatorInterface $translator
     ) {
         $this->beConstructedWith(
             $productUpdater,
             $productValidator,
             $productSaver,
             $eventDispatcher,
-            $objectManager,
+            $objectDetacher,
             $versionManager,
             $cacheClearer,
+            $translator,
             self::RULE_DEFINITION_CLASS
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier');
     }
 
-    public function it_is_a_rule_applier()
+    function it_is_a_rule_applier()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
-    public function it_applies_a_rule_which_does_not_update_products(
+    function it_applies_a_rule_which_does_not_update_products(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
@@ -88,7 +89,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
     }
 
-    public function it_applies_a_rule_which_has_a_set_action(
+    function it_applies_a_rule_which_has_a_set_action(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
@@ -99,6 +100,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductSetValueActionInterface $action,
         ProductInterface $selectedProduct,
         ConstraintViolationList $violationList,
+        $translator,
         $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
@@ -117,7 +119,10 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productValidator->validate($selectedProduct)->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
 
+        $translator->trans(Argument::cetera())->willReturn('Applied rule "rule_one"');
+
         // save products
+        $versionManager->isRealTimeVersioning()->willReturn(false);
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
@@ -130,7 +135,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $cacheClearer->clear()->shouldBeCalled();
     }
 
-    public function it_applies_a_rule_which_has_a_copy_action(
+    function it_applies_a_rule_which_has_a_copy_action(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
@@ -141,7 +146,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductCopyValueAction $action,
         ProductInterface $selectedProduct,
         ConstraintViolationList $violationList,
-        $cacheClearer
+        $cacheClearer,
+        $translator
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -163,7 +169,10 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productValidator->validate($selectedProduct)->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
 
+        $translator->trans(Argument::cetera())->willReturn('Applied rule "rule_one"');
+
         // save products
+        $versionManager->isRealTimeVersioning()->willReturn(false);
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
@@ -176,11 +185,11 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $cacheClearer->clear()->shouldBeCalled();
     }
 
-    public function it_applies_a_rule_with_invalid_product(
+    function it_applies_a_rule_with_invalid_product(
         $eventDispatcher,
         $productUpdater,
         $productValidator,
-        $objectManager,
+        $objectDetacher,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductCopyValueAction $action,
@@ -214,7 +223,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $notEmptyViolationList->count()->willReturn(1);
         $notEmptyViolationList->getIterator()->willReturn(new \ArrayIterator([]));
 
-        $objectManager->detach($invalidProduct)->shouldBeCalled();
+        $objectDetacher->detach($invalidProduct)->shouldBeCalled();
         $subjectSet->skipSubject($invalidProduct, Argument::any())->shouldBeCalled();
         $subjectSet->skipSubject($validProduct, Argument::any())->shouldNotBeCalled();
 
@@ -226,7 +235,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $cacheClearer->clear()->shouldBeCalled();
     }
 
-    public function it_applies_a_rule_which_has_an_unknown_action(
+    function it_applies_a_rule_which_has_an_unknown_action(
         $eventDispatcher,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet

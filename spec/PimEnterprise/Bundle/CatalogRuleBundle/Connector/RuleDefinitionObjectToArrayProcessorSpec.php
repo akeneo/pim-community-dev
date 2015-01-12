@@ -3,13 +3,12 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Prophecy\Argument;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RuleDefinitionObjectToArrayProcessorSpec extends ObjectBehavior
 {
-    public function let(NormalizerInterface $ruleNormalizer)
+    function let(NormalizerInterface $ruleNormalizer)
     {
         $this->beConstructedWith($ruleNormalizer);
     }
@@ -25,13 +24,13 @@ class RuleDefinitionObjectToArrayProcessorSpec extends ObjectBehavior
         RuleDefinitionInterface $ruleDefinition2
     ) {
         $ruleDefinition1->getCode()->shouldBeCalled()->willReturn('camera_copy_name_to_model');
-        $ruleDefinition1->getPriority()->shouldBeCalled()->willReturn(0);
-
         $ruleDefinition2->getCode()->shouldBeCalled()->willReturn('camera_set_autofocus');
-        $ruleDefinition2->getPriority()->shouldBeCalled()->willReturn(100);
 
         $ruleNormalizer->normalize($ruleDefinition1)->shouldBeCalled()->willReturn(
             [
+                'code' => 'camera_copy_name_to_model',
+                'type' => 'product',
+                'priority' => 0,
                 'conditions' => [
                     [
                         'field'    => 'family.code',
@@ -50,6 +49,9 @@ class RuleDefinitionObjectToArrayProcessorSpec extends ObjectBehavior
         );
         $ruleNormalizer->normalize($ruleDefinition2)->shouldBeCalled()->willReturn(
             [
+                'code' => 'camera_set_autofocus',
+                'type' => 'product',
+                'priority' => 100,
                 'conditions' => [
                     [
                         'field'    => 'family.code',

@@ -91,14 +91,15 @@ define(
                     '<button class="btn delete-row" alt="Delete rule" type="button"><i class="icon-trash"></i> <%= delete_label %></button>' +
                 '</td>'
             ),
-            renderRuleParts: function(type) {
-                var renderedRuleParts = '';
+            renderRuleContentParts: function(type) {
+                var renderedRuleContentParts = '';
+                var ruleContentPart = this.model.attributes.content[type.toString()];
 
-                for (var key in this.model.attributes[type]) {
-                    renderedRuleParts += this.renderRulePart(this.model.attributes[type][key], type);
+                for (var key in ruleContentPart) {
+                    renderedRuleContentParts += this.renderRulePart(ruleContentPart[key], type);
                 }
 
-                return renderedRuleParts;
+                return renderedRuleContentParts;
             },
             renderRulePart: function(rulePart, type) {
                 var rulePartType = rulePart.type ? rulePart.type : 'field';
@@ -118,8 +119,8 @@ define(
                 });
             },
             renderTemplate: function() {
-                var renderedConditions = this.renderRuleParts('conditions');
-                var renderedActions    = this.renderRuleParts('actions');
+                var renderedConditions = this.renderRuleContentParts('conditions');
+                var renderedActions    = this.renderRuleContentParts('actions');
 
                 return this.template({
                     'rule':       this.model.toJSON(),

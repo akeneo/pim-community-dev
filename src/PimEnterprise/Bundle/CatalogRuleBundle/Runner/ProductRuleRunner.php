@@ -12,11 +12,11 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\BuilderInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use PimEnterprise\Bundle\RuleEngineBundle\Runner\AbstractRunner;
+use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
+use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -24,25 +24,37 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleRunner extends AbstractRunner
+class ProductRuleRunner implements DryRunnerInterface
 {
+    /** @var BuilderInterface */
+    protected $builder;
+
+    /** @var SelectorInterface */
+    protected $selector;
+
+    /** @var ApplierInterface */
+    protected $applier;
+
     /** @var string */
-    protected $productConditionClass;
+    protected $productCondClass;
 
     /**
      * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
-     * @param string            $productConditionClass should implement \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
+     * @param string            $productCondClass should implement
+     *                                            \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
      */
     public function __construct(
         BuilderInterface $builder,
         SelectorInterface $selector,
         ApplierInterface $applier,
-        $productConditionClass
+        $productCondClass
     ) {
-        parent::__construct($builder, $selector, $applier);
-        $this->productConditionClass = $productConditionClass;
+        $this->builder = $builder;
+        $this->selector = $selector;
+        $this->applier = $applier;
+        $this->productCondClass = $productCondClass;
     }
 
     /**
@@ -57,6 +69,16 @@ class ProductRuleRunner extends AbstractRunner
         if (!empty($subjects)) {
             $this->applier->apply($definition, $subjects);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dryRun(RuleDefinitionInterface $definition, array $options = [])
+    {
+        $options = $this->resolveOptions($options);
+        $definition = $this->loadRule($definition, $options);
+        $this->selector->select($definition);
     }
 
     /**
@@ -86,18 +108,18 @@ class ProductRuleRunner extends AbstractRunner
      * @param RuleDefinitionInterface $definition
      * @param array                   $options
      *
-     * @return \PimEnterprise\Bundle\RuleEngineBundle\Model\RuleInterface
+     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface
      */
     protected function loadRule(RuleDefinitionInterface $definition, array $options)
     {
         $definition = $this->builder->build($definition);
         if (!empty($options['selected_products'])) {
             /** @var ProductConditionInterface $condition */
-            $condition = new $this->productConditionClass([
-                    'field' => 'id',
-                    'operator' => 'IN',
-                    'value' => $options['selected_products']
-                ]);
+            $condition = new $this->productCondClass([
+                'field'    => 'id',
+                'operator' => 'IN',
+                'value'    => $options['selected_products']
+            ]);
             $definition->addCondition($condition);
         }
 

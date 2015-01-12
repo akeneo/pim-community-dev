@@ -1,0 +1,29 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation:
+    type: entity
+    table: pimee_catalog_rule_rule_relation
+    indexes:
+        resource_name_resource_id_idx:
+            columns:
+                - resource_name
+                - resource_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        resourceName:
+            type: string
+            column: resource_name
+        resourceId:
+            type: string
+            column: resource_id
+            length: 24
+    manyToOne:
+        rule:
+            targetEntity: Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+            joinColumn:
+                name: rule_id
+                referencedColumnName: id
+            joinColumn:
+                onDelete: CASCADE

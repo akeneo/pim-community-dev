@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
+use Akeneo\Component\Persistence\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleLinkedResourceManager;
-use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -26,11 +26,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class RuleController
 {
-    /** @var RuleLinkedResourceManager */
-    protected $linkedResManager;
+    /** @var RuleRelationManager */
+    protected $ruleRelationManager;
 
-    /** @var RuleDefinitionManager */
-    protected $ruleManager;
+    /** @var RemoverInterface */
+    protected $ruleRemover;
 
     /** @var RuleDefinitionRepositoryInterface */
     protected $ruleDefinitionRepo;
@@ -38,54 +38,38 @@ class RuleController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var string */
-    protected $attributeClass;
-
     /**
      * Constructor
      *
-     * @param RuleLinkedResourceManager         $linkedResManager
-     * @param RuleDefinitionManager             $ruleManager
+     * @param RuleRelationManager               $ruleRelationManager
+     * @param RemoverInterface                  $ruleRemover
      * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
      * @param NormalizerInterface               $normalizer
-     * @param string                            $attributeClass
      */
     public function __construct(
-        RuleLinkedResourceManager $linkedResManager,
-        RuleDefinitionManager $ruleManager,
+        RuleRelationManager $ruleRelationManager,
+        RemoverInterface $ruleRemover,
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
-        NormalizerInterface $normalizer,
-        $attributeClass
+        NormalizerInterface $normalizer
     ) {
-        $this->linkedResManager   = $linkedResManager;
-        $this->ruleManager        = $ruleManager;
+        $this->ruleRelationManager = $ruleRelationManager;
+        $this->ruleRemover        = $ruleRemover;
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->normalizer         = $normalizer;
-        $this->attributeClass     = $attributeClass;
     }
 
     /**
      * List all rules for the given resource
-     * @param string $resourceType
+     * @param string $resourceName
      * @param int    $resourceId
      *
      * @return JsonResponse
      *
      * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
      */
-    public function indexAction($resourceType, $resourceId)
+    public function indexAction($resourceName, $resourceId)
     {
-        switch ($resourceType) {
-            case 'attribute':
-                $resourceName = $this->attributeClass;
-                break;
-            default:
-                throw new NotFoundHttpException(sprintf('Resource type %s is unknown', $resourceType));
-
-        }
-
-        $rules = $this->linkedResManager->getRulesForAttribute($resourceId, $resourceName);
-
+        $rules = $this->ruleRelationManager->getRulesForResource($resourceId, $resourceName);
         $normalizedRules = $this->normalizer->normalize($rules, 'array');
 
         return new JsonResponse($normalizedRules);
@@ -94,7 +78,7 @@ class RuleController
     /**
      * Delete an rule of a resource
      *
-     * @param string $resourceType
+     * @param string $resourceName
      * @param int    $resourceId
      * @param int    $ruleId
      *
@@ -102,12 +86,16 @@ class RuleController
      *
      * @return JsonResponse
      */
-    public function deleteAction($resourceType, $resourceId, $ruleId)
+    public function deleteAction($resourceName, $resourceId, $ruleId)
     {
-        $rule = $this->ruleDefinitionRepo->findOneById($ruleId);
+        if (null === $rule = $this->ruleDefinitionRepo->find($ruleId)) {
+            throw new NotFoundHttpException(
+                sprintf('Rule definition with id "%s" can not be found.', (string) $ruleId)
+            );
+        }
 
         try {
-            $this->ruleManager->remove($rule);
+            $this->ruleRemover->remove($rule);
         } catch (\Exception $e) {
             return new JsonResponse(['message' => 'An error occured during the deletion of the rule.'], 500);
         }

@@ -50,7 +50,8 @@ class IsSmartFilter extends BooleanFilter
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
-        if (!$data) {
+
+        if (!$data || !isset($data['value'])) {
             return false;
         }
 

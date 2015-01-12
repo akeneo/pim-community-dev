@@ -385,7 +385,7 @@ class EnterpriseFeatureContext extends FeatureContext
     public function iExecuteTheProductRule($code)
     {
         $rule = $this->getSubcontext('fixtures')->getRule($code);
-        $runner = $this->getContainer()->get('pimee_rule_engine.runner.chained');
+        $runner = $this->getContainer()->get('akeneo_rule_engine.runner.chained');
         $runner->run($rule);
     }
 }

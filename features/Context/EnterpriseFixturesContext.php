@@ -2,18 +2,18 @@
 
 namespace Context;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use PimEnterprise\Bundle\RuleEngineBundle\Manager\RuleDefinitionManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use PimEnterprise\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Behat\Behat\Context\Step;
 
 /**
@@ -494,7 +494,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();
-            $content = json_decode($content, true);
             if (!isset($content['conditions'])) {
                 $content['conditions'] = [];
             }
@@ -506,7 +505,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $condition = [
                 'field' => $data['field'],
                 'operator' => $data['operator'],
-                // TODO: replace this dirty fix to use the same class than ProductRuleConditionNormalizer
+                // TODO: replace this dirty fix to use the same class than ConditionNormalizer
                 'value' => $data['value'],
             ];
             if ($data['locale']) {
@@ -519,8 +518,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $content['actions'] = [];
 
-            $rule->setContent(json_encode($content));
-            $manager = $this->getRuleManager();
+            $rule->setContent($content);
+            $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
     }
@@ -543,7 +542,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();
-            $content = json_decode($content, true);
             if (!isset($content['actions'])) {
                 $content['actions'] = [];
             }
@@ -552,12 +550,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $code]);
             $attributeType = $attribute->getAttributeType();
 
-            // TODO: replace this dirty fix to use the same class than ProductSetValueActionNormalizer
+            // TODO: replace this dirty fix to use the same class than SetValueActionNormalizer
             switch ($attributeType) {
                 case 'pim_catalog_text':
                 case 'pim_catalog_textarea':
                 case 'pim_catalog_date':
                 case 'pim_catalog_identifier':
+                case 'pim_catalog_simpleselect':
                     $value = (string) $data['value'];
                     break;
                 case 'pim_catalog_number':
@@ -568,18 +567,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = ['unit' => $values[1], 'data' => $values[0]];
                     break;
                 case 'pim_catalog_multiselect':
-                    $values = explode(',', $data['value']);
-                    $value = [];
-                    foreach ($values as $val) {
-                        $value[] = ['code' => $val, 'attribute' => $attribute->getCode()];
-                    }
+                    $value = explode(',', $data['value']);
                     break;
                 case 'pim_catalog_price_collection':
                     $values = explode(',', $data['value']);
                     $value = [['data' => $values[0], 'currency' => $values[1]]];
-                    break;
-                case 'pim_catalog_simpleselect':
-                    $value = ['code' => $data['value'], 'attribute' => $attribute->getCode()];
                     break;
                 case 'pim_catalog_boolean':
                     $value = (bool) $data['value'];
@@ -589,6 +581,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $values = explode(',', $data['value']);
                     $value = ['filePath' => $values[1], 'originalFilename' => $values[0]];
                     break;
+                default:
+                    throw new \LogicException(sprintf('Unknown attribute type "%s".', $attributeType));
             }
 
             $action = [
@@ -604,8 +598,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
             $content['actions'][] = $action;
 
-            $rule->setContent(json_encode($content));
-            $manager = $this->getRuleManager();
+            $rule->setContent($content);
+            $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
     }
@@ -628,7 +622,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();
-            $content = json_decode($content, true);
             if (!isset($content['actions'])) {
                 $content['actions'] = [];
             }
@@ -651,8 +644,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
             $content['actions'][] = $action;
 
-            $rule->setContent(json_encode($content));
-            $manager = $this->getRuleManager();
+            $rule->setContent($content);
+            $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
     }
@@ -660,13 +653,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
      *
      * @throws \InvalidArgumentException
      */
     public function getRule($code)
     {
-        $rule = $this->getRuleRepository()->findOneByCode($code);
+        $rule = $this->getRuleDefinitionRepository()->findOneByCode($code);
         if (!$rule) {
             throw new \InvalidArgumentException(sprintf('Could not find a rule with code "%s"', $code));
         }
@@ -677,16 +670,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @return RuleDefinitionRepositoryInterface
      */
-    protected function getRuleRepository()
+    protected function getRuleDefinitionRepository()
     {
-        return $this->getContainer()->get('pimee_rule_engine.repository.rule');
+        return $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
     }
 
     /**
-     * @return RuleDefinitionManager
+     * @return SaverInterface
      */
-    protected function getRuleManager()
+    protected function getRuleSaver()
     {
-        return $this->getContainer()->get('pimee_rule_engine.manager.rule_definition');
+        return $this->getContainer()->get('akeneo_rule_engine.saver.rule_definition');
     }
 }

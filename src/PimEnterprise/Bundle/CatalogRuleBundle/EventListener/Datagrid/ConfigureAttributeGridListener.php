@@ -17,7 +17,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 
 /**
- * Grid listner to configure the columns of attribute grid
+ * Grid listener to configure the columns of attribute grid
  *
  * @author Filips Alpe <filips@akeneo.com>
  */

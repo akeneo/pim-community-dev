@@ -110,9 +110,7 @@ Feature: Import rules
             actions:
                 - type:  set_value
                   field: manufacturer
-                  value:
-                      code:      Desigual
-                      attribute: manufacturer
+                  value: Desigual
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -140,8 +138,7 @@ Feature: Import rules
                 - type:  set_value
                   field: weather_conditions
                   value:
-                      - code: dry
-                        attribute: weather_conditions
+                      - dry
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -190,7 +187,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:  set_value
                   field: length
@@ -297,7 +294,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:  set_value
                   field: side_view
@@ -323,7 +320,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:        copy_value
                   from_field:  description
@@ -354,7 +351,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:        copy_value
                   from_field:  name
@@ -381,7 +378,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:       copy_value
                   from_field: release_date
@@ -409,7 +406,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:        copy_value
                   from_field:  length
@@ -433,7 +430,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:       copy_value
                   from_field: price
@@ -457,7 +454,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:       copy_value
                   from_field: weather_conditions
@@ -481,7 +478,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:       copy_value
                   from_field: manufacturer
@@ -505,7 +502,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:       copy_value
                   from_field: number_in_stock
@@ -533,7 +530,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:       copy_value
                   from_field: handmade
@@ -557,7 +554,7 @@ Feature: Import rules
     """
     rules:
         canon_beautiful_description:
-            conditions:
+            conditions: []
             actions:
                 - type:        copy_value
                   from_field:  side_view

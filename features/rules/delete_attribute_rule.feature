@@ -17,7 +17,7 @@ Feature: Delete a rule
       | rule                 | field         | value                | locale | scope  |
       | set_tees_description | description   | an other description | fr_FR  | tablet |
 
-  Scenario: Successfully show rules of an attribute
+  Scenario: Successfully delete rules of an attribute
     Given I am on the "description" attribute page
     And I visit the "Rules" tab
     And I delete the rule "set_tees_description"
