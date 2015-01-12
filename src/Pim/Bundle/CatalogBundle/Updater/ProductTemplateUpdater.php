@@ -31,7 +31,6 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
     {
         $updates = $template->getValuesData();
         // TODO unset identifier and axis updates and picture (not supported for now)
-
         foreach ($updates as $attributeCode => $values) {
             foreach ($values as $value) {
                 $this->productUpdater->setValue(

@@ -183,6 +183,7 @@ class ProductTransformer extends EntityTransformer
             }
         }
 
+        // TODO, add specs of this class !!!
         $this->setProductValuesFromVariantGroup($entity);
     }
 
