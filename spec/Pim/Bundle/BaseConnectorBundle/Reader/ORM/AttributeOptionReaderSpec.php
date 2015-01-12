@@ -9,15 +9,16 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class AttributeOptionReaderSpec extends ObjectBehavior {
-
+class AttributeOptionReaderSpec extends ObjectBehavior
+{
     function let(
         EntityManager $entityManager
     ) {
         $this->beConstructedWith($entityManager, 'Pim\Bundle\CatalogBundle\Entity\AttributeOption');
     }
 
-    function it_should_be_a_reader() {
+    function it_should_be_a_reader()
+    {
         $this->shouldImplement('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\Reader');
     }
 
@@ -35,4 +36,4 @@ class AttributeOptionReaderSpec extends ObjectBehavior {
 
         $this->getQuery()->shouldNotBeNull();
     }
-} 
+}

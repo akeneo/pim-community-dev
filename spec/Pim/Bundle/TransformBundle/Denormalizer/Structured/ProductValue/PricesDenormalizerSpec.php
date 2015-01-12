@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class PricesDenormalizerSpec extends ObjectBehavior
 {

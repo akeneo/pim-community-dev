@@ -6,8 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
-use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class BaseSaverSpec extends ObjectBehavior
 {

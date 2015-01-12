@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Remover\BaseRemovingOptionsResolver;
-use Prophecy\Argument;
 
 class BaseRemoverSpec extends ObjectBehavior
 {

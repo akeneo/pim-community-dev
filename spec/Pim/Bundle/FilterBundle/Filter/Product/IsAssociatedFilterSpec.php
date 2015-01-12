@@ -66,7 +66,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
 
 class CustomAssociationTypeRepository extends AssociationTypeRepository
 {
-    public function findOneByCode()
+    function findOneByCode()
     {
         return null;
     }

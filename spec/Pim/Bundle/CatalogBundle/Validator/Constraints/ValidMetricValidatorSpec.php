@@ -23,7 +23,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
                         'kg' => ''
                     ]
                 ]
-            
+
             ]
         ];
         $this->beConstructedWith($accessor, $measures);

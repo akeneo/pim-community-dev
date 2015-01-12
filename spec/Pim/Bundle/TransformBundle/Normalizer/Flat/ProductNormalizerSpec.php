@@ -19,35 +19,35 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    public function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
+    function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
         $this->setFilters([$filter]);
     }
 
-    public function it_is_a_serializer_aware_normalizer()
+    function it_is_a_serializer_aware_normalizer()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    public function it_supports_csv_normalization_of_product(ProductInterface $product)
+    function it_supports_csv_normalization_of_product(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'csv')->shouldBe(true);
     }
 
-    public function it_supports_flat_normalization_of_product(ProductInterface $product)
+    function it_supports_flat_normalization_of_product(ProductInterface $product)
     {
         $this->supportsNormalization($product, 'flat')->shouldBe(true);
     }
 
-    public function it_does_not_support_csv_normalization_of_integer()
+    function it_does_not_support_csv_normalization_of_integer()
     {
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    public function it_normalizes_product(
+    function it_normalizes_product(
         $filter,
         ProductInterface $product,
         AttributeInterface $skuAttribute,
@@ -86,7 +86,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_normalizes_product_with_associations(
+    function it_normalizes_product_with_associations(
         $filter,
         ProductInterface $product,
         AttributeInterface $skuAttribute,
@@ -156,7 +156,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_normalizes_product_with_a_multiselect_value(
+    function it_normalizes_product_with_a_multiselect_value(
         $filter,
         $serializer,
         ProductInterface $product,
@@ -209,7 +209,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_normalizes_product_with_price(
+    function it_normalizes_product_with_price(
         $filter,
         ProductInterface $product,
         AttributeInterface $priceAttribute,

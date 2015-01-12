@@ -2,10 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes;
 
 class ProductMassEditOperatorSpec extends ObjectBehavior

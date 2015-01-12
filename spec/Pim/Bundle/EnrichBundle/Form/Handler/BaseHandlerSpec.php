@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Form\FormInterface;

@@ -12,7 +12,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, AttributeInterface $simpleAttribute) {
+    function let(SerializerInterface $serializer, AttributeInterface $simpleAttribute)
+    {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
 

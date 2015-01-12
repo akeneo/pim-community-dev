@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;

@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AclVisibilityCheckerSpec extends ObjectBehavior
 {

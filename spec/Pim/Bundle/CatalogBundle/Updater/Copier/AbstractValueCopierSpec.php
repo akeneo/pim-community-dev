@@ -138,7 +138,7 @@ class AbstractValueCopierSpec extends ObjectBehavior
 
 class ConcreteValueCopier extends AbstractValueCopier
 {
-    public function copyValue(
+    function copyValue(
         array $products,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
@@ -150,12 +150,12 @@ class ConcreteValueCopier extends AbstractValueCopier
         // needs to be implemented
     }
 
-    public function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
+    function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'concrete');
     }
 
-    public function testUnitFamily(AttributeInterface $from, AttributeInterface $to)
+    function testUnitFamily(AttributeInterface $from, AttributeInterface $to)
     {
         $this->checkUnitFamily($from, $to, 'concrete');
     }

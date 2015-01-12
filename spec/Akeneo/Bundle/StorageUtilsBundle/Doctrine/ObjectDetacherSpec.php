@@ -4,9 +4,7 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ObjectDetacherSpec extends ObjectBehavior
 {

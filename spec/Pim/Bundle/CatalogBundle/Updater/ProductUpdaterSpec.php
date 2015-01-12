@@ -44,7 +44,7 @@ class ProductUpdaterSpec extends ObjectBehavior
         $this->setValue($products, 'field', 'data', 'fr_FR', 'ecommerce');
     }
 
-    function it_throws_an_exception_when_it_sets_an_unknown_field( $attributeRepository, ProductInterface $product)
+    function it_throws_an_exception_when_it_sets_an_unknown_field($attributeRepository, ProductInterface $product)
     {
         $attributeRepository->findOneBy(Argument::any())->willReturn(null);
         $this->shouldThrow(new \LogicException('Unknown attribute "unknown_field".'))->during(
@@ -73,7 +73,7 @@ class ProductUpdaterSpec extends ObjectBehavior
         $this->copyValue($products, 'from_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope');
     }
 
-    function it_throws_an_exception_when_it_copies_an_unknown_field( $attributeRepository, ProductInterface $product)
+    function it_throws_an_exception_when_it_copies_an_unknown_field($attributeRepository, ProductInterface $product)
     {
         $attributeRepository->findOneBy(Argument::any())->willReturn(null);
         $this->shouldThrow(new \LogicException('Unknown attribute "unknown_field".'))->during(

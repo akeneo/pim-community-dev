@@ -3,16 +3,11 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
-use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
 {
@@ -50,7 +45,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $taxAttribute->isLocaleSpecific()->willReturn(true);
         $taxAttribute->getLocaleSpecificCodes()->willReturn(['fr_FR']);
         $form->remove('tax')->shouldBeCalled();
-         
+
         $this->preSetData($event);
     }
 
@@ -73,7 +68,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $taxAttribute->getLocaleSpecificCodes()->willReturn(['fr_FR', 'en_US']);
 
         $form->remove('tax')->shouldNotBeCalled();
-         
+
         $this->preSetData($event);
     }
 
@@ -90,7 +85,7 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         $nameValue->getAttribute()->willReturn($nameAttribute);
         $nameAttribute->isLocaleSpecific()->willReturn(false);
         $form->remove('name')->shouldNotBeCalled();
-         
+
         $this->preSetData($event);
     }
 }

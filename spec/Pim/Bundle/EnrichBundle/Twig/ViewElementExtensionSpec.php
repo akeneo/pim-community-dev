@@ -185,7 +185,7 @@ class ViewElementExtensionSpec extends ObjectBehavior
         $this->getViewElementAliases([], 'foo')->shouldReturn([]);
     }
 
-    public function getMatchers()
+    function getMatchers()
     {
         return [
             'haveTwigMethod' => function ($subject, $name, $method, $needsContext, $safe) {
