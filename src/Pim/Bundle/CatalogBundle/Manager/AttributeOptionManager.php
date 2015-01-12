@@ -10,6 +10,7 @@ use Akeneo\Component\Persistence\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -68,8 +69,7 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
 
     /**
      * Create an attribute option value
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
+     * @return AttributeOptionValueInterface
      */
     public function createAttributeOptionValue()
     {

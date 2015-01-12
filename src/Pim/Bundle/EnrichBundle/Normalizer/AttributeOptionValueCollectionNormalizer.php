@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 /**
  * Attribute normalizer for private api
@@ -40,7 +40,7 @@ class AttributeOptionValueCollectionNormalizer implements NormalizerInterface, S
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Collection &&
-            $data->first() instanceof AttributeOptionValue &&
+            $data->first() instanceof AttributeOptionValueInterface &&
             $format === 'array';
     }
 

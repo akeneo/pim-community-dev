@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 /**
  * Attribute option value normalizer
@@ -31,6 +31,6 @@ class AttributeOptionValueNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOptionValue && $format === 'array';
+        return $data instanceof AttributeOptionValueInterface && $format === 'array';
     }
 }

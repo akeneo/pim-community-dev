@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
@@ -195,7 +196,7 @@ class AttributeOption implements ReferableInterface, AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function addOptionValue(AttributeOptionValue $value)
+    public function addOptionValue(AttributeOptionValueInterface $value)
     {
         $this->optionValues[] = $value;
         $value->setOption($this);
@@ -206,7 +207,7 @@ class AttributeOption implements ReferableInterface, AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function removeOptionValue(AttributeOptionValue $value)
+    public function removeOptionValue(AttributeOptionValueInterface $value)
     {
         $this->optionValues->removeElement($value);
 

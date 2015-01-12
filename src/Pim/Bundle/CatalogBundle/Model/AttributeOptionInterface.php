@@ -1,8 +1,6 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-
 /**
  * Attribute options
  *
@@ -46,6 +44,7 @@ interface AttributeOptionInterface
 
     /**
      * Get values
+     *
      * @return \ArrayAccess
      */
     public function getOptionValues();
@@ -77,7 +76,8 @@ interface AttributeOptionInterface
 
     /**
      * Get sort order
-     * @return integer
+     *
+     * @return int
      */
     public function getSortOrder();
 
@@ -98,32 +98,33 @@ interface AttributeOptionInterface
 
     /**
      * Returns the current translation
-     * @return AttributeOptionValue
+     *
+     * @return AttributeOptionValueInterface
      */
     public function getTranslation();
 
     /**
      * Add option value
      *
-     * @param AttributeOptionValue $value
+     * @param AttributeOptionValueInterface $value
      *
      * @return AttributeOptionInterface
      */
-    public function addOptionValue(AttributeOptionValue $value);
+    public function addOptionValue(AttributeOptionValueInterface $value);
 
     /**
      * Remove value
      *
-     * @param AttributeOptionValue $value
+     * @param AttributeOptionValueInterface $value
      *
      * @return AttributeOptionInterface
      */
-    public function removeOptionValue(AttributeOptionValue $value);
+    public function removeOptionValue(AttributeOptionValueInterface $value);
 
     /**
      * Get localized value
      *
-     * @return AttributeOptionValue
+     * @return AttributeOptionValueInterface
      */
     public function getOptionValue();
 

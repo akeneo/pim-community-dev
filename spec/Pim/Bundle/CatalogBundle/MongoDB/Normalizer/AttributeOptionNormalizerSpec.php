@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
@@ -23,8 +24,8 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_attribute_option(
         AttributeOptionInterface $option,
-        AttributeOptionValue $valueUs,
-        AttributeOptionValue $valueFr
+        AttributeOptionValueInterface $valueUs,
+        AttributeOptionValueInterface $valueFr
     ) {
         $option->getId()->willReturn(42);
         $option->getCode()->willReturn('red');

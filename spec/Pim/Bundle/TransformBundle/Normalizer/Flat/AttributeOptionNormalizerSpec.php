@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
@@ -40,8 +41,8 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_the_whole_option(
         AttributeOptionInterface $option,
         AttributeInterface $attribute,
-        AttributeOptionValue $valueEn,
-        AttributeOptionValue $valueFr
+        AttributeOptionValueInterface $valueEn,
+        AttributeOptionValueInterface $valueFr
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
@@ -69,8 +70,8 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_the_whole_option_and_ignore_disabled_locales(
         AttributeOptionInterface $option,
         AttributeInterface $attribute,
-        AttributeOptionValue $valueEn,
-        AttributeOptionValue $valueFr
+        AttributeOptionValueInterface $valueEn,
+        AttributeOptionValueInterface $valueFr
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
@@ -97,9 +98,9 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     function it_provides_all_locales_if_no_list_provided_in_context(
         AttributeOptionInterface $option,
         AttributeInterface $attribute,
-        AttributeOptionValue $valueEn,
-        AttributeOptionValue $valueFr,
-        AttributeOptionValue $valueDe
+        AttributeOptionValueInterface $valueEn,
+        AttributeOptionValueInterface $valueFr,
+        AttributeOptionValueInterface $valueDe
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);

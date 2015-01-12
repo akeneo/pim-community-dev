@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute option values
@@ -14,10 +15,10 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeOptionValue
+class AttributeOptionValue implements AttributeOptionValueInterface
 {
     /**
-     * @var integer $id
+     * @var int $id
      */
     protected $id;
 
@@ -28,6 +29,7 @@ class AttributeOptionValue
 
     /**
      * LocaleInterface scope
+     *
      * @var string $locale
      */
     protected $locale;
@@ -38,9 +40,7 @@ class AttributeOptionValue
     protected $value;
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -48,11 +48,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AttributeOptionValue
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -62,11 +58,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Set option
-     *
-     * @param AttributeOptionInterface $option
-     *
-     * @return AttributeOptionValue
+     * {@inheritdoc}
      */
     public function setOption(AttributeOptionInterface $option)
     {
@@ -76,9 +68,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Get option
-
-     * @return AttributeOptionInterface
+     * {@inheritdoc}
      */
     public function getOption()
     {
@@ -86,8 +76,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Get used locale
-     * @return string $locale
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -95,10 +84,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Set used locale
-     * @param string $locale
-     *
-     * @return AttributeOptionValue
+     * {@inheritdoc}
      */
     public function setLocale($locale)
     {
@@ -108,11 +94,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return AttributeOptionValue
+     * {@inheritdoc}
      */
     public function setValue($value)
     {
@@ -122,9 +104,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Get value
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getValue()
     {
@@ -132,9 +112,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Returns the label of the attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -142,11 +120,7 @@ class AttributeOptionValue
     }
 
     /**
-     * Sets the label
-     *
-     * @param string $label
-     *
-     * @return AttributeOptionValue
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
