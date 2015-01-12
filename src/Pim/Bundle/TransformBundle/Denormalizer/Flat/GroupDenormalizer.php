@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\PersistentCollection;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -90,7 +91,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
      */
     protected function setAxis(GroupInterface $group, $data)
     {
-        if (isset($data['axis']) && !empty($data['axis']) && $group->getId() === null) {
+        if (isset($data['axis']) && !empty($data['axis'])) {
             $axisCodes = explode(',', $data['axis']);
             $attributes = [];
             foreach ($axisCodes as $code) {

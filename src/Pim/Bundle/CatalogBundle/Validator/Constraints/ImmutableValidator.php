@@ -47,10 +47,9 @@ class ImmutableValidator extends ConstraintValidator
             $originalValue = $accessor->getValue($originalData, sprintf('[%s]', $property));
             if (null !== $originalValue) {
                 $newValue = $accessor->getValue($entity, $property);
-
-                if ($originalValue !== $newValue ||
-                    ($newValue instanceof PersistentCollection && $newValue->isDirty())
-                ) {
+                $isDifferent = $originalValue !== $newValue;
+                $isDirtyCollection = ($newValue instanceof PersistentCollection && $newValue->isDirty());
+                if ($isDifferent || $isDirtyCollection) {
                     $this->context->addViolationAt($property, $constraint->message);
                 }
             }
