@@ -5,7 +5,6 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -129,6 +128,7 @@ class ProductTransformer extends EntityTransformer
     {
         $this->setProductProperties($class, $entity, $data);
         $this->setProductValues($class, $entity, $data);
+        $this->setProductValuesFromVariantGroup($entity);
         $this->setAssociations($entity, $data);
     }
 
@@ -182,9 +182,6 @@ class ProductTransformer extends EntityTransformer
                 }
             }
         }
-
-        // TODO, add specs of this class !!!
-        $this->setProductValuesFromVariantGroup($entity);
     }
 
     /**
