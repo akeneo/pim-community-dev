@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\TransformBundle\Builder;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
@@ -27,8 +27,8 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_association_type_field_names(
         $managerRegistry,
         AssociationTypeRepository $repository,
-        AssociationType $assocType1,
-        AssociationType $assocType2
+        AssociationTypeInterface $assocType1,
+        AssociationTypeInterface $assocType2
     ) {
         $assocType1->getCode()->willReturn("ASSOC_TYPE_1");
         $assocType2->getCode()->willReturn("ASSOC_TYPE_2");

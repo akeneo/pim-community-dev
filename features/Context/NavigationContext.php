@@ -6,6 +6,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
@@ -490,11 +491,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param AssociationType $associationType
-     *
+     * @param AssociationTypeInterface $associationType
      * @Given /^I should be on the ("([^"]*)" association type) page$/
      */
-    public function iShouldBeOnTheAssociationTypePage(AssociationType $associationType)
+    public function iShouldBeOnTheAssociationTypePage(AssociationTypeInterface $associationType)
     {
         $expectedAddress = $this->getPage('AssociationType edit')->getUrl(array('id' => $associationType->getId()));
         $this->assertAddress($expectedAddress);

@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
  * Abstract association entity
@@ -20,7 +19,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var int|string */
     protected $id;
 
-    /** @var AssociationType */
+    /** @var AssociationTypeInterface */
     protected $associationType;
 
     /** @var ProductInterface */
@@ -55,7 +54,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociationType(AssociationType $associationType)
+    public function setAssociationType(AssociationTypeInterface $associationType)
     {
         $this->associationType = $associationType;
 

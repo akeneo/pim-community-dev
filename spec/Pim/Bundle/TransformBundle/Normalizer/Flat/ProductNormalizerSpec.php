@@ -4,8 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -93,9 +92,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         AttributeInterface $skuAttribute,
         ProductValueInterface $sku,
         Association $myCrossSell,
-        AssociationType $crossSell,
+        AssociationTypeInterface $crossSell,
         Association $myUpSell,
-        AssociationType $upSell,
+        AssociationTypeInterface $upSell,
         GroupInterface $associatedGroup1,
         GroupInterface $associatedGroup2,
         ProductInterface $associatedProduct1,

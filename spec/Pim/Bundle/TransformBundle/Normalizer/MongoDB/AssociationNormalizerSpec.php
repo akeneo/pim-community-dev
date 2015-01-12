@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -42,7 +42,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_without_product_or_group(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef
     ) {
@@ -67,7 +67,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_with_products(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
         ProductInterface $product1,
@@ -102,7 +102,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_with_groups(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
         GroupInterface $group1,
@@ -133,7 +133,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_with_products_and_groups(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
         ProductInterface $product1,

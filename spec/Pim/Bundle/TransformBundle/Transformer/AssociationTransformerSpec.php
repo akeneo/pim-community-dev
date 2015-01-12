@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Transformer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Prophecy\Argument;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
@@ -11,7 +12,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer;
@@ -27,7 +27,7 @@ class AssociationTransformerSpec extends ObjectBehavior
         $doctrine,
         EntityManager $em,
         ReferableEntityRepositoryInterface $repository,
-        AssociationType $pack,
+        AssociationTypeInterface $pack,
         ProductInterface $mug,
         $colInfoTransformer,
         ColumnInfo $columnInfo,
@@ -69,7 +69,7 @@ class AssociationTransformerSpec extends ObjectBehavior
         $doctrine,
         EntityManager $em,
         ReferableEntityRepositoryInterface $repository,
-        AssociationType $pack
+        AssociationTypeInterface $pack
     ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
         $data  = ['owner' => 'mug-001'];
