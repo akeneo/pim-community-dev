@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
 
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
@@ -14,12 +15,19 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {
-    function let(AttributeRepository $repository, QueryFilterRegistryInterface $filterRegistry, QuerySorterRegistryInterface $sorterRegistry, QueryBuilder $qb)
-    {
-        $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry, ['locale' => 'en_US', 'scope' => 'print']);
+    function let(
+        AttributeRepository $repository,
+        QueryFilterRegistryInterface $filterRegistry,
+        QuerySorterRegistryInterface $sorterRegistry,
+        CursorFactoryInterface $cursorFactory,
+        QueryBuilder $qb
+    ) {
+        $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry, $cursorFactory,
+            ['locale' => 'en_US', 'scope' => 'print']);
         $this->setQueryBuilder($qb);
     }
 
@@ -39,15 +47,20 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addFilter('id', '=', '42', []);
     }
 
-    function it_adds_an_attribute_filter($repository, $filterRegistry, AttributeFilterInterface $filter, AttributeInterface $attribute)
-    {
+    function it_adds_an_attribute_filter(
+        $repository,
+        $filterRegistry,
+        AttributeFilterInterface $filter,
+        AttributeInterface $attribute
+    ) {
         $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
         $filterRegistry->getAttributeFilter($attribute)->willReturn($filter);
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $filter->addAttributeFilter($attribute, '=', '42', 'en_US', 'print', ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku'])->shouldBeCalled();
+        $filter->addAttributeFilter($attribute, '=', '42', 'en_US', 'print',
+            ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku'])->shouldBeCalled();
 
         $this->addFilter('sku', '=', '42', []);
     }
@@ -62,8 +75,12 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addSorter('id', 'DESC', []);
     }
 
-    function it_adds_an_attribute_sorter($repository, $sorterRegistry, AttributeSorterInterface $sorter, AttributeInterface $attribute)
-    {
+    function it_adds_an_attribute_sorter(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
         $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
         $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
@@ -82,11 +99,15 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->setQueryBuilder($qb)->shouldReturn($this);
     }
 
-    function it_executes_the_query($qb, AbstractQuery $query)
-    {
+    function it_executes_the_query(
+        $qb,
+        AbstractQuery $query,
+        CursorFactoryInterface $cursorFactory,
+        CursorInterface $cursor
+    ) {
         $qb->getQuery()->willReturn($query);
-        $query->execute()->shouldBeCalled();
+        $cursorFactory->createCursor(Argument::any())->shouldBeCalled()->willReturn($cursor);
 
-        $this->execute();
+        $this->execute()->shouldReturn($cursor);
     }
 }
