@@ -1,6 +1,6 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
+        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2', 'tinymce'],
         function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator) {
             'use strict';
 
@@ -77,6 +77,7 @@
                 $('div.submit-form a').click(function() {
                     var action = $(this).attr('value');
                     $('#{{ form.vars.id }}').attr('action', $('#{{ form.vars.id }}').attr('action') +"&action="+ action);
+                    tinymce.triggerSave();
                     $('#{{ form.vars.id }}').submit();
                 });
 
