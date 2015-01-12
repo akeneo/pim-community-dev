@@ -38,9 +38,9 @@ Feature: Edit a product
 
   Scenario: Successfully edit a product description, and back to grid after save.
     Given I am on the "sandal" product page
-    And the english ecommerce description of "sandal" should be "My awesome description"
+    And the english description of "sandal" should be "My awesome description"
     And I change the "Description" to "My new cool and awesome description"
     When I press "Save and back to grid" on the "Save" dropdown button
     Then I should be on the products page
-    Then I am on the "sandal" product page
-    And the english ecommerce description of "sandal" should be "My new cool and awesome description"
+    And I wait 3 seconds
+    And the english description of "sandal" should be "My new cool and awesome description"
