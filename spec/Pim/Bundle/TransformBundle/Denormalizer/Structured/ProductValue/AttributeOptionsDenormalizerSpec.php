@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -39,8 +40,8 @@ class AttributeOptionsDenormalizerSpec extends ObjectBehavior
     function it_returns_the_requested_attribute_options(
         $serializer,
         AttributeInterface $color,
-        AttributeOption $red,
-        AttributeOption $blue
+        AttributeOptionInterface $red,
+        AttributeOptionInterface $blue
     ) {
         $color->getCode()->willReturn('color');
 

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -40,18 +40,18 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOption && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Returns an array containing the label values
      *
-     * @param AttributeOption $entity
-     * @param array           $context
+     * @param AttributeOptionInterface $entity
+     * @param array                    $context
      *
      * @return array
      */
-    protected function normalizeLabel(AttributeOption $entity, $context)
+    protected function normalizeLabel(AttributeOptionInterface $entity, $context)
     {
         $locales = isset($context['locales']) ? $context['locales'] : [];
         $labels = array_fill_keys($locales, '');

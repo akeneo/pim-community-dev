@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer;
 use Prophecy\Argument;
@@ -25,7 +26,7 @@ class AttributeOptionsDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_attribute_options($denormalizer, ProductValueInterface $productValueInterface, AttributeInterface $abstractAttribute, AttributeOption $red, AttributeOption $blue, AttributeOption $green)
+    function it_denormalizes_attribute_options($denormalizer, ProductValueInterface $productValueInterface, AttributeInterface $abstractAttribute, AttributeOptionInterface $red, AttributeOptionInterface $blue, AttributeOptionInterface $green)
     {
         $data = '1,2,3';
         $context['value'] = $productValueInterface;

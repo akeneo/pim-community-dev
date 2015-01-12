@@ -7,8 +7,9 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\SaverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -55,8 +56,8 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
 
     /**
      * Create an attribute option
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
+
+     * @return AttributeOptionInterface
      */
     public function createAttributeOption()
     {
@@ -102,10 +103,10 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof AttributeOption) {
+        if (!$object instanceof AttributeOptionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );
@@ -123,10 +124,10 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof AttributeOption) {
+        if (!$object instanceof AttributeOptionInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );

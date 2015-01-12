@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -164,8 +165,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         AttributeInterface $colorsAttribute,
         ProductValueInterface $sku,
         ProductValueInterface $colors,
-        AttributeOption $red,
-        AttributeOption $blue,
+        AttributeOptionInterface $red,
+        AttributeOptionInterface $blue,
         Collection $values,
         FamilyInterface $family
     ) {

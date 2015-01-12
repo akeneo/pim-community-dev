@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
@@ -14,12 +15,12 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_xml_normalization_of_attribute_option(AttributeOption $option)
+    function it_supports_xml_normalization_of_attribute_option(AttributeOptionInterface $option)
     {
         $this->supportsNormalization($option, 'xml')->shouldBe(true);
     }
 
-    function it_supports_json_normalization_of_attribute_option(AttributeOption $option)
+    function it_supports_json_normalization_of_attribute_option(AttributeOptionInterface $option)
     {
         $this->supportsNormalization($option, 'json')->shouldBe(true);
     }
@@ -29,7 +30,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(1, 'json')->shouldBe(false);
     }
 
-    function it_normalizes_option_code_when_product_entity_is_provided(AttributeOption $option)
+    function it_normalizes_option_code_when_product_entity_is_provided(AttributeOptionInterface $option)
     {
         $option->getCode()->willReturn('red');
 
@@ -37,7 +38,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_whole_option(
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         AttributeInterface $attribute,
         AttributeOptionValue $valueEn,
         AttributeOptionValue $valueFr
@@ -64,7 +65,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_whole_option_and_ignore_disabled_locales(
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         AttributeInterface $attribute,
         AttributeOptionValue $valueEn,
         AttributeOptionValue $valueFr
@@ -91,7 +92,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_provides_all_locales_if_no_list_provided_in_context(
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         AttributeInterface $attribute,
         AttributeOptionValue $valueEn,
         AttributeOptionValue $valueFr,

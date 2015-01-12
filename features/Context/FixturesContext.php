@@ -3,6 +3,7 @@
 namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -1698,7 +1699,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param string $code
      *
-     * @return AttributeOption
+     * @return AttributeOptionInterface
      */
     protected function createOption($code)
     {

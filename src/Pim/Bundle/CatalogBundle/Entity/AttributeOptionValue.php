@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 /**
  * Attribute option values
@@ -21,7 +22,7 @@ class AttributeOptionValue
     protected $id;
 
     /**
-     * @var AttributeOption $option
+     * @var AttributeOptionInterface $option
      */
     protected $option;
 
@@ -63,11 +64,11 @@ class AttributeOptionValue
     /**
      * Set option
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return AttributeOptionValue
      */
-    public function setOption(AttributeOption $option)
+    public function setOption(AttributeOptionInterface $option)
     {
         $this->option = $option;
 
@@ -76,8 +77,8 @@ class AttributeOptionValue
 
     /**
      * Get option
-     *
-     * @return AttributeOption
+
+     * @return AttributeOptionInterface
      */
     public function getOption()
     {

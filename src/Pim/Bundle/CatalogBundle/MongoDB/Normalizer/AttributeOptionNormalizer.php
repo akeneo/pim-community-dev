@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -41,6 +41,6 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOption && 'mongodb_json' === $format;
+        return $data instanceof AttributeOptionInterface && 'mongodb_json' === $format;
     }
 }
