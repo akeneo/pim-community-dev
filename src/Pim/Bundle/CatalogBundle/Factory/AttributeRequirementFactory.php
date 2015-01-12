@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Factory;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 
 /**
  * Attribute requirement factory
@@ -22,7 +23,7 @@ class AttributeRequirementFactory
      * @param Channel            $channel
      * @param boolean            $required
      *
-     * @return AttributeRequirement
+     * @return AttributeRequirementInterface
      */
     public function createAttributeRequirement(AttributeInterface $attribute, Channel $channel, $required)
     {

@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
@@ -204,14 +204,14 @@ class CompletenessManager
     /**
      * Adds a requirement to the completenesses
      *
-     * @param array                &$completenesses
-     * @param AttributeRequirement $requirement
-     * @param ArrayCollection      $productValues
-     * @param array                $localeCodes
+     * @param array                         &$completenesses
+     * @param AttributeRequirementInterface $requirement
+     * @param ArrayCollection               $productValues
+     * @param array                         $localeCodes
      */
     protected function addRequirementToCompleteness(
         array &$completenesses,
-        AttributeRequirement $requirement,
+        AttributeRequirementInterface $requirement,
         ArrayCollection $productValues,
         array $localeCodes
     ) {

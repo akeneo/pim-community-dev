@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
@@ -85,11 +84,11 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Add attribute requirement
      *
-     * @param AttributeRequirement $requirement
+     * @param AttributeRequirementInterface $requirement
      *
      * @return FamilyInterface
      */
-    public function addAttributeRequirement(AttributeRequirement $requirement);
+    public function addAttributeRequirement(AttributeRequirementInterface $requirement);
 
     /**
      * Set attribute requirements
@@ -133,11 +132,11 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get attribute requirement key
      *
-     * @param AttributeRequirement $requirement
+     * @param AttributeRequirementInterface $requirement
      *
      * @return string
      */
-    public function getAttributeRequirementKey(AttributeRequirement $requirement);
+    public function getAttributeRequirementKey(AttributeRequirementInterface $requirement);
 
     /**
      * @return array
