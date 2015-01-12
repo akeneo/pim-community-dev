@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
@@ -34,7 +34,7 @@ class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
         CreateProductValueFormEvent $event,
         ProductValueInterface $value,
         AttributeInterface $sku,
-        AttributeGroup $group,
+        AttributeGroupInterface $group,
         $context
     ) {
         $event->getProductValue()->willReturn($value);
@@ -53,7 +53,7 @@ class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
         CreateProductValueFormEvent $event,
         ProductValueInterface $value,
         AttributeInterface $sku,
-        AttributeGroup $group,
+        AttributeGroupInterface $group,
         $context
     ) {
         $event->getProductValue()->willReturn($value);

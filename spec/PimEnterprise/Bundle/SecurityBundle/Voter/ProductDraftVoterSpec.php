@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
@@ -55,7 +55,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
         UserInterface $user,
         TokenInterface $token,
         ProductDraft $draft,
-        AttributeGroup $group
+        AttributeGroupInterface $group
     ) {
         $token->getUser()->willReturn($user);
         $draft->getChanges()->willReturn($this->getChanges(['description']));
@@ -75,8 +75,8 @@ class ProductDraftVoterSpec extends ObjectBehavior
         UserInterface $user,
         TokenInterface $token,
         ProductDraft $draft,
-        AttributeGroup $groupGranted,
-        AttributeGroup $groupDenied
+        AttributeGroupInterface $groupGranted,
+        AttributeGroupInterface $groupDenied
     ) {
         $token->getUser()->willReturn($user);
         $draft->getChanges()->willReturn($this->getChanges(['description', 'price']));
