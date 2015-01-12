@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
@@ -83,7 +83,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
     public function addDefaultUserGroupForAttributeGroup(GenericEvent $event)
     {
         $object = $event->getSubject();
-        if ($object instanceof AttributeGroup) {
+        if ($object instanceof AttributeGroupInterface) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
             $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES, true);
         }
