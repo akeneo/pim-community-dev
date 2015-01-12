@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -120,7 +121,7 @@ class ProductDraftVoter implements VoterInterface
     /**
      * @param ProductDraft $draft
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup[]
+     * @return AttributeGroupInterface
      */
     protected function getAttributeGroupsImpactedByADraft(ProductDraft $draft)
     {
