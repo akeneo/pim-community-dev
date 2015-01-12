@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
