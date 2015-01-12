@@ -12,7 +12,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface AssociationTypeInterface extends TranslatableInterface, ReferableInterface,
-    VersionableInterface, TimestampableInterface
+ VersionableInterface, TimestampableInterface
 {
     /**
      * Get id
