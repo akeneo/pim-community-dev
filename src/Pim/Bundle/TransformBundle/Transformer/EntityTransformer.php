@@ -62,7 +62,7 @@ class EntityTransformer implements EntityTransformerInterface
     /**
      * Constructor
      *
-     * @param RegistryInterface              $doctrine
+     * @param ManagerRegistry                $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $colInfoTransformer

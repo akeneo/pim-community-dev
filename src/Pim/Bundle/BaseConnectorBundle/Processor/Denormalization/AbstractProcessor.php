@@ -20,7 +20,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * - fetch an existing object or create it
  * - denormalize item to update the object
  * - validate the object
- * - skip the object it contains invalid data
+ * - skip the object if it contains invalid data
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -134,9 +134,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /**
      * Detaches the object from the unit of work
      *
-     * Detach an object from theUOW is the responsibility of the writer, but to do so, it should knows the
-     * skipped items, another valid option could be to use explicit persist strategy, means no persist,
-     * no flush
+     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should knows the
+     * skipped items or we should use an explicit persist strategy
      *
      * @param mixed $object
      */
@@ -152,8 +151,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param \Exception $previousException
      * @param string     $message
      *
-     * TODO previous optional !
-     * TODO naming from Batch ?
      * TODO : replace handleExceptionOnItem by this one
      *
      * @throws InvalidItemException
@@ -194,8 +191,9 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 "%s: %s: %s\n",
                 $violation->getPropertyPath(),
                 $violation->getMessage(),
-                $violation->getInvalidValue() // TODO only useful for product value ?
-                // TODO re-format the message sometimes, property path doesnt exist for class constraint for instance cf VariantGroupAxis
+                $violation->getInvalidValue()
+                // TODO re-format the message, property path doesn't exist for class constraint
+                // for instance cf VariantGroupAxis
             );
         }
 

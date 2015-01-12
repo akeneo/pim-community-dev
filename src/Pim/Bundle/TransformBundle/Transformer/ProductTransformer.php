@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Specialized ORMTransformer for products
+ * Specialized transformer for products
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -63,7 +63,7 @@ class ProductTransformer extends EntityTransformer
     /**
      * Constructor
      *
-     * @param RegistryInterface               $doctrine
+     * @param ManagerRegistry                 $doctrine
      * @param PropertyAccessorInterface       $propertyAccessor
      * @param GuesserInterface                $guesser
      * @param ColumnInfoTransformerInterface  $colInfoTransformer
@@ -189,14 +189,12 @@ class ProductTransformer extends EntityTransformer
      */
     protected function setProductValuesFromVariantGroup(ProductInterface $product)
     {
+        // TODO only update when attached to a new VG ?!
         $variantGroup = $product->getVariantGroup();
         if ($variantGroup !== null && $variantGroup->getProductTemplate() !== null) {
             $template = $variantGroup->getProductTemplate();
             $this->templateUpdater->update($template, [$product]);
         }
-
-        // TODO validate values from template ?!
-        // TODO only update when attach to a new VG ?!
     }
 
     /**
