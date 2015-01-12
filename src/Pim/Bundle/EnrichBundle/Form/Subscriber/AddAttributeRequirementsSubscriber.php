@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -103,7 +104,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
      * @param AttributeInterface $attribute
      * @param FamilyInterface    $family
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirementInterface
      */
     protected function createAttributeRequirement(
         Channel $channel,

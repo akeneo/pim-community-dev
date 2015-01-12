@@ -6,6 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
@@ -14,12 +16,12 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_csv_normalization_of_attribute_option(AttributeOption $option)
+    function it_supports_csv_normalization_of_attribute_option(AttributeOptionInterface $option)
     {
         $this->supportsNormalization($option, 'csv')->shouldBe(true);
     }
 
-    function it_supports_flat_normalization_of_attribute_option(AttributeOption $option)
+    function it_supports_flat_normalization_of_attribute_option(AttributeOptionInterface $option)
     {
         $this->supportsNormalization($option, 'flat')->shouldBe(true);
     }
@@ -29,7 +31,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    function it_normalizes_option_code_when_field_name_is_provided(AttributeOption $option)
+    function it_normalizes_option_code_when_field_name_is_provided(AttributeOptionInterface $option)
     {
         $option->getCode()->willReturn('red');
 
@@ -37,10 +39,10 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_whole_option(
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         AttributeInterface $attribute,
-        AttributeOptionValue $valueEn,
-        AttributeOptionValue $valueFr
+        AttributeOptionValueInterface $valueEn,
+        AttributeOptionValueInterface $valueFr
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
@@ -66,10 +68,10 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_whole_option_and_ignore_disabled_locales(
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         AttributeInterface $attribute,
-        AttributeOptionValue $valueEn,
-        AttributeOptionValue $valueFr
+        AttributeOptionValueInterface $valueEn,
+        AttributeOptionValueInterface $valueFr
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);
@@ -94,11 +96,11 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_provides_all_locales_if_no_list_provided_in_context(
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         AttributeInterface $attribute,
-        AttributeOptionValue $valueEn,
-        AttributeOptionValue $valueFr,
-        AttributeOptionValue $valueDe
+        AttributeOptionValueInterface $valueEn,
+        AttributeOptionValueInterface $valueFr,
+        AttributeOptionValueInterface $valueDe
     ) {
         $option->getCode()->willReturn('red');
         $option->getAttribute()->willReturn($attribute);

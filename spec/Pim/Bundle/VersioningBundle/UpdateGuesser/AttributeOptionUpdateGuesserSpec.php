@@ -5,6 +5,8 @@ namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -19,8 +21,8 @@ class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
         ProductRepositoryInterface $repository,
         EntityManager $em,
         AttributeInterface $attribute,
-        AttributeOption $option,
-        AttributeOptionValue $optionValue
+        AttributeOptionInterface $option,
+        AttributeOptionValueInterface $optionValue
     ) {
         $registry->getRepository('product')->willReturn($repository);
         $repository->findAllWithAttributeOption($option)->willReturn([]);

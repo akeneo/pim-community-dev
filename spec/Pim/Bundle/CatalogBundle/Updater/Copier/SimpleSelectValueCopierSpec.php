@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
@@ -67,7 +68,7 @@ class SimpleSelectValueCopierSpec extends ObjectBehavior
         ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
-        AttributeOption $attributeOption
+        AttributeOptionInterface $attributeOption
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';

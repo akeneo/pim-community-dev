@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
@@ -344,7 +345,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeRequirement(AttributeRequirement $requirement)
+    public function addAttributeRequirement(AttributeRequirementInterface $requirement)
     {
         $requirementKey = $this->getAttributeRequirementKey($requirement);
         $requirements = $this->getAttributeRequirements();
@@ -390,7 +391,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeRequirementKey(AttributeRequirement $requirement)
+    public function getAttributeRequirementKey(AttributeRequirementInterface $requirement)
     {
         return sprintf(
             '%s_%s',

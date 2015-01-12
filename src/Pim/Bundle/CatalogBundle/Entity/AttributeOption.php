@@ -5,10 +5,12 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
- * Attribute options
+ * Attribute option
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,16 +18,12 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeOption implements ReferableInterface
+class AttributeOption implements ReferableInterface, AttributeOptionInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string $code
-     */
+    /** @var string $code */
     protected $code;
 
     /**
@@ -35,20 +33,16 @@ class AttributeOption implements ReferableInterface
      */
     protected $attribute;
 
-    /**
-     * @var ArrayCollection $values
-     */
+    /** @var ArrayCollection */
     protected $optionValues;
 
     /**
-     * Not persisted, allowe to define the value locale
+     * Not persisted, allows to define the value locale
      * @var string $locale
      */
     protected $locale;
 
-    /**
-     * @var integer
-     */
+    /** @var int */
     protected $sortOrder = 1;
 
     /**
@@ -60,9 +54,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -70,11 +62,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -84,9 +72,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Get attribute
-     *
-     * @return AttributeInterface
+     * {@inheritdoc}
      */
     public function getAttribute()
     {
@@ -94,11 +80,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Set attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
     public function setAttribute(AttributeInterface $attribute = null)
     {
@@ -108,9 +90,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Get values
-     *
-     * @return \ArrayAccess
+     * {@inheritdoc}
      */
     public function getOptionValues()
     {
@@ -118,9 +98,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Get used locale
-     *
-     * @return string $locale
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -128,11 +106,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Set used locale
-     *
-     * @param string $locale
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
     public function setLocale($locale)
     {
@@ -142,11 +116,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Set sort order
-     *
-     * @param string $sortOrder
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
     public function setSortOrder($sortOrder)
     {
@@ -158,9 +128,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Get sort order
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getSortOrder()
     {
@@ -168,11 +136,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -182,9 +146,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -194,7 +156,7 @@ class AttributeOption implements ReferableInterface
     /**
      * Override to use default value
      *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -216,9 +178,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Returns the current translation
-     *
-     * @return AttributeOptionValue
+     * {@inheritdoc}
      */
     public function getTranslation()
     {
@@ -234,13 +194,9 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Add option value
-     *
-     * @param AttributeOptionValue $value
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
-    public function addOptionValue(AttributeOptionValue $value)
+    public function addOptionValue(AttributeOptionValueInterface $value)
     {
         $this->optionValues[] = $value;
         $value->setOption($this);
@@ -249,13 +205,9 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Remove value
-     *
-     * @param AttributeOptionValue $value
-     *
-     * @return AttributeOption
+     * {@inheritdoc}
      */
-    public function removeOptionValue(AttributeOptionValue $value)
+    public function removeOptionValue(AttributeOptionValueInterface $value)
     {
         $this->optionValues->removeElement($value);
 
@@ -263,9 +215,7 @@ class AttributeOption implements ReferableInterface
     }
 
     /**
-     * Get localized value
-     *
-     * @return AbstractEntityAttributeOptionValue
+     * {@inheritdoc}
      */
     public function getOptionValue()
     {

@@ -2,7 +2,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
@@ -96,11 +95,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Add option
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return AttributeInterface
      */
-    public function addOption(AttributeOption $option);
+    public function addOption(AttributeOptionInterface $option);
 
     /**
      * Get available locales
@@ -519,11 +518,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Remove option
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return AttributeInterface
      */
-    public function removeOption(AttributeOption $option);
+    public function removeOption(AttributeOptionInterface $option);
 
     /**
      * Get Max characters

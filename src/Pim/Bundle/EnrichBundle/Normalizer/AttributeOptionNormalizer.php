@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -67,7 +67,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOption && in_array($format, $this->supportedFormat);
+        return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormat);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -127,8 +128,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $multiColorAttribute,
         SerializerInterface $serializer,
-        AttributeOption $redOption,
-        AttributeOption $blueOption,
+        AttributeOptionInterface $redOption,
+        AttributeOptionInterface $blueOption,
         ArrayCollection $collection
     ) {
         $collection->toArray()->willReturn([$redOption, $blueOption]);

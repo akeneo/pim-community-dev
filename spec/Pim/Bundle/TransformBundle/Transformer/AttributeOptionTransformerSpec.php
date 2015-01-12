@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
@@ -36,7 +37,7 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
         ManagerRegistry $doctrine,
         EntityManager $em,
         ReferableEntityRepositoryInterface $repository,
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ColumnInfo $columnInfo,
         ClassMetadata $metadata,
@@ -67,7 +68,7 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
         ManagerRegistry $doctrine,
         EntityManager $em,
         ReferableEntityRepositoryInterface $repository,
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ColumnInfo $columnInfo,
         ClassMetadata $metadata,

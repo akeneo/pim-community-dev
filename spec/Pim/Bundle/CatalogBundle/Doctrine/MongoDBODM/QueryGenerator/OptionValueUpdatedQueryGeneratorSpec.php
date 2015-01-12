@@ -7,6 +7,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 class OptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
@@ -17,8 +19,8 @@ class OptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
 
     function it_generates_a_query_to_update_product_select_attributes(
         $namingUtility,
-        AttributeOptionValue $bleu,
-        AttributeOption $blue,
+        AttributeOptionValueInterface $bleu,
+        AttributeOptionInterface $blue,
         AttributeInterface $color
     ) {
         $bleu->getOption()->willReturn($blue);

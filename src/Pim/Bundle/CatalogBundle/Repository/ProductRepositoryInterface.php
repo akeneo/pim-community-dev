@@ -3,12 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\NonUniqueResultException;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
 
 /**
@@ -66,11 +67,11 @@ interface ProductRepositoryInterface
     /**
      * Returns all products that have the given attribute option
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return ProductInterface[]
      */
-    public function findAllWithAttributeOption(AttributeOption $option);
+    public function findAllWithAttributeOption(AttributeOptionInterface $option);
 
     /**
      * Returns a full product with all relations
