@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -147,7 +147,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAssociationType(AssociationType $associationType)
+    public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb

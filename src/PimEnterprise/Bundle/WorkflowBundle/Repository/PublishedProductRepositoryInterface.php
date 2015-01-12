@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -104,11 +104,11 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Count published products for a specific association type
      *
-     * @param AssociationType $associationType
+     * @param AssociationTypeInterface $associationType
      *
      * @return integer
      */
-    public function countPublishedProductsForAssociationType(AssociationType $associationType);
+    public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType);
 
     /**
      * Count published products for a specific attribute option
