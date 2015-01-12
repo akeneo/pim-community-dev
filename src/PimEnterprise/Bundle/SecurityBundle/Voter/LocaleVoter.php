@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -52,7 +52,7 @@ class LocaleVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof Locale;
+        return $class instanceof LocaleInterface;
     }
 
     /**
@@ -82,8 +82,8 @@ class LocaleVoter implements VoterInterface
     /**
      * Get usr groups for specific attribute and object
      *
-     * @param string $attribute
-     * @param Locale $object
+     * @param string          $attribute
+     * @param LocaleInterface $object
      *
      * @return Group[]
      */

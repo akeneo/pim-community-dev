@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
@@ -28,7 +28,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         User $user,
         ResultRecordInterface $record,
         ProductInterface $product,
-        Locale $locale
+        LocaleInterface $locale
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);

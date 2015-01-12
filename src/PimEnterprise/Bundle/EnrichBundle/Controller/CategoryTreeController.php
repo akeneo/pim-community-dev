@@ -52,11 +52,11 @@ class CategoryTreeController extends BaseCategoryTreeController
         $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
 
         if (!in_array($context, $allowed)) {
-             throw new AccessDeniedException('You can not access this category');
+            throw new AccessDeniedException('You can not access this category');
         }
 
         if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
-             throw new AccessDeniedException('You can not access this category');
+            throw new AccessDeniedException('You can not access this category');
         } elseif (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             throw new AccessDeniedException('You can not access this category');
         }
@@ -78,7 +78,6 @@ class CategoryTreeController extends BaseCategoryTreeController
 
         if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
             return $this->categoryManager->getTrees($this->getUser());
-
         } else {
             return $this->categoryManager->getAccessibleTrees($this->getUser());
         }

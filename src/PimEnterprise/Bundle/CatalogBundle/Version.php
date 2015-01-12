@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 /**
  * PIM Enterprise Version
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class Version
 {

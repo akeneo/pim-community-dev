@@ -33,7 +33,6 @@ class RegisterProductDraftPresentersPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('pimee_workflow.twig.extension.product_draft_changes');
         foreach ($container->findTaggedServiceIds('pimee_workflow.presenter') as $id => $attribute) {
-
             $container->getDefinition($id)->setPublic(false);
             $definition->addMethodCall(
                 'addPresenter',
@@ -42,7 +41,6 @@ class RegisterProductDraftPresentersPass implements CompilerPassInterface
                     isset($attribute[0]['priority']) ? $attribute[0]['priority'] : 0
                 ]
             );
-
         }
     }
 }

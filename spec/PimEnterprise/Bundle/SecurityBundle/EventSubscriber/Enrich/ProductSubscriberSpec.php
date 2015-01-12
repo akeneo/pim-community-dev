@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -21,7 +21,7 @@ class ProductSubscriberSpec extends ObjectBehavior
         TokenInterface $token,
         User $user,
         UserContext $userContext,
-        Locale $locale
+        LocaleInterface $locale
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);

@@ -68,7 +68,6 @@ class CategoryFilter extends BaseCategoryFilter
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
         if (count($grantedCategoryIds) > 0) {
             $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
-
         } else {
             $this->util->applyFilter($ds, 'categories.id', 'UNCLASSIFIED', []);
         }

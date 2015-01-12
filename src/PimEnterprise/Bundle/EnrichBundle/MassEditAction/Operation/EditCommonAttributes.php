@@ -36,7 +36,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
 
     /**
      * @param ProductManager           $productManager
-     * @param ProductUpdaterInterface  $productUpdater,
+     * @param ProductUpdaterInterface  $productUpdater
      * @param UserContext              $userContext
      * @param CurrencyManager          $currencyManager
      * @param CatalogContext           $catalogContext

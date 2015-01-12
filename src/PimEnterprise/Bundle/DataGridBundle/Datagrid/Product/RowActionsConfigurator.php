@@ -103,7 +103,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function addDispatchAction()
     {
         $properties = $this->configuration->offsetGetByPath('[properties]');
-        $properties['row_action_link']= [
+        $properties['row_action_link'] = [
             'type'  => 'url',
             'route' => 'pimee_enrich_product_dispatch',
             'params' => ['id', 'dataLocale']
@@ -112,7 +112,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
 
         $actions = $this->configuration->offsetGetByPath('[actions]');
         unset($actions['edit']['rowAction']);
-        $actions['row_action']= [
+        $actions['row_action'] = [
             'type'      => 'tab-redirect',
             'label'     => 'Dispatch a product',
             'tab'       => 'attributes',
@@ -136,7 +136,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
             '[action_configuration]',
             $this->getActionConfigurationClosure()
         );
-
     }
 
     /**

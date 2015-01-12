@@ -114,7 +114,7 @@ class PermissionFilter extends OroChoiceFilter
             return false;
         }
 
-        $data['type']= $mapping[$data['value']];
+        $data['type'] = $mapping[$data['value']];
 
         return $data;
     }

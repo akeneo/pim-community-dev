@@ -154,10 +154,10 @@ class AttributeGroupAccessManager
     /**
      * Get AttributeGroupAccess entity for an attribute group and user group
      *
-    * @param AttributeGroup $attributeGroup
-    * @param UserGroup      $userGroup
-    *
-    * @return AttributeGroupAccess
+     * @param AttributeGroup $attributeGroup
+     * @param UserGroup      $userGroup
+     *
+     * @return AttributeGroupAccess
      */
     protected function getAttributeGroupAccess(AttributeGroup $attributeGroup, UserGroup $userGroup)
     {
