@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class OptionPresenterSpec extends ObjectBehavior
@@ -30,8 +30,8 @@ class OptionPresenterSpec extends ObjectBehavior
         $repository,
         RendererInterface $renderer,
         Model\ProductValueInterface $value,
-        AttributeOption $blue,
-        AttributeOption $red
+        AttributeOptionInterface $blue,
+        AttributeOptionInterface $red
     ) {
         $repository->find('1')->willReturn($blue);
         $value->getData()->willReturn($red);

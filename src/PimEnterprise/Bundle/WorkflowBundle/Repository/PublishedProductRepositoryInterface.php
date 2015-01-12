@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -113,9 +113,9 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Count published products for a specific attribute option
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return integer
      */
-    public function countPublishedProductsForAttributeOption(AttributeOption $option);
+    public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option);
 }
