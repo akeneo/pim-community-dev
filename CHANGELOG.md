@@ -47,6 +47,7 @@
 - Use `Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeRequirement`
 - Use `Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AssociationType`
 - Use `Pim\Bundle\CatalogBundle\Model\GroupTypeInterface` instead of `Pim\Bundle\CatalogBundle\Entity\GroupType`
+- Use `Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeGroup`
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`

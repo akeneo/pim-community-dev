@@ -211,11 +211,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set group
      *
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
      * @return AttributeInterface
      */
-    public function setGroup(AttributeGroup $group = null);
+    public function setGroup(AttributeGroupInterface $group = null);
 
     /**
      * Get allowedExtensions
@@ -356,8 +356,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get group
-     *
-     * @return AttributeGroup
+     * @return AttributeGroupInterface
      */
     public function getGroup();
 

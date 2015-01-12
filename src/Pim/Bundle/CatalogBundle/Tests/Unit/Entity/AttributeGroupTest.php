@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 
 /**
  * Test related class
@@ -16,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
 class AttributeGroupTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var AttributeGroup
+     * @var AttributeGroupInterface
      */
     protected $group;
 

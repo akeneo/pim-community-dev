@@ -3,6 +3,7 @@
 namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
@@ -1735,7 +1736,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return AttributeGroup
+     * @return AttributeGroupInterface
      */
     protected function createAttributeGroup($data)
     {

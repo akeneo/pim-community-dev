@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
@@ -444,7 +443,7 @@ abstract class AbstractProduct implements ProductInterface
             $groups[$group->getId()] = $group;
         }
 
-        $sortGroup = function (AttributeGroup $fst, AttributeGroup $snd) {
+        $sortGroup = function (AttributeGroupInterface $fst, AttributeGroupInterface $snd) {
             return $fst->getSortOrder() - $snd->getSortOrder();
         };
 

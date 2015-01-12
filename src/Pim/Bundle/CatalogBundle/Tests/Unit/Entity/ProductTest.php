@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 
@@ -347,7 +348,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      * @param mixed   $name
      * @param integer $sortOrder
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroupInterface
      */
     protected function getGroupMock($id, $name, $sortOrder)
     {

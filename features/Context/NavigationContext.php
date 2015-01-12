@@ -7,12 +7,12 @@ use Behat\Behat\Context\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\Product;
@@ -434,11 +434,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param AttributeGroup $group
-     *
+     * @param AttributeGroupInterface $group
      * @Given /^I should be on the ("([^"]*)" attribute group) page$/
      */
-    public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
+    public function iShouldBeOnTheAttributeGroupPage(AttributeGroupInterface $group)
     {
         $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
         $this->assertAddress($expectedAddress);
