@@ -4,6 +4,7 @@ namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -1460,7 +1461,7 @@ class FixturesContext extends RawMinkContext
      * @param string  $label
      * @param boolean $isVariant
      *
-     * @return GroupType
+     * @return GroupTypeInterface
      */
     protected function createGroupType($code, $label, $isVariant)
     {

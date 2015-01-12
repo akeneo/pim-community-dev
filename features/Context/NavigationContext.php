@@ -7,14 +7,13 @@ use Behat\Behat\Context\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\Product;
 
@@ -458,11 +457,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param GroupType $groupType
-     *
+     * @param GroupTypeInterface $groupType
+
      * @Given /^I should be on the ("([^"]*)" group type) page$/
      */
-    public function iShouldBeOnTheGroupTypePage(GroupType $groupType)
+    public function iShouldBeOnTheGroupTypePage(GroupTypeInterface $groupType)
     {
         $expectedAddress = $this->getPage('GroupType edit')->getUrl(array('id' => $groupType->getId()));
         $this->assertAddress($expectedAddress);

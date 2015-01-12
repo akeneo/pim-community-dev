@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Saver;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
 
 class BaseSaverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, BaseSavingOptionsResolver $optionsResolver)
     {
-        $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Entity\GroupType');
+        $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
     }
 
     function it_is_a_saver()
@@ -20,7 +20,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\Persistence\BulkSaverInterface');
     }
 
-    function it_persists_the_object_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupType $type)
+    function it_persists_the_object_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupTypeInterface $type)
     {
         $optionsResolver->resolveSaveOptions([])
             ->shouldBeCalled()
@@ -31,7 +31,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->save($type);
     }
 
-    function it_persists_the_objects_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupType $type1, GroupType $type2)
+    function it_persists_the_objects_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupTypeInterface $type1, GroupTypeInterface $type2)
     {
         $optionsResolver->resolveSaveAllOptions([])
             ->shouldBeCalled()
@@ -47,7 +47,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->saveAll([$type1, $type2]);
     }
 
-    function it_persists_the_object_and_does_not_flush($objectManager, $optionsResolver, GroupType $type)
+    function it_persists_the_object_and_does_not_flush($objectManager, $optionsResolver, GroupTypeInterface $type)
     {
         $optionsResolver->resolveSaveOptions(['flush' => false])
             ->shouldBeCalled()
@@ -58,7 +58,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->save($type, ['flush' => false]);
     }
 
-    function it_persists_the_objects_and_does_not_flush($objectManager, $optionsResolver, GroupType $type1, GroupType $type2)
+    function it_persists_the_objects_and_does_not_flush($objectManager, $optionsResolver, GroupTypeInterface $type1, GroupTypeInterface $type2)
     {
         $optionsResolver->resolveSaveAllOptions(['flush' => false])
             ->shouldBeCalled()
@@ -74,7 +74,7 @@ class BaseSaverSpec extends ObjectBehavior
         $this->saveAll([$type1, $type2], ['flush' => false]);
     }
 
-    function it_persists_the_object_and_flush_only_the_object($objectManager, $optionsResolver, GroupType $type)
+    function it_persists_the_object_and_flush_only_the_object($objectManager, $optionsResolver, GroupTypeInterface $type)
     {
         $optionsResolver->resolveSaveOptions(['flush_only_object' => true])
             ->shouldBeCalled()
@@ -90,7 +90,7 @@ class BaseSaverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-                'Expects a "Pim\Bundle\CatalogBundle\Entity\GroupType", "%s" provided.',
+                'Expects a "Pim\Bundle\CatalogBundle\Model\GroupTypeInterface", "%s" provided.',
                 get_class($anythingElse)
             )
         );

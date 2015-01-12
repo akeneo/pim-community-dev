@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,7 +35,7 @@ class Group implements GroupInterface
     protected $code;
 
     /**
-     * @var GroupType
+     * @var GroupTypeInterface
      */
     protected $type;
 
@@ -100,7 +101,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setType(GroupType $type)
+    public function setType(GroupTypeInterface $type)
     {
         $this->type = $type;
 

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
@@ -44,16 +43,15 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
     /**
      * Set group type
      *
-     * @param GroupType $type
+     * @param GroupTypeInterface $type
      *
      * @return GroupInterface
      */
-    public function setType(GroupType $type);
+    public function setType(GroupTypeInterface $type);
 
     /**
      * Get group type
-     *
-     * @return GroupType
+     * @return GroupTypeInterface
      */
     public function getType();
 

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 
 /**
  * Test related class
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation;
 class GroupTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\GroupType
+     * @var GroupTypeInterface
      */
     protected $type;
 
