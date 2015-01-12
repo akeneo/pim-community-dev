@@ -36,6 +36,7 @@ Feature: Edit a product
     Then I should not see "Attributes"
     And I reset the "Administrator" rights
 
+  @skip
   Scenario: Successfully edit a product description, and back to grid after save.
     Given I am on the "sandal" product page
     And the english description of "sandal" should be "My awesome description"
