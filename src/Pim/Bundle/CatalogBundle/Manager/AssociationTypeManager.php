@@ -6,9 +6,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\SaverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -62,10 +62,10 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof AssociationType) {
+        if (!$object instanceof AssociationTypeInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects an Pim\Bundle\CatalogBundle\Entity\AssociationType, "%s" provided',
+                    'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );
@@ -83,10 +83,10 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof AssociationType) {
+        if (!$object instanceof AssociationTypeInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects an Pim\Bundle\CatalogBundle\Entity\AssociationType, "%s" provided',
+                    'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );

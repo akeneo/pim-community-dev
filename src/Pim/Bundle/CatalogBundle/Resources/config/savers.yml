@@ -10,14 +10,14 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
-            - %pim_catalog.entity.group_type.class%
+            - %pim_catalog.model.group_type.interface%
 
     pim_catalog.saver.currency:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
-            - %pim_catalog.entity.currency.class%
+            - %pim_catalog.model.currency.interface%
 
     pim_catalog.saver.product:
         class: %pim_catalog.saver.product.class%

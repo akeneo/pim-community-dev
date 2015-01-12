@@ -64,7 +64,7 @@ class LocaleExtensionSpec extends ObjectBehavior
         $this->currencyLabel('fr', 'en_US')->shouldReturn('Euro');
     }
 
-    public function getMatchers()
+    function getMatchers()
     {
         $filterArgs = new \Twig_Node();
 

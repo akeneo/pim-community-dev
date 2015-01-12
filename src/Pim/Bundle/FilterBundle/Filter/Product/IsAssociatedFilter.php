@@ -7,8 +7,8 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -75,7 +75,7 @@ class IsAssociatedFilter extends BooleanFilter
     }
 
     /**
-     * @return AssociationType
+     * @return AssociationTypeInterface
      */
     protected function getAssociationType()
     {
@@ -110,12 +110,12 @@ class IsAssociatedFilter extends BooleanFilter
     }
 
     /**
-     * @param ProductInterface $product
-     * @param AssociationType  $type
+     * @param ProductInterface         $product
+     * @param AssociationTypeInterface $type
      *
      * @return array
      */
-    protected function getAssociatedProductIds(ProductInterface $product, AssociationType $type)
+    protected function getAssociatedProductIds(ProductInterface $product, AssociationTypeInterface $type)
     {
         $productIds  = [];
         $association = $product->getAssociationForType($type);

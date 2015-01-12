@@ -3,10 +3,8 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class AttributeOptionsDenormalizerSpec extends ObjectBehavior

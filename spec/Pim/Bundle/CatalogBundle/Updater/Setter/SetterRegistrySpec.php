@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface;
 
 class SetterRegistrySpec extends ObjectBehavior
 {
-    public function it_gets_setter(
+    function it_gets_setter(
         AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         AttributeInterface $attribute3,

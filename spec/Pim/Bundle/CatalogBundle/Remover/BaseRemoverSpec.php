@@ -4,15 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Remover;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Remover\BaseRemovingOptionsResolver;
-use Prophecy\Argument;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, BaseRemovingOptionsResolver $optionsResolver)
     {
-        $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Entity\GroupType');
+        $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
     }
 
     function it_is_a_remover()
@@ -21,7 +20,7 @@ class BaseRemoverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\Persistence\BulkRemoverInterface');
     }
 
-    function it_removes_the_object_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupType $type)
+    function it_removes_the_object_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupTypeInterface $type)
     {
         $optionsResolver->resolveRemoveOptions([])
             ->shouldBeCalled()
@@ -32,7 +31,7 @@ class BaseRemoverSpec extends ObjectBehavior
         $this->remove($type);
     }
 
-    function it_removes_the_objects_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupType $type1, GroupType $type2)
+    function it_removes_the_objects_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupTypeInterface $type1, GroupTypeInterface $type2)
     {
         $optionsResolver->resolveRemoveAllOptions([])
             ->shouldBeCalled()
@@ -48,7 +47,7 @@ class BaseRemoverSpec extends ObjectBehavior
         $this->removeAll([$type1, $type2]);
     }
 
-    function it_removes_the_object_and_does_not_flush($objectManager, $optionsResolver, GroupType $type)
+    function it_removes_the_object_and_does_not_flush($objectManager, $optionsResolver, GroupTypeInterface $type)
     {
         $optionsResolver->resolveRemoveOptions(['flush' => false])
             ->shouldBeCalled()
@@ -59,7 +58,7 @@ class BaseRemoverSpec extends ObjectBehavior
         $this->remove($type, ['flush' => false]);
     }
 
-    function it_removes_the_objects_and_does_not_flush($objectManager, $optionsResolver, GroupType $type1, GroupType $type2)
+    function it_removes_the_objects_and_does_not_flush($objectManager, $optionsResolver, GroupTypeInterface $type1, GroupTypeInterface $type2)
     {
         $optionsResolver->resolveRemoveAllOptions(['flush' => false])
             ->shouldBeCalled()
@@ -75,7 +74,7 @@ class BaseRemoverSpec extends ObjectBehavior
         $this->removeAll([$type1, $type2], ['flush' => false]);
     }
 
-    function it_removes_the_object_and_flush_only_the_object($objectManager, $optionsResolver, GroupType $type)
+    function it_removes_the_object_and_flush_only_the_object($objectManager, $optionsResolver, GroupTypeInterface $type)
     {
         $optionsResolver->resolveRemoveOptions(['flush_only_object' => true])
             ->shouldBeCalled()
@@ -91,7 +90,7 @@ class BaseRemoverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-                'Expects a "Pim\Bundle\CatalogBundle\Entity\GroupType", "%s" provided.',
+                'Expects a "Pim\Bundle\CatalogBundle\Model\GroupTypeInterface", "%s" provided.',
                 get_class($anythingElse)
             )
         );

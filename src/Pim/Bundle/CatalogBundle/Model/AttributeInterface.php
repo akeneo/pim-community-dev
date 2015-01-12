@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
@@ -211,11 +210,11 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set group
      *
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
      * @return AttributeInterface
      */
-    public function setGroup(AttributeGroup $group = null);
+    public function setGroup(AttributeGroupInterface $group = null);
 
     /**
      * Get allowedExtensions
@@ -356,8 +355,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get group
-     *
-     * @return AttributeGroup
+     * @return AttributeGroupInterface
      */
     public function getGroup();
 

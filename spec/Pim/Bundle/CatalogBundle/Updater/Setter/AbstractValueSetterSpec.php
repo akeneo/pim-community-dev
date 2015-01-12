@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Updater\Setter\AbstractValueSetter;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Prophecy\Argument;
 
 class AbstractValueSetterSpec extends ObjectBehavior
 {
@@ -122,12 +121,12 @@ class AbstractValueSetterSpec extends ObjectBehavior
 
 class ConcreteValueSetter extends AbstractValueSetter
 {
-    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
+    function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
         // needs to be implemented
     }
 
-    public function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
+    function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'concrete');
     }

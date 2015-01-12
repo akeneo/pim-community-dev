@@ -127,15 +127,15 @@ class UserContextSpec extends ObjectBehavior
 
 class User
 {
-    public function getCatalogLocale()
+    function getCatalogLocale()
     {
     }
 
-    public function getCatalogScope()
+    function getCatalogScope()
     {
     }
 
-    public function getDefaultTree()
+    function getDefaultTree()
     {
     }
 }

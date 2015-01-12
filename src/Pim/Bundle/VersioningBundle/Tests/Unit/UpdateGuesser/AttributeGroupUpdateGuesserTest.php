@@ -4,6 +4,7 @@ namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
@@ -38,9 +39,10 @@ class AttributeGroupUpdateGuesserTest extends AbstractUpdateGuesserTest
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
+
      *
-     * @return Doctrine\ORM\UnitOfWork
+*@return Doctrine\ORM\UnitOfWork
      */
     protected function getUnitOfWorkMock($group)
     {

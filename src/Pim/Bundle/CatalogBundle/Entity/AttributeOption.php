@@ -7,7 +7,6 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Attribute option
@@ -18,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeOption implements ReferableInterface, AttributeOptionInterface
+class AttributeOption implements AttributeOptionInterface
 {
     /** @var int */
     protected $id;

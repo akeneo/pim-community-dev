@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Association interface
@@ -73,19 +73,18 @@ interface AssociationInterface extends ReferableInterface
 
     /**
      * Get association type
-     *
-     * @return AssociationType
+     * @return AssociationTypeInterface
      */
     public function getAssociationType();
 
     /**
      * Set association type
      *
-     * @param AssociationType $associationType
+     * @param AssociationTypeInterface $associationType
      *
      * @return AssociationInterface
      */
-    public function setAssociationType(AssociationType $associationType);
+    public function setAssociationType(AssociationTypeInterface $associationType);
 
     /**
      * Add a group

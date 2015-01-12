@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\View;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Form\FormView;
@@ -56,27 +56,27 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      */
-    protected function orderGroupAttributes(AttributeGroup $group)
+    protected function orderGroupAttributes(AttributeGroupInterface $group)
     {
         $this->view[$group->getId()]['attributes'] = $this->sortAttributes($this->view[$group->getId()]['attributes']);
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
-     * @return boolean
+     * @return bool
      */
-    protected function hasGroup(AttributeGroup $group)
+    protected function hasGroup(AttributeGroupInterface $group)
     {
         return isset($this->view[$group->getId()]);
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      */
-    protected function initializeGroup(AttributeGroup $group)
+    protected function initializeGroup(AttributeGroupInterface $group)
     {
         $this->view[$group->getId()] = array(
             'label'      => $group->getLabel(),

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -81,7 +80,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var int */
     protected $sortOrder = 0;
 
-    /** @var AttributeGroup $group */
+    /** @var AttributeGroupInterface $group */
     protected $group;
 
     /** @var bool */
@@ -467,7 +466,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function setGroup(AttributeGroup $group = null)
+    public function setGroup(AttributeGroupInterface $group = null)
     {
         $this->group = $group;
 

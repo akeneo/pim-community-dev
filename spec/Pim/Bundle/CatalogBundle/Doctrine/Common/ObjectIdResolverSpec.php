@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ObjectIdResolverSpec extends ObjectBehavior
 {

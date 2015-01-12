@@ -5,8 +5,6 @@ namespace spec\Pim\Bundle\CommentBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
-use Doctrine\ORM\EntityRepository;
-use Prophecy\Argument;
 
 class CommentManagerSpec extends ObjectBehavior
 {

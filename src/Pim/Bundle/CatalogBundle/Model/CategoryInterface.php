@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+
 /**
  * Category interface
  *
@@ -9,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface CategoryInterface
+interface CategoryInterface extends TranslatableInterface, ReferableInterface, VersionableInterface
 {
     /**
      * @return int|string

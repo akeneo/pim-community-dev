@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\AssociationTypeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
 
@@ -56,8 +57,8 @@ class AssociationTypeNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
-     *
-     * @return AssociationType
+
+     * @return AssociationTypeInterface
      */
     protected function createEntity(array $data)
     {

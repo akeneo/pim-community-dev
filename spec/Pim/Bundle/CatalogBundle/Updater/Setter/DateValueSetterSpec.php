@@ -93,7 +93,7 @@ class DateValueSetterSpec extends ObjectBehavior
 
         $this->setValue([$product], $attribute, null);
     }
-    
+
     function it_throws_an_error_if_data_is_not_a_string_or_datetime_or_null(
         AttributeInterface $attribute
     ) {

@@ -6,7 +6,6 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class ProductIdFilterSpec extends ObjectBehavior
 {

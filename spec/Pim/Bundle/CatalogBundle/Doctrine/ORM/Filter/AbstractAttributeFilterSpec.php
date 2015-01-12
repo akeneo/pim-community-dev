@@ -121,12 +121,12 @@ class AbstractAttributeFilterSpec extends ObjectBehavior
 
 class ConcreteAttributeFilter extends AbstractAttributeFilter
 {
-    public function __construct(AttributeValidatorHelper $attrValidatorHelper)
+    function __construct(AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->attrValidatorHelper = $attrValidatorHelper;
     }
 
-    public function addAttributeFilter(
+    function addAttributeFilter(
         AttributeInterface $attribute,
         $operator,
         $value,
@@ -137,12 +137,12 @@ class ConcreteAttributeFilter extends AbstractAttributeFilter
         // need to be implemented
     }
 
-    public function supportsAttribute(AttributeInterface $attribute)
+    function supportsAttribute(AttributeInterface $attribute)
     {
         // need to be implemented
     }
 
-    public function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
+    function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'concrete');
     }

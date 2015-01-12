@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -51,17 +52,17 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeGroup && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeGroupInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Normalize the attributes
      *
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
      * @return array
      */
-    protected function normalizeAttributes(AttributeGroup $group)
+    protected function normalizeAttributes(AttributeGroupInterface $group)
     {
         $attributes = array();
         foreach ($group->getAttributes() as $attribute) {

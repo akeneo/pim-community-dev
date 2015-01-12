@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Prophecy\Argument;
 
 class MetricDenormalizerSpec extends ObjectBehavior
 {
