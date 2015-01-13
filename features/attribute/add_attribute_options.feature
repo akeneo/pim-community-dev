@@ -53,7 +53,7 @@ Feature: Add attribute options
     And I edit the code "green" to turn it to "yellow" and cancel
     Then I should see a confirm dialog with the following content:
       | title   | Cancel modification                                                                                   |
-      | content | Warning, you will lose usaved data. Are you sure you want to cancel modification on this new option ? |
+      | content | Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ? |
     And I confirm the cancellation
     And I wait for options to load
     Then I should see "green"
@@ -62,20 +62,21 @@ Feature: Add attribute options
   @jira https://akeneo.atlassian.net/browse/PIM-2166
   Scenario: Successfully delete some attribute options
     Given I create the following attribute options:
-      | Code          |
-      | small_size    |
-      | medium_size   |
-      | large_size    |
+      | Code        |
+      | small_size  |
+      | medium_size |
+      | large_size  |
     When I remove the "small_size" option
+    And I confirm the deletion
     And I wait for options to load
     Then I should not see "small_size"
 
   Scenario: Auto sorting disable reorder
     Given I create the following attribute options:
-      | Code          |
-      | small_size    |
-      | medium_size   |
-      | large_size    |
+      | Code        |
+      | small_size  |
+      | medium_size |
+      | large_size  |
     Then I should not see reorder handles
     Given I uncheck the "Automatic option sorting" switch
     And I wait for options to load

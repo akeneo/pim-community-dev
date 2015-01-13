@@ -68,7 +68,7 @@ alert:
 
 confirm:
     attribute_option:
-        cancel_edition_on_new_option_text: Warning, you will lose usaved data. Are you sure you want to cancel modification on this new option ?
+        cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ?
         cancel_edition_on_new_option_title: Cancel modification
 
 label:
@@ -94,3 +94,12 @@ pim.grid.mass_action.sequential_edit:      Sequential Edit
 jstree.create: Create
 switch_on: "Yes"
 switch_off: "No"
+
+pim_enrich:
+    item:
+        list:
+            delete.label: Delete
+            delete.error: Error during item deletion
+        delete:
+            confirm.content: It is not possible not undo this action
+            confirm.title: Delete item
