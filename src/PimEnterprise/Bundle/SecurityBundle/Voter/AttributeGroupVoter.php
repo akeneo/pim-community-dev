@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -51,7 +51,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof AttributeGroup;
+        return $class instanceof AttributeGroupInterface;
     }
 
     /**

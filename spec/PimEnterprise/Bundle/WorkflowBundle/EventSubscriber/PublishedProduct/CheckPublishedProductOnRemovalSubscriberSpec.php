@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
@@ -176,7 +176,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_the_association_type_is_linked_to_a_published_product(
         $publishedRepository,
-        AssociationType $associationType,
+        AssociationTypeInterface $associationType,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($associationType);
@@ -187,7 +187,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_association_type_is_linked_to_a_published_product(
         $publishedRepository,
-        AssociationType $associationType,
+        AssociationTypeInterface $associationType,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($associationType);

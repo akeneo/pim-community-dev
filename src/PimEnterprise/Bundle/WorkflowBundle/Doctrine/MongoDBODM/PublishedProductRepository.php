@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -109,7 +109,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      *
      * TODO; find a way to do it efficiently
      */
-    public function findOneByTypeAndOwner(AssociationType $type, $ownerId)
+    public function findOneByTypeAndOwner(AssociationTypeInterface $type, $ownerId)
     {
         // retrieve the product that owns our published association
         $product = $this->find($ownerId);
@@ -226,7 +226,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAssociationType(AssociationType $associationType)
+    public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->field('associations.associationType')->equals($associationType->getId());
@@ -237,7 +237,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAttributeOption(AttributeOption $option)
+    public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option)
     {
         $qb = $this->createQueryBuilder('pp');
 

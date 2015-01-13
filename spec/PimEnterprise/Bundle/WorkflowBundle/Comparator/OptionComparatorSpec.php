@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 class OptionComparatorSpec extends ObjectBehavior
 {
@@ -29,7 +29,7 @@ class OptionComparatorSpec extends ObjectBehavior
 
     function it_detects_changes_when_changing_option_data(
         $value,
-        AttributeOption $red
+        AttributeOptionInterface $red
     ) {
         $submittedData = [
             'option' => '42',
@@ -59,7 +59,7 @@ class OptionComparatorSpec extends ObjectBehavior
 
     function it_detects_no_changes_when_option_is_the_same(
         Model\ProductValueInterface $value,
-        AttributeOption $red
+        AttributeOptionInterface $red
     ) {
         $submittedData = [
             'option' => '21',

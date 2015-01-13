@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -34,12 +34,12 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Get user groups that have the specified access to an attribute group
      *
-     * @param AttributeGroup $group
-     * @param string         $accessLevel
+     * @param AttributeGroupInterface $group
+     * @param string                  $accessLevel
      *
      * @return \Oro\Bundle\UserBundle\Entity\Group[]
      */
-    public function getGrantedUserGroups(AttributeGroup $group, $accessLevel)
+    public function getGrantedUserGroups(AttributeGroupInterface $group, $accessLevel)
     {
         $accessField = ($accessLevel === Attributes::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
 
@@ -58,12 +58,12 @@ class AttributeGroupAccessRepository extends EntityRepository
      * Revoke access to an attribute group
      * If excluded user groups are provided, access will not be revoked for these groups
      *
-     * @param AttributeGroup                        $group
+     * @param AttributeGroupInterface               $group
      * @param \Oro\Bundle\UserBundle\Entity\Group[] $excludedUserGroups
      *
      * @return integer
      */
-    public function revokeAccess(AttributeGroup $group, array $excludedUserGroups = [])
+    public function revokeAccess(AttributeGroupInterface $group, array $excludedUserGroups = [])
     {
         $qb = $this->createQueryBuilder('a');
         $qb

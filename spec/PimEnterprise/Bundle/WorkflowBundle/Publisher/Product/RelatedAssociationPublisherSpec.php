@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
@@ -41,9 +41,9 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         Association $association1,
-        AssociationType $type1,
+        AssociationTypeInterface $type1,
         Association $association3,
-        AssociationType $type3,
+        AssociationTypeInterface $type3,
         PublishedProductAssociation $publishedAssociation
     ) {
         $product1->getId()->willReturn('original1');

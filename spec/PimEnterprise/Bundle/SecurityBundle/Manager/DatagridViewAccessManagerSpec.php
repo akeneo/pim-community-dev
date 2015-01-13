@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
@@ -46,7 +46,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeGroupAccessManager,
         $attributeRepository,
         AttributeInterface $attribute,
-        AttributeGroup $group
+        AttributeGroupInterface $group
     ) {
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn($attribute);
@@ -61,7 +61,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeGroupAccessManager,
         $attributeRepository,
         AttributeInterface $attribute,
-        AttributeGroup $group
+        AttributeGroupInterface $group
     ) {
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn(null);
@@ -97,7 +97,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $categoryRepository,
         $categoryAccessManager,
         AttributeInterface $attribute,
-        AttributeGroup $group,
+        AttributeGroupInterface $group,
         CategoryInterface $category
     ) {
 
