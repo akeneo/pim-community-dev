@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'pimee/catalogrule/itemview'],
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'pim/item/view'],
     function ($, _, Backbone, __, Routing, mediator, ItemView) {
         'use strict';
 
@@ -126,7 +126,7 @@ define(
                     'rule':       this.model.toJSON(),
                     'conditions': renderedConditions,
                     'actions':    renderedActions,
-                    'delete_label': __('pimee_catalog_rule.rule.list.delete_rule.label')
+                    'delete_label': __('pim_enrich.item.list.delete.label')
                 });
             },
         });

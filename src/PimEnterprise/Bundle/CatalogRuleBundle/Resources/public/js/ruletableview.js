@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pimee/catalogrule/itemtableview', 'pimee/catalogrule/ruleitemview'],
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pim/item/tableview', 'pimee/catalogrule/ruleitemview'],
     function ($, _, Backbone, __, Routing, mediator, LoadingMask, TableView, RuleItemView) {
         'use strict';
 
