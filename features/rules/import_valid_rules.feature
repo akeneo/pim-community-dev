@@ -300,7 +300,7 @@ Feature: Import rules
                   field: side_view
                   value:
                        filePath:         ../../../features/Context/fixtures/akeneo.jpg
-                       originalFilename: akeneo
+                       originalFilename: akeneo.jpg
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -312,7 +312,6 @@ Feature: Import rules
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see "Context/fixtures/akeneo.jpg"
     Then I should see "akeneo.jpg"
 
   Scenario: Import a copy value rule with valid values for attribute of type textarea in actions
