@@ -11,5 +11,5 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
  */
 interface EntityRepositoryInterface
 {
-    public function findByIds($array);
+    public function findByIds(array $ids);
 }

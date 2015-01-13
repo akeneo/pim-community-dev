@@ -54,7 +54,9 @@ parameters:
     pim_catalog.doctrine.query.filter.price.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter
     pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter
 
-    pim_catalog.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM\MongoDBODMCursor
+    pim_catalog.doctrine.query.cursor.class:              Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM\MongoDBODMCursor
+    pim_catalog.factory.cursor.class:                     Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM\MongoDBODMCursorFactory
+    pim_catalog.factory.cursor.page_size:                 1000
 
     pim_catalog.doctrine.query.sorter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
     pim_catalog.doctrine.query.sorter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter
@@ -381,3 +383,9 @@ services:
             - ['IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.factory.cursor:
+        class: %pim_catalog.factory.cursor.class%
+        arguments:
+            - %pim_catalog.doctrine.query.cursor.class%
+            - %pim_catalog.factory.cursor.page_size%

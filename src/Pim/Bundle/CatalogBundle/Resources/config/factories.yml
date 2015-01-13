@@ -5,9 +5,6 @@ parameters:
     pim_catalog.factory.metric.class:                Pim\Bundle\CatalogBundle\Factory\MetricFactory
     pim_catalog.factory.group.class:                 Pim\Bundle\CatalogBundle\Factory\GroupFactory
 
-    pim_catalog.factory.cursor.class:                Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactory
-    pim_catalog.factory.cursor.page_size:            1000
-
 services:
     pim_catalog.factory.family:
         class: %pim_catalog.factory.family.class%
@@ -38,8 +35,3 @@ services:
         arguments:
             - %pim_catalog.entity.group.class%
 
-    pim_catalog.factory.cursor:
-        class: %pim_catalog.factory.cursor.class%
-        arguments:
-            - %pim_catalog.doctrine.query.cursor.class%
-            - %pim_catalog.factory.cursor.page_size%

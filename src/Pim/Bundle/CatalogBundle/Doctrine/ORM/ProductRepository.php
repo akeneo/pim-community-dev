@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\EntityRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
@@ -23,7 +24,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
  */
 class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    EntityRepositoryInterface
 {
     /** @var ProductQueryFactoryInterface */
     protected $productQueryFactory;
