@@ -49,7 +49,10 @@ class ChannelManager implements SaverInterface
     {
         if (!$channel instanceof ChannelInterface) {
             throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\ChannelInterface", "%s" provided.', get_class($channel))
+                sprintf(
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\ChannelInterface", "%s" provided.',
+                    get_class($channel)
+                )
             );
         }
 
