@@ -22,7 +22,7 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function __construct($queryBuilder)
     {
-        $this->queryBuilder = $queryBuilder;
+        $this->queryBuilder = clone $queryBuilder;
     }
 
     /**

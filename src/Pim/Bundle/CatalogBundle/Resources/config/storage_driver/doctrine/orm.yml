@@ -23,6 +23,8 @@ parameters:
     pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter
 
     pim_catalog.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Cursor\ORM\ORMCursor
+    pim_catalog.factory.cursor.class:                      Akeneo\Bundle\StorageUtilsBundle\Cursor\ORM\ORMCursorFactory
+    pim_catalog.factory.cursor.page_size:                  1000
 
     pim_catalog.doctrine.query.sorter.base.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter
     pim_catalog.doctrine.query.sorter.entity.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter
@@ -124,3 +126,10 @@ services:
         class: %pim_catalog.doctrine.query.sorter.is_associated.class%
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.factory.cursor:
+        class: %pim_catalog.factory.cursor.class%
+        arguments:
+            - %pim_catalog.doctrine.query.cursor.class%
+            - @pim_catalog.object_manager.product
+            - %pim_catalog.factory.cursor.page_size%
