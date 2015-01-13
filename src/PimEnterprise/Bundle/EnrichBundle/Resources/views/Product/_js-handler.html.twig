@@ -120,11 +120,12 @@
                 });
 
                 // Current value popover
-                $('.icon-code-fork[data-async-content]').on('mouseover', function() {
+                $('.from-smart[data-async-content]').on('mouseover', function() {
                     var $this = $(this);
                     var url = $this.data('async-content');
 
                     $this.attr('data-content', '{{ "pimee_catalog_rule.product.tooltip.loading.title"|trans }}');
+                    $this.popover({'html': true});
                     $this.popover('show');
 
                     $this.off('mouseover');
@@ -135,20 +136,16 @@
                             codes.push(data[key].code);
                         }
 
-                        var message = codes.join(', ');
+                        var message = '{{ "pimee_catalog_rule.product.tooltip.affected_by_a_rule.content"|trans|capitalize|raw }}';
 
-                        if (message.length > 250) {
-                            message = message.substring(0, 250) + '...';
-                        }
-
-                        if (message.length == 0) {
-                            message = '{{ "pimee_catalog_rule.product.tooltip.affected_by_a_rule.title"|trans|capitalize }}';
-                        }
+                        message = message.replace('%rule%', codes.join(', '));
 
                         $this
                             .attr('data-content', message)
                             .popover('destroy')
-                            .popover('show');
+                            .popover({'html': true})
+                            .popover('show')
+                            ;
                     });
                 });
             });
