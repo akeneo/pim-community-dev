@@ -138,7 +138,9 @@ define(
                 }
             },
             deleteItem: function() {
-                this.parent.deleteItem(this);
+                Dialog.confirm(__('pim_enrich.item.modal.delete.content'), __('pim_enrich.item.modal.delete.title'), _.bind(function () {
+                    this.parent.deleteItem(this);
+                }, this));
             },
             updateItem: function() {
                 this.inLoading(true);
