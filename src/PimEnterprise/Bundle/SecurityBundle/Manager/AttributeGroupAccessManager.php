@@ -137,8 +137,12 @@ class AttributeGroupAccessManager
      * @param string                  $accessLevel
      * @param boolean                 $flush
      */
-    public function grantAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup, $accessLevel, $flush = false)
-    {
+    public function grantAccess(
+        AttributeGroupInterface $attributeGroup,
+        UserGroup $userGroup,
+        $accessLevel,
+        $flush = false
+    ) {
         $access = $this->getAttributeGroupAccess($attributeGroup, $userGroup);
         $access
             ->setViewAttributes(true)
