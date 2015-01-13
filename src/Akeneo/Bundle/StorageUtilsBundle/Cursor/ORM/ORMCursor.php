@@ -7,6 +7,7 @@ use Doctrine\MongoDB\Query\Query;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\EntityRepositoryInterface;
 
 /**
  * Class ORMCursor to iterate entities from QueryBuilder
@@ -84,7 +85,7 @@ class ORMCursor extends AbstractCursor
     public function count()
     {
         if ($this->count === null) {
-            $this->count = count(getEntitiesIds());
+            $this->count = count($this->getEntitiesIds());
         }
 
         return $this->count;
