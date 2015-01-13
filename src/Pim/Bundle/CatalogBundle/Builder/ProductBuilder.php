@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -204,7 +204,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return null|ProductPrice
+     * @return null|ProductPriceInterface
      */
     protected function getPriceForCurrency(ProductValueInterface $value, $currency)
     {

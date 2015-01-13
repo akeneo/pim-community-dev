@@ -7,7 +7,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\SaverInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
