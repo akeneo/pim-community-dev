@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -41,7 +41,7 @@ class BulkProductReaderSpec extends ObjectBehavior
     function it_reads_all_products_at_once(
         $channelManager,
         $repository,
-        Channel $channel,
+        ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,
@@ -61,7 +61,7 @@ class BulkProductReaderSpec extends ObjectBehavior
         $channelManager,
         $completenessManager,
         $repository,
-        Channel $channel,
+        ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,
@@ -84,7 +84,7 @@ class BulkProductReaderSpec extends ObjectBehavior
         $channelManager,
         $repository,
         $metricConverter,
-        Channel $channel,
+        ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,
@@ -106,7 +106,7 @@ class BulkProductReaderSpec extends ObjectBehavior
         $channelManager,
         $repository,
         $stepExecution,
-        Channel $channel,
+        ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,

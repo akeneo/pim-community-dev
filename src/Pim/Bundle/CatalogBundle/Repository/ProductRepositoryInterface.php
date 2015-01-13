@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NonUniqueResultException;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -32,11 +32,11 @@ interface ProductRepositoryInterface
     public function findOneByWithValues($id);
 
     /**
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return mixed
      */
-    public function buildByChannelAndCompleteness(Channel $channel);
+    public function buildByChannelAndCompleteness(ChannelInterface $channel);
 
     /**
      * @param array $ids

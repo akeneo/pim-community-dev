@@ -165,9 +165,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * Get locale codes
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getLocaleCodes()
     {
@@ -247,9 +245,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * To string
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {

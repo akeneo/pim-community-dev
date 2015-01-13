@@ -22,7 +22,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /** @var LocaleInterface */
     protected $locale;
 
-    /** @var Channel */
+    /** @var ChannelInterface */
     protected $channel;
 
     /** @var int */
@@ -66,7 +66,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(Channel $channel)
+    public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
 

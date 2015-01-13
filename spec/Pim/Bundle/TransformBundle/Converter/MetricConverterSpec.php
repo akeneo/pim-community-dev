@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -28,7 +28,7 @@ class MetricConverterSpec extends ObjectBehavior
         MetricInterface $weightMetric,
         MetricInterface $surfaceMetric,
         ProductInterface $product,
-        Channel $channel
+        ChannelInterface $channel
     ) {
         $weightValue->getAttribute()->willReturn($weight);
         $weightValue->getData()->willReturn($weightMetric);

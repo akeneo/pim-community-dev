@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -39,7 +39,7 @@ class ORMProductReaderSpec extends ObjectBehavior
     function it_reads_products_one_by_one(
         $channelManager,
         $repository,
-        Channel $channel,
+        ChannelInterface $channel,
         From $from,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
@@ -73,7 +73,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         $completenessManager,
         $repository,
         From $from,
-        Channel $channel,
+        ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
         ProductInterface $sku1,
@@ -108,7 +108,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         $channelManager,
         $repository,
         $metricConverter,
-        Channel $channel,
+        ChannelInterface $channel,
         From $from,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
@@ -145,7 +145,7 @@ class ORMProductReaderSpec extends ObjectBehavior
         $stepExecution,
         $channelManager,
         $repository,
-        Channel $channel,
+        ChannelInterface $channel,
         From $from,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,

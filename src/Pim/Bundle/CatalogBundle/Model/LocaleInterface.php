@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Locale interface
@@ -55,16 +55,16 @@ interface LocaleInterface extends ReferableInterface
     public function setChannels($channels);
 
     /**
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return LocaleInterface
      */
-    public function addChannel(Channel $channel);
+    public function addChannel(ChannelInterface $channel);
 
     /**
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return LocaleInterface
      */
-    public function removeChannel(Channel $channel);
+    public function removeChannel(ChannelInterface $channel);
 }

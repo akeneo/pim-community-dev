@@ -5,12 +5,12 @@ namespace spec\Pim\Bundle\CatalogBundle\Builder;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -49,8 +49,8 @@ class ProductBuilderSpec extends ObjectBehavior
         LocaleInterface $fr,
         LocaleInterface $en,
         $channelManager,
-        Channel $ecom,
-        Channel $print,
+        ChannelInterface $ecom,
+        ChannelInterface $print,
         ProductValueInterface $skuValue
     ) {
         // get expected attributes

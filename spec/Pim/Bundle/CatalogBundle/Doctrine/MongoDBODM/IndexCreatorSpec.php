@@ -7,7 +7,7 @@ use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -44,8 +44,8 @@ class IndexCreatorSpec extends ObjectBehavior
         AttributeInterface $title,
         LocaleInterface $en_US,
         LocaleInterface $de_DE,
-        Channel $ecommerce,
-        Channel $mobile
+        ChannelInterface $ecommerce,
+        ChannelInterface $mobile
     ) {
         $title->getCode()->willReturn('title');
         $title->getBackendType()->willReturn('varchar');
@@ -90,7 +90,7 @@ class IndexCreatorSpec extends ObjectBehavior
         AttributeInterface $description,
         LocaleInterface $en_US,
         LocaleInterface $de_DE,
-        Channel $ecommerce
+        ChannelInterface $ecommerce
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('varchar');
@@ -310,8 +310,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $namingUtility,
         $collection,
         AttributeInterface $title,
-        Channel $ecommerce,
-        Channel $mobile
+        ChannelInterface $ecommerce,
+        ChannelInterface $mobile
     ) {
         $title->getCode()->willReturn('title');
         $title->getBackendType()->willReturn('varchar');

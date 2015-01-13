@@ -35,7 +35,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     protected $attribute;
 
     /**
-     * @var Channel $channel
+     * @var ChannelInterface $channel
      */
     protected $channel;
 

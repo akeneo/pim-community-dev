@@ -123,4 +123,18 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface
      * @return ChannelInterface
      */
     public function setColor($color);
+
+    /**
+     * Get locale codes
+     *
+     * @return array
+     */
+    public function getLocaleCodes();
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString();
 }
