@@ -8,7 +8,7 @@ pimee_catalog_rule:
             rule.view_permissions: View rules
     product:
         tooltip:
-            affected_by_a_rule.title: Is affected by a rule
+            affected_by_a_rule.content: The value of this attribute can come from the rule <strong>%rule%</strong>. That means if the conditions of the rule are valid, your modification will be overridden.
             loading.title: Loading...
         history: Applied rule "%rule%"
     product_value:
