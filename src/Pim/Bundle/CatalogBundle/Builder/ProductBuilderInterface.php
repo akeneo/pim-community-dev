@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -54,7 +54,7 @@ interface ProductBuilderInterface
      * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return ProductPrice
+     * @return ProductPriceInterface
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency);
 
@@ -66,7 +66,7 @@ interface ProductBuilderInterface
      * @param string                $currency
      * @param float|int             $data
      *
-     * @return null|ProductPrice
+     * @return null|ProductPriceInterface
      */
     public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $data);
 

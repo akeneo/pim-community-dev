@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
@@ -139,7 +140,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function addCurrency(Currency $currency)
+    public function addCurrency(CurrencyInterface $currency)
     {
         $this->currencies[] = $currency;
 
@@ -149,7 +150,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCurrency(Currency $currency)
+    public function removeCurrency(CurrencyInterface $currency)
     {
         $this->currencies->removeElement($currency);
 

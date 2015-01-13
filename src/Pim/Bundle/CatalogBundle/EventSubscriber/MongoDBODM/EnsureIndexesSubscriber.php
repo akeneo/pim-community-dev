@@ -6,10 +6,10 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
@@ -103,7 +103,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
             }
         }
 
-        if ($entity instanceof Currency) {
+        if ($entity instanceof CurrencyInterface) {
             if (true === $entity->isActivated()) {
                 $this->indexCreator->ensureIndexesFromCurrency($entity);
             } else {
