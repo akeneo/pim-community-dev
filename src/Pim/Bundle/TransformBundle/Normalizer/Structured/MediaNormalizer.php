@@ -26,6 +26,7 @@ class MediaNormalizer implements NormalizerInterface
     {
         $this->manager = $manager;
     }
+
     /**
      * @var string[] $supportedFormats
      */
@@ -44,8 +45,6 @@ class MediaNormalizer implements NormalizerInterface
                 'filePath' => $file->getPathname(),
             ];
         }
-
-
 
         return [
             'originalFilename' => $object->getOriginalFilename(),

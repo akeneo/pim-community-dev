@@ -21,9 +21,9 @@ echo sprintf("Removing filePath from %s media...\n", $products->count());
 
 foreach ($products as $product) {
     if (array_key_exists('values', $product)) {
-        $n = count($product['values']);
+        $countValues = count($product['values']);
 
-        for ($i = 0; $i <= $n; $i++) {
+        for ($i = 0; $i <= $countValues; $i++) {
             $result = $productCollection->update(
                 ['_id' => $product['_id']],
                 ['$unset' => [sprintf('values.%s.media.filePath', $i) => true]],

@@ -140,7 +140,7 @@ class MediaManager
     public function duplicate(ProductMediaInterface $source, ProductMediaInterface $target, $filenamePrefix)
     {
         if (null === $path = $this->getFilePath($source)) {
-            return;
+            throw new \LogicException('File path should not be null');
         }
 
         $target->setFile(new File($path));
