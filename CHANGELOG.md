@@ -166,6 +166,7 @@
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
+- PIM-3548: Do not use the absolute file path of a media
 
 # 1.2.x
 
