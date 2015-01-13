@@ -28,7 +28,7 @@ abstract class AbstractProductPrice implements ProductPriceInterface
     protected $data;
 
     /**
-     * Currency code
+     * CurrencyInterface code
      * @var string $currency
      */
     protected $currency;

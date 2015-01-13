@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
@@ -76,9 +76,9 @@ class IndexPurger
     /**
      * Remove indexes associated with the provided currency
      *
-     * @param Currency $currency
+     * @param CurrencyInterface $currency
      */
-    public function purgeIndexesFromCurrency(Currency $currency)
+    public function purgeIndexesFromCurrency(CurrencyInterface $currency)
     {
         $currencyPattern = sprintf(
             '/%s\..+\.%s\.data/',

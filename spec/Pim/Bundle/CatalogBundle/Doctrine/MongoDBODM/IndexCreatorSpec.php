@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
@@ -131,7 +131,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function it_generates_prices_indexes_when_saving_enabled_currency(
         $collection,
         $namingUtility,
-        Currency $eur,
+        CurrencyInterface $eur,
         AttributeInterface $price
     ) {
         $eur->getCode()->willReturn('EUR');
