@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
-use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 
 class PublishedProductConsistencyExceptionSubscriberSpec extends ObjectBehavior
 {

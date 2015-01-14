@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Datagrid view access manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class DatagridViewAccessManager
 {
@@ -32,27 +32,27 @@ class DatagridViewAccessManager
     protected $categoryRepository;
 
     /** @var AttributeGroupAccessManager */
-    protected $attributeGroupAccessManager;
+    protected $attGrpAccessManager;
 
     /** @var CategoryAccessManager */
-    protected $categoryAccessManager;
+    protected $catAccessManager;
 
     /**
      * @param AttributeRepository         $attributeRepository
      * @param CategoryRepository          $categoryRepository
-     * @param AttributeGroupAccessManager $attributeGroupAccessManager
-     * @param CategoryAccessManager       $categoryAccessManager
+     * @param AttributeGroupAccessManager $attGrpAccessManager
+     * @param CategoryAccessManager       $catAccessManager
      */
     public function __construct(
         AttributeRepository $attributeRepository,
         CategoryRepository $categoryRepository,
-        AttributeGroupAccessManager $attributeGroupAccessManager,
-        CategoryAccessManager $categoryAccessManager
+        AttributeGroupAccessManager $attGrpAccessManager,
+        CategoryAccessManager $catAccessManager
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->categoryRepository = $categoryRepository;
-        $this->attributeGroupAccessManager = $attributeGroupAccessManager;
-        $this->categoryAccessManager = $categoryAccessManager;
+        $this->attGrpAccessManager = $attGrpAccessManager;
+        $this->catAccessManager = $catAccessManager;
     }
 
     /**
@@ -106,7 +106,7 @@ class DatagridViewAccessManager
             return true;
         }
 
-        return $this->attributeGroupAccessManager->isUserGranted(
+        return $this->attGrpAccessManager->isUserGranted(
             $user,
             $attribute->getGroup(),
             Attributes::VIEW_ATTRIBUTES
@@ -132,7 +132,7 @@ class DatagridViewAccessManager
             return false;
         }
 
-        return $this->categoryAccessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS);
+        return $this->catAccessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS);
     }
 
     /**

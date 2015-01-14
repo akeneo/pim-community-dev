@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\FilterBundle\Filter;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 

@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 /**
  * Product change set computer during product draft workflow
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 interface ChangeSetComputerInterface
 {

@@ -17,7 +17,7 @@ use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository as Ba
 /**
  * Override of job execution repository
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobExecutionRepository extends BaseJobExecutionRepository
 {

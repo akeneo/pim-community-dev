@@ -65,6 +65,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string $userGroup
+     * @param string $accessLevel
+     * @param string $attributeGroup
+     *
      * @Given /^user group "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
      */
     public function userGroupHasThePermissionToEditTheAttributeGroup($userGroup, $accessLevel, $attributeGroup)
@@ -78,6 +82,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following product drafts:$/
      */
     public function theFollowingProductDrafts(TableNode $table)
@@ -106,6 +112,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string    $username
+     * @param string    $product
+     * @param TableNode $table
+     * @param bool      $scopable
+     * @param bool      $ready
+     *
+     * @return Given[]
      * @Given /^(\w+) proposed the following change to "([^"]*)":$/
      */
     public function someoneProposedTheFollowingChangeTo(
@@ -133,17 +146,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     sprintf('I expand the "%s" attribute', substr(strstr($data['field'], ' '), 1))
                 );
             }
-            switch (true)
-            {
+            switch (true) {
                 case 0 === strpos($data['value'], 'file('):
                     $file = strtr($data['value'], ['file(' => '', ')' => '']);
                     $steps[] = new Step\Given(sprintf('I attach file "%s" to "%s"', $file, $data['field']));
-                    break;
 
+                    break;
                 case 0 === strpos($data['value'], 'state('):
                     $steps[] = new Step\Given(sprintf('I check the "%s" switch', $data['field']));
-                    break;
 
+                    break;
                 default:
                     $steps[] = new Step\Given(sprintf('I change the "%s" to "%s"', $data['field'], $data['value']));
             }
@@ -159,6 +171,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string    $username
+     * @param string    $product
+     * @param TableNode $table
+     *
+     * @return Given[]
      * @Given /^(\w+) proposed the following scopable change to "([^"]*)":$/
      */
     public function someoneProposedTheFollowingScopableChangeTo($username, $product, TableNode $table)
@@ -167,6 +184,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string    $username
+     * @param string    $product
+     * @param TableNode $table
+     *
+     * @return Given[]
      * @Given /^(\w+) started to propose the following change to "([^"]*)":$/
      */
     public function someoneStartedToProposeTheFollowingChangeTo($username, $product, TableNode $table)
@@ -175,6 +197,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following attribute group accesses:$/
      */
     public function theFollowingAttributeGroupAccesses(TableNode $table)
@@ -183,6 +207,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following category accesses:$/
      */
     public function theFollowingCategoryAccesses(TableNode $table)
@@ -191,6 +217,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following locale accesses:$/
      */
     public function theFollowingLocaleAccesses(TableNode $table)
@@ -227,44 +255,46 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @Given /^I should the following product drafts:$/
+     * @param TableNode $table
+     *
+     * @Given /^I should see the following proposals:$/
      */
-    public function iShouldTheFollowingProductDrafts(TableNode $table)
+    public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
-        $expectedProductDrafts = $table->getHash();
-        $actualProductDrafts = $this->getSession()->getPage()->findAll('css', '#product-drafts-widget tbody tr');
+        $expectedProposals = $table->getHash();
+        $actualProposals = $this->getSession()->getPage()->findAll('css', '#proposal-widget tbody tr');
 
-        $expectedCount = count($expectedProductDrafts);
-        $actualCount   = count($actualProductDrafts);
+        $expectedCount = count($expectedProposals);
+        $actualCount   = count($actualProposals);
         if ($expectedCount !== $actualCount) {
             throw new \Exception(
                 sprintf(
-                    'Expecting %d product drafts, actually saw %d',
+                    'Expecting %d proposals, actually saw %d',
                     $expectedCount,
                     $actualCount
                 )
             );
         }
 
-        foreach ($expectedProductDrafts as $key => $productDraft) {
-            $cells = $actualProductDrafts[$key]->findAll('css', 'td');
-            if ($cells[1]->getText() !== $productDraft['author']) {
+        foreach ($expectedProposals as $key => $proposal) {
+            $cells = $actualProposals[$key]->findAll('css', 'td');
+            if ($cells[1]->getText() !== $proposal['author']) {
                 throw new \Exception(
                     sprintf(
-                        'Product draft #%d author is expected to be "%s", actually is "%s"',
+                        'Proposal #%d author is expected to be "%s", actually is "%s"',
                         $key + 1,
-                        $productDraft['author'],
+                        $proposal['author'],
                         $cells[1]->getText()
                     )
                 );
             }
 
-            if ($cells[2]->getText() !== $productDraft['product']) {
+            if ($cells[2]->getText() !== $proposal['product']) {
                 throw new \Exception(
                     sprintf(
-                        'Product draft #%d product is expected to be "%s", actually is "%s"',
+                        'Proposal #%d product is expected to be "%s", actually is "%s"',
                         $key + 1,
-                        $productDraft['product'],
+                        $proposal['product'],
                         $cells[2]->getText()
                     )
                 );
@@ -285,6 +315,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string    $username
+     * @param string    $products
+     * @param TableNode $table
+     *
+     * @return Given[]
      * @Given /^(\w+) should have proposed the following values for products (.*):$/
      */
     public function someoneShouldHaveProposedTheFollowingValuesForProducts($username, $products, TableNode $table)
@@ -305,7 +340,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param $data
+     * @param mixed $data
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      */
@@ -317,7 +352,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param $type
+     * @param string $type
      *
      * @return AttributeGroupAccessManager|CategoryAccessManager
      */

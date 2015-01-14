@@ -11,17 +11,17 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 
 /**
  * Subscriber to manage permissions on locales
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocalePermissionsSubscriber implements EventSubscriberInterface
 {

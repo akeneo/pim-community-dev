@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 /**
  * Unpublisher interface
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface UnpublisherInterface
 {

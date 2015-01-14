@@ -126,7 +126,6 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
                     type:      product_enabled
                     ftype:     choice

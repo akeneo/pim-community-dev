@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Grid listener to configure job profile grid row actions
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ConfigureJobProfileGridListener
 {

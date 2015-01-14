@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Merge values to keep previous product draft changes that
  * are not sent in the current request (like localized attributes or files)
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
 {
@@ -71,8 +71,8 @@ class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
         $productDraft = $event->getProductDraft();
         $submittedChanges = $event->getChanges();
 
-        $oldValue = array_merge(['values'=>[]], $productDraft->getChanges());
-        $newValue = array_merge(['values'=>[]], $submittedChanges);
+        $oldValue = array_merge(['values' => []], $productDraft->getChanges());
+        $newValue = array_merge(['values' => []], $submittedChanges);
 
         $event->setChanges(
             [

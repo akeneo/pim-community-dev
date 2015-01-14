@@ -3,9 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior

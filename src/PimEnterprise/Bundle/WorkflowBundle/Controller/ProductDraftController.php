@@ -11,28 +11,31 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use Doctrine\Common\Persistence\ObjectRepository;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * ProductDraft controller
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftController extends AbstractController
 {
@@ -87,14 +90,31 @@ class ProductDraftController extends AbstractController
     }
 
     /**
+     * List proposals
+     *
+     * @Template
+     * @return Response
+     * @throws AccessDeniedException if the current user is not the owner of any categories
+     */
+    public function indexAction()
+    {
+        if (!$this->securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)) {
+            throw new AccessDeniedException();
+        }
+
+        return [];
+    }
+
+    /**
+     * @param Request        $request
      * @param integer|string $id
      *
-     * @return RedirectResponse
+     * @return JsonResponse|RedirectResponse
      * @throws \LogicException
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      */
-    public function approveAction($id)
+    public function approveAction(Request $request, $id)
     {
         if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
@@ -114,10 +134,26 @@ class ProductDraftController extends AbstractController
 
         try {
             $this->manager->approve($productDraft);
-            $this->addFlash('success', 'flash.product_draft.approve.success');
+            $status = 'success';
+            $messageParams = [];
         } catch (ValidatorException $e) {
-            $this->addFlash('error', 'flash.product_draft.approve.error', ['%error%' => $e->getMessage()]);
+            $status = 'error';
+            $messageParams = ['%error%' => $e->getMessage()];
         }
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'successful' => $status === 'success',
+                    'message' => $this->getTranslator()->trans(
+                        sprintf('flash.product_draft.approve.%s', $status),
+                        $messageParams
+                    )
+                ]
+            );
+        }
+
+        $this->addFlash($status, sprintf('flash.product_draft.approve.%s', $status), $messageParams);
 
         return $this->redirect(
             $this->generateUrl(
@@ -131,13 +167,14 @@ class ProductDraftController extends AbstractController
     }
 
     /**
+     * @param Request        $request
      * @param integer|string $id
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      */
-    public function refuseAction($id)
+    public function refuseAction(Request $request, $id)
     {
         if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
@@ -152,6 +189,15 @@ class ProductDraftController extends AbstractController
         }
 
         $this->manager->refuse($productDraft);
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'successful' => true,
+                    'message' => $this->getTranslator()->trans('flash.product_draft.refuse.success')
+                ]
+            );
+        }
 
         return $this->redirect(
             $this->generateUrl(

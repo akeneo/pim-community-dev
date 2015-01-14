@@ -35,9 +35,15 @@ class RegisterComparatorsPassSpec extends ObjectBehavior
         $barDefinition->setPublic(false)->shouldBeCalled();
         $fooDefinition->setPublic(false)->shouldBeCalled();
         $bazDefinition->setPublic(false)->shouldBeCalled();
-        $comparator->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.bar', -10))->shouldBeCalled();
-        $comparator->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.foo', 10))->shouldBeCalled();
-        $comparator->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.baz', 0))->shouldBeCalled();
+        $comparator
+            ->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.bar', -10))
+            ->shouldBeCalled();
+        $comparator
+            ->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.foo', 10))
+            ->shouldBeCalled();
+        $comparator
+            ->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.baz', 0))
+            ->shouldBeCalled();
 
         $this->process($container);
     }

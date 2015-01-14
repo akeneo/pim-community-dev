@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 /**
  * Published product media
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
 class PublishedProductMedia extends AbstractProductMedia implements PublishedProductMediaInterface

@@ -3,8 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 
 class MetricPublisherSpec extends ObjectBehavior
 {
@@ -18,11 +17,15 @@ class MetricPublisherSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
 
-    function it_supports_metric(Model\AbstractMetric $value) {
+    function it_supports_metric(MetricInterface $value)
+    {
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_publishes_metric(Model\AbstractMetric $value) {
-        $this->publish($value)->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric');
+    function it_publishes_metric(MetricInterface $value)
+    {
+        $this
+            ->publish($value)
+            ->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric');
     }
 }

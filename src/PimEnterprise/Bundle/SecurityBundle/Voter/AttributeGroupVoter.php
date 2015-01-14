@@ -11,17 +11,17 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a
  * user depending on his user groups
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AttributeGroupVoter implements VoterInterface
 {
@@ -51,7 +51,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof AttributeGroup;
+        return $class instanceof AttributeGroupInterface;
     }
 
     /**

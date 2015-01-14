@@ -3,22 +3,18 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
 {
-    function let(
-        FormFactoryInterface $formFactory,
-        ProductDraftManager $manager
-    ) {
+    function let(FormFactoryInterface $formFactory, ProductDraftManager $manager)
+    {
         $this->beConstructedWith($formFactory, $manager);
     }
 
@@ -57,18 +53,16 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         $this->addProductDraftFormView($event);
     }
 
-    function it_does_nothing_if_event_does_not_have_a_parameters_argument(
-        GenericEvent $event
-    ) {
+    function it_does_nothing_if_event_does_not_have_a_parameters_argument(GenericEvent $event)
+    {
         $event->getArgument('parameters')->willThrow(new \InvalidArgumentException());
         $event->setArgument('parameters', Argument::any())->shouldNotBeCalled();
 
         $this->addProductDraftFormView($event);
     }
 
-    function it_does_nothing_if_parameters_does_not_have_a_product(
-        GenericEvent $event
-    ) {
+    function it_does_nothing_if_parameters_does_not_have_a_product(GenericEvent $event)
+    {
         $event->getArgument('parameters')->willReturn([]);
         $event->setArgument('parameters', Argument::any())->shouldNotBeCalled();
 

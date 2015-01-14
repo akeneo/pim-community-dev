@@ -1,4 +1,3 @@
-@javascript
 Feature: Edit a product I have access
   In order to enrich the catalog
   As a product manager
@@ -35,6 +34,7 @@ Feature: Edit a product I have access
     Then I should be on the product "rangers" edit page
     Then the product Name should be "My Rangers"
 
+  @javascript
   Scenario: Seeing the edit actions on the product grid
     Given I am on the products page
     And I select the "Boots" tree

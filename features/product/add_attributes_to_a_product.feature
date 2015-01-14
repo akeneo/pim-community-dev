@@ -1,4 +1,3 @@
-@javascript
 Feature: Add attributes to a product
   In order to provide more information about a product restricting accesses
   As a product manager

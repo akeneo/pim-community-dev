@@ -3,17 +3,14 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 
 class ChainedComparatorSpec extends ObjectBehavior
 {
-    public function let(
-        ComparatorInterface $comparator1,
-        ComparatorInterface $comparator2
-    ) {
+    function let(ComparatorInterface $comparator1, ComparatorInterface $comparator2)
+    {
         $this->addComparator($comparator1, 0);
         $this->addComparator($comparator2, 100);
     }
@@ -23,7 +20,7 @@ class ChainedComparatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_is_a_root_comparator(AbstractProductValue $value)
+    function it_is_a_root_comparator(ProductValueInterface $value)
     {
         $this->supportsComparison($value)->shouldBe(true);
     }
@@ -34,7 +31,7 @@ class ChainedComparatorSpec extends ObjectBehavior
     }
 
     function it_delegates_comparison_resolution_to_embedded_comparators(
-        AbstractProductValue $value,
+        ProductValueInterface $value,
         $comparator1,
         $comparator2
     ) {
@@ -46,14 +43,15 @@ class ChainedComparatorSpec extends ObjectBehavior
     }
 
     function it_throws_exception_when_no_eligible_comparator_is_available(
-        AbstractProductValue $value,
-        AbstractAttribute $attribute
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn('pim_catalog_fancy');
 
         $exception = new \LogicException(
-            'Cannot compare value of attribute type "pim_catalog_fancy". Please check that a comparator exists for such attribute type.'
+            'Cannot compare value of attribute type "pim_catalog_fancy". ' .
+            'Please check that a comparator exists for such attribute type.'
         );
         $this->shouldThrow($exception)->duringGetChanges($value, ['foo' => 'bar']);
     }

@@ -11,17 +11,17 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use Symfony\Component\Form\FormBuilderInterface;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType as BaseEditCommonAttributesType;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductMassEditValuesSubscriber;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Form type of the EditCommonAttributes operation
  * configured with a data collector subscriber
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class EditCommonAttributesType extends BaseEditCommonAttributesType
 {

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 /**
  * Datetime publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class DateTimePublisher implements PublisherInterface
 {

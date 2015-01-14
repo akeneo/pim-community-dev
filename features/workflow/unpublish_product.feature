@@ -1,9 +1,9 @@
-@javascript
 Feature: Unpublish a product
   In order to unfroze the product data
   As a product manager
   I need to be able to unpublish a product
 
+  @javascript
   Scenario: Successfully unpublish a product
     Given a "clothing" catalog configuration
     And the following published product:
@@ -19,6 +19,7 @@ Feature: Unpublish a product
     And I should see product my-leather-jacket
     And I should not see product my-jacket
 
+  @javascript
   Scenario: Successfully unpublish a product from the grid
     Given a "clothing" catalog configuration
     And the following published product:
@@ -44,6 +45,7 @@ Feature: Unpublish a product
     And I am on the "my-tee" published show page
     Then I should not see "Unpublish"
 
+  @javascript
   Scenario: Not being able to unpublish a product I am not owner anymore from the grid
     Given a "clothing" catalog configuration
     And the following published product:

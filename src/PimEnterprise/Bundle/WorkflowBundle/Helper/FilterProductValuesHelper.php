@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Helper for filtering product values
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class FilterProductValuesHelper
 {
@@ -37,10 +37,10 @@ class FilterProductValuesHelper
      * Returns values that the current user is allowed to see
      * If locale is specified, only values in this locale are returned
      *
-     * @param \Pim\Bundle\CatalogBundle\Model\AbstractProductValue[] $values
-     * @param string|null                                            $locale
+     * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
+     * @param string|null                                             $locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractProductValue[]
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[]
      */
     public function filter(array $values, $locale = null)
     {

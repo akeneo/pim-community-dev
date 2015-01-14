@@ -2,6 +2,7 @@ parameters:
     pim_datagrid.datagrid.product.context_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator
     pim_datagrid.datagrid.product.filters_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator
     pimee_datagrid.datagrid.product.row_actions_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator
+    pimee_datagrid.datagrid.proposal.context_configurator.class:    PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\ContextConfigurator
 
 services:
     pim_datagrid.datagrid.product.context_configurator:
@@ -12,6 +13,14 @@ services:
             - '@pim_user.context.user'
             - '@pim_datagrid.repository.datagrid_view'
             - '@pimee_security.repository.attribute_group_access'
+        calls:
+            - [setRequest, ['@?request=']]
+
+    pimee_datagrid.datagrid.proposal.context_configurator:
+        class: %pimee_datagrid.datagrid.proposal.context_configurator.class%
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
         calls:
             - [setRequest, ['@?request=']]
 

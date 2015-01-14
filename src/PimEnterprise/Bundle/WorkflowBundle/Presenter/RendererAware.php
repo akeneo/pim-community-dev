@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 /**
  * Provides renderer capabilities default implementation
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 trait RendererAware
 {
