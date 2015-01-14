@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.13 (2015-01-14)
 
 ## Bug fixes
 - PIM-3603: Trigger saving wysiwyg editor contents when submitting product form manually
