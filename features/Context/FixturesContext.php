@@ -4,10 +4,13 @@ namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
@@ -1143,11 +1146,17 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProduct($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
-            //TODO: does not work for  scopable, non-localizable fields
-            list($code, $locale, $scope) = array_replace([null, null, null], explode('-', $rawCode));
-            $productValue = $product->getValue($code, $locale, $scope);
+            $infos = $this->getFieldNameBuilder()->extractAttributeFieldNameInfos($rawCode);
 
-            if ('media' === $this->getAttribute($code)->getBackendType()) {
+            /** @var AttributeInterface $attribute */
+            $attribute = $infos['attribute'];
+            $attributeCode = $attribute->getCode();
+            $localeCode = $infos['locale_code'];
+            $scopeCode = $infos['scope_code'];
+            $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
+            $productValue = $product->getValue($attributeCode, $localeCode, $scopeCode);
+
+            if ('media' === $attribute->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)
                 if ('**empty**' === $value) {
@@ -1155,6 +1164,16 @@ class FixturesContext extends RawMinkContext
                 } else {
                     assertTrue(false !== strpos((string) $productValue, $value));
                 }
+            } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
+                // $priceCurrency can be null if we want to test all the currencies at the same time
+                // in this case, it's a simple string comparison
+                // example: 180.00 EUR, 220.00 USD
+
+                /** @var ProductPriceInterface $price */
+                $price = $productValue->getPrice($priceCurrency);
+                assertEquals($value, $price->getData());
+            } elseif ('date' === $attribute->getBackendType()) {
+                assertEquals($value, $productValue->getDate()->format('Y-m-d'));
             } else {
                 assertEquals($value, (string) $productValue);
             }
@@ -1913,6 +1932,14 @@ class FixturesContext extends RawMinkContext
     protected function getVersionManager()
     {
         return $this->getContainer()->get('pim_versioning.manager.version');
+    }
+
+    /**
+     * @return FieldNameBuilder
+     */
+    protected function getFieldNameBuilder()
+    {
+        return $this->getContainer()->get('pim_transform.builder.field_name');
     }
 
     /**
