@@ -5,10 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Category class allowing to organize a flexible product class into trees
@@ -19,8 +16,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Category implements CategoryInterface, TranslatableInterface, ReferableInterface,
- VersionableInterface
+class Category implements CategoryInterface
 {
     /**
      * @var integer $id

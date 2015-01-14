@@ -22,6 +22,9 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
@@ -798,7 +801,6 @@ class FixturesContext extends RawMinkContext
     {
         $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
-            /** @var GroupInterface $group */
             $group = $this->getProductGroup($data['code']);
             $this->refresh($group);
 
@@ -1347,7 +1349,6 @@ class FixturesContext extends RawMinkContext
      */
     public function groupShouldContain($group, $products)
     {
-        /** @var GroupInterface $group */
         $group = $this->getProductGroup($group);
         $this->refresh($group);
         $groupProducts = $group->getProducts();
@@ -1594,7 +1595,7 @@ class FixturesContext extends RawMinkContext
      * @param string  $label
      * @param boolean $isVariant
      *
-     * @return GroupType
+     * @return GroupTypeInterface
      */
     protected function createGroupType($code, $label, $isVariant)
     {
@@ -1833,7 +1834,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param string $code
      *
-     * @return AttributeOption
+     * @return AttributeOptionInterface
      */
     protected function createOption($code)
     {
@@ -1868,7 +1869,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return AttributeGroup
+     * @return AttributeGroupInterface
      */
     protected function createAttributeGroup($data)
     {

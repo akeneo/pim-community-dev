@@ -7,10 +7,12 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -177,12 +179,13 @@ class AttributeOptionController
 
     /**
      * Manage form submission of an attribute option
-     * @param AttributeOption $attributeOption
-     * @param array           $data
+     *
+     * @param AttributeOptionInterface $attributeOption
+     * @param array                    $data
      *
      * @return FormInterface
      */
-    protected function manageFormSubmission(AttributeOption $attributeOption, array $data = [])
+    protected function manageFormSubmission(AttributeOptionInterface $attributeOption, array $data = [])
     {
         $form = $this->formFactory->createNamed('option', 'pim_enrich_attribute_option', $attributeOption);
 
@@ -224,7 +227,7 @@ class AttributeOptionController
      * @param integer $id The id of the attribute option
      *
      * @throws NotFoundHttpException
-     * @return AttributeOption
+     * @return AttributeOptionInterface
      */
     protected function findAttributeOptionOr404($id)
     {

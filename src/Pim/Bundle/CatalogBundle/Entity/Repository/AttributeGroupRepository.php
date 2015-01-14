@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 
 /**
  * Repository
@@ -16,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class AttributeGroupRepository extends ReferableEntityRepository
 {
     /**
-     * @return AttributeGroup[]
+     * @return AttributeGroupInterface
      */
     public function findAllWithTranslations()
     {
@@ -71,8 +72,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
 
     /**
      * Get the default attribute group
-     *
-     * @return null|AttributeGroup
+     * @return null|AttributeGroupInterface
      */
     public function findDefaultAttributeGroup()
     {
@@ -82,7 +82,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
     /**
      * @param array $codes
      *
-     * @return AttributeGroup[]
+     * @return AttributeGroupInterface
      */
     public function getAttributeGroupsFromAttributeCodes(array $codes)
     {

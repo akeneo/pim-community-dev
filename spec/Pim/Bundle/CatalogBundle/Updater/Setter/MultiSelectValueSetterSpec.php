@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
@@ -49,7 +49,7 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         $attrValidatorHelper,
         $attrOptionRepository,
         AttributeInterface $attribute,
-        AttributeOption $attributeOption
+        AttributeOptionInterface $attributeOption
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
@@ -113,8 +113,8 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         ProductValueInterface $productValue,
-        AttributeOption $attributeOption,
-        AttributeOption $oldOption
+        AttributeOptionInterface $attributeOption,
+        AttributeOptionInterface $oldOption
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';

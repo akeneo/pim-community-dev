@@ -2,7 +2,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
@@ -195,11 +194,11 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
     /**
      * Get the product association for an Association type
      *
-     * @param AssociationType $type
+     * @param AssociationTypeInterface $type
      *
      * @return AssociationInterface|null
      */
-    public function getAssociationForType(AssociationType $type);
+    public function getAssociationForType(AssociationTypeInterface $type);
 
     /**
      * Get the product association for an association type code

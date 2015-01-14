@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface;
 
 class CopierRegistrySpec extends ObjectBehavior
 {
-    public function it_gets_copier(
+    function it_gets_copier(
         AttributeInterface $fromAttribute1,
         AttributeInterface $fromAttribute2,
         AttributeInterface $toAttribute1,

@@ -2,7 +2,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Product value interface
@@ -52,7 +51,7 @@ interface ProductValueInterface
     /**
      * Get related option, used for simple select to set single option
      *
-     * @return AttributeOption
+     * @return AttributeOptionInterface
      */
     public function getOption();
 
@@ -93,11 +92,11 @@ interface ProductValueInterface
     /**
      * Add option, used for multi select to add many options
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return ProductValueInterface
      */
-    public function addOption(AttributeOption $option);
+    public function addOption(AttributeOptionInterface $option);
 
     /**
      * Get boolean data
@@ -265,11 +264,11 @@ interface ProductValueInterface
     /**
      * Remove an option
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return ProductValue
      */
-    public function removeOption(AttributeOption $option);
+    public function removeOption(AttributeOptionInterface $option);
 
     /**
      * Get text data
@@ -290,11 +289,11 @@ interface ProductValueInterface
     /**
      * Set option, used for simple select to set single option
      *
-     * @param AttributeOption $option
+     * @param AttributeOptionInterface $option
      *
      * @return ProductValueInterface
      */
-    public function setOption(AttributeOption $option = null);
+    public function setOption(AttributeOptionInterface $option = null);
 
     /**
      * Get the price matching the given currency

@@ -13,7 +13,7 @@ use Prophecy\Argument;
 class WriterSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, CacheClearer $clearer, StepExecution $stepExecution)
-    { 
+    {
         $this->beConstructedWith($registry, $clearer);
         $this->setStepExecution($stepExecution);
     }

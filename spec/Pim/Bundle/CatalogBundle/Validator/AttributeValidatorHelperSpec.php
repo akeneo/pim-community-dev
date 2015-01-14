@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Prophecy\Argument;
 
 class AttributeValidatorHelperSpec extends ObjectBehavior
 {
@@ -43,7 +42,6 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         $description->getCode()->willReturn('description');
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
-
 
         $this->shouldThrow(new \LogicException('Attribute "description" expects a locale, none given.'))
             ->during('validateLocale', [$description, null]);
@@ -88,7 +86,6 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         $description->getCode()->willReturn('description');
         $name->isScopable()->willReturn(false);
         $name->getCode()->willReturn('name');
-
 
         $this->shouldThrow(new \LogicException('Attribute "description" expects a scope, none given.'))
             ->during('validateScope', [$description, null]);

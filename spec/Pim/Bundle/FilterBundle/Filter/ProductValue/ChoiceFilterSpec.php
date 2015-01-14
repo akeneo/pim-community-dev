@@ -130,7 +130,7 @@ class ChoiceFilterSpec extends ObjectBehavior
 
 class CustomAttributeRepository extends AttributeRepository
 {
-    public function findOneByCode()
+    function findOneByCode()
     {
         return null;
     }

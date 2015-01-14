@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
@@ -17,7 +17,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        Channel $channel,
+        ChannelInterface $channel,
         $channelManager,
         ProductInterface $item,
         ProductMediaInterface $media1,
@@ -25,11 +25,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $serializer
     ) {
         $media1->getFilename()->willReturn('media_name');
-        $media1->getFilePath()->willReturn('media_file_path');
         $media1->getOriginalFilename()->willReturn('media_original_name');
 
         $media2->getFilename()->willReturn('media_name');
-        $media2->getFilePath()->willReturn('media_file_path');
         $media2->getOriginalFilename()->willReturn('media_original_name');
 
         $item->getMedia()->willReturn([$media1, $media2]);
@@ -49,7 +47,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
-        Channel $channel,
+        ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $item,
         Serializer $serializer

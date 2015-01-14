@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Model;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -29,8 +29,8 @@ class ProductSpec extends ObjectBehavior
     function it_returns_association_from_an_association_type(
         Association $assoc1,
         Association $assoc2,
-        AssociationType $assocType1,
-        AssociationType $assocType2
+        AssociationTypeInterface $assocType1,
+        AssociationTypeInterface $assocType2
     ) {
         $assoc1->getAssociationType()->willReturn($assocType1);
         $assoc2->getAssociationType()->willReturn($assocType2);
@@ -42,8 +42,8 @@ class ProductSpec extends ObjectBehavior
     function it_returns_association_from_an_association_type_code(
         Association $assoc1,
         Association $assoc2,
-        AssociationType $assocType1,
-        AssociationType $assocType2
+        AssociationTypeInterface $assocType1,
+        AssociationTypeInterface $assocType2
     ) {
         $assocType1->getCode()->willReturn('ASSOC_TYPE_1');
         $assocType2->getCode()->willReturn('ASSOC_TYPE_2');
@@ -55,7 +55,7 @@ class ProductSpec extends ObjectBehavior
     }
 
     function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection(
-        AssociationType $assocType1
+        AssociationTypeInterface $assocType1
     ) {
         $this->setAssociations([]);
         $this->getAssociationForType($assocType1)->shouldReturn(null);

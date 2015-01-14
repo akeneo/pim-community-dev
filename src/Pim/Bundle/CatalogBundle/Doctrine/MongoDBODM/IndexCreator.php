@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
@@ -79,9 +79,9 @@ class IndexCreator
      * - completenesses
      * - scopable attributes
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function ensureIndexesFromChannel(Channel $channel)
+    public function ensureIndexesFromChannel(ChannelInterface $channel)
     {
         $this->channel = null;
 
@@ -120,9 +120,9 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for:
      * - prices (because of potentially added currency)
      *
-     * @param Currency $currency
+     * @param CurrencyInterface $currency
      */
-    public function ensureIndexesFromCurrency(Currency $currency)
+    public function ensureIndexesFromCurrency(CurrencyInterface $currency)
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
@@ -133,11 +133,11 @@ class IndexCreator
     /**
      * Get the completeness fields for the channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function getCompletenessNormFields(Channel $channel = null)
+    protected function getCompletenessNormFields(ChannelInterface $channel = null)
     {
         $normFields = [];
         $channels = [];

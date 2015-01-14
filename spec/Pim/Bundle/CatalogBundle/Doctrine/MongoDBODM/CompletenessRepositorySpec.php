@@ -9,7 +9,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -23,8 +23,8 @@ class CompletenessRepositorySpec extends ObjectBehavior
 {
     function let(
         DocumentManager $manager,
-        Channel $ecommerce,
-        Channel $mobile,
+        ChannelInterface $ecommerce,
+        ChannelInterface $mobile,
         LocaleInterface $enUs,
         LocaleInterface $frFr,
         CategoryInterface $category,

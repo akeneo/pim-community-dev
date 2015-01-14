@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -96,16 +95,16 @@ class SimpleSelectValueSetter extends AbstractValueSetter
     /**
      * Set option into the product value
      *
-     * @param AttributeInterface   $attribute
-     * @param ProductInterface     $product
-     * @param AttributeOption|null $option
-     * @param string|null          $locale
-     * @param string|null          $scope
+     * @param AttributeInterface            $attribute
+     * @param ProductInterface              $product
+     * @param AttributeOptionInterface|null $option
+     * @param string|null                   $locale
+     * @param string|null                   $scope
      */
     protected function setOption(
         AttributeInterface $attribute,
         ProductInterface $product,
-        AttributeOption $option = null,
+        AttributeOptionInterface $option = null,
         $locale = null,
         $scope = null
     ) {

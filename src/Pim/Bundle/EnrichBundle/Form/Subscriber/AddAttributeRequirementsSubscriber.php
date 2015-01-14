@@ -3,9 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -21,7 +22,7 @@ use Symfony\Component\Form\FormEvents;
 class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var Channel[]
+     * @var ChannelInterface[]
      */
     protected $channels;
 
@@ -99,14 +100,14 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     /**
      * Create attribute requirement entity
      *
-     * @param Channel            $channel
+     * @param ChannelInterface   $channel
      * @param AttributeInterface $attribute
      * @param FamilyInterface    $family
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirementInterface
      */
     protected function createAttributeRequirement(
-        Channel $channel,
+        ChannelInterface $channel,
         AttributeInterface $attribute,
         FamilyInterface $family
     ) {

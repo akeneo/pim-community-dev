@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 
 /**
@@ -15,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeRequirement
+class AttributeRequirement implements AttributeRequirementInterface
 {
     /**
      * @var integer $id
@@ -33,7 +35,7 @@ class AttributeRequirement
     protected $attribute;
 
     /**
-     * @var Channel $channel
+     * @var ChannelInterface $channel
      */
     protected $channel;
 
@@ -43,11 +45,7 @@ class AttributeRequirement
     protected $required = false;
 
     /**
-     * Setter family
-     *
-     * @param FamilyInterface $family
-     *
-     * @return AttributeRequirement
+     * {@inheritdoc}
      */
     public function setFamily(FamilyInterface $family)
     {
@@ -57,9 +55,7 @@ class AttributeRequirement
     }
 
     /**
-     * Getter family
-     *
-     * @return Family
+     * {@inheritdoc}
      */
     public function getFamily()
     {
@@ -67,11 +63,7 @@ class AttributeRequirement
     }
 
     /**
-     * Set attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return AttributeRequirement
+     * {@inheritdoc}
      */
     public function setAttribute(AttributeInterface $attribute)
     {
@@ -81,9 +73,7 @@ class AttributeRequirement
     }
 
     /**
-     * Get attribute
-     *
-     * @return AttributeInterface
+     * {@inheritdoc}
      */
     public function getAttribute()
     {
@@ -91,9 +81,7 @@ class AttributeRequirement
     }
 
     /**
-     * Get attribute code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getAttributeCode()
     {
@@ -101,13 +89,9 @@ class AttributeRequirement
     }
 
     /**
-     * Setter channel
-     *
-     * @param Channel $channel
-     *
-     * @return AttributeRequirement
+     * {@inheritdoc}
      */
-    public function setChannel(Channel $channel)
+    public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
 
@@ -115,9 +99,7 @@ class AttributeRequirement
     }
 
     /**
-     * Getter channel
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function getChannel()
     {
@@ -125,9 +107,7 @@ class AttributeRequirement
     }
 
     /**
-     * Get channel code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getChannelCode()
     {
@@ -135,11 +115,7 @@ class AttributeRequirement
     }
 
     /**
-     * Setter required property
-     *
-     * @param boolean $required
-     *
-     * @return AttributeRequirement
+     * {@inheritdoc}
      */
     public function setRequired($required)
     {
@@ -149,9 +125,7 @@ class AttributeRequirement
     }
 
     /**
-     * Predicate for required property
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isRequired()
     {

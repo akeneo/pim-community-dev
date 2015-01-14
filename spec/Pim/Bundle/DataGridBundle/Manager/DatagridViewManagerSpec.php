@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
-use Prophecy\Argument;
 
 class DatagridViewManagerSpec extends ObjectBehavior
 {

@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Abstract product value
@@ -99,7 +98,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store simple option value
      *
-     * @var \Pim\Bundle\CatalogBundle\Entity\AttributeOption $option
+     * @var AttributeOptionInterface $option
      */
     protected $option;
 
@@ -413,7 +412,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setOption(AttributeOption $option = null)
+    public function setOption(AttributeOptionInterface $option = null)
     {
         $this->option = $option;
 
@@ -449,7 +448,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function addOption(AttributeOption $option)
+    public function addOption(AttributeOptionInterface $option)
     {
         $this->options->add($option);
 
@@ -459,7 +458,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function removeOption(AttributeOption $option)
+    public function removeOption(AttributeOptionInterface $option)
     {
         $this->options->removeElement($option);
 

@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
@@ -93,9 +93,9 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function generateMissingForChannel(Channel $channel)
+    public function generateMissingForChannel(ChannelInterface $channel)
     {
         $this->generator->generateMissingForChannel($channel);
     }
@@ -137,9 +137,9 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all products
      * of a channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function scheduleForChannel(Channel $channel)
+    public function scheduleForChannel(ChannelInterface $channel)
     {
         if ($channel->getId()) {
             $deletedLocaleIds = $this->channelRepository->getDeletedLocaleIdsForChannel($channel);
@@ -204,14 +204,14 @@ class CompletenessManager
     /**
      * Adds a requirement to the completenesses
      *
-     * @param array                &$completenesses
-     * @param AttributeRequirement $requirement
-     * @param ArrayCollection      $productValues
-     * @param array                $localeCodes
+     * @param array                         &$completenesses
+     * @param AttributeRequirementInterface $requirement
+     * @param ArrayCollection               $productValues
+     * @param array                         $localeCodes
      */
     protected function addRequirementToCompleteness(
         array &$completenesses,
-        AttributeRequirement $requirement,
+        AttributeRequirementInterface $requirement,
         ArrayCollection $productValues,
         array $localeCodes
     ) {

@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class AttributeOptionDenormalizerSpec extends ObjectBehavior
@@ -23,7 +23,7 @@ class AttributeOptionDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_attribute_option($repository, ProductValueInterface $productValueInterface, AttributeInterface $color, AttributeOption $red)
+    function it_denormalizes_attribute_option($repository, ProductValueInterface $productValueInterface, AttributeInterface $color, AttributeOptionInterface $red)
     {
         $data = '1';
         $context['value'] = $productValueInterface;

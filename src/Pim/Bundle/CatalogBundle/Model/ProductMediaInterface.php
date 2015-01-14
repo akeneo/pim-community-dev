@@ -43,13 +43,6 @@ interface ProductMediaInterface
     public function isRemoved();
 
     /**
-     * Get file path
-     *
-     * @return string
-     */
-    public function getFilePath();
-
-    /**
      * Set the product value
      *
      * @param ProductValueInterface $value
@@ -128,15 +121,6 @@ interface ProductMediaInterface
      * @return int|string
      */
     public function getId();
-
-    /**
-     * Set file path
-     *
-     * @param string $filePath
-     *
-     * @return ProductMediaInterface
-     */
-    public function setFilePath($filePath);
 
     /**
      * Get filename

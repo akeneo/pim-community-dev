@@ -5,12 +5,12 @@ namespace spec\Pim\Bundle\CatalogBundle\Builder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -49,8 +49,8 @@ class ProductBuilderSpec extends ObjectBehavior
         LocaleInterface $fr,
         LocaleInterface $en,
         $channelRepository,
-        Channel $ecom,
-        Channel $print,
+        ChannelInterface $ecom,
+        ChannelInterface $print,
         ProductValueInterface $skuValue
     ) {
         // get expected attributes
@@ -99,7 +99,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $this->addMissingProductValues($product);
     }
 
-    public function it_adds_product_value(ProductInterface $product, AttributeInterface $size)
+    function it_adds_product_value(ProductInterface $product, AttributeInterface $size)
     {
         $size->isLocalizable()->willReturn(false);
         $size->isScopable()->willReturn(false);
@@ -108,7 +108,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $this->addProductValue($product, $size);
     }
 
-    public function it_throws_exception_when_locale_is_not_provided_but_expected(ProductInterface $product, AttributeInterface $name)
+    function it_throws_exception_when_locale_is_not_provided_but_expected(ProductInterface $product, AttributeInterface $name)
     {
         $name->getCode()->willReturn('name');
         $name->isLocalizable()->willReturn(true);
@@ -119,7 +119,7 @@ class ProductBuilderSpec extends ObjectBehavior
         )->duringAddProductValue($product, $name);
     }
 
-    public function it_throws_exception_when_scope_is_not_provided_but_expected(ProductInterface $product, AttributeInterface $price)
+    function it_throws_exception_when_scope_is_not_provided_but_expected(ProductInterface $product, AttributeInterface $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(false);

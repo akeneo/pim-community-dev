@@ -25,7 +25,7 @@
 - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
 - Move filter transformation to CatalogBundle
-- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable
+- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable 
 - Re-work the `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder` to provide a clear and extensible API to query products
 - Normalize the managers by introducing 4 interfaces, `Akeneo\Component\Persistence\SaverInterface`, `Akeneo\Component\Persistence\BulkSaverInterface`, `Akeneo\Component\Persistence\RemoverInterface` and `Pim\Component\Persistence\BulkRemoverInterface`
 - Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
@@ -42,6 +42,14 @@
 - Allow to generate many versions in a single request
 - Add flat / csv denormalizers for product data
 - Introduce `Pim\Bundle\CatalogBundle\Model\GroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Group`
+- Use `Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeOption`
+- Use `Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue`
+- Use `Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeRequirement`
+- Use `Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AssociationType`
+- Use `Pim\Bundle\CatalogBundle\Model\GroupTypeInterface` instead of `Pim\Bundle\CatalogBundle\Entity\GroupType`
+- Use `Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeGroup`
+- Use `Pim\Bundle\CatalogBundle\Model\ChannelInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Channel`
+- Use `Pim\Bundle\CatalogBundle\Model\CurrencyInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Currency`
 - Add a form view updater to ease update of form views
 
 ## BC breaks
@@ -161,11 +169,18 @@
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
+- PIM-3548: Do not use the absolute file path of a media
 
 # 1.2.x
 
 ## Bug fixes
+- PIM-3603 Trigger saving wysiwyg editor contents when submitting product form manually
+
+# 1.2.19 (2015-01-09)
+
+## Bug fixes
 - PIM-3556: Fix memory leak on versionning
+- PIM-3548: Do not rely on the absolute file path of a media 
 
 # 1.2.18 (2014-12-23)
 

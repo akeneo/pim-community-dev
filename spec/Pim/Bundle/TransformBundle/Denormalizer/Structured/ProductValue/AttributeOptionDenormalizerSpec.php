@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 class AttributeOptionDenormalizerSpec extends ObjectBehavior
 {
@@ -34,7 +34,7 @@ class AttributeOptionDenormalizerSpec extends ObjectBehavior
         $this->supportsDenormalization([], 'pim_catalog_simpleselect', 'csv')->shouldReturn(false);
     }
 
-    function it_returns_the_requested_attribute_option($repository, AttributeInterface $color, AttributeOption $red)
+    function it_returns_the_requested_attribute_option($repository, AttributeInterface $color, AttributeOptionInterface $red)
     {
         $color->getCode()->willReturn('color');
 

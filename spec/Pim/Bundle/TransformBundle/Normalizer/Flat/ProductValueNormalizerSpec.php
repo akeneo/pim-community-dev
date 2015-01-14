@@ -2,26 +2,18 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
-
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, AttributeInterface $simpleAttribute) {
+    function let(SerializerInterface $serializer, AttributeInterface $simpleAttribute)
+    {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
 
@@ -127,8 +119,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $multiColorAttribute,
         SerializerInterface $serializer,
-        AttributeOption $redOption,
-        AttributeOption $blueOption,
+        AttributeOptionInterface $redOption,
+        AttributeOptionInterface $blueOption,
         ArrayCollection $collection
     ) {
         $collection->toArray()->willReturn([$redOption, $blueOption]);

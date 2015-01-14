@@ -3,12 +3,12 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
@@ -25,7 +25,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
-    function it_has_attribute_requirements(AttributeRequirement $requirement)
+    function it_has_attribute_requirements(AttributeRequirementInterface $requirement)
     {
         $requirement->getAttributeCode()->willReturn('foo');
         $requirement->getChannelCode()->willReturn('bar');
@@ -36,7 +36,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         ]);
     }
 
-    function it_removes_its_own_attribute_requirements(AttributeRequirement $requirement)
+    function it_removes_its_own_attribute_requirements(AttributeRequirementInterface $requirement)
     {
         $this->addAttributeRequirement($requirement);
         $this->removeAttributeRequirement($requirement);
@@ -51,16 +51,16 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
 
     function it_initializes_attribute_requirements_with_all_channels_and_attributes_in_the_PIM(
         ChannelRepository $channelRepository,
-        Channel $ecommerce,
-        Channel $mobile,
+        ChannelInterface $ecommerce,
+        ChannelInterface $mobile,
         AttributeRepository $attributeRepository,
         AttributeInterface $name,
         AttributeInterface $description,
         AttributeRequirementFactory $factory,
-        AttributeRequirement $r1,
-        AttributeRequirement $r2,
-        AttributeRequirement $r3,
-        AttributeRequirement $r4
+        AttributeRequirementInterface $r1,
+        AttributeRequirementInterface $r2,
+        AttributeRequirementInterface $r3,
+        AttributeRequirementInterface $r4
     ) {
         $channelRepository->findAll()->willReturn([
             $ecommerce, $mobile

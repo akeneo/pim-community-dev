@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 /**
  * Test related class
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 class AttributeOptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Pim\Bundle\CatalogBundle\Entity\AttributeOption
+     * @var AttributeOptionInterface
      */
     protected $attributeOption;
 

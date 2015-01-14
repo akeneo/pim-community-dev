@@ -2,16 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
-use Doctrine\ORM\EntityManager;
-use \Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
-use Prophecy\Argument;
 
 class CategoryFilterSpec extends ObjectBehavior
 {

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -73,7 +74,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
      *
      * @param string $identifier
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
+     * @return AttributeOptionInterface
      */
     protected function findEntity($identifier)
     {

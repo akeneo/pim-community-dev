@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -31,7 +31,7 @@ class ProductMediaNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof ProductMedia && ProductNormalizer::FORMAT === $format);
+        return ($data instanceof ProductMediaInterface && ProductNormalizer::FORMAT === $format);
     }
 
     /**
@@ -42,7 +42,6 @@ class ProductMediaNormalizer implements NormalizerInterface
         $data = [];
         $data['_id']              = $this->mongoFactory->createMongoId();
         $data['filename']         = $media->getFilename();
-        $data['filePath']         = $media->getFilePath();
         $data['originalFilename'] = $media->getOriginalFilename();
         $data['mimeType']         = $media->getMimeType();
 

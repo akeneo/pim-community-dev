@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 class MultipleOptionCodeUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
@@ -16,7 +17,7 @@ class MultipleOptionCodeUpdatedQueryGeneratorSpec extends ObjectBehavior
 
     function it_generates_a_query_to_update_product_select_attributes(
         $namingUtility,
-        AttributeOption $blue,
+        AttributeOptionInterface $blue,
         AttributeInterface $color
     ) {
         $blue->getAttribute()->willReturn($color);

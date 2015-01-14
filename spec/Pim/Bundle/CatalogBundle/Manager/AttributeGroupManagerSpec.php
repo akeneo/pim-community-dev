@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class AttributeGroupManagerSpec extends ObjectBehavior
@@ -37,7 +37,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_removing_an_attribute_group_and_the_default_group_does_not_exist(
         $repository,
-        AttributeGroup $group,
+        AttributeGroupInterface $group,
         AttributeInterface $attribute
     ) {
         $repository->findDefaultAttributeGroup()->willReturn(null);
@@ -49,8 +49,8 @@ class AttributeGroupManagerSpec extends ObjectBehavior
     function it_removes_an_attribute_group(
         $repository,
         $objectManager,
-        AttributeGroup $default,
-        AttributeGroup $group,
+        AttributeGroupInterface $default,
+        AttributeGroupInterface $group,
         AttributeInterface $attribute
     ) {
         $repository->findDefaultAttributeGroup()->willReturn($default);
@@ -67,8 +67,8 @@ class AttributeGroupManagerSpec extends ObjectBehavior
 
     function it_add_attributes_to_attribute_group(
         $objectManager,
-        AttributeGroup $default,
-        AttributeGroup $group,
+        AttributeGroupInterface $default,
+        AttributeGroupInterface $group,
         AttributeInterface $sku,
         AttributeInterface $name
     ) {
@@ -95,7 +95,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface", "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -103,7 +103,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
             ->duringSave($anythingElse);
     }
 
-    function it_throws_exception_when_bulk_save_anything_else_than_a_attribute_group(AttributeGroup $group)
+    function it_throws_exception_when_bulk_save_anything_else_than_a_attribute_group(AttributeGroupInterface $group)
     {
         $anythingElse = new \stdClass();
         $mixed = [$group, $anythingElse];
@@ -111,7 +111,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface", "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -126,7 +126,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface", "%s" provided',
                         get_class($anythingElse)
                     )
                 )

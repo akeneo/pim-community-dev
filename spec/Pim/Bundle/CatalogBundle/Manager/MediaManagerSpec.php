@@ -41,7 +41,6 @@ class MediaManagerSpec extends ObjectBehavior
         $filesystem->write('prefix-my-new-file.jpg', Argument::any(), false)->shouldBeCalled();
         $media->setOriginalFilename('my-new-file.jpg')->shouldBeCalled();
         $media->setFilename('prefix-my-new-file.jpg')->shouldBeCalled();
-        $media->setFilePath(null)->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $media->setMimeType('jpg')->shouldBeCalled();
         $media->resetFile()->shouldBeCalled();
@@ -61,7 +60,6 @@ class MediaManagerSpec extends ObjectBehavior
         $filesystem->has('akeneo.jpg')->willReturn(true);
         $media->setOriginalFilename(null)->shouldBeCalled();
         $media->setFilename(null)->shouldBeCalled();
-        $media->setFilePath(null)->shouldBeCalled();
         $media->setMimeType(null)->shouldBeCalled();
 
         // upload
@@ -75,7 +73,6 @@ class MediaManagerSpec extends ObjectBehavior
         $filesystem->write('prefix-akeneo.jpg', '', false)->shouldBeCalled();
         $media->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
         $media->setFilename('prefix-akeneo.jpg')->shouldBeCalled();
-        $media->setFilePath(Argument::any())->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $media->setMimeType('jpg')->shouldBeCalled();
         $media->resetFile()->shouldBeCalled();
@@ -85,7 +82,6 @@ class MediaManagerSpec extends ObjectBehavior
 
     function it_duplicates_product_media($filesystem, ProductMediaInterface $source, ProductMediaInterface $target, File $newFile)
     {
-        $source->getFilePath()->willReturn('/tmp/tmp-phpspec');
         $target->setFile(Argument::any())->shouldBeCalled();
         $source->getOriginalFilename()->willReturn('akeneo.jpg');
 
@@ -98,13 +94,13 @@ class MediaManagerSpec extends ObjectBehavior
         $fs = new Filesystem($adapter);
         $fs->write('tmp-phpspec', '', true);
 
+        $source->getFilename()->willReturn('akeneo.jpg');
         $newFile->getFilename()->willReturn('akeneo.jpg');
         $filesystem->write('prefix-akeneo.jpg', '', false)->shouldBeCalled();
         $target->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
         $target->setFilename('prefix-akeneo.jpg')->shouldBeCalled();
         $filesystem->has('akeneo.jpg')->willReturn(true);
         $target->getFilename()->willReturn('akeneo.jpg');
-        $target->setFilePath(Argument::any())->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $target->setMimeType('jpg')->shouldBeCalled();
         $target->resetFile()->shouldBeCalled();
@@ -116,10 +112,17 @@ class MediaManagerSpec extends ObjectBehavior
         $this->duplicate($source, $target, 'prefix');
     }
 
-    function it_provides_export_path(ProductMediaInterface $media, ProductValueInterface $value, AttributeInterface $attribute, ProductInterface $product)
-    {
-        $media->getFilePath()->willReturn('my-path');
+    function it_provides_export_path(
+        $filesystem,
+        ProductMediaInterface $media,
+        ProductValueInterface $value,
+        AttributeInterface $attribute,
+        ProductInterface $product
+    ) {
+        $filesystem->has('akeneo.jpg')->willReturn(true);
+
         $media->getValue()->willReturn($value);
+        $media->getFilename()->willReturn('akeneo.jpg');
         $value->getAttribute()->willReturn($attribute);
         $value->getEntity()->willReturn($product);
         $product->getIdentifier()->willReturn('my-sku');
@@ -128,9 +131,9 @@ class MediaManagerSpec extends ObjectBehavior
         $value->getLocale()->willReturn('en_US');
         $attribute->isScopable()->willReturn(true);
         $value->getScope()->willReturn('mobile');
-        $media->getOriginalFilename()->willReturn('my-file.jpg');
+        $media->getOriginalFilename()->willReturn('akeneo.jpg');
 
-        $this->getExportPath($media)->shouldReturn('files/my-sku/thumbnail/en_US/mobile/my-file.jpg');
+        $this->getExportPath($media)->shouldReturn('files/my-sku/thumbnail/en_US/mobile/akeneo.jpg');
     }
 
     function it_generates_filename_prefix(ProductInterface $product, ProductValueInterface $value, AttributeInterface $attribute)
@@ -152,13 +155,12 @@ class MediaManagerSpec extends ObjectBehavior
         $factory->createMedia()->willReturn($media);
         $media->setOriginalFilename('preview.jpg')->shouldBeCalled();
         $media->setFilename('preview.jpg')->shouldBeCalled();
-        $media->setFilePath(Argument::any())->shouldBeCalled();
         $media->setMimeType('image/jpeg')->shouldBeCalled();
 
         $this->createFromFilename('preview.jpg')->shouldReturn($media);
     }
 
-    function its_load_method_throw_exception_when_file_does_not_exist($filesystem, ProductMediaInterface $media)
+    function its_load_method_throw_exception_when_file_does_not_exist($filesystem)
     {
         $filesystem->has('readme.md')->willReturn(false);
 
@@ -170,7 +172,6 @@ class MediaManagerSpec extends ObjectBehavior
     function it_can_create_media_from_the_file_path($factory, ProductMediaInterface $media)
     {
         $factory->createMedia()->willReturn($media);
-        $media->setFilePath('/uploads/preview.jpg')->shouldBeCalled();
         $media->setFilename('preview.jpg')->shouldBeCalled();
 
         $this->createFromFilePath('/uploads/preview.jpg')->shouldReturn($media);

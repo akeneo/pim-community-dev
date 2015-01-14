@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 class ProductValueCompleteSpec extends ObjectBehavior
 {
@@ -25,7 +25,7 @@ class ProductValueCompleteSpec extends ObjectBehavior
             ->shouldThrow(
                 new \LogicException(
                     sprintf(
-                        'Expecting $channel to be an instance of "\Pim\Bundle\CatalogBundle\Entity\Channel", got "%s"',
+                        'Expecting $channel to be an instance of "Pim\Bundle\CatalogBundle\Model\ChannelInterface", got "%s"',
                         'ecommerce'
                     )
                 )
@@ -33,7 +33,7 @@ class ProductValueCompleteSpec extends ObjectBehavior
             ->duringGetChannel();
     }
 
-    function it_has_a_channel(Channel $channel)
+    function it_has_a_channel(ChannelInterface $channel)
     {
         $this->beConstructedWith(['channel' => $channel]);
 

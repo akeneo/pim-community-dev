@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Factory;
 
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 
 /**
  * Test related class
@@ -142,7 +143,7 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
      * @param AttributeInterface $attribute
      * @param Channel            $channel
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirementInterface
      */
     protected function getAttributeRequirementMock($attribute, $channel)
     {

@@ -152,7 +152,4 @@ class CsvProductReaderSpec extends ObjectBehavior
         $this->shouldThrow(new \LogicException("Currency wrongcurrency does not exist."))->during('read');
     }
 
-
-
-
 }

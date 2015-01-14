@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;

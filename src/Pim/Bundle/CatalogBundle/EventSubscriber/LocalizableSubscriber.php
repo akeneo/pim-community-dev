@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -48,7 +48,7 @@ class LocalizableSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if (!$object instanceof ProductInterface && !$object instanceof AttributeOption) {
+        if (!$object instanceof ProductInterface && !$object instanceof AttributeOptionInterface) {
             return;
         }
 

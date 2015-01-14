@@ -3,8 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -82,7 +80,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var int */
     protected $sortOrder = 0;
 
-    /** @var AttributeGroup $group */
+    /** @var AttributeGroupInterface $group */
     protected $group;
 
     /** @var bool */
@@ -362,7 +360,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function addOption(AttributeOption $option)
+    public function addOption(AttributeOptionInterface $option)
     {
         $this->options[] = $option;
         $option->setAttribute($this);
@@ -373,7 +371,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function removeOption(AttributeOption $option)
+    public function removeOption(AttributeOptionInterface $option)
     {
         $this->options->removeElement($option);
 
@@ -468,7 +466,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function setGroup(AttributeGroup $group = null)
+    public function setGroup(AttributeGroupInterface $group = null)
     {
         $this->group = $group;
 

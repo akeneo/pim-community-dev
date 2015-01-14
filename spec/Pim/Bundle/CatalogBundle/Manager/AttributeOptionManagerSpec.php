@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
@@ -42,7 +41,7 @@ class AttributeOptionManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
                         get_class($anythingElse)
                     )
                 )
@@ -57,7 +56,7 @@ class AttributeOptionManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeOption, "%s" provided',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
                         get_class($anythingElse)
                     )
                 )

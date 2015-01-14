@@ -7,8 +7,8 @@ use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\SaverInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -43,10 +43,10 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof AttributeGroup) {
+        if (!$object instanceof AttributeGroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface", "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );
@@ -79,10 +79,10 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof AttributeGroup) {
+        if (!$object instanceof AttributeGroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Entity\AttributeGroup, "%s" provided',
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface", "%s" provided',
                     ClassUtils::getClass($object)
                 )
             );
@@ -95,12 +95,12 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
     /**
      * Remove an attribute from a group and link it to the default group
      *
-     * @param AttributeGroup     $group
-     * @param AttributeInterface $attribute
+     * @param AttributeGroupInterface $group
+     * @param AttributeInterface      $attribute
      *
      * @throws \LogicException
      */
-    public function removeAttribute(AttributeGroup $group, AttributeInterface $attribute)
+    public function removeAttribute(AttributeGroupInterface $group, AttributeInterface $attribute)
     {
         if (null === $default = $this->repository->findDefaultAttributeGroup()) {
             throw new \LogicException('The default attribute group should exist.');
@@ -117,10 +117,10 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
     /**
      * Add attributes to a group
      *
-     * @param AttributeGroup       $group
+     * @param AttributeGroupInterface $group
      * @param AttributeInterface[] $attributes
      */
-    public function addAttributes(AttributeGroup $group, $attributes)
+    public function addAttributes(AttributeGroupInterface $group, $attributes)
     {
         $maxOrder = $group->getMaxAttributeSortOrder();
         foreach ($attributes as $attribute) {

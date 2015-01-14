@@ -76,7 +76,6 @@ class PriceCollectionValueCopierSpec extends ObjectBehavior
         $price->getCurrency()->willReturn('USD');
         $price->getData()->willReturn(123);
 
-
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 

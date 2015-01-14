@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class LocalizableSubscriberSpec extends ObjectBehavior
@@ -35,7 +35,7 @@ class LocalizableSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
-    function it_configures_the_attribute_option_locale($context, LifecycleEventArgs $args, AttributeOption $option)
+    function it_configures_the_attribute_option_locale($context, LifecycleEventArgs $args, AttributeOptionInterface $option)
     {
         $args->getObject()->willReturn($option);
         $context->hasLocaleCode()->willReturn(true);

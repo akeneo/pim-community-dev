@@ -6,8 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Symfony\Component\Security\Core\SecurityContext;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 class ChannelManagerSpec extends ObjectBehavior
 {
@@ -36,7 +35,7 @@ class ChannelManagerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Entity\Channel", "%s" provided.',
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\ChannelInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )
@@ -51,7 +50,7 @@ class ChannelManagerSpec extends ObjectBehavior
         $this->getChannels()->shouldHaveCount(2);
     }
 
-    function it_provides_channel_choices(ObjectManager $objectManager, ChannelRepository $repository, Channel $mobile, Channel $ecommerce)
+    function it_provides_channel_choices(ObjectManager $objectManager, ChannelRepository $repository, ChannelInterface $mobile, ChannelInterface $ecommerce)
     {
         $repository->findBy(array())->willReturn(array($mobile, $ecommerce));
         $mobile->getCode()->willReturn('mobile');
@@ -61,7 +60,7 @@ class ChannelManagerSpec extends ObjectBehavior
         $this->getChannelChoices()->shouldReturn(['mobile' => 'Mobile', 'ecommerce' => 'Ecommerce']);
     }
 
-    function it_schedule_completeness_when_save_a_channel(Channel $channel, $completenessManager, $objectManager)
+    function it_schedule_completeness_when_save_a_channel(ChannelInterface $channel, $completenessManager, $objectManager)
     {
         $objectManager->persist($channel)->shouldBeCalled();
         $completenessManager->scheduleForChannel($channel)->shouldBeCalled();

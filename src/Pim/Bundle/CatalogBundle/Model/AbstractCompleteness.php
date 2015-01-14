@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Abstract product completeness entity
@@ -22,7 +21,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /** @var LocaleInterface */
     protected $locale;
 
-    /** @var Channel */
+    /** @var ChannelInterface */
     protected $channel;
 
     /** @var int */
@@ -66,7 +65,7 @@ abstract class AbstractCompleteness implements CompletenessInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(Channel $channel)
+    public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
 

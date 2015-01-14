@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;

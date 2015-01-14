@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormView;
 
 class EditFormVisibilityCheckerSpec extends ObjectBehavior

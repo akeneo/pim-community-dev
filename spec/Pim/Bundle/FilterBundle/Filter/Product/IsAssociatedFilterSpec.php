@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -39,7 +39,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         $extractor,
         $assocRepository,
         ProductManager $productManager,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         AbstractAssociation $association,
         ProductInterface $productOwner,
         ProductInterface $productAssociatedOne,
@@ -66,7 +66,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
 
 class CustomAssociationTypeRepository extends AssociationTypeRepository
 {
-    public function findOneByCode()
+    function findOneByCode()
     {
         return null;
     }

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 
 class GroupFactorySpec extends ObjectBehavior
 {
@@ -19,7 +19,7 @@ class GroupFactorySpec extends ObjectBehavior
         $this->createGroup()->shouldReturnAnInstanceOf(self::GROUP_CLASS);
     }
 
-    function it_creates_a_group_with_a_type(GroupType $type)
+    function it_creates_a_group_with_a_type(GroupTypeInterface $type)
     {
         $this->createGroup($type)->shouldReturnAnInstanceOf(self::GROUP_CLASS);
     }
