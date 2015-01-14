@@ -138,7 +138,7 @@ define(
                 }
             },
             deleteItem: function() {
-                Dialog.confirm(__('pim_enrich.item.modal.delete.content'), __('pim_enrich.item.modal.delete.title'), _.bind(function () {
+                Dialog.confirm(__('pim_enrich.item.delete.confirm.content'), __('pim_enrich.item.delete.confirm.title'), _.bind(function () {
                     this.parent.deleteItem(this);
                 }, this));
             },
