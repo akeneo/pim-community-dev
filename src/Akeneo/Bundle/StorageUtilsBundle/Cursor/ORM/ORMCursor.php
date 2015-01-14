@@ -43,16 +43,16 @@ class ORMCursor extends AbstractCursor
     protected $currentPage;
 
     /**
-     * @param QueryBuilder              $queryBuilder
-     * @param EntityManager             $entityManager
-     * @param int                       $pageSize
+     * @param QueryBuilder  $queryBuilder
+     * @param EntityManager $entityManager
+     * @param int           $pageSize
      */
     public function __construct(
         QueryBuilder $queryBuilder,
         EntityManager $entityManager,
         $pageSize
     ) {
-        parent::__construct($queryBuilder);
+        $this->queryBuilder = clone $queryBuilder;
         $this->entityManager = $entityManager;
         $this->pageSize = $pageSize;
     }
@@ -70,6 +70,7 @@ class ORMCursor extends AbstractCursor
             $entity = $this->entitiesPage->current();
             $this->entitiesPage->next();
         }
+
         return $entity;
     }
 
@@ -95,37 +96,29 @@ class ORMCursor extends AbstractCursor
     }
 
     /**
+     * Get ids of entities from the QueryBuilder
+     *
      * @return array
      */
     protected function getEntitiesIds()
     {
         if ($this->entitiesIds === null) {
-            $this->entitiesIds = $this->getIds();
+            $rootAlias = current($this->queryBuilder->getRootAliases());
+            $rootIdExpr = sprintf('%s.id', $rootAlias);
+
+            $from = current($this->queryBuilder->getDQLPart('from'));
+
+            $this->queryBuilder
+                ->select($rootIdExpr)
+                ->resetDQLPart('from')
+                ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
+                ->groupBy($rootIdExpr);
+
+            $results = $this->queryBuilder->getQuery()->getArrayResult();
+
+            $this->entitiesIds = array_keys($results);
         }
         return $this->entitiesIds;
-    }
-
-    /**
-     * Get ids of entities from the QueryBuilder
-     *
-     * @return array
-     */
-    protected function getIds()
-    {
-        $rootAlias = current($this->queryBuilder->getRootAliases());
-        $rootIdExpr = sprintf('%s.id', $rootAlias);
-
-        $from = current($this->queryBuilder->getDQLPart('from'));
-
-        $this->queryBuilder
-            ->select($rootIdExpr)
-            ->resetDQLPart('from')
-            ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
-            ->groupBy($rootIdExpr);
-
-        $results = $this->queryBuilder->getQuery()->getArrayResult();
-
-        return array_keys($results);
     }
 
     /**
@@ -136,18 +129,22 @@ class ORMCursor extends AbstractCursor
         return $this->pageSize * $this->currentPage;
     }
 
+    /**
+     * @return EntityRepositoryInterface
+     * @throws Exception
+     */
     protected function getRepository()
     {
         if ($this->repository === null) {
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
             $this->repository = $this->entityManager->getRepository($entityClass);
-            if(!($this->repository instanceof EntityRepositoryInterface)) {
-                throw new Exception(sprintf('%s repository must implement EntityRepositoryInterface',$entityClass));
+            if (!($this->repository instanceof EntityRepositoryInterface)) {
+                throw new Exception(sprintf('%s repository must implement EntityRepositoryInterface', $entityClass));
             }
         }
+
         return $this->repository;
     }
-
 
     /**
      * Get next products batch from DB

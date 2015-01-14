@@ -2,9 +2,11 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM;
 
-use Doctrine\Bundle\MongoDBBundle\Cursor;
+use Doctrine\ODM\MongoDB\Cursor;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
+use Doctrine\ORM\EntityManager;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\EntityRepositoryInterface;
 
 /**
  * Class MongoDBODMCursor to iterate entities from Builder
@@ -32,13 +34,13 @@ class MongoDBODMCursor extends AbstractCursor
 
     /**
      * @param Builder $queryBuilder
-     * @param int     $batchSize : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
+     * @param int     $batchSize    : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
      * @internal param $query
      */
     public function __construct(Builder $queryBuilder, $batchSize = null)
     {
-        parent::__construct($queryBuilder);
-        $this->batchSize            = $batchSize;
+        $this->queryBuilder = $queryBuilder;
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -59,7 +61,7 @@ class MongoDBODMCursor extends AbstractCursor
     public function rewind()
     {
         $this->position = 0;
-        $this->cursor->rewind();
+        $this->getCursor()->rewind();
     }
 
     /**
@@ -90,7 +92,7 @@ class MongoDBODMCursor extends AbstractCursor
             }
             // MongoDB Cursor are not positioned on first element (whereas ArrayIterator is)
             // as long as getNext() hasn't be called
-            $this->getCursor()->getNext();
+            $this->cursor->getNext();
         }
 
         return $this->cursor;
