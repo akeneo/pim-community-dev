@@ -99,7 +99,6 @@ pim_base_connector:
       help: 'グループ]列の名前'
     filePath:
       label: ファイル
-      help: インポートする csv ファイル
     uploadAllowed:
       label: ファイルのアップロードを許可
       help: 直接ファイルのアップロードを許可するかどうか
