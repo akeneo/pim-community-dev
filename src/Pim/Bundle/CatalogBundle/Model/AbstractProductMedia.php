@@ -23,9 +23,6 @@ abstract class AbstractProductMedia implements ProductMediaInterface
     protected $filename;
 
     /** @var string */
-    protected $filePath;
-
-    /** @var string */
     protected $originalFilename;
 
     /** @var string */
@@ -90,24 +87,6 @@ abstract class AbstractProductMedia implements ProductMediaInterface
     public function setFilename($filename)
     {
         $this->filename = $filename;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
 
         return $this;
     }

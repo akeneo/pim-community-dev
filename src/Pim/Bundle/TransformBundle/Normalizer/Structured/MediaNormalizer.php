@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,6 +16,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class MediaNormalizer implements NormalizerInterface
 {
+    /** @var MediaManager */
+    protected $manager;
+
+    /**
+     * @param MediaManager $manager
+     */
+    public function __construct(MediaManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @var string[] $supportedFormats
      */
@@ -36,7 +48,7 @@ class MediaNormalizer implements NormalizerInterface
 
         return [
             'originalFilename' => $object->getOriginalFilename(),
-            'filePath' => $object->getFilePath(),
+            'filePath'         => $this->manager->getFilePath($object),
         ];
     }
 
