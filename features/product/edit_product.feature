@@ -4,11 +4,19 @@ Feature: Edit a product
   I need to be able edit and save a product
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "default" catalog configuration
     And I am logged in as "Mary"
     And the following products:
-      | sku    | family  |
-      | sandal | sandals |
+      | sku    |
+      | sandal |
+    And the following attributes:
+      | code        | type     | localizable | availableLocales | wysiwyg_enabled | label-en_US |
+      | description | textarea | yes         | en_US            | yes             | Description |
+      | name        | text     | yes         |                  |                 | Name        |
+    And the following product values:
+      | product | attribute   | value                  | locale | scope     |
+      | sandal  | description | My awesome description | en_US  | ecommerce |
+      | sandal  | name        | My awesome sandals     | en_US  | ecommerce |
 
   Scenario: Successfully create, edit and save a product
     Given I am on the "sandal" product page
@@ -27,3 +35,13 @@ Feature: Edit a product
     When I am on the "sandal" product page
     Then I should not see "Attributes"
     And I reset the "Administrator" rights
+
+  @skip
+  Scenario: Successfully edit a product description, and back to grid after save.
+    Given I am on the "sandal" product page
+    And the english description of "sandal" should be "My awesome description"
+    And I change the "Description" to "My new cool and awesome description"
+    When I press "Save and back to grid" on the "Save" dropdown button
+    Then I should be on the products page
+    And I wait 3 seconds
+    And the english description of "sandal" should be "My new cool and awesome description"
