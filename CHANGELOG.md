@@ -1,4 +1,4 @@
-# 1.0.11 (2015-01-09)
+# 1.0.12 (2015-01-14)
 
 ## Bug fixes
 - PIM-3548: Do not rely on the absolute file path of a media
