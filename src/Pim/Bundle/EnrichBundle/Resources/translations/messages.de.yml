@@ -1,4 +1,116 @@
 pim_enrich:
+  product:
+    tab:
+      attribute.title: Attribute
+      category.title: Kategorien
+      association.title: Verbindungen
+      completeness.title: Vollständigkeit
+      history.title: Historie
+    no_comparison_locale_available: Es ist kein anderes Gebietsschema für einen Vergleich vorhanden
+    no_compared_media: Keine Medien für einen Vergleich vorhanden
+  attribute:
+    tab:
+      parameter.title: Parameter
+      value.title: Werte
+      history.title: Historie
+  attribute_group:
+    tab:
+      property.title: Eigenschaften
+      attribute.title: Attribute
+      history.title: Historie
+  family:
+    tab:
+      property.title: Eigenschaften
+      attribute.title: Attribute
+      history.title: Historie
+  association_type:
+    tab:
+      property.title: Eigenschaften
+      history.title: Historie
+  group_type:
+    tab:
+      property.title: Eigenschaften
+  channel:
+    pick_conversion_unit: Wählen Sie eine Umrechnungseinheit für jedes metrische Attribut, welche beim Produkt-Export verwendet werden soll
+    tab:
+      property.title: Eigenschaften
+      history.title: Historie
+  category:
+    tab:
+      property.title: Eigenschaften
+      history.title: Historie
+  group:
+    axis.help: Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht sprachabhängig sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.
+    type:
+      VARIANT: Variante
+      X_SELL: Cross-Sell
+      ADDITIONAL: Ergänzend
+      RELATED: Verknüpft
+    tab:
+      product.title: Produkte
+      property.title: Eigenschaften
+      history.title: Historie
+  completeness:
+    progress_bar.title: '%ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)'
+    subtitle: '{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte'
+    missing_attributes: Fehlender Wert|Fehlende Werte
+    legend:
+      locale_not_associated: Das Gebietsschema ist nicht mit diesem Ausgabekanal verbunden
+  mass_edit_action:
+    limit_exceeded: 'Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung'
+    product:
+      page_title: Produkte
+      page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
+      title: Aktion auswählen
+      subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
+      confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.'
+      steps:
+        first: Produkte auswählen
+        second: Aktion auswählen
+        third: Konfigurieren
+        fourth: Bestätigen
+    family:
+      page_title: Produktfamilien
+      page_subtitle: 'Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)'
+      title: Aktion auswählen
+      subtitle: 'Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen'
+      confirm: 'Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.'
+      steps:
+        first: Produktfamilien auswählen
+        second: Aktion auswählen
+        third: Konfigurieren
+        fourth: Bestätigen
+    change-status:
+      label: Status ändern (aktivieren / deaktivieren)
+      description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
+      success_flash: Der Produktstatus wurde geändert
+    edit-common-attributes:
+      label: Attribute bearbeiten
+      description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
+      empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
+      success_flash: Die Produkt-Attribute wurden aktualisiert
+      message:
+        warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
+    classify:
+      label: Zuordnung von Produkten in Kategorien
+      description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
+      success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
+    change-family:
+      label: Produktfamilie der Produkte ändern
+      description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
+      success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
+    add-to-groups:
+      label: Zu Gruppen hinzufügen
+      description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
+      success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
+    set-attribute-requirements:
+      label: Attribut-Anforderungen festlegen
+      description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
+      success_flash: Die Attribut-Anforderungen wurden den ausgewählten Produktfamilien zugeordnet
+  sequential_edit_action:
+    product:
+      previous: 'Zurück zu "%product%" ohne zu speichern.'
+      next: 'Weiter zu "%product%" ohne zu speichern.'
   acl:
     locale:
       index: Gebietsschemata auflisten
