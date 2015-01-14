@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Context;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CatalogContextSpec extends ObjectBehavior
 {

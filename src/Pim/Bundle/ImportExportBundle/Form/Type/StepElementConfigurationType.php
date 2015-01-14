@@ -4,8 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -31,7 +31,6 @@ class StepElementConfigurationType extends AbstractType
                 $stepElement = $event->getData();
 
                 foreach ($stepElement->getConfigurationFields() as $field => $config) {
-
                     if (isset($config['system']) && true === $config['system']) {
                         continue;
                     }

@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured\ChannelNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\ChannelNormalizer;
 
 /**
  * Test related class

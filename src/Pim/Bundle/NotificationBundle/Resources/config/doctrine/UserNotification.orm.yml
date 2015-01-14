@@ -1,0 +1,25 @@
+Pim\Bundle\NotificationBundle\Entity\UserNotification:
+    type: entity
+    table: pim_notification_user_notification
+    repositoryClass: Pim\Bundle\NotificationBundle\Entity\UserNotificationRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewed:
+            type: boolean
+    manyToOne:
+        notification:
+            targetEntity: Pim\Bundle\NotificationBundle\Entity\Notification
+            joinColumns:
+                notification:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        user:
+            targetEntity: Symfony\Component\Security\Core\User\UserInterface
+            joinColumns:
+                user:
+                    referencedColumnName: id
+                    onDelete: CASCADE

@@ -3,13 +3,13 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
+use Gaufrette\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
@@ -52,7 +52,8 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $this->archive($jobExecution);
     }
 
-    function it_returns_the_name_of_the_archiver() {
+    function it_returns_the_name_of_the_archiver()
+    {
         $this->getName()->shouldReturn('archive');
     }
 

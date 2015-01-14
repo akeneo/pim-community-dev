@@ -37,9 +37,9 @@ Feature: Filter products
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products page
     And I show the filter "Description"
-    And I filter by "Description" with value "red"
+    And I filter by "Description" with value "Red"
     And I show the filter "Name"
-    And I filter by "Name" with value "green"
+    And I filter by "Name" with value "Green"
     Then the grid should contain 3 elements
     And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
     And I hide the filter "Description"

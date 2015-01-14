@@ -2,19 +2,16 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-
-use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-
-use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Metric filter
@@ -107,11 +104,11 @@ class MetricFilter extends OroNumberFilter
             $baseValue = null;
         }
 
-        $this->util->applyFilterByAttribute(
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $baseValue,
-            $operator
+            $operator,
+            $baseValue
         );
 
         return true;

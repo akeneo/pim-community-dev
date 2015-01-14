@@ -43,7 +43,6 @@ Feature: Edit an import
     And I should see "Family column fam"
     And I should see "Groups column grp"
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "footwear_product_import" import job edit page
     When I fill in the following information:

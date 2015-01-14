@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Constraint guesser interface
@@ -16,18 +16,18 @@ interface ConstraintGuesserInterface
     /**
      * Tells whether or not the constraint guesser supports the given attribute type
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return bool
      */
-    public function supportAttribute(AbstractAttribute $attribute);
+    public function supportAttribute(AttributeInterface $attribute);
 
     /**
      * Guess the constraints for the given attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return Symfony\Component\Validator\Constraint[]
      */
-    public function guessConstraints(AbstractAttribute $attribute);
+    public function guessConstraints(AttributeInterface $attribute);
 }

@@ -31,40 +31,12 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {% if form.vars.value.id %}
-            {{ elements.form_navbar(['Properties', 'History']) }}
-        {% else %}
-            {{ elements.form_navbar(['Properties']) }}
-        {% endif %}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
         <div class="row-fluid tab-content">
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="properties">
-                {% set generalProperties %}
-                    {{ form_row(form.code) }}
-                    {{ form_row(form.label) }}
-                    {{ form_row(form.color) }}
-                    {{ form_row(form.currencies) }}
-                    {{ form_row(form.locales) }}
-                    {{ form_row(form.category) }}
-                {% endset %}
-                {% set conversionOptions %}
-                    {% for conversionUnitForm in form.conversionUnits %}
-                        {{ form_row(conversionUnitForm) }}
-                    {% endfor %}
-                {% endset %}
-                {{ elements.accordion({
-                    'pane.accordion.general_properties': generalProperties,
-                    'pim_enrich.channel.pick_conversion_unit': conversionOptions
-                }) }}
-            </div>
-            {% if form.vars.value.id %}
-                {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
-                <div class="tab-pane" id="history">
-                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-                </div>
-            {% endif %}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
     {{ form_end(form) }}
 {% endblock %}

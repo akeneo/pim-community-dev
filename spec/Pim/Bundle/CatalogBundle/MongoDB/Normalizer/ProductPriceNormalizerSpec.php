@@ -3,8 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 
 class ProductPriceNormalizerSpec extends ObjectBehavior
 {
@@ -13,14 +12,14 @@ class ProductPriceNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_price(AbstractProductPrice $price)
+    function it_supports_normalization_in_mongodb_json_of_price(ProductPriceInterface $price)
     {
         $this->supportsNormalization($price, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($price, 'json')->shouldBe(false);
         $this->supportsNormalization($price, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_price(AbstractProductPrice $price)
+    function it_normalizes_price(ProductPriceInterface $price)
     {
         $price->getData()->willReturn('12.75');
         $price->getCurrency()->willReturn('EUR');

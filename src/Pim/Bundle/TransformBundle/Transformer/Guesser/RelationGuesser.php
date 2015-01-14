@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo as ODMMongoDBClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadataInfo as ORMClassMetadataInfo;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo as ORMClassMetadataInfo;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo as ODMMongoDBClassMetadataInfo;
 
 /**
  * Guesser for entity transformer
@@ -33,7 +33,7 @@ class RelationGuesser implements GuesserInterface
      * Constructor
      *
      * @param PropertyTransformerInterface $transformer
-     * @param RegistryInterface            $doctrine
+     * @param ManagerRegistry              $doctrine
      */
     public function __construct(PropertyTransformerInterface $transformer, ManagerRegistry $doctrine)
     {

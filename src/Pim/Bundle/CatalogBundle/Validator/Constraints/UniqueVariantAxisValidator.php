@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Constraint;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validator for unique variant group axis values constraint
@@ -17,9 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  */
 class UniqueVariantAxisValidator extends ConstraintValidator
 {
-    /**
-     * @var ProductManager $manager
-     */
+    /** @var ProductManager $manager */
     protected $manager;
 
     /**
@@ -39,7 +37,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof Group && $entity->getType()->isVariant()) {
+        if ($entity instanceof GroupInterface && $entity->getType()->isVariant()) {
             $this->validateVariantGroup($entity, $constraint);
         } elseif ($entity instanceof ProductInterface) {
             $this->validateProduct($entity, $constraint);
@@ -49,10 +47,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Validate variant group
      *
-     * @param Group      $variantGroup
-     * @param Constraint $constraint
+     * @param GroupInterface $variantGroup
+     * @param Constraint     $constraint
      */
-    protected function validateVariantGroup(Group $variantGroup, Constraint $constraint)
+    protected function validateVariantGroup(GroupInterface $variantGroup, Constraint $constraint)
     {
         $existingCombinations = array();
 
@@ -113,12 +111,12 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Prepare query criteria for variant group
      *
-     * @param Group            $variantGroup
+     * @param GroupInterface   $variantGroup
      * @param ProductInterface $entity
      *
      * @return array
      */
-    protected function prepareQueryCriterias(Group $variantGroup, ProductInterface $entity)
+    protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $entity)
     {
         $criteria = array();
         foreach ($variantGroup->getAttributes() as $attribute) {
@@ -135,14 +133,17 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Get matching products
      *
-     * @param Group            $variantGroup the variant group
+     * @param GroupInterface   $variantGroup the variant group
      * @param ProductInterface $entity       the product
      * @param array            $criteria     query criterias
      *
      * @return ProductInterface[]
      */
-    protected function getMatchingProducts(Group $variantGroup, ProductInterface $entity = null, array $criteria = [])
-    {
+    protected function getMatchingProducts(
+        GroupInterface $variantGroup,
+        ProductInterface $entity = null,
+        array $criteria = []
+    ) {
         if (!$variantGroup->getId()) {
             return [];
         }

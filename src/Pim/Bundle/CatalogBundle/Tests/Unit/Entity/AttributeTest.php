@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 class AttributeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     protected $attribute;
 
@@ -44,10 +44,8 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->attribute->isRequired());
         $this->assertFalse($this->attribute->isUnique());
-        $this->assertNull($this->attribute->getDefaultValue());
         $this->assertFalse($this->attribute->isLocalizable());
         $this->assertFalse($this->attribute->isScopable());
-        $this->assertFalse($this->attribute->isUseableAsGridColumn());
         $this->assertFalse($this->attribute->isUseableAsGridFilter());
         $this->assertNull($this->attribute->isDecimalsAllowed());
         $this->assertNull($this->attribute->isNegativeAllowed());
@@ -127,21 +125,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertEntity($this->attribute->setGroup($attributeGroup));
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', $this->attribute->getGroup());
         $this->assertEquals($attributeGroup, $this->attribute->getGroup());
-    }
-
-    /**
-     * Test is/setter for useableAsGridColumn property
-     *
-     * TODO : Test with the both values
-     */
-    public function testIsSetUseableAsGridColumn()
-    {
-        $this->assertFalse($this->attribute->isUseableAsGridColumn());
-
-        // change value and assert new
-        $newUseableAsGridColumn = true;
-        $this->assertEntity($this->attribute->setUseableAsGridColumn($newUseableAsGridColumn));
-        $this->assertTrue($this->attribute->isUseableAsGridColumn());
     }
 
     /**
@@ -413,18 +396,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for defaultValue property
-     */
-    public function testGetSetDefaultValue()
-    {
-        $this->assertEquals('', $this->attribute->getDefaultValue());
-
-        $expectedDefaultValue = 'test-default-value';
-        $this->assertEntity($this->attribute->setDefaultValue($expectedDefaultValue));
-        $this->assertEquals($expectedDefaultValue, $this->attribute->getDefaultValue());
-    }
-
-    /**
      * Data provider for set parameters method
      *
      * @return array
@@ -459,7 +430,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert entity
-     * @param \Pim\Bundle\CatalogBundle\Model\AbstractAttribute $entity
+     * @param \Pim\Bundle\CatalogBundle\Model\AttributeInterface $entity
      */
     protected function assertEntity($entity)
     {

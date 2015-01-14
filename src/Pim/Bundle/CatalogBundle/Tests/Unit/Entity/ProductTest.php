@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Test related class
@@ -276,7 +278,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return Group
+     * @return GroupInterface
      */
     protected function createGroup($code)
     {
@@ -291,7 +293,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      * @param string $type
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     protected function getAttributeMock($group = null, $type = 'pim_catalog_text', $code = null)
     {
@@ -346,7 +348,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      * @param mixed   $name
      * @param integer $sortOrder
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroupInterface
      */
     protected function getGroupMock($id, $name, $sortOrder)
     {

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Test related class
@@ -64,19 +64,6 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->category->hasProducts());
         $this->assertEquals(0, $this->category->getProductsCount());
-
-        // assert adding
-        $this->assertEntity($this->category->addProduct($product1));
-        $this->category->addProduct($product2);
-        $this->assertCount(2, $this->category->getProducts());
-        $this->assertEquals(2, $this->category->getProductsCount());
-        $this->assertTrue($this->category->hasProducts());
-
-        // assert removing
-        $this->assertEntity($this->category->removeProduct($product1));
-        $this->assertCount(1, $this->category->getProducts());
-        $this->assertEquals(1, $this->category->getProductsCount());
-        $this->assertTrue($this->category->hasProducts());
 
         // assert product entity
         $products = $this->category->getProducts();

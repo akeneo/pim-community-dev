@@ -21,7 +21,6 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         $this->reader = new CsvReader();
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);
-
     }
 
     /**
@@ -65,7 +64,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidCsvRead()
     {
-        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/invalid_import.csv');
+        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/invalid_import_data.csv');
 
         try {
             $this->reader->read();
@@ -85,7 +84,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(3, $parameters['%totalColumnsCount%']);
             $this->assertEquals(4, $parameters['%itemColumnsCount%']);
             $this->assertStringEndsWith(
-                'src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/invalid_import.csv',
+                'src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/invalid_import_data.csv',
                 $parameters['%csvPath%']
             );
             $this->assertEquals(1, $parameters['%lineno%']);

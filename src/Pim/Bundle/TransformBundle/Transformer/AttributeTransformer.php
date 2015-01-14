@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Attribute transformer
@@ -19,25 +20,25 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class AttributeTransformer extends NestedEntityTransformer
 {
-    /**
-     * @var AttributeManager
-     */
+    /** @var AttributeManager */
     protected $attributeManager;
 
-    /**
-     * @var DoctrineCache
-     */
+    /** @var AttributeOptionManager */
+    protected $optionManager;
+
+    /** @var DoctrineCache */
     protected $doctrineCache;
 
     /**
      * Constructor
      *
-     * @param RegistryInterface              $doctrine
+     * @param ManagerRegistry                $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
      * @param AttributeManager               $attributeManager
+     * @param AttributeOptionManager         $optionManager
      * @param DoctrineCache                  $doctrineCache
      */
     public function __construct(
@@ -47,11 +48,14 @@ class AttributeTransformer extends NestedEntityTransformer
         ColumnInfoTransformerInterface $colInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
         AttributeManager $attributeManager,
+        AttributeOptionManager $optionManager,
         DoctrineCache $doctrineCache
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer, $transformerRegistry);
+
         $this->attributeManager = $attributeManager;
-        $this->doctrineCache = $doctrineCache;
+        $this->optionManager    = $optionManager;
+        $this->doctrineCache    = $doctrineCache;
     }
 
     /**
@@ -74,14 +78,14 @@ class AttributeTransformer extends NestedEntityTransformer
     /**
      * Sets the options of the attribute
      *
-     * @param string            $class
-     * @param AbstractAttribute $attribute
-     * @param array             $optionsData
+     * @param string             $class
+     * @param AttributeInterface $attribute
+     * @param array              $optionsData
      */
-    protected function setOptions($class, AbstractAttribute $attribute, array $optionsData)
+    protected function setOptions($class, AttributeInterface $attribute, array $optionsData)
     {
         $this->doctrineCache->setReference($attribute);
-        $optionClass = $this->attributeManager->getAttributeOptionClass();
+        $optionClass = $this->optionManager->getAttributeOptionClass();
         foreach ($optionsData as $code => $optionData) {
             $optionData['attribute'] = $attribute->getCode();
             if (!isset($optionData['code'])) {

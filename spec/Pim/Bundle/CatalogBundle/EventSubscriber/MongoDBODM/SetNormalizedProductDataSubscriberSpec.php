@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
@@ -28,7 +28,7 @@ class SetNormalizedProductDataSubscriberSpec extends ObjectBehavior
 
     function it_sets_normalized_product_data_before_inserting_document(
         LifecycleEventArgs $args,
-        AbstractProduct $product,
+        ProductInterface $product,
         NormalizerInterface $normalizer,
         DocumentManager $dm,
         ClassMetadata $metadata,
@@ -54,7 +54,7 @@ class SetNormalizedProductDataSubscriberSpec extends ObjectBehavior
 
     function it_sets_normalized_product_data_before_updating_document(
         LifecycleEventArgs $args,
-        AbstractProduct $product,
+        ProductInterface $product,
         NormalizerInterface $normalizer,
         DocumentManager $dm,
         ClassMetadata $metadata,

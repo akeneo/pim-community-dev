@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeGroupNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Attribute group normalizer test
@@ -59,8 +60,8 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
-     *
-     * @return AttributeGroup
+
+     * @return AttributeGroupInterface
      */
     protected function createEntity(array $data)
     {

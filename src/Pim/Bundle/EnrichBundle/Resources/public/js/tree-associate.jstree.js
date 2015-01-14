@@ -46,7 +46,7 @@ define(
 
                             if ((!node || (node === -1)) && treeHasProduct) {
                                 // First load of the tree: get the checked categories
-                                return Routing.generate('pim_enrich_product_listcategories', { id: id, category_id: currentTree, _format: 'json', dataLocale: dataLocale, context: 'associate' });
+                                return Routing.generate('pim_enrich_product_listcategories', { id: id, categoryId: currentTree, _format: 'json', dataLocale: dataLocale, context: 'associate' });
                             }
 
                             return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale, context: 'associate' });

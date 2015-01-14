@@ -41,8 +41,8 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->method('setFilePath')
             ->with($this->equalTo('file'));
 
-        $data1 = array('code'=>'data1');
-        $data2 = array('code'=>'data2');
+        $data1 = array('code' => 'data1');
+        $data2 = array('code' => 'data2');
         $reader->expects($this->at(1))
             ->method('read')
             ->will($this->returnValue($data1));

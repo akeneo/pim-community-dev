@@ -10,11 +10,12 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
-use Prophecy\Argument;
 
 class JobExecutionArchivistSpec extends ObjectBehavior
 {
-    function let(InvalidItemsCollector $collector, CsvWriter $writer, Filesystem $filesystem) {}
+    function let(InvalidItemsCollector $collector, CsvWriter $writer, Filesystem $filesystem)
+    {
+    }
 
     function it_is_initializable()
     {
@@ -23,7 +24,11 @@ class JobExecutionArchivistSpec extends ObjectBehavior
 
     function it_returns_subscribed_events()
     {
-        $this::getSubscribedEvents()->shouldReturn([EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade']);
+        $this::getSubscribedEvents()->shouldReturn(
+            [
+                EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade'
+            ]
+        );
     }
 
     function it_throws_an_exception_if_there_is_already__a_registered_archier(ArchiverInterface $archiver)

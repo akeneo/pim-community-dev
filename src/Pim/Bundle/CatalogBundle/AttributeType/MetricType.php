@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 
@@ -74,21 +74,15 @@ class MetricType extends AbstractAttributeType
             return $value->getData();
         };
 
-        $data = $this->metricFactory->createMetric($value->getAttribute()->getMetricFamily());
-        $data->setData($value->getAttribute()->getDefaultValue());
-
-        return $data;
+        return $this->metricFactory->createMetric($value->getAttribute()->getMetricFamily());
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name' => 'defaultValue'
-            ],
             'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'pim_number'

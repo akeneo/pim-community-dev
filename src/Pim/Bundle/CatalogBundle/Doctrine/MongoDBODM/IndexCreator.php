@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -41,7 +41,7 @@ class IndexCreator
         ManagerRegistry $managerRegistry,
         NamingUtility $namingUtility,
         $productClass,
-        $logger = null
+        LoggerInterface $logger
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;
@@ -54,9 +54,9 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for attribute
      * that are usable as column and as filter and for identifier and unique attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    public function ensureIndexesFromAttribute(AbstractAttribute $attribute)
+    public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
 
@@ -79,9 +79,9 @@ class IndexCreator
      * - completenesses
      * - scopable attributes
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function ensureIndexesFromChannel(Channel $channel)
+    public function ensureIndexesFromChannel(ChannelInterface $channel)
     {
         $this->channel = null;
 
@@ -101,9 +101,9 @@ class IndexCreator
      * - completenesses
      * - localizable attributes
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      */
-    public function ensureIndexesFromLocale(Locale $locale)
+    public function ensureIndexesFromLocale(LocaleInterface $locale)
     {
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
@@ -120,9 +120,9 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for:
      * - prices (because of potentially added currency)
      *
-     * @param Currency $currency
+     * @param CurrencyInterface $currency
      */
-    public function ensureIndexesFromCurrency(Currency $currency)
+    public function ensureIndexesFromCurrency(CurrencyInterface $currency)
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
@@ -133,11 +133,11 @@ class IndexCreator
     /**
      * Get the completeness fields for the channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function getCompletenessNormFields(Channel $channel = null)
+    protected function getCompletenessNormFields(ChannelInterface $channel = null)
     {
         $normFields = [];
         $channels = [];
@@ -206,11 +206,7 @@ class IndexCreator
         $postNbIndexes = $preNbIndexes + count($fields);
         if ($postNbIndexes > 64) {
             $msg = sprintf('Too many MongoDB indexes (%d), no way to add %s', $preNbIndexes, print_r($fields, true));
-            if (null !== $this->logger) {
-                $this->logger->error($msg);
-            } else {
-                error_log($msg);
-            }
+            $this->logger->error($msg);
 
             return;
         }

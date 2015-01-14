@@ -37,6 +37,12 @@
                             '{{ "info.product.change family"|trans }}',
                             function () {
                                 $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
+                                if($("#sequentialEdit").length) {
+                                    var formAction = $('#{{ form.vars.id }}').attr('action');
+                                    formAction = formAction.replace('action=SaveAndNext', '');
+                                    formAction = formAction.replace('action=SaveAndFinish', '');
+                                    $('#{{ form.vars.id }}').attr('action', formAction);
+                                }
                                 $('#{{ form.vars.id }}').submit();
                             }
                         );

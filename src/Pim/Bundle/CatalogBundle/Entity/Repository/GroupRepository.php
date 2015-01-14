@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 
 /**
  * Group repository
@@ -17,11 +17,12 @@ class GroupRepository extends ReferableEntityRepository
 {
     /**
      * Get ordered groups associative array id to label
-     * @param GroupType $type
+     *
+     * @param GroupTypeInterface $type
      *
      * @return array
      */
-    public function getChoicesByType(GroupType $type)
+    public function getChoicesByType(GroupTypeInterface $type)
     {
         $groups = $this->getGroupsByType($type);
 
@@ -41,7 +42,7 @@ class GroupRepository extends ReferableEntityRepository
     public function getChoices()
     {
         $groups = $this
-            ->buildAll()
+            ->createQueryBuilder($this->getAlias())
             ->addOrderBy($this->getAlias() .'.code', 'ASC')
             ->getQuery()
             ->getResult();
@@ -56,11 +57,11 @@ class GroupRepository extends ReferableEntityRepository
 
     /**
      * Return the number of groups containing the provided attribute
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return interger
      */
-    public function countVariantGroupAxis(AbstractAttribute $attribute)
+    public function countVariantGroupAxis(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('g');
 
@@ -78,11 +79,11 @@ class GroupRepository extends ReferableEntityRepository
     /**
      * Get ordered groups by type
      *
-     * @param GroupType $type
+     * @param GroupTypeInterface $type
      *
      * @return array
      */
-    protected function getGroupsByType(GroupType $type)
+    protected function getGroupsByType(GroupTypeInterface $type)
     {
         return $this
             ->getGroupsByTypeQB($type)
@@ -93,15 +94,15 @@ class GroupRepository extends ReferableEntityRepository
     /**
      * Get ordered groups query builder
      *
-     * @param GroupType $type
+     * @param GroupTypeInterface $type
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function getGroupsByTypeQB(GroupType $type)
+    protected function getGroupsByTypeQB(GroupTypeInterface $type)
     {
         $alias = $this->getAlias();
 
-        return $this->build()
+        return $this->createQueryBuilder($alias)
             ->where($alias.'.type = :groupType')
             ->addOrderBy($alias.'.code', 'ASC')
             ->setParameter('groupType', $type);

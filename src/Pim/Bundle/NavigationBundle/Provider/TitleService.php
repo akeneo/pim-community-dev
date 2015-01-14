@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\NavigationBundle\Provider;
 
-use Symfony\Component\Routing\Route;
 use Oro\Bundle\NavigationBundle\Provider\TitleService as OroTitleService;
+use Symfony\Component\Routing\Route;
 
 /**
  * Overriding TitleService to remove breadcrumb in createTitle method

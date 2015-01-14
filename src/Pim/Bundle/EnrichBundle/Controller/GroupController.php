@@ -2,25 +2,23 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Group controller
@@ -37,11 +35,14 @@ class GroupController extends AbstractController
     /** @var GroupManager */
     protected $groupManager;
 
-    /** @var GroupHandler */
+    /** @var HandlerInterface */
     protected $groupHandler;
 
     /** @var Form */
     protected $groupForm;
+
+    /** @var GroupFactory */
+    protected $groupFactory;
 
     /**
      * Constructor
@@ -55,8 +56,9 @@ class GroupController extends AbstractController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param GroupManager             $groupManager
-     * @param GroupHandler             $groupHandler
+     * @param HandlerInterface         $groupHandler
      * @param Form                     $groupForm
+     * @param GroupFactory             $groupFactory
      */
     public function __construct(
         Request $request,
@@ -68,8 +70,9 @@ class GroupController extends AbstractController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
-        GroupHandler $groupHandler,
-        Form $groupForm
+        HandlerInterface $groupHandler,
+        Form $groupForm,
+        GroupFactory $groupFactory
     ) {
         parent::__construct(
             $request,
@@ -85,6 +88,7 @@ class GroupController extends AbstractController
         $this->groupManager = $groupManager;
         $this->groupHandler = $groupHandler;
         $this->groupForm    = $groupForm;
+        $this->groupFactory = $groupFactory;
     }
 
     /**
@@ -117,7 +121,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('pim_enrich_group_index');
         }
 
-        $group = new Group();
+        $group = $this->groupFactory->createGroup();
 
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.group.created');
@@ -139,6 +143,8 @@ class GroupController extends AbstractController
     /**
      * Edit a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @Template
@@ -159,6 +165,9 @@ class GroupController extends AbstractController
 
     /**
      * Remove a group
+     *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_remove")
@@ -178,6 +187,8 @@ class GroupController extends AbstractController
     /**
      * Display the products of a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @return array
@@ -193,9 +204,12 @@ class GroupController extends AbstractController
     /**
      * History of a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @AclAncestor("pim_enrich_group_history")
+     * @return Response
      */
     public function historyAction(Group $group)
     {

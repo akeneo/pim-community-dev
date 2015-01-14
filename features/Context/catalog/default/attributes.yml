@@ -7,6 +7,5 @@ attributes:
         group: other
         required:            true
         unique:              true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1

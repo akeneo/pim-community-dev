@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Test related class
@@ -28,7 +27,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     public function itShouldBeAProductValue()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Model\AbstractProductValue',
+            'Pim\Bundle\CatalogBundle\Model\ProductValueInterface',
             $this->value
         );
     }
@@ -152,7 +151,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     private function getAttributeMock()
     {

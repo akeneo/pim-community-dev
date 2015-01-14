@@ -22,7 +22,7 @@ pim_dashboard:
             status: Status
             date: Date
             type: Type
-            profile name: Profile name
+            "profile name": Profile name
             details: Details
             job_type:
                 import: Import

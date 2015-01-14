@@ -2,16 +2,15 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Builder;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class FieldNameBuilderSpec extends ObjectBehavior
 {
@@ -28,8 +27,8 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_association_type_field_names(
         $managerRegistry,
         AssociationTypeRepository $repository,
-        AssociationType $assocType1,
-        AssociationType $assocType2
+        AssociationTypeInterface $assocType1,
+        AssociationTypeInterface $assocType2
     ) {
         $assocType1->getCode()->willReturn("ASSOC_TYPE_1");
         $assocType2->getCode()->willReturn("ASSOC_TYPE_2");
@@ -49,7 +48,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -82,9 +81,9 @@ class FieldNameBuilderSpec extends ObjectBehavior
         AttributeRepository $attributeRepository,
         ReferableEntityRepositoryInterface $channelRepository,
         ReferableEntityRepositoryInterface $localeRepository,
-        AbstractAttribute $attribute,
-        Locale $locale,
-        Channel $channel
+        AttributeInterface $attribute,
+        LocaleInterface $locale,
+        ChannelInterface $channel
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(true);
@@ -148,7 +147,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_scopable_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -181,7 +180,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_price_attribute(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
@@ -226,7 +225,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_attribute_property(
         $managerRegistry,
         AttributeRepository $repository,
-        Attribute $attribute
+        AttributeInterface $attribute
     ) {
         // global with extra locale
         $attribute->getCode()->willReturn('sku');
@@ -263,11 +262,11 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_channel_locale(
         $managerRegistry,
         ReferableEntityRepositoryInterface $repository,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         ReferableEntityRepositoryInterface $channelRepository,
         ReferableEntityRepositoryInterface $localeRepository,
-        Locale $locale,
-        Channel $channel
+        LocaleInterface $locale,
+        ChannelInterface $channel
     ) {
         // localizable without the associated locale not in the channel
         $attribute->getCode()->willReturn('description');
@@ -296,6 +295,5 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
         $this->shouldThrow(new \InvalidArgumentException('The locale "de_DE" of the field "description-de_DE-mobile" is not available in scope "mobile"'))
             ->duringExtractAttributeFieldNameInfos('description-de_DE-mobile');
-
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Unit\Form\Type;
 
+use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
 
 /**
  * Test related class

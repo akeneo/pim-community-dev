@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
-use Prophecy\Argument;
 
 class FamilyLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
 {

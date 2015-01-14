@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Type for option attribute form
@@ -22,15 +22,9 @@ class AttributeOptionType extends AbstractType
     {
         $this->addFieldId($builder);
 
-        $this->addFieldSortOrder($builder);
-
-        $this->addFieldTranslatable($builder);
-
         $this->addFieldOptionValues($builder);
 
         $this->addFieldCode($builder);
-
-        $this->addFieldIsDefault($builder);
     }
 
     /**
@@ -40,24 +34,6 @@ class AttributeOptionType extends AbstractType
     protected function addFieldId(FormBuilderInterface $builder)
     {
         $builder->add('id', 'hidden');
-    }
-
-    /**
-     * Add field sort_order to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldSortOrder(FormBuilderInterface $builder)
-    {
-        $builder->add('sort_order', 'integer', array('required' => false));
-    }
-
-    /**
-     * Add field translatable to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldTranslatable(FormBuilderInterface $builder)
-    {
-        $builder->add('translatable', null, array('required' => false));
     }
 
     /**
@@ -82,18 +58,9 @@ class AttributeOptionType extends AbstractType
                 'type'         => 'pim_enrich_attribute_option_value',
                 'allow_add'    => true,
                 'allow_delete' => true,
-                'by_reference' => false
+                'by_reference' => false,
             )
         );
-    }
-
-    /**
-     * Add isDefault field to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldIsDefault(FormBuilderInterface $builder)
-    {
-        $builder->add('default', 'hidden');
     }
 
     /**
@@ -103,7 +70,8 @@ class AttributeOptionType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption'
+                'data_class'      => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
+                'csrf_protection' => false
             )
         );
     }

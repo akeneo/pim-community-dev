@@ -28,7 +28,7 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attributes'                 => array('css' => '#attributes table'),
+                'Attributes'                 => array('css' => '.tab-pane.tab-attribute table'),
                 'Attribute as label choices' => array('css' => '#pim_enrich_family_form_attributeAsLabel'),
             )
         );

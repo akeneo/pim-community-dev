@@ -1,4 +1,3 @@
-@javascript
 Feature: Edit a product group
   In order to manage existing product groups for the catalog
   As a product manager
@@ -10,6 +9,7 @@ Feature: Edit a product group
     And I am on the "similar_boots" product group page
     And I visit the "Properties" tab
 
+  @javascript
   Scenario: Successfully edit a group
     Then I should see the Code and Type fields
     And the fields Code and Type should be disabled

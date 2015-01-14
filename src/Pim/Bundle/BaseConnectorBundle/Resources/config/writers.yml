@@ -17,8 +17,6 @@ services:
     pim_base_connector.writer.product_file:
         parent: pim_base_connector.writer.file
         class: %pim_base_connector.writer.file.product.class%
-        arguments:
-            - '@pim_catalog.manager.media'
 
     pim_base_connector.writer.dummy:
         class: %pim_base_connector.writer.dummy.class%

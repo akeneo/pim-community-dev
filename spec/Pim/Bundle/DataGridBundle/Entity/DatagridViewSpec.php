@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Entity;
 
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\UserBundle\Entity\User;
+use PhpSpec\ObjectBehavior;
 
 class DatagridViewSpec extends ObjectBehavior
 {

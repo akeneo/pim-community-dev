@@ -4,9 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class ChannelDeletedQueryGeneratorSpec extends ObjectBehavior
 {
@@ -15,14 +14,21 @@ class ChannelDeletedQueryGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($namingUtility, 'Pim\Bundle\CatalogBundle\Model\Channel', '');
     }
 
-    function it_generates_a_query_to_update_product_scopable_attributes($namingUtility, AbstractAttribute $label, Channel $mobile)
-    {
+    function it_generates_a_query_to_update_product_scopable_attributes(
+        $namingUtility,
+        AttributeInterface $label,
+        ChannelInterface $mobile
+    ) {
         $namingUtility->getScopableAttributes(false)->willReturn([$label]);
         $label->getCode()->willReturn('label');
 
         $namingUtility->getLocaleCodes()->willReturn(['fr_FR', 'en_US']);
-        $namingUtility->appendSuffixes(['normalizedData.label'], ['fr_FR', 'en_US'])->willReturn(['normalizedData.label-fr_FR', 'normalizedData.label-en_US']);
-        $namingUtility->appendSuffixes(['normalizedData.label-fr_FR', 'normalizedData.label-en_US'], ['mobile'])->willReturn(['normalizedData.label-fr_FR-mobile', 'normalizedData.label-en_US-mobile']);
+        $namingUtility
+            ->appendSuffixes(['normalizedData.label'], ['fr_FR', 'en_US'])
+            ->willReturn(['normalizedData.label-fr_FR', 'normalizedData.label-en_US']);
+        $namingUtility
+            ->appendSuffixes(['normalizedData.label-fr_FR', 'normalizedData.label-en_US'], ['mobile'])
+            ->willReturn(['normalizedData.label-fr_FR-mobile', 'normalizedData.label-en_US-mobile']);
 
         $mobile->getCode()->willReturn('mobile');
 

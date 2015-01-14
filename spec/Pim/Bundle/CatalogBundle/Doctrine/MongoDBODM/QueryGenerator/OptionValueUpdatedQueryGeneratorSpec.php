@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 class OptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
@@ -16,12 +16,18 @@ class OptionValueUpdatedQueryGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($namingUtility, 'Pim\Bundle\CatalogBundle\Model\AttributeOptionValue', 'value');
     }
 
-    function it_generates_a_query_to_update_product_select_attributes($namingUtility, AttributeOptionValue $bleu, AttributeOption $blue, AbstractAttribute $color)
-    {
+    function it_generates_a_query_to_update_product_select_attributes(
+        $namingUtility,
+        AttributeOptionValueInterface $bleu,
+        AttributeOptionInterface $blue,
+        AttributeInterface $color
+    ) {
         $bleu->getOption()->willReturn($blue);
         $bleu->getLocale()->willReturn('fr_FR');
         $blue->getAttribute()->willReturn($color);
-        $namingUtility->getAttributeNormFields($color)->willReturn(['normalizedData.color-fr_FR', 'normalizedData.color-en_US']);
+        $namingUtility
+            ->getAttributeNormFields($color)
+            ->willReturn(['normalizedData.color-fr_FR', 'normalizedData.color-en_US']);
 
         $blue->getCode()->willReturn('blue');
         $this->generateQuery($bleu, 'value', 'bleu', 'bleus')->shouldReturn([
