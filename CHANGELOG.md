@@ -39,6 +39,12 @@
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
 - Remove the `is_default` from fixtures for attribute options
+- PIM-3548: Do not rely on the absolute file path of a media
+
+# 1.0.11 (2015-01-09)
+
+## Bug fixes
+- PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.0.10 (2014-12-23)
 

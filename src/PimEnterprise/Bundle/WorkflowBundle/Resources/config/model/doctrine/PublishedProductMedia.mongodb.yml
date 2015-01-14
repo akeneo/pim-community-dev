@@ -5,8 +5,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia:
             id: true
         filename:
             type: string
-        filePath:
-            type: string
         originalFilename:
             type: string
         mimeType:

@@ -80,7 +80,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
 
                 $data['values'][$key]['media']['filename'] = $media->getFilename();
                 $data['values'][$key]['media']['originalFilename'] = $media->getOriginalFilename();
-                $data['values'][$key]['media']['filePath'] = $media->getFilePath();
+                $data['values'][$key]['media']['filePath'] = $this->mediaManager->getFilePath($media);
                 $data['values'][$key]['media']['mimeType'] = $media->getMimeType();
                 $data['values'][$key]['media']['size'] = $changes['media']['file']->getClientSize();
 
