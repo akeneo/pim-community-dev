@@ -21,11 +21,11 @@ class MongoDBODMCursorFactory implements CursorFactoryInterface
 
     /**
      * @param string $productCursorClass class name implementation
-     * @param int $batchSize
+     * @param int    $batchSize
      */
     public function __construct(
         $productCursorClass,
-        $batchSize=null
+        $batchSize = null
     ) {
         $this->cursorClass = $productCursorClass;
         $this->batchSize = $batchSize;

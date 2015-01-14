@@ -27,10 +27,10 @@ class ORMCursorFactory implements CursorFactoryInterface
     private $pageSize;
 
     /**
-     * @param string $productCursorClass class name implementation
+     * @param string        $productCursorClass class name implementation
      * @param EntityManager $entityManager
-     * @param string $entityClass
-     * @param int $pageSize
+     * @param string        $entityClass
+     * @param int           $pageSize
      */
     public function __construct(
         $productCursorClass,

@@ -44,23 +44,19 @@ class Paginator implements PaginatorInterface
      */
     public function getNextPage()
     {
+        $result = [];
         if ($this->hasNextPage()) {
-            $result = [];
-
             for ($i = 0; $i<$this->pageSize; $i++) {
                 $this->cursor->next();
                 $current = $this->cursor->current();
-                if ($current !=null) {
+                if ($current != null) {
                     $result[] = $current;
-                }
-                else {
+                } else {
                     break;
                 }
             }
-
             $this->currentPage++;
         }
-
         return $result;
     }
 
@@ -79,7 +75,6 @@ class Paginator implements PaginatorInterface
     public function setPageSize($pageSize)
     {
         $this->pageSize = $pageSize;
-
         return $this;
     }
 
