@@ -41,6 +41,13 @@
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
 
+# 1.0.13 (2015-01-14)
+
+## Bug fixes
+- PIM-3603: Trigger saving wysiwyg editor contents when submitting product form manually
+
+# 1.0.12 (2015-01-14)
+
 # 1.0.11 (2015-01-09)
 
 ## Bug fixes
