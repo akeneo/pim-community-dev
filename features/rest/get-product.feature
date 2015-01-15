@@ -9,15 +9,18 @@ Feature: Expose product data via a REST API
       | sku     | name-en_US | description-en_US-mobile | description-en_US-tablet | price-EUR | price-USD | categories      |
       | sandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        | 2014_collection |
 
+  @skip
   Scenario: Fail to authenticate an anonymous user
     Given I send a GET request to "api/rest/products/sandals.json"
     Then the response code should be 401
 
+  @skip
   Scenario: Successfully authenticate a user
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I send a GET request to "api/rest/products/sandals.json"
     Then the response code should be 200
 
+  @skip
   Scenario: Successfully retrieve a product
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "sandals"
