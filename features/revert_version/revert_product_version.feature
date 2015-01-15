@@ -117,7 +117,7 @@ Feature: Revert a product to a previous version
     And the following product:
       | sku   | family  |
       | jeans | jackets |
-    And I am logged in as "Julia"
+    And I am logged in as "Sandra"
     When I edit the "jeans" product
     And I visit the "Marketing" group
     And I change the "mobile Number in stock" to "100"
