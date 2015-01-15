@@ -403,12 +403,22 @@ class ProductRepository extends EntityRepository implements
         $stmt->execute();
         $nbAxes = $stmt->fetch()['nb'];
 
-        $sql = 'SELECT v.entity_id '.
+        $elligibleProductsSQL = 'SELECT v.entity_id as product_id '.
             'FROM pim_catalog_group_attribute as ga '.
-            "LEFT JOIN %product_value_table% as v ON v.attribute_id = ga.attribute_id ".
+            'LEFT JOIN %product_value_table% as v ON v.attribute_id = ga.attribute_id '.
             'WHERE ga.group_id = :groupId '.
             'GROUP BY v.entity_id '.
-            'having count(v.option_id) = :nbAxes ;';
+            'having count(v.option_id) = :nbAxes';
+
+        $alreadyInGroupSQL = 'SELECT p.id as product_id ' .
+            'FROM pim_catalog_product as p ' .
+            'JOIN pim_catalog_group_product as gp on p.id = gp.product_id ' .
+            'JOIN pim_catalog_group as g on g.id = gp.group_id ' .
+            'JOIN pim_catalog_group_type as gt on gt.id = g.type_id ' .
+            'WHERE gt.code = "VARIANT" ' .
+            'AND g.id != :groupId';
+
+        $sql = sprintf('SELECT * FROM (%s) as p WHERE p.product_id NOT IN (%s);', $elligibleProductsSQL, $alreadyInGroupSQL);
         $sql = QueryBuilderUtility::prepareDBALQuery($this->_em, $this->_entityName, $sql);
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
@@ -418,7 +428,7 @@ class ProductRepository extends EntityRepository implements
         $results = $stmt->fetchAll();
         $productIds = array_map(
             function ($row) {
-                return $row['entity_id'];
+                return $row['product_id'];
             },
             $results
         );

@@ -78,21 +78,21 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Validate product
      *
-     * @param ProductInterface $entity
+     * @param ProductInterface $product
      * @param Constraint       $constraint
      *
      * @return null
      */
-    protected function validateProduct(ProductInterface $entity, Constraint $constraint)
+    protected function validateProduct(ProductInterface $product, Constraint $constraint)
     {
-        if (null === $entity->getGroups()) {
+        if (null === $product->getGroups()) {
             return;
         }
 
-        foreach ($entity->getGroups() as $variantGroup) {
+        foreach ($product->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $criteria = $this->prepareQueryCriterias($variantGroup, $entity);
-                $matchingProducts = $this->getMatchingProducts($variantGroup, $entity, $criteria);
+                $criteria = $this->prepareQueryCriterias($variantGroup, $product);
+                $matchingProducts = $this->getMatchingProducts($variantGroup, $product, $criteria);
                 if (count($matchingProducts) !== 0) {
                     $values = array();
                     foreach ($criteria as $item) {

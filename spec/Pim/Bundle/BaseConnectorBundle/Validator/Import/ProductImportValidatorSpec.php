@@ -96,9 +96,8 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $productValue3->__toString()->willReturn("17727158");
         $productValue4->__toString()->willReturn("1200000011a");
 
-        $validator->validateValue('17727158', Argument::any())->shouldBeCalled()->willReturn($constraint);
-        $validator->validateValue('1200000011a', Argument::any())->shouldBeCalled()->willReturn($constraint);
-        $validator->validateValue('AKNTS_BPXL', Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate($product1, Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate($product2, Argument::any())->shouldBeCalled()->willReturn($constraint);
         $constraint->count()->willReturn(0);
 
         $errors = [
