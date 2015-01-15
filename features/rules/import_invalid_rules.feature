@@ -571,7 +571,6 @@ Feature: Import rules
     And I should see "actions[0]: Attribute \"side_view\" expects a valid file path"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see "../../../features/Context/fixtures/SNKRS-1R.png"
     Then I should see "SNKRS-1R"
 
   Scenario: Skip rules with missing values for attribute of type media in conditions
@@ -620,7 +619,6 @@ Feature: Import rules
     And I should see "actions[0]: Attribute \"side_view\" expects an array with the key"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
-    Then I should see "Context/fixtures/SNKRS-1R.png"
     Then I should see "SNKRS-1R"
 
   Scenario: Skip rules with missing conditions key

@@ -3,7 +3,7 @@ define(
     function ($, _, Backbone, __, Routing, mediator, ItemView) {
         'use strict';
 
-        var templates = {
+        var ruleItemTemplates = {
             'conditions': {
                 'field': _.template(
                     '<div class="rule-item rule-condition">' +
@@ -23,15 +23,7 @@ define(
                 'set_value': _.template(
                     '<div class="rule-item rule-action set-value-action">' +
                         '<span class="rule-item-emphasize"><%= then_label %></span>' +
-                        '<% if (typeof rulePart.value === \'object\') { %>' +
-                            '<span class="action-values" title="<%= JSON.stringify(rulePart.value).replace(/\"/g, \'\\\'\') %>" >' +
-                                '<%= JSON.stringify(rulePart.value) %>' +
-                            '</span>' +
-                        '<% } else { %>' +
-                            '<span class="action-values" title="rulePart.value">' +
-                                '<%= rulePart.value %>' +
-                            '</span>' +
-                        '<% } %>' +
+                        '<span class="action-value"><%= renderValue(rulePart.value) %></span>' +
                         '<span class="rule-item-emphasize action-type"><%= set_value_label %></span>' +
                         '<span class="action-field">' +
                             '<%= rulePart.field %>' +
@@ -56,6 +48,18 @@ define(
             }
         };
 
+        var valueTemplates = {
+            'metric': _.template('<%= value.data %> <%= value.unit %>'),
+            'collection': _.template(
+                '<% for (var i in value) { %>' +
+                    '<%= renderValue(value[i]) %> ' +
+                '<% } %>'
+            ),
+            'price': _.template('<%= value.data %> <%= value.currency %> '),
+            'file': _.template('<i class="icon-file"></i> <%= value.originalFilename %>'),
+            'default': _.template('<%= value %>')
+        };
+
         var itemContextTemplate = _.template(
             '<% if (localeCountry || scope) { %>' +
                 '<span class="rule-item-context">' +
@@ -75,6 +79,30 @@ define(
                 '</span>' +
             '<% } %>'
         );
+
+        var renderValue = function (value) {
+            var template;
+
+            switch (true) {
+                case typeof value.unit !== 'undefined':
+                    template = 'metric';
+                    break;
+                case typeof value.currency !== 'undefined':
+                    template = 'price';
+                    break;
+                case typeof value.originalFilename !== 'undefined':
+                    template = 'file';
+                    break;
+                case Array.isArray(value):
+                    template = 'collection';
+                    break;
+                default:
+                    template = 'default';
+                    break;
+            }
+
+            return valueTemplates[template]({'value': value, 'renderValue': renderValue});
+        };
 
         return ItemView.extend({
             className: 'rule-row',
@@ -104,7 +132,7 @@ define(
             renderRulePart: function(rulePart, type) {
                 var rulePartType = rulePart.type ? rulePart.type : 'field';
 
-                return templates[type][rulePartType]({
+                return ruleItemTemplates[type][rulePartType]({
                     'rulePart': rulePart,
                     'renderItemContext': function(locale, scope) {
                         var localeCountry  = locale ? locale.split('_')[1].toLowerCase() : locale;
@@ -112,6 +140,7 @@ define(
 
                         return itemContextTemplate({'localeCountry': localeCountry, 'localeLanguage': localeLanguage, 'scope': scope});
                     },
+                    'renderValue': renderValue,
                     'if_label': __('pimee_catalog_rule.rule.condition.if.label'),
                     'then_label': __('pimee_catalog_rule.rule.action.then.label'),
                     'set_value_label': __('pimee_catalog_rule.rule.action.set_value.label'),

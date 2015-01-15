@@ -185,6 +185,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-value'),
                 $action['value'],
+                true,
                 false
             );
             $this->checkRuleElementValue(
@@ -302,7 +303,11 @@ class EnterpriseFeatureContext extends FeatureContext
         $element = is_array($element) ? reset($element) : $element;
 
         if ($mandatory || null !== $element && $expectedValue !== null) {
-            $actualValue = $firstElement ? explode('<', trim($element->getHTML()))[0] : $element->getText();
+            if ($element) {
+                $actualValue = $firstElement ? explode('<', trim($element->getHTML()))[0] : $element->getText();
+            } else {
+                $actualValue = '';
+            }
 
             if ($actualValue !== $expectedValue) {
                 throw new \Exception(
