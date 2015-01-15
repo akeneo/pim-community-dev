@@ -11,11 +11,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia:
             type: string
             length: 255
             nullable: true
-        filePath:
-            type: string
-            length: 500
-            nullable: true
-            column: file_path
         originalFilename:
             type: string
             nullable: true
