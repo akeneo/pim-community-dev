@@ -10,6 +10,7 @@ Feature: Expose product data via a REST API
       | sandals    | My sandals | My great sandals         | My great new sandals     | 20        | 30        | sandals      | old value        |
       | oldsandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        | old_sandals  | old value        |
 
+  @skip
   Scenario: Successfully retrieve a product by applying permissions on attribute groups
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "sandals"
@@ -51,6 +52,7 @@ Feature: Expose product data via a REST API
     }
     """
 
+  @skip
   Scenario: Fail to fetch a not granted product by applying permissions on categories
     Given I am authenticating as "admin" with "admin_api_key" api key
     And I request information for product "oldsandals"
