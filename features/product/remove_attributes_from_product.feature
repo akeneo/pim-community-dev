@@ -8,7 +8,7 @@ Feature: Remove an attribute from a product
     And the following product:
       | sku  | family  |
       | nike | sandals |
-    And I am logged in as "Julia"
+    And I am logged in as "Sandra"
 
   Scenario: Fail to remove an attribute belonging to the family of the product
     Given I am on the "nike" product page

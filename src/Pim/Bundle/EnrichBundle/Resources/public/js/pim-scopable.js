@@ -128,7 +128,8 @@ define(
                 '<%= label %>'
             ),
 
-            initialize: function () {
+            initialize: function (opts) {
+                var options = opts || {};
                 this.fieldViews = [];
                 this.fields     = [];
                 this.expanded   = true;
@@ -143,6 +144,10 @@ define(
                 this.label = this.$el.find('.control-label').first().get(0).outerHTML;
 
                 this.render();
+
+                if (_.has(options, 'initialScope')) {
+                    this._changeDefault(options.initialScope);
+                }
 
                 mediator.on('scopablefield:changescope', function (scope) {
                     this._changeDefault(scope);

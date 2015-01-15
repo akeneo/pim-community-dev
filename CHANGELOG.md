@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3615: Context of the grid not applied in product form for an attribute type Date
+
 # 1.2.20 (2015-01-14)
 
 ## Bug fixes
