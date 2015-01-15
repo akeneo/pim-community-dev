@@ -1156,7 +1156,9 @@ class FixturesContext extends RawMinkContext
             $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
             $productValue = $product->getValue($attributeCode, $localeCode, $scopeCode);
 
-            if ('media' === $attribute->getBackendType()) {
+            if ('' === $value) {
+                assertEmpty((string) $productValue);
+            } elseif ('media' === $attribute->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)
                 if ('**empty**' === $value) {
