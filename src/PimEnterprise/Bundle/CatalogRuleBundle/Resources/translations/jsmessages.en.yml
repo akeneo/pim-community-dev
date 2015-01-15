@@ -12,6 +12,3 @@ pimee_catalog_rule:
             then.label: then
             set_value.label: is set into
             copy_value.label: is copied into
-        list:
-            delete_rule.label: Delete
-            delete_rule.error: Error during deletion of the rule
