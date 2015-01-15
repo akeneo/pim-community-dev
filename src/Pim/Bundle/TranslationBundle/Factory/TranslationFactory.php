@@ -19,29 +19,13 @@ class TranslationFactory
     protected $translationClass;
 
     /**
-     * The entity class
-     *
-     * @var string
-     */
-    protected $entityClass;
-
-    /**
-     * The field type
-     *
-     * @var string
-     */
-    protected $field;
-
-    /**
      * Constructor
      *
      * @param string $translationClass
-     * @param string $entityClass
-     * @param string $field
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($translationClass, $entityClass, $field)
+    public function __construct($translationClass)
     {
         $refl = new \ReflectionClass($translationClass);
         if (!$refl->isSubClassOf('Pim\Bundle\TranslationBundle\Entity\AbstractTranslation')) {
@@ -55,8 +39,6 @@ class TranslationFactory
         }
 
         $this->translationClass = $translationClass;
-        $this->entityClass      = $entityClass;
-        $this->field            = $field;
     }
 
     /**
