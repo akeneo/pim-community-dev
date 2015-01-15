@@ -56,15 +56,13 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.builder.product'
             - '@pim_catalog.updater.product'
             - '@pim_user.context.user'
-            - '@pim_catalog.manager.currency'
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.manager.product_mass_action'
             - '@pim_serializer'
             - '@pim_catalog.saver.product'
-            - {'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
         tags:
             -
                 name: pim_enrich.mass_edit_action

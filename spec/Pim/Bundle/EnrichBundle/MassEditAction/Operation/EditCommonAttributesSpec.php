@@ -5,16 +5,18 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
@@ -23,13 +25,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
-        ProductManager $productManager,
+        ProductBuilder $productBuilder,
         ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
-        CurrencyManager $currencyManager,
         LocaleInterface $en,
         LocaleInterface $de,
-        AttributeRepository $attributeRepository,
         ProductValueInterface $productValue,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
@@ -42,20 +42,16 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $userContext->getUserLocales()->willReturn([$en, $de]);
 
         $catalogContext->setLocaleCode(Argument::any())->willReturn($catalogContext);
-        $productManager->createProductValue()->willReturn($productValue);
 
         $productValue->setAttribute(Argument::any())->willReturn($productValue);
         $productValue->setLocale(Argument::any())->willReturn($productValue);
         $productValue->setScope(Argument::any())->willReturn($productValue);
         $productValue->addPrice(Argument::any())->willReturn($productValue);
 
-        $productManager->getAttributeRepository()->willReturn($attributeRepository);
-
         $this->beConstructedWith(
-            $productManager,
+            $productBuilder,
             $productUpdater,
             $userContext,
-            $currencyManager,
             $catalogContext,
             $massActionManager,
             $normalizer,
@@ -90,13 +86,6 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getLocale()->shouldReturn($fr);
     }
 
-    function it_stores_the_common_attributes_of_the_products()
-    {
-        $this->getCommonAttributes()->shouldReturn([]);
-        $this->setCommonAttributes(['foo', 'bar', 'baz']);
-        $this->getCommonAttributes()->shouldReturn(['foo', 'bar', 'baz']);
-    }
-
     function it_stores_the_attributes_displayed_by_the_user()
     {
         $this->getDisplayedAttributes()->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
@@ -112,40 +101,139 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getFormType()->shouldReturn('pim_enrich_mass_edit_common_attributes');
     }
 
-    function it_provides_form_options($en, $de)
+    function it_provides_form_options($en, $de, $massActionManager, AttributeInterface $name, AttributeInterface $description, AttributeInterface $price, AttributeGroup $otherGroup, $massActionManager)
     {
-        $this->setCommonAttributes(['foo', 'bar', 'baz']);
+        $this->setObjectsToMassEdit(['foo', 'bar', 'baz']);
+
+        $massActionManager->findCommonAttributes(['foo', 'bar', 'baz'])->willReturn([$name, $description, $price]);
+
+        $name->getGroup()->willReturn($otherGroup);
+        $name->setLocale('en_US')->shouldBeCalled();
+        $otherGroup->setLocale('en_US')->shouldBeCalled();
+        $description->getGroup()->willReturn($otherGroup);
+        $description->setLocale('en_US')->shouldBeCalled();
+        $price->getGroup()->willReturn($otherGroup);
+        $price->setLocale('en_US')->shouldBeCalled();
+
+        $massActionManager->filterLocaleSpecificAttributes([$name, $description, $price], 'en_US')->willReturn([$name, $description, $price]);
+        $massActionManager->filterAttributesComingFromVariant([$name, $description, $price], ['foo', 'bar', 'baz'])->willReturn([$name, $description, $price]);
+
         $this->getFormOptions()->shouldReturn([
             'locales' => [$en, $de],
-            'common_attributes' => ['foo', 'bar', 'baz'],
+            'common_attributes' => [$name, $description, $price],
             'current_locale' => 'en_US'
         ]);
     }
 
     function it_initializes_the_operation_with_common_attributes_of_the_products(
+        $massActionManager,
+        $productBuilder,
         ProductInterface $product1,
         ProductInterface $product2,
         AttributeInterface $name,
-        $massActionManager
+        AttributeInterface $name,
+        AttributeInterface $description,
+        AttributeInterface $price,
+        AttributeGroup $otherGroup,
+        ProductValueInterface $nameProductValue,
+        ProductValueInterface $descriptionProductValue,
+        ProductValueInterface $priceProductValue
     ) {
         $this->setObjectsToMassEdit([$product1, $product2]);
+
+        $name->getGroup()->willReturn($otherGroup);
+        $name->setLocale('en_US')->shouldBeCalled();
+        $otherGroup->setLocale('en_US')->shouldBeCalled();
+        $description->getGroup()->willReturn($otherGroup);
+        $description->setLocale('en_US')->shouldBeCalled();
+        $price->getGroup()->willReturn($otherGroup);
+        $price->setLocale('en_US')->shouldBeCalled();
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
 
         $name->setLocale(Argument::any())->willReturn($name);
-        $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->isScopable()->willReturn(false);
-        $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
-        $name->getGroup()->willReturn(new AttributeGroup());
-        $name->isLocaleSpecific()->willReturn(false);
+        $description->setLocale(Argument::any())->willReturn($description);
+        $description->isScopable()->willReturn(false);
+        $description->getCode()->willReturn('description');
+        $price->setLocale(Argument::any())->willReturn($price);
+        $price->isScopable()->willReturn(false);
+        $price->getCode()->willReturn('price');
 
-        $massActionManager->findCommonAttributes([1, 2])->willReturn([$name]);
+        $this->setObjectsToMassEdit([$product1, $product2]);
+
+        $massActionManager->findCommonAttributes([$product1, $product2])->willReturn([$name, $description, $price]);
+        $massActionManager->filterLocaleSpecificAttributes([$name, $description, $price], 'en_US')->willReturn([$name, $description, $price]);
+        $massActionManager->filterAttributesComingFromVariant([$name, $description, $price], [$product1, $product2])->willReturn([$name, $description, $price]);
+
+        $productBuilder->createProductValue($name, 'en_US')->willReturn($nameProductValue);
+        $productBuilder->addMissingPrices($nameProductValue)->shouldBeCalled();
+        $productBuilder->createProductValue($description, 'en_US')->willReturn($descriptionProductValue);
+        $productBuilder->addMissingPrices($descriptionProductValue)->shouldBeCalled();
+        $productBuilder->createProductValue($price, 'en_US')->willReturn($priceProductValue);
+        $productBuilder->addMissingPrices($priceProductValue)->shouldBeCalled();
+
 
         $this->initialize();
 
-        $this->getCommonAttributes()->shouldReturn([$name]);
-        $this->getValues()->shouldHaveCount(1);
+        $this->getCommonAttributes()->shouldReturn([$name, $description, $price]);
+        $this->getValues()->shouldHaveCount(3);
+    }
+
+    function it_filters_attributes_coming_from_variant_group(
+        $massActionManager,
+        $productBuilder,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        AttributeInterface $name,
+        AttributeInterface $name,
+        AttributeInterface $description,
+        AttributeInterface $price,
+        AttributeGroup $otherGroup,
+        ProductValueInterface $nameProductValue,
+        ProductValueInterface $descriptionProductValue,
+        ProductValueInterface $priceProductValue
+    ) {
+        $this->setObjectsToMassEdit([$product1, $product2]);
+
+        $name->getGroup()->willReturn($otherGroup);
+        $name->setLocale('en_US')->shouldBeCalled();
+        $otherGroup->setLocale('en_US')->shouldBeCalled();
+        $description->getGroup()->willReturn($otherGroup);
+        $description->setLocale('en_US')->shouldBeCalled();
+        $price->getGroup()->willReturn($otherGroup);
+        $price->setLocale('en_US')->shouldBeCalled();
+
+        $product1->getId()->willReturn(1);
+        $product2->getId()->willReturn(2);
+
+        $name->setLocale(Argument::any())->willReturn($name);
+        $name->isScopable()->willReturn(false);
+        $name->getCode()->willReturn('name');
+        $description->setLocale(Argument::any())->willReturn($description);
+        $description->isScopable()->willReturn(false);
+        $description->getCode()->willReturn('description');
+        $price->setLocale(Argument::any())->willReturn($price);
+        $price->isScopable()->willReturn(false);
+        $price->getCode()->willReturn('price');
+
+        $this->setObjectsToMassEdit([$product1, $product2]);
+
+        $massActionManager->findCommonAttributes([$product1, $product2])->willReturn([$name, $description, $price]);
+        $massActionManager->filterLocaleSpecificAttributes([$name, $description, $price], 'en_US')->willReturn([$name, $description, $price]);
+        $massActionManager->filterAttributesComingFromVariant([$name, $description, $price], [$product1, $product2])->willReturn([$name, $price]);
+
+        $productBuilder->createProductValue($name, 'en_US')->willReturn($nameProductValue);
+        $productBuilder->addMissingPrices($nameProductValue)->shouldBeCalled();
+        $productBuilder->createProductValue($price, 'en_US')->willReturn($priceProductValue);
+        $productBuilder->addMissingPrices($priceProductValue)->shouldBeCalled();
+
+
+        $this->initialize();
+
+        $this->getCommonAttributes()->shouldReturn([$name, $price]);
+        $this->getValues()->shouldHaveCount(2);
     }
 }
