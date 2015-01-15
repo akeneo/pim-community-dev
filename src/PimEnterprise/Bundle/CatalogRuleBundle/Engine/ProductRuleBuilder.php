@@ -66,7 +66,6 @@ class ProductRuleBuilder implements BuilderInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_BUILD, new RuleEvent($definition));
 
-        /** @var \Akeneo\Bundle\RuleEngineBundle\Model\Rule $rule */
         $rule = new $this->ruleClass($definition);
 
         try {
@@ -82,7 +81,7 @@ class ProductRuleBuilder implements BuilderInterface
 
         $violations = $this->validator->validate($rule);
 
-        if (count($violations)) {
+        if (count($violations) > 0) {
             throw new BuilderException(
                 sprintf(
                     'Impossible to build the rule "%s" as it does not appear to be valid (%s).',
@@ -105,7 +104,7 @@ class ProductRuleBuilder implements BuilderInterface
     protected function violationsToMessage(ConstraintViolationListInterface $violations)
     {
         $errors = [];
-        /** @var ConstraintViolationInterface $violation */
+
         foreach ($violations as $violation) {
             $errors[] = sprintf("%s: %s", $violation->getPropertyPath(), $violation->getMessage());
         }

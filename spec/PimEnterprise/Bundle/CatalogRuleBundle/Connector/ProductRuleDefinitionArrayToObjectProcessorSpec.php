@@ -2,13 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
+use PimEnterprise\Bundle\CatalogRuleBundle\CustomMatcher;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -133,9 +132,6 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
     {
         return [
             'beValidRuleDefinition' => function ($subject, $expected) {
-                /** @var RuleDefinitionInterface $expected */
-                /** @var RuleDefinitionInterface $subject */
-
                 return $subject->getCode() === $expected->getCode() &&
                     $subject->getPriority() === $expected->getPriority() &&
                     $subject->getType() === $expected->getType() &&

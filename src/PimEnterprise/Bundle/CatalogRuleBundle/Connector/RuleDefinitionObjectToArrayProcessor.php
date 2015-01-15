@@ -39,7 +39,6 @@ class RuleDefinitionObjectToArrayProcessor extends DummyProcessor
     public function process($item)
     {
         $rules = [];
-        /** @var RuleDefinitionInterface $ruleDefinition */
         foreach ($item as $ruleDefinition) {
             $normalizedRule = $this->ruleNormalizer->normalize($ruleDefinition);
 

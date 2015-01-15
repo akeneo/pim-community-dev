@@ -132,13 +132,11 @@
                     $this.off('mouseover');
                     $.get(url, function(data) {
                         var codes = [];
-
                         for (var key in data) {
                             codes.push(data[key].code);
                         }
 
                         var message = '{{ "pimee_catalog_rule.product.tooltip.affected_by_a_rule.content"|trans|capitalize|raw }}';
-
                         message = message.replace('%rule%', codes.join(', '));
 
                         $this

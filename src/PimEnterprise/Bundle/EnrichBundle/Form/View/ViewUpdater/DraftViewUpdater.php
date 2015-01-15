@@ -82,14 +82,15 @@ class DraftViewUpdater implements ViewUpdaterInterface
      */
     protected function checkIfDraft(array $views, $key, $name)
     {
-        if ((isset($views[$key]['attributes'][$name]['value'])
-            && $this->applier->isMarkedAsModified($views[$key]['attributes'][$name]))
+        $attribute = $views[$key]['attributes'][$name];
+        if ((isset($attribute['value'])
+            && $this->applier->isMarkedAsModified($attribute))
         ) {
-            $this->markFieldAsModified($views[$key]['attributes'][$name]['value']);
-        } elseif (isset($views[$key]['attributes'][$name]['values'])) {
-            foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
-                if ($this->applier->isMarkedAsModified($views[$key]['attributes'][$name], $scope)) {
-                    $this->markFieldAsModified($views[$key]['attributes'][$name]['values'][$scope]);
+            $this->markFieldAsModified($attribute['value']);
+        } elseif (isset($attribute['values'])) {
+            foreach (array_keys($attribute['values']) as $scope) {
+                if ($this->applier->isMarkedAsModified($attribute, $scope)) {
+                    $this->markFieldAsModified($attribute['values'][$scope]);
                 }
             }
         }

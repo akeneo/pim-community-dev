@@ -149,7 +149,7 @@ class ProductRuleApplier implements ApplierInterface
             if ($violations->count() > 0) {
                 $this->objectDetacher->detach($product);
                 $reasons = [];
-                /** @var \Symfony\Component\Validator\ConstraintViolation $violation */
+
                 foreach ($violations as $violation) {
                     $reasons[] = sprintf('%s : %s', $violation->getInvalidValue(), $violation->getMessage());
                 }

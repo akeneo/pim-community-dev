@@ -45,6 +45,8 @@ class ChainedRunner implements DryRunnerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function run(RuleDefinitionInterface $definition, array $options = [])
     {
@@ -59,6 +61,8 @@ class ChainedRunner implements DryRunnerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function dryRun(RuleDefinitionInterface $definition, array $options = [])
     {

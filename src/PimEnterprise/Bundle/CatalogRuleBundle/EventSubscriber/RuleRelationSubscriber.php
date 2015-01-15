@@ -159,7 +159,6 @@ class RuleRelationSubscriber implements EventSubscriberInterface
 
         $ruleRelations = [];
         foreach ($relatedAttributes as $relatedAttribute) {
-            /** @var RuleRelationInterface $ruleRelation */
             $ruleRelation = new $this->ruleRelationClass();
             $ruleRelation->setRuleDefinition($definition);
             $ruleRelation->setResourceName(ClassUtils::getClass($relatedAttribute));

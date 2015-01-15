@@ -24,7 +24,7 @@ class SetValueActionDenormalizerSpec extends ObjectBehavior
 
     function it_denormalizes()
     {
-        $data['type'] = ProductSetValueActionInterface::TYPE;
+        $data['type'] = ProductSetValueActionInterface::ACTION_TYPE;
 
         $this->denormalize($data, 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction')
             ->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction');
@@ -32,7 +32,7 @@ class SetValueActionDenormalizerSpec extends ObjectBehavior
 
     function it_supports_denormalization()
     {
-        $data['type'] = ProductSetValueActionInterface::TYPE;
+        $data['type'] = ProductSetValueActionInterface::ACTION_TYPE;
         $type = '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction';
 
         $this->supportsDenormalization($data, $type)->shouldReturn(true);
@@ -40,7 +40,7 @@ class SetValueActionDenormalizerSpec extends ObjectBehavior
 
     function it_does_not_support_denormalization_for_wrong_object()
     {
-        $data['type'] = ProductSetValueActionInterface::TYPE;
+        $data['type'] = ProductSetValueActionInterface::ACTION_TYPE;
         $type = '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition';
 
         $this->supportsDenormalization($data, $type)->shouldReturn(false);

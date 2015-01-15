@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormView;
 /**
  * Product form view decorator that adds classes and fields
  *
- * @author Gildas Quemener <gildas@akeneo.com>
+ * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class HighlightProductFormView implements ProductFormViewInterface
 {

@@ -46,7 +46,7 @@ class DeleteCommand extends ContainerAwareCommand
     {
         $code = $input->getArgument('code');
 
-        if (true === $this->confirmDeletion($output, $code)) {
+        if ($this->confirmDeletion($output, $code)) {
             $rules = $this->getRules($code);
             $remover = $this->getRuleDefinitionRemover();
             $remover->removeAll($rules);
@@ -66,7 +66,6 @@ class DeleteCommand extends ContainerAwareCommand
             sprintf('Are you sure you want to delete the rule "%s"?', $code):
             'Are you sure you want to delete all the rules?';
 
-        /** @var DialogHelper $dialog */
         $dialog = $this->getHelper('dialog');
 
         return $dialog->askConfirmation($output, sprintf('<question>%s</question>', $question), false);

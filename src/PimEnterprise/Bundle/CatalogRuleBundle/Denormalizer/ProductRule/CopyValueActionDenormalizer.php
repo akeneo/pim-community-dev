@@ -48,6 +48,6 @@ class CopyValueActionDenormalizer implements DenormalizerInterface
     {
         return $type === $this->copyValueActionClass &&
             isset($data['type']) &&
-            ProductCopyValueActionInterface::TYPE === $data['type'];
+            ProductCopyValueActionInterface::ACTION_TYPE === $data['type'];
     }
 }

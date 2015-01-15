@@ -63,8 +63,7 @@ class RuleDenormalizer implements DenormalizerInterface
     {
         $this->checkRuleKeys($data);
 
-        /** @var RuleInterface $rule */
-        $rule = $this->getObject($context);
+        $rule = $this->geRuleDefinition($context);
         $rule->setCode($data['code']);
         $rule->setType($this->type);
 
@@ -100,7 +99,7 @@ class RuleDenormalizer implements DenormalizerInterface
      *
      * @return RuleDefinitionInterface
      */
-    protected function getObject(array $context)
+    protected function geRuleDefinition(array $context)
     {
         if (isset($context['object'])) {
             return $context['object'];
@@ -119,6 +118,8 @@ class RuleDenormalizer implements DenormalizerInterface
      * Checks if the rule have a 'conditions' and 'actions' keys
      *
      * @param array $data
+     *
+     * @throws \LogicException
      */
     protected function checkRuleKeys(array $data)
     {

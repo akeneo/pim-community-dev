@@ -28,7 +28,7 @@ class PimEnterpriseCatalogRuleBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $versionMappings = [
+        $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\CatalogRuleBundle\Model'
         ];
 
@@ -36,7 +36,7 @@ class PimEnterpriseCatalogRuleBundle extends Bundle
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
-                    $versionMappings,
+                    $mappings,
                     ['doctrine.orm.entity_manager'],
                     false
                 )
