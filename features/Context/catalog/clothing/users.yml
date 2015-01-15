@@ -21,7 +21,7 @@ users:
         groups:        [ IT support ]
     Mary:
         catalogLocale: en_US
-        catalogScope:  tablet
+        catalogScope:  mobile
         defaultTree:   summer_collection
         last_name:     Smith
         roles:         [ ROLE_USER ]
