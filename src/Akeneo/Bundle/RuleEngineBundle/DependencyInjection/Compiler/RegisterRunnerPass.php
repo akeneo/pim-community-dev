@@ -36,7 +36,7 @@ class RegisterRunnerPass extends AbstractOrderedPass
         }
 
         $chainedLoader = $container->getDefinition(self::CHAINED_RUNNER_DEF);
-        $loaders = $this->findAndSortTaggedServices($container, self::RUNNER_TAG);
+        $loaders = $this->collectTaggedServices($container, self::RUNNER_TAG);
 
         foreach ($loaders as $loader) {
             $chainedLoader->addMethodCall('addRunner', [$loader]);

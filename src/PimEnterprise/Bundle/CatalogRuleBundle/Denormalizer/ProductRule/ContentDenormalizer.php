@@ -57,13 +57,11 @@ class ContentDenormalizer implements DenormalizerInterface
      *
      * {@inheritdoc}
      *
-     * @return array with keys
-     *               "conditions" which is an array of ConditionInterface
-     *               "actions" which is an array of ConditionInterface
+     * @return ["conditions" => ConditionInterface[], "actions" => ActionInterface[])
      */
     public function denormalize($ruleContent, $class, $format = null, array $context = array())
     {
-        // this check is performed this denormalizer is not used via the serializer
+        // this check is performed as the denormalizer is not used via the serializer
         if (!$this->supportsDenormalization($ruleContent, $class, $format)) {
             throw new \InvalidArgumentException(
                 sprintf('Rule content "%s" can not be denormalized.', json_encode($ruleContent))
@@ -81,9 +79,9 @@ class ContentDenormalizer implements DenormalizerInterface
                 throw new \LogicException(
                     sprintf('Rule content "%s" has an action with no type.', json_encode($ruleContent))
                 );
-            } elseif (ProductSetValueActionInterface::TYPE === $action['type']) {
+            } elseif (ProductSetValueActionInterface::ACTION_TYPE === $action['type']) {
                 $actions[] = $this->setValueNormalizer->denormalize($action, $class, $format, $context);
-            } elseif (ProductCopyValueActionInterface::TYPE === $action['type']) {
+            } elseif (ProductCopyValueActionInterface::ACTION_TYPE === $action['type']) {
                 $actions[] = $this->copyValueNormalizer->denormalize($action, $class, $format, $context);
             } else {
                 throw new \LogicException(

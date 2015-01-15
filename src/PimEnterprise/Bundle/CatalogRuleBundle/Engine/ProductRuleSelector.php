@@ -66,11 +66,9 @@ class ProductRuleSelector implements SelectorInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
-        /** @var RuleSubjectSetInterface $subjectSet */
         $subjectSet = new $this->subjectSetClass();
         $pqb = $this->productQueryFactory->create();
 
-        /** @var \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface $condition */
         foreach ($rule->getConditions() as $condition) {
             $pqb->addFilter(
                 $condition->getField(),

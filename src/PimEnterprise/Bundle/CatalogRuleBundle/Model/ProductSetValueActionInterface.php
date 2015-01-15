@@ -24,7 +24,7 @@ use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
  */
 interface ProductSetValueActionInterface extends ActionInterface
 {
-    const TYPE = 'set_value';
+    const ACTION_TYPE = 'set_value';
 
     /**
      * @return string

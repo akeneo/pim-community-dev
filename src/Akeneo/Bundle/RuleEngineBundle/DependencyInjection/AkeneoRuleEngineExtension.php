@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * Akeneo Rule Engine extension
  *
- * @author Julien Janbvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class AkeneoRuleEngineExtension extends Extension
 {

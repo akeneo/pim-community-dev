@@ -1,6 +1,7 @@
 connector:
     name: Akeneo Rule Engine Connector
     jobs:
+
         yml_rule_import:
             title: pimee_catalog_rule.jobs.yml_rule_import.title
             type:  import
@@ -11,6 +12,7 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_catalog_rule.processor.rule_definition.array_to_object
                         writer:    pimee_catalog_rule.writer.rule_definition.doctrine
+
         yml_rule_export:
             title: pimee_catalog_rule.jobs.yml_rule_export.title
             type:  export

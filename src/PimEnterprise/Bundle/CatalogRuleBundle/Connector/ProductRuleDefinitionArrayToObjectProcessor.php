@@ -66,6 +66,8 @@ class ProductRuleDefinitionArrayToObjectProcessor extends AbstractProcessor
     }
 
     /**
+     * Computes the item data and the rule definition object to build a rule object.
+     *
      * @param array                   $item
      * @param RuleDefinitionInterface $definition
      *
@@ -84,6 +86,8 @@ class ProductRuleDefinitionArrayToObjectProcessor extends AbstractProcessor
     }
 
     /**
+     * Updates (or creates) a rule definition from a rule
+     *
      * @param RuleInterface           $rule
      * @param RuleDefinitionInterface $ruleDefinition
      *

@@ -114,7 +114,6 @@ class ProductRuleRunner implements DryRunnerInterface
     {
         $definition = $this->builder->build($definition);
         if (!empty($options['selected_products'])) {
-            /** @var ProductConditionInterface $condition */
             $condition = new $this->productCondClass([
                 'field'    => 'id',
                 'operator' => 'IN',

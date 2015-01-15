@@ -56,7 +56,6 @@ class DebugCommand extends ContainerAwareCommand
      */
     protected function showRule(OutputInterface $output, $code)
     {
-        /** @var RuleDefinitionInterface $rule */
         $rule = $this->getRuleDefinitionRepository()->findOneBy(['code' => $code]);
 
         if (null === $rule) {
@@ -82,12 +81,10 @@ class DebugCommand extends ContainerAwareCommand
         $rows = [];
         $rules = $this->getRuleDefinitionRepository()->findAll();
 
-        /** @var RuleDefinitionInterface $rule */
         foreach ($rules as $rule) {
             $rows[] = [$rule->getCode(), $rule->getType(), $rule->getPriority()];
         }
 
-        /** @var TableHelper $table */
         $table = $this->getHelperSet()->get('table');
         $table->setHeaders($headers)->setRows($rows);
         $table->render($output);

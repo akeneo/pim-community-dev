@@ -26,16 +26,14 @@ class RuleRelation implements RuleRelationInterface
     /** @var RuleDefinitionInterface */
     protected $rule;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $resourceName;
 
     /** @var mixed */
     protected $resourceId;
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {

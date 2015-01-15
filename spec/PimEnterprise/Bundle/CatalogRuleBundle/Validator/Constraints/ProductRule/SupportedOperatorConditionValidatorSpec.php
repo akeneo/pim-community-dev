@@ -33,7 +33,7 @@ class SupportedOperatorConditionValidatorSpec extends ObjectBehavior
         $context,
         ProductConditionInterface $condition,
         FilterInterface $filter,
-        \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition $constraint
+        SupportedOperatorCondition $constraint
     ) {
         $condition->getField()->willReturn('description');
         $condition->getOperator()->willReturn('NOT SUPPORTED');

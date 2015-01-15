@@ -15,7 +15,7 @@ class ProductSetValueActionSpec extends ObjectBehavior
                 'value' => 'RATM-NIN-001',
                 'locale' => 'fr_FR',
                 'scope' => 'ecommerce',
-                'type' => ProductSetValueActionInterface::TYPE
+                'type' => ProductSetValueActionInterface::ACTION_TYPE
             ]
         );
     }

@@ -22,6 +22,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class RuleDefinitionYamlFileWriter extends FileWriter
 {
+    const INLINE_ARRAY_LEVEL = 8;
+
     /** @var string */
     protected $filePath = '/tmp/rule_export_%datetime%.yml';
 
@@ -30,12 +32,12 @@ class RuleDefinitionYamlFileWriter extends FileWriter
      */
     public function write(array $items)
     {
-        $yaml = Yaml::dump($items[0], 8);
-
         $path = $this->getPath();
         if (!is_dir(dirname($path))) {
             mkdir(dirname($path), 0777, true);
         }
+
+        $yaml = Yaml::dump($items[0], self::INLINE_ARRAY_LEVEL);
 
         if (false === file_put_contents($path, $yaml)) {
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);

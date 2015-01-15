@@ -60,47 +60,47 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($object, array $options = [])
+    public function save($ruleDefinition, array $options = [])
     {
-        if (!$object instanceof $this->ruleDefinitionClass) {
+        if (!$ruleDefinition instanceof $this->ruleDefinitionClass) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expects a "%s", "%s" provided.',
                     $this->ruleDefinitionClass,
-                    ClassUtils::getClass($object)
+                    ClassUtils::getClass($ruleDefinition)
                 )
             );
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($object));
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($ruleDefinition));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
-        $this->objectManager->persist($object);
+        $this->objectManager->persist($ruleDefinition);
         if (true === $options['flush'] && true === $options['flush_only_object']) {
-            $this->objectManager->flush($object);
+            $this->objectManager->flush($ruleDefinition);
         } elseif (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($object));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($ruleDefinition));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $objects, array $options = [])
+    public function saveAll(array $ruleDefinitions, array $options = [])
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE_ALL, new BulkRuleEvent($objects));
+        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
 
         $options = $this->optionsResolver->resolveSaveAllOptions($options);
-        foreach ($objects as $object) {
-            $this->save($object, ['flush' => false]);
+        foreach ($ruleDefinitions as $ruleDefinition) {
+            $this->save($ruleDefinition, ['flush' => false]);
         }
 
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE_ALL, new BulkRuleEvent($objects));
+        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
     }
 }

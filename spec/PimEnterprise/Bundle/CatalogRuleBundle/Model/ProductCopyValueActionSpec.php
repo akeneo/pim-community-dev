@@ -11,7 +11,7 @@ class ProductCopyValueActionSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [
-                'type' => ProductCopyValueActionInterface::TYPE,
+                'type' => ProductCopyValueActionInterface::ACTION_TYPE,
                 'from_field' => 'sku',
                 'to_field' => 'description',
                 'from_locale' => 'FR_fr',

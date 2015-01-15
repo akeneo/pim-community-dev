@@ -84,19 +84,20 @@ class SmartViewUpdater implements ViewUpdaterInterface
      */
     protected function checkIfSmartAttribute(array $views, $key, $name)
     {
-        if ((isset($views[$key]['attributes'][$name]['value'])
-            && $this->ruleRelationManager->isAttributeImpacted($views[$key]['attributes'][$name]['id']))
+        $attribute = $views[$key]['attributes'][$name];
+        if ((isset($attribute['value'])
+            && $this->ruleRelationManager->isAttributeImpacted($attribute['id']))
         ) {
             $this->markAttributeAsSmart(
-                $views[$key]['attributes'][$name]['value'],
-                $views[$key]['attributes'][$name]['id']
+                $attribute['value'],
+                $attribute['id']
             );
-        } elseif (isset($views[$key]['attributes'][$name]['values'])) {
-            foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
-                if ($this->ruleRelationManager->isAttributeImpacted($views[$key]['attributes'][$name]['id'])) {
+        } elseif (isset($attribute['values'])) {
+            foreach (array_keys($attribute['values']) as $scope) {
+                if ($this->ruleRelationManager->isAttributeImpacted($attribute['id'])) {
                     $this->markAttributeAsSmart(
-                        $views[$key]['attributes'][$name]['values'][$scope],
-                        $views[$key]['attributes'][$name]['id']
+                        $attribute['values'][$scope],
+                        $attribute['id']
                     );
                 }
             }

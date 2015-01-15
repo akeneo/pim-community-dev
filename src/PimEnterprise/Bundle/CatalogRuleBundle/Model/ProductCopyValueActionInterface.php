@@ -23,7 +23,7 @@ use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
  */
 interface ProductCopyValueActionInterface extends ActionInterface
 {
-    const TYPE = 'copy_value';
+    const ACTION_TYPE = 'copy_value';
 
     /**
      * @return string

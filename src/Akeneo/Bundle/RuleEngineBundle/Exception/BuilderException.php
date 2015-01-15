@@ -18,5 +18,4 @@ namespace Akeneo\Bundle\RuleEngineBundle\Exception;
  */
 class BuilderException extends \LogicException
 {
-
 }

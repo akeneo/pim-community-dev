@@ -21,6 +21,11 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 interface RuleRelationInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @return RuleDefinitionInterface
      */
     public function getRuleDefinition();

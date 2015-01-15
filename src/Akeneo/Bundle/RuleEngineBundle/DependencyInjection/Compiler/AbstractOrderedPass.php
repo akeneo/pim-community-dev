@@ -23,7 +23,8 @@ use Symfony\Component\DependencyInjection\Reference;
 abstract class AbstractOrderedPass implements CompilerPassInterface
 {
     /**
-     * Returns an array of service references for a specified tag name
+     * Returns an array of service references for a specified tag name.
+     * The services are ordered by priority
      *
      * @param ContainerBuilder $container
      * @param string           $tagName
@@ -31,7 +32,7 @@ abstract class AbstractOrderedPass implements CompilerPassInterface
      *
      * @return \Symfony\Component\DependencyInjection\Reference[]
      */
-    protected function findAndSortTaggedServices(ContainerBuilder $container, $tagName, $defaultPriority = 0)
+    protected function collectTaggedServices(ContainerBuilder $container, $tagName, $defaultPriority = 0)
     {
         $services = $container->findTaggedServiceIds($tagName);
 

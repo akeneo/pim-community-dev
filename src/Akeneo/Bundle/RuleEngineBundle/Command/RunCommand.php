@@ -12,6 +12,7 @@
 namespace Akeneo\Bundle\RuleEngineBundle\Command;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -44,25 +45,13 @@ class RunCommand extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $repository = $this->getRuleDefinitionRepository();
-
-        // get rule instances
-        if ($code = $input->getArgument('code')) {
-            $rule = $repository->findOneBy(['code' => $code]);
-
-            if (null === $rule) {
-                throw new \InvalidArgumentException(sprintf('The rule %s does not exists', $code));
-            }
-
-            $rules = [$rule];
-        } else {
-            $rules = $repository->findAll();
-        }
-
-        // run the rules
+        $code = $input->hasArgument('code') ? $input->getArgument('code') : null;
+        $rules = $this->getRulesToRun($code);
         $runnerRegistry = $this->getRuleRunner();
 
         foreach ($rules as $rule) {
@@ -116,6 +105,30 @@ class RunCommand extends ContainerAwareCommand
                 );
             }
         }
+    }
+
+    /**
+     * @param $ruleCode
+     *
+     * @return RuleDefinitionInterface[]
+     */
+    protected function getRulesToRun($ruleCode)
+    {
+        $repository = $this->getRuleDefinitionRepository();
+
+        if (null !== $ruleCode) {
+            $rule = $repository->findOneBy(['code' => $ruleCode]);
+
+            if (null === $rule) {
+                throw new \InvalidArgumentException(sprintf('The rule %s does not exists', $ruleCode));
+            }
+
+            $rules = [$rule];
+        } else {
+            $rules = $repository->findAll();
+        }
+
+        return $rules;
     }
 
     /**
