@@ -147,4 +147,12 @@ class ProductCopyValueAction implements ProductCopyValueActionInterface
     {
         $this->toScope = $toScope;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getImpactedFields()
+    {
+        return [$this->getToField()];
+    }
 }

@@ -10,9 +10,9 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -53,18 +53,16 @@ class RuleRelationManager
     /**
      * Returns all impacted attributes
      *
-     * @param array $actions
+     * @param RuleInterface $rule
      *
      * @return array
      */
-    public function getImpactedAttributes(array $actions)
+    public function getImpactedAttributes(RuleInterface $rule)
     {
         $fields = [];
-        foreach ($actions as $action) {
-            if ($action instanceof ProductCopyValueActionInterface) {
-                $fields[] = $action->getToField();
-            } elseif ($action instanceof ProductSetValueActionInterface) {
-                $fields[] = $action->getField();
+        foreach ($rule->getActions() as $action) {
+            if ($action instanceof FieldImpactActionInterface) {
+                $fields = array_merge($fields, $action->getImpactedFields());
             }
         }
 

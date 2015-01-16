@@ -21,7 +21,7 @@ use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ProductCopyValueActionInterface extends ActionInterface
+interface ProductCopyValueActionInterface extends ActionInterface, FieldImpactActionInterface
 {
     const ACTION_TYPE = 'copy_value';
 
