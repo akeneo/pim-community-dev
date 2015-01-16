@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
-class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
+class RuleDefinitionProcessorSpec extends ObjectBehavior
 {
     function let(
         ReferableEntityRepositoryInterface $repository,
@@ -32,7 +32,7 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Connector\ProductRuleDefinitionArrayToObjectProcessor');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor');
     }
 
     function it_is_an_import_processor()

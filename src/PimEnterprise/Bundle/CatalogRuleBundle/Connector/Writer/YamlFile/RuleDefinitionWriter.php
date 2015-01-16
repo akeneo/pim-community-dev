@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\YamlFile;
 
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
@@ -20,7 +20,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionYamlFileWriter extends FileWriter
+class RuleDefinitionWriter extends FileWriter
 {
     const INLINE_ARRAY_LEVEL = 8;
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -19,11 +19,9 @@ use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 /**
  * Get rules definition
  *
- * TODO: make generic, move to base connector and rename it ObjectDoctrineReader ?
- *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionDoctrineReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class RuleDefinitionReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
     /** @var RuleDefinitionRepositoryInterface */
     protected $ruleRepository;

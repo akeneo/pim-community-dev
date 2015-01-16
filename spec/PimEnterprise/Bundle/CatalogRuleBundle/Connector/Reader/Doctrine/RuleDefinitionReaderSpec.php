@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Reader\Doctrine;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 
-class RuleDefinitionDoctrineReaderSpec extends ObjectBehavior
+class RuleDefinitionReaderSpec extends ObjectBehavior
 {
     function let(RuleDefinitionRepositoryInterface $ruleRepository)
     {
