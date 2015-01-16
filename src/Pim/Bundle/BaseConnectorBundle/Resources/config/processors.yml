@@ -6,8 +6,8 @@ parameters:
     pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
     pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
-    pim_base_connector.processor.denormalization.flat.group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
-    pim_base_connector.processor.denormalization.flat.variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
+    pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
+    pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
 
     pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
@@ -120,15 +120,14 @@ services:
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
 
-    # deprecated, will be dropped in 1.4, use pim_base_connector.processor.denormalization.flat.group or variant_group
+    # deprecated, will be dropped in 1.4, use pim_base_connector.processor.denormalization.csv_group or variant_group
     pim_base_connector.processor.group:
         parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.group.class%
 
-    # TODO name flat or csv ?
-    pim_base_connector.processor.denormalization.flat.group:
-        class: %pim_base_connector.processor.denormalization.flat.group.class%
+    pim_base_connector.processor.denormalization.csv_group:
+        class: %pim_base_connector.processor.denormalization.csv_group.class%
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'
@@ -137,8 +136,8 @@ services:
             - %pim_catalog.entity.group.class%
             - 'csv'
 
-    pim_base_connector.processor.denormalization.flat.variant_group:
-        class: %pim_base_connector.processor.denormalization.flat.variant_group.class%
+    pim_base_connector.processor.denormalization.csv_variant_group:
+        class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'
@@ -148,3 +147,11 @@ services:
             - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.product_template.class%
             - 'csv'
+
+    pim_base_connector.processor.normalization.csv_group:
+        class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
+        parent: pim_base_connector.processor.csv_serializer
+
+    pim_base_connector.processor.normalization.csv_variant_group:
+        class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
+        parent: pim_base_connector.processor.csv_serializer
