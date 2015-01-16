@@ -48,13 +48,13 @@ class ProductTemplate implements ProductTemplateInterface
      */
     public function getValues()
     {
-        $_values = new ArrayCollection();
+        $values = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $_values[ProductValueKeyGenerator::getKey($value)] = $value;
+            $values[ProductValueKeyGenerator::getKey($value)] = $value;
         }
 
-        return $_values;
+        return $values;
     }
 
     /**
