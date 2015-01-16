@@ -132,9 +132,9 @@ Feature: Execute an import
     And I should see "Updated 1"
     And I should see "Updated products 6"
     And the product "sandal-white-37" should have the following value:
-      | destocking_date | 2015-12-14T00:00:00+0100 |
+      | destocking_date | 2015-12-14 |
     And the product "sandal-white-38" should have the following value:
-      | destocking_date | 2015-12-14T00:00:00+0100 |
+      | destocking_date | 2015-12-14 |
 
   Scenario: Successfully import a csv file of variant group values with booleans (to true)
     Given the following CSV file to import:

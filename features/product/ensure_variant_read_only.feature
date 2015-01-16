@@ -32,8 +32,7 @@ Feature: Disable attribute fields updated by a variant group
       | sku  | color-en_US | groups        |
       | sku1 | red         | tshirt_akeneo |
     And I am logged in as "Julia"
-    Given I am on the "sku1" product page
-    When I add available attributes Name, Description, Dimension, Price, Length and Options
+    When I am on the "sku1" product page
     Then the field mobile Options, Dimension, Price in €, Length should be disabled
     Given I switch the locale to "French (France)"
     Then the field [name] should be disabled

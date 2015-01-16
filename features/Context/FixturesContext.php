@@ -573,17 +573,6 @@ class FixturesContext extends RawMinkContext
                 $attributeCode .= '-' . $row['scope'];
             }
             $groups[$row['group']][$attributeCode] = $this->replacePlaceholders($row['value']);
-
-			/* TODO to check and fix for many values for a locale
-            $data = array_merge(
-                $data,
-                [
-                    'code'         => $row['group'],
-                    $attributeCode => $this->replacePlaceholders($row['value'])
-                ]
-            );
-			*/
-
         }
 
         foreach ($groups as $code => $data) {
