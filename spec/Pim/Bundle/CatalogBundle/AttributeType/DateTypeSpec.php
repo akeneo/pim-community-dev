@@ -60,4 +60,9 @@ class DateTypeSpec extends ObjectBehavior
         $value->getData()->willReturn($date);
         $this->prepareValueFormData($value)->shouldReturn($date);
     }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn('pim_catalog_date');
+    }
 }
