@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Cursor\ORM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\Query;
@@ -25,7 +25,7 @@ class ORMCursorSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Cursor\ORM\ORMCursor');
+        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
     }
 

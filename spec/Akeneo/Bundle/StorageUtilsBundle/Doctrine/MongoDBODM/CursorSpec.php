@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
@@ -18,7 +18,7 @@ class MongoDBODMCursorSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM\MongoDBODMCursor');
+        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
     }
 
