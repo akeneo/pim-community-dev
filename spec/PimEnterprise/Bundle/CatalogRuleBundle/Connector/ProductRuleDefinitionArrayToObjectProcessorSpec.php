@@ -47,7 +47,18 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         RuleInterface $rule,
         ConstraintViolationListInterface $violations
     ) {
-        $item = $this->getRuleArray();
+        $item = [
+            'code' => 'discharge_fr_description',
+            'priority' => 100,
+            'conditions' => [
+                ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+            ],
+            'actions' => [
+                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+            ],
+        ];
 
         $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
@@ -61,13 +72,35 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         $rule->getCode()->willReturn('discharge_fr_description');
         $rule->getPriority()->willReturn(100);
         $rule->getType()->willReturn('product');
-        $rule->getContent()->willReturn($this->getRuleContentArray());
+        $rule->getContent()->willReturn(
+            [
+                'conditions' => [
+                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+                'actions' => [
+                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                ],
+            ]
+        );
 
         $definition = new RuleDefinition();
         $definition->setCode('discharge_fr_description');
         $definition->setPriority(100);
         $definition->setType('product');
-        $definition->setContent($this->getRuleContentArray());
+        $definition->setContent(
+            [
+                'conditions' => [
+                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+                'actions' => [
+                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                ],
+            ]
+        );
 
         $this->process($item)->shouldBeValidRuleDefinition($definition);
     }
@@ -79,18 +112,51 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         RuleInterface $rule,
         ConstraintViolationListInterface $violations
     ) {
-        $item = $this->getRuleArray();
+        $item = [
+            'code' => 'discharge_fr_description',
+            'priority' => 100,
+            'conditions' => [
+                ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+            ],
+            'actions' => [
+                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+            ],
+        ];
 
         $rule->getCode()->willReturn('discharge_fr_description');
         $rule->getPriority()->willReturn(100);
         $rule->getType()->willReturn('product');
-        $rule->getContent()->willReturn($this->getRuleContentArray());
+        $rule->getContent()->willReturn(
+            [
+                'conditions' => [
+                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+                'actions' => [
+                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                ],
+            ]
+        );
 
         $definition = new RuleDefinition();
         $definition->setCode('discharge_fr_description');
         $definition->setPriority(100);
         $definition->setType('product');
-        $definition->setContent($this->getRuleContentArray());
+        $definition->setContent(
+            [
+                'conditions' => [
+                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ],
+                'actions' => [
+                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                ],
+            ]
+        );
 
         $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn($definition);
         $denormalizer->denormalize(
@@ -111,7 +177,18 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
         RuleInterface $rule,
         ConstraintViolationListInterface $violations
     ) {
-        $item = $this->getRuleArray();
+        $item = [
+            'code' => 'discharge_fr_description',
+            'priority' => 100,
+            'conditions' => [
+                ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+            ],
+            'actions' => [
+                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+            ],
+        ];
         $violations->count()->willReturn(2);
         $violations->rewind()->willReturn(null);
         $violations->valid()->shouldBeCalled();
@@ -137,30 +214,6 @@ class ProductRuleDefinitionArrayToObjectProcessorSpec extends ObjectBehavior
                     $subject->getType() === $expected->getType() &&
                     $subject->getContent() === $expected->getContent();
             },
-        ];
-    }
-
-    private function getRuleArray()
-    {
-        return [
-                'code' => 'discharge_fr_description',
-                'priority' => 100,
-            ]
-            + $this->getRuleContentArray()
-        ;
-    }
-
-    private function getRuleContentArray()
-    {
-        return [
-            'conditions' => [
-                ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-            ],
-            'actions' => [
-                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
-            ],
         ];
     }
 }
