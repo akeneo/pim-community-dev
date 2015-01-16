@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
 /**
  * Product template model, contains common product values as raw data
@@ -23,6 +25,37 @@ class ProductTemplate implements ProductTemplateInterface
 
     /** @var array */
     protected $valuesData = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $values = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues($values)
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
+    /**
+     * Get values
+     *
+     * @return ProductValueInterface[]
+     */
+    public function getValues()
+    {
+        $values = new ArrayCollection();
+
+        foreach ($this->values as $value) {
+            $values[ProductValueKeyGenerator::getKey($value)] = $value;
+        }
+
+        return $values;
+    }
 
     /**
      * {@inheritdoc}

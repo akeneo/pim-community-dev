@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Variant group controller
@@ -67,13 +68,17 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      *
-     * TODO : find a way to use param converter with interfaces
+     * TODO: find a way to use param converter with interfaces
      *
      * @AclAncestor("pim_enrich_group_edit")
      * @Template
      */
     public function editAction(Group $group)
     {
+        if (!$group->getType()->isVariant()) {
+            throw new NotFoundHttpException(sprintf('Variant group with id %d not found.', $group->getId()));
+        }
+
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.variant group.updated');
         }

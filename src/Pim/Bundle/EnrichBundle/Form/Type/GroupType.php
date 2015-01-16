@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -29,6 +30,9 @@ class GroupType extends AbstractType
      * @var string
      */
     protected $attributeClass;
+
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
 
     /**
      * Constructor
@@ -58,6 +62,40 @@ class GroupType extends AbstractType
         $this->addAttributesField($builder);
 
         $this->addProductsField($builder);
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_enrich_group';
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 
     /**
@@ -162,25 +200,5 @@ class GroupType extends AbstractType
                 )
             )
             ->addEventSubscriber(new BindGroupProductsSubscriber($this->productRepository));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_enrich_group';
     }
 }

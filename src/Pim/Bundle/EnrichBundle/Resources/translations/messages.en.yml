@@ -60,6 +60,10 @@ pim_enrich:
             product.title:  Products
             property.title: Properties
             history.title:  History
+            attribute.title: Attributes
+        info:
+            no_attributes: This variant group has no attributes yet
+            no_attributes_in_selected_locale: This variant group has no attributes in this locale
 
     # Product completeness
     completeness:

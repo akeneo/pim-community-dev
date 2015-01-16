@@ -1,0 +1,11 @@
+parameters:
+    pim_enrich.form.data_transformer.product_template_values.class: Pim\Bundle\EnrichBundle\Form\DataTransformer\ProductTemplateValuesTransformer
+
+services:
+    pim_enrich.form.data_transformer.product_template_values:
+        class: %pim_enrich.form.data_transformer.product_template_values.class%
+        arguments:
+          - '@pim_serializer'
+          - '@pim_serializer'
+          - '@pim_catalog.repository.attribute'
+          - %pim_catalog.entity.product_value.class%

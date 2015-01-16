@@ -1,7 +1,8 @@
 parameters:
-    pim_enrich.view_element.group.tab.product.template:  'PimEnrichBundle:Group:Tab/product.html.twig'
-    pim_enrich.view_element.group.tab.property.template: 'PimEnrichBundle:Group:Tab/property.html.twig'
-    pim_enrich.view_element.group.tab.history.template:  'PimEnrichBundle:Group:Tab/history.html.twig'
+    pim_enrich.view_element.group.tab.product.template:   'PimEnrichBundle:Group:Tab/product.html.twig'
+    pim_enrich.view_element.group.tab.property.template:  'PimEnrichBundle:Group:Tab/property.html.twig'
+    pim_enrich.view_element.group.tab.history.template:   'PimEnrichBundle:Group:Tab/history.html.twig'
+    pim_enrich.view_element.group.tab.attribute.template: 'PimEnrichBundle:VariantGroup:Tab/attribute.html.twig'
 
 services:
     pim_enrich.view_element.group.tab.product:
@@ -11,6 +12,17 @@ services:
             - %pim_enrich.view_element.group.tab.product.template%
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_group_form.form_tab, position: 90 }
+
+    pim_enrich.view_element.group.tab.attribute:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_enrich.group.tab.attribute'
+            - %pim_enrich.view_element.group.tab.attribute.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_group_edit_attributes'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[productTemplate]'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_group_form.form_tab, position: 95 }
 
     pim_enrich.view_element.group.tab.property:
         parent: pim_enrich.view_element.base
@@ -29,3 +41,4 @@ services:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_group_history'}] ]
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_group_form.form_tab, position: 110 }
+
