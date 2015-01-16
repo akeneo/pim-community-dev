@@ -1,8 +1,10 @@
 parameters:
     akeneo_storage_utils.event_subscriber.mongodb.entities_type.class: Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber
     akeneo_storage_utils.event_subscriber.mongodb.entity_type.class:   Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber
-    akeneo_storage_utils.mongodb.mongo_objects_factory.class:        Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory
-    akeneo_storage_utils.doctrine.smart_manager_registry.class:      Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry
+    akeneo_storage_utils.mongodb.mongo_objects_factory.class:          Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory
+    akeneo_storage_utils.doctrine.smart_manager_registry.class:        Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry
+    akeneo_storage_utils.doctrine.orm.query.cursor.class:              Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor
+    akeneo_storage_utils.doctrine.orm.factory.product_cursor.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\CursorFactory
 
 services:
     akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository:

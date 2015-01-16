@@ -12,10 +12,10 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
 class PaginatorFactory implements PaginatorFactoryInterface
 {
     /** @var string */
-    private $paginatorClass = null;
+    protected $paginatorClass;
 
-    /** @type int */
-    private $pageSize;
+    /** @var int */
+    protected $pageSize;
 
     /**
      * @param string $paginatorClass class name implementation
@@ -32,8 +32,12 @@ class PaginatorFactory implements PaginatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createPaginator(CursorInterface $cursor)
+    public function createPaginator(CursorInterface $cursor, $pageSize=null)
     {
-        return new $this->paginatorClass($cursor, $this->pageSize);
+        if ($pageSize===null) {
+            $pageSize = $this->pageSize;
+        }
+
+        return new $this->paginatorClass($cursor, $pageSize);
     }
 }

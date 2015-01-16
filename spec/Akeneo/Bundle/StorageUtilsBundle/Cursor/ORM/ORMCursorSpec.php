@@ -7,7 +7,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\EntityRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
 use Prophecy\Argument;
 use Doctrine\ORM\Query\Expr\From;
 
@@ -57,7 +57,7 @@ class ORMCursorSpec extends ObjectBehavior
         AbstractQuery $query,
         From $from,
         Entity $entity,
-        EntityRepositoryInterface $repository
+        ModelRepositoryInterface $repository
     ) {
         $this->shouldImplement('\Iterator');
 

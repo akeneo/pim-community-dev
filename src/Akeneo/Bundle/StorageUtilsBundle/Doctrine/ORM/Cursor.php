@@ -1,45 +1,45 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Cursor\ORM;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
 use ArrayIterator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\EntityRepositoryInterface;
-use Exception;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
+use LogicException;
 
 /**
- * Class ORMCursor to iterate entities from QueryBuilder
+ * Class Cursor to iterate entities from QueryBuilder
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
   */
-class ORMCursor extends AbstractCursor
+class Cursor extends AbstractCursor
 {
-    /** @type int */
+    /** @var int */
     protected $position = 0;
 
-    /** @type array */
+    /** @var array */
     protected $entitiesIds = null;
 
-    /** @type int */
+    /** @var int */
     protected $count = null;
 
-    /** @type \ArrayIterator */
+    /** @var \ArrayIterator */
     protected $entitiesPage = null;
 
-    /** @type EntityManager  */
+    /** @var EntityManager  */
     protected $entityManager;
 
-    /** @type EntityRepositoryInterface */
+    /** @var ModelRepositoryInterface */
     protected $repository = null;
 
-    /** @type int */
+    /** @var int */
     protected $pageSize;
 
-    /** @type int */
+    /** @var int */
     protected $currentPage;
 
     /**
@@ -60,15 +60,23 @@ class ORMCursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
+    public function next()
+    {
+        parent::next();
+        $this->entitiesPage->next();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function current()
     {
         $entity = null;
         if ($this->entitiesPage === null || !$this->entitiesPage->valid()) {
-            $this->entitiesPage = $this->getNextEntities();
+            $this->entitiesPage = $this->getNextEntitiesPage();
         }
         if ($this->entitiesPage !== null) {
             $entity = $this->entitiesPage->current();
-            $this->entitiesPage->next();
         }
 
         return $entity;
@@ -130,16 +138,16 @@ class ORMCursor extends AbstractCursor
     }
 
     /**
-     * @return EntityRepositoryInterface
-     * @throws Exception
+     * @return ModelRepositoryInterface
+     * @throws LogicException
      */
     protected function getRepository()
     {
         if ($this->repository === null) {
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
             $this->repository = $this->entityManager->getRepository($entityClass);
-            if (!($this->repository instanceof EntityRepositoryInterface)) {
-                throw new Exception(sprintf('%s repository must implement EntityRepositoryInterface', $entityClass));
+            if (!($this->repository instanceof ModelRepositoryInterface)) {
+                throw new LogicException(sprintf('%s repository must implement ModelRepositoryInterface', $entityClass));
             }
         }
 
@@ -151,7 +159,7 @@ class ORMCursor extends AbstractCursor
      *
      * @return \ArrayIterator
      */
-    protected function getNextEntities()
+    protected function getNextEntitiesPage()
     {
         $entities = null;
         $currentIds = array_slice($this->getEntitiesIds(), $this->getOffSet(), $this->pageSize);
