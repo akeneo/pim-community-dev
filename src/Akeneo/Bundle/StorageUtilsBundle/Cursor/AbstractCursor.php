@@ -11,10 +11,10 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
  */
 abstract class AbstractCursor implements CursorInterface
 {
-    /** @type int */
+    /** @var int */
     protected $position;
 
-    /** @var  Query */
+    /** @var  QueryBuilder depending on the implementation */
     protected $queryBuilder;
 
     /**

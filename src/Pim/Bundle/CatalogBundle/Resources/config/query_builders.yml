@@ -17,7 +17,7 @@ services:
             - @pim_catalog.repository.attribute
             - @pim_catalog.doctrine.query.filter_registry
             - @pim_catalog.doctrine.query.sorter_registry
-            - @pim_catalog.factory.cursor
+            - @pim_catalog.factory.product_cursor
 
     # deprecated : will be removed in 1.4
     pim_catalog.doctrine.product_query_builder:
@@ -26,7 +26,7 @@ services:
             - @pim_catalog.repository.attribute
             - @pim_catalog.doctrine.query.filter_registry
             - @pim_catalog.doctrine.query.sorter_registry
-            - @pim_catalog.factory.cursor
+            - @pim_catalog.factory.product_cursor
 
     pim_catalog.doctrine.query.filter_registry:
         class: %pim_catalog.doctrine.query.filter_registry.class%

@@ -1,41 +1,32 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Cursor\MongoDBODM;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
 
-use Doctrine\ODM\MongoDB\Cursor;
+use Doctrine\ODM\MongoDB\Cursor as CursorMongoDB;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
-use Doctrine\ORM\EntityManager;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\EntityRepositoryInterface;
 
 /**
- * Class MongoDBODMCursor to iterate entities from Builder
+ * Class Cursor to iterate entities from Builder
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-  */
-class MongoDBODMCursor extends AbstractCursor
+ */
+class Cursor extends AbstractCursor
 {
-    /** @type Cursor */
+    /** @var CursorMongoDB */
     protected $cursor = null;
 
-    /** @type int */
+    /** @var int */
     protected $count = null;
 
-    /** @type EntityManager */
-    protected $entityManager;
-
-    /** @type EntityRepositoryInterface */
-    protected $repository;
-
-    /** @type int */
+    /** @var int */
     protected $batchSize;
 
     /**
      * @param Builder $queryBuilder
-     * @param int     $batchSize    : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
-     * @internal param $query
+     * @param int     $batchSize : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
      */
     public function __construct(Builder $queryBuilder, $batchSize = null)
     {
@@ -67,28 +58,33 @@ class MongoDBODMCursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
+    public function next()
+    {
+        parent::next();
+        $this->getCursor()->getNext();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function current()
     {
-        $entity = $this->getCursor()->current();
+        $document = $this->getCursor()->current();
 
-        if ($entity) {
-            $this->getCursor()->getNext();
-        }
-
-        return $entity;
+        return $document;
     }
 
     /**
      * Give a cursor and create it if necessary
      *
-     * @return Cursor
+     * @return CursorMongoDB
      */
     protected function getCursor()
     {
         if ($this->cursor === null) {
             $this->cursor = $this->queryBuilder->getQuery()->execute();
             if ($this->batchSize !== null) {
-                $this->cursor->setBatchSize($this->batchSize);
+                $this->cursor->batchSize($this->batchSize);
             }
             // MongoDB Cursor are not positioned on first element (whereas ArrayIterator is)
             // as long as getNext() hasn't be called

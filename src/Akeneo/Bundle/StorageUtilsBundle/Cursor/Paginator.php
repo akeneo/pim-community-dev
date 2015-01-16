@@ -11,53 +11,30 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
  */
 class Paginator implements PaginatorInterface
 {
-    /** @type CursorInterface */
+    /** @var CursorInterface */
     protected $cursor;
 
-    /** @type int */
+    /** @var int */
     protected $pageSize;
 
-    /** @type int */
+    /** @var int */
+    protected $pageNumber;
+
+    /** @var int */
     protected $currentPage;
+
+    /** @var  array */
+    protected $pageData;
 
     /**
      * @param CursorInterface $cursor
-     * @param $pageSize
+     * @param                 $pageSize
      */
     public function __construct(CursorInterface $cursor, $pageSize)
     {
         $this->cursor = $cursor;
         $this->pageSize = $pageSize;
-        $this->currentPage = 0;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasNextPage()
-    {
-        return $this->currentPage*$this->pageSize<$this->cursor->count();
-    }
-
-    /**
-     * @return array
-     */
-    public function getNextPage()
-    {
-        $result = [];
-        if ($this->hasNextPage()) {
-            for ($i = 0; $i<$this->pageSize; $i++) {
-                $this->cursor->next();
-                $current = $this->cursor->current();
-                if ($current != null) {
-                    $result[] = $current;
-                } else {
-                    break;
-                }
-            }
-            $this->currentPage++;
-        }
-        return $result;
+        $this->pageNumber = 0;
     }
 
     /**
@@ -70,12 +47,55 @@ class Paginator implements PaginatorInterface
 
     /**
      * @param $pageSize
+     *
      * @return $this
      */
     public function setPageSize($pageSize)
     {
         $this->pageSize = $pageSize;
+
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPageNumber()
+    {
+        return $this->pageNumber;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function current()
+    {
+        return $this->pageData;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function next()
+    {
+        $this->pageNumber++;
+        $this->pageData = $this->getNextDataPage();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function key()
+    {
+        return $this->pageNumber;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function valid()
+    {
+        return $this->pageNumber * $this->pageSize < $this->cursor->count();
     }
 
     /**
@@ -84,14 +104,34 @@ class Paginator implements PaginatorInterface
     public function rewind()
     {
         $this->cursor->rewind();
-        $this->currentPage = 0;
+        $this->pageNumber = 0;
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getCurrentPage()
+    public function count()
     {
-        return $this->currentPage;
+        round($this->cursor->count() / $this->pageSize);
+    }
+
+    /**
+     * @return array
+     */
+    private function getNextDataPage()
+    {
+        $result = [];
+
+        for ($i = 0; $i < $this->pageSize; $i++) {
+            $this->cursor->next();
+            $current = $this->cursor->current();
+            if ($current != null) {
+                $result[] = $current;
+            } else {
+                break;
+            }
+        }
+
+        return $result;
     }
 }
