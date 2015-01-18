@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\PersistentCollection;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;

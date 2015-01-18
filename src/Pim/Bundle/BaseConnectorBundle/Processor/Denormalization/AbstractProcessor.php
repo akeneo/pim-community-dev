@@ -130,7 +130,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         return $repository->findByReference(implode('.', $references));
     }
 
-
     /**
      * Detaches the object from the unit of work
      *
