@@ -3,21 +3,23 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ContentDenormalizerSpec extends ObjectBehavior
 {
-    function let(
-        DenormalizerInterface $conditionNormalizer,
-        DenormalizerInterface $setValueActionNormalizer,
-        DenormalizerInterface $copyValueActionNormalizer
-    ) {
+    function let(DenormalizerInterface $chainedDenormalizer)
+    {
         $this->beConstructedWith(
-            $conditionNormalizer,
-            $setValueActionNormalizer,
-            $copyValueActionNormalizer,
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition',
+            [
+                'copy_value' => 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction',
+                'set_value' => 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction',
+            ]
         );
+
+        $this->setChainedDenormalizer($chainedDenormalizer);
     }
 
     function it_is_initializable()
@@ -30,40 +32,45 @@ class ContentDenormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_a_product_rule_content()
+    function it_denormalizes_a_product_rule_content($chainedDenormalizer)
     {
-        $content = $this->buildRuleContent();
+        $content = [
+            'conditions' => [
+                ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+            ],
+            'actions' => [
+                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                ['type' => 'copy_value', 'fromField' => 'description', 'toField' => 'description', 'fromLocale' => 'fr_FR', 'toLocale' => 'fr_CH']
+            ]
+        ];
+
+        $chainedDenormalizer->denormalize(
+            ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition',
+            Argument::cetera()
+        )->shouldBeCalled();
+
+        $chainedDenormalizer->denormalize(
+            ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition',
+            Argument::cetera()
+        )->shouldBeCalled();
+
+        $chainedDenormalizer->denormalize(
+            ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction',
+            Argument::cetera()
+        )->shouldBeCalled();
+
+        $chainedDenormalizer->denormalize(
+            ['type' => 'copy_value', 'fromField' => 'description', 'toField' => 'description', 'fromLocale' => 'fr_FR', 'toLocale' => 'fr_CH'],
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction',
+            Argument::cetera()
+        )->shouldBeCalled();
 
         // TODO: use a custom matcher to test it
         $this->denormalize($content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule');
-    }
-
-    function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_conditions_key()
-    {
-        $content = [
-            'actions' => [
-                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['type' => 'copy_value', 'fromField' => 'description', 'toField' => 'description', 'fromLocale' => 'fr_FR', 'toLocale' => 'fr_CH']
-            ]
-        ];
-
-        $this->shouldThrow(
-            new \LogicException(sprintf('Rule content "%s" can not be denormalized.', json_encode($content)))
-        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
-    }
-
-    function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_actions_key()
-    {
-        $content = [
-            'actions' => [
-                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['type' => 'copy_value', 'fromField' => 'description', 'toField' => 'description', 'fromLocale' => 'fr_FR', 'toLocale' => 'fr_CH']
-            ]
-        ];
-
-        $this->shouldThrow(
-            new \LogicException(sprintf('Rule content "%s" can not be denormalized.', json_encode($content)))
-        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_action_type()
@@ -100,30 +107,5 @@ class ContentDenormalizerSpec extends ObjectBehavior
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an unknown type of action "unknown_action".', json_encode($content)))
         )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
-    }
-
-    /**
-     * Do not delete it, this method is used to easily build the rule content that is
-     * used in those specs.
-     * In case we need to modify the specs, it will be useful.
-     *
-     * @param bool $encode
-     *
-     * @return string
-     */
-    private function buildRuleContent()
-    {
-        $content = [
-            'conditions' => [
-                ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-            ],
-            'actions' => [
-                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['type' => 'copy_value', 'fromField' => 'description', 'toField' => 'description', 'fromLocale' => 'fr_FR', 'toLocale' => 'fr_CH']
-            ]
-        ];
-
-        return $content;
     }
 }

@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
