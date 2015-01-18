@@ -202,7 +202,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Denormalize product values objects from CSV fields
+     * Filter empt values then denormalize the product values objects from CSV fields
      *
      * @param array $rawProductValues
      *
@@ -210,7 +210,14 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function denormalizeValuesFromItemData(array $rawProductValues)
     {
-        return $this->denormalizer->denormalize($rawProductValues, 'ProductValue[]', 'csv');
+        $nonEmptyValues = $rawProductValues;
+        foreach ($nonEmptyValues as $index => $data) {
+            if (trim($data) === "") {
+                unset($nonEmptyValues[$index]);
+            }
+        }
+
+        return $this->denormalizer->denormalize($nonEmptyValues, 'ProductValue[]', 'csv');
     }
 
     /**

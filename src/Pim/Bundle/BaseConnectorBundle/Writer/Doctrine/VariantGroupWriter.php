@@ -132,7 +132,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     {
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
-        if ($template && count($products) > 0) {
+        if ($template && count($template->getValuesData()) > 0 && count($products) > 0) {
             $products = $products->count() > 0 ? $products->toArray() : [];
             $skippedMessages = $this->productTemplateApplier->apply($template, $products);
             $nbSkipped = count($skippedMessages);
