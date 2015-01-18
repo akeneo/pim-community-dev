@@ -32,7 +32,9 @@ Feature: Execute an import
     And I upload and import the file "%file to import%"
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
-    And the english tablet name of "sandal-white-37" should be "My sandal"
-    And the english tablet description of "sandal-white-37" should be "My sandal description for locale en_US and channel tablet"
-    And the english tablet name of "sandal-white-38" should be "My sandal"
-    And the english tablet description of "sandal-white-38" should be "My sandal description for locale en_US and channel tablet"
+    And the product "sandal-white-37" should have the following value:
+      | name-en_US               | My sandal                                                 |
+      | description-en_US-tablet | My sandal description for locale en_US and channel tablet |
+    And the product "sandal-white-38" should have the following value:
+      | name-en_US               | My sandal                                                 |
+      | description-en_US-tablet | My sandal description for locale en_US and channel tablet |
