@@ -18,7 +18,6 @@ use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -45,7 +44,7 @@ class ProductRuleBuilder implements BuilderInterface
      * @param DenormalizerInterface    $chainedDenormalizer
      * @param EventDispatcherInterface $eventDispatcher
      * @param ValidatorInterface       $validator
-     * @param string                   $ruleClass               should implement
+     * @param string                   $ruleClass           should implement
      */
     public function __construct(
         DenormalizerInterface $chainedDenormalizer,

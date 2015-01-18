@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

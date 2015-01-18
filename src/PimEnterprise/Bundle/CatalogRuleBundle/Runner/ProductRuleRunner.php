@@ -77,6 +77,7 @@ class ProductRuleRunner implements DryRunnerInterface
     {
         $options = $this->resolveOptions($options);
         $definition = $this->loadRule($definition, $options);
+
         return $this->selector->select($definition);
     }
 
