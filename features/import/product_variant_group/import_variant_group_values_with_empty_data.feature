@@ -7,13 +7,13 @@ Feature: Execute an import
   Background:
     Given the "footwear" catalog configuration
     And the following products:
-      | sku             | family  | categories        | size | color | name-en_US-tablet |
-      | sandal-white-37 | sandals | winter_collection | 37   | white | old name          |
-      | sandal-white-38 | sandals | winter_collection | 38   | white | old name          |
-      | sandal-white-39 | sandals | winter_collection | 39   | white | old name          |
-      | sandal-red-37   | sandals | winter_collection | 37   | red   | old name          |
-      | sandal-red-38   | sandals | winter_collection | 38   | red   | old name          |
-      | sandal-red-39   | sandals | winter_collection | 39   | red   | old name          |
+      | sku             | family  | categories        | size | color | name-en_US |
+      | sandal-white-37 | sandals | winter_collection | 37   | white | old name   |
+      | sandal-white-38 | sandals | winter_collection | 38   | white | old name   |
+      | sandal-white-39 | sandals | winter_collection | 39   | white | old name   |
+      | sandal-red-37   | sandals | winter_collection | 37   | red   | old name   |
+      | sandal-red-38   | sandals | winter_collection | 38   | red   | old name   |
+      | sandal-red-39   | sandals | winter_collection | 39   | red   | old name   |
     And the following product groups:
       | code    | label   | axis        | type    | products                                          |
       | SANDAL  | Sandal  | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39 |
@@ -36,5 +36,7 @@ Feature: Execute an import
     And I should see "Read 2"
     And I should see "Updated 2"
     And I should see "Updated products 3"
-    And the english tablet name of "sandal-white-37" should be "My new name"
-    And the english tablet name of "sandal-red-37" should be "old name"
+    And the product "sandal-white-37" should have the following value:
+      | name-en_US   | My new name |
+    And the product "sandal-red-37" should have the following value:
+      | name-en_US   | old name |
