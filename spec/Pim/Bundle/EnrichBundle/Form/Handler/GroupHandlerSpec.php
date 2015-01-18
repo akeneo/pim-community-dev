@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
@@ -29,6 +30,7 @@ class GroupHandlerSpec extends ObjectBehavior
         $request,
         $saver,
         GroupInterface $group,
+        GroupTypeInterface $groupType,
         ProductInterface $product,
         ProductInterface $addedProduct,
         FormInterface $addedForm,
@@ -37,6 +39,8 @@ class GroupHandlerSpec extends ObjectBehavior
         $form->setData($group)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
         $group->getProducts()->willReturn([$product]);
+        $group->getType()->willReturn($groupType);
+        $groupType->isVariant()->willReturn(false);
 
         $form->submit($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
@@ -47,6 +51,39 @@ class GroupHandlerSpec extends ObjectBehavior
         $removedForm->getData()->willReturn([]);
 
         $saver->save($group, ['add_products' => [$addedProduct], 'remove_products' => []])->shouldBeCalled();
+
+        $this->process($group)->shouldReturn(true);
+    }
+
+    function it_saves_a_variant_group_and_update_products_values_when_form_is_valid(
+        $form,
+        $request,
+        $saver,
+        GroupInterface $group,
+        GroupTypeInterface $groupType,
+        ProductInterface $product,
+        ProductInterface $addedProduct,
+        FormInterface $addedForm,
+        FormInterface $removedForm
+    ) {
+        $form->setData($group)->shouldBeCalled();
+        $request->isMethod('POST')->willReturn(true);
+        $group->getProducts()->willReturn([$product]);
+        $group->getType()->willReturn($groupType);
+        $groupType->isVariant()->willReturn(true);
+
+        $form->submit($request)->shouldBeCalled();
+        $form->isValid()->willReturn(true);
+
+        $form->get('appendProducts')->willReturn($addedForm);
+        $form->get('removeProducts')->willReturn($removedForm);
+        $addedForm->getData()->willReturn([$addedProduct]);
+        $removedForm->getData()->willReturn([]);
+
+        $saver->save(
+            $group,
+            ['add_products' => [$addedProduct], 'remove_products' => [], 'copy_values_to_products' => true]
+        )->shouldBeCalled();
 
         $this->process($group)->shouldReturn(true);
     }
