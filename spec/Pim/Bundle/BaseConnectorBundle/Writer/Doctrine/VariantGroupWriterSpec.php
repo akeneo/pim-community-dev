@@ -76,6 +76,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $groupSaver->save($variantGroup)->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
+        $productTemplate->getValuesData()->willReturn(['something']);
         $variantGroup->getProducts()->willReturn($productCollection);
         $productCollection->isEmpty()->willReturn(false);
         $productCollection->toArray()->willReturn([$productOne, $productTwo]);
@@ -108,6 +109,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $groupSaver->save($variantGroup)->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
+        $productTemplate->getValuesData()->willReturn(['something']);
         $variantGroup->getProducts()->willReturn($productCollection);
         $productCollection->isEmpty()->willReturn(false);
         $productCollection->toArray()->willReturn([$validProduct, $invalidProduct]);
@@ -122,6 +124,33 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
         $cacheClearer->clear()->shouldBeCalled();
+
+        $this->write([$variantGroup]);
+    }
+
+    function it_does_not_copy_values_to_products_when_template_is_empty(
+        GroupInterface $variantGroup,
+        $groupSaver,
+        ProductTemplateInterface $productTemplate,
+        Collection $productCollection,
+        ProductInterface $productOne,
+        ProductInterface $productTwo,
+        $templateApplier,
+        $stepExecution
+    ) {
+        $variantGroup->getId()->willReturn(42);
+        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $groupSaver->save($variantGroup)->shouldBeCalled();
+
+        $variantGroup->getProductTemplate()->willReturn($productTemplate);
+        $productTemplate->getValuesData()->willReturn([]);
+        $variantGroup->getProducts()->willReturn($productCollection);
+        $productCollection->isEmpty()->willReturn(false);
+        $productCollection->toArray()->willReturn([$productOne, $productTwo]);
+        $productCollection->count()->willReturn(2);
+
+        $templateApplier->apply($productTemplate, [$productOne, $productTwo])
+            ->shouldNotBeCalled();
 
         $this->write([$variantGroup]);
     }
