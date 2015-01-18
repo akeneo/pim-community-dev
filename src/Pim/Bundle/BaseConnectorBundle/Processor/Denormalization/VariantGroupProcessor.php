@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -42,25 +42,33 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @var string */
     protected $templateClass;
 
+    /** @var string */
+    protected $format;
+
     /**
      * @param ReferableEntityRepositoryInterface $groupRepository
      * @param DenormalizerInterface              $groupValuesDenormalizer
      * @param ValidatorInterface                 $validator
      * @param NormalizerInterface                $valueNormalizer
+     * @param ObjectDetacherInterface            $detacher
      * @param string                             $groupClass
      * @param string                             $templateClass
+     * @param string                             $format
      */
     public function __construct(
         ReferableEntityRepositoryInterface $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $validator,
         NormalizerInterface $valueNormalizer,
+        ObjectDetacherInterface $detacher,
         $groupClass,
-        $templateClass
+        $templateClass,
+        $format
     ) {
-        parent::__construct($groupRepository, $groupValuesDenormalizer, $validator, $groupClass);
+        parent::__construct($groupRepository, $groupValuesDenormalizer, $validator, $detacher, $groupClass);
         $this->valueNormalizer = $valueNormalizer;
         $this->templateClass   = $templateClass;
+        $this->format = $format;
     }
 
     /**
@@ -112,7 +120,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $variantGroup = $this->denormalizer->denormalize(
             $variantGroupData,
             $this->class,
-            'csv',
+            $this->format,
             ['entity' => $variantGroup]
         );
 
@@ -130,7 +138,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $valuesData = $this->filterVariantGroupData($item, false);
         if (!empty($valuesData)) {
             $values = $this->denormalizeValuesFromItemData($valuesData);
-            $this->validateValues($values, $item);
+            $this->validateValues($variantGroup, $values, $item);
             $template = $this->getProductTemplate($variantGroup);
             $structuredValuesData = $this->normalizeValuesToStructuredData($values);
             $template->setValuesData($structuredValuesData);
@@ -147,6 +155,7 @@ class VariantGroupProcessor extends AbstractProcessor
     {
         $violations = $this->validator->validate($variantGroup);
         if ($violations->count() !== 0) {
+            $this->detachObject($variantGroup);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
     }
@@ -175,16 +184,18 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
+     * @param GroupInterface          $variantGroup
      * @param ProductValueInterface[] $values
      * @param array                   $item
      *
      * @throw InvalidItemException
      */
-    protected function validateValues(array $values, array $item)
+    protected function validateValues(GroupInterface $variantGroup, array $values, array $item)
     {
         foreach ($values as $value) {
             $violations = $this->validator->validate($value);
             if ($violations->count() !== 0) {
+                $this->detachObject($variantGroup);
                 $this->skipItemWithConstraintViolations($item, $violations);
             }
         }

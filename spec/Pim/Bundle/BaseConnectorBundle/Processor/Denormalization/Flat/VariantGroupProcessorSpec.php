@@ -1,9 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
@@ -26,6 +27,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         NormalizerInterface $valueNormalizer,
+        ObjectDetacherInterface $detacher,
         StepExecution $stepExecution
     ) {
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
@@ -35,8 +37,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             $denormalizer,
             $validator,
             $valueNormalizer,
+            $detacher,
             $groupClass,
-            $templateClass
+            $templateClass,
+            'csv'
         );
         $this->setStepExecution($stepExecution);
         $validator->validate(Argument::any())->willReturn(new ConstraintViolationList());
@@ -156,7 +160,9 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
-        $validator->validate($value)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $validator->validate($value)
+            ->shouldBeCalled()
+            ->willReturn(new ConstraintViolationList());
 
         $valueNormalizer
             ->normalize($value, 'json', ['entity' => 'product'])
@@ -199,6 +205,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $groupRepository,
         $denormalizer,
         $validator,
+        $detacher,
         $stepExecution,
         Group $variantGroup,
         GroupType $type,

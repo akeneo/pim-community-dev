@@ -1,12 +1,13 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -15,7 +16,11 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Abstract processor to transform array data to object
+ * Abstract processor to provide a way to denormalize array data to object by,
+ * - fetch an existing object or create it
+ * - denormalize item to update the object
+ * - validate the object
+ * - skip the object if it contains invalid data
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -37,6 +42,9 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var string */
     protected $class;
 
@@ -44,17 +52,20 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param ReferableEntityRepositoryInterface $repository   repository to search the object in
      * @param ValidatorInterface                 $validator    validator of the object
      * @param DenormalizerInterface              $denormalizer denormalizer used to transform array to object
+     * @param ObjectDetacherInterface            $detacher
      * @param string                             $class        class of the object to instanciate in case if need
      */
     public function __construct(
         ReferableEntityRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
         $class
     ) {
         $this->repository = $repository;
         $this->denormalizer = $denormalizer;
         $this->validator = $validator;
+        $this->detacher = $detacher;
         $this->class = $class;
     }
 
@@ -119,44 +130,38 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         return $repository->findByReference(implode('.', $references));
     }
 
+
     /**
-     * Sets an item as skipped and throws an invalid item exception with the message.
+     * Detaches the object from the unit of work
      *
-     * @param array  $item
-     * @param string $message
+     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should knows the
+     * skipped items or we should use an explicit persist strategy
      *
-     * @throws InvalidItemException
+     * @param mixed $object
      */
-    protected function skipItemWithMessage(array $item, $message)
+    protected function detachObject($object)
     {
-        // TODO : detach when skip ?
-
-        if ($this->stepExecution) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-        }
-
-        throw new InvalidItemException($message, $item);
+        $this->detacher->detach($object);
     }
 
     /**
-     * Sets an item as skipped and throws an invalid item exception.
+     * Sets an item as skipped and throws an invalid item exception
      *
      * @param array      $item
-     * @param \Exception $e
+     * @param \Exception $previousException
+     * @param string     $message
      *
      * TODO : replace handleExceptionOnItem by this one
      *
      * @throws InvalidItemException
      */
-    protected function skipItemWithPreviousException(array $item, \Exception $e)
+    protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
     {
-        // TODO : detach when skip ?
-
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($e->getMessage(), $item, [], 0, $e);
+        throw new InvalidItemException($message, $item, [], 0, $previousException);
     }
 
     /**
@@ -164,15 +169,17 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      *
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
+     * @param \Exception                       $previousException
      *
      * TODO : replace handleConstraintViolationsOnItem by this one
      *
      * @throws InvalidItemException
      */
-    protected function skipItemWithConstraintViolations(array $item, ConstraintViolationListInterface $violations)
-    {
-        // TODO : detach when skip ?
-
+    protected function skipItemWithConstraintViolations(
+        array $item,
+        ConstraintViolationListInterface $violations,
+        \Exception $previousException = null
+    ) {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -184,11 +191,12 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 "%s: %s: %s\n",
                 $violation->getPropertyPath(),
                 $violation->getMessage(),
-                $violation->getInvalidValue() // TODO only useful for product value ?
-                // TODO re-format the message sometimes, property path doesnot exist for class constraint for instance cf VariantGroupAxis
+                $violation->getInvalidValue()
+                // TODO re-format the message, property path doesn't exist for class constraint
+                // for instance cf VariantGroupAxis
             );
         }
 
-        throw new InvalidItemException(implode("\n", $errors), $item);
+        throw new InvalidItemException(implode("\n", $errors), $item, [], 0, $previousException);
     }
 }

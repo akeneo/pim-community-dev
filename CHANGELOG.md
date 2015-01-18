@@ -166,6 +166,7 @@
 - removeAttributesAction and addAttributesAction have been move from `Pim\Bundle\EnrichBundle\Controller\ProductController` to a dedicated `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 - constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` has been updated and now receives `Akeneo\Component\Persistence\SaverInterface`, `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` as extra arguments
 - constructor of `Pim\Bundle\EnrichBundle\Form\View\ProductFormView` has been updated and now receives `Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry`
+- constructor of `Pim\Bundle\TransformBundle\Transformer\ProductTransformer` has been updated and now receives `Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

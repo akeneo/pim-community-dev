@@ -26,11 +26,30 @@ Feature: Execute an import
     Then I should see "Status: FAILED"
     And I should see "No identifier column"
 
-  Scenario: Skip the line when encounter a line with updated axis (here we try to change color and size to color)
+  Scenario: Skip the line when encounter a line with updated axis (here we try to replace the axis color by manufacturer)
     Given the following CSV file to import:
     """
     code;axis;label-en_US
-    SANDAL;size;"Sandal"
+    SANDAL;manufacturer,size;"Sandal"
+    """
+    And the following job "footwear_variant_group_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_variant_group_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_variant_group_import" job to finish
+    Then I should see "Attributes: This property cannot be changed."
+    And I should see "Read 1"
+    And I should see "Skipped 1"
+    And there should be the following groups:
+      | code    | label-en_US | label-fr_FR | axis       | type    |
+      | SANDAL  | Sandal      |             | color,size | VARIANT |
+      | NOT_VG  | Not VG      |             |            | RELATED |
+
+  Scenario: Skip the line when encounter a line with updated axis (here we try to remove the axis size)
+    Given the following CSV file to import:
+    """
+    code;axis;label-en_US
+    SANDAL;color;"Sandal"
     """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |

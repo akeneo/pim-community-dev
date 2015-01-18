@@ -1,9 +1,12 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\Flat;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Group import processor, allows to,
@@ -24,6 +27,29 @@ class GroupProcessor extends AbstractProcessor
 
     /** @staticvar string */
     const LABEL_FIELD = 'label';
+
+    /** @var string */
+    protected $format;
+
+    /**
+     * @param ReferableEntityRepositoryInterface $repository   repository to search the object in
+     * @param ValidatorInterface                 $validator    validator of the object
+     * @param DenormalizerInterface              $denormalizer denormalizer used to transform array to object
+     * @param ObjectDetacherInterface            $detacher     detacher to remove it from UOW when skip
+     * @param string                             $class        class of the object to instanciate in case if need
+     * @param string                             $format       format use to denormalize
+     */
+    public function __construct(
+        ReferableEntityRepositoryInterface $repository,
+        DenormalizerInterface $denormalizer,
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
+        $class, // TODO responsibility of the denormalizer ?!
+        $format
+    ) {
+        parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
+        $this->format = $format;
+    }
 
     /**
      * {@inheritdoc}
@@ -84,7 +110,7 @@ class GroupProcessor extends AbstractProcessor
         $group = $this->denormalizer->denormalize(
             $groupData,
             $this->class,
-            'csv',
+            $this->format,
             ['entity' => $group]
         );
 
@@ -99,6 +125,7 @@ class GroupProcessor extends AbstractProcessor
     {
         $violations = $this->validator->validate($group);
         if ($violations->count() !== 0) {
+            $this->detachObject($group);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
     }

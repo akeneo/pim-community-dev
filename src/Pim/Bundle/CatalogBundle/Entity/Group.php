@@ -312,9 +312,16 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setAxisAttributes(array $attributes = array())
+    public function setAxisAttributes(array $newAttributes = array())
     {
-        $this->attributes = $attributes;
+        foreach ($this->attributes as $attribute) {
+            if (!in_array($attribute, $newAttributes)) {
+                $this->removeAxisAttribute($attribute);
+            }
+        }
+        foreach ($newAttributes as $attribute) {
+            $this->addAxisAttribute($attribute);
+        }
 
         return $this;
     }
