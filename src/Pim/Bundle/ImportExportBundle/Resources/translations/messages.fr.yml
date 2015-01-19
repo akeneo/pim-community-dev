@@ -129,6 +129,7 @@ job_execution.summary:
   skip: ignoré
   create: créé
   update: mis à jour
+  displayed: premiers avertissements affichés
   charset_validator:
     title: 'Encodage du fichier :'
     skipped: Ignoré, extension dans la liste blanche
