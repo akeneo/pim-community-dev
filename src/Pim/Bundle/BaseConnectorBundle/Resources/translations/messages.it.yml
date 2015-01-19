@@ -93,7 +93,6 @@ pim_base_connector:
       help: Nome della colonna gruppi
     filePath:
       label: File
-      help: File csv da importare
     uploadAllowed:
       label: Consentire il caricamento di file
       help: Consentire o no il caricamento diretto di file
