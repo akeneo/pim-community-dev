@@ -32,7 +32,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return ['code'];
     }
@@ -40,7 +40,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);
     }
