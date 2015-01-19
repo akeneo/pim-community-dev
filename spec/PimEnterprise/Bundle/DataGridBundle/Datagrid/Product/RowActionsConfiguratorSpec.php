@@ -8,8 +8,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
@@ -23,7 +23,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
         ProductRepository $productRepository,
-        LocaleRepository $localeRepository,
+        LocaleRepositoryInterface $localeRepository,
         TokenInterface $token,
         User $user,
         ResultRecordInterface $record,

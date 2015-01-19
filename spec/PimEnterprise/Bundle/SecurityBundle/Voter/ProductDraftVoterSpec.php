@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductDraftVoterSpec extends ObjectBehavior
 {
     function let(
-        AttributeGroupRepository $attrGroupRepository,
+        AttributeGroupRepositoryInterface $attrGroupRepository,
         AttributeGroupAccessManager $attrGroupAccessManager
     ) {
         $this->beConstructedWith($attrGroupRepository, $attrGroupAccessManager);

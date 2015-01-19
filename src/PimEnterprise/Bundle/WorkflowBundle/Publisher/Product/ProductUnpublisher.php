@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
@@ -26,18 +26,18 @@ class ProductUnpublisher implements UnpublisherInterface
     /** @var PublishedAssociationRepositoryInterface */
     protected $publishedAssocRepo;
 
-    /** @var AssociationTypeRepository */
+    /** @var AssociationTypeRepositoryInterface */
     protected $associationTypeRepo;
 
     /**
      * The constructor
      *
      * @param PublishedAssociationRepositoryInterface $publishedAssocRepo
-     * @param AssociationTypeRepository               $associationTypeRepo
+     * @param AssociationTypeRepositoryInterface      $associationTypeRepo
      */
     public function __construct(
         PublishedAssociationRepositoryInterface $publishedAssocRepo,
-        AssociationTypeRepository $associationTypeRepo
+        AssociationTypeRepositoryInterface $associationTypeRepo
     ) {
         $this->publishedAssocRepo = $publishedAssocRepo;
         $this->associationTypeRepo = $associationTypeRepo;

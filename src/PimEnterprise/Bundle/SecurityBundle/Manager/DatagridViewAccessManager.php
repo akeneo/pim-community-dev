@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter;
@@ -28,7 +28,7 @@ class DatagridViewAccessManager
     /** @var AttributeRepository */
     protected $attributeRepository;
 
-    /** @var CategoryRepository */
+    /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
     /** @var AttributeGroupAccessManager */
@@ -39,13 +39,13 @@ class DatagridViewAccessManager
 
     /**
      * @param AttributeRepository         $attributeRepository
-     * @param CategoryRepository          $categoryRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      * @param AttributeGroupAccessManager $attGrpAccessManager
      * @param CategoryAccessManager       $catAccessManager
      */
     public function __construct(
         AttributeRepository $attributeRepository,
-        CategoryRepository $categoryRepository,
+        CategoryRepositoryInterface $categoryRepository,
         AttributeGroupAccessManager $attGrpAccessManager,
         CategoryAccessManager $catAccessManager
     ) {

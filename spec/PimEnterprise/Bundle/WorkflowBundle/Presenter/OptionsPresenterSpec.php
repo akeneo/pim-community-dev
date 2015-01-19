@@ -3,14 +3,14 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class OptionsPresenterSpec extends ObjectBehavior
 {
-    function let(AttributeOptionRepository $repository)
+    function let(AttributeOptionRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }

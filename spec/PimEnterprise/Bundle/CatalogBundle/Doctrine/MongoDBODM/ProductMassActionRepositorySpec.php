@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository;
 use Prophecy\Argument;
 
@@ -15,7 +15,7 @@ class ProductMassActionRepositorySpec extends ObjectBehavior
 {
     function let(
         DocumentManager $dm,
-        FamilyRepository $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         PublishedProductRepository $publishedRepository
     ) {
         $this->beConstructedWith($dm, Argument::any(), $familyRepository, $publishedRepository);
