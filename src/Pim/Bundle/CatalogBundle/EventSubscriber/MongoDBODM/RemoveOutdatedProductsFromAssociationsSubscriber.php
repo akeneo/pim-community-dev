@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -17,19 +17,19 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductRepository */
+    /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var AssociationTypeRepository */
+    /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
 
     /**
-     * @param ProductRepository         $productRepository
-     * @param AssociationTypeRepository $assocTypeRepository
+     * @param ProductRepositoryInterface         $productRepository
+     * @param AssociationTypeRepositoryInterface $assocTypeRepository
      */
     public function __construct(
-        ProductRepository $productRepository,
-        AssociationTypeRepository $assocTypeRepository
+        ProductRepositoryInterface $productRepository,
+        AssociationTypeRepositoryInterface $assocTypeRepository
     ) {
         $this->productRepository   = $productRepository;
         $this->assocTypeRepository = $assocTypeRepository;

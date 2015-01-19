@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 
 /**
  * Group repository
@@ -12,15 +13,13 @@ use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class GroupRepository extends ReferableEntityRepository
+class GroupRepository extends ReferableEntityRepository implements GroupRepositoryInterface
 {
     /**
-     * Get ordered groups associative array id to label
-     *
-     * @param GroupTypeInterface $type
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getChoicesByType(GroupTypeInterface $type)
     {
@@ -35,9 +34,7 @@ class GroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * Get groups
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getChoices()
     {
@@ -56,10 +53,7 @@ class GroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return the number of groups containing the provided attribute
-     * @param AttributeInterface $attribute
-     *
-     * @return interger
+     * {@inheritdoc}
      */
     public function countVariantGroupAxis(AttributeInterface $attribute)
     {
@@ -109,7 +103,7 @@ class GroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {
@@ -137,7 +131,7 @@ class GroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function createAssociationDatagridQueryBuilder()
     {

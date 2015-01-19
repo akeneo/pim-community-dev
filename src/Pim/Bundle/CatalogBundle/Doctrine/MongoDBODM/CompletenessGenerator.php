@@ -9,10 +9,10 @@ use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 
 /**
  * Generate the completeness when Product are in MongoDBODM
@@ -33,25 +33,25 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var string */
     protected $productClass;
 
-    /** @var ChannelRepository */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var FamilyRepository */
+    /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
     /**
      * Constructor
      *
-     * @param DocumentManager  $documentManager
-     * @param string           $productClass
-     * @param ChannelManager   $channelRepository
-     * @param FamilyRepository $familyRepository
+     * @param DocumentManager           $documentManager
+     * @param string                    $productClass
+     * @param ChannelManager            $channelRepository
+     * @param FamilyRepositoryInterface $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
         $productClass,
-        ChannelRepository $channelRepository,
-        FamilyRepository $familyRepository
+        ChannelRepositoryInterface $channelRepository,
+        FamilyRepositoryInterface $familyRepository
     ) {
         $this->documentManager   = $documentManager;
         $this->productClass      = $productClass;

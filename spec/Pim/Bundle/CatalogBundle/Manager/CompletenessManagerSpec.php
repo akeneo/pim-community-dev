@@ -3,18 +3,18 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class CompletenessManagerSpec extends ObjectBehavior
 {
     function let(
-        FamilyRepository $familyRepository,
-        ChannelRepository $channelRepository,
-        LocaleRepository $localeRepository,
+        FamilyRepositoryInterface $familyRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator
     ) {

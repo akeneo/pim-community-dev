@@ -129,4 +129,11 @@ interface ProductRepositoryInterface
      * @return ProductInterface|null
      */
     public function findOneById($id);
+
+    /**
+     * @param integer $variantGroupId
+     *
+     * @return array product ids
+     */
+    public function getEligibleProductIdsForVariantGroup($variantGroupId);
 }

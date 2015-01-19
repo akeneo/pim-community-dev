@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
@@ -33,7 +33,7 @@ class CategoryFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         $manager,
-        CategoryRepository $repo,
+        CategoryRepositoryInterface $repo,
         CategoryInterface $tree
     ) {
         $manager->getCategoryRepository()->willReturn($repo);
@@ -49,7 +49,7 @@ class CategoryFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         $manager,
-        CategoryRepository $repo,
+        CategoryRepositoryInterface $repo,
         CategoryInterface $category
     ) {
         $manager->getCategoryRepository()->willReturn($repo);
@@ -64,7 +64,7 @@ class CategoryFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         $manager,
-        CategoryRepository $repo,
+        CategoryRepositoryInterface $repo,
         CategoryInterface $category
     ) {
         $manager->getCategoryRepository()->willReturn($repo);

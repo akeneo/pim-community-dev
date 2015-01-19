@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Akeneo\Component\Persistence\RemoverInterface;
 use Akeneo\Component\Persistence\SaverInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class FamilyManager implements SaverInterface, RemoverInterface
 {
-    /** @var FamilyRepository */
+    /** @var FamilyRepositoryInterface */
     protected $repository;
 
     /** @var UserContext */
@@ -40,14 +40,14 @@ class FamilyManager implements SaverInterface, RemoverInterface
     /**
      * Constructor
      *
-     * @param FamilyRepository         $repository
-     * @param UserContext              $userContext
-     * @param ObjectManager            $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param CompletenessManager      $completenessManager
+     * @param FamilyRepositoryInterface $repository
+     * @param UserContext               $userContext
+     * @param ObjectManager             $objectManager
+     * @param EventDispatcherInterface  $eventDispatcher
+     * @param CompletenessManager       $completenessManager
      */
     public function __construct(
-        FamilyRepository $repository,
+        FamilyRepositoryInterface $repository,
         UserContext $userContext,
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,

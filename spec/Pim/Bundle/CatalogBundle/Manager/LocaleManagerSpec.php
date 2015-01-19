@@ -4,11 +4,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 class LocaleManagerSpec extends ObjectBehavior
 {
-    function let(LocaleRepository $repository)
+    function let(LocaleRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }

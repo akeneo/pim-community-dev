@@ -7,6 +7,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -105,7 +106,7 @@ class ChoiceFilterSpec extends ObjectBehavior
      */
     function it_provides_a_choice_filter_form(
         Form $form,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute,
         $utility,
         $factory,

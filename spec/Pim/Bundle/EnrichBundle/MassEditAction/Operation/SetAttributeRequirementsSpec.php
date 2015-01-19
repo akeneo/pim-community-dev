@@ -9,12 +9,14 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
     function let(
-        ChannelRepository $channelRepository,
-        AttributeRepository $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory
     ) {
         $this->beConstructedWith($channelRepository, $attributeRepository, $factory);
@@ -50,10 +52,10 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
     }
 
     function it_initializes_attribute_requirements_with_all_channels_and_attributes_in_the_PIM(
-        ChannelRepository $channelRepository,
+        ChannelRepositoryInterface $channelRepository,
         ChannelInterface $ecommerce,
         ChannelInterface $mobile,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $name,
         AttributeInterface $description,
         AttributeRequirementFactory $factory,

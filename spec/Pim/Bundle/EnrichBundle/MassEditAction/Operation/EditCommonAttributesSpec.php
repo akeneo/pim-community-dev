@@ -8,13 +8,13 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
@@ -29,7 +29,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         CurrencyManager $currencyManager,
         LocaleInterface $en,
         LocaleInterface $de,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductValueInterface $productValue,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
 /**
  * Currency manager
@@ -14,16 +14,16 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 class CurrencyManager
 {
     /**
-     * @var CurrencyRepository $repository
+     * @var CurrencyRepositoryInterface $repository
      */
     protected $repository;
 
     /**
      * Constructor
      *
-     * @param CurrencyRepository $repository
+     * @param CurrencyRepositoryInterface $repository
      */
-    public function __construct(CurrencyRepository $repository)
+    public function __construct(CurrencyRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

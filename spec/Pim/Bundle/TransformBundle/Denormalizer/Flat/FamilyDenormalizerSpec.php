@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Serializer;
 
@@ -14,7 +14,7 @@ class FamilyDenormalizerSpec extends ObjectBehavior
     const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Model\FamilyInterface';
     const FORMAT_CSV   = 'csv';
 
-    function let(Serializer $serializer, ManagerRegistry $registry, FamilyRepository $repository)
+    function let(Serializer $serializer, ManagerRegistry $registry, FamilyRepositoryInterface $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 

@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, CategoryRepository $categoryRepo, ProductCategoryRepositoryInterface $productRepo, ObjectIdResolverInterface $objectIdResolver)
+    function let(QueryBuilder $qb, CategoryRepositoryInterface $categoryRepo, ProductCategoryRepositoryInterface $productRepo, ObjectIdResolverInterface $objectIdResolver)
     {
         $operators = ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN'];
         $this->beConstructedWith($categoryRepo, $productRepo, $objectIdResolver, ['categories'], $operators);

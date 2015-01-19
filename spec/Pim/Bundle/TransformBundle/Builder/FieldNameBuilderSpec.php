@@ -8,9 +8,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 class FieldNameBuilderSpec extends ObjectBehavior
 {
@@ -26,7 +26,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_returns_association_type_field_names(
         $managerRegistry,
-        AssociationTypeRepository $repository,
+        AssociationTypeRepositoryInterface $repository,
         AssociationTypeInterface $assocType1,
         AssociationTypeInterface $assocType2
     ) {
@@ -47,7 +47,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_returns_attribute_informations_from_field_name(
         $managerRegistry,
-        AttributeRepository $repository,
+        AttributeRepositoryInterface $repository,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
@@ -68,7 +68,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_returns_null_attribute_informations_from_unknown_field_name(
         $managerRegistry,
-        AttributeRepository $repository
+        AttributeRepositoryInterface $repository
     ) {
         $repository->findOneByIdentifier('foo')->willReturn(null);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
@@ -78,7 +78,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
         $managerRegistry,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         AttributeInterface $attribute,
@@ -146,7 +146,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_returns_attribute_informations_from_field_name_with_scopable_attribute(
         $managerRegistry,
-        AttributeRepository $repository,
+        AttributeRepositoryInterface $repository,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
@@ -179,7 +179,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_returns_attribute_informations_from_field_name_with_price_attribute(
         $managerRegistry,
-        AttributeRepository $repository,
+        AttributeRepositoryInterface $repository,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
@@ -224,7 +224,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_attribute_property(
         $managerRegistry,
-        AttributeRepository $repository,
+        AttributeRepositoryInterface $repository,
         AttributeInterface $attribute
     ) {
         // global with extra locale

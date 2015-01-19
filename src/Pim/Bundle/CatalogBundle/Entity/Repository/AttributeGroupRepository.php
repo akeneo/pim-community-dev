@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 
 /**
  * Repository
@@ -13,11 +13,13 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class AttributeGroupRepository extends ReferableEntityRepository
+class AttributeGroupRepository extends ReferableEntityRepository implements AttributeGroupRepositoryInterface
 {
     /**
-     * @return AttributeGroupInterface
+     * {@inheritdoc}
      */
     public function findAllWithTranslations()
     {
@@ -29,18 +31,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function buildAllOrderedBySortOrder()
-    {
-        return $this->createQueryBuilder('attribute_group')
-            ->orderBy('attribute_group.sortOrder');
-    }
-
-    /**
-     * Find all ordered by label with fallback to default mecanism
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getIdToLabelOrderedBySortOrder()
     {
@@ -54,9 +45,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * Get the attribute group choices
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAttributeGroupChoices()
     {
@@ -71,8 +60,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * Get the default attribute group
-     * @return null|AttributeGroupInterface
+     * {@inheritdoc}
      */
     public function findDefaultAttributeGroup()
     {
@@ -80,9 +68,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * @param array $codes
-     *
-     * @return AttributeGroupInterface
+     * {@inheritdoc}
      */
     public function getAttributeGroupsFromAttributeCodes(array $codes)
     {
@@ -98,9 +84,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
     }
 
     /**
-     * Find the largest attribute group sort order present in the database
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getMaxSortOrder()
     {
@@ -108,5 +92,14 @@ class AttributeGroupRepository extends ReferableEntityRepository
             ->select('MAX(ag.sortOrder)')
             ->getQuery()
             ->execute([], AbstractQuery::HYDRATE_SINGLE_SCALAR);
+    }
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function buildAllOrderedBySortOrder()
+    {
+        return $this->createQueryBuilder('attribute_group')
+            ->orderBy('attribute_group.sortOrder');
     }
 }

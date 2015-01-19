@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Expr;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 
 /**
@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository in 1.4
  */
 class ProductMassActionRepository implements ProductMassActionRepositoryInterface
 {
@@ -22,15 +24,15 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     /** @var DocumentManager */
     protected $dm;
 
-    /** @var FamilyRepository */
+    /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
     /**
-     * @param DocumentManager  $dm
-     * @param string           $documentName
-     * @param FamilyRepository $familyRepository
+     * @param DocumentManager           $dm
+     * @param string                    $documentName
+     * @param FamilyRepositoryInterface $familyRepository
      */
-    public function __construct(DocumentManager $dm, $documentName, FamilyRepository $familyRepository)
+    public function __construct(DocumentManager $dm, $documentName, FamilyRepositoryInterface $familyRepository)
     {
         $this->dm = $dm;
         $this->documentName     = $documentName;

@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 
 class AttributeGroupManagerSpec extends ObjectBehavior
 {
@@ -15,7 +15,7 @@ class AttributeGroupManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager');
     }
 
-    function let(ObjectManager $objectManager, AttributeGroupRepository $repository)
+    function let(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
     {
         $this->beConstructedWith($objectManager, $repository);
     }
