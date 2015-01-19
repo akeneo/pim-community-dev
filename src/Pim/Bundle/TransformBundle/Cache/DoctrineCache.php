@@ -5,6 +5,7 @@ namespace Pim\Bundle\TransformBundle\Cache;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
@@ -100,6 +101,8 @@ class DoctrineCache
      * @param string $code
      *
      * @return object
+     *
+     * @throws \Exception
      */
     protected function findObject($class, $code)
     {
@@ -108,13 +111,39 @@ class DoctrineCache
             return $this->referenceRepository->getReference($reference);
         } else {
             $repository = $this->doctrine->getManagerForClass($class)->getRepository($class);
-            if (!$repository instanceof ReferableEntityRepositoryInterface) {
-                throw new \Exception(
-                    sprintf('Repository "%s" of class "%s" is not referable', get_class($repository), $class)
-                );
+            if (null !== $object = $this->findOneByIdentifier($repository, $code)) {
+                return $object;
             }
 
-            return $repository->findByReference($code);
+            $message = <<<MESSAGE
+Repository "%s" of class "%s" does not implement "Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface"
+MESSAGE;
+            throw new \Exception(
+                sprintf($message, get_class($repository), $class)
+            );
         }
+    }
+
+    /**
+     * Transitional method that will be removed in 1.4
+     *
+     * @param mixed  $repository
+     * @param string $identifier
+     *
+     * @return mixed|null
+     *
+     * @deprecated will be removed in 1.4
+     */
+    private function findOneByIdentifier($repository, $identifier)
+    {
+        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
+            return $repository->findOneByIdentifier($identifier);
+        }
+
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
+            return $repository->findByReference($identifier);
+        }
+
+        return null;
     }
 }

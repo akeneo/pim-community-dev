@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -31,7 +31,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ReferableEntityRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;
 
     /** @var DenormalizerInterface */
@@ -41,13 +41,13 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     protected $class;
 
     /**
-     * @param ReferableEntityRepositoryInterface $repository   repository to search the object in
-     * @param ValidatorInterface                 $validator    validator of the object
-     * @param DenormalizerInterface              $denormalizer denormalizer used to transform array to object
-     * @param string                             $class        class of the object to instanciate in case if need
+     * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
+     * @param ValidatorInterface                    $validator    validator of the object
+     * @param DenormalizerInterface                 $denormalizer denormalizer used to transform array to object
+     * @param string                                $class        class of the object to instanciate in case if need
      */
     public function __construct(
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         $class
@@ -78,14 +78,14 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * Try to find an object according to its identifiers from a repository or create an empty object
      * if it does not exist.
      *
-     * @param ReferableEntityRepositoryInterface $repository the repository to search inside
-     * @param array                              $data       the data that is currently processed
-     * @param string                             $class      the class to instanciate in case the
-     *                                                       object has not been found
+     * @param IdentifiableObjectRepositoryInterface $repository the repository to search inside
+     * @param array                                 $data       the data that is currently processed
+     * @param string                                $class      the class to instanciate in case the
+     *                                                          object has not been found
      *
      * @return object
      */
-    protected function findOrCreateObject(ReferableEntityRepositoryInterface $repository, array $data, $class)
+    protected function findOrCreateObject(IdentifiableObjectRepositoryInterface $repository, array $data, $class)
     {
         if (null !== $object = $this->findObject($repository, $data)) {
             return $object;
@@ -97,17 +97,16 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /**
      * Find an object according to its identifiers from a repository.
      *
-     * @param ReferableEntityRepositoryInterface $repository the repository to search inside
-     * @param array                              $data       the data that is currently processed
+     * @param IdentifiableObjectRepositoryInterface $repository the repository to search inside
+     * @param array                                 $data       the data that is currently processed
      *
      * @return object|null
-     *
      * @throws MissingIdentifierException in case the processed data do not allow to retrieve an object
      *                                    by its identifiers properly
      */
-    protected function findObject(ReferableEntityRepositoryInterface $repository, array $data)
+    protected function findObject(IdentifiableObjectRepositoryInterface $repository, array $data)
     {
-        $properties = $repository->getReferenceProperties();
+        $properties = $repository->getIdentifierProperties();
         $references = [];
         foreach ($properties as $property) {
             if (!isset($data[$property])) {
@@ -116,7 +115,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
             $references[] = $data[$property];
         }
 
-        return $repository->findByReference(implode('.', $references));
+        return $repository->findOneByIdentifier(implode('.', $references));
     }
 
     /**

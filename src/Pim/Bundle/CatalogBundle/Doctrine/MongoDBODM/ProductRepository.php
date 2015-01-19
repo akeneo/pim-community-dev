@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
@@ -32,6 +33,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
  */
 class ProductRepository extends DocumentRepository implements
     ProductRepositoryInterface,
+    IdentifiableObjectRepositoryInterface,
     ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface,
     ModelRepositoryInterface
@@ -399,15 +401,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
-    {
-        return $this->findOneByIdentifier($code);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array($this->attributeRepository->getIdentifierCode());
     }
@@ -687,5 +681,25 @@ class ProductRepository extends DocumentRepository implements
     protected function getIdentifierAttribute()
     {
         return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

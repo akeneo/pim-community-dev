@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 
@@ -15,7 +16,8 @@ use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
  */
 class AttributeOptionRepository extends EntityRepository implements
     OptionRepositoryInterface,
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -120,7 +122,7 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         list($attributeCode, $optionCode) = explode('.', $code);
 
@@ -137,8 +139,28 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('attribute', 'code');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

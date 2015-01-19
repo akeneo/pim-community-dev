@@ -56,14 +56,14 @@ class FamilyDenormalizerSpec extends ObjectBehavior
 
     function it_denormalizes_family($repository, FamilyInterface $family)
     {
-        $repository->findByReference('foo')->willReturn($family);
+        $repository->findOneByIdentifier('foo')->willReturn($family);
 
         $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($family);
     }
 
     function it_throws_an_exception_if_family_is_unknown($repository)
     {
-        $repository->findByReference('foo')->willReturn(false);
+        $repository->findOneByIdentifier('foo')->willReturn(null);
 
         $this->shouldThrow(
             new \Exception(

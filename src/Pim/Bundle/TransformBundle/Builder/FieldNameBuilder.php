@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Builder;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Create field names for associations and product values
@@ -89,7 +91,8 @@ class FieldNameBuilder
     {
         $explodedFieldName = explode("-", $fieldName);
         $attributeCode = $explodedFieldName[0];
-        $attribute = $this->getRepository($this->attributeClass)->findByReference($attributeCode);
+        $repository = $this->getRepository($this->attributeClass);
+        $attribute = $this->findOneByIdentifier($repository, $attributeCode);
 
         if (null !== $attribute) {
             $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
@@ -236,8 +239,11 @@ class FieldNameBuilder
             isset($attributeInfos['scope_code']) &&
             isset($attributeInfos['locale_code'])
         ) {
-            $channel = $this->getRepository($this->channelClass)->findByReference($attributeInfos['scope_code']);
-            $locale = $this->getRepository($this->localeClass)->findByReference($attributeInfos['locale_code']);
+            $channelRepository = $this->getRepository($this->channelClass);
+            $localeRepository = $this->getRepository($this->localeClass);
+
+            $channel = $this->findOneByIdentifier($channelRepository, $attributeInfos['scope_code']);
+            $locale = $this->findOneByIdentifier($localeRepository, $attributeInfos['locale_code']);
 
             if ($channel !== null && $locale !== null && !$channel->hasLocale($locale)) {
                 throw new \InvalidArgumentException(
@@ -260,6 +266,29 @@ class FieldNameBuilder
     protected function getRepository($entityClass)
     {
         return $this->managerRegistry->getRepository($entityClass);
+    }
+
+    /**
+     * Transitional method that will be removed in 1.4
+     *
+     * @param mixed  $repository
+     * @param string $identifier
+     *
+     * @return mixed|null
+     *
+     * @deprecated will be removed in 1.4
+     */
+    private function findOneByIdentifier($repository, $identifier)
+    {
+        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
+            return $repository->findOneByIdentifier($identifier);
+        }
+
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
+            return $repository->findByReference($identifier);
+        }
+
+        return null;
     }
 
     /**

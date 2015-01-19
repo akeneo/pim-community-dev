@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Entity\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\RoleRepository as BaseRoleRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -13,12 +14,13 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RoleRepository extends BaseRoleRepository implements ReferableEntityRepositoryInterface
+class RoleRepository extends BaseRoleRepository implements
+ IdentifiableObjectRepositoryInterface, ReferableEntityRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         return $this->findOneBy(array('label' => $code));
     }
@@ -38,8 +40,28 @@ class RoleRepository extends BaseRoleRepository implements ReferableEntityReposi
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('label');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
@@ -18,7 +19,8 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  */
 class AssociationRepository extends EntityRepository implements
     AssociationRepositoryInterface,
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -48,7 +50,7 @@ class AssociationRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         list($productCode, $associationCode) = explode('.', $code);
 
@@ -71,7 +73,7 @@ class AssociationRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('owner', 'associationType');
     }
@@ -89,5 +91,25 @@ class AssociationRepository extends EntityRepository implements
             ->setParameter(':productId', $product->getId());
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }
