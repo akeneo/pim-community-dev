@@ -19,5 +19,5 @@ interface CursorFactoryInterface
      *
      * @return CursorInterface
      */
-    public function createCursor($queryBuilder, $pageSize=null);
+    public function createCursor($queryBuilder, $pageSize = null);
 }

@@ -24,6 +24,9 @@ class Cursor extends AbstractCursor
     /** @var int */
     protected $batchSize;
 
+    /** @var mixed */
+    protected $currentDocument;
+
     /**
      * @param Builder $queryBuilder
      * @param int     $batchSize : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
@@ -53,6 +56,8 @@ class Cursor extends AbstractCursor
     {
         $this->position = 0;
         $this->getCursor()->rewind();
+        $this->getCursor()->getNext();
+        $this->currentDocument = $this->getCursor()->current();
     }
 
     /**
@@ -62,6 +67,11 @@ class Cursor extends AbstractCursor
     {
         parent::next();
         $this->getCursor()->getNext();
+        if ($this->valid()) {
+            $this->currentDocument = $this->getCursor()->current();
+        } else {
+            $this->currentDocument = false;
+        }
     }
 
     /**
@@ -69,9 +79,7 @@ class Cursor extends AbstractCursor
      */
     public function current()
     {
-        $document = $this->getCursor()->current();
-
-        return $document;
+        return $this->currentDocument;
     }
 
     /**

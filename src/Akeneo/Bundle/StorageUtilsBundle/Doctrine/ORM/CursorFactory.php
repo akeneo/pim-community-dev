@@ -29,7 +29,6 @@ class CursorFactory implements CursorFactoryInterface
     /**
      * @param string        $cursorClass class name implementation
      * @param EntityManager $entityManager
-     * @param string        $entityClass
      * @param int           $pageSize
      */
     public function __construct(
@@ -48,7 +47,7 @@ class CursorFactory implements CursorFactoryInterface
     public function createCursor($queryBuilder, $pageSize=null)
     {
         if ($pageSize==null) {
-            $pageSize = $this->batchSize;
+            $pageSize = $this->pageSize;
         }
         return new $this->cursorClass($queryBuilder, $this->entityManager, $pageSize);
     }

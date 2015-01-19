@@ -22,69 +22,76 @@ class PaginatorSpec extends ObjectBehavior
 
     public function it_iterate_by_page_over_cursor(CursorInterface $cursor)
     {
-        $page1 = [new Entity(1), new Entity(2), new Entity(3), new Entity(4), new Entity(5), new Entity(6),
-            new Entity(7), new Entity(8), new Entity(9), new Entity(10)];
+        $page1 = [
+            new Entity(1),
+            new Entity(2),
+            new Entity(3),
+            new Entity(4),
+            new Entity(5),
+            new Entity(6),
+            new Entity(7),
+            new Entity(8),
+            new Entity(9),
+            new Entity(10)
+        ];
         $page2 = [new Entity(11), new Entity(12), new Entity(13)];
-        $entities = array_merge($page1, $page2);
+        $data = array_merge($page1, $page2);
 
         $cursor->count()->shouldBeCalled()->willReturn(13);
-        $cursor->next()->shouldBeCalled()->will(function () use ($cursor, &$entities) {
-            $cursor->current()->willReturn(array_shift($entities));
+        $cursor->next()->shouldBeCalled()->will(function () use ($cursor, &$data) {
+            $cursor->current()->willReturn(array_shift($data));
         });
-        $cursor->rewind()->shouldBeCalled()->willReturn(null);
+        $cursor->rewind()->shouldBeCalled()->will(function () use ($cursor, &$data, $page1, $page2) {
+            $data = array_merge($page1, $page2);
+        });
 
+        // for each call sequence
         $this->rewind()->shouldReturn(null);
-        $this->getCurrentPage()->shouldReturn(0);
-        $this->hasNextPage()->shouldReturn(true);
-        $this->getNextPage()->shouldReturn($page1);
-        $this->getCurrentPage()->shouldReturn(1);
-        $this->hasNextPage()->shouldReturn(true);
-        $this->getNextPage()->shouldReturn($page2);
-        $this->getCurrentPage()->shouldReturn(2);
-        $this->hasNextPage()->shouldReturn(false);
-        $this->getNextPage()->shouldReturn([]);
+        $this->valid()->shouldReturn(true);
+        $this->current()->shouldReturn($page1);
+        $this->key()->shouldReturn(0);
+
+        $this->next()->shouldReturn(null);
+        $this->valid()->shouldReturn(true);
+        $this->current()->shouldReturn($page2);
+        $this->key()->shouldReturn(1);
+
+        $this->next()->shouldReturn(null);
+        $this->valid()->shouldReturn(false);
+
+        // check behaviour after the end of data
+        $this->current()->shouldReturn(false);
+        $this->key()->shouldReturn(null);
+
+        // methods that not iterate can be called twice
+        $this->rewind()->shouldReturn(null);
+        $this->valid()->shouldReturn(true);
+        $this->valid()->shouldReturn(true);
+        $this->current()->shouldReturn($page1);
+        $this->current()->shouldReturn($page1);
+        $this->key()->shouldReturn(0);
+        $this->key()->shouldReturn(0);
+
     }
 
-    public function it_is_rewindable(CursorInterface $cursor)
+    public function it_is_countable(CursorInterface $cursor)
     {
-        $page1 = [new Entity(1), new Entity(2), new Entity(3), new Entity(4), new Entity(5), new Entity(6),
-            new Entity(7), new Entity(8), new Entity(9), new Entity(10)];
-        $page2 = [new Entity(11), new Entity(12), new Entity(13)];
-        $entities = array_merge($page1, $page2);
+        $this->shouldImplement('\Countable');
 
         $cursor->count()->shouldBeCalled()->willReturn(13);
-        $cursor->next()->shouldBeCalled()->will(function () use ($cursor, &$entities) {
-            $cursor->current()->willReturn(array_shift($entities));
-        });
-        $cursor->rewind()->shouldBeCalled()->will(function () use ($cursor, &$entities, $page1, $page2) {
-            $entities = array_merge($page1, $page2);
-        });
 
-        $this->rewind()->shouldReturn(null);
-        $this->getCurrentPage()->shouldReturn(0);
-        $this->hasNextPage()->shouldReturn(true);
-        $this->getNextPage()->shouldReturn($page1);
-        $this->getCurrentPage()->shouldReturn(1);
-
-        $this->rewind()->shouldReturn(null);
-        $this->getCurrentPage()->shouldReturn(0);
-        $this->hasNextPage()->shouldReturn(true);
-        $this->getNextPage()->shouldReturn($page1);
-        $this->getCurrentPage()->shouldReturn(1);
-        $this->hasNextPage()->shouldReturn(true);
-        $this->getNextPage()->shouldReturn($page2);
-        $this->getCurrentPage()->shouldReturn(2);
-        $this->hasNextPage()->shouldReturn(false);
-        $this->getNextPage()->shouldReturn([]);
+        $this->shouldHaveCount(2);
     }
 }
 
-class Entity {
+class Entity
+{
 
-    protected  $id;
+    protected $id;
+
     public function __construct($id)
     {
-        $this->id=$id;
+        $this->id = $id;
     }
 
 }
