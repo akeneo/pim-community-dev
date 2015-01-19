@@ -78,8 +78,12 @@ class Paginator implements PaginatorInterface
      */
     public function next()
     {
-        $this->pageNumber++;
-        $this->pageData = $this->getNextDataPage();
+        if ($this->valid()) {
+            $this->pageNumber++;
+            $this->pageData = $this->getNextDataPage();
+        } else {
+            $this->pageData = false;
+        }
     }
 
     /**
@@ -87,7 +91,11 @@ class Paginator implements PaginatorInterface
      */
     public function key()
     {
-        return $this->pageNumber;
+        if ($this->valid()) {
+            return $this->pageNumber;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -105,6 +113,7 @@ class Paginator implements PaginatorInterface
     {
         $this->cursor->rewind();
         $this->pageNumber = 0;
+        $this->pageData = $this->getNextDataPage();
     }
 
     /**
@@ -112,7 +121,7 @@ class Paginator implements PaginatorInterface
      */
     public function count()
     {
-        round($this->cursor->count() / $this->pageSize);
+        return intval(ceil($this->cursor->count() / $this->pageSize));
     }
 
     /**
@@ -132,6 +141,10 @@ class Paginator implements PaginatorInterface
             }
         }
 
-        return $result;
+        if (empty($result)) {
+            return false;
+        } else {
+            return $result;
+        }
     }
 }

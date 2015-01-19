@@ -42,6 +42,9 @@ class Cursor extends AbstractCursor
     /** @var int */
     protected $currentPage;
 
+    /** @var Object */
+    protected $entity;
+
     /**
      * @param QueryBuilder  $queryBuilder
      * @param EntityManager $entityManager
@@ -63,7 +66,7 @@ class Cursor extends AbstractCursor
     public function next()
     {
         parent::next();
-        $this->entitiesPage->next();
+        $this->entity = $this->getNextEntity();
     }
 
     /**
@@ -71,15 +74,7 @@ class Cursor extends AbstractCursor
      */
     public function current()
     {
-        $entity = null;
-        if ($this->entitiesPage === null || !$this->entitiesPage->valid()) {
-            $this->entitiesPage = $this->getNextEntitiesPage();
-        }
-        if ($this->entitiesPage !== null) {
-            $entity = $this->entitiesPage->current();
-        }
-
-        return $entity;
+        return $this->entity;
     }
 
     /**
@@ -101,6 +96,8 @@ class Cursor extends AbstractCursor
     {
         $this->position = 0;
         $this->currentPage = 0;
+        $this->entitiesPage = null;
+        $this->entity = $this->getNextEntity();
     }
 
     /**
@@ -123,7 +120,6 @@ class Cursor extends AbstractCursor
                 ->groupBy($rootIdExpr);
 
             $results = $this->queryBuilder->getQuery()->getArrayResult();
-
             $this->entitiesIds = array_keys($results);
         }
         return $this->entitiesIds;
@@ -152,6 +148,24 @@ class Cursor extends AbstractCursor
         }
 
         return $this->repository;
+    }
+
+    /**
+     *
+     */
+    protected function getNextEntity()
+    {
+        $entity = false;
+
+        if ($this->entitiesPage === null || !$this->entitiesPage->valid()) {
+            $this->entitiesPage = $this->getNextEntitiesPage();
+        }
+        if ($this->entitiesPage !== null) {
+            $entity = $this->entitiesPage->current();
+            $this->entitiesPage->next();
+        }
+
+        return $entity;
     }
 
     /**

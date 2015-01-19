@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 
-class ORMCursorFactorySpec extends ObjectBehavior
+class CursorFactorySpec extends ObjectBehavior
 {
     const DEFAULT_BATCH_SIZE = 100;
 
@@ -18,7 +18,7 @@ class ORMCursorFactorySpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\ORMCursorFactory');
+        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\CursorFactory');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface');
     }
 

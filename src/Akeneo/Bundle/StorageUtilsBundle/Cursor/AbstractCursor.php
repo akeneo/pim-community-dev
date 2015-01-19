@@ -48,7 +48,11 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function key()
     {
-        return $this->position;
+        if ($this->valid()) {
+            return $this->position;
+        } else {
+            return null;
+        }
     }
 
     /**
