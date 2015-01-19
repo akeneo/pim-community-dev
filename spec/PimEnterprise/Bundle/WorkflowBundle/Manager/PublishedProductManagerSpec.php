@@ -45,7 +45,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
     ) {
         $repository->findOneByOriginalProduct(Argument::any())->willReturn(null);
         $manager->getObjectManager()->willReturn($om);
-        $publisher->publish($product)->willReturn($published);
+        $publisher->publish($product, [])->willReturn($published);
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
         $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::any(), Argument::any())->shouldBeCalled();
@@ -69,7 +69,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
     ) {
         $repository->findOneByOriginalProduct(Argument::any())->willReturn($alreadyPublished);
         $manager->getObjectManager()->willReturn($om);
-        $publisher->publish($product)->willReturn($published);
+        $publisher->publish($product, [])->willReturn($published);
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
         $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::any(), Argument::any())->shouldBeCalled();
