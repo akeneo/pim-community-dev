@@ -3,15 +3,14 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ProductTemplateValuesTransformer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Transforms normalized values of ProductTemplate into product value objects prior to binding to the form
- *
- * TODO: Perhaps there is a way to use the transformer directly in the form?
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -19,15 +18,20 @@ use Symfony\Component\Form\FormEvents;
  */
 class TransformProductTemplateValuesSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductTemplateValuesTransformer $transformer */
-    protected $transformer;
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
 
     /**
-     * @param ProductTemplateValuesTransformer $transformer
+     * @param NormalizerInterface   $normalizer
+     * @param DenormalizerInterface $denormalizer
      */
-    public function __construct(ProductTemplateValuesTransformer $transformer)
+    public function __construct(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
     {
-        $this->transformer = $transformer;
+        $this->normalizer   = $normalizer;
+        $this->denormalizer = $denormalizer;
     }
 
     /**
@@ -52,7 +56,8 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
             return;
         }
 
-        $data->setValues($this->transformer->transform($data->getValuesData()));
+        $values = $this->denormalizer->denormalize($data->getValuesData(), 'ProductValue[]', 'json');
+        $data->setValues($values);
     }
 
     /**
@@ -68,6 +73,7 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
             return;
         }
 
-        $data->setValuesData($this->transformer->reverseTransform($data->getValues()));
+        $valuesData = $this->normalizer->normalize($data->getValues(), 'json', ['entity' => 'product']);
+        $data->setValuesData($valuesData);
     }
 }
