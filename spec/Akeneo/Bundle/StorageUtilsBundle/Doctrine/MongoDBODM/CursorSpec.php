@@ -48,13 +48,17 @@ class CursorSpec extends ObjectBehavior
         $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
         $query->execute()->shouldBeCalled()->willReturn($cursor);
 
-        $cursor->current()->shouldBeCalled()->willReturn($entity);
+        //$cursor->current()->shouldBeCalled()->willReturn($entity);
 
         $cursor->getNext()->shouldBeCalled()->will(function () use ($cursor, &$data) {
-            $cursor->current()->willReturn(array_shift($data));
+            $stepData = array_shift($data);
+            $cursor->current()->willReturn($stepData);
+            return $stepData;
         });
-        $cursor->rewind()->shouldBeCalled()->will(function () use ($cursor, &$data, $initialData) {
+        $cursor->reset()->shouldBeCalled()->will(function () use ($cursor, &$data, $initialData) {
             $data = array_merge([], $initialData);
+            $stepData = array_shift($data);
+            $cursor->current()->willReturn($stepData);
         });
 
         $cursor->count()->shouldBeCalled()->willReturn(3);
