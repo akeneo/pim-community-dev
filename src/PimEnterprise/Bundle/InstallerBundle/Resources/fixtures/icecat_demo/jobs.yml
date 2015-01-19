@@ -143,3 +143,19 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/option.csv
+    yml_rule_import:
+        connector: Akeneo Rule Engine Connector
+        alias:     yml_rule_import
+        label:     Demo rules import
+        type:      import
+        configuration:
+            filePath:      /tmp/rules.yml
+            uploadAllowed: true
+            multiple:      false
+    yml_rule_export:
+        connector: Akeneo Rule Engine Connector
+        alias:     yml_rule_export
+        label:     Demo rules export
+        type:      export
+        configuration:
+            filePath:      /tmp/rules.yml

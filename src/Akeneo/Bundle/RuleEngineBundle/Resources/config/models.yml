@@ -1,0 +1,4 @@
+parameters:
+    akeneo_rule_engine.model.rule_definition.class:  Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition
+    akeneo_rule_engine.model.rule.class:             Akeneo\Bundle\RuleEngineBundle\Model\Rule
+    akeneo_rule_engine.model.rule_subject_set.class: Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet
