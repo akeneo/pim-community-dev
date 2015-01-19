@@ -12,7 +12,6 @@
 namespace Akeneo\Bundle\RuleEngineBundle\Denormalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -20,10 +19,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class RuleDenormalizer implements DenormalizerInterface
+class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwareInterface
 {
     /** @var DenormalizerInterface */
-    protected $contentDernomalizer;
+    protected $chainedDernomalizer;
 
     /** @var string */
     protected $ruleClass;
@@ -35,18 +34,12 @@ class RuleDenormalizer implements DenormalizerInterface
     protected $type;
 
     /**
-     * @param DenormalizerInterface $contentDernomalizer
-     * @param string                $ruleClass
-     * @param string                $definitionClass
-     * @param string                $type
+     * @param string $ruleClass
+     * @param string $definitionClass
+     * @param string $type
      */
-    public function __construct(
-        DenormalizerInterface $contentDernomalizer,
-        $ruleClass,
-        $definitionClass,
-        $type
-    ) {
-        $this->contentDernomalizer = $contentDernomalizer;
+    public function __construct($ruleClass, $definitionClass, $type)
+    {
         $this->ruleClass = $ruleClass;
         $this->definitionClass = $definitionClass;
         $this->type = $type;
@@ -74,7 +67,7 @@ class RuleDenormalizer implements DenormalizerInterface
         $rawContent = ['conditions' => $data['conditions'], 'actions' => $data['actions']];
         $rule->setContent($rawContent);
 
-        $content = $this->contentDernomalizer->denormalize($rawContent, $class, $context);
+        $content = $this->chainedDernomalizer->denormalize($rawContent, $class, 'rule_content', $context);
 
         foreach ($content['conditions'] as $condition) {
             $rule->addCondition($condition);
@@ -92,6 +85,14 @@ class RuleDenormalizer implements DenormalizerInterface
     public function supportsDenormalization($data, $type, $format = null)
     {
         return $this->ruleClass === $type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setChainedDenormalizer(DenormalizerInterface $denormalizer)
+    {
+        $this->chainedDernomalizer = $denormalizer;
     }
 
     /**

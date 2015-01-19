@@ -18,7 +18,6 @@ use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -30,7 +29,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 class ProductRuleBuilder implements BuilderInterface
 {
     /** @var DenormalizerInterface */
-    protected $ruleContentDenormalizer;
+    protected $chainedDenormalizer;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -42,18 +41,18 @@ class ProductRuleBuilder implements BuilderInterface
     protected $ruleClass;
 
     /**
-     * @param DenormalizerInterface    $ruleContentDenormalizer
+     * @param DenormalizerInterface    $chainedDenormalizer
      * @param EventDispatcherInterface $eventDispatcher
      * @param ValidatorInterface       $validator
-     * @param string                   $ruleClass               should implement
+     * @param string                   $ruleClass           should implement
      */
     public function __construct(
-        DenormalizerInterface $ruleContentDenormalizer,
+        DenormalizerInterface $chainedDenormalizer,
         EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
         $ruleClass
     ) {
-        $this->ruleContentDenormalizer = $ruleContentDenormalizer;
+        $this->chainedDenormalizer = $chainedDenormalizer;
         $this->eventDispatcher = $eventDispatcher;
         $this->validator = $validator;
         $this->ruleClass = $ruleClass;
@@ -69,7 +68,11 @@ class ProductRuleBuilder implements BuilderInterface
         $rule = new $this->ruleClass($definition);
 
         try {
-            $content = $this->ruleContentDenormalizer->denormalize($definition->getContent(), $this->ruleClass);
+            $content = $this->chainedDenormalizer->denormalize(
+                $definition->getContent(),
+                $this->ruleClass,
+                'rule_content'
+            );
         } catch (\LogicException $e) {
             throw new BuilderException(
                 sprintf('Impossible to build the rule "%s". %s', $definition->getCode(), $e->getMessage())

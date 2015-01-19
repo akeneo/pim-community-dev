@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -20,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionObjectToArrayProcessor extends DummyProcessor
+class RuleDefinitionProcessor extends DummyProcessor
 {
     /** @var NormalizerInterface */
     protected $ruleNormalizer;

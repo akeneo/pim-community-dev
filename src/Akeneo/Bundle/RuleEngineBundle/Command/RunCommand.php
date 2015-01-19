@@ -23,7 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command to run a rule
- * TODO: review the dry run so that something actually happens
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
@@ -54,14 +53,19 @@ class RunCommand extends ContainerAwareCommand
         $rules = $this->getRulesToRun($code);
         $runnerRegistry = $this->getRuleRunner();
 
+        $stopOnError = $input->getOption('stop-on-error') ?: false;
+        $dryRun = $input->getOption('dry-run') ?: false;
+
+        $message = $dryRun ? 'Dry running rule <info>%s</info>...' : 'Running rule <info>%s</info>...';
+
         foreach ($rules as $rule) {
-            $output->writeln(sprintf('Running rule <info>%s</info>...', $rule->getCode()));
+            $output->writeln(sprintf($message, $rule->getCode()));
             $this->runRule(
                 $runnerRegistry,
                 $output,
                 $rule,
-                $input->getOption('dry-run'),
-                $input->getOption('stop-on-error')
+                $dryRun,
+                $stopOnError
             );
         }
 
@@ -88,7 +92,10 @@ class RunCommand extends ContainerAwareCommand
     ) {
         try {
             if ($dryRun) {
-                $runnerRegistry->dryRun($rule);
+                $subjectSet = $runnerRegistry->dryRun($rule);
+                $message = '<info>%d</info> subjects impacted by the rule <info>%s</info>.';
+                $output->writeln(sprintf($message, count($subjectSet->getSubjects()), $rule->getCode()));
+                $output->writeln('');
             } else {
                 $runnerRegistry->run($rule);
             }
@@ -96,13 +103,9 @@ class RunCommand extends ContainerAwareCommand
             if ($stopOnError) {
                 throw $e;
             } else {
-                $output->writeln(
-                    sprintf(
-                        "Error during execution of rule %s : %s\n",
-                        $rule->getCode(),
-                        $e->getMessage()
-                    )
-                );
+                $message = '<error>Error</error> during the execution of the rule <info>%s</info>: <error>%s</error>.';
+                $output->writeln(sprintf($message, $rule->getCode(), $e->getMessage()));
+                $output->writeln('');
             }
         }
     }

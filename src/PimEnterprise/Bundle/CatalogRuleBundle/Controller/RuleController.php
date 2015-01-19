@@ -97,11 +97,7 @@ class RuleController
             );
         }
 
-        try {
-            $this->ruleRemover->remove($rule);
-        } catch (\Exception $e) {
-            return new JsonResponse(['message' => 'An error occured during the deletion of the rule.'], 500);
-        }
+        $this->ruleRemover->remove($rule);
 
         return new JsonResponse();
     }

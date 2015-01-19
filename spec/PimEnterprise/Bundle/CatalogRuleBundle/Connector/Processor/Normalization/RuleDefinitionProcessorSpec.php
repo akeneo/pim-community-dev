@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class RuleDefinitionObjectToArrayProcessorSpec extends ObjectBehavior
+class RuleDefinitionProcessorSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $ruleNormalizer)
     {

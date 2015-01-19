@@ -12,6 +12,7 @@
 namespace Akeneo\Bundle\RuleEngineBundle\Runner;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 
 /**
  * Runs or dry run a rule.
@@ -24,7 +25,7 @@ interface DryRunnerInterface extends RunnerInterface
      * @param RuleDefinitionInterface $definition
      * @param array                   $options
      *
-     * @return mixed
+     * @return RuleSubjectSetInterface
      */
     public function dryRun(RuleDefinitionInterface $definition, array $options = []);
 }

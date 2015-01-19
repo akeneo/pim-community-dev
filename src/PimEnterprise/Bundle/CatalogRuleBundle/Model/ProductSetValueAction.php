@@ -116,4 +116,12 @@ class ProductSetValueAction implements ProductSetValueActionInterface
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getImpactedFields()
+    {
+        return [$this->getField()];
+    }
 }

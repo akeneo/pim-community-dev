@@ -196,7 +196,6 @@ Feature: Read a single product with applied rules
       | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
       | made_in_france  | Made in France  | boolean     | no       | no          |                   |               |                     |
       | report          | Report          | file        | no       | no          | txt               |               |                     |
-      | width           | Width           | metric      | no       | no          |                   | Length        | METER               |
       | climate         | Climate         | multiselect | no       | no          |                   |               |                     |
       | promotion_price | Promotion price | prices      | no       | no          |                   |               |                     |
     And the following "climate" attribute options: Hot and Cold
@@ -271,7 +270,6 @@ Feature: Read a single product with applied rules
       | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
       | made_in_france  | Made in France  | boolean     | no       | no          |                   |               |                     |
       | report          | Report          | file        | no       | no          | txt               |               |                     |
-      | width           | Width           | metric      | no       | no          |                   | Length        | METER               |
       | climate         | Climate         | multiselect | no       | no          |                   |               |                     |
       | promotion_price | Promotion price | prices      | no       | no          |                   |               |                     |
     And the following "climate" attribute options: Hot and Cold

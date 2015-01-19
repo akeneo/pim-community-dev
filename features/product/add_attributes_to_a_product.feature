@@ -12,5 +12,5 @@ Feature: Add attributes to a product
 
   Scenario: Successfully display only attributes I have edit permissions access
     Given I am on the "jacket" product page
-    Then I should see available attribute Length in group "Sizes"
+    Then I should see available attribute Width in group "Sizes"
     And I should not see available attribute Video in group "Media"

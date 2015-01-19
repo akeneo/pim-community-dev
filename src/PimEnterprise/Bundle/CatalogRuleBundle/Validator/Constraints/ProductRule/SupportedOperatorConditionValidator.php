@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

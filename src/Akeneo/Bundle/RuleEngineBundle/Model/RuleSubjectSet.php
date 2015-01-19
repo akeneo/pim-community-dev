@@ -87,11 +87,14 @@ class RuleSubjectSet implements RuleSubjectSetInterface
     /**
      * {@inheritdoc}
      */
-    public function skipSubject($subject, array $reasons)
+    public function skipSubject($subjectToSkip, array $reasons)
     {
-        $this->skippedSubjects[] = ['subject' => $subject, 'reasons' => $reasons];
-        foreach ($this->subjects as $index => $subject) {
-            unset($this->subjects[$index]);
+        $this->skippedSubjects[] = ['subject' => $subjectToSkip, 'reasons' => $reasons];
+        foreach ($this->getSubjects() as $index => $subject) {
+            if ($subjectToSkip === $subject) {
+                unset($this->subjects[$index]);
+                break;
+            }
         }
     }
 
@@ -108,7 +111,7 @@ class RuleSubjectSet implements RuleSubjectSetInterface
      */
     public function getSkippedReasons($subject)
     {
-        foreach ($this->skippedSubjects as $skippedSubject) {
+        foreach ($this->getSkippedSubjects() as $skippedSubject) {
             if ($skippedSubject['subject'] === $subject) {
                 return $skippedSubject['reasons'];
             }
@@ -122,7 +125,7 @@ class RuleSubjectSet implements RuleSubjectSetInterface
      */
     public function isSkipped($subject)
     {
-        foreach ($this->skippedSubjects as $skippedSubject) {
+        foreach ($this->getSkippedSubjects() as $skippedSubject) {
             if ($skippedSubject['subject'] === $subject) {
                 return true;
             }

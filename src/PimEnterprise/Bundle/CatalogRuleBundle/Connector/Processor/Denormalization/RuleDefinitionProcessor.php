@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductRuleDefinitionArrayToObjectProcessor extends AbstractProcessor
+class RuleDefinitionProcessor extends AbstractProcessor
 {
     /** @var string rule class*/
     protected $ruleClass;

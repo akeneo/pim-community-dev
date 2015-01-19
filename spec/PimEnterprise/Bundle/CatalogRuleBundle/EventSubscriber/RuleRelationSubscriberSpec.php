@@ -96,10 +96,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
 
         // add new resources
         $productRuleBuilder->build($definition)->shouldBeCalled()->willReturn($rule);
-
-        $rule->getActions()->shouldBeCalled()->willReturn([['field' => 'name', 'to_field' => 'description']]);
-
-        $ruleRelationManager->getImpactedAttributes([['field' => 'name', 'to_field' => 'description']])
+        $ruleRelationManager->getImpactedAttributes($rule)
             ->shouldBeCalled()->willReturn([$attribute1, $attribute2]);
 
         $ruleRelationSaver->saveAll(Argument::any())

@@ -18,7 +18,6 @@ use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
@@ -154,8 +153,7 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     protected function addRuleRelations(RuleDefinitionInterface $definition)
     {
         $rule = $this->productRuleBuilder->build($definition);
-        $actions = $rule->getActions();
-        $relatedAttributes = $this->ruleRelationManager->getImpactedAttributes($actions);
+        $relatedAttributes = $this->ruleRelationManager->getImpactedAttributes($rule);
 
         $ruleRelations = [];
         foreach ($relatedAttributes as $relatedAttribute) {

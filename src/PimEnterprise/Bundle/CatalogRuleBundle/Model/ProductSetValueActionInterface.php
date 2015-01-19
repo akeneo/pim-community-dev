@@ -22,7 +22,7 @@ use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ProductSetValueActionInterface extends ActionInterface
+interface ProductSetValueActionInterface extends ActionInterface, FieldImpactActionInterface
 {
     const ACTION_TYPE = 'set_value';
 

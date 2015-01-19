@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 
-class RuleDefinitionDoctrineWriterSpec extends ObjectBehavior
+class RuleDefinitionWriterSpec extends ObjectBehavior
 {
     function let(
         BulkSaverInterface $saver

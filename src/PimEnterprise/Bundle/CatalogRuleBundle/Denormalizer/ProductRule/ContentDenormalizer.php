@@ -11,8 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule;
 
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -20,36 +19,33 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ContentDenormalizer implements DenormalizerInterface
+class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwareInterface
 {
     /** @var DenormalizerInterface */
-    protected $conditionNormalizer;
-
-    /** @var DenormalizerInterface */
-    protected $setValueNormalizer;
-
-    /** @var DenormalizerInterface */
-    protected $copyValueNormalizer;
+    protected $chainedDenormalizer;
 
     /** @var string */
     protected $ruleClass;
 
+    /** @var string */
+    protected $conditionClass;
+
+    /** @var array */
+    protected $actionClasses;
+
     /**
-     * @param DenormalizerInterface $conditionNormalizer
-     * @param DenormalizerInterface $setValueNormalizer
-     * @param DenormalizerInterface $copyValueNormalizer
-     * @param string                $ruleClass
+     * @param string $ruleClass
      */
-    public function __construct(
-        DenormalizerInterface $conditionNormalizer,
-        DenormalizerInterface $setValueNormalizer,
-        DenormalizerInterface $copyValueNormalizer,
-        $ruleClass
-    ) {
-        $this->conditionNormalizer = $conditionNormalizer;
-        $this->setValueNormalizer = $setValueNormalizer;
-        $this->copyValueNormalizer = $copyValueNormalizer;
+    /**
+     * @param string $ruleClass
+     * @param string $conditionClass
+     * @param array  $actionClasses, the key of the items if the type of action
+     */
+    public function __construct($ruleClass, $conditionClass, array $actionClasses)
+    {
         $this->ruleClass = $ruleClass;
+        $this->conditionClass = $conditionClass;
+        $this->actionClasses = $actionClasses;
     }
 
     /**
@@ -61,17 +57,15 @@ class ContentDenormalizer implements DenormalizerInterface
      */
     public function denormalize($ruleContent, $class, $format = null, array $context = array())
     {
-        // this check is performed as the denormalizer is not used via the serializer
-        if (!$this->supportsDenormalization($ruleContent, $class, $format)) {
-            throw new \InvalidArgumentException(
-                sprintf('Rule content "%s" can not be denormalized.', json_encode($ruleContent))
-            );
-        }
-
         $conditions = $actions = [];
 
         foreach ($ruleContent['conditions'] as $condition) {
-            $conditions[] = $this->conditionNormalizer->denormalize($condition, $class, $format, $context);
+            $conditions[] = $this->chainedDenormalizer->denormalize(
+                $condition,
+                $this->conditionClass,
+                $format,
+                $context
+            );
         }
 
         foreach ($ruleContent['actions'] as $action) {
@@ -79,17 +73,20 @@ class ContentDenormalizer implements DenormalizerInterface
                 throw new \LogicException(
                     sprintf('Rule content "%s" has an action with no type.', json_encode($ruleContent))
                 );
-            } elseif (ProductSetValueActionInterface::ACTION_TYPE === $action['type']) {
-                $actions[] = $this->setValueNormalizer->denormalize($action, $class, $format, $context);
-            } elseif (ProductCopyValueActionInterface::ACTION_TYPE === $action['type']) {
-                $actions[] = $this->copyValueNormalizer->denormalize($action, $class, $format, $context);
-            } else {
+            } elseif (!isset($this->actionClasses[$action['type']])) {
                 throw new \LogicException(
                     sprintf(
                         'Rule content "%s" has an unknown type of action "%s".',
                         json_encode($ruleContent),
                         $action['type']
                     )
+                );
+            } else {
+                $actions[] = $this->chainedDenormalizer->denormalize(
+                    $action,
+                    $this->actionClasses[$action['type']],
+                    $format,
+                    $context
                 );
             }
         }
@@ -106,10 +103,19 @@ class ContentDenormalizer implements DenormalizerInterface
     public function supportsDenormalization($ruleContent, $type, $format = null)
     {
         return $this->ruleClass === $type &&
+            $format === 'rule_content' &&
             isset($ruleContent['conditions']) &&
             is_array($ruleContent['conditions']) &&
             isset($ruleContent['actions']) &&
             is_array($ruleContent['actions'])
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setChainedDenormalizer(DenormalizerInterface $denormalizer)
+    {
+        $this->chainedDenormalizer = $denormalizer;
     }
 }

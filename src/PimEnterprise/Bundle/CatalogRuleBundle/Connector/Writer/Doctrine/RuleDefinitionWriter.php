@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -20,11 +20,9 @@ use Akeneo\Component\Persistence\BulkSaverInterface;
 /**
  * Writer for rules definitions
  *
- * TODO: make generic, move to base connector and rename it ObjectDoctrineWriter ?
- *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionDoctrineWriter extends AbstractConfigurableStepElement implements
+class RuleDefinitionWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {

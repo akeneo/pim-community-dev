@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -23,6 +24,7 @@ class RuleRelationManagerSpec extends ObjectBehavior
 
     function it_returns_impacted_attributes(
         $attributeRepository,
+        RuleInterface $rule,
         ProductCopyValueActionInterface $action1,
         ProductSetValueActionInterface $action2,
         ProductSetValueActionInterface $action3,
@@ -30,12 +32,12 @@ class RuleRelationManagerSpec extends ObjectBehavior
         AbstractAttribute $attribute1,
         AbstractAttribute $attribute2
     ) {
-        $actions = [$action1, $action2, $action3, $action4];
+        $rule->getActions()->willReturn([$action1, $action2, $action3, $action4]);
 
-        $action1->getToField()->shouldBeCalled()->willReturn('to_field');
-        $action2->getField()->shouldBeCalled()->willReturn('field');
-        $action3->getField()->shouldBeCalled()->willReturn('field');
-        $action4->getField()->shouldBeCalled()->willReturn('field_2');
+        $action1->getImpactedFields()->shouldBeCalled()->willReturn(['to_field']);
+        $action2->getImpactedFields()->shouldBeCalled()->willReturn(['field']);
+        $action3->getImpactedFields()->shouldBeCalled()->willReturn(['field']);
+        $action4->getImpactedFields()->shouldBeCalled()->willReturn(['field_2']);
 
         $attribute1->__toString()->willReturn('attribute1');
         $attribute2->__toString()->willReturn('attribute2');
@@ -45,7 +47,7 @@ class RuleRelationManagerSpec extends ObjectBehavior
         $attributeRepository->findByReference('field')->shouldBeCalled()->willReturn($attribute2);
         $attributeRepository->findByReference('field_2')->shouldBeCalled()->willReturn(null);
 
-        $this->getImpactedAttributes($actions)->shouldReturn([$attribute1, $attribute2]);
+        $this->getImpactedAttributes($rule)->shouldReturn([$attribute1, $attribute2]);
     }
 
     function it_throws_an_exception_during_the_check_of_the_impacts_on_a_wrong_resource()

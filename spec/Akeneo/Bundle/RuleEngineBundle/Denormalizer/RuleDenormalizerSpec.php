@@ -12,14 +12,15 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class RuleDenormalizerSpec extends ObjectBehavior
 {
-    function let(DenormalizerInterface $contentDernomalizer)
+    function let(DenormalizerInterface $chainedDernomalizer)
     {
         $this->beConstructedWith(
-            $contentDernomalizer,
             'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
             'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition',
             'foo'
         );
+
+        $this->setChainedDenormalizer($chainedDernomalizer);
     }
 
     function it_is_initializable()
@@ -27,16 +28,16 @@ class RuleDenormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer');
     }
 
-    function it_denormalizes_a_rule($contentDernomalizer)
+    function it_denormalizes_a_rule($chainedDernomalizer)
     {
-        $contentDernomalizer->denormalize(Argument::cetera())->willReturn(['conditions' => [], 'actions' => []]);
+        $chainedDernomalizer->denormalize(Argument::cetera())->willReturn(['conditions' => [], 'actions' => []]);
 
         $this->denormalize(['code' => 'discharge_fr_description', 'conditions' => [], 'actions' => []], Argument::any())
             ->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\Rule');
     }
 
     function it_denormalizes_a_rule_provided_in_the_context(
-        $contentDernomalizer,
+        $chainedDernomalizer,
         RuleInterface $rule,
         ConditionInterface $condition,
         ProductSetValueActionInterface $setValueAction,
@@ -54,7 +55,7 @@ class RuleDenormalizerSpec extends ObjectBehavior
         $rule->addAction($setValueAction)->shouldBeCalled();
         $rule->addAction($copyValueAction)->shouldBeCalled();
 
-        $contentDernomalizer->denormalize($rawContent, Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setValueAction, $copyValueAction]]);
+        $chainedDernomalizer->denormalize($rawContent, Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setValueAction, $copyValueAction]]);
 
         // TODO: really spec it...
         $this->denormalize(

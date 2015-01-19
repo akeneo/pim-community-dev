@@ -2,15 +2,12 @@ parameters:
     pimee_catalog_rule.applier.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier
     pimee_catalog_rule.builder.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder
     pimee_catalog_rule.selector.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
-    pimee_catalog_rule.model.product_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition
-    pimee_catalog_rule.model.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction
-    pimee_catalog_rule.model.set_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction
 
 services:
     pimee_catalog_rule.builder.product:
         class: %pimee_catalog_rule.builder.product.class%
         arguments:
-            - '@pimee_catalog_rule.denormalizer.product_rule.content'
+            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '@event_dispatcher'
             - '@validator'
             - %akeneo_rule_engine.model.rule.class%
