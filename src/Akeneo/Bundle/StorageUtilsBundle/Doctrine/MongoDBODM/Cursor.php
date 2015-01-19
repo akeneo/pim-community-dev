@@ -55,8 +55,7 @@ class Cursor extends AbstractCursor
     public function rewind()
     {
         $this->position = 0;
-        $this->getCursor()->rewind();
-        $this->getCursor()->getNext();
+        $this->getCursor()->reset();
         $this->currentDocument = $this->getCursor()->current();
     }
 
@@ -66,10 +65,8 @@ class Cursor extends AbstractCursor
     public function next()
     {
         parent::next();
-        $this->getCursor()->getNext();
-        if ($this->valid()) {
-            $this->currentDocument = $this->getCursor()->current();
-        } else {
+        $this->currentDocument = $this->getCursor()->getNext();
+        if ($this->currentDocument===null){
             $this->currentDocument = false;
         }
     }

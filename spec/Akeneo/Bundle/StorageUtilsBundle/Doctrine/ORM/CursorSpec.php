@@ -55,56 +55,6 @@ class CursorSpec extends ObjectBehavior
         EntityManager $entityManager,
         AbstractQuery $query,
         From $from,
-        Entity $entity,
-        ModelRepositoryInterface $repository
-    ) {
-        $this->shouldImplement('\Iterator');
-
-        $rootIdExpr = 'o.id';
-        $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
-
-        $from->getFrom()->shouldBeCalled()->willReturn($entityClass);
-        $from->getAlias()->shouldBeCalled()->willReturn('o');
-
-        $queryBuilder->getRootAliases()->shouldBeCalled()->willReturn(['o']);
-        $queryBuilder->getDQLPart('from')->shouldBeCalled()->willReturn([$from]);
-        $queryBuilder->select($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->resetDQLPart('from')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
-
-        $query->getArrayResult()->shouldBeCalled()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
-
-        $entityManager->getRepository($entityClass)->shouldBeCalled()->willReturn($repository);
-        $repository->findByIds(Argument::any())->shouldBeCalled()->willReturn([
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity,
-            $entity
-        ]);
-
-        $this->rewind()->shouldReturn(null);
-        $this->valid()->shouldReturn(true);
-        $this->current()->shouldReturn($entity);
-        $this->key()->shouldReturn(0);
-        $this->next()->shouldReturn(null);
-    }
-
-    public function it_is_iterable_bis(
-        $queryBuilder,
-        EntityManager $entityManager,
-        AbstractQuery $query,
-        From $from,
         ModelRepositoryInterface $repository
     ) {
         $this->shouldImplement('\Iterator');
@@ -209,7 +159,6 @@ class CursorSpec extends ObjectBehavior
 
 class Entity
 {
-
     protected $id;
 
     public function __construct($id)

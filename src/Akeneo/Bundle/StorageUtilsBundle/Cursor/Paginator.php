@@ -103,7 +103,7 @@ class Paginator implements PaginatorInterface
      */
     public function valid()
     {
-        return $this->pageNumber * $this->pageSize < $this->cursor->count();
+        return $this->pageNumber < $this->count();
     }
 
     /**
