@@ -59,17 +59,20 @@ class ProductPublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
+        $options = array_merge(['with_associations' => true], $options);
         $published = $this->createNewPublishedProduct();
         $published->setOriginalProduct($object);
         $published->setEnabled($object->isEnabled());
         $this->copyFamily($object, $published);
         $this->copyGroups($object, $published);
         $this->copyCategories($object, $published);
-        $this->copyAssociations($object, $published);
         $this->copyCompletenesses($object, $published);
         $this->copyValues($object, $published);
-        $this->updateRelatedAssociations($published);
         $this->setVersion($object, $published);
+        if (true === $options['with_associations']) {
+            $this->copyAssociations($object, $published);
+            $this->updateRelatedAssociations($published);
+        }
 
         return $published;
     }
