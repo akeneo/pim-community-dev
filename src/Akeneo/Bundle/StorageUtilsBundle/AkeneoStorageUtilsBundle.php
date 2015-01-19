@@ -2,8 +2,9 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\StorageMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\CustomTypeRegisterer;
 //TODO: should be trashed
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -16,31 +17,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoStorageUtilsBundle extends Bundle
 {
-    /** @staticvar string */
-    const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
-
-    /** @staticvar string */
-    const ODM_ENTITIES_TYPE = 'entities';
-
-    /** @staticvar string */
-    const ODM_ENTITY_TYPE = 'entity';
-
-    /**
-     * Register custom doctrine types
-     */
     public function __construct()
     {
-        if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
-            \Doctrine\ODM\MongoDB\Types\Type::registerType(
-                self::ODM_ENTITIES_TYPE,
-                'Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entities'
-            );
-
-            \Doctrine\ODM\MongoDB\Types\Type::registerType(
-                self::ODM_ENTITY_TYPE,
-                'Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entity'
-            );
-        }
+        CustomTypeRegisterer::register();
     }
 
     /**
@@ -48,7 +27,7 @@ class AkeneoStorageUtilsBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        if (class_exists(self::DOCTRINE_MONGODB)) {
+        if (class_exists(StorageMappingsPass::DOCTRINE_MONGODB_MAPPINGS_PASS)) {
             // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
             // https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged
             $definition = $container->register(
@@ -56,32 +35,6 @@ class AkeneoStorageUtilsBundle extends Bundle
                 'Doctrine\ODM\MongoDB\Tools\ResolveTargetDocumentListener'
             );
             $definition->addTag('doctrine_mongodb.odm.event_listener', array('event' => 'loadClassMetadata'));
-        }
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $mappings
-     */
-    protected function registerDoctrineMappingDriver(ContainerBuilder $container, array $mappings)
-    {
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $mappings,
-                array('doctrine.orm.entity_manager'),
-                'akeneo_storage_utils.storage_driver.doctrine/orm'
-            )
-        );
-
-        if (class_exists(self::DOCTRINE_MONGODB)) {
-            $mongoDBClass = self::DOCTRINE_MONGODB;
-            $container->addCompilerPass(
-                $mongoDBClass::createYamlMappingDriver(
-                    $mappings,
-                    array('doctrine.odm.mongodb.document_manager'),
-                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
-                )
-            );
         }
     }
 }
