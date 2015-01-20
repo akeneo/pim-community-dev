@@ -144,6 +144,8 @@ class GroupManager implements RemoverInterface
     }
 
     /**
+     * TODO: we should always use the GroupSaver and drop this method
+     *
      * {@inheritdoc}
      */
     public function save($group, array $options = [])

@@ -50,9 +50,9 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
 
     /**
      * @param ReferableEntityRepositoryInterface $repository   repository to search the object in
-     * @param ValidatorInterface                 $validator    validator of the object
      * @param DenormalizerInterface              $denormalizer denormalizer used to transform array to object
-     * @param ObjectDetacherInterface            $detacher
+     * @param ValidatorInterface                 $validator    validator of the object
+     * @param ObjectDetacherInterface            $detacher     object detacher
      * @param string                             $class        class of the object to instanciate in case if need
      */
     public function __construct(
@@ -150,8 +150,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param \Exception $previousException
      * @param string     $message
      *
-     * TODO : replace handleExceptionOnItem by this one
-     *
      * @throws InvalidItemException
      */
     protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
@@ -169,8 +167,6 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
      * @param \Exception                       $previousException
-     *
-     * TODO : replace handleConstraintViolationsOnItem by this one
      *
      * @throws InvalidItemException
      */
