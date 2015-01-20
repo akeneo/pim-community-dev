@@ -12,14 +12,13 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
-
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Product association publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AssociationPublisher implements PublisherInterface
 {

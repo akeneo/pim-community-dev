@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Helper for product draft datagrid
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class GridHelper
 {
@@ -28,10 +28,8 @@ class GridHelper
 
     /**
      * @param SecurityContextInterface $securityContext
-     *
-     * TODO: make this parameter mandatory for 1.3
      */
-    public function __construct(SecurityContextInterface $securityContext = null)
+    public function __construct(SecurityContextInterface $securityContext)
     {
         $this->securityContext = $securityContext;
     }

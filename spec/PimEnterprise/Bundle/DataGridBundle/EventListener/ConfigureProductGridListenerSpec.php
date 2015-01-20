@@ -10,7 +10,6 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator;
-use Prophecy\Argument;
 
 class ConfigureProductGridListenerSpec extends ObjectBehavior
 {
@@ -35,10 +34,8 @@ class ConfigureProductGridListenerSpec extends ObjectBehavior
         );
     }
 
-    public function it_builds_the_datagrid(
-        BuildBefore $event,
-        DatagridConfiguration $dataGridConfiguration
-    ) {
+    function it_builds_the_datagrid(BuildBefore $event, DatagridConfiguration $dataGridConfiguration)
+    {
         $event->getConfig()->willReturn($dataGridConfiguration);
 
         $this->buildBefore($event);

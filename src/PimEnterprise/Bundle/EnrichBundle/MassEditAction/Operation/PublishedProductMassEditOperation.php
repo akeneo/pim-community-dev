@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 /**
  * Base class of published product mass edit operations
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 abstract class PublishedProductMassEditOperation extends AbstractMassEditAction
 {

@@ -20,6 +20,7 @@ families:
             - release_date
             - datasheet
             - side_view
+            - length
         attributeAsLabel: name
         requirements:
             tablet:

@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct;
 
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Helper for published datagrid
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class GridHelper
 {
@@ -50,7 +50,7 @@ class GridHelper
     {
         return function (ResultRecordInterface $record) {
             /** @var \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface $published */
-            $published = $this->publishedRepository->findOneBy(['id' => $record->getValue('id')]);
+            $published = $this->publishedRepository->findOneById($record->getValue('id'));
             $ownershipGranted = $this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct());
 
             return [

@@ -43,7 +43,7 @@ Feature: Mass edit products through product draft
 
   Scenario: Succesfully create simple text attribute product draft of many products
     Given I mass-edit products my-first-jacket and my-second-jacket
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "A jacket"
     And I move on to the next step

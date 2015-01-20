@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * EE Transform bundle
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PimEnterpriseTransformBundle extends Bundle
 {

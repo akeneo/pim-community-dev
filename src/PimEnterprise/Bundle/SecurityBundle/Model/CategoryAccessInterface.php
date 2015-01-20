@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 /**
  * Category access interface
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface CategoryAccessInterface extends AccessInterface
 {

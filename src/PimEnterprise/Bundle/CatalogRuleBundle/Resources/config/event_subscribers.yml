@@ -1,0 +1,15 @@
+parameters:
+    pimee_catalog_rule.event_subscriber.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleRelationSubscriber
+
+services:
+    pimee_catalog_rule.event_subscriber.rule_relation:
+        class: %pimee_catalog_rule.event_subscriber.rule_relation.class%
+        arguments:
+            - '@pimee_catalog_rule.manager.rule_relation'
+            - '@pimee_catalog_rule.saver.rule_relation'
+            - '@pimee_catalog_rule.remover.rule_relation'
+            - '@pimee_catalog_rule.repository.rule_relation'
+            - '@pimee_catalog_rule.builder.product'
+            - %pimee_catalog_rule.model.rule_relation.class%
+        tags:
+            - { name: kernel.event_subscriber}

@@ -13,7 +13,7 @@ services:
         tags:
             - { name: 'pim_repository' }
         calls:
-            - [setTableNameBuilder, ['@pim_catalog.doctrine.table_name_builder']]
+            - [setTableNameBuilder, ['@akeneo_storage_utils.doctrine.table_name_builder']]
 
     pimee_security.repository.category_access:
         class: %pimee_security.repository.category_access.class%
@@ -23,7 +23,7 @@ services:
         tags:
             - { name: 'pim_repository' }
         calls:
-            - [setTableNameBuilder, ['@pim_catalog.doctrine.table_name_builder']]
+            - [setTableNameBuilder, ['@akeneo_storage_utils.doctrine.table_name_builder']]
 
     pimee_security.repository.job_profile_access:
         class: %pimee_security.repository.job_profile_access.class%

@@ -1,8 +1,8 @@
 category_accesses:
     master:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
-        ownProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
+        ownProducts: [IT support, Manager]
     sales:
         viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager]
@@ -12,20 +12,20 @@ category_accesses:
         editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     home_appliances:
-        viewProducts: [IT support, Manager]
+        viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     tvs_projectors:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     pc_monitors:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     led_tvs:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
     cameras:
         viewProducts: [IT support, Manager, Redactor]
@@ -433,55 +433,55 @@ category_accesses:
         ownProducts: [IT support, Manager]
     clothes:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     pants:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     shoes:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     clothes_accessories:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     sweat:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     coats:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     underwear:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     tshirts:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     jeans:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     caps:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     ties:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     gloves:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     belts:
         viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
+        editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
     office:
         viewProducts: [IT support, Manager, Redactor]

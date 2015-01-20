@@ -38,6 +38,12 @@
                             '{{ "info.product.change family"|trans }}',
                             function () {
                                 $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
+                                if($("#sequentialEdit").length) {
+                                    var formAction = $('#{{ form.vars.id }}').attr('action');
+                                    formAction = formAction.replace('action=SaveAndNext', '');
+                                    formAction = formAction.replace('action=SaveAndFinish', '');
+                                    $('#{{ form.vars.id }}').attr('action', formAction);
+                                }
                                 $('#{{ form.vars.id }}').submit();
                             }
                         );
@@ -111,6 +117,34 @@
                             .attr('data-content', data)
                             .popover('destroy')
                             .popover('show');
+                    });
+                });
+
+                // Current value popover
+                $('.from-smart[data-async-content]').on('mouseover', function() {
+                    var $this = $(this);
+                    var url = $this.data('async-content');
+
+                    $this.attr('data-content', '{{ "pimee_catalog_rule.product.tooltip.loading.title"|trans }}');
+                    $this.popover({'html': true});
+                    $this.popover('show');
+
+                    $this.off('mouseover');
+                    $.get(url, function(data) {
+                        var codes = [];
+                        for (var key in data) {
+                            codes.push(data[key].code);
+                        }
+
+                        var message = '{{ "pimee_catalog_rule.product.tooltip.affected_by_a_rule.content"|trans|capitalize|raw }}';
+                        message = message.replace('%rule%', codes.join(', '));
+
+                        $this
+                            .attr('data-content', message)
+                            .popover('destroy')
+                            .popover({'html': true})
+                            .popover('show')
+                            ;
                     });
                 });
             });

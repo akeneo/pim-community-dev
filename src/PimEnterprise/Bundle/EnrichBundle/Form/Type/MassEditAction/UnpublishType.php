@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Form type of the Unpublish operation
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class UnpublishType extends AbstractType
 {

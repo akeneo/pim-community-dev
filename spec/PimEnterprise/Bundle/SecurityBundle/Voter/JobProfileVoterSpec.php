@@ -2,14 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Oro\Bundle\UserBundle\Entity\User;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\UserBundle\Entity\User;
+use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class JobProfileVoterSpec extends ObjectBehavior
 {

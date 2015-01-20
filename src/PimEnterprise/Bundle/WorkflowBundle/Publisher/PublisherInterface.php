@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 /**
  * Publisher interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface PublisherInterface
 {

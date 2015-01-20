@@ -12,16 +12,16 @@
 namespace PimEnterprise\Bundle\InstallerBundle\DependencyInjection;
 
 use Pim\Bundle\InstallerBundle\DependencyInjection\PimInstallerExtension as BasePimInstallerExtension;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * This is the class that loads and manages your bundle configuration
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
 {

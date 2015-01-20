@@ -3,14 +3,13 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
 {
@@ -33,9 +32,9 @@ class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
 
     function it_disables_the_product_value_form_when_no_edit_right(
         CreateProductValueFormEvent $event,
-        AbstractProductValue $value,
-        AbstractAttribute $sku,
-        AttributeGroup $group,
+        ProductValueInterface $value,
+        AttributeInterface $sku,
+        AttributeGroupInterface $group,
         $context
     ) {
         $event->getProductValue()->willReturn($value);
@@ -52,9 +51,9 @@ class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
 
     function it_doesnt_disable_the_product_value_form_when_no_edit_right_but_creating_the_product(
         CreateProductValueFormEvent $event,
-        AbstractProductValue $value,
-        AbstractAttribute $sku,
-        AttributeGroup $group,
+        ProductValueInterface $value,
+        AttributeInterface $sku,
+        AttributeGroupInterface $group,
         $context
     ) {
         $event->getProductValue()->willReturn($value);

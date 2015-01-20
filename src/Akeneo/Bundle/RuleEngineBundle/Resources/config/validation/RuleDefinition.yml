@@ -1,0 +1,26 @@
+Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+
+    properties:
+        code:
+            - Type:
+                type: string
+            - NotBlank: ~
+            - Regex:
+               pattern: /^[a-zA-Z0-9_]+$/
+               message: Rule code may contain only letters, numbers and underscores
+            - Length:
+               max: 100
+        type:
+            - Type:
+                type: string
+            - NotBlank: ~
+            - Length:
+                max: 100
+        content:
+            - Type:
+                type: array
+        priority:
+            - Type:
+                type: int

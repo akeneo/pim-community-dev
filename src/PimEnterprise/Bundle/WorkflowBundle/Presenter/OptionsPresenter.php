@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 /**
  * Present changes on options data
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class OptionsPresenter extends AbstractProductValuePresenter
 {

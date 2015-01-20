@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {

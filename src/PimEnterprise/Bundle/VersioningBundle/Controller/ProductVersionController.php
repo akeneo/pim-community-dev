@@ -12,6 +12,9 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,15 +24,11 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\VersioningBundle\Model\Version;
-use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
 
 /**
  * Product version controller
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductVersionController extends AbstractDoctrineController
 {
@@ -84,7 +83,7 @@ class ProductVersionController extends AbstractDoctrineController
     /**
      * Revert the entity to the current version
      *
-     * @param Version $version
+     * @param string|integer $id
      *
      * @return RedirectResponse
      *
