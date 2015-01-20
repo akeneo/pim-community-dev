@@ -77,10 +77,16 @@ class ProductImportValidator extends ImportValidator
             $errors[$data['sku']] = [[$e->getMessage()]];
         }
 
-        $violations = $this->validator->validate($entity);
+        foreach ($columnsInfo as $columnInfo) {
+            if ($columnInfo->getAttribute()) {
+                $violations = $this->validateProductValue($entity, $columnInfo);
+            } else {
+                $violations = $this->validator->validateProperty($entity, $columnInfo->getPropertyPath());
+            }
 
-        if ($violations->count() > 0) {
-            $errors['error'] = $this->getErrorArray($violations);
+            if ($violations->count()) {
+                $errors[$columnInfo->getLabel()] = $this->getErrorArray($violations);
+            }
         }
 
         return $errors;
@@ -132,6 +138,48 @@ class ProductImportValidator extends ImportValidator
                 }
             }
         }
+    }
+
+    /**
+     * Validates a ProductValue
+     *
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $columnInfo
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function validateProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
+    {
+        $value = $this->getProductValue($product, $columnInfo);
+        if (!$value) {
+            return new \Symfony\Component\Validator\ConstraintViolationList();
+        }
+
+        return $this->validator->validateValue(
+            $value->getData(),
+            $this->getAttributeConstraints($columnInfo->getAttribute())
+        );
+    }
+
+    /**
+     * Returns an array of constraints for a given attribute
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return string
+     */
+    protected function getAttributeConstraints(AttributeInterface $attribute)
+    {
+        $code = $attribute->getCode();
+        if (!isset($this->constraints[$code])) {
+            if ($this->constraintGuesser->supportAttribute($attribute)) {
+                $this->constraints[$code] = $this->constraintGuesser->guessConstraints($attribute);
+            } else {
+                $this->constraints[$code] = array();
+            }
+        }
+
+        return $this->constraints[$code];
     }
 
     /**
