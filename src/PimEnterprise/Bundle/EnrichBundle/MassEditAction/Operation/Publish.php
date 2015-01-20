@@ -11,18 +11,18 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation to publish products
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  */
-class Publish extends ProductMassEditOperation
+class Publish extends AbstractMassEditAction
 {
     /**
      * @var PublishedProductManager
@@ -85,6 +85,38 @@ class Publish extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
+    public function perform()
+    {
+        foreach ($this->objects as $key => $object) {
+            if (!$object instanceof ProductInterface) {
+                throw new \LogicException(
+                    sprintf(
+                        'Cannot perform mass edit action "%s" on object of type "%s", '.
+                        'expecting "Pim\Bundle\CatalogBundle\Model\ProductInterface"',
+                        __CLASS__,
+                        get_class($object)
+                    )
+                );
+            }
+
+            try {
+                $this->doPerform($object);
+            } catch (\RuntimeException $e) {
+                unset($this->objects[$key]);
+            }
+        }
+
+        // TODO : about refactoring of this one,
+        // we should provide a BulkPublishInterface and provide a BulkProductPublisher implementation which publish
+        // all products data and then, publish all associations where products appears in owner or owned side, it could
+        // make the code far more readable and decouple this logic from the mass edit operation
+
+        $this->manager->publishAssociations($this->objects);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function doPerform(ProductInterface $product)
     {
         if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
@@ -96,6 +128,6 @@ class Publish extends ProductMassEditOperation
             );
         }
 
-        $this->manager->publish($product);
+        $this->manager->publish($product, ['with_associations' => false]);
     }
 }

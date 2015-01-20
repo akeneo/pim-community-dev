@@ -34,7 +34,8 @@ class PublishSpec extends ObjectBehavior
     {
         $this->setObjectsToMassEdit([$product]);
         $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $manager->publish($product)->shouldBeCalled();
+        $manager->publishAssociations([$product])->shouldBeCalled();
+        $manager->publish($product, ['with_associations' => false])->shouldBeCalled();
         $this->perform();
     }
 }

@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
@@ -44,25 +45,32 @@ class PublishedProductManager
     /** @var  UnpublisherInterface */
     protected $unpublisher;
 
+    /** @var RelatedAssociationPublisher */
+    protected $associationPublisher;
+
     /**
-     * @param ProductManager                      $manager         the product manager
-     * @param PublishedProductRepositoryInterface $repository      the published repository
-     * @param EventDispatcherInterface            $eventDispatcher the event dispatcher
-     * @param PublisherInterface                  $publisher       the product publisher
-     * @param UnpublisherInterface                $unpublisher     the product unpublisher
+     * @param ProductManager                      $manager              the product manager
+     * @param PublishedProductRepositoryInterface $repository           the published repository
+     * @param EventDispatcherInterface            $eventDispatcher      the event dispatcher
+     * @param PublisherInterface                  $publisher            the product publisher
+     * @param UnpublisherInterface                $unpublisher          the product unpublisher
+     * @param RelatedAssociationPublisher         $associationPublisher the related associations publisher
      */
     public function __construct(
         ProductManager $manager,
         PublishedProductRepositoryInterface $repository,
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
-        UnpublisherInterface $unpublisher
+        UnpublisherInterface $unpublisher,
+        // TODO : drop the default null value when merge on master
+        RelatedAssociationPublisher $associationPublisher = null
     ) {
         $this->productManager  = $manager;
         $this->repository      = $repository;
         $this->eventDispatcher = $eventDispatcher;
         $this->publisher = $publisher;
         $this->unpublisher = $unpublisher;
+        $this->associationPublisher = $associationPublisher;
     }
 
     /**
@@ -124,10 +132,11 @@ class PublishedProductManager
      * Publish a product
      *
      * @param ProductInterface $product
+     * @param array            $publishOptions
      *
      * @return PublishedProductInterface
      */
-    public function publish(ProductInterface $product)
+    public function publish(ProductInterface $product, array $publishOptions = [])
     {
         $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $product);
 
@@ -138,7 +147,7 @@ class PublishedProductManager
             $this->getObjectManager()->flush();
         }
 
-        $published = $this->publisher->publish($product);
+        $published = $this->publisher->publish($product, $publishOptions);
         $this->getObjectManager()->persist($published);
         $this->getObjectManager()->flush();
 
@@ -160,6 +169,34 @@ class PublishedProductManager
         $this->getObjectManager()->remove($published);
         $this->getObjectManager()->flush();
         $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
+    }
+
+    /**
+     * Publish all associations where products appears in owner or owned side
+     *
+     * For instance,
+     *  A1- P1 -> cross-sell -> P2
+     *  A2- P3 -> cross-sell -> P4
+     *
+     * If P1 is passed in $products, association A1 is refreshed
+     * If P4 is passed in $products, association A2 is refreshed
+     *
+     * @param ProductInterface[] $products
+     */
+    public function publishAssociations(array $products)
+    {
+        foreach ($products as $product) {
+            $published = $this->findPublishedProductByOriginal($product);
+            foreach ($product->getAssociations() as $association) {
+                $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
+                $published->addAssociation($copiedAssociation);
+            }
+            // TODO : drop this if when merge on master
+            if ($this->associationPublisher !== null) {
+                $this->associationPublisher->publish($published);
+            }
+        }
+        $this->getObjectManager()->flush();
     }
 
     /**

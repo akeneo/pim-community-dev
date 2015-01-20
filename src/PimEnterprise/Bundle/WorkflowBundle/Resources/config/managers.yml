@@ -11,6 +11,7 @@ services:
             - '@event_dispatcher'
             - '@pimee_workflow.publisher.chained'
             - '@pimee_workflow.unpublisher.product'
+            - '@pimee_workflow.publisher.product_related_association'
 
     pimee_workflow.manager.published_product_category:
         class: %pim_catalog.manager.product_category.class%

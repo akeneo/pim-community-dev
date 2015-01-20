@@ -1,3 +1,8 @@
+# 1.0.x
+
+## Bug fixes
+- PIM-3636: Fix the failing publish of associations when mass publish products
+
 # 1.0.14 (2015-01-16)
 
 ## Bug fixes
