@@ -45,7 +45,8 @@ services:
     pim_enrich.form.subscriber.transform_product_template_values:
         class: %pim_enrich.form.subscriber.transform_product_template_values.class%
         arguments:
-            - '@pim_enrich.form.data_transformer.product_template_values'
+            - '@pim_serializer'
+            - '@pim_serializer'
 
     pim_enrich.form.subscriber.add_variant_group_template:
         class: %pim_enrich.form.subscriber.add_variant_group_template.class%

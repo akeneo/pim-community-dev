@@ -43,7 +43,6 @@ class PimEnrichExtension extends Extension
         $loader->load('resolvers.yml');
         $loader->load('serializers.yml');
         $loader->load('twig.yml');
-        $loader->load('data_transformers.yml');
         $loader->load('view_updaters.yml');
         $loader->load('view_elements.yml');
 

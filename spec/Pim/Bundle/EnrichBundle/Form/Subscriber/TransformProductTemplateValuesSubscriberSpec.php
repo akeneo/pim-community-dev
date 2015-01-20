@@ -5,15 +5,16 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ProductTemplateValuesTransformer;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TransformProductTemplateValuesSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductTemplateValuesTransformer $transformer)
+    function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
     {
-        $this->beConstructedWith($transformer);
+        $this->beConstructedWith($normalizer, $denormalizer);
     }
 
     function it_is_initializable()
@@ -37,14 +38,14 @@ class TransformProductTemplateValuesSubscriberSpec extends ObjectBehavior
     }
 
     function it_sets_denormalized_values_to_product_template_before_setting_form_data(
-        $transformer,
+        $denormalizer,
         FormEvent $event,
         ProductTemplateInterface $template,
         ProductValueInterface $value
     ) {
         $event->getData()->willReturn($template);
         $template->getValuesData()->willReturn(['foo' => 'bar']);
-        $transformer->transform(['foo' => 'bar'])->willReturn([$value]);
+        $denormalizer->denormalize(['foo' => 'bar'], 'ProductValue[]', 'json')->willReturn([$value]);
 
         $template->setValues([$value])->shouldBeCalled();
 
@@ -52,14 +53,14 @@ class TransformProductTemplateValuesSubscriberSpec extends ObjectBehavior
     }
 
     function it_updates_product_template_normalized_values_after_submitting_the_form(
-        $transformer,
+        $normalizer,
         FormEvent $event,
         ProductTemplateInterface $template,
         ProductValueInterface $value
     ) {
         $event->getData()->willReturn($template);
         $template->getValues()->willReturn([$value]);
-        $transformer->reverseTransform([$value])->willReturn(['foo' => 'bar']);
+        $normalizer->normalize([$value], 'json', ['entity' => 'product'])->willReturn(['foo' => 'bar']);
 
         $template->setValuesData(['foo' => 'bar'])->shouldBeCalled();
 

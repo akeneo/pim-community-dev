@@ -232,6 +232,14 @@ pim_enrich_group_edit_attributes:
     type: action
     label: pim_enrich.acl.group.edit_attributes
     group_name: pim_enrich.acl_group.group
+pim_enrich_group_add_attributes:
+    type: action
+    label: pim_enrich.acl.group.add_attributes
+    group_name: pim_enrich.acl_group.group
+pim_enrich_group_remove_attribute:
+    type: action
+    label: pim_enrich.acl.group.remove_attribute
+    group_name: pim_enrich.acl_group.group
 
 # Group type
 pim_enrich_group_type_index:
