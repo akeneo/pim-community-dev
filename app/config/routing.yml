@@ -36,6 +36,9 @@ pim_pdf_generator:
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
 
+pim_catalog_rule:
+    resource: "@PimEnterpriseCatalogRuleBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:

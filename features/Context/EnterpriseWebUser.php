@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Mink\Driver\Selenium2Driver;
 use Context\WebUser as BaseWebUser;
 
 /**
@@ -55,6 +56,25 @@ class EnterpriseWebUser extends BaseWebUser
                     $fieldName,
                     $expected,
                     $actual
+                )
+            );
+        }
+    }
+
+    /**
+     * @Then /^I should see the smart attribute tooltip$/
+     */
+    public function iShouldSeeTheTooltip()
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = 'return $(\'.icon-code-fork[data-async-content]\').length > 0';
+            $found = $this->getSession()->evaluateScript($script);
+            if ($found) {
+                return;
+            }
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see smart attribute tooltip'
                 )
             );
         }

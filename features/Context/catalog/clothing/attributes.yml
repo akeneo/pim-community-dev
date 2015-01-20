@@ -260,6 +260,14 @@ attributes:
         sortOrder:   10
         metricFamily: Length
         defaultMetricUnit: CENTIMETER
+    width:
+        labels:
+            en_US: Width
+        type:  pim_catalog_metric
+        group: sizes
+        sortOrder:   10
+        metricFamily: Length
+        defaultMetricUnit: CENTIMETER
     number_in_stock:
         labels:
             en_US: Number in stock

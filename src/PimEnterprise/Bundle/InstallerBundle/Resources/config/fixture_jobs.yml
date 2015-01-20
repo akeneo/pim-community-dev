@@ -38,3 +38,13 @@ jobs:
         configuration:
             filePath: locale_accesses.yml
             multiple: false
+
+    fixtures_rule_yml:
+        order:     70
+        connector: Data fixtures
+        alias:     fixtures_rule_yml
+        label:     rules data fixtures
+        type:      fixtures
+        configuration:
+            filePath: rules.yml
+            multiple: false

@@ -1,7 +1,6 @@
 parameters:
     pimee_workflow.form.subscriber.collect_product_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber
     pimee_workflow.form.subscriber.collect_product_mass_edit_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductMassEditValuesSubscriber
-    pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
 
 services:
     pimee_workflow.form.subscriber.collect_product_value_changes:
@@ -20,13 +19,3 @@ services:
             - '@pim_catalog.manager.media'
             - '@pim_catalog.factory.media'
             - '@pim_catalog.repository.locale'
-
-    ##
-    # Product form view decorator
-    ##
-    pimee_workflow.form.type.product.highlight_modified_values_view:
-        class: %pimee_workflow.form.type.product.highlight_modified_values_view.class%
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pimee_workflow.applier.product_draft_changes_applier'
-            - '@router'
