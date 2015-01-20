@@ -27,7 +27,6 @@ class PimEnrichExtension extends Extension
         $loader->load('attribute_icons.yml');
         $loader->load('colors.yml');
         $loader->load('controllers.yml');
-        $loader->load('data_transformers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_listeners.yml');
