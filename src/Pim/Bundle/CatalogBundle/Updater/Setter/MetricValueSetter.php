@@ -83,6 +83,7 @@ class MetricValueSetter extends AbstractValueSetter
                 'data',
                 'setter',
                 'metric',
+                //TODO: change getype by print_r
                 gettype($data)
             );
         }
@@ -93,6 +94,7 @@ class MetricValueSetter extends AbstractValueSetter
                 'unit',
                 'setter',
                 'metric',
+                //TODO: change getype by print_r
                 gettype($data)
             );
         }
@@ -103,6 +105,7 @@ class MetricValueSetter extends AbstractValueSetter
                 'data',
                 'setter',
                 'metric',
+                //TODO: change getype
                 gettype($data)
             );
         }
@@ -113,6 +116,7 @@ class MetricValueSetter extends AbstractValueSetter
                 'unit',
                 'setter',
                 'metric',
+                //TODO: change getype
                 gettype($data)
             );
         }
@@ -121,6 +125,8 @@ class MetricValueSetter extends AbstractValueSetter
             $data['unit'],
             $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())
         )) {
+
+            //TODO: change msg exception
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'unit',

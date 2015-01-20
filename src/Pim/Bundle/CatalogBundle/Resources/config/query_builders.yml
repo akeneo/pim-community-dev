@@ -90,6 +90,8 @@ services:
         class: %pim_catalog.doctrine.query.filter.metric.class%
         arguments:
             - @pim_catalog.validator.helper.attribute
+            - @akeneo_measure.manager
+            - @akeneo_measure.measure_converter
             - ['pim_catalog_metric']
             - ['<', '<=', '=', '>=', '>', 'EMPTY']
         tags:
