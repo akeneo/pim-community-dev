@@ -130,16 +130,15 @@ class Paginator implements PaginatorInterface
     private function getNextDataPage()
     {
         $result = [];
-
-        for ($i = 0; $i < $this->pageSize; $i++) {
-            $this->cursor->next();
+        $i=0;
+        do {
             $current = $this->cursor->current();
-            if ($current != null) {
+            if ($current !== false) {
                 $result[] = $current;
-            } else {
-                break;
             }
-        }
+            $i++;
+            $this->cursor->next();
+        } while ($i < $this->pageSize && $current !== false);
 
         if (empty($result)) {
             return false;
