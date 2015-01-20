@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
 
 /**
- * Class AbstractCursor to iterate product
+ * Class AbstractCursor to iterate items
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -14,16 +14,8 @@ abstract class AbstractCursor implements CursorInterface
     /** @var int */
     protected $position;
 
-    /** @var  QueryBuilder depending on the implementation */
+    /** @var mixed QueryBuilder depending on the implementation */
     protected $queryBuilder;
-
-    /**
-     * @param $query
-     */
-    public function __construct($queryBuilder)
-    {
-        $this->queryBuilder = clone $queryBuilder;
-    }
 
     /**
      * {@inheritdoc}
@@ -50,9 +42,9 @@ abstract class AbstractCursor implements CursorInterface
     {
         if ($this->valid()) {
             return $this->position;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**

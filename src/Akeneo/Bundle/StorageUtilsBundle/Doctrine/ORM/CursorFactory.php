@@ -15,7 +15,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 class CursorFactory implements CursorFactoryInterface
 {
     /** @var string */
-    protected $cursorClass = null;
+    protected $cursorClass;
 
     /** @var EntityManager */
     protected $entityManager;
@@ -27,7 +27,7 @@ class CursorFactory implements CursorFactoryInterface
     protected $pageSize;
 
     /**
-     * @param string        $cursorClass class name implementation
+     * @param string        $cursorClass   class name implementation
      * @param EntityManager $entityManager
      * @param int           $pageSize
      */
@@ -44,11 +44,12 @@ class CursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, $pageSize=null)
+    public function createCursor($queryBuilder, $pageSize = null)
     {
-        if ($pageSize==null) {
+        if ($pageSize == null) {
             $pageSize = $this->pageSize;
         }
+
         return new $this->cursorClass($queryBuilder, $this->entityManager, $pageSize);
     }
 }

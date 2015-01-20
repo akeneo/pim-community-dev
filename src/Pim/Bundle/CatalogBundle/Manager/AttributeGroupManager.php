@@ -118,7 +118,7 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
      * Add attributes to a group
      *
      * @param AttributeGroupInterface $group
-     * @param AttributeInterface[] $attributes
+     * @param AttributeInterface[]    $attributes
      */
     public function addAttributes(AttributeGroupInterface $group, $attributes)
     {

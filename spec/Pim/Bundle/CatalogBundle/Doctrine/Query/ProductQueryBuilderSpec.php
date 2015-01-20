@@ -26,8 +26,13 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         QueryBuilder $qb
     ) {
-        $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry, $cursorFactory,
-            ['locale' => 'en_US', 'scope' => 'print']);
+        $this->beConstructedWith(
+            $repository,
+            $filterRegistry,
+            $sorterRegistry,
+            $cursorFactory,
+            ['locale' => 'en_US', 'scope' => 'print']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -59,8 +64,13 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $filter->addAttributeFilter($attribute, '=', '42', 'en_US', 'print',
-            ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku'])->shouldBeCalled();
+        $filter->addAttributeFilter(
+            $attribute,
+            '=', '42',
+            'en_US',
+            'print',
+            ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku']
+        )->shouldBeCalled();
 
         $this->addFilter('sku', '=', '42', []);
     }
@@ -70,7 +80,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $repository->findOneBy(['code' => 'id'])->willReturn(null);
         $sorterRegistry->getFieldSorter('id')->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $sorter->addFieldSorter( 'id', 'DESC', 'en_US', 'print')->shouldBeCalled();
+        $sorter->addFieldSorter('id', 'DESC', 'en_US', 'print')->shouldBeCalled();
 
         $this->addSorter('id', 'DESC', []);
     }

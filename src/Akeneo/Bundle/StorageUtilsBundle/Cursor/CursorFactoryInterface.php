@@ -14,8 +14,8 @@ interface CursorFactoryInterface
     /**
      * Create the cursor with the correct implementation
      *
-     * @param $queryBuilder
-     * @param $pageSize     Optionnal page size for reading data
+     * @param mixed    $queryBuilder Query builder
+     * @param int|null $pageSize     Optional page size for reading data
      *
      * @return CursorInterface
      */

@@ -33,11 +33,11 @@ class AkeneoStorageUtilsExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         self::$storageDriver = $config['storage_driver'];
 
-        $container->setParameter($this->getAlias().'.storage_driver', $this->getStorageDriver());
+        $container->setParameter($this->getAlias() . '.storage_driver', $this->getStorageDriver());
         // Parameter defining if the mapping driver must be enabled or not
-        $container->setParameter($this->getAlias().'.storage_driver.'.$this->getStorageDriver(), true);
+        $container->setParameter($this->getAlias() . '.storage_driver.' . $this->getStorageDriver(), true);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('doctrine.yml');
         $loader->load('factories.yml');
 
@@ -65,16 +65,22 @@ class AkeneoStorageUtilsExtension extends Extension
      * Load the mapping for application storage
      *
      * TODO: rename this method
+     *
      * @param ContainerBuilder $container
      * @param string           $path
      */
     protected function loadStorageDriver(ContainerBuilder $container, $path)
     {
         if (!in_array($this->getStorageDriver(), $this->getSupportedStorageDrivers())) {
-            throw new \RuntimeException(sprintf('The storage driver "%s" is not supported.', $this->getStorageDriver()));
+            throw new \RuntimeException(
+                sprintf(
+                    'The storage driver "%s" is not supported.',
+                    $this->getStorageDriver()
+                )
+            );
         }
 
-        $loader = new YamlFileLoader($container, new FileLocator($path.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator($path . '/../Resources/config'));
         $loader->load(sprintf('storage_driver/%s.yml', $this->getStorageDriver()));
     }
 }

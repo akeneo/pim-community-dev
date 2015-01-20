@@ -28,7 +28,7 @@ class Paginator implements PaginatorInterface
 
     /**
      * @param CursorInterface $cursor
-     * @param                 $pageSize
+     * @param int             $pageSize
      */
     public function __construct(CursorInterface $cursor, $pageSize)
     {
@@ -38,7 +38,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getPageSize()
     {
@@ -46,9 +46,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * @param $pageSize
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setPageSize($pageSize)
     {
@@ -58,7 +56,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getPageNumber()
     {
@@ -93,9 +91,9 @@ class Paginator implements PaginatorInterface
     {
         if ($this->valid()) {
             return $this->pageNumber;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -130,20 +128,20 @@ class Paginator implements PaginatorInterface
     private function getNextDataPage()
     {
         $result = [];
-        $i=0;
+        $i = 0;
         do {
             $current = $this->cursor->current();
-            if ($current !== false) {
+            if (null !== $current && false !== $current) {
                 $result[] = $current;
             }
             $i++;
             $this->cursor->next();
-        } while ($i < $this->pageSize && $current !== false);
+        } while ($i < $this->pageSize && null !== $current && false !== $current);
 
         if (empty($result)) {
             return false;
-        } else {
-            return $result;
         }
+
+        return $result;
     }
 }

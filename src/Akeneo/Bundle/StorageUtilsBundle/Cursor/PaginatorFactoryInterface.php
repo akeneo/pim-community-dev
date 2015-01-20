@@ -13,10 +13,10 @@ interface PaginatorFactoryInterface
     /**
      * Create the paginator with the correct implementation and parameters from context
      *
-     * @param  CursorInterface $cursor
-     * @param  int             $pageSize Optionnal page size if it needs to override those specified in factory.
+     * @param CursorInterface $cursor
+     * @param int             $pageSize Optionnal page size if it needs to override those specified in factory.
      *
      * @return PaginatorInterface
      */
-    public function createPaginator(CursorInterface $cursor, $pageSize=null);
+    public function createPaginator(CursorInterface $cursor, $pageSize = null);
 }

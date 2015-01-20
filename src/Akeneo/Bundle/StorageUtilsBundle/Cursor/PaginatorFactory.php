@@ -21,10 +21,8 @@ class PaginatorFactory implements PaginatorFactoryInterface
      * @param string $paginatorClass class name implementation
      * @param int    $pageSize
      */
-    public function __construct(
-        $paginatorClass,
-        $pageSize
-    ) {
+    public function __construct($paginatorClass, $pageSize)
+    {
         $this->paginatorClass = $paginatorClass;
         $this->pageSize = $pageSize;
     }
@@ -32,9 +30,9 @@ class PaginatorFactory implements PaginatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createPaginator(CursorInterface $cursor, $pageSize=null)
+    public function createPaginator(CursorInterface $cursor, $pageSize = null)
     {
-        if ($pageSize===null) {
+        if (null === $pageSize) {
             $pageSize = $this->pageSize;
         }
 

@@ -15,26 +15,26 @@ use LogicException;
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-  */
+ */
 class Cursor extends AbstractCursor
 {
     /** @var int */
     protected $position = 0;
 
     /** @var array */
-    protected $entitiesIds = null;
+    protected $entitiesIds;
 
     /** @var int */
-    protected $count = null;
+    protected $count;
 
     /** @var \ArrayIterator */
-    protected $entitiesPage = null;
+    protected $entitiesPage;
 
-    /** @var EntityManager  */
+    /** @var EntityManager */
     protected $entityManager;
 
     /** @var ModelRepositoryInterface */
-    protected $repository = null;
+    protected $repository;
 
     /** @var int */
     protected $pageSize;
@@ -82,7 +82,7 @@ class Cursor extends AbstractCursor
      */
     public function count()
     {
-        if ($this->count === null) {
+        if (null === $this->count) {
             $this->count = count($this->getEntitiesIds());
         }
 
@@ -107,7 +107,7 @@ class Cursor extends AbstractCursor
      */
     protected function getEntitiesIds()
     {
-        if ($this->entitiesIds === null) {
+        if (null === $this->entitiesIds) {
             $rootAlias = current($this->queryBuilder->getRootAliases());
             $rootIdExpr = sprintf('%s.id', $rootAlias);
 
@@ -122,6 +122,7 @@ class Cursor extends AbstractCursor
             $results = $this->queryBuilder->getQuery()->getArrayResult();
             $this->entitiesIds = array_keys($results);
         }
+
         return $this->entitiesIds;
     }
 
@@ -139,11 +140,16 @@ class Cursor extends AbstractCursor
      */
     protected function getRepository()
     {
-        if ($this->repository === null) {
+        if (null === $this->repository) {
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
             $this->repository = $this->entityManager->getRepository($entityClass);
             if (!($this->repository instanceof ModelRepositoryInterface)) {
-                throw new LogicException(sprintf('%s repository must implement ModelRepositoryInterface', $entityClass));
+                throw new LogicException(
+                    sprintf(
+                        '%s repository must implement ModelRepositoryInterface',
+                        $entityClass
+                    )
+                );
             }
         }
 
@@ -151,13 +157,15 @@ class Cursor extends AbstractCursor
     }
 
     /**
+     * Get next entity
      *
+     * @return bool|mixed
      */
     protected function getNextEntity()
     {
         $entity = false;
 
-        if ($this->entitiesPage === null || !$this->entitiesPage->valid()) {
+        if (null === $this->entitiesPage || !$this->entitiesPage->valid()) {
             $this->entitiesPage = $this->getNextEntitiesPage();
         }
         if ($this->entitiesPage !== null) {
@@ -169,7 +177,7 @@ class Cursor extends AbstractCursor
     }
 
     /**
-     * Get next products batch from DB
+     * Get next entities batch from DB
      *
      * @return \ArrayIterator
      */

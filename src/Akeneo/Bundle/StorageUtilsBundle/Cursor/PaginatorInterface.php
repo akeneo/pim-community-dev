@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
 
 /**
- * Class Paginator that paginate over cursors
+ * interface PaginatorInterface that paginate over cursors
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -18,8 +18,13 @@ interface PaginatorInterface extends \Countable, \Iterator
 
     /**
      * @param $pageSize
+     *
      * @return $this
      */
     public function setPageSize($pageSize);
 
+    /**
+     * @return int
+     */
+    public function getPageNumber();
 }

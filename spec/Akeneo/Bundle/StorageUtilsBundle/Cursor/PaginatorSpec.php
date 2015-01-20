@@ -9,18 +9,18 @@ class PaginatorSpec extends ObjectBehavior
 {
     const PAGE_SIZE = 10;
 
-    public function let(CursorInterface $cursor)
+    function let(CursorInterface $cursor)
     {
         $this->beConstructedWith($cursor, self::PAGE_SIZE);
     }
 
-    public function it_is_initializable()
+    function it_is_a_paginator()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface');
     }
 
-    public function it_iterate_by_page_over_cursor(CursorInterface $cursor)
+    function it_iterate_by_page_over_cursor(CursorInterface $cursor)
     {
         $page1 = [
             new Entity(1),
@@ -40,15 +40,17 @@ class PaginatorSpec extends ObjectBehavior
         $cursor->count()->shouldBeCalled()->willReturn(13);
         $cursor->next()->shouldBeCalled()->will(function () use ($cursor, &$data) {
             $item = array_shift($data);
-            if ($item===null)
-                $item=false;
+            if ($item === null) {
+                $item = false;
+            }
             $cursor->current()->willReturn($item);
         });
         $cursor->rewind()->shouldBeCalled()->will(function () use ($cursor, &$data, $page1, $page2) {
             $data = array_merge($page1, $page2);
             $item = array_shift($data);
-            if ($item===null)
-                $item=false;
+            if ($item === null) {
+                $item = false;
+            }
             $cursor->current()->willReturn($item);
         });
 
@@ -78,27 +80,25 @@ class PaginatorSpec extends ObjectBehavior
         $this->current()->shouldReturn($page1);
         $this->key()->shouldReturn(0);
         $this->key()->shouldReturn(0);
-
     }
 
-    public function it_is_countable(CursorInterface $cursor)
+    function it_is_countable(CursorInterface $cursor)
     {
         $this->shouldImplement('\Countable');
 
         $cursor->count()->shouldBeCalled()->willReturn(13);
 
+        // page size is 10 : so 1 page of 10 elements and a second of 3
         $this->shouldHaveCount(2);
     }
 }
 
 class Entity
 {
-
     protected $id;
 
     public function __construct($id)
     {
         $this->id = $id;
     }
-
 }
