@@ -97,6 +97,100 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
+     * @param string $name
+     * @param string $key
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function arrayKeyExpected($name, $key, $action, $type, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects an array with the key "%s" as data, "%s" given (for %s %s).',
+                $name,
+                $key,
+                $data,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $key
+     * @param string $because
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function arrayInvalidKey($name, $key, $because, $action, $type, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects an array with valid data for the key "%s". %s, "%s" given (for %s %s).',
+                $name,
+                $key,
+                $because,
+                $data,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $key
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function arrayNumericKeyExpected($name, $key, $action, $type, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects an array with numeric data for the key "%s", "%s" given (for %s %s).',
+                $name,
+                $key,
+                $data,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $key
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function arrayStringKeyExpected($name, $key, $action, $type, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects an array with string data for the key "%s", "%s" given (for %s %s).',
+                $name,
+                $key,
+                $data,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
      * @param \Exception $exception
      * @param string     $name
      * @param string     $action

@@ -170,7 +170,6 @@ services:
             - '@pim_filter.product_utility'
             - '@translator'
             - '@akeneo_measure.manager'
-            - '@akeneo_measure.measure_converter'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_metric }
 

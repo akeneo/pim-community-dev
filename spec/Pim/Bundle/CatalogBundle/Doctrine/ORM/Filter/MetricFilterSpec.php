@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
@@ -12,9 +14,19 @@ use Prophecy\Argument;
 
 class MetricFilterSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $qb, AttributeValidatorHelper $attrValidatorHelper)
-    {
-        $this->beConstructedWith($attrValidatorHelper, ['pim_catalog_metric'], ['<', '<=', '=', '>=', '>', 'EMPTY']);
+    function let(
+        QueryBuilder $qb,
+        AttributeValidatorHelper $attrValidatorHelper,
+        MeasureManager $measureManager,
+        MeasureConverter $measureConverter
+    ) {
+        $this->beConstructedWith(
+            $attrValidatorHelper,
+            $measureManager,
+            $measureConverter,
+            ['pim_catalog_metric'],
+            ['<', '<=', '=', '>=', '>', 'EMPTY']
+        );
         $this->setQueryBuilder($qb);
     }
 
@@ -39,8 +51,13 @@ class MetricFilterSpec extends ObjectBehavior
         $this->supportsAttribute($attribute)->shouldReturn(false);
     }
 
-    function it_adds_a_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
-    {
+    function it_adds_a_filter_to_the_query(
+        $qb,
+        $measureManager,
+        $measureConverter,
+        $attrValidatorHelper,
+        AttributeInterface $attribute
+    ) {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
 
@@ -53,18 +70,23 @@ class MetricFilterSpec extends ObjectBehavior
         $qb->getRootAlias()->willReturn('r');
         $qb->expr()->willReturn(new Expr());
 
+        $value = ['data' => 16, 'unit' => 'CENTIMETER'];
+        $attribute->getMetricFamily()->willReturn('length');
+        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+        $measureConverter->setFamily('length')->shouldBeCalled();
+        $measureConverter->convertBaseToStandard('CENTIMETER', 16)->willReturn(0.16);
+
         $qb->innerJoin('r.values', 'filtermetric_code', 'WITH', 'filtermetric_code.attribute = 42')->shouldBeCalled();
         $qb
             ->innerJoin(
                 'filtermetric_code.metric',
                 'filterMmetric_code',
                 'WITH',
-                'filterMmetric_code.baseData = 16'
+                'filterMmetric_code.baseData = 0.16'
             )
-            ->shouldBeCalled()
-        ;
+            ->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, '=', 16);
+        $this->addAttributeFilter($attribute, '=', $value);
     }
 
     function it_adds_an_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute)
@@ -88,10 +110,51 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
 
-    function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
+    function it_throws_an_exception_if_value_is_not_an_valid_array(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('metric_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('metric_code', 'filter', 'metric'))
-            ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
+
+        $value = ['unit' => 'foo'];
+        $this->shouldThrow(
+            InvalidArgumentException::arrayKeyExpected('metric_code', 'data', 'filter', 'metric', print_r($value, true))
+        )
+            ->during('addAttributeFilter', [$attribute, '=', $value]);
+
+        $value = ['data' => 459];
+        $this->shouldThrow(
+            InvalidArgumentException::arrayKeyExpected('metric_code', 'unit', 'filter', 'metric', print_r($value, true))
+        )
+            ->during('addAttributeFilter', [$attribute, '=', $value]);
+
+        $value = ['data' => 'foo', 'unit' => 'foo'];
+        $this->shouldThrow(
+            InvalidArgumentException::arrayNumericKeyExpected('metric_code', 'data', 'filter', 'metric', 'string')
+        )
+            ->during('addAttributeFilter', [$attribute, '=', $value]);
+
+        $value = ['data' => 132, 'unit' => 42];
+        $this->shouldThrow(
+            InvalidArgumentException::arrayStringKeyExpected('metric_code', 'unit', 'filter', 'metric', 'integer')
+        )
+            ->during('addAttributeFilter', [$attribute, '=', $value]);
+    }
+
+    function it_throws_an_exception_if_value_had_not_a_valid_unit($measureManager, AttributeInterface $attribute)
+    {
+        $attribute->getMetricFamily()->willReturn('length');
+        $measureManager->getUnitSymbolsForFamily('length')->willReturn(['CENTIMETER' => 'cm', 'METER' => 'm', 'KILOMETER' => 'km']);
+
+        $attribute->getCode()->willReturn('metric_code');
+        $value = ['data' => 132, 'unit' => 'foo'];
+        $this->shouldThrow(
+            InvalidArgumentException::arrayInvalidKey(
+                'metric_code',
+                'unit',
+                'The unit "foo" does not exist in the attribute\'s family "length"',
+                'filter',
+                'metric',
+                'foo'
+            )
+        )->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 }
