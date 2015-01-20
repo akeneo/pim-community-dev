@@ -99,7 +99,8 @@ class VariantGroupAttributeController
         }
 
         $this->tplAttributesManager->addAttributes($template, $availableAttributes->getAttributes());
-        $this->groupSaver->save($group, ['copy_values_to_products' => true]);
+        // TODO : should be pass to true once issue with null values fixed
+        $this->groupSaver->save($group, ['copy_values_to_products' => false]);
         $this->addFlash($request, 'success', 'flash.variant group.attributes_added');
 
         return $this->redirectToRoute('pim_enrich_variant_group_edit', ['id' => $id]);
