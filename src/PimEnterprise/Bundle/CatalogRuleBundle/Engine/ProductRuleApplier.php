@@ -83,8 +83,7 @@ class ProductRuleApplier implements ApplierInterface
         CacheClearer $cacheClearer,
         TranslatorInterface $translator,
         $ruleDefinitionClass
-    )
-    {
+    ) {
         $this->productUpdater      = $productUpdater;
         $this->productValidator    = $productValidator;
         $this->productSaver        = $productSaver;

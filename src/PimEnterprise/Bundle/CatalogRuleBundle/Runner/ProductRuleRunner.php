@@ -42,7 +42,7 @@ class ProductRuleRunner implements DryRunnerInterface
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
      * @param string            $productCondClass should implement
-     *                                            \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
+     *                          \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
      */
     public function __construct(
         BuilderInterface $builder,
