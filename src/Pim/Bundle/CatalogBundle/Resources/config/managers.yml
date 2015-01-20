@@ -15,6 +15,7 @@ parameters:
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
     pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
+    pim_catalog.manager.product_template_attributes.class: Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager
     pim_catalog.applier.product_template.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
 
 services:
@@ -139,6 +140,14 @@ services:
             - '@pim_catalog.repository.association_type'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+
+    pim_catalog.manager.product_template_attributes:
+        class: %pim_catalog.manager.product_template_attributes.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_serializer'
+            - '@pim_catalog.builder.product'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.applier.product_template:
         class: %pim_catalog.applier.product_template.class%
