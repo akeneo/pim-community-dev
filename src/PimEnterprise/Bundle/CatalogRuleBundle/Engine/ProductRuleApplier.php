@@ -27,6 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 
 /**
  * Applies product rules via a batch.
@@ -118,7 +119,7 @@ class ProductRuleApplier implements ApplierInterface
 
         foreach ($paginator as $productsPage) {
             $this->updateProducts($productsPage, $rule->getActions());
-            $this->validateProducts($productsPage, $subjectSet);
+            $this->validateProducts($productsPage, $subjectSet, $rule);
             $this->saveProducts($productsPage, $savingContext);
 
             $this->cacheClearer->addNonClearableEntity($this->ruleDefinitionClass);
@@ -150,19 +151,19 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * @param array                   $products
      * @param RuleSubjectSetInterface $subjectSet
+     * @param RuleInterface           $rule
      */
-    protected function validateProducts(array $products, RuleSubjectSetInterface $subjectSet)
+    protected function validateProducts(array $products, RuleSubjectSetInterface $subjectSet, RuleInterface $rule)
     {
         foreach ($products as $product) {
             $violations = $this->productValidator->validate($product);
             if ($violations->count() > 0) {
                 $this->objectDetacher->detach($product);
                 $reasons = [];
-
                 foreach ($violations as $violation) {
                     $reasons[] = sprintf('%s : %s', $violation->getInvalidValue(), $violation->getMessage());
                 }
-                $subjectSet->skipSubject($product, $reasons);
+                $this->eventDispatcher->dispatch(RuleEvents::SKIPPED, new SkippedSubjectRuleEvent($rule, $subjectSet, $reasons));
             }
         }
     }

@@ -14,6 +14,7 @@ namespace Akeneo\Bundle\RuleEngineBundle\EventSubscriber;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -44,12 +45,13 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::PRE_BUILD   => 'preBuild',
-            RuleEvents::POST_BUILD  => 'postBuild',
-            RuleEvents::PRE_SELECT  => 'preSelect',
+            RuleEvents::PRE_BUILD => 'preBuild',
+            RuleEvents::POST_BUILD => 'postBuild',
+            RuleEvents::PRE_SELECT => 'preSelect',
+            RuleEvents::SKIPPED => 'skipped',
             RuleEvents::POST_SELECT => 'postSelect',
-            RuleEvents::PRE_APPLY   => 'preApply',
-            RuleEvents::POST_APPLY  => 'postApply'
+            RuleEvents::PRE_APPLY => 'preApply',
+            RuleEvents::POST_APPLY => 'postApply'
         ];
     }
 
@@ -90,6 +92,25 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Track skipped events
+     *
+     * @param SkippedSubjectRuleEvent $event
+     */
+    public function skipped(SkippedSubjectRuleEvent $event)
+    {
+        $skippedReasons = implode(', ', $event->getReasons());
+        $patternItem = static::NAME_PATTERN . ': subject "%s" has been skipped due to "%s".';
+        $messageItem = sprintf(
+            $patternItem,
+            $event->getDefinition()->getCode(),
+            RuleEvents::SKIPPED,
+            $event->getSubject()->getId(),
+            $skippedReasons
+        );
+        $this->logger->warning($messageItem);
+    }
+
+    /**
      * Track postSelect events
      *
      * @param SelectedRuleEvent $event
@@ -98,7 +119,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.': %s items selected.';
+        $pattern = static::NAME_PATTERN . ': %s items selected.';
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -117,7 +138,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.': %s items to update.';
+        $pattern = static::NAME_PATTERN . ': %s items to update.';
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -136,7 +157,7 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     {
         $ruleDefinition = $event->getDefinition();
         $subjectSet = $event->getSubjectSet();
-        $pattern = static::NAME_PATTERN.': %s items updated.';
+        $pattern = static::NAME_PATTERN . ': %s items updated.';
         $message = sprintf(
             $pattern,
             $ruleDefinition->getCode(),
@@ -144,44 +165,5 @@ class LogExecutionSubscriber implements EventSubscriberInterface
             count($subjectSet->getSubjectsCursor())
         );
         $this->logger->info($message);
-
-        $skippedSubjects = $subjectSet->getSkippedSubjects();
-        if (count($skippedSubjects) > 0) {
-            $this->logSkippedSubjects($ruleDefinition->getCode(), $skippedSubjects);
-        }
-    }
-
-    /**
-     * Log skipped subjects with reasons
-     *
-     * @param string $ruleCode
-     * @param array  $skippedSubjects
-     */
-    protected function logSkippedSubjects($ruleCode, $skippedSubjects)
-    {
-        if (count($skippedSubjects) > 0) {
-            $pattern = static::NAME_PATTERN.': %s subjects skipped.';
-            $message = sprintf(
-                $pattern,
-                $ruleCode,
-                RuleEvents::POST_APPLY,
-                count($skippedSubjects)
-            );
-            $this->logger->warning($message);
-
-            $patternItem = static::NAME_PATTERN.': subject "%s" has been skipped due to "%s".';
-            foreach ($skippedSubjects as $skippedItem) {
-                $skippedSubject = $skippedItem['subject'];
-                $skippedReasons = implode(', ', $skippedItem['reasons']);
-                $messageItem = sprintf(
-                    $patternItem,
-                    $ruleCode,
-                    RuleEvents::POST_APPLY,
-                    $skippedSubject->getId(),
-                    $skippedReasons
-                );
-                $this->logger->warning($messageItem);
-            }
-        }
     }
 }

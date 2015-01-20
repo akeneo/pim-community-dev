@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
@@ -249,6 +250,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         PaginatorFactoryInterface $paginatorFactory,
         PaginatorInterface $paginator,
         CursorInterface $cursor,
+        SkippedSubjectRuleEvent $skippedSubjectRuleEvent,
         $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
@@ -288,14 +290,14 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productValidator->validate($validProduct)->shouldBeCalled()->willReturn($emptyViolationList);
         $emptyViolationList->count()->willReturn(0);
 
+
         $productValidator->validate($invalidProduct)->shouldBeCalled()->willReturn($notEmptyViolationList);
         $notEmptyViolationList->count()->willReturn(1);
         $notEmptyViolationList->getIterator()->willReturn(new \ArrayIterator([]));
 
         $objectDetacher->detach($invalidProduct)->shouldBeCalled();
-        $subjectSet->skipSubject($invalidProduct, Argument::any())->shouldBeCalled();
-        $subjectSet->skipSubject($validProduct, Argument::any())->shouldNotBeCalled();
 
+        $eventDispatcher->dispatch(RuleEvents::SKIPPED, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);

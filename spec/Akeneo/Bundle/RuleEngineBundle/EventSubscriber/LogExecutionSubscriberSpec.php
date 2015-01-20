@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\EventSubscriber;
 
+use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
@@ -51,29 +52,25 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
         $event->getSubjectSet()->willReturn($subjectSet);
         $logger->info(Argument::any())->shouldBeCalled();
         $subjectSet->getSubjectsCursor()->willReturn([$subject]);
-        $subjectSet->getSkippedSubjects()->willReturn([]);
-
         $this->postApply($event);
     }
 
     function it_logs_post_apply_rule_error(
         $logger,
-        SelectedRuleEvent $event,
+        SkippedSubjectRuleEvent $event,
         RuleDefinitionInterface $definition,
-        RuleSubjectSetInterface $subjectSet,
         ProductInterface $subject
     ) {
         $event->getDefinition()->willReturn($definition);
-        $event->getSubjectSet()->willReturn($subjectSet);
-        $logger->info(Argument::any())->shouldBeCalled();
-        $subjectSet->getSubjectsCursor()->willReturn([$subject]);
-        $subjectSet->getSkippedSubjects()->willReturn([['subject' => $subject, 'reasons' => ['My name should be shorter']]]);
+        $event->getSubject()->willReturn($subject);
+        $reasons = ['My name should be shorter'];
+        $event->getReasons()->willReturn($reasons);
 
         $definition->getCode()->willReturn('rule_code');
         $subject->getId()->willReturn(42);
-        $logger->warning('Rule "rule_code", event "pim_rule_engine.rule.post_apply": 1 subjects skipped.')->shouldBeCalled();
-        $logger->warning('Rule "rule_code", event "pim_rule_engine.rule.post_apply": subject "42" has been skipped due to "My name should be shorter".')->shouldBeCalled();
 
-        $this->postApply($event);
+        $logger->warning('Rule "rule_code", event "pim_rule_engine.rule.skipped": subject "42" has been skipped due to "My name should be shorter".')->shouldBeCalled();
+
+        $this->skipped($event);
     }
 }
