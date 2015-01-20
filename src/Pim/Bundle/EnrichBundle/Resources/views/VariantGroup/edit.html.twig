@@ -16,6 +16,13 @@
 
 {% block content %}
 
+    {% if resource_granted('pim_enrich_group_add_attributes') %}
+        {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
+            'form': attributesForm,
+            'action': path('pim_enrich_variant_group_add_attributes', {'id': form.vars.data.id})
+        } %}
+    {% endif %}
+
     {{ JSFV(form) }}
     {{ form_start(form, {
         'action': path('pim_enrich_variant_group_edit', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),

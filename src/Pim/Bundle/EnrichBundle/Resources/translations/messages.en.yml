@@ -205,6 +205,8 @@ pim_enrich:
             edit: Edit a group
             remove: Remove a group
             history: View group history
+            add_attributes: Add attributes to variant groups
+            remove_attribute: Remove attributes from variant groups
         group_type:
             index: List group types
             create: Create a group type
@@ -367,6 +369,8 @@ confirmation:
         remove attribute: Are you sure you want to remove the attribute %name% from this family?
     product:
         remove attribute: Are you sure you want to remove the attribute %name% from this product?
+    variant_group:
+        remove_attribute: Are you sure you want to remove the attribute %name% from this variant group?
 
 # Flash messages
 flash:
@@ -429,6 +433,8 @@ flash:
         created: Variant group successfully created
         updated: Variant group successfully updated
         removed: Variant group successfully removed
+        attributes_added: Attributes successfully added to the variant group
+        attribute_removed: Attribute successfully removed from the variant group
     group type:
         created: Group type successfully created
         updated: Group type successfully updated
