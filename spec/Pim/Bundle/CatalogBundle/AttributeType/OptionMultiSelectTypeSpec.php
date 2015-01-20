@@ -70,4 +70,9 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
 
         $this->prepareValueFormData($value)->shouldReturnAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
     }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn('pim_catalog_multiselect');
+    }
 }

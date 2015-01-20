@@ -59,4 +59,9 @@ class TextTypeSpec extends ObjectBehavior
         $value->getData()->willReturn('my data');
         $this->prepareValueFormData($value)->shouldReturn('my data');
     }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn('pim_catalog_text');
+    }
 }

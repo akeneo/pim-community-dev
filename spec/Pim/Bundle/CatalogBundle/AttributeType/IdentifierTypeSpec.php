@@ -59,4 +59,9 @@ class IdentifierTypeSpec extends ObjectBehavior
         $value->getData()->willReturn('sku-001');
         $this->prepareValueFormData($value)->shouldReturn('sku-001');
     }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn('pim_catalog_identifier');
+    }
 }
