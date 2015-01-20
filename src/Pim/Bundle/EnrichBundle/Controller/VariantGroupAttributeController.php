@@ -4,11 +4,12 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Factory\ProductTemplateFactory;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Saver\GroupSaver;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,8 +34,11 @@ class VariantGroupAttributeController
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** @var GroupManager */
-    protected $groupManager;
+    /** @var GroupRepository */
+    protected $groupRepository;
+
+    /** @var GroupSaver */
+    protected $groupSaver;
 
     /** @var AttributeRepository */
     protected $attributeRepository;
@@ -48,7 +52,8 @@ class VariantGroupAttributeController
     /**
      * @param RouterInterface                  $router
      * @param FormFactoryInterface             $formFactory
-     * @param GroupManager                     $groupManager
+     * @param GroupRepository                  $groupRepository
+     * @param GroupSaver                       $groupSaver
      * @param AttributeRepository              $attributeRepository
      * @param ProductTemplateFactory           $templateFactory
      * @param ProductTemplateAttributesManager $tplAttributesManager
@@ -56,14 +61,16 @@ class VariantGroupAttributeController
     public function __construct(
         RouterInterface $router,
         FormFactoryInterface $formFactory,
-        GroupManager $groupManager,
+        GroupRepository $groupRepository,
+        GroupSaver $groupSaver,
         AttributeRepository $attributeRepository,
         ProductTemplateFactory $templateFactory,
         ProductTemplateAttributesManager $tplAttributesManager
     ) {
         $this->router               = $router;
         $this->formFactory          = $formFactory;
-        $this->groupManager         = $groupManager;
+        $this->groupRepository      = $groupRepository;
+        $this->groupSaver           = $groupSaver;
         $this->attributeRepository  = $attributeRepository;
         $this->templateFactory      = $templateFactory;
         $this->tplAttributesManager = $tplAttributesManager;
@@ -92,7 +99,7 @@ class VariantGroupAttributeController
         }
 
         $this->tplAttributesManager->addAttributes($template, $availableAttributes->getAttributes());
-        $this->groupManager->save($group);
+        $this->groupSaver->save($group, ['copy_values_to_products' => true]);
         $this->addFlash($request, 'success', 'flash.variant group.attributes_added');
 
         return $this->redirectToRoute('pim_enrich_variant_group_edit', ['id' => $id]);
@@ -118,7 +125,7 @@ class VariantGroupAttributeController
         $template = $group->getProductTemplate();
         if (null !== $template) {
             $this->tplAttributesManager->removeAttribute($template, $attribute);
-            $this->groupManager->save($group);
+            $this->groupSaver->save($group);
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -139,7 +146,7 @@ class VariantGroupAttributeController
      */
     protected function findVariantGroupOr404($id)
     {
-        $group = $this->groupManager->getRepository()->find($id);
+        $group = $this->groupRepository->find($id);
 
         if (!$group || !$group->getType()->isVariant()) {
             throw new NotFoundHttpException(

@@ -239,7 +239,8 @@ services:
         arguments:
             - '@router'
             - '@form.factory'
-            - '@pim_catalog.manager.group'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.saver.group'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.factory.product_template'
             - '@pim_catalog.manager.product_template_attributes'
