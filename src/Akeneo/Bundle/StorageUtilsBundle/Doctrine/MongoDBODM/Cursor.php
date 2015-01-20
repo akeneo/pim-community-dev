@@ -56,7 +56,7 @@ class Cursor extends AbstractCursor
     {
         $this->position = 0;
         $this->getCursor()->reset();
-        $this->currentDocument = $this->getCursor()->current();
+        $this->next();
     }
 
     /**
