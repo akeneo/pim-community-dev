@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -18,22 +19,28 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
+    /** @var CurrencyManager */
+    protected $currencyManager;
+
     /** @var array */
     protected $supportedAttributes;
 
     /**
-     * Instanciate the filter
+     * Instanciate the base filter
      *
      * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param CurrencyManager          $currencyManager
      * @param array                    $supportedAttributes
      * @param array                    $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
+        CurrencyManager $currencyManager,
         array $supportedAttributes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->currencyManager     = $currencyManager;
         $this->supportedAttributes = $supportedAttributes;
         $this->supportedOperators  = $supportedOperators;
     }
@@ -58,17 +65,12 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $options = []
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
+        $this->checkValue($attribute, $value);
 
-        if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'price');
-        }
-
-        list($data, $currency) = explode(' ', $value);
-        $data = (float) $data;
-
+        $data = (float) $value['data'];
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $field = sprintf('%s.%s', $field, $currency);
+        $field = sprintf('%s.%s', $field, $value['currency']);
         $fieldData = sprintf('%s.data', $field);
 
         $this->applyFilter($operator, $fieldData, $data);
@@ -103,6 +105,68 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
                 break;
             default:
                 $this->qb->field($fieldData)->equals($data);
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     */
+    protected function checkValue(AttributeInterface $attribute, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'price');
+        }
+
+        if (!array_key_exists('data', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'data',
+                'filter',
+                'price',
+                print_r($data, true)
+            );
+        }
+
+        if (!array_key_exists('currency', $data)) {
+            throw InvalidArgumentException::arrayKeyExpected(
+                $attribute->getCode(),
+                'currency',
+                'filter',
+                'price',
+                print_r($data, true)
+            );
+        }
+
+        if (!is_numeric($data['data']) && null !== $data['data']) {
+            throw InvalidArgumentException::arrayNumericKeyExpected(
+                $attribute->getCode(),
+                'data',
+                'filter',
+                'price',
+                gettype($data['data'])
+            );
+        }
+
+        if (!is_string($data['currency'])) {
+            throw InvalidArgumentException::arrayStringKeyExpected(
+                $attribute->getCode(),
+                'currency',
+                'filter',
+                'price',
+                gettype($data['currency'])
+            );
+        }
+
+        if (!in_array($data['currency'], $this->currencyManager->getActiveCodes())) {
+            throw InvalidArgumentException::arrayInvalidKey(
+                $attribute->getCode(),
+                'currency',
+                sprintf('The currency "%s" does not exist', $data['currency']),
+                'filter',
+                'price',
+                $data['currency']
+            );
         }
     }
 }
