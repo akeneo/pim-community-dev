@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
@@ -32,6 +33,7 @@ class RuleDefinitionProcessor extends AbstractProcessor
      * @param ReferableEntityRepositoryInterface $repository
      * @param DenormalizerInterface              $denormalizer
      * @param ValidatorInterface                 $validator
+     * @param ObjectDetacherInterface            $detacher
      * @param string                             $ruleDefinitionClass
      * @param string                             $ruleClass
      */
@@ -39,10 +41,11 @@ class RuleDefinitionProcessor extends AbstractProcessor
         ReferableEntityRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
         $ruleDefinitionClass,
         $ruleClass
     ) {
-        parent::__construct($repository, $denormalizer, $validator, $ruleDefinitionClass);
+        parent::__construct($repository, $denormalizer, $validator, $detacher, $ruleDefinitionClass);
 
         $this->ruleClass = $ruleClass;
     }
@@ -58,8 +61,8 @@ class RuleDefinitionProcessor extends AbstractProcessor
 
         $violations = $this->validator->validate($rule);
         if ($violations->count()) {
-            $this->handleConstraintViolationsOnItem($item, $violations);
-            // TODO: detach the $definition ?
+            // TODO detach ????
+            $this->skipItemWithConstraintViolations($item, $violations);
         }
 
         return $this->updateDefinitionFromRule($rule, $definition);
@@ -79,7 +82,8 @@ class RuleDefinitionProcessor extends AbstractProcessor
             $rule = $this->denormalizer
                 ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
         } catch (\LogicException $e) {
-            $this->handleExceptionOnItem($item, $e);
+            // TODO detach ????
+            $this->skipItemWithMessage($item, $e->getMessage());
         }
 
         return $rule;
