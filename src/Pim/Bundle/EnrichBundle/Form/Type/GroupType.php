@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
 /**
  * Type for group form
@@ -76,10 +76,7 @@ class GroupType extends AbstractType
                 array(
                     'class' => 'PimCatalogBundle:GroupType',
                     'query_builder' => function (EntityRepository $repository) {
-                        return $repository
-                            ->buildAll()
-                            ->andWhere('group_type.code != :variant')
-                            ->setParameter('variant', 'VARIANT');
+                        return $repository->getAllGroupsExceptVariantQB();
                     },
                     'multiple' => false,
                     'expanded' => false,

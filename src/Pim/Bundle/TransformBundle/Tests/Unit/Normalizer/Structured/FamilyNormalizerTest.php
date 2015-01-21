@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer;
-use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 /**
  * Family normalizer test

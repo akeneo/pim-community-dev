@@ -22,6 +22,8 @@ class GroupsProperty extends OroFieldProperty
             return null;
         }
 
+        $result = [];
+
         foreach ($value as $group) {
             if ($group['label'] !== '') {
                 $result[] = $group['label'];

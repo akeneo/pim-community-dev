@@ -12,7 +12,7 @@ Feature: Import invalid products
     And the following product:
       | sku         | publicPrice |
       | honda-civic |             |
-    And the following file to import:
+    And the following CSV file to import:
     """
     sku;publicPrice
     renault-kangoo;20000 EUR

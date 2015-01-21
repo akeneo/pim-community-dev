@@ -9,7 +9,6 @@ attributes:
         group: general
         required:            true
         unique:              true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
     name:
@@ -21,7 +20,6 @@ attributes:
         type:  pim_catalog_text
         group: general
         localizable:         true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
     description:
@@ -34,7 +32,6 @@ attributes:
         group: general
         localizable:         true
         scopable:            true
-        useableAsGridColumn: false
         useableAsGridFilter: true
         maxCharacters:       1000
         sortOrder:           3
@@ -69,7 +66,6 @@ attributes:
         type:  pim_catalog_text
         group: media
         localizable:         true
-        useableAsGridColumn: false
         useableAsGridFilter: false
         sortOrder:           3
     price:
@@ -80,7 +76,6 @@ attributes:
             de_DE: Preis
         type:  pim_catalog_price_collection
         group: sales
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           1000
@@ -95,7 +90,6 @@ attributes:
         type:  pim_catalog_simpleselect
         group: sales
         scopable:            true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
         options:
@@ -138,7 +132,6 @@ attributes:
         type:  pim_catalog_date
         group: sales
         scopable:            true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           3
     size:
@@ -149,7 +142,6 @@ attributes:
             de_DE: Größe
         type:  pim_catalog_simpleselect
         group: sizes
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -209,7 +201,6 @@ attributes:
             de_DE: Brustumfang
         type:  pim_catalog_simpleselect
         group: sizes
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
         options:
@@ -269,7 +260,6 @@ attributes:
             de_DE: Taillengröße
         type:  pim_catalog_simpleselect
         group: sizes
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           3
         options:
@@ -329,7 +319,6 @@ attributes:
             de_DE: Farbe
         type:  pim_catalog_simpleselect
         group: colors
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -383,7 +372,6 @@ attributes:
             de_DE: Zusätzliche Farben
         type:  pim_catalog_multiselect
         group: colors
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           2
         options:
@@ -444,7 +432,6 @@ attributes:
             de_DE: Hersteller
         type:  pim_catalog_simpleselect
         group: additional
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -498,7 +485,6 @@ attributes:
             de_DE: Herstellungsland
         type:  pim_catalog_simpleselect
         group: additional
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
         options:
@@ -552,8 +538,6 @@ attributes:
             de_DE: Handgefertigt
         type:  pim_catalog_boolean
         group: additional
-        defaultValue:        false
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           3
     weather_conditions:
@@ -564,7 +548,6 @@ attributes:
             de_DE: Wetterverhältnisse
         type:  pim_catalog_multiselect
         group: additional
-        useableAsGridColumn: false
         useableAsGridFilter: false
         sortOrder:           4
         options:
@@ -613,7 +596,6 @@ attributes:
         group: additional
         localizable:         true
         scopable:            true
-        useableAsGridColumn: false
         useableAsGridFilter: false
         maxCharacters:       1000
         sortOrder:           5
@@ -651,7 +633,6 @@ attributes:
             de_DE: Material
         type:  pim_catalog_simpleselect
         group: additional
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           8
         options:
@@ -712,7 +693,6 @@ attributes:
             de_DE: Zusätzliche Materialien
         type:  pim_catalog_multiselect
         group: additional
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           9
         options:
@@ -773,7 +753,6 @@ attributes:
             de_DE: Kosten
         type:  pim_catalog_price_collection
         group: internal
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           1000
@@ -789,7 +768,6 @@ attributes:
         type:  pim_catalog_number
         group: internal
         scopable:            true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           10000
@@ -807,7 +785,6 @@ attributes:
         localizable:         true
         availableLocales:
             - de_DE
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           1000

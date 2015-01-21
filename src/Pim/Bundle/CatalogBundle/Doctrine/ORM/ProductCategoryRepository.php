@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 
 /**
  * Product category repository
@@ -133,7 +132,6 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($include) {
             $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
-
         } else {
             $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
@@ -169,8 +167,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
                 ->select($rootAliasIn.'.id')
                 ->from($rootEntity, $rootAliasIn, $rootAliasIn.'.id')
                 ->leftJoin($rootAliasIn.'.categories', $alias)
-                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'))
-            ;
+                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'));
 
             $qb->andWhere($qb->expr()->notIn($rootAlias.'.id', $qbIn->getDQL()));
         }

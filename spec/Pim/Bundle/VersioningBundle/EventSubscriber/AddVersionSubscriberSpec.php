@@ -3,16 +3,9 @@
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\Event\PostFlushEventArgs;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AddVersionSubscriberSpec extends ObjectBehavior
 {

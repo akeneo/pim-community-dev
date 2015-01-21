@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 
 /**
  * Base value selector

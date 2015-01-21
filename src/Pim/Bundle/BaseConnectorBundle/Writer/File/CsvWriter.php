@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Write data into a csv file on the filesystem

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 
 /**
  * Repository
@@ -16,11 +17,15 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class AttributeGroupRepository extends ReferableEntityRepository
 {
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return AttributeGroupInterface
      */
-    public function buildAllWithTranslations()
+    public function findAllWithTranslations()
     {
-        return $this->build()->addSelect('translation')->leftJoin('attribute_group.translations', 'translation');
+        $qb = $this->createQueryBuilder('attribute_group')
+            ->addSelect('translation')
+            ->leftJoin('attribute_group.translations', 'translation');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -28,7 +33,8 @@ class AttributeGroupRepository extends ReferableEntityRepository
      */
     protected function buildAllOrderedBySortOrder()
     {
-        return $this->build()->orderBy('attribute_group.sortOrder');
+        return $this->createQueryBuilder('attribute_group')
+            ->orderBy('attribute_group.sortOrder');
     }
 
     /**
@@ -66,8 +72,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
 
     /**
      * Get the default attribute group
-     *
-     * @return null|AttributeGroup
+     * @return null|AttributeGroupInterface
      */
     public function findDefaultAttributeGroup()
     {
@@ -77,7 +82,7 @@ class AttributeGroupRepository extends ReferableEntityRepository
     /**
      * @param array $codes
      *
-     * @return AttributeGroup[]
+     * @return AttributeGroupInterface
      */
     public function getAttributeGroupsFromAttributeCodes(array $codes)
     {

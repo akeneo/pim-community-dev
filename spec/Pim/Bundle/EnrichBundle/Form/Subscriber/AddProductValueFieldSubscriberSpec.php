@@ -3,12 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
-use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class AddProductValueFieldSubscriberSpec extends ObjectBehavior
 {

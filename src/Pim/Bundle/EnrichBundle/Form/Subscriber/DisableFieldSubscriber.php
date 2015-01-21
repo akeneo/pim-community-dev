@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormConfigInterface;
 
 /**
  * Subscriber to disable field modification after the entity has been created

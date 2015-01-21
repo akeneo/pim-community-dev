@@ -1,0 +1,43 @@
+<div class="row-fluid">
+    {% include 'PimCommentBundle:Comment:reply.html.twig' %}
+</div>
+
+<script type="text/javascript">
+    require(['jquery', 'oro/messenger'], function($, messenger) {
+        $(function() {
+            $('#pim_comment_comment_reply_{{ comment.id }}').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ path('pim_comment_comment_reply')}}',
+                    type: 'POST',
+                    data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
+                    success: function(data) {
+                        $('#comment{{ comment.id }}').replaceWith(data);
+                        $('#pim_comment_comment_body_reply_{{ comment.id }}').val('');
+
+                        messenger.notificationFlashMessage('success', '{{ 'flash.comment.reply.success'|trans }}');
+                    },
+                    error: function(xhr) {
+                        messenger.notificationFlashMessage(
+                                'error',
+                                (xhr.responseJSON && xhr.responseJSON.message) ?
+                                        xhr.responseJSON.message :
+                                        '{{ 'flash.comment.reply.error'|trans }}'
+                        );
+                    }
+                });
+            });
+
+            $(".tab-comment .comment-thread").on("click", function() {
+                $(".tab-comment .active").removeClass("active");
+                $(this).addClass("active");
+            });
+
+            $(".tab-comment .cancel").on("click", function(e) {
+                e.stopPropagation();
+                $(".tab-comment .active").removeClass("active");
+                $(".tab-comment textarea").val('');
+            });
+        });
+    });
+</script>

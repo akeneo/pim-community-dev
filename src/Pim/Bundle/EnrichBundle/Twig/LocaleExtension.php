@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
-use \Twig_Environment;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Twig_Environment;
 
 /**
  * Twig extension to render locales from twig templates

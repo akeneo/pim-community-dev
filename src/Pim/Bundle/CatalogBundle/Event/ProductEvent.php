@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Filter event allows to know the create product

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * A normalizer to transform a group entity into an array
@@ -53,17 +53,17 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Group && in_array($format, $this->supportedFormats);
+        return $data instanceof GroupInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Normalize the attributes
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return array
      */
-    protected function normalizeAttributes(Group $group)
+    protected function normalizeAttributes(GroupInterface $group)
     {
         $attributes = array();
         foreach ($group->getAttributes() as $attribute) {

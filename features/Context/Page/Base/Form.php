@@ -33,7 +33,7 @@ class Form extends Base
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
                 'Available attributes search'     => array('css' => '.pimmultiselect input[type="search"]'),
                 'Available attributes add button' => array('css' => '.pimmultiselect a.btn:contains("Add")'),
-                'Updates grid'                    => array('css' => '#history table.grid'),
+                'Updates grid'                    => array('css' => '.tab-pane.tab-history table.grid'),
             ),
             $this->elements
         );

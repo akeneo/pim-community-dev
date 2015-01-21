@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * User context listener
@@ -22,7 +22,7 @@ use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
  */
 class UserContextListener implements EventSubscriberInterface
 {
-     /**
+    /**
      * @var SecurityContextInterface
      */
     protected $securityContext;
@@ -81,11 +81,11 @@ class UserContextListener implements EventSubscriberInterface
             return;
         }
 
-        // If there are no activated locales, skip configuring the listener and productmanager
         try {
             $this->configureTranslatableListener();
             $this->configureCatalogContext();
         } catch (\LogicException $e) {
+            // If there are no activated locales, skip configuring the listener and productmanager
         }
     }
 

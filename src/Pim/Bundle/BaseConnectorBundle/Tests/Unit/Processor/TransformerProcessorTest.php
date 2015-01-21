@@ -84,7 +84,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             ->method('transform')
             ->will(
                 $this->throwException(
-                    new ParametrizedException('exception %arg1%', array('%arg1%'=>'value'))
+                    new ParametrizedException('exception %arg1%', array('%arg1%' => 'value'))
                 )
             );
         $this->createProcessor()->process($this->data);
@@ -106,7 +106,7 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             ->method('validate')
             ->will(
                 $this->throwException(
-                    new ParametrizedException('exception %arg1%', array('%arg1%'=>'value'))
+                    new ParametrizedException('exception %arg1%', array('%arg1%' => 'value'))
                 )
             );
 
@@ -123,11 +123,11 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
                 $this->returnValue(
                     array(
                         'field1' => array(
-                            array('exception %arg1%', array('%arg1%'=>'value1')),
-                            array('exception %arg2%', array('%arg2%'=>'value1')),
+                            array('exception %arg1%', array('%arg1%' => 'value1')),
+                            array('exception %arg2%', array('%arg2%' => 'value1')),
                         ),
                         'field2' => array(
-                            array('exception %arg3%', array('%arg3%'=>'value3')),
+                            array('exception %arg3%', array('%arg3%' => 'value3')),
                         )
                     )
                 )
@@ -157,8 +157,8 @@ class TransformerProcessorTest extends TransformerProcessorTestCase
             $this->validator,
             $this->translator,
             $this->transformer,
+            $this->managerRegistry,
             'class',
-            null,
             $skipEmpty
         );
 

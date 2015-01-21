@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid;
 
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Extract request parameters from Oro RequestParameters and fallback on Request, idea is to wrap

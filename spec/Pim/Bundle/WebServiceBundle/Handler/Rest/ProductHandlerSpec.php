@@ -3,15 +3,13 @@
 namespace spec\Pim\Bundle\WebServiceBundle\Handler\Rest;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductHandlerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer) {
+    function let(SerializerInterface $serializer)
+    {
         $this->beConstructedWith($serializer);
     }
 

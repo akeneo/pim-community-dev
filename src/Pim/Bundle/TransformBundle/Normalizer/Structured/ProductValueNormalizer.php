@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Normalize a product value into an array

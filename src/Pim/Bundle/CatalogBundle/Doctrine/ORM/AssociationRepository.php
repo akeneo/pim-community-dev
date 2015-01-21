@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -23,7 +23,7 @@ class AssociationRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function countForAssociationType(AssociationType $associationType)
+    public function countForAssociationType(AssociationTypeInterface $associationType)
     {
         $qb = $this->createQueryBuilder('pa');
 

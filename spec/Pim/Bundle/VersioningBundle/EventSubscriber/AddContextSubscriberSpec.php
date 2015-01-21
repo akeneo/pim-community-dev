@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Prophecy\Argument;
 
 class AddContextSubscriberSpec extends ObjectBehavior
 {

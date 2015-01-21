@@ -16,10 +16,14 @@ class GroupTypeRepository extends ReferableEntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function buildAll()
+    public function getAllGroupsExceptVariantQB()
     {
-        return $this->build()
+        $qb = $this->createQueryBuilder('group_type')
+            ->andWhere('group_type.code != :variant')
+            ->setParameter('variant', 'VARIANT')
             ->addOrderBy('group_type.code', 'ASC');
+
+        return $qb;
     }
 
     /**

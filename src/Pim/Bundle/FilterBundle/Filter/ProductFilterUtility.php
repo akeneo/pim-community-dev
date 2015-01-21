@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 
 /**
  * Product filter utility
@@ -16,44 +14,17 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class ProductFilterUtility extends BaseFilterUtility
 {
-    /** @var ProductManager */
-    protected $productManager;
-
     /**
-     * @param ProductManager $manager
-     */
-    public function __construct(ProductManager $manager)
-    {
-        $this->productManager = $manager;
-    }
-
-    /**
-     * @return ProductManager
-     */
-    public function getProductManager()
-    {
-        return $this->productManager;
-    }
-
-    /**
-     * @return ProductRepositoryInterface
-     */
-    public function getProductRepository()
-    {
-        return $this->productManager->getProductRepository();
-    }
-
-    /**
-     * @param string $code
+     * Applies filter to query by attribute
      *
-     * @return AbstractAttribute
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $field
+     * @param string                           $operator
+     * @param mixed                            $value
      */
-    public function getAttribute($code)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $attributeRepo = $this->productManager->getAttributeRepository();
-        $attribute     = $attributeRepo->findOneByCode($code);
-
-        return $attribute;
+        $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
     }
 
     /**
@@ -63,15 +34,11 @@ class ProductFilterUtility extends BaseFilterUtility
      * @param string                           $field
      * @param mixed                            $value
      * @param string                           $operator
+     *
+     * @deprecated will be removed in 1.4
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $attribute = $this->getAttribute($field);
-        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
-        if ($attribute) {
-            $productQueryBuilder->addAttributeFilter($attribute, $operator, $value);
-        } else {
-            $productQueryBuilder->addFieldFilter($field, $operator, $value);
-        }
+        $this->applyFilter($ds, $field, $operator, $value);
     }
 }

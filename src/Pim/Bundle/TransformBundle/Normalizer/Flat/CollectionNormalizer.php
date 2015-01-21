@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
  * Normalize a doctrine collection

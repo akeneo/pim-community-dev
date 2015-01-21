@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Form\PreloadedExtension;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType;
+use Symfony\Component\Form\PreloadedExtension;
 
 /**
  * Test related class
@@ -49,8 +49,6 @@ class AttributeOptionTypeTest extends AbstractFormTypeTest
     public function testFormCreate()
     {
         $this->assertField('id', 'hidden');
-        $this->assertField('sort_order', 'integer');
-        $this->assertField('translatable', 'text');
 
         $this->assertEquals(
             'Pim\Bundle\CatalogBundle\Entity\AttributeOption',

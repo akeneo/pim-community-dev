@@ -5,7 +5,6 @@ services:
     pim_catalog.builder.product:
         class: %pim_catalog.builder.product.class%
         arguments:
-            - '@pim_catalog.object_manager.product'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.currency'

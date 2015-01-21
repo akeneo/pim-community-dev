@@ -2,6 +2,15 @@
 
 namespace Context;
 
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Bundle\CommentBundle\Entity\Comment;
+use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
@@ -441,6 +450,24 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product comments:$/
+     */
+    public function theFollowingProductComments(TableNode $table)
+    {
+        $comments = [];
+
+        foreach ($table->getHash() as $row) {
+            $product = $this->getProductManager()->findByIdentifier($row['product']);
+            $row['resource'] = $product;
+            $comments[$row['#']] = $this->createComment($row, $comments);
+        }
+
+        $this->flush();
+    }
+
+    /**
      * @param string $sku
      * @param string $attributeCodes
      *
@@ -488,6 +515,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following datagrid views:$/
      */
     public function theFollowingDatagridViews(TableNode $table)
@@ -567,7 +596,6 @@ class FixturesContext extends RawMinkContext
             assertEquals(($data['localizable'] == 1), $attribute->isLocalizable());
             assertEquals(($data['scopable'] == 1), $attribute->isScopable());
             assertEquals($data['group'], $attribute->getGroup()->getCode());
-            assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
             assertEquals(($data['unique'] == 1), $attribute->isUnique());
             if ($data['allowed_extensions'] != '') {
@@ -595,7 +623,6 @@ class FixturesContext extends RawMinkContext
 
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
-            assertEquals(($data['default'] == 1), $option->isDefault());
         }
     }
 
@@ -793,7 +820,7 @@ class FixturesContext extends RawMinkContext
      * @param string $attribute
      * @param string $options
      *
-     * @Given /^the following "([^"]*)" attribute options: (.*)$/
+     * @Given /^the following "([^"]*)" attribute options?: (.*)$/
      */
     public function theFollowingAttributeOptions($attribute, $options)
     {
@@ -910,8 +937,9 @@ class FixturesContext extends RawMinkContext
     {
         $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
-            $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            assertEquals($optionCode, $productValue->getOption()->getCode());
+            $value = $this->getProductValue($identifier, strtolower($attribute));
+            $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
+            assertEquals($optionCode, $actualCode);
         }
     }
 
@@ -936,12 +964,20 @@ class FixturesContext extends RawMinkContext
                 }
             );
 
-            assertEquals(count($table->getHash()), $options->count());
-            foreach ($table->getHash() as $data) {
+            $values = array_map(
+                function ($row) {
+                    return $row['value'];
+                },
+                $table->getHash()
+            );
+            $values = array_filter($values);
+
+            assertEquals(count($values), $options->count());
+            foreach ($values as $value) {
                 assertContains(
-                    $data['value'],
+                    $value,
                     $optionCodes,
-                    sprintf('"%s" does not contain "%s"', join(', ', $optionCodes->toArray()), $data['value'])
+                    sprintf('"%s" does not contain "%s"', join(', ', $optionCodes->toArray()), $value)
                 );
             }
         }
@@ -989,15 +1025,18 @@ class FixturesContext extends RawMinkContext
     /**
      * @param PyStringNode $string
      *
-     * @Given /^the following file to import:$/
+     * @Given /^the following ([^"]*) file to import:$/
      */
-    public function theFollowingFileToImport(PyStringNode $string)
+    public function theFollowingFileToImport($extension, PyStringNode $string)
     {
+        $extension = strtolower($extension);
+
         $this->placeholderValues['%file to import%'] = $filename =
             sprintf(
-                '%s/pim-import/behat-import-%s.csv',
+                '%s/pim-import/behat-import-%s.%s',
                 $this->placeholderValues['%tmp%'],
-                substr(md5(rand()), 0, 7)
+                substr(md5(rand()), 0, 7),
+                $extension
             );
         @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
@@ -1010,7 +1049,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return null
      *
-     * @Given /^the following CSV to import:$/
+     * @Given /^the following CSV configuration to import:$/
      */
     public function theFollowingCSVToImport(TableNode $table)
     {
@@ -1035,7 +1074,7 @@ class FixturesContext extends RawMinkContext
 
         array_unshift($rows, $columns);
 
-        return $this->theFollowingFileToImport(new PyStringNode(join("\n", $rows)));
+        return $this->theFollowingFileToImport('csv', new PyStringNode(join("\n", $rows)));
     }
 
     /**
@@ -1107,11 +1146,19 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProduct($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
-            //TODO: does not work for  scopable, non-localizable fields
-            list($code, $locale, $scope) = array_replace([null, null, null], explode('-', $rawCode));
-            $productValue = $product->getValue($code, $locale, $scope);
+            $infos = $this->getFieldNameBuilder()->extractAttributeFieldNameInfos($rawCode);
 
-            if ('media' === $this->getAttribute($code)->getBackendType()) {
+            /** @var AttributeInterface $attribute */
+            $attribute = $infos['attribute'];
+            $attributeCode = $attribute->getCode();
+            $localeCode = $infos['locale_code'];
+            $scopeCode = $infos['scope_code'];
+            $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
+            $productValue = $product->getValue($attributeCode, $localeCode, $scopeCode);
+
+            if ('' === $value) {
+                assertEmpty((string) $productValue);
+            } elseif ('media' === $attribute->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)
                 if ('**empty**' === $value) {
@@ -1119,6 +1166,16 @@ class FixturesContext extends RawMinkContext
                 } else {
                     assertTrue(false !== strpos((string) $productValue, $value));
                 }
+            } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
+                // $priceCurrency can be null if we want to test all the currencies at the same time
+                // in this case, it's a simple string comparison
+                // example: 180.00 EUR, 220.00 USD
+
+                /** @var ProductPriceInterface $price */
+                $price = $productValue->getPrice($priceCurrency);
+                assertEquals($value, $price->getData());
+            } elseif ('date' === $attribute->getBackendType()) {
+                assertEquals($value, $productValue->getDate()->format('Y-m-d'));
             } else {
                 assertEquals($value, (string) $productValue);
             }
@@ -1254,6 +1311,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
      * @param string $attribute
      *
      * @Given /^I\'ve removed the "([^"]*)" attribute$/
@@ -1308,6 +1373,19 @@ class FixturesContext extends RawMinkContext
         assertFalse($requirement->isRequired());
     }
 
+    /**
+     * @Given /^the history of the product "([^"]*)" has been built$/
+     */
+    public function theHistoryOfTheProductHasBeenBuilt($identifier)
+    {
+        $product = $this->getProduct($identifier);
+        $this->getVersionManager()->setRealTimeVersioning(true);
+        $versions = $this->getVersionManager()->buildPendingVersions($product);
+        foreach ($versions as $version) {
+            $this->persist($version);
+            $this->flush($version);
+        }
+    }
 
     /**
      * @param string $attributeCode
@@ -1405,7 +1483,7 @@ class FixturesContext extends RawMinkContext
      * @param string  $label
      * @param boolean $isVariant
      *
-     * @return GroupType
+     * @return GroupTypeInterface
      */
     protected function createGroupType($code, $label, $isVariant)
     {
@@ -1644,7 +1722,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param string $code
      *
-     * @return AttributeOption
+     * @return AttributeOptionInterface
      */
     protected function createOption($code)
     {
@@ -1679,7 +1757,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return AttributeGroup
+     * @return AttributeGroupInterface
      */
     protected function createAttributeGroup($data)
     {
@@ -1692,6 +1770,37 @@ class FixturesContext extends RawMinkContext
         $this->persist($attributeGroup);
 
         return $attributeGroup;
+    }
+
+    /**
+     * @param array              $data
+     * @param CommentInterface[] $comments
+     *
+     * @return CommentInterface
+     */
+    protected function createComment(array $data, array $comments)
+    {
+        $resource = $data['resource'];
+        $createdAt = \DateTime::createFromFormat('j-M-Y', $data['created_at']);
+
+        $comment = new Comment();
+        $comment->setAuthor($this->getUser($data['author']));
+        $comment->setCreatedAt($createdAt);
+        $comment->setRepliedAt($createdAt);
+        $comment->setBody($data['message']);
+        $comment->setResourceName(ClassUtils::getClass($resource));
+        $comment->setResourceId($resource->getId());
+
+        if (isset($data['parent']) && !empty($data['parent'])) {
+            $parent = $comments[$data['parent']];
+            $parent->setRepliedAt($createdAt);
+            $comment->setParent($parent);
+            $this->persist($parent);
+        }
+
+        $this->persist($comment);
+
+        return $comment;
     }
 
     /**
@@ -1817,6 +1926,22 @@ class FixturesContext extends RawMinkContext
     protected function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
+    }
+
+    /**
+     * @return VersionManager
+     */
+    protected function getVersionManager()
+    {
+        return $this->getContainer()->get('pim_versioning.manager.version');
+    }
+
+    /**
+     * @return FieldNameBuilder
+     */
+    protected function getFieldNameBuilder()
+    {
+        return $this->getContainer()->get('pim_transform.builder.field_name');
     }
 
     /**
