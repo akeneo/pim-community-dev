@@ -131,17 +131,9 @@ class InvalidArgumentException extends \InvalidArgumentException
      */
     public static function arrayInvalidKey($name, $key, $because, $action, $type, $data)
     {
-        return new self(
-            sprintf(
-                'Attribute or field "%s" expects an array with valid data for the key "%s". %s, "%s" given (for %s %s).',
-                $name,
-                $key,
-                $because,
-                $data,
-                $action,
-                $type
-            )
-        );
+        $err = 'Attribute or field "%s" expects an array with valid data for the key "%s". %s, "%s" given (for %s %s).';
+
+        return new self(sprintf($err, $name, $key, $because, $data, $action, $type));
     }
 
     /**
