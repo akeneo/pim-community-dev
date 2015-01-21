@@ -168,7 +168,13 @@
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 - PIM-3548: Do not use the absolute file path of a media
 
-# 1.2.x
+# 1.2.21 (2015-01-16)
+
+## Bug fixes
+- PIM-3615: Context of the grid not applied in product form for an attribute type Date
+- PIM-3638: Fix doctrine/cache 1.3.1 to fix Oro FilesystemCache issue
+
+# 1.2.20 (2015-01-14)
 
 ## Bug fixes
 - PIM-3603 Trigger saving wysiwyg editor contents when submitting product form manually
