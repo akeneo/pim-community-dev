@@ -165,5 +165,4 @@ class Entity
     {
         $this->id = $id;
     }
-
 }

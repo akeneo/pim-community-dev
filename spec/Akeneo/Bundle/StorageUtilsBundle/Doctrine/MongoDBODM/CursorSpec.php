@@ -33,7 +33,7 @@ class CursorSpec extends ObjectBehavior
         $this->shouldHaveCount(13);
     }
 
-    public function it_is_iterable($queryBuilder, Query $query, Cursor $cursor, Entity $entity)
+    public function it_is_iterable($queryBuilder, Query $query, Cursor $mongodbCursor)
     {
         $this->shouldImplement('\Iterator');
 
@@ -46,18 +46,18 @@ class CursorSpec extends ObjectBehavior
         $data = array_merge([], $initialData);
 
         $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
-        $query->execute()->shouldBeCalled()->willReturn($cursor);
+        $query->execute()->shouldBeCalled()->willReturn($mongodbCursor);
 
-        $cursor->getNext()->shouldBeCalled()->will(function () use ($cursor, &$data) {
+        $mongodbCursor->getNext()->shouldBeCalled()->will(function () use ($mongodbCursor, &$data) {
             $stepData = array_shift($data);
-            $cursor->current()->willReturn($stepData);
+            $mongodbCursor->current()->willReturn($stepData);
             return $stepData;
         });
-        $cursor->reset()->shouldBeCalled()->will(function () use ($cursor, &$data, $initialData) {
+        $mongodbCursor->reset()->shouldBeCalled()->will(function () use ($mongodbCursor, &$data, $initialData) {
             $data = array_merge([], $initialData);
         });
 
-        $cursor->count()->shouldBeCalled()->willReturn(3);
+        $mongodbCursor->count()->shouldBeCalled()->willReturn(3);
 
         // methods that not iterate can be called twice
         $this->rewind()->shouldReturn(null);
@@ -95,13 +95,11 @@ class CursorSpec extends ObjectBehavior
 
 class Entity
 {
-
     protected $id;
 
     public function __construct($id)
     {
         $this->id = $id;
     }
-
 }
 
