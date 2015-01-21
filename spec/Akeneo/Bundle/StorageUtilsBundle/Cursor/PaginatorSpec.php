@@ -80,7 +80,6 @@ class PaginatorSpec extends ObjectBehavior
         $this->current()->shouldReturn($page1);
         $this->key()->shouldReturn(0);
         $this->key()->shouldReturn(0);
-
     }
 
     function it_is_countable(CursorInterface $cursor)
@@ -89,6 +88,7 @@ class PaginatorSpec extends ObjectBehavior
 
         $cursor->count()->shouldBeCalled()->willReturn(13);
 
+        // page size is 10 : so 1 page of 10 elements and a second of 3
         $this->shouldHaveCount(2);
     }
 }

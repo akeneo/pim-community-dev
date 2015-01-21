@@ -27,7 +27,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         QueryBuilder $qb
     ) {
         $this->beConstructedWith(
-            $repository
+            $repository,
             $filterRegistry,
             $sorterRegistry,
             $cursorFactory,
@@ -64,8 +64,13 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $filter->supportsOperator('=')->willReturn(true);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $filter->addAttributeFilter($attribute, '=', '42', 'en_US', 'print',
-            ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku'])->shouldBeCalled();
+        $filter->addAttributeFilter(
+            $attribute,
+            '=', '42',
+            'en_US',
+            'print',
+            ['locale' => 'en_US', 'scope' => 'print', 'field' => 'sku']
+        )->shouldBeCalled();
 
         $this->addFilter('sku', '=', '42', []);
     }

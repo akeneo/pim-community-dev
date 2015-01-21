@@ -22,4 +22,9 @@ interface PaginatorInterface extends \Countable, \Iterator
      * @return $this
      */
     public function setPageSize($pageSize);
+
+    /**
+     * @return int
+     */
+    public function getPageNumber();
 }

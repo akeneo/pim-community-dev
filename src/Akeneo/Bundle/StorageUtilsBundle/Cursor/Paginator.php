@@ -56,7 +56,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getPageNumber()
     {
