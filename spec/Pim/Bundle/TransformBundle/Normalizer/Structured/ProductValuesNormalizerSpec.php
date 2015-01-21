@@ -7,12 +7,14 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer)
+    function let(SerializerInterface $serializer)
     {
-        $this->beConstructedWith($normalizer, 'ProductValue');
+        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->setSerializer($serializer);
     }
 
     function it_is_initializable()
@@ -33,7 +35,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_values_into_json(
-        $normalizer,
+        $serializer,
         ProductValueInterface $nameValue,
         ProductValueInterface $colorValue,
         AttributeInterface $name,
@@ -44,12 +46,12 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $name->getCode()->willReturn('name');
         $color->getCode()->willReturn('color');
 
-        $normalizer
+        $serializer
             ->normalize($nameValue, 'json', [])
             ->shouldBeCalled()
             ->willReturn(['locale' => null, 'scope' => null, 'value' => 'foo']);
 
-        $normalizer
+        $serializer
             ->normalize($colorValue, 'json', [])
             ->shouldBeCalled()
             ->willReturn(['locale' => 'en_US', 'scope' => 'ecommerce', 'value' => 'red']);
