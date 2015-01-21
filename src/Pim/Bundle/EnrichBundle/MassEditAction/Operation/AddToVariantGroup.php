@@ -123,12 +123,12 @@ class AddToVariantGroup extends ProductMassEditOperation
 
         $alreadyInVariantGroup = [];
         foreach ($products as $product) {
-            if (null != $product->getVariantGroup()) {
+            if (null !== $product->getVariantGroup()) {
                 $alreadyInVariantGroup[] = $product->getIdentifier();
             }
         }
 
-        if (count($alreadyInVariantGroup) > 1) {
+        if (count($alreadyInVariantGroup) > 0) {
             $messages[] = [
                 'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group',
                 'options' => ['%products%' => implode(', ', $alreadyInVariantGroup)]
