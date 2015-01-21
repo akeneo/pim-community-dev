@@ -163,7 +163,10 @@ class ProductRuleApplier implements ApplierInterface
                 foreach ($violations as $violation) {
                     $reasons[] = sprintf('%s : %s', $violation->getInvalidValue(), $violation->getMessage());
                 }
-                $this->eventDispatcher->dispatch(RuleEvents::SKIPPED, new SkippedSubjectRuleEvent($rule, $subjectSet, $reasons));
+                $this->eventDispatcher->dispatch(
+                    RuleEvents::SKIPPED,
+                    new SkippedSubjectRuleEvent($rule, $subjectSet, $reasons)
+                );
             }
         }
     }

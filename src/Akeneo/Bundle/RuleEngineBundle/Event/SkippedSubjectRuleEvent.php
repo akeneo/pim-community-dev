@@ -54,5 +54,4 @@ class SkippedSubjectRuleEvent extends RuleEvent
     {
         return $this->reasons;
     }
-
 }
