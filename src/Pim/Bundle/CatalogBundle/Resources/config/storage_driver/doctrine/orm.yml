@@ -23,7 +23,7 @@ parameters:
     pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter
 
     pim_catalog.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor
-    pim_catalog.doctrine.cursor_factory.product.class:              Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\CursorFactory
+    pim_catalog.doctrine.cursor_factory.product.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\CursorFactory
     pim_catalog.factory.product_cursor.page_size:          1000
 
     pim_catalog.doctrine.query.sorter.base.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter
