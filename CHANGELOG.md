@@ -1,3 +1,6 @@
+# 1.2.22 (2015-01-21)
+- Crowdin Updated translations
+
 # 1.2.21 (2015-01-16)
 
 ## Bug fixes
