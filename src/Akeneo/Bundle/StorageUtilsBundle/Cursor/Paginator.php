@@ -131,12 +131,12 @@ class Paginator implements PaginatorInterface
         $i = 0;
         do {
             $current = $this->cursor->current();
-            if ($current !== null && $current !== false) {
+            if (null !== $current && false !== $current) {
                 $result[] = $current;
             }
             $i++;
             $this->cursor->next();
-        } while ($i < $this->pageSize && $current !== null && $current !== false);
+        } while ($i < $this->pageSize && null !== $current && false !== $current);
 
         if (empty($result)) {
             return false;

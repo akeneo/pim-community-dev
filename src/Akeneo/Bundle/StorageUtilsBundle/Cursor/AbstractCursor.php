@@ -43,6 +43,7 @@ abstract class AbstractCursor implements CursorInterface
         if ($this->valid()) {
             return $this->position;
         }
+
         return null;
     }
 

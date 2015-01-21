@@ -42,7 +42,7 @@ class Cursor extends AbstractCursor
      */
     public function count()
     {
-        if ($this->count === null) {
+        if (null === $this->count) {
             $this->count = $this->getCursor()->count();
         }
 
@@ -66,7 +66,7 @@ class Cursor extends AbstractCursor
     {
         parent::next();
         $this->currentDocument = $this->getCursor()->getNext();
-        if ($this->currentDocument === null) {
+        if (null === $this->currentDocument) {
             $this->currentDocument = false;
         }
     }
@@ -86,9 +86,9 @@ class Cursor extends AbstractCursor
      */
     protected function getCursor()
     {
-        if ($this->cursor === null) {
+        if (null === $this->cursor) {
             $this->cursor = $this->queryBuilder->getQuery()->execute();
-            if ($this->batchSize !== null) {
+            if (null !== $this->batchSize) {
                 $this->cursor->batchSize($this->batchSize);
             }
             // MongoDB Cursor are not positioned on first element (whereas ArrayIterator is)

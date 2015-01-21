@@ -82,7 +82,7 @@ class Cursor extends AbstractCursor
      */
     public function count()
     {
-        if ($this->count === null) {
+        if (null === $this->count) {
             $this->count = count($this->getEntitiesIds());
         }
 
@@ -107,7 +107,7 @@ class Cursor extends AbstractCursor
      */
     protected function getEntitiesIds()
     {
-        if ($this->entitiesIds === null) {
+        if (null === $this->entitiesIds) {
             $rootAlias = current($this->queryBuilder->getRootAliases());
             $rootIdExpr = sprintf('%s.id', $rootAlias);
 
@@ -140,7 +140,7 @@ class Cursor extends AbstractCursor
      */
     protected function getRepository()
     {
-        if ($this->repository === null) {
+        if (null === $this->repository) {
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
             $this->repository = $this->entityManager->getRepository($entityClass);
             if (!($this->repository instanceof ModelRepositoryInterface)) {
@@ -165,7 +165,7 @@ class Cursor extends AbstractCursor
     {
         $entity = false;
 
-        if ($this->entitiesPage === null || !$this->entitiesPage->valid()) {
+        if (null === $this->entitiesPage || !$this->entitiesPage->valid()) {
             $this->entitiesPage = $this->getNextEntitiesPage();
         }
         if ($this->entitiesPage !== null) {
