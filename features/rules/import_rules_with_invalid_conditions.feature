@@ -332,7 +332,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Only scalar values are allowed for operators eq, lt, lte, gt, gte, like."
+    And I should see "conditions[0]: Attribute or field \"price\" expects an array as data (for filter price)."
     And I should see "actions[0]: Attribute \"price\" expects an array as data, \"string\" given (for setter prices collection)."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
@@ -377,7 +377,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"length\" expects a numeric as data (for filter metric)."
+    And I should see "conditions[0]: Attribute or field \"length\" expects an array as data (for filter metric)."
     And I should see "actions[0]: Attribute \"length\" expects an array as data, \"string\" given (for setter metric)."
     When I am on the "length" attribute page
     And I visit the "Rules" tab
