@@ -54,9 +54,9 @@ class Cursor extends AbstractCursor
      */
     public function rewind()
     {
-        $this->position = 0;
         $this->getCursor()->reset();
         $this->next();
+        $this->position = 0;
     }
 
     /**
