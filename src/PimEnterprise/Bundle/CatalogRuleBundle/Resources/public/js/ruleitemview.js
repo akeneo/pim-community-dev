@@ -14,7 +14,7 @@ define(
                         '</span>' +
                         '<span class="rule-item-emphasize condition-operator"><%= rulePart.operator %></span>' +
                         '<% if (!!rulePart.value) { %>' +
-                            '<span class="condition-value"><%= rulePart.value %></span>' +
+                            '<span class="condition-value"><%= renderValue(rulePart.value) %></span>' +
                         '<% } %>' +
                     '</div>'
                 )
@@ -49,7 +49,7 @@ define(
         };
 
         var valueTemplates = {
-            'metric': _.template('<%= value.data %> <%= value.unit %>'),
+            'metric': _.template('<%= value.data %> <%= value.unit %><%= value.data > 1 ? \'S\' : \'\' %>'),
             'collection': _.template(
                 '<% for (var i in value) { %>' +
                     '<%= renderValue(value[i]) %> ' +
