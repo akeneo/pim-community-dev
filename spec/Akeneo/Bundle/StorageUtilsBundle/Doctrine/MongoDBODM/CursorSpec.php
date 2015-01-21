@@ -7,6 +7,9 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\Cursor;
 
+/**
+ * @require Doctrine\ODM\MongoDB\Query\Builder
+ */
 class CursorSpec extends ObjectBehavior
 {
     function let(

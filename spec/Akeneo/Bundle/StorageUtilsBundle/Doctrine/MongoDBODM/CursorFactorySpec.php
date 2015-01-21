@@ -5,6 +5,9 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
 
+/**
+ * @require Doctrine\ODM\MongoDB\Query\Builder
+ */
 class CursorFactorySpec extends ObjectBehavior
 {
     const DEFAULT_BATCH_SIZE = 100;
