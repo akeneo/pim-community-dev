@@ -1,4 +1,116 @@
 pim_enrich:
+  product:
+    tab:
+      attribute.title: Attributs
+      category.title: Catégories
+      association.title: Associations
+      completeness.title: Complétude
+      history.title: Historique
+    no_comparison_locale_available: "Aucune autre locale n'est disponible pour la comparaison"
+    no_compared_media: Aucun média disponible pour comparaison
+  attribute:
+    tab:
+      parameter.title: Paramètres 
+      value.title: Valeurs
+      history.title: Historique
+  attribute_group:
+    tab:
+      property.title: Propriétés
+      attribute.title: Attributs
+      history.title: Historique
+  family:
+    tab:
+      property.title: Propriétés
+      attribute.title: Attributs
+      history.title: Historique
+  association_type:
+    tab:
+      property.title: Propriétés
+      history.title: Historique
+  group_type:
+    tab:
+      property.title: Propriétés
+  channel:
+    pick_conversion_unit: "Choisissez une unité de conversion pour chaque métrique. Elle sera utilisé lors de l'exportation du produit"
+    tab:
+      property.title: Propriétés
+      history.title: Historique
+  category:
+    tab:
+      property.title: Propriétés
+      history.title: Historique
+  group:
+    axis.help: Les axes sont les attributs qui définissent des variantes du groupe. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Il ne peuvent pas être modifiés après la création.
+    type:
+      VARIANT: Variante
+      X_SELL: Vente croisée
+      ADDITIONAL: Additionnel
+      RELATED: Associés
+    tab:
+      product.title: Produits
+      property.title: Propriétés
+      history.title: Historique
+  completeness:
+    progress_bar.title: '%ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)'
+    subtitle: '{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes'
+    missing_attributes: Valeur manquante|Valeurs manquantes
+    legend:
+      locale_not_associated: Locale non associée à ce canal
+  mass_edit_action:
+    limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
+    product:
+      page_title: Produits
+      page_subtitle: 'Edition de masse (1 produit)|Edition de masse (%count% produits)'
+      title: Choisir une opération
+      subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
+      confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
+      steps:
+        first: Choisissez des produits
+        second: Choisir une opération
+        third: Configurer
+        fourth: Confirmer
+    family:
+      page_title: Familles
+      page_subtitle: 'Edition de masse (1 famille)|Edition de masse (%count% familles)'
+      title: Choisir une opération
+      subtitle: "Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée| Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées"
+      confirm: 'Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% familles avec les renseignements suivants, merci de confirmer.'
+      steps:
+        first: Choisissez des familles
+        second: Choisir une opération
+        third: Configurer
+        fourth: Confirmer
+    change-status:
+      label: Changer de statut (activé / désactivé)
+      description: Les produits sélectionnés vont être activés ou désactivés.
+      success_flash: Le statut du/des produit(s) a/ont été changé(s)
+    edit-common-attributes:
+      label: Modifier les attributs
+      description: Les attributs sélectionnés vont être modifié avec les valeurs suivantes pour la locale choisie.
+      empty: Veuillez sélectionner le ou les attribut(s) à modifier
+      success_flash: Le(s) attribut(s) ont été mis à jour
+      message:
+        warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
+    classify:
+      label: Classer les produits dans des catégories
+      description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
+      success_flash: Le(s) produit(s) ont été classés dans les catégories sélectionnées
+    change-family:
+      label: Changer la famille des produits
+      description: La famille des produits sélectionnés sera remplacée par la famille choisie
+      success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
+    add-to-groups:
+      label: Ajouter aux groupes
+      description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
+      success_flash: Les produits ont été ajoutés aux groupes sélectionnés
+    set-attribute-requirements:
+      label: Choisir les attributs requis
+      description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
+      success_flash: "Les exigences d'attributs ont été appliqués aux familles sélectionnées"
+  sequential_edit_action:
+    product:
+      previous: 'Revenir à "%product%" sans enregistrer.'
+      next: 'Passer à "%product%" sans enregistrer.'
   acl:
     locale:
       index: Liste des locales

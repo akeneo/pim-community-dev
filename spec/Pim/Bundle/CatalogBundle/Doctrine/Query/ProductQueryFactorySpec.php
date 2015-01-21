@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
 class ProductQueryFactorySpec extends ObjectBehavior
 {
@@ -16,6 +17,7 @@ class ProductQueryFactorySpec extends ObjectBehavior
         AttributeRepository $attRepository,
         QueryFilterRegistryInterface $filterRegistry,
         QuerySorterRegistryInterface $sorterRegistry,
+        CursorFactoryInterface $cursorFactory,
         ObjectManager $om
     ) {
         $this->beConstructedWith(
@@ -24,7 +26,8 @@ class ProductQueryFactorySpec extends ObjectBehavior
             'Pim\Bundle\CatalogBundle\Model\Product',
             $attRepository,
             $filterRegistry,
-            $sorterRegistry
+            $sorterRegistry,
+            $cursorFactory
         );
     }
 

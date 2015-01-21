@@ -25,7 +25,7 @@
 - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
 - Move filter transformation to CatalogBundle
-- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable
+- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable 
 - Re-work the `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder` to provide a clear and extensible API to query products
 - Normalize the managers by introducing 4 interfaces, `Akeneo\Component\Persistence\SaverInterface`, `Akeneo\Component\Persistence\BulkSaverInterface`, `Akeneo\Component\Persistence\RemoverInterface` and `Pim\Component\Persistence\BulkRemoverInterface`
 - Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
@@ -50,8 +50,6 @@
 - Use `Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeGroup`
 - Use `Pim\Bundle\CatalogBundle\Model\ChannelInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Channel`
 - Use `Pim\Bundle\CatalogBundle\Model\CurrencyInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Currency`
-- Add a form view updater to ease update of form views
-- Add a filter on common attributes to avoid attributes coming from variant to be editable
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`
@@ -120,7 +118,7 @@
 - `ProductPersister` and `BasePersister` has been replaced by `ProductSaver` in CatalogBundle
 - Add methods `execute()`, `getQueryBuilder()`, `setQueryBuilder()` in `ProductQueryBuilderInterface`
 - Add `MediaFactory` and `ObjectManager` arguments in MediaManager contructor
-- Change of constructor `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove arguments `Pim\Bundle\CatalogBundle\Manager\ProductManager` and `Pim\Bundle\CatalogBundle\Factory\MetricFactory`. `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface` is expected as second argument and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` is expected as last but one.
+- Change of constructor `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to remove arguments `Pim\Bundle\CatalogBundle\Builder\ProductBuilder` and  `Pim\Bundle\CatalogBundle\Factory\MetricFactory`. `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface` is expected as second argument and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` is expected as last but one.
 - Enabled field in normalized data is now a boolean in mongodb. You can migrate your database with the script located at `./upgrades/1.2-1.3/mongodb/migrate_statuses.php`
 - Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductManager` to accept a `Pim\Component\Resource\Model\SaverInterface` as second argument. Add a `Pim\Component\Resource\Model\BulkSaverInterface` as third argument
 - FieldNameBuilder constructor now expects $channelClass and $localeClass FQCN
@@ -165,6 +163,7 @@
   * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`
 - removeAttributesAction and addAttributesAction have been move from `Pim\Bundle\EnrichBundle\Controller\ProductController` to a dedicated `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 - constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` has been updated and now receives `Akeneo\Component\Persistence\SaverInterface`, `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` as extra arguments
+- the method execute() of `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface` now return a `Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface`
 - constructor of `Pim\Bundle\EnrichBundle\Form\View\ProductFormView` has been updated and now receives `Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry`
 - constructor of `Pim\Bundle\TransformBundle\Transformer\ProductTransformer` has been updated and now receives `Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface`
 - You cannot add product to multiple variant group anymore
@@ -174,7 +173,13 @@
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 - PIM-3548: Do not use the absolute file path of a media
 
-# 1.2.x
+# 1.2.21 (2015-01-16)
+
+## Bug fixes
+- PIM-3615: Context of the grid not applied in product form for an attribute type Date
+- PIM-3638: Fix doctrine/cache 1.3.1 to fix Oro FilesystemCache issue
+
+# 1.2.20 (2015-01-14)
 
 ## Bug fixes
 - PIM-3603 Trigger saving wysiwyg editor contents when submitting product form manually
@@ -183,7 +188,7 @@
 
 ## Bug fixes
 - PIM-3556: Fix memory leak on versionning
-- PIM-3548: Do not rely on the absolute file path of a media
+- PIM-3548: Do not rely on the absolute file path of a media 
 
 # 1.2.18 (2014-12-23)
 

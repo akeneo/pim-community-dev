@@ -21,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
 
 /**
  * Product repository
@@ -32,7 +33,8 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 class ProductRepository extends DocumentRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface,
-    AssociationRepositoryInterface
+    AssociationRepositoryInterface,
+    ModelRepositoryInterface
 {
     /** @var ProductQueryFactoryInterface */
     protected $productQueryFactory;
