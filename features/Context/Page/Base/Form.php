@@ -433,10 +433,10 @@ class Form extends Base
 
             if (0 === strpos($for, 's2id_')) {
 
-                if ($label->getParent()->find('css', 'select')) {
-                    return 'select';
-                } elseif ($label->getParent()->find('css', '.select2-container-multi')) {
+                if ($label->getParent()->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
+                } elseif ($label->getParent()->find('css', 'select')) {
+                    return 'select';
                 }
 
                 return 'simpleSelect2';
