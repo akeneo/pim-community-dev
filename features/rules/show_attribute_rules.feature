@@ -40,7 +40,7 @@ Feature: Show all rules related to an attribute
     Then I should see the following rule conditions:
       | rule                   | field                   | operator    | value          | locale | scope |
       | copy_description       | name                    | =           | My nice tshirt | en     |       |
-      | copy_description       | weather_conditions.code | IN          | dry,wet        |        |       |
+      | copy_description       | weather_conditions.code | IN          | dry wet        |        |       |
       | copy_description       | comment                 | STARTS WITH | promo          |        |       |
       | update_tees_collection | categories.code         | IN          | tees           |        |       |
     Then I should see the following rule setter actions:
@@ -49,9 +49,9 @@ Feature: Show all rules related to an attribute
       | update_tees_collection | description     | une belle description | fr     | mobile |
       | update_tees_collection | number_in_stock | 800                   |        | tablet |
       | update_tees_collection | release_date    | 2015-05-26            |        | mobile |
-      | update_tees_collection | price           | 12 EUR                 |        |        |
+      | update_tees_collection | price           | 12 EUR                |        |        |
       | update_tees_collection | side_view       | image.jpg             |        |        |
-      | update_tees_collection | length          | 10 CENTIMETER         |        |        |
+      | update_tees_collection | length          | 10 CENTIMETERS        |        |        |
     Then I should see the following rule copier actions:
       | rule                   | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |
       | copy_description       | description | description | en          | en        | mobile     | tablet   |

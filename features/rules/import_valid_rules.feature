@@ -40,11 +40,11 @@ Feature: Import rules
       | rule                        | field       | value                   | locale | scope  |
       | canon_beautiful_description | description | A beautiful description | en     | tablet |
 
-  Scenario: Import rule with valid value for attribute of type text in conditions
+  Scenario: Import valid rule for "text" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        sony_beautiful_description:
+        sony_beautiful_name:
             conditions:
                 - field:    name
                   operator: CONTAINS
@@ -62,12 +62,12 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_name\" as it does not appear to be valid."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
     Then I should see "My new Super Name"
 
-  Scenario: Import rule with valid values for attribute of type textarea in conditions
+  Scenario: Import valid rule for "textarea" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
@@ -97,11 +97,11 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "My new description"
 
-  Scenario: Import rule with valid values for attribute of type simple select in conditions
+  Scenario: Import valid rule for "simple select" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        canon_beautiful_description:
+        canon_beautiful_manufacturer:
             conditions:
                 - field:    manufacturer.code
                   operator: IN
@@ -119,16 +119,16 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "created 1"
     Then I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_manufacturer\" as it does not appear to be valid."
     When I am on the "manufacturer" attribute page
     And I visit the "Rules" tab
     Then I should see "Desigual"
 
-  Scenario: Import rule with valid values for the multi select attribute weather_conditions in conditions
+  Scenario: Import valid rule for "multi select" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        canon_beautiful_description:
+        canon_beautiful_weather:
             conditions:
                 - field:    weather_conditions.code
                   operator: IN
@@ -147,22 +147,23 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "created 1"
     And I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_weather\" as it does not appear to be valid."
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then I should see "dry"
     And I should not see "wet"
 
-  Scenario: Import rule with valid values for attribute of type price collection in conditions
+  Scenario: Import valid rule for "price collection" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        sony_beautiful_description:
+        sony_beautiful_price:
             conditions:
-                - field:    name
-                  operator: CONTAINS
-                  value:    Super Name
-                  locale:   fr_FR
+                - field: price
+                  operator: =
+                  value:
+                       data: 35
+                       currency: EUR
             actions:
                 - type:  set_value
                   field: price
@@ -176,18 +177,23 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"sony_beautiful_price\" as it does not appear to be valid."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
     Then I should see "3"
     Then I should see "EUR"
 
-  Scenario: Import rule with valid values for attribute of type metric in conditions
+  Scenario: Import valid rule for "metric attribute" in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        canon_beautiful_description:
-            conditions: []
+        canon_beautiful_length:
+            conditions:
+                - field:    length
+                  operator: =
+                  value:
+                      data: 156
+                      unit: METER
             actions:
                 - type:  set_value
                   field: length
@@ -201,17 +207,17 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_length\" as it does not appear to be valid."
     When I am on the "length" attribute page
     And I visit the "Rules" tab
     Then I should see "4"
     Then I should see "CENTIMETER"
 
-  Scenario: Import rule with valid values for attribute of type number in conditions
+  Scenario: Import valid rule for "number" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        canon_beautiful_description:
+        canon_beautiful_number:
             conditions:
                 - field:    number_in_stock
                   operator: =
@@ -230,16 +236,16 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
     Then I should see "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_number\" as it does not appear to be valid."
     When I am on the "number_in_stock" attribute page
     And I visit the "Rules" tab
     Then I should see "5"
 
-  Scenario: Import rule with valid values for attribute of type boolean in conditions
+  Scenario: Import valid rule for "boolean" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        canon_beautiful_description:
+        canon_beautiful_boolean:
             conditions:
                 - field:    handmade
                   operator: =
@@ -256,16 +262,16 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
     Then I should see "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_boolean\" as it does not appear to be valid."
     When I am on the "handmade" attribute page
     And I visit the "Rules" tab
     Then I should see "true"
 
-  Scenario: Import rule with valid values for attribute of type date (with a string for a date) in conditions
+  Scenario: Import valid rule for "date" attribute (with a string for a date) in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        canon_beautiful_description:
+        canon_beautiful_date:
             conditions:
                 - field:    release_date
                   operator: =
@@ -284,17 +290,20 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
     And I should see "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_date\" as it does not appear to be valid."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
     Then I should see "1970-01-01"
 
-  Scenario: Import rule with valid values for attribute of type media in conditions
+  Scenario: Import valid rule for "media" attribute in conditions and "set value" actions
     Given the following yaml file to import:
     """
     rules:
-        canon_beautiful_description:
-            conditions: []
+        canon_beautiful_media:
+            conditions:
+              - field:    side_view
+                operator: =
+                value:    akeneo.jpg
             actions:
                 - type:  set_value
                   field: side_view
@@ -309,7 +318,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should not see "skipped"
     And I should see "created 1"
-    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_media\" as it does not appear to be valid."
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "akeneo.jpg"
@@ -567,6 +576,54 @@ Feature: Import rules
     Then I should not see "skipped"
     And I should see "created 1"
     And I should not see "RULE IMPORT  Impossible to build the rule \"canon_beautiful_description\" as it does not appear to be valid."
+    When I am on the "side_view" attribute page
+    And I visit the "Rules" tab
+    Then I should see "side_view"
+    Then I should see "is copied into"
+
+  Scenario: Import a rule with valid but non standard values
+    Given the following yaml file to import:
+    """
+    rules:
+        canon_beautiful_media:
+            conditions:
+                - field:    sku
+                  operator: CONTAINS
+                  value:    '0'
+                - field:    description
+                  operator: CONTAINS
+                  value:    '0'
+                  locale:   en_US
+                  scope:    tablet
+                - field:    handmade
+                  operator: =
+                  value:    false
+                - field:    number_in_stock
+                  operator: =
+                  value:    0
+                  scope:    tablet
+                - field:    length
+                  operator: =
+                  value:
+                      data: 0
+                      unit: CENTIMETER
+                - field:    price
+                  operator: =
+                  value:
+                      data:     0
+                      currency: EUR
+            actions:
+                - type:        copy_value
+                  from_field:  side_view
+                  to_field:    side_view
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should not see "skipped"
+    And I should see "created 1"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "side_view"
