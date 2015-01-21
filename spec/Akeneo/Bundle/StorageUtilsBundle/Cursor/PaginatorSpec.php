@@ -14,7 +14,7 @@ class PaginatorSpec extends ObjectBehavior
         $this->beConstructedWith($cursor, self::PAGE_SIZE);
     }
 
-    public function it_is_initializable()
+    public function it_is_a_paginator()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface');
@@ -95,12 +95,10 @@ class PaginatorSpec extends ObjectBehavior
 
 class Entity
 {
-
     protected $id;
 
     public function __construct($id)
     {
         $this->id = $id;
     }
-
 }

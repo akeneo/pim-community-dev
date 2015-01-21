@@ -55,7 +55,7 @@ parameters:
     pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter
 
     pim_catalog.doctrine.query.cursor.class:              Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor
-    pim_catalog.factory.product_cursor.class:             Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\CursorFactory
+    pim_catalog.doctrine.cursor_factory.product.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\CursorFactory
 
     pim_catalog.doctrine.query.sorter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
     pim_catalog.doctrine.query.sorter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter
@@ -384,6 +384,6 @@ services:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
 
     pim_catalog.factory.product_cursor:
-        class: %pim_catalog.factory.product_cursor.class%
+        class: %pim_catalog.doctrine.cursor_factory.product.class%
         arguments:
             - %pim_catalog.doctrine.query.cursor.class%

@@ -14,7 +14,8 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
 interface ModelRepositoryInterface
 {
     /**
-     * @param array $ids of the entities
+     * @param  array $ids of the entities
+     *
      * @return mixed : entities
      */
     public function findByIds(array $ids);

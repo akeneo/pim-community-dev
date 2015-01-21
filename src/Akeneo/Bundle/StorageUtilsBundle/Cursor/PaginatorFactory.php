@@ -21,10 +21,8 @@ class PaginatorFactory implements PaginatorFactoryInterface
      * @param string $paginatorClass class name implementation
      * @param int    $pageSize
      */
-    public function __construct(
-        $paginatorClass,
-        $pageSize
-    ) {
+    public function __construct($paginatorClass, $pageSize)
+    {
         $this->paginatorClass = $paginatorClass;
         $this->pageSize = $pageSize;
     }

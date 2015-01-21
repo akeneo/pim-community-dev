@@ -38,7 +38,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getPageSize()
     {
@@ -46,9 +46,7 @@ class Paginator implements PaginatorInterface
     }
 
     /**
-     * @param $pageSize
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setPageSize($pageSize)
     {
@@ -133,12 +131,12 @@ class Paginator implements PaginatorInterface
         $i = 0;
         do {
             $current = $this->cursor->current();
-            if ($current !== false && $current !== null) {
+            if ($current !== null && $current !== false) {
                 $result[] = $current;
             }
             $i++;
             $this->cursor->next();
-        } while ($i < $this->pageSize && $current !== false && $current !== null);
+        } while ($i < $this->pageSize && $current !== null && $current !== false);
 
         if (empty($result)) {
             return false;

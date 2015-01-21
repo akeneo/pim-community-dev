@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
 
 /**
- * Class AbstractCursor to iterate product
+ * Class AbstractCursor to iterate items
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

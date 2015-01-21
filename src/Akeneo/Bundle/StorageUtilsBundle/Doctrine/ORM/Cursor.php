@@ -144,8 +144,12 @@ class Cursor extends AbstractCursor
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
             $this->repository = $this->entityManager->getRepository($entityClass);
             if (!($this->repository instanceof ModelRepositoryInterface)) {
-                throw new LogicException(sprintf('%s repository must implement ModelRepositoryInterface',
-                    $entityClass));
+                throw new LogicException(
+                    sprintf(
+                        '%s repository must implement ModelRepositoryInterface',
+                        $entityClass
+                    )
+                );
             }
         }
 
