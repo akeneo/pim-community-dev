@@ -39,13 +39,13 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     protected $cursorFactory;
 
     /**
-     * @param string $pqbClass
-     * @param ObjectManager $om
-     * @param string $productClass
-     * @param AttributeRepository $attributeRepository
+     * @param string                       $pqbClass
+     * @param ObjectManager                $om
+     * @param string                       $productClass
+     * @param AttributeRepository          $attributeRepository
      * @param QueryFilterRegistryInterface $filterRegistry
      * @param QuerySorterRegistryInterface $sorterRegistry
-     * @param CursorFactoryInterface $cursorFactory
+     * @param CursorFactoryInterface       $cursorFactory
      */
     public function __construct(
         $pqbClass,

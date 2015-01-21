@@ -18,14 +18,6 @@ abstract class AbstractCursor implements CursorInterface
     protected $queryBuilder;
 
     /**
-     * @param $query
-     */
-    public function __construct($queryBuilder)
-    {
-        $this->queryBuilder = clone $queryBuilder;
-    }
-
-    /**
      * {@inheritdoc}
      */
     abstract public function count();
