@@ -9,18 +9,18 @@ class PaginatorSpec extends ObjectBehavior
 {
     const PAGE_SIZE = 10;
 
-    public function let(CursorInterface $cursor)
+    function let(CursorInterface $cursor)
     {
         $this->beConstructedWith($cursor, self::PAGE_SIZE);
     }
 
-    public function it_is_a_paginator()
+    function it_is_a_paginator()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface');
     }
 
-    public function it_iterate_by_page_over_cursor(CursorInterface $cursor)
+    function it_iterate_by_page_over_cursor(CursorInterface $cursor)
     {
         $page1 = [
             new Entity(1),
@@ -83,7 +83,7 @@ class PaginatorSpec extends ObjectBehavior
 
     }
 
-    public function it_is_countable(CursorInterface $cursor)
+    function it_is_countable(CursorInterface $cursor)
     {
         $this->shouldImplement('\Countable');
 

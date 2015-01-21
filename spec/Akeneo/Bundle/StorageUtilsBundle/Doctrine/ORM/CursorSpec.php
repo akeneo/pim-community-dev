@@ -15,20 +15,20 @@ class CursorSpec extends ObjectBehavior
 {
     const PAGE_SIZE = 10;
 
-    public function let(
+    function let(
         QueryBuilder $queryBuilder,
         EntityManager $entityManager
     ) {
         $this->beConstructedWith($queryBuilder, $entityManager, self::PAGE_SIZE);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
     }
 
-    public function it_is_countable($queryBuilder, AbstractQuery $query, From $from)
+    function it_is_countable($queryBuilder, AbstractQuery $query, From $from)
     {
         $this->shouldImplement('\Countable');
 
@@ -50,7 +50,7 @@ class CursorSpec extends ObjectBehavior
         $this->shouldHaveCount(13);
     }
 
-    public function it_is_iterable(
+    function it_is_iterable(
         $queryBuilder,
         EntityManager $entityManager,
         AbstractQuery $query,
@@ -136,7 +136,7 @@ class CursorSpec extends ObjectBehavior
         $this->key()->shouldReturn(null);
     }
 
-    public function it_check_entity_repository($queryBuilder, AbstractQuery $query, From $from)
+    function it_check_entity_repository($queryBuilder, AbstractQuery $query, From $from)
     {
         $rootIdExpr = 'o.id';
 

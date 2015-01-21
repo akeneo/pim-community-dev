@@ -9,19 +9,19 @@ use Doctrine\ODM\MongoDB\Cursor;
 
 class CursorSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         Builder $queryBuilder
     ) {
         $this->beConstructedWith($queryBuilder);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
     }
 
-    public function it_is_countable($queryBuilder, Query $query, Cursor $cursor)
+    function it_is_countable($queryBuilder, Query $query, Cursor $cursor)
     {
         $this->shouldImplement('\Countable');
 
@@ -33,7 +33,7 @@ class CursorSpec extends ObjectBehavior
         $this->shouldHaveCount(13);
     }
 
-    public function it_is_iterable($queryBuilder, Query $query, Cursor $mongodbCursor)
+    function it_is_iterable($queryBuilder, Query $query, Cursor $mongodbCursor)
     {
         $this->shouldImplement('\Iterator');
 

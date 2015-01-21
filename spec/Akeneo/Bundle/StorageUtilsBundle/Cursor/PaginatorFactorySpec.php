@@ -9,18 +9,18 @@ class PaginatorFactorySpec extends ObjectBehavior
 {
     const DEFAULT_BATCH_SIZE = 100;
 
-    public function let()
+    function let()
     {
         $this->beConstructedWith('Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator', self::DEFAULT_BATCH_SIZE);
     }
 
-    public function it_is_a_paginator_factory()
+    function it_is_a_paginator_factory()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactory');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactoryInterface');
     }
 
-    public function it_creates_a_paginator(CursorInterface $cursor)
+    function it_creates_a_paginator(CursorInterface $cursor)
     {
         $paginator = $this->createPaginator($cursor);
         $paginator->shouldBeAnInstanceOf('Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface');

@@ -19,24 +19,29 @@ use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         AttributeRepository $repository,
         QueryFilterRegistryInterface $filterRegistry,
         QuerySorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         QueryBuilder $qb
     ) {
-        $this->beConstructedWith($repository, $filterRegistry, $sorterRegistry, $cursorFactory,
-            ['locale' => 'en_US', 'scope' => 'print']);
+        $this->beConstructedWith(
+            $repository
+            $filterRegistry,
+            $sorterRegistry,
+            $cursorFactory,
+            ['locale' => 'en_US', 'scope' => 'print']
+        );
         $this->setQueryBuilder($qb);
     }
 
-    public function it_is_a_product_query_builder()
+    function it_is_a_product_query_builder()
     {
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface');
     }
 
-    public function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
+    function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
     {
         $repository->findOneBy(['code' => 'id'])->willReturn(null);
         $filterRegistry->getFieldFilter('id')->willReturn($filter);
@@ -47,7 +52,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addFilter('id', '=', '42', []);
     }
 
-    public function it_adds_an_attribute_filter(
+    function it_adds_an_attribute_filter(
         $repository,
         $filterRegistry,
         AttributeFilterInterface $filter,
@@ -65,7 +70,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addFilter('sku', '=', '42', []);
     }
 
-    public function it_adds_a_field_sorter($repository, $sorterRegistry, FieldSorterInterface $sorter)
+    function it_adds_a_field_sorter($repository, $sorterRegistry, FieldSorterInterface $sorter)
     {
         $repository->findOneBy(['code' => 'id'])->willReturn(null);
         $sorterRegistry->getFieldSorter('id')->willReturn($sorter);
@@ -75,7 +80,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addSorter('id', 'DESC', []);
     }
 
-    public function it_adds_an_attribute_sorter(
+    function it_adds_an_attribute_sorter(
         $repository,
         $sorterRegistry,
         AttributeSorterInterface $sorter,
@@ -89,17 +94,17 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         $this->addSorter('sku', 'DESC', []);
     }
 
-    public function it_provides_a_query_builder_once_configured($qb)
+    function it_provides_a_query_builder_once_configured($qb)
     {
         $this->getQueryBuilder()->shouldReturn($qb);
     }
 
-    public function it_configures_the_query_builder($qb)
+    function it_configures_the_query_builder($qb)
     {
         $this->setQueryBuilder($qb)->shouldReturn($this);
     }
 
-    public function it_executes_the_query(
+    function it_executes_the_query(
         $qb,
         AbstractQuery $query,
         CursorFactoryInterface $cursorFactory,

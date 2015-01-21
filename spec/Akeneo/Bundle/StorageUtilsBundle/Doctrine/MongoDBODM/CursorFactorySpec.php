@@ -9,7 +9,7 @@ class CursorFactorySpec extends ObjectBehavior
 {
     const DEFAULT_BATCH_SIZE = 100;
 
-    public function let()
+    function let()
     {
         $this->beConstructedWith(
             'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor',
@@ -17,13 +17,13 @@ class CursorFactorySpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\CursorFactory');
         $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface');
     }
 
-    public function it_create_a_cursor(Builder $queryBuilder)
+    function it_create_a_cursor(Builder $queryBuilder)
     {
         $cursor = $this->createCursor($queryBuilder);
         $cursor->shouldBeAnInstanceOf('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
