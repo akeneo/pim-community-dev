@@ -3,7 +3,10 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Normalizer for a collection of product values
@@ -12,25 +15,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValuesNormalizer implements NormalizerInterface
+class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var string */
-    protected $valueClass;
+    /** @var SerializerInterface */
+    protected $serializer;
 
     /** @var string[] */
     protected $supportedFormats = ['json'];
 
     /**
-     * @param NormalizerInterface $normalizer
-     * @param string              $valueClass
+     * {@inheritdoc}
      */
-    public function __construct(NormalizerInterface $normalizer, $valueClass)
+    public function setSerializer(SerializerInterface $serializer)
     {
-        $this->normalizer = $normalizer;
-        $this->valueClass = $valueClass;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -41,7 +39,11 @@ class ProductValuesNormalizer implements NormalizerInterface
         $result = [];
 
         foreach ($data as $value) {
-            $result[$value->getAttribute()->getCode()][] = $this->normalizer->normalize($value, 'json', $context);
+            if ($value instanceof ProductValueInterface) {
+                $result[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, 'json', $context);
+            } else {
+                $result[] = $this->serializer->normalize($value, 'json', $context);
+            }
         }
 
         return $result;
