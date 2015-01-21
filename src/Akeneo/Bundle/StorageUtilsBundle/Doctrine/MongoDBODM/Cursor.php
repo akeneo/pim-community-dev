@@ -29,7 +29,7 @@ class Cursor extends AbstractCursor
 
     /**
      * @param Builder $queryBuilder
-     * @param int     $batchSize : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
+     * @param int     $batchSize    : set MongoCursor::batchSize — Limits the number of elements returned in one batch.
      */
     public function __construct(Builder $queryBuilder, $batchSize = null)
     {

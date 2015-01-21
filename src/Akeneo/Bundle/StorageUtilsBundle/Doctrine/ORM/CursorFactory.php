@@ -27,7 +27,7 @@ class CursorFactory implements CursorFactoryInterface
     protected $pageSize;
 
     /**
-     * @param string        $cursorClass class name implementation
+     * @param string        $cursorClass   class name implementation
      * @param EntityManager $entityManager
      * @param int           $pageSize
      */
