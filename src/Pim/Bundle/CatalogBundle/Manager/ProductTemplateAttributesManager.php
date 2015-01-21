@@ -14,6 +14,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO not comfortable with the naming of ProductTemplateAttributesManager we could maybe merge
+ * ProductTemplateAttributesManager and ProductTemplateFactory to a ProductTemplateBuilder
+ * with create(), addAttributes(), removeAttribute() methods
  */
 class ProductTemplateAttributesManager
 {
