@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Reader;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Repository;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\MongoDB\Cursor;
@@ -10,11 +10,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
-class RepositoryReaderSpec extends ObjectBehavior
+class VariantGroupReaderSpec extends ObjectBehavior
 {
     function let(StepExecution $stepExecution, GroupRepository $repository)
     {
-        $this->beConstructedWith($repository, 'findAll');
+        $this->beConstructedWith($repository);
         $this->setStepExecution($stepExecution);
     }
 
@@ -25,9 +25,9 @@ class RepositoryReaderSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 
-    function it_reads_records_one_by_one($repository)
+    function it_reads_variant_groups_one_by_one($repository)
     {
-        $repository->findAll()
+        $repository->getAllVariantGroups()
             ->shouldBeCalled()
             ->willReturn(array('foo','bar'));
 
@@ -36,9 +36,9 @@ class RepositoryReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn(null);
     }
 
-    function it_increments_read_count_for_each_record_reading($stepExecution, $repository)
+    function it_increments_read_count_for_each_variant_group_reading($stepExecution, $repository)
     {
-        $repository->findAll()
+        $repository->getAllVariantGroups()
             ->shouldBeCalled()
             ->willReturn(array('foo','bar'));
 

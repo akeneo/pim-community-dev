@@ -1,21 +1,21 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\Repository;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 
 /**
- * A reader based on a method of a repository
+ * The variant group reader
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RepositoryReader extends AbstractConfigurableStepElement implements
+class VariantGroupReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
@@ -28,20 +28,15 @@ class RepositoryReader extends AbstractConfigurableStepElement implements
     /** @var \ArrayIterator */
     protected $results;
 
-    /** @var ReferableEntityRepositoryInterface */
+    /** @var GroupRepository */
     protected $repository;
 
-    /** @var string */
-    protected $method;
-
     /**
-     * @param ReferableEntityRepositoryInterface $repository The repository
-     * @param string                             $method     The method that will be called
+     * @param GroupRepository $repository
      */
-    public function __construct(ReferableEntityRepositoryInterface $repository, $method)
+    public function __construct(GroupRepository $repository)
     {
         $this->repository = $repository;
-        $this->method     = $method;
     }
 
     /**
@@ -51,8 +46,7 @@ class RepositoryReader extends AbstractConfigurableStepElement implements
     {
         if (!$this->executed) {
             $this->executed = true;
-            $method = $this->method;
-            $this->results = $this->repository->$method();
+            $this->results = $this->repository->getAllVariantGroups();
             if (!$this->results instanceof \Iterator) {
                 $this->results = new \ArrayIterator($this->results);
             }
