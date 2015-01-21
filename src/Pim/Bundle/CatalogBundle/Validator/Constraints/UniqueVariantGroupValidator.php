@@ -18,18 +18,18 @@ class UniqueVariantGroupValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($product, Constraint $constraint)
     {
-        if ($value instanceof ProductInterface) {
+        if ($product instanceof ProductInterface) {
             $productVariantGroup = null;
-            foreach ($value->getGroups() as $group) {
+            foreach ($product->getGroups() as $group) {
                 if ($group->getType()->isVariant() && null !== $productVariantGroup) {
                     $this->context->addViolation(
                         $constraint->message,
                         array(
                             '%group_one%' => $productVariantGroup,
                             '%group_two%' => $group,
-                            '%product%'   => $value->getIdentifier()
+                            '%product%'   => $product->getIdentifier()
                         )
                     );
                 } elseif ($group->getType()->isVariant()) {
