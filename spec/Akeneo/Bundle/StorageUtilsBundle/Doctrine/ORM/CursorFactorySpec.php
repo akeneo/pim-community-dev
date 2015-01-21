@@ -12,8 +12,11 @@ class CursorFactorySpec extends ObjectBehavior
 
     public function let(EntityManager $entityManager)
     {
-        $this->beConstructedWith('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor', $entityManager,
-            self::DEFAULT_BATCH_SIZE);
+        $this->beConstructedWith(
+            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor',
+            $entityManager,
+            self::DEFAULT_BATCH_SIZE
+        );
     }
 
     public function it_is_initializable()

@@ -11,8 +11,10 @@ class CursorFactorySpec extends ObjectBehavior
 
     public function let()
     {
-        $this->beConstructedWith('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor',
-            self::DEFAULT_BATCH_SIZE);
+        $this->beConstructedWith(
+            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor',
+            self::DEFAULT_BATCH_SIZE
+        );
     }
 
     public function it_is_initializable()
