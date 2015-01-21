@@ -40,15 +40,17 @@ class PaginatorSpec extends ObjectBehavior
         $cursor->count()->shouldBeCalled()->willReturn(13);
         $cursor->next()->shouldBeCalled()->will(function () use ($cursor, &$data) {
             $item = array_shift($data);
-            if ($item===null)
-                $item=false;
+            if ($item === null) {
+                $item = false;
+            }
             $cursor->current()->willReturn($item);
         });
         $cursor->rewind()->shouldBeCalled()->will(function () use ($cursor, &$data, $page1, $page2) {
             $data = array_merge($page1, $page2);
             $item = array_shift($data);
-            if ($item===null)
-                $item=false;
+            if ($item === null) {
+                $item = false;
+            }
             $cursor->current()->willReturn($item);
         });
 
