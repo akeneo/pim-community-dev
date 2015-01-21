@@ -1,22 +1,20 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository;
 
 /**
- * Interface ModelRepositoryInterface
- *
- * TODO : move to IdentifiableRepoInterface
+ * CursorableRepositoryInterface for ORM repositories
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ModelRepositoryInterface
+interface CursorableRepositoryInterface
 {
     /**
      * @param array $ids of the entities
      *
-     * @return mixed : entities
+     * @return array
      */
     public function findByIds(array $ids);
 }

@@ -6,7 +6,7 @@ use ArrayIterator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use LogicException;
 
 /**
@@ -33,7 +33,7 @@ class Cursor extends AbstractCursor
     /** @var EntityManager */
     protected $entityManager;
 
-    /** @var ModelRepositoryInterface */
+    /** @var CursorableRepositoryInterface */
     protected $repository;
 
     /** @var int */
@@ -135,7 +135,7 @@ class Cursor extends AbstractCursor
     }
 
     /**
-     * @return ModelRepositoryInterface
+     * @return CursorableRepositoryInterface
      * @throws LogicException
      */
     protected function getRepository()
@@ -143,13 +143,11 @@ class Cursor extends AbstractCursor
         if (null === $this->repository) {
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
             $this->repository = $this->entityManager->getRepository($entityClass);
-            if (!($this->repository instanceof ModelRepositoryInterface)) {
-                throw new LogicException(
-                    sprintf(
-                        '%s repository must implement ModelRepositoryInterface',
-                        $entityClass
-                    )
-                );
+            if (!$this->repository instanceof CursorableRepositoryInterface) {
+                $message = <<<MESSAGE
+'"%s" repository must implement "Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface"'
+MESSAGE;
+                throw new LogicException(sprintf($message, $entityClass));
             }
         }
 

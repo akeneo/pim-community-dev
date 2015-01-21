@@ -2,12 +2,12 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
 use Prophecy\Argument;
 use Doctrine\ORM\Query\Expr\From;
 
@@ -55,7 +55,7 @@ class CursorSpec extends ObjectBehavior
         EntityManager $entityManager,
         AbstractQuery $query,
         From $from,
-        ModelRepositoryInterface $repository
+        CursorableRepositoryInterface $repository
     ) {
         $this->shouldImplement('\Iterator');
 

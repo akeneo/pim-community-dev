@@ -22,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
 
 /**
  * Product repository
@@ -35,8 +34,7 @@ class ProductRepository extends DocumentRepository implements
     ProductRepositoryInterface,
     IdentifiableObjectRepositoryInterface,
     ReferableEntityRepositoryInterface,
-    AssociationRepositoryInterface,
-    ModelRepositoryInterface
+    AssociationRepositoryInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
@@ -304,23 +302,6 @@ class ProductRepository extends DocumentRepository implements
             ->field('normalizedData.completenesses')->unsetField()
             ->getQuery()
             ->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByIds(array $ids)
-    {
-        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
-        $qb->field('_id')->in($ids);
-
-        $cursor = $qb->getQuery()->execute();
-        $products = [];
-        foreach ($cursor as $product) {
-            $products[] = $product;
-        }
-
-        return $products;
     }
 
     /**

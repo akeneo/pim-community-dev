@@ -144,25 +144,6 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     }
 
     /**
-     * Find products by id
-     * Also ensure that they contain all required values
-     *
-     * @param integer[] $ids
-     *
-     * @return ProductInterface[]
-     */
-    public function findByIds(array $ids)
-    {
-        $products = $this->getProductRepository()->findByIds($ids);
-
-        foreach ($products as $product) {
-            $this->builder->addMissingProductValues($product);
-        }
-
-        return $products;
-    }
-
-    /**
      * Find a product by identifier
      * Also ensure that it contains all required values
      *

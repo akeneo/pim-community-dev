@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
@@ -26,7 +27,8 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     IdentifiableObjectRepositoryInterface,
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    CursorableRepositoryInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
@@ -254,24 +256,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
-    {
-        return $this->createQueryBuilder('p')
-            ->select('p')
-            ->innerJoin('p.values', 'v')
-            ->innerJoin('v.attribute', 'a')
-            ->where('a.attributeType=:attribute_type')
-            ->andWhere('v.varchar=:code')
-            ->setParameter('attribute_type', 'pim_catalog_identifier')
-            ->setParameter('code', $code)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array($this->getAttributeRepository()->getIdentifierCode());
     }
@@ -535,5 +520,25 @@ class ProductRepository extends EntityRepository implements
     protected function getIdentifierAttribute()
     {
         return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }
