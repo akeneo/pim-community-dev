@@ -158,7 +158,7 @@ class VariantGroupController extends GroupController
     /**
      * Get the AvailbleAttributes form
      *
-     * @param GroupInterface      $group
+     * @param GroupInterface $group
      *
      * @return \Symfony\Component\Form\Form
      */
