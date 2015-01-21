@@ -1,29 +1,31 @@
 <?php
 
+
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Adds many products to many groups
+ * Operation to add products to variant groups
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddToGroups extends ProductMassEditOperation
+class AddToVariantGroup extends ProductMassEditOperation
 {
     /** @var GroupRepository */
     protected $groupRepository;
 
-    /** @var ArrayCollection */
-    protected $groups;
+    /** @var GroupInterface */
+    protected $group;
 
     /** @var string[] */
-    protected $warningMessages;
+    protected $warningMessages = null;
 
     /**
      * @param GroupRepository    $groupRepository
@@ -34,27 +36,26 @@ class AddToGroups extends ProductMassEditOperation
         parent::__construct($productSaver);
 
         $this->groupRepository = $groupRepository;
-        $this->groups = new ArrayCollection();
     }
 
     /**
-     * Set groups
+     * Set group
      *
-     * @param array $groups
+     * @param GroupInterface $group
      */
-    public function setGroups(array $groups)
+    public function setGroup(GroupInterface $group)
     {
-        $this->groups = new ArrayCollection($groups);
+        $this->group = $group;
     }
 
     /**
-     * Get groups
+     * Get group
      *
      * @return array
      */
-    public function getGroups()
+    public function getGroup()
     {
-        return $this->groups;
+        return $this->group;
     }
 
     /**
@@ -63,7 +64,7 @@ class AddToGroups extends ProductMassEditOperation
     public function getFormOptions()
     {
         return [
-            'groups' => $this->groupRepository->getAllGroupsExceptVariant()
+            'groups' => $this->groupRepository->getAllVariantGroups()
         ];
     }
 
@@ -72,7 +73,17 @@ class AddToGroups extends ProductMassEditOperation
      */
     public function getFormType()
     {
-        return 'pim_enrich_mass_add_to_groups';
+        return 'pim_enrich_mass_add_to_variant_group';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doPerform(ProductInterface $product)
+    {
+        if (null === $product->getVariantGroup()) {
+            $this->group->addProduct($product);
+        }
     }
 
     /**
@@ -99,23 +110,29 @@ class AddToGroups extends ProductMassEditOperation
     {
         $messages = [];
 
-        if (count($this->groupRepository->getAllGroupsExceptVariant()) === 0) {
+        if (count($this->groupRepository->getAllVariantGroups()) === 0) {
             $messages[] = [
-                'key'     => 'pim_enrich.mass_edit_action.add-to-groups.no_group',
+                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.no_variant_group',
                 'options' => []
+            ];
+
+            return $messages;
+        }
+
+        $alreadyInVariantGroup = [];
+        foreach ($products as $product) {
+            if (null != $product->getVariantGroup()) {
+                $alreadyInVariantGroup[] = $product->getIdentifier();
+            }
+        }
+
+        if (count($alreadyInVariantGroup) > 1) {
+            $messages[] = [
+                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group',
+                'options' => ['%products%' => implode(', ', $alreadyInVariantGroup)]
             ];
         }
 
         return $messages;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doPerform(ProductInterface $product)
-    {
-        foreach ($this->groups as $group) {
-            $group->addProduct($product);
-        }
     }
 }

@@ -48,7 +48,7 @@ class AddToGroupsSpec extends ObjectBehavior
 
     function it_provides_form_options($groupRepository, $shirts, $pants)
     {
-        $groupRepository->findAll()->willReturn([$shirts, $pants]);
+        $groupRepository->getAllGroupsExceptVariant()->willReturn([$shirts, $pants]);
 
         $this->getFormOptions()->shouldReturn(['groups' => [$shirts, $pants]]);
     }

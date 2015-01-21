@@ -8,6 +8,7 @@ parameters:
     pim_enrich.mass_edit_action.classify.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify
     pim_enrich.mass_edit_action.change_family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
     pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
+    pim_enrich.mass_edit_action.add_to_variant_group.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
     pim_entich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
 
 services:
@@ -105,6 +106,18 @@ services:
                 name: pim_enrich.mass_edit_action
                 alias: add-to-groups
                 acl: pim_enrich_product_add_to_groups
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    pim_enrich.mass_edit_action.add_to_variant_group:
+        class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.saver.product'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: add-to-variant-group
+                acl: pim_enrich_product_add_to_variant_group
                 operator: pim_enrich.mass_edit_action.operator.product
 
     # Family Grid Mass edit actions

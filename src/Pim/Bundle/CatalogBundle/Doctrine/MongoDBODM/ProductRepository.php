@@ -509,6 +509,23 @@ class ProductRepository extends DocumentRepository implements
 
         $qb = $this->createQueryBuilder()->hydrate(false)->select('_id');
 
+        $otherVariantGroupsSQL = 'SELECT g.id as group_id ' .
+            'FROM pim_catalog_group as g ' .
+            'JOIN pim_catalog_group_type as gt on gt.id = g.type_id ' .
+            'WHERE gt.code = "VARIANT" ' .
+            'AND g.id != :groupId';
+
+        $stmt = $this->entityManager->getConnection()->prepare($otherVariantGroupsSQL);
+        $stmt->bindValue('groupId', $variantGroupId);
+        $stmt->execute();
+        $otherVariantGroups = $stmt->fetchAll();
+
+        $groupsToRemove = [];
+        foreach ($otherVariantGroups as $variantGroup) {
+            $groupsToRemove[] = (int) $variantGroup['group_id'];
+        }
+        $qb->addAnd($qb->expr()->field('groupIds')->notIn($groupsToRemove));
+
         foreach ($attributes as $attribute) {
             $andExpr = $qb
                 ->expr()

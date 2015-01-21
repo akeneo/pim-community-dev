@@ -126,6 +126,14 @@ pim_enrich:
             label:         Add to groups
             description:   Select the groups in which to add the selected products
             success_flash: Products were successfully added to the selected groups
+            no_group:      No group for now. Please start by creating a group.
+
+        add-to-variant-group:
+            label:                    Add to a variant group
+            description:              Select the variant group in which to add the selected products
+            success_flash:            Products were successfully added to the selected variant group
+            already_in_variant_group: You cannot group the following products (%products%) because they are already in a variant group.
+            no_variant_group:         No variant group for now. Please start by creating a variant group.
 
         set-attribute-requirements:
             label:         Set attribute requirements
@@ -157,6 +165,7 @@ pim_enrich:
             change_family: Change product family
             change_state: Change state of product
             add_to_groups: Add product to groups
+            add_to_variant_group: Add product to a variant group
             mass_edit: Product mass edit actions
             comment: Comment products
             download: Download the product as PDF

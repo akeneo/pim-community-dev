@@ -85,8 +85,8 @@ class GroupRepository extends ReferableEntityRepository
     {
         $qb = $this->createQueryBuilder('grp');
         $qb->innerJoin('grp.type', 'type')
-            ->where($qb->expr()->neq('type.code', ':code'))
-            ->setParameter(':code', 'VARIANT');
+            ->where($qb->expr()->eq('type.variant', ':variant'))
+            ->setParameter(':variant', false);
 
         return $qb->getQuery()->execute();
     }
@@ -100,8 +100,8 @@ class GroupRepository extends ReferableEntityRepository
     {
         $qb = $this->createQueryBuilder('grp');
         $qb->innerJoin('grp.type', 'type')
-            ->where($qb->expr()->eq('type.code', ':code'))
-            ->setParameter(':code', 'VARIANT');
+            ->where($qb->expr()->eq('type.variant', ':variant'))
+            ->setParameter(':variant', true);
 
         return $qb->getQuery()->execute();
     }

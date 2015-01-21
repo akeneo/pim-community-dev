@@ -3,6 +3,7 @@ parameters:
     pim_catalog.validator.constraint.valid_metric.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
     pim_catalog.validator.constraint.single_identifier.class:        Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
     pim_catalog.validator.constraint.unique_variant_axis.class:      Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
+    pim_catalog.validator.constraint.unique_variant_group.class:     Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantGroupValidator
     pim_catalog.validator.constraint.unique_value.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
     pim_catalog.validator.constraint.immutable.class:                Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
     pim_catalog.validator.constraint.variant_group_values.class:     Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValuesValidator
@@ -55,6 +56,11 @@ services:
             - '@pim_catalog.manager.product'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_axis_validator }
+
+    pim_catalog.validator.constraint.unique_variant_group:
+        class: %pim_catalog.validator.constraint.unique_variant_group.class%
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_variant_group_validator }
 
     pim_catalog.validator.constraint.unique_value:
         class: %pim_catalog.validator.constraint.unique_value.class%
