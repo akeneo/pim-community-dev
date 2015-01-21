@@ -14,7 +14,7 @@ abstract class AbstractCursor implements CursorInterface
     /** @var int */
     protected $position;
 
-    /** @var  QueryBuilder depending on the implementation */
+    /** @var mixed QueryBuilder depending on the implementation */
     protected $queryBuilder;
 
     /**

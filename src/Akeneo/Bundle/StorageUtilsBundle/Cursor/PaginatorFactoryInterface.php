@@ -18,5 +18,5 @@ interface PaginatorFactoryInterface
      *
      * @return PaginatorInterface
      */
-    public function createPaginator(CursorInterface $cursor, $pageSize=null);
+    public function createPaginator(CursorInterface $cursor, $pageSize = null);
 }

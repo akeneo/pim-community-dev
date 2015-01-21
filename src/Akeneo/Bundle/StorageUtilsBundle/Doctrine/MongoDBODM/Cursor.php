@@ -16,10 +16,10 @@ use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
 class Cursor extends AbstractCursor
 {
     /** @var CursorMongoDB */
-    protected $cursor = null;
+    protected $cursor;
 
     /** @var int */
-    protected $count = null;
+    protected $count;
 
     /** @var int */
     protected $batchSize;
@@ -66,7 +66,7 @@ class Cursor extends AbstractCursor
     {
         parent::next();
         $this->currentDocument = $this->getCursor()->getNext();
-        if ($this->currentDocument===null){
+        if ($this->currentDocument === null) {
             $this->currentDocument = false;
         }
     }
