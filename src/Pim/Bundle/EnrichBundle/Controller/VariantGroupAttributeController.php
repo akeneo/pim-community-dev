@@ -199,7 +199,12 @@ class VariantGroupAttributeController
             }
         }
 
-        $attributes[] = $this->attributeRepository->getIdentifier();
+        $uniqueAttributes = $this->attributeRepository->findBy(['unique' => true]);
+        foreach ($uniqueAttributes as $attribute) {
+            if (!in_array($attribute, $attributes)) {
+                $attributes[] = $attribute;
+            }
+        }
 
         return $this->formFactory->create(
             'pim_available_attributes',
