@@ -72,22 +72,6 @@ Feature: Edit attributes of a variant group
     Then the field ecommerce Description should contain "British ecommerce description"
     And the field tablet Description should contain "British tablet description"
 
-  Scenario: Successfully use the translation mode on the variant group form
-    Then I should see comparison languages "German (Germany), English (United Kingdom) and French (France)"
-    When I compare values with the "French (France)" translation
-    And I select all translations
-    And I copy selected translations
-    Then the product Name should be "c"
-    And the product ecommerce Description should be "g"
-    But the product tablet Description should be "i"
-    But the product print Description should be "k"
-    When I compare values with the "German (Germany)" translation
-    And I confirm the navigation
-    And I select translations for "Name"
-    And I copy selected translations
-    Then the product Name should be "d"
-    But the product ecommerce Description should be "e"
-
   Scenario: Display a message when variant group has no attributes
     Given I am on the "jackets" variant group page
     And I visit the "Attributes" tab
