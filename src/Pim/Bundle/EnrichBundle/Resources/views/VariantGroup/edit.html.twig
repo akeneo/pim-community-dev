@@ -2,7 +2,6 @@
 {% set locales = form.productTemplate.vars.locales %}
 {% set channels = form.productTemplate.vars.channels %}
 {% set dataLocale = form.productTemplate.vars.currentLocale %}
-{% set comparisonLocale = form.productTemplate.vars.comparisonLocale %}
 
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
@@ -25,7 +24,7 @@
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_enrich_variant_group_edit', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
+        'action': path('pim_enrich_variant_group_edit', { id: form.vars.value.id, dataLocale: dataLocale }),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'variant group'|trans })

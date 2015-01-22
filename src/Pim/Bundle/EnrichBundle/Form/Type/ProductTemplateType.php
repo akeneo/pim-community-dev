@@ -11,7 +11,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -38,31 +37,25 @@ class ProductTemplateType extends AbstractType
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var Request */
-    protected $request;
-
     /**
      * @param string                                   $productTemplateClass
      * @param ProductFormViewInterface                 $productFormView
      * @param TransformProductTemplateValuesSubscriber $valuesSubscriber
      * @param UserContext                              $userContext
      * @param ChannelManager                           $channelManager
-     * @param Request                                  $request
      */
     public function __construct(
         $productTemplateClass,
         ProductFormViewInterface $productFormView,
         TransformProductTemplateValuesSubscriber $valuesSubscriber,
         UserContext $userContext,
-        ChannelManager $channelManager,
-        Request $request
+        ChannelManager $channelManager
     ) {
         $this->productTemplateClass = $productTemplateClass;
         $this->productFormView      = $productFormView;
         $this->valuesSubscriber     = $valuesSubscriber;
         $this->userContext          = $userContext;
         $this->channelManager       = $channelManager;
-        $this->request              = $request;
     }
 
     /**
@@ -80,8 +73,7 @@ class ProductTemplateType extends AbstractType
                     'allow_delete'       => false,
                     'by_reference'       => false,
                     'cascade_validation' => true,
-                    'currentLocale'      => $options['currentLocale'],
-                    'comparisonLocale'   => $this->getComparisonLocale($options['currentLocale']),
+                    'currentLocale'      => $options['currentLocale']
                 )
             )
             ->addEventSubscriber($this->valuesSubscriber);
@@ -94,12 +86,11 @@ class ProductTemplateType extends AbstractType
     {
         $values = null !== $view->vars['value'] ? $view->vars['value']->getValues() : [];
 
-        $view->vars['groups']           = $this->productFormView->getView();
-        $view->vars['orderedGroups']    = $this->getOrderedGroups($values);
-        $view->vars['locales']          = $this->userContext->getUserLocales();
-        $view->vars['channels']         = $this->channelManager->getChannels();
-        $view->vars['comparisonLocale'] = $this->getComparisonLocale($options['currentLocale']);
-        $view->vars['currentLocale']    = $options['currentLocale'];
+        $view->vars['groups']        = $this->productFormView->getView();
+        $view->vars['orderedGroups'] = $this->getOrderedGroups($values);
+        $view->vars['locales']       = $this->userContext->getUserLocales();
+        $view->vars['channels']      = $this->channelManager->getChannels();
+        $view->vars['currentLocale'] = $options['currentLocale'];
     }
 
     /**
@@ -151,19 +142,5 @@ class ProductTemplateType extends AbstractType
         usort($groups, $sortGroup);
 
         return $groups;
-    }
-
-    /**
-     * Returns the comparison locale code
-     *
-     * @param string $currentLocale
-     *
-     * @return string|null
-     */
-    protected function getComparisonLocale($currentLocale)
-    {
-        $comparisonLocale = $this->request->query->get('compareWith');
-
-        return $comparisonLocale !== $currentLocale ? $comparisonLocale :  null;
     }
 }
