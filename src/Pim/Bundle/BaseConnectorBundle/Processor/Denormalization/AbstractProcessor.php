@@ -182,13 +182,19 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         $errors = [];
         /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
+            // TODO re-format the message, property path doesn't exist for class constraint
+            // for instance cf VariantGroupAxis
+            $invalidValue = $violation->getInvalidValue();
+            if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
+                $invalidValue = (string) $invalidValue;
+            } elseif (is_object($invalidValue)) {
+                $invalidValue = get_class($invalidValue);
+            }
             $errors[] = sprintf(
                 "%s: %s: %s\n",
                 $violation->getPropertyPath(),
                 $violation->getMessage(),
-                $violation->getInvalidValue()
-                // TODO re-format the message, property path doesn't exist for class constraint
-                // for instance cf VariantGroupAxis
+                $invalidValue
             );
         }
 
