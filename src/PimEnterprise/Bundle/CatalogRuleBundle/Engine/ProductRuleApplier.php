@@ -191,7 +191,7 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * Apply a copy action on a subject set.
      *
-     * @param array                           $products
+     * @param ProductInterface[]              $products
      * @param ProductCopyValueActionInterface $action
      *
      * @return ProductRuleApplier
