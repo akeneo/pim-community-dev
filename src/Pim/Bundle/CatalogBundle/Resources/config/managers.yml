@@ -16,6 +16,7 @@ parameters:
     pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
     pim_catalog.manager.product_template_attributes.class: Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager
+    pim_catalog.manager.product_template_media.class:      Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
 
 services:
@@ -148,6 +149,12 @@ services:
             - '@pim_serializer'
             - '@pim_catalog.builder.product'
             - %pim_catalog.entity.product.class%
+
+    pim_catalog.manager.product_template_media:
+        class: %pim_catalog.manager.product_template_media.class%
+        arguments:
+            - '@pim_catalog.manager.media'
+            - '@pim_serializer'
 
     pim_catalog.applier.product_template:
         class: %pim_catalog.applier.product_template.class%

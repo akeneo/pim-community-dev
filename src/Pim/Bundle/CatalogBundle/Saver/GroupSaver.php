@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Saver;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
 
 /**
  * Group saver, contains custom logic for variant group products saving
@@ -24,21 +25,27 @@ class GroupSaver implements SaverInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
+    /** @var ProductTemplateMediaManager */
+    protected $templateMediaManager;
+
     /** @var ProductTemplateApplierInterface */
     protected $productTemplateApplier;
 
     /**
      * @param ObjectManager                   $objectManager
      * @param BulkSaverInterface              $productSaver
+     * @param ProductTemplateMediaManager     $templateMediaManager
      * @param ProductTemplateApplierInterface $productTemplateApplier
      */
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
+        ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $productTemplateApplier
     ) {
-        $this->objectManager   = $objectManager;
-        $this->productSaver    = $productSaver;
+        $this->objectManager          = $objectManager;
+        $this->productSaver           = $productSaver;
+        $this->templateMediaManager   = $templateMediaManager;
         $this->productTemplateApplier = $productTemplateApplier;
     }
 
@@ -75,6 +82,13 @@ class GroupSaver implements SaverInterface
 
         if (count($options['remove_products']) > 0) {
             $this->removeProducts($options['remove_products']);
+        }
+
+        if ($group->getType()->isVariant()) {
+            $template = $group->getProductTemplate();
+            if (null !== $template) {
+                $this->templateMediaManager->handleProductTemplateMedia($template);
+            }
         }
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
