@@ -3,9 +3,11 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,9 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
-    /**
-     * @var Serializer
-     */
+    /** @var Serializer */
     protected $serializer;
 
     /**
@@ -31,26 +31,28 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      */
     protected $channel;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var array Normalizer context
-     */
+    /** @var array Normalizer context */
     protected $normalizerContext;
+
+    /** @var string */
+    protected $uploadDirectory;
 
     /**
      * @param Serializer     $serializer
      * @param ChannelManager $channelManager
+     * @param string         $uploadDirectory
      */
     public function __construct(
         Serializer $serializer,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        $uploadDirectory
     ) {
-        $this->serializer     = $serializer;
-        $this->channelManager = $channelManager;
+        $this->serializer      = $serializer;
+        $this->channelManager  = $channelManager;
+        $this->uploadDirectory = $uploadDirectory;
     }
 
     /**
@@ -60,11 +62,21 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     {
         $data['media'] = [];
         if (count($item->getMedia()) > 0) {
-            $data['media'] = $this->serializer->normalize(
-                $item->getMedia(),
-                'flat',
-                ['field_name' => 'media', 'prepare_copy' => true]
-            );
+            try {
+                $data['media'] = $this->serializer->normalize(
+                    $item->getMedia(),
+                    'flat',
+                    ['field_name' => 'media', 'prepare_copy' => true]
+                );
+            } catch (FileNotFoundException $e) {
+                throw new InvalidItemException(
+                    $e->getMessage(),
+                    [
+                        'item'            => $item->getOriginalProduct()->getIdentifier()->getData(),
+                        'uploadDirectory' => $this->uploadDirectory,
+                    ]
+                );
+            }
         }
 
         $data['product'] = $this->serializer->normalize($item, 'flat', $this->getNormalizerContext());
