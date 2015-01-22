@@ -113,6 +113,8 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.saver.product'
+            - '@pim_catalog.updater.product_template'
+            - '@validator'
         tags:
             -
                 name: pim_enrich.mass_edit_action

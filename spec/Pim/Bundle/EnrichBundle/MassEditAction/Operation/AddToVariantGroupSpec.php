@@ -8,6 +8,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class AddToVariantGroupSpec extends ObjectBehavior
 {
@@ -15,9 +18,11 @@ class AddToVariantGroupSpec extends ObjectBehavior
         GroupRepository $groupRepository,
         BulkSaverInterface $productSaver,
         GroupInterface $shirts,
-        GroupInterface $pants
+        GroupInterface $pants,
+        ValidatorInterface $validator,
+        ProductTemplateUpdaterInterface $productTemplateUpdater
     ) {
-        $this->beConstructedWith($groupRepository, $productSaver);
+        $this->beConstructedWith($groupRepository, $productSaver, $productTemplateUpdater, $validator);
     }
 
     function it_is_a_mass_edit_action()
@@ -38,9 +43,10 @@ class AddToVariantGroupSpec extends ObjectBehavior
     }
 
     function it_adds_products_to_groups_when_performing_the_operation(
+        $shirts,
         ProductInterface $product1,
         ProductInterface $product2,
-        $shirts
+        ProductTemplateInterface $shirtProductTemplate
     ) {
         $this->setObjectsToMassEdit([$product1, $product2]);
 
@@ -48,6 +54,8 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
         $shirts->addProduct($product1)->shouldBeCalled();
         $shirts->addProduct($product2)->shouldBeCalled();
+
+        $shirts->getProductTemplate()->willReturn($shirtProductTemplate);
 
         $this->perform();
     }
@@ -73,16 +81,30 @@ class AddToVariantGroupSpec extends ObjectBehavior
         ProductInterface $product2
     ) {
         $groupRepository->getAllVariantGroups()->willReturn([$shirts]);
-        $this->setObjectsToMassEdit([$product1, $product2]);
-
         $product1->getVariantGroup()->willReturn(null);
         $product1->getIdentifier()->shouldNotBeCalled();
         $product2->getVariantGroup()->willReturn($shirts);
         $product2->getIdentifier()->shouldBeCalled()->willReturn('shirt_000');
 
+        $this->setObjectsToMassEdit([$product1, $product2]);
+
         $this->getWarningMessages()->shouldReturn([[
-            'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group',
+            'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid',
             'options' => ['%products%' => 'shirt_000']
         ]]);
+    }
+
+    function it_applies_product_template_to_products_when_performing_the_operation(
+        $shirts,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductTemplateInterface $shirtProductTemplate
+    ) {
+        $this->setObjectsToMassEdit([$product1, $product2]);
+        $this->setGroup($shirts);
+
+        $shirts->getProductTemplate()->willReturn($shirtProductTemplate);
+
+        $this->perform();
     }
 }

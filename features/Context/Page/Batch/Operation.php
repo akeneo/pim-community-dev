@@ -20,6 +20,7 @@ class Operation extends Wizard
         'Edit common attributes'           => 'Batch EditCommonAttributes',
         'Change the family of products'    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
+        'Add to a variant group'           => 'Batch AddToVariantGroup',
         'Set attribute requirements'       => 'Batch SetAttributeRequirements',
         'Classify products in categories'  => 'Batch Classify',
     );

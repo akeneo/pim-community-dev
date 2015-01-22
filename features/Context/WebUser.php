@@ -1998,6 +1998,14 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I select the "([^"]*)" variant group$/
+     */
+    public function iSelectVariantGroup($variant)
+    {
+        $element = $this->getCurrentPage()->find('css', sprintf('.mass-edit-form input[type="radio"] + label:contains("%s")', $variant))->click();
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *

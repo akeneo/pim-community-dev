@@ -8,3 +8,9 @@ Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups:
         groups:
             - Valid:
                 traverse: true
+
+Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup:
+    properties:
+        group:
+            - Valid:
+                traverse: true

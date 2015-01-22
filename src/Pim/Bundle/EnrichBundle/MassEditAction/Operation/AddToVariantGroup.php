@@ -6,6 +6,8 @@ use Akeneo\Component\Persistence\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Operation to add products to variant groups
@@ -19,8 +21,17 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class AddToVariantGroup extends ProductMassEditOperation
 {
+    /** @var array */
+    protected $skippedObjects = [];
+
     /** @var GroupRepository */
     protected $groupRepository;
+
+    /** @var ProductTemplateUpdaterInterface */
+    protected $templateUpdater;
+
+    /** @var ValidatorInterface */
+    protected $validator;
 
     /** @var GroupInterface */
     protected $group;
@@ -29,14 +40,46 @@ class AddToVariantGroup extends ProductMassEditOperation
     protected $warningMessages = null;
 
     /**
-     * @param GroupRepository    $groupRepository
-     * @param BulkSaverInterface $productSaver
+     * @param GroupRepository                 $groupRepository
+     * @param BulkSaverInterface              $productSaver
+     * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param ValidatorInterface              $validator
      */
-    public function __construct(GroupRepository $groupRepository, BulkSaverInterface $productSaver)
-    {
+    public function __construct(
+        GroupRepository $groupRepository,
+        BulkSaverInterface $productSaver,
+        ProductTemplateUpdaterInterface $templateUpdater,
+        ValidatorInterface $validator
+    ) {
         parent::__construct($productSaver);
 
         $this->groupRepository = $groupRepository;
+        $this->templateUpdater = $templateUpdater;
+        $this->validator       = $validator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setObjectsToMassEdit(array $objects)
+    {
+        $this->objects        = [];
+        $this->skippedObjects = [];
+
+        foreach ($objects as $object) {
+            $violations = $this->validator->validate($object, ['pim_catalog_variant_group']);
+
+            if ($object instanceof ProductInterface &&
+                null === $object->getVariantGroup() &&
+                count($violations) === 0
+            ) {
+                $this->objects[] = $object;
+            } else {
+                $this->skippedObjects[] = $object;
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -75,6 +118,18 @@ class AddToVariantGroup extends ProductMassEditOperation
     public function getFormType()
     {
         return 'pim_enrich_mass_add_to_variant_group';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function perform()
+    {
+        parent::perform();
+
+        if (null !== $this->group->getProductTemplate()) {
+            $this->templateUpdater->update($this->group->getProductTemplate(), $this->objects);
+        }
     }
 
     /**
@@ -121,17 +176,17 @@ class AddToVariantGroup extends ProductMassEditOperation
             return $messages;
         }
 
-        $alreadyInVariantGroup = [];
-        foreach ($products as $product) {
-            if (null !== $product->getVariantGroup()) {
-                $alreadyInVariantGroup[] = $product->getIdentifier();
+        $invalidProducts = [];
+        foreach ($this->skippedObjects as $product) {
+            if ($product instanceof ProductInterface) {
+                $invalidProducts[] = $product->getIdentifier();
             }
         }
 
-        if (count($alreadyInVariantGroup) > 0) {
+        if (count($invalidProducts) > 0) {
             $messages[] = [
-                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group',
-                'options' => ['%products%' => implode(', ', $alreadyInVariantGroup)]
+                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid',
+                'options' => ['%products%' => implode(', ', $invalidProducts)]
             ];
         }
 

@@ -129,11 +129,11 @@ pim_enrich:
             no_group:      No group for now. Please start by creating a group.
 
         add-to-variant-group:
-            label:                    Add to a variant group
-            description:              Select the variant group in which to add the selected products
-            success_flash:            Products were successfully added to the selected variant group
-            already_in_variant_group: You cannot group the following products (%products%) because they are already in a variant group.
-            no_variant_group:         No variant group for now. Please start by creating a variant group.
+            label:                                 Add to a variant group
+            description:                           Select the variant group in which to add the selected products
+            success_flash:                         Products were successfully added to the selected variant group
+            already_in_variant_group_or_not_valid: You cannot group the following products (%products%) because they are already in a variant group or doesn't have the group axis.
+            no_variant_group:                      No variant group for now. Please start by creating a variant group.
 
         set-attribute-requirements:
             label:         Set attribute requirements
