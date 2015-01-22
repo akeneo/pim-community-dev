@@ -25,7 +25,7 @@ class ViewUpdaterRegistry
         if (!isset($this->updaters[$position])) {
             $this->updaters[$position] = $updater;
         } else {
-            $this->addUpdater($updater, ++$position);
+            $this->registerUpdater($updater, ++$position);
         }
     }
 
