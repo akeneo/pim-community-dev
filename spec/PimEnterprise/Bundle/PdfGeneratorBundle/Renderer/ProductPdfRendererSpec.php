@@ -21,7 +21,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         PdfBuilderInterface $pdfBuilder,
         FilterProductValuesHelper $filterHelper
     ) {
-        $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder, $filterHelper);
+        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
+        $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder, $filterHelper, $uploadDirectory);
     }
 
     function it_renders_a_product_without_images(
@@ -33,6 +34,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ProductValueInterface $blue,
         $templating
     ) {
+        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$blue]);
@@ -49,7 +51,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'locale'            => 'en_US',
             'scope'             => 'ecommerce',
             'groupedAttributes' => ['Design' => ['color' => $color]],
-            'imageAttributes'   => []
+            'imageAttributes'   => [],
+            'uploadDir'         => $uploadDirectory . DIRECTORY_SEPARATOR,
         ])->shouldBeCalled();
 
         $this->render($blender, 'plain', ['locale' => 'en_US', 'scope' => 'ecommerce']);
@@ -64,6 +67,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ProductValueInterface $blenderPicture,
         $templating
     ) {
+        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
         $filterHelper->filter([$blenderPicture], 'en_US')->willReturn([$blenderPicture]);
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$blenderPicture]);
@@ -81,7 +85,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'locale'            => 'en_US',
             'scope'             => 'ecommerce',
             'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
-            'imageAttributes'   => ['main_image' => $mainImage]
+            'imageAttributes'   => ['main_image' => $mainImage],
+            'uploadDir'         => $uploadDirectory . DIRECTORY_SEPARATOR,
         ])->shouldBeCalled();
 
         $this->render($blender, 'plain', ['locale' => 'en_US', 'scope' => 'ecommerce']);

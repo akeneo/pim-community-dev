@@ -24,9 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
  */
 class ProductPdfRenderer extends PimProductPdfRenderer
 {
-    /**
-     * @var FilterProductValuesHelper
-     */
+    /** @var FilterProductValuesHelper */
     protected $filterHelper;
 
     /**
@@ -34,14 +32,16 @@ class ProductPdfRenderer extends PimProductPdfRenderer
      * @param string                    $template
      * @param PdfBuilderInterface       $pdfBuilder
      * @param FilterProductValuesHelper $filterHelper
+     * @param string                    $uploadDirectory
      */
     public function __construct(
         EngineInterface $templating,
         $template,
         PdfBuilderInterface $pdfBuilder,
-        FilterProductValuesHelper $filterHelper
+        FilterProductValuesHelper $filterHelper,
+        $uploadDirectory
     ) {
-        parent::__construct($templating, $template, $pdfBuilder);
+        parent::__construct($templating, $template, $pdfBuilder, $uploadDirectory);
 
         $this->filterHelper = $filterHelper;
     }

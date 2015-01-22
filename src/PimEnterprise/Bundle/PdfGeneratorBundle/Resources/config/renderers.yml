@@ -4,8 +4,11 @@ parameters:
 services:
     pimee_pdf_generator.renderer.product_pdf:
         class: %pimee_pdf_generator.renderer.product_pdf.class%
-        parent: pim_pdf_generator.renderer.product_pdf
         arguments:
+            - '@templating'
+            - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
+            - '@pim_pdf_generator.builder.dompdf'
             - '@pimee_workflow.helper.filter_product_values'
+            - %upload_dir%
         tags:
             - { name: pim_pdf_generator.renderer, priority: 100 }
