@@ -508,6 +508,12 @@ class Form extends Base
         // wait for it to completly vanish in order to reopen select list
         $this->getSession()->wait(2000);
 
+        $allValues = array_filter($allValues);
+        if (1 === count($allValues)) {
+            $value = array_shift($allValues);
+            $this->fillSelectField($label, $value);
+        }
+
         // Fill in remaining values
         $remainingValues = array_diff($allValues, $selectedTextValues);
 
