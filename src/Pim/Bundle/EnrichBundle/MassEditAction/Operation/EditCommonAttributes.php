@@ -68,7 +68,6 @@ class EditCommonAttributes extends ProductMassEditOperation
      * @param ProductMassActionManager $massActionManager
      * @param NormalizerInterface      $normalizer
      * @param BulkSaverInterface       $productSaver
-     * @param array                    $classes
      */
     public function __construct(
         ProductBuilder $productBuilder,
