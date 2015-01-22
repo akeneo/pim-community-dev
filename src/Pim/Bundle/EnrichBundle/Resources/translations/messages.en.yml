@@ -214,6 +214,7 @@ pim_enrich:
             edit: Edit a group
             remove: Remove a group
             history: View group history
+            edit_attributes: Edit attributes of variant groups
             add_attributes: Add attributes to variant groups
             remove_attribute: Remove attributes from variant groups
         group_type:
