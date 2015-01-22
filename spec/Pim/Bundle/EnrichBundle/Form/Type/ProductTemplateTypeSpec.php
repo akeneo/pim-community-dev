@@ -8,8 +8,6 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscr
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProductTemplateTypeSpec extends ObjectBehavior
@@ -18,13 +16,9 @@ class ProductTemplateTypeSpec extends ObjectBehavior
         ProductFormViewInterface $formView,
         TransformProductTemplateValuesSubscriber $subscriber,
         UserContext $userContext,
-        ChannelManager $channelManager,
-        Request $request,
-        ParameterBag $query
+        ChannelManager $channelManager
     ) {
-        $request->query = $query;
-
-        $this->beConstructedWith('ProductTemplate', $formView, $subscriber, $userContext, $channelManager, $request);
+        $this->beConstructedWith('ProductTemplate', $formView, $subscriber, $userContext, $channelManager);
     }
 
     function it_is_initializable()
@@ -54,7 +48,7 @@ class ProductTemplateTypeSpec extends ObjectBehavior
         $this->setDefaultOptions($resolver);
     }
 
-    function it_adds_values_to_the_form($request, $subscriber, FormBuilderInterface $builder)
+    function it_adds_values_to_the_form($subscriber, FormBuilderInterface $builder)
     {
         $builder
             ->add(
@@ -67,7 +61,6 @@ class ProductTemplateTypeSpec extends ObjectBehavior
                     'by_reference'       => false,
                     'cascade_validation' => true,
                     'currentLocale'      => 'en_GB',
-                    'comparisonLocale'   => null,
                 )
             )
             ->shouldBeCalled()
