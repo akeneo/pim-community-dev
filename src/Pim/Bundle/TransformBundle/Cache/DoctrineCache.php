@@ -111,16 +111,20 @@ class DoctrineCache
             return $this->referenceRepository->getReference($reference);
         } else {
             $repository = $this->doctrine->getManagerForClass($class)->getRepository($class);
-            if (null !== $object = $this->findOneByIdentifier($repository, $code)) {
-                return $object;
+
+            if (!$repository instanceof IdentifiableObjectRepositoryInterface &&
+                !$repository instanceof ReferableEntityRepositoryInterface) {
+                throw new \Exception(
+                    sprintf(
+                        'Repository "%s" of class "%s" does not implement ' .
+                        '"Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface".',
+                        get_class($repository),
+                        $class
+                    )
+                );
             }
 
-            $message = <<<MESSAGE
-Repository "%s" of class "%s" does not implement "Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface"
-MESSAGE;
-            throw new \Exception(
-                sprintf($message, get_class($repository), $class)
-            );
+            return $this->findOneByIdentifier($repository, $code);
         }
     }
 

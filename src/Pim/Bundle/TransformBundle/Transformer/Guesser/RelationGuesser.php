@@ -96,7 +96,7 @@ class RelationGuesser implements GuesserInterface
             $mapping = $metadata->getFieldMapping($fieldName);
             $target = $mapping['targetEntity'];
 
-            if (!$this->isRepositoryEligible($this->doctrine->getRepository($mapping['targetEntity']))) {
+            if (!$this->isRepositoryEligible($this->doctrine->getRepository($target))) {
                 return;
             }
 
@@ -120,7 +120,7 @@ class RelationGuesser implements GuesserInterface
                     return;
             }
 
-            if (!$this->isRepositoryEligible($this->doctrine->getRepository($mapping['targetEntity']))) {
+            if (!$this->isRepositoryEligible($this->doctrine->getRepository($target))) {
                 return;
             }
 

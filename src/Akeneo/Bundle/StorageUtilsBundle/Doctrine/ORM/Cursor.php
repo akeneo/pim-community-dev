@@ -143,11 +143,15 @@ class Cursor extends AbstractCursor
         if (null === $this->repository) {
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
             $this->repository = $this->entityManager->getRepository($entityClass);
+
             if (!$this->repository instanceof CursorableRepositoryInterface) {
-                $message = <<<MESSAGE
-'"%s" repository must implement "Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface"'
-MESSAGE;
-                throw new LogicException(sprintf($message, $entityClass));
+                throw new LogicException(
+                    sprintf(
+                        '"%s" repository must implement ' .
+                        '"Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface"',
+                        $entityClass
+                    )
+                );
             }
         }
 
