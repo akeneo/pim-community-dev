@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -49,10 +50,11 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
 
-        if ($operator === Operators::IS_EMPTY) {
-            $this->addIsEmptyFilter($attribute, $operator, $value, $locale, $scope);
-        } else {
+        if ($operator !== Operators::IS_EMPTY) {
+            $this->checkValue($attribute, $value);
             $this->addLikeFilter($attribute, $operator, $value, $locale, $scope);
+        } else {
+            $this->addIsEmptyFilter($attribute, $locale, $scope);
         }
 
         return $this;
@@ -68,12 +70,10 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
 
     /**
      * @param AttributeInterface $attribute the attribute
-     * @param string             $operator  the used operator
-     * @param string|array       $value     the value(s) to filter
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      */
-    protected function addIsEmptyFilter(AttributeInterface $attribute, $operator, $value, $locale, $scope)
+    protected function addIsEmptyFilter(AttributeInterface $attribute, $locale, $scope)
     {
         // join on values
         $joinAlias = 'filter'.$attribute->getCode();
@@ -90,7 +90,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $backendType = $attribute->getBackendType();
         $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMedia);
-        $mediaCondition = $this->prepareCondition($backendField, $operator, $value);
+        $mediaCondition = $this->prepareCondition($backendField, Operators::IS_EMPTY, null);
         $this->qb->andWhere($mediaCondition);
     }
 
@@ -153,5 +153,16 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         }
 
         return $this->prepareCriteriaCondition($backendField, $operator, $value);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $value
+     */
+    protected function checkValue(AttributeInterface $attribute, $value)
+    {
+        if (!is_string($value)) {
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media');
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
@@ -61,12 +62,12 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s.originalFilename', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if (Operators::IS_EMPTY === $operator) {
-            $this->qb->field($field)->exists(false);
-        } else {
+        if (Operators::IS_EMPTY !== $operator) {
+            $this->checkValue($attribute, $value);
             $value = $this->prepareValue($operator, $value);
-
             $this->qb->field($field)->equals($value);
+        } else {
+            $this->qb->field($field)->exists(false);
         }
 
         return $this;
@@ -99,5 +100,16 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         }
 
         return $value;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param mixed              $value
+     */
+    public function checkValue(AttributeInterface $attribute, $value)
+    {
+        if (!is_string($value)) {
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media');
+        }
     }
 }
