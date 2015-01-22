@@ -200,7 +200,7 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Volcom"
 
-  Scenario: Skip rules with unsupported string value for the multi select attribute of type multi select in conditions
+  Scenario: Skip rules with unsupported string value for the multi select attribute of type multi select in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -294,7 +294,7 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "Another good description"
 
-  Scenario: Skip rules with unsupported values for attribute of type prices collection in conditions
+  Scenario: Skip rules with unsupported values for attribute of type prices collection in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -339,7 +339,7 @@ Feature: Import rules
     Then I should see "3"
     Then I should see "EUR"
 
-  Scenario: Skip rules with unsupported values for attribute of type metric in conditions
+  Scenario: Skip rules with unsupported values for attribute of type metric in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -384,7 +384,7 @@ Feature: Import rules
     Then I should see "3"
     Then I should see "CENTIMETER"
 
-  Scenario: Skip rules with unsupported values for attribute of type number in conditions
+  Scenario: Skip rules with unsupported values for attribute of type number in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -431,7 +431,7 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "42"
 
-  Scenario: Skip rules with unsupported values for attribute of type boolean in conditions
+  Scenario: Skip rules with unsupported values for attribute of type boolean in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -475,7 +475,7 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "true"
 
-  Scenario: Skip rules with unsupported values for attribute of type date in conditions
+  Scenario: Skip rules with unsupported values for attribute of type date in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -523,7 +523,7 @@ Feature: Import rules
     And I visit the "Rules" tab
     Then I should see "1970-01-01"
 
-  Scenario: Skip rules with unsupported values for attribute of type media in conditions
+  Scenario: Skip rules with unsupported values for attribute of type media in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -567,13 +567,13 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Only scalar values are allowed for operators eq, lt, lte, gt, gte, like."
+    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data (for filter media)"
     And I should see "actions[0]: Attribute \"side_view\" expects a valid file path"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "SNKRS-1R"
 
-  Scenario: Skip rules with missing values for attribute of type media in conditions
+  Scenario: Skip rules with missing values for attribute of type media in conditions and actions
     Given the following product rules:
       | code                       | priority |
       | sony_beautiful_description | 10       |
@@ -590,8 +590,6 @@ Feature: Import rules
             conditions:
                 - field:    side_view
                   operator: =
-                  value:
-                      - invalid
             actions:
                 - type:  set_value
                   field: side_view
@@ -601,8 +599,6 @@ Feature: Import rules
             conditions:
                 - field:    side_view
                   operator: =
-                  value:
-                      - invalid
             actions:
                 - type:  set_value
                   field: side_view
@@ -615,8 +611,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Only scalar values are allowed for operators eq, lt, lte, gt, gte, like."
-    And I should see "actions[0]: Attribute \"side_view\" expects an array with the key"
+    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data (for filter media)."
+    And I should see "actions[0]: Attribute \"side_view\" expects an array with the key \"filePath\" as data, \"array\" given (for setter media)."
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "SNKRS-1R"
