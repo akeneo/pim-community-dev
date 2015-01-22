@@ -79,15 +79,10 @@ class ProductRuleSelector implements SelectorInterface
             );
         }
 
-        $products = $pqb->execute();
-        // TODO : Hot Fix for MongoDB, should be included in the execute() method itself
-        if (is_object($products)) {
-            $products = $products->toArray();
-        }
-
+        $productsCursor = $pqb->execute();
         $subjectSet->setCode($rule->getCode());
         $subjectSet->setType('product');
-        $subjectSet->setSubjects($products);
+        $subjectSet->setSubjectsCursor($productsCursor);
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_SELECT, new SelectedRuleEvent($rule, $subjectSet));
 

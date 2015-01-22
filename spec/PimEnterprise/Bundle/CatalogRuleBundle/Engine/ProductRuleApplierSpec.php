@@ -2,9 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -19,6 +22,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
@@ -32,6 +37,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ValidatorInterface $productValidator,
         ObjectDetacherInterface $objectDetacher,
         CacheClearer $cacheClearer,
+        PaginatorFactoryInterface $paginatorFactory,
         TranslatorInterface $translator
     ) {
         $this->beConstructedWith(
@@ -43,6 +49,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $versionManager,
             $cacheClearer,
             $translator,
+            $paginatorFactory,
             self::RULE_DEFINITION_CLASS
         );
     }
@@ -61,16 +68,22 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $eventDispatcher,
         $productUpdater,
         $productValidator,
-        $productSaver,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
-        $cacheClearer
+        CursorInterface $cursor,
+        PaginatorFactoryInterface $paginatorFactory,
+        PaginatorInterface $paginator
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
         // update products
         $rule->getActions()->willReturn([]);
-        $subjectSet->getSubjects()->willReturn([]);
+
+        $paginator->valid()->shouldBeCalled()->willReturn(false);
+        $paginator->rewind()->shouldBeCalled()->willReturn(null);
+        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
+        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
+
         $productUpdater->setValue(Argument::any())->shouldNotBeCalled();
         $productUpdater->copyValue(Argument::any())->shouldNotBeCalled();
 
@@ -78,15 +91,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $rule->getCode()->willReturn('rule_one');
         $productValidator->validate(Argument::any())->shouldNotBeCalled();
 
-        // save products
-        $productSaver->saveAll([], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
-
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
         $this->apply($rule, $subjectSet);
-
-        $cacheClearer->addNonClearableEntity(self::RULE_DEFINITION_CLASS)->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalled();
-
     }
 
     function it_applies_a_rule_which_has_a_set_action(
@@ -100,6 +106,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductSetValueActionInterface $action,
         ProductInterface $selectedProduct,
         ConstraintViolationList $violationList,
+        PaginatorFactoryInterface $paginatorFactory,
+        PaginatorInterface $paginator,
+        CursorInterface $cursor,
         $translator,
         $cacheClearer
     ) {
@@ -111,12 +120,33 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $action->getScope()->willReturn('ecommerce');
         $action->getLocale()->willReturn('en_US');
         $rule->getActions()->willReturn([$action]);
-        $subjectSet->getSubjects()->willReturn([$selectedProduct]);
-        $productUpdater->setValue([$selectedProduct], 'sku', 'foo', 'en_US', 'ecommerce')->shouldBeCalled();
+
+        // paginator mocking
+        $productArray = [];
+        for ($i = 0; $i < 13; $i++) {
+            $productArray[] = $selectedProduct;
+        }
+        $indexPage = 0;
+        $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
+        $paginator->next()->shouldBeCalled()->will(function () use ($paginator, &$productArray, &$indexPage) {
+            $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
+            $indexPage++;
+        });
+        $paginator->rewind()->shouldBeCalled()->will(function () use (&$indexPage) {
+            $indexPage = 0;
+        });
+        $paginator->valid()->shouldBeCalled()->will(function () use (&$indexPage) {
+            return $indexPage < 3;
+        });
+
+        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
+        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
+
+        $productUpdater->setValue(Argument::any(), 'sku', 'foo', 'en_US', 'ecommerce')->shouldBeCalled();
 
         // validate products
         $rule->getCode()->willReturn('rule_one');
-        $productValidator->validate($selectedProduct)->shouldBeCalled()->willReturn($violationList);
+        $productValidator->validate(Argument::any())->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
 
         $translator->trans(Argument::cetera())->willReturn('Applied rule "rule_one"');
@@ -125,7 +155,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $versionManager->isRealTimeVersioning()->willReturn(false);
         $versionManager->setContext('Applied rule "rule_one"')->shouldBeCalled();
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
-        $productSaver->saveAll([$selectedProduct], ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
+        $productSaver->saveAll(Argument::any(), ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
@@ -147,6 +177,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductInterface $selectedProduct,
         ConstraintViolationList $violationList,
         $cacheClearer,
+        PaginatorFactoryInterface $paginatorFactory,
+        PaginatorInterface $paginator,
+        CursorInterface $cursor,
         $translator
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
@@ -159,7 +192,24 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $action->getFromScope()->willReturn('ecommerce');
         $action->getToScope()->willReturn('tablet');
         $rule->getActions()->willReturn([$action]);
-        $subjectSet->getSubjects()->willReturn([$selectedProduct]);
+
+        // paginator mocking
+        $productArray = [$selectedProduct];
+        $indexPage = 0;
+        $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
+        $paginator->next()->shouldBeCalled()->will(function () use ($paginator, &$productArray, &$indexPage) {
+            $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
+            $indexPage++;
+        });
+        $paginator->rewind()->shouldBeCalled()->will(function () use (&$indexPage) {
+            $indexPage = 0;
+        });
+        $paginator->valid()->shouldBeCalled()->will(function () use (&$indexPage) {
+            return $indexPage < 2;
+        });
+        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
+        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
+
         $productUpdater
             ->copyValue([$selectedProduct], 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
             ->shouldBeCalled();
@@ -197,6 +247,10 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductInterface $invalidProduct,
         ConstraintViolationList $emptyViolationList,
         ConstraintViolationList $notEmptyViolationList,
+        PaginatorFactoryInterface $paginatorFactory,
+        PaginatorInterface $paginator,
+        CursorInterface $cursor,
+        SkippedSubjectRuleEvent $skippedSubjectRuleEvent,
         $cacheClearer
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
@@ -209,9 +263,26 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $action->getFromScope()->willReturn('ecommerce');
         $action->getToScope()->willReturn('tablet');
         $rule->getActions()->willReturn([$action]);
-        $subjectSet->getSubjects()->willReturn([$validProduct, $invalidProduct]);
+
+        // paginator mocking
+        $productArray = [$validProduct, $invalidProduct];
+        $indexPage = 0;
+        $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
+        $paginator->next()->shouldBeCalled()->will(function () use ($paginator, &$productArray, &$indexPage) {
+            $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
+            $indexPage++;
+        });
+        $paginator->rewind()->shouldBeCalled()->will(function () use (&$indexPage) {
+            $indexPage = 0;
+        });
+        $paginator->valid()->shouldBeCalled()->will(function () use (&$indexPage) {
+            return $indexPage < 2;
+        });
+        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
+        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
+
         $productUpdater
-            ->copyValue([$validProduct, $invalidProduct], 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
+            ->copyValue($productArray, 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
             ->shouldBeCalled();
 
         // validate products
@@ -219,14 +290,14 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productValidator->validate($validProduct)->shouldBeCalled()->willReturn($emptyViolationList);
         $emptyViolationList->count()->willReturn(0);
 
+
         $productValidator->validate($invalidProduct)->shouldBeCalled()->willReturn($notEmptyViolationList);
         $notEmptyViolationList->count()->willReturn(1);
         $notEmptyViolationList->getIterator()->willReturn(new \ArrayIterator([]));
 
         $objectDetacher->detach($invalidProduct)->shouldBeCalled();
-        $subjectSet->skipSubject($invalidProduct, Argument::any())->shouldBeCalled();
-        $subjectSet->skipSubject($validProduct, Argument::any())->shouldNotBeCalled();
 
+        $eventDispatcher->dispatch(RuleEvents::SKIP, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);
@@ -238,10 +309,28 @@ class ProductRuleApplierSpec extends ObjectBehavior
     function it_applies_a_rule_which_has_an_unknown_action(
         $eventDispatcher,
         RuleInterface $rule,
-        RuleSubjectSetInterface $subjectSet
+        RuleSubjectSetInterface $subjectSet,
+        ProductInterface $selectedProduct,
+        PaginatorFactoryInterface $paginatorFactory,
+        PaginatorInterface $paginator,
+        CursorInterface $cursor
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
         $rule->getActions()->willReturn([new \stdClass()]);
+        $rule->getCode()->willReturn('test_rule');
+
+        // paginator mocking
+        $productArray = [$selectedProduct];
+        $indexPage = 0;
+        $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
+        $paginator->rewind()->shouldBeCalled()->will(function () use (&$indexPage) {
+            $indexPage = 0;
+        });
+        $paginator->valid()->shouldBeCalled()->will(function () use (&$indexPage) {
+            return $indexPage < 2;
+        });
+        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
+        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
 
         $this->shouldThrow(new \LogicException('The action "stdClass" is not supported yet.'))
             ->during('apply', [$rule, $subjectSet]);

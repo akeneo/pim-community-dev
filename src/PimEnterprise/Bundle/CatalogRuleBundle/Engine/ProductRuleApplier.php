@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacher;
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactoryInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
@@ -27,6 +27,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 
 /**
  * Applies product rules via a batch.
@@ -62,16 +65,20 @@ class ProductRuleApplier implements ApplierInterface
     /** @var string */
     protected $ruleDefinitionClass;
 
+    /** @var PaginatorFactoryInterface */
+    protected $paginatorFactory;
+
     /**
-     * @param ProductUpdaterInterface  $productUpdater
-     * @param ValidatorInterface       $productValidator
-     * @param BulkSaverInterface       $productSaver
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ObjectDetacherInterface  $objectDetacher
-     * @param VersionManager           $versionManager
-     * @param CacheClearer             $cacheClearer
-     * @oaram TranslatorInterface      $translator
-     * @param string                   $ruleDefinitionClass
+     * @param ProductUpdaterInterface   $productUpdater
+     * @param ValidatorInterface        $productValidator
+     * @param BulkSaverInterface        $productSaver
+     * @param EventDispatcherInterface  $eventDispatcher
+     * @param ObjectDetacherInterface   $objectDetacher
+     * @param VersionManager            $versionManager
+     * @param CacheClearer              $cacheClearer
+     * @param TranslatorInterface       $translator
+     * @param PaginatorFactoryInterface $paginatorFactory
+     * @param string                    $ruleDefinitionClass
      */
     public function __construct(
         ProductUpdaterInterface $productUpdater,
@@ -82,6 +89,7 @@ class ProductRuleApplier implements ApplierInterface
         VersionManager $versionManager,
         CacheClearer $cacheClearer,
         TranslatorInterface $translator,
+        PaginatorFactoryInterface $paginatorFactory,
         $ruleDefinitionClass
     ) {
         $this->productUpdater      = $productUpdater;
@@ -92,6 +100,7 @@ class ProductRuleApplier implements ApplierInterface
         $this->versionManager      = $versionManager;
         $this->cacheClearer        = $cacheClearer;
         $this->translator          = $translator;
+        $this->paginatorFactory    = $paginatorFactory;
         $this->ruleDefinitionClass = $ruleDefinitionClass;
     }
 
@@ -102,34 +111,38 @@ class ProductRuleApplier implements ApplierInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
-        $this->updateProducts($subjectSet, $rule->getActions());
-        $this->validateProducts($subjectSet);
-
+        $paginator = $this->paginatorFactory->createPaginator($subjectSet->getSubjectsCursor());
         $savingContext = $this->translator->trans(
             'pimee_catalog_rule.product.history',
             ['%rule%' => $rule->getCode()],
             null,
             'en'
         );
-        $this->saveProducts($subjectSet, $savingContext);
-
-        $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
         $this->cacheClearer->addNonClearableEntity($this->ruleDefinitionClass);
-        $this->cacheClearer->clear();
+
+        foreach ($paginator as $productsPage) {
+            $this->updateProducts($productsPage, $rule->getActions());
+            $this->validateProducts($productsPage, $subjectSet, $rule);
+            $this->saveProducts($productsPage, $savingContext);
+
+            $this->cacheClearer->clear();
+        }
+
+        $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
     }
 
     /**
-     * @param RuleSubjectSetInterface                                 $subjectSet
-     * @param \Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
+     * @param ProductInterface[] $products
+     * @param ActionInterface[]  $actions
      */
-    protected function updateProducts(RuleSubjectSetInterface $subjectSet, $actions)
+    protected function updateProducts(array $products, $actions)
     {
         foreach ($actions as $action) {
             if ($action instanceof ProductSetValueActionInterface) {
-                $this->applySetAction($subjectSet, $action);
+                $this->applySetAction($products, $action);
             } elseif ($action instanceof ProductCopyValueActionInterface) {
-                $this->applyCopyAction($subjectSet, $action);
+                $this->applyCopyAction($products, $action);
             } else {
                 throw new \LogicException(
                     sprintf('The action "%s" is not supported yet.', get_class($action))
@@ -139,50 +152,54 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
+     * @param ProductInterface[]      $products
      * @param RuleSubjectSetInterface $subjectSet
+     * @param RuleInterface           $rule
      */
-    protected function validateProducts(RuleSubjectSetInterface $subjectSet)
+    protected function validateProducts(array $products, RuleSubjectSetInterface $subjectSet, RuleInterface $rule)
     {
-        foreach ($subjectSet->getSubjects() as $product) {
+        foreach ($products as $product) {
             $violations = $this->productValidator->validate($product);
             if ($violations->count() > 0) {
                 $this->objectDetacher->detach($product);
                 $reasons = [];
-
                 foreach ($violations as $violation) {
                     $reasons[] = sprintf('%s : %s', $violation->getInvalidValue(), $violation->getMessage());
                 }
-                $subjectSet->skipSubject($product, $reasons);
+                $this->eventDispatcher->dispatch(
+                    RuleEvents::SKIP,
+                    new SkippedSubjectRuleEvent($rule, $product, $reasons)
+                );
             }
         }
     }
 
     /**
-     * @param RuleSubjectSetInterface $subjectSet
-     * @param string                  $savingContext
+     * @param ProductInterface[] $products
+     * @param string             $savingContext
      */
-    protected function saveProducts(RuleSubjectSetInterface $subjectSet, $savingContext)
+    protected function saveProducts(array $products, $savingContext)
     {
         $versioningState = $this->versionManager->isRealTimeVersioning();
 
         $this->versionManager->setContext($savingContext);
         $this->versionManager->setRealTimeVersioning(false);
-        $this->productSaver->saveAll($subjectSet->getSubjects(), ['recalculate' => false, 'schedule' => true]);
+        $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => true]);
         $this->versionManager->setRealTimeVersioning($versioningState);
     }
 
     /**
      * Apply a copy action on a subject set.
      *
-     * @param RuleSubjectSetInterface         $subjectSet
+     * @param ProductInterface[]              $products
      * @param ProductCopyValueActionInterface $action
      *
      * @return ProductRuleApplier
      */
-    protected function applyCopyAction(RuleSubjectSetInterface $subjectSet, ProductCopyValueActionInterface $action)
+    protected function applyCopyAction(array $products, ProductCopyValueActionInterface $action)
     {
         $this->productUpdater->copyValue(
-            $subjectSet->getSubjects(),
+            $products,
             $action->getFromField(),
             $action->getToField(),
             $action->getFromLocale(),
@@ -197,15 +214,15 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * Applies a set action on a subject set.
      *
-     * @param RuleSubjectSetInterface        $subjectSet
+     * @param ProductInterface[]             $products
      * @param ProductSetValueActionInterface $action
      *
      * @return ProductRuleApplier
      */
-    protected function applySetAction(RuleSubjectSetInterface $subjectSet, ProductSetValueActionInterface $action)
+    protected function applySetAction(array $products, ProductSetValueActionInterface $action)
     {
         $this->productUpdater->setValue(
-            $subjectSet->getSubjects(),
+            $products,
             $action->getField(),
             $action->getValue(),
             $action->getLocale(),

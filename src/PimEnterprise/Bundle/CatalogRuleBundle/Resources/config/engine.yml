@@ -2,8 +2,16 @@ parameters:
     pimee_catalog_rule.applier.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier
     pimee_catalog_rule.builder.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder
     pimee_catalog_rule.selector.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
+    pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactory
+    pimee_catalog_rule.paginator.class: Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator
 
 services:
+    pimee_catalog_rule.product.paginator:
+        class: %pimee_catalog_rule.paginator.paginator_factory.class%
+        arguments:
+            - %pimee_catalog_rule.paginator.class%
+            - %pimee_catalog_rule.paginator.page_size%
+
     pimee_catalog_rule.builder.product:
         class: %pimee_catalog_rule.builder.product.class%
         arguments:
@@ -31,4 +39,5 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_transform.cache.product_cache_clearer'
             - '@translator'
+            - '@pimee_catalog_rule.product.paginator'
             - %akeneo_rule_engine.model.rule_definition.class%

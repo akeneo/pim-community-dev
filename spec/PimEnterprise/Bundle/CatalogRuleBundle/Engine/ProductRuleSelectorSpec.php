@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
 use Doctrine\ORM\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
@@ -43,9 +44,10 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
         RuleInterface $rule,
-        ProductConditionInterface $condition
+        ProductConditionInterface $condition,
+        CursorInterface $cursor
     ) {
-        $pqb->execute()->willReturn([]);
+
         $rule->getConditions()->willReturn([$condition]);
         $rule->getCode()->willReturn('therule');
         $condition->getField()->willReturn('field');
@@ -56,6 +58,8 @@ class ProductRuleSelectorSpec extends ObjectBehavior
 
         $productQueryFactory->create()->shouldBeCalled()->willReturn($pqb);
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
+        $pqb->execute()->shouldBeCalled()->willReturn($cursor);
+
         $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
 
@@ -67,9 +71,9 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $productQueryFactory,
         ProductQueryBuilderInterface $pqb,
         RuleInterface $rule,
-        ProductConditionInterface $condition
+        ProductConditionInterface $condition,
+        CursorInterface $cursor
     ) {
-        $pqb->execute()->willReturn([]);
         $rule->getConditions()->willReturn([$condition]);
         $rule->getCode()->willReturn('therule');
         $condition->getField()->willReturn('field');
@@ -82,6 +86,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
+        $pqb->execute()->shouldBeCalled()->willReturn($cursor);
 
         $this->select($rule)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }

@@ -11,24 +11,24 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * PIM Enterprise Rule Engine extension
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class PimEnterpriseCatalogRuleExtension extends Extension
+class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
 {
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('connector_steps.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_extensions.yml');
@@ -44,5 +44,7 @@ class PimEnterpriseCatalogRuleExtension extends Extension
         $loader->load('serializers.yml');
         $loader->load('validators.yml');
         $loader->load('view_elements/attribute.yml');
+
+        $this->loadStorageDriver($container, __DIR__);
     }
 }

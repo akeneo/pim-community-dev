@@ -11,6 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+
 /**
  * Subjects set that will be impacted by a rule.
  *
@@ -24,11 +26,8 @@ class RuleSubjectSet implements RuleSubjectSetInterface
     /** @var string */
     protected $type;
 
-    /** @var array */
-    protected $subjects = [];
-
-    /** @var array */
-    protected $skippedSubjects = [];
+    /** @var CursorInterface */
+    protected $subjectsCursor;
 
     /**
      * {@inheritdoc}
@@ -69,68 +68,18 @@ class RuleSubjectSet implements RuleSubjectSetInterface
     /**
      * {@inheritdoc}
      */
-    public function getSubjects()
+    public function getSubjectsCursor()
     {
-        return $this->subjects;
+        return $this->subjectsCursor;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setSubjects(array $subjects)
+    public function setSubjectsCursor(CursorInterface $subjectsCursor)
     {
-        $this->subjects = $subjects;
+        $this->subjectsCursor = $subjectsCursor;
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function skipSubject($subjectToSkip, array $reasons)
-    {
-        $this->skippedSubjects[] = ['subject' => $subjectToSkip, 'reasons' => $reasons];
-        foreach ($this->getSubjects() as $index => $subject) {
-            if ($subjectToSkip === $subject) {
-                unset($this->subjects[$index]);
-                break;
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSkippedSubjects()
-    {
-        return $this->skippedSubjects;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSkippedReasons($subject)
-    {
-        foreach ($this->getSkippedSubjects() as $skippedSubject) {
-            if ($skippedSubject['subject'] === $subject) {
-                return $skippedSubject['reasons'];
-            }
-        }
-
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isSkipped($subject)
-    {
-        foreach ($this->getSkippedSubjects() as $skippedSubject) {
-            if ($skippedSubject['subject'] === $subject) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

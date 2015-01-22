@@ -49,6 +49,16 @@ final class RuleEvents
     const PRE_SELECT = 'pim_rule_engine.rule.pre_select';
 
     /**
+     * This event is thrown when an item is skipped.
+     *
+     * The event listener receives an
+     * Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent instance.
+     *
+     * @staticvar string
+     */
+    const SKIP = 'pim_rule_engine.rule.skip';
+
+    /**
      * This event is thrown after executing rule selection.
      *
      * The event listener receives an

@@ -64,9 +64,9 @@ class ProductRuleRunner implements DryRunnerInterface
         $options = $this->resolveOptions($options);
         $definition = $this->loadRule($definition, $options);
 
-        $subjects = $this->selector->select($definition);
-        if (!empty($subjects)) {
-            $this->applier->apply($definition, $subjects);
+        $subjectSet = $this->selector->select($definition);
+        if (!empty($subjectSet)) {
+            $this->applier->apply($definition, $subjectSet);
         }
     }
 
@@ -117,7 +117,7 @@ class ProductRuleRunner implements DryRunnerInterface
             $condition = new $this->productCondClass([
                 'field'    => 'id',
                 'operator' => 'IN',
-                'value'    => $options['selected_products']
+                'value'    => $options['selected_products'],
             ]);
             $definition->addCondition($condition);
         }
