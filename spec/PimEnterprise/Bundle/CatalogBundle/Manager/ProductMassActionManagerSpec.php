@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -33,12 +34,16 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         $attRepo,
         $attGroupAccessRepo,
         $user,
-        QueryBuilder $subQB
+        QueryBuilder $subQB,
+        ProductInterface $productOne,
+        ProductInterface $productTwo
     ) {
-        $productIds   = [1, 2];
+        $products   = [$productOne, $productTwo];
         $attributeIds = [1, 2, 3, 4, 5];
+        $productOne->getId()->willReturn(1);
+        $productTwo->getId()->willReturn(2);
 
-        $massActionRepo->findCommonAttributeIds($productIds)->shouldBeCalled()->willReturn($attributeIds);
+        $massActionRepo->findCommonAttributeIds([1, 2])->shouldBeCalled()->willReturn($attributeIds);
 
         $attGroupAccessRepo
             ->getGrantedAttributeGroupQB($user, Attributes::EDIT_ATTRIBUTES)
@@ -51,6 +56,6 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         ];
         $attRepo->findWithGroups($attributeIds, $conditions)->shouldBeCalled()->willReturn(['foo', 'bar']);
 
-        $this->findCommonAttributes($productIds)->shouldReturn(['foo', 'bar']);
+        $this->findCommonAttributes($products)->shouldReturn(['foo', 'bar']);
     }
 }
