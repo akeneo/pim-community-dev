@@ -2,20 +2,21 @@
 
 namespace Context;
 
-use Behat\MinkExtension\Context\RawMinkContext;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Behat\Behat\Context\Step;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\Product;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 
 /**
  * Context for navigating the website
@@ -435,6 +436,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /**
      * @param AttributeGroupInterface $group
+     *
      * @Given /^I should be on the ("([^"]*)" attribute group) page$/
      */
     public function iShouldBeOnTheAttributeGroupPage(AttributeGroupInterface $group)
@@ -457,12 +459,34 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /**
      * @param GroupTypeInterface $groupType
-
+     *
      * @Given /^I should be on the ("([^"]*)" group type) page$/
      */
     public function iShouldBeOnTheGroupTypePage(GroupTypeInterface $groupType)
     {
         $expectedAddress = $this->getPage('GroupType edit')->getUrl(array('id' => $groupType->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param GroupInterface $group
+     *
+     * @Given /^I should be on the ("([^"]*)" product group) page$/
+     */
+    public function iShouldBeOnTheProductGroupPage(GroupInterface $group)
+    {
+        $expectedAddress = $this->getPage('ProductGroup edit')->getUrl(array('id' => $group->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param GroupInterface $group
+     *
+     * @Given /^I should be on the ("([^"]*)" variant group) page$/
+     */
+    public function iShouldBeOnTheVariantGroupPage(GroupInterface $group)
+    {
+        $expectedAddress = $this->getPage('VariantGroup edit')->getUrl(array('id' => $group->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -490,6 +514,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /**
      * @param AssociationTypeInterface $associationType
+     *
      * @Given /^I should be on the ("([^"]*)" association type) page$/
      */
     public function iShouldBeOnTheAssociationTypePage(AssociationTypeInterface $associationType)
