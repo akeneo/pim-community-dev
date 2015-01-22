@@ -11,6 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
+use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+
 /**
  * Subjects set that will be impacted by a rule.
  *
@@ -43,41 +45,14 @@ interface RuleSubjectSetInterface
     public function setType($type);
 
     /**
-     * @return array
+     * @return CursorInterface
      */
-    public function getSubjects();
+    public function getSubjectsCursor();
 
     /**
-     * @param array $subjects
+     * @param CursorInterface $subjectsCursor
      *
      * @return RuleSubjectSetInterface
      */
-    public function setSubjects(array $subjects);
-
-    /**
-     * Mark a subject as skipped, means selected by a rule but not updated for the given reasons
-     *
-     * @param object $subject
-     * @param array  $reasons
-     */
-    public function skipSubject($subject, array $reasons);
-
-    /**
-     * @return array
-     */
-    public function getSkippedSubjects();
-
-    /**
-     * @param object $subject
-     *
-     * @return array
-     */
-    public function getSkippedReasons($subject);
-
-    /**
-     * @param object $subject
-     *
-     * @return boolean
-     */
-    public function isSkipped($subject);
+    public function setSubjectsCursor(CursorInterface $subjectsCursor);
 }
