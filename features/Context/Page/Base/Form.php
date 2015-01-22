@@ -433,10 +433,10 @@ class Form extends Base
 
             if (0 === strpos($for, 's2id_')) {
 
-                if ($label->getParent()->find('css', 'select')) {
-                    return 'select';
-                } elseif ($label->getParent()->find('css', '.select2-container-multi')) {
+                if ($label->getParent()->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
+                } elseif ($label->getParent()->find('css', 'select')) {
+                    return 'select';
                 }
 
                 return 'simpleSelect2';
@@ -507,6 +507,12 @@ class Form extends Base
         // Removing tags in MultiSelect2 drops an "animation" with opacity, we must
         // wait for it to completly vanish in order to reopen select list
         $this->getSession()->wait(2000);
+
+        $allValues = array_filter($allValues);
+        if (1 === count($allValues)) {
+            $value = array_shift($allValues);
+            $this->fillSelectField($label, $value);
+        }
 
         // Fill in remaining values
         $remainingValues = array_diff($allValues, $selectedTextValues);
