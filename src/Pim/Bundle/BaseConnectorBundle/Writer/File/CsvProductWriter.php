@@ -67,7 +67,7 @@ class CsvProductWriter extends CsvWriter
         } else {
             $this->stepExecution->addWarning(
                 $this->getName(),
-                sprintf('Copy of "%s" failed.', $media['filePath']),
+                'The media has not been found or is not currently available',
                 [],
                 $media
             );
