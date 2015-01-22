@@ -32,7 +32,7 @@ class SkippedSubjectRuleEvent extends RuleEvent
      * @param mixed                   $subject
      * @param array                   $reasons
      */
-    public function __construct(RuleDefinitionInterface $definition, $subject, $reasons)
+    public function __construct(RuleDefinitionInterface $definition, $subject, array $reasons)
     {
         parent::__construct($definition);
         $this->subject = $subject;

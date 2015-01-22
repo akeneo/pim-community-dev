@@ -28,6 +28,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 
 /**
  * Applies product rules via a batch.
@@ -117,12 +119,13 @@ class ProductRuleApplier implements ApplierInterface
             'en'
         );
 
+        $this->cacheClearer->addNonClearableEntity($this->ruleDefinitionClass);
+
         foreach ($paginator as $productsPage) {
             $this->updateProducts($productsPage, $rule->getActions());
             $this->validateProducts($productsPage, $subjectSet, $rule);
             $this->saveProducts($productsPage, $savingContext);
 
-            $this->cacheClearer->addNonClearableEntity($this->ruleDefinitionClass);
             $this->cacheClearer->clear();
         }
 
@@ -130,8 +133,8 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
-     * @param array                                                   $products
-     * @param \Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface[] $actions
+     * @param ProductInterface[] $products
+     * @param ActionInterface[]  $actions
      */
     protected function updateProducts(array $products, $actions)
     {
@@ -149,7 +152,7 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
-     * @param array                   $products
+     * @param ProductInterface[]      $products
      * @param RuleSubjectSetInterface $subjectSet
      * @param RuleInterface           $rule
      */
@@ -165,15 +168,15 @@ class ProductRuleApplier implements ApplierInterface
                 }
                 $this->eventDispatcher->dispatch(
                     RuleEvents::SKIPPED,
-                    new SkippedSubjectRuleEvent($rule, $subjectSet, $reasons)
+                    new SkippedSubjectRuleEvent($rule, $product, $reasons)
                 );
             }
         }
     }
 
     /**
-     * @param array  $products
-     * @param string $savingContext
+     * @param ProductInterface[] $products
+     * @param string             $savingContext
      */
     protected function saveProducts(array $products, $savingContext)
     {
@@ -211,7 +214,7 @@ class ProductRuleApplier implements ApplierInterface
     /**
      * Applies a set action on a subject set.
      *
-     * @param array                          $products
+     * @param ProductInterface[]             $products
      * @param ProductSetValueActionInterface $action
      *
      * @return ProductRuleApplier
