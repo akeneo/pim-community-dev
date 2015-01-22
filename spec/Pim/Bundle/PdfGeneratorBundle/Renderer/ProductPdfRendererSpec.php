@@ -17,7 +17,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
     function let(EngineInterface $templating, PdfBuilderInterface $pdfBuilder)
     {
-        $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder);
+        $path = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
+        $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder, $path);
     }
 
     function it_does_not_filter_compatible_entities(ProductInterface $blender)
@@ -31,13 +32,14 @@ class ProductPdfRendererSpec extends ObjectBehavior
     }
 
     function it_renders_a_product_without_images(
+        $templating,
         ProductInterface $blender,
         AttributeGroupInterface $design,
-        AttributeInterface $color,
-        $templating
+        AttributeInterface $color
     ) {
         $blender->getAttributes()->willReturn([$color]);
 
+        $path = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
         $color->getGroup()->willReturn($design);
         $design->getLabel()->willReturn('Design');
 
@@ -49,18 +51,24 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'locale'            => 'en_US',
             'scope'             => 'ecommerce',
             'groupedAttributes' => ['Design' => ['color' => $color]],
-            'imageAttributes'   => []
+            'imageAttributes'   => [],
+            'uploadDir'         => $path . DIRECTORY_SEPARATOR,
         ])->shouldBeCalled();
 
-        $this->render($blender, 'pdf', ['locale' => 'en_US', 'scope' => 'ecommerce']);
+        $this->render(
+            $blender,
+            'pdf',
+            ['locale' => 'en_US', 'scope' => 'ecommerce']
+        );
     }
 
     function it_renders_a_product_with_an_image(
+        $templating,
         ProductInterface $blender,
         AttributeGroupInterface $media,
-        AttributeInterface $mainImage,
-        $templating
+        AttributeInterface $mainImage
     ) {
+        $path = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $blender->getAttributes()->willReturn([$mainImage]);
 
         $mainImage->getGroup()->willReturn($media);
@@ -69,14 +77,22 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $mainImage->getCode()->willReturn('main_image');
         $mainImage->getAttributeType()->willReturn('pim_catalog_image');
 
-        $templating->render(self::TEMPLATE_NAME, [
-            'product'           => $blender,
-            'locale'            => 'en_US',
-            'scope'             => 'ecommerce',
-            'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
-            'imageAttributes'   => ['main_image' => $mainImage]
-        ])->shouldBeCalled();
+        $templating->render(
+            self::TEMPLATE_NAME,
+            [
+                'product'           => $blender,
+                'locale'            => 'en_US',
+                'scope'             => 'ecommerce',
+                'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
+                'imageAttributes'   => ['main_image' => $mainImage],
+                'uploadDir'         => $path . DIRECTORY_SEPARATOR,
+            ]
+        )->shouldBeCalled();
 
-        $this->render($blender, 'pdf', ['locale' => 'en_US', 'scope' => 'ecommerce']);
+        $this->render(
+            $blender,
+            'pdf',
+            ['locale' => 'en_US', 'scope' => 'ecommerce']
+        );
     }
 }
