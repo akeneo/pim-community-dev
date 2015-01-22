@@ -16,6 +16,6 @@ class DraftViewUpdaterSpec extends ObjectBehavior
 
     function it_is_a_form_view_updater()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterInterface');
     }
 }

@@ -11,8 +11,9 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -38,9 +39,19 @@ class DraftViewUpdater implements ViewUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update(array $views, $key, $name)
+    public function update($attributeView)
     {
-        $this->checkIfDraft($views, $key, $name);
+        if ((isset($attributeView['value'])
+            && $this->applier->isMarkedAsModified($attributeView))
+        ) {
+            $this->markFieldAsModified($attributeView['value']);
+        } elseif (isset($attributeView['values'])) {
+            foreach (array_keys($attributeView['values']) as $scope) {
+                if ($this->applier->isMarkedAsModified($attributeView, $scope)) {
+                    $this->markFieldAsModified($attributeView['values'][$scope]);
+                }
+            }
+        }
     }
 
     /**
@@ -61,38 +72,15 @@ class DraftViewUpdater implements ViewUpdaterInterface
         $url = $this->urlGenerator->generate(
             'pimee_enrich_product_value_show',
             [
-                'productId' => $value->getEntity()->getId(),
+                'productId'     => $value->getEntity()->getId(),
                 'attributeCode' => $value->getAttribute()->getCode(),
-                'locale' => $value->getLocale(),
-                'scope' => $value->getScope(),
+                'locale'        => $value->getLocale(),
+                'scope'         => $value->getScope(),
             ]
         );
 
         foreach ($view as $child) {
             $child->vars['modified'] = $url;
-        }
-    }
-
-    /**
-     * Check if an attribute is a draft and mark it as a draft
-     *
-     * @param array  $views
-     * @param string $key
-     * @param string $name
-     */
-    protected function checkIfDraft(array $views, $key, $name)
-    {
-        $attribute = $views[$key]['attributes'][$name];
-        if ((isset($attribute['value'])
-            && $this->applier->isMarkedAsModified($attribute))
-        ) {
-            $this->markFieldAsModified($attribute['value']);
-        } elseif (isset($attribute['values'])) {
-            foreach (array_keys($attribute['values']) as $scope) {
-                if ($this->applier->isMarkedAsModified($attribute, $scope)) {
-                    $this->markFieldAsModified($attribute['values'][$scope]);
-                }
-            }
         }
     }
 }
