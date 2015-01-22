@@ -12,9 +12,8 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\Persistence\BulkSaverInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -35,39 +34,35 @@ class EditCommonAttributes extends BaseEditCommonAttributes
     protected $securityContext;
 
     /**
-     * @param ProductManager           $productManager
+     * Constructor
+     *
+     * @param ProductBuilder           $productBuilder
      * @param ProductUpdaterInterface  $productUpdater
      * @param UserContext              $userContext
-     * @param CurrencyManager          $currencyManager
      * @param CatalogContext           $catalogContext
      * @param ProductMassActionManager $massActionManager
      * @param NormalizerInterface      $normalizer
      * @param BulkSaverInterface       $productSaver
-     * @param array                    $classes
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
-        ProductManager $productManager,
+        ProductBuilder $productBuilder,
         ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
-        CurrencyManager $currencyManager,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
         NormalizerInterface $normalizer,
         BulkSaverInterface $productSaver,
-        array $classes,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
-            $productManager,
+            $productBuilder,
             $productUpdater,
             $userContext,
-            $currencyManager,
             $catalogContext,
             $massActionManager,
             $normalizer,
-            $productSaver,
-            $classes
+            $productSaver
         );
 
         $this->securityContext = $securityContext;
