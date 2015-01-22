@@ -2,22 +2,26 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Saver;
 
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
 
 class GroupSaverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, BulkSaverInterface $productSaver, ProductTemplateApplierInterface $templateApplier)
-    {
-        $this->beConstructedWith($objectManager, $productSaver, $templateApplier);
+    function let(
+        ObjectManager $objectManager,
+        BulkSaverInterface $productSaver,
+        ProductTemplateMediaManager $templateMediaManager,
+        ProductTemplateApplierInterface $templateApplier
+    ) {
+        $this->beConstructedWith($objectManager, $productSaver, $templateMediaManager, $templateApplier);
     }
 
     function it_is_a_saver()
@@ -25,7 +29,7 @@ class GroupSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
     }
 
-    function it_saves_a_group_and_flush_by_default($objectManager, GroupInterface $group, GroupType $type)
+    function it_saves_a_group_and_flushes_by_default($objectManager, GroupInterface $group, GroupType $type)
     {
         $group->getType()->willReturn($type);
         $objectManager->persist($group)->shouldBeCalled();
@@ -33,8 +37,13 @@ class GroupSaverSpec extends ObjectBehavior
         $this->save($group);
     }
 
-    function it_saves_a_group_and_added_products($objectManager, GroupInterface $group, GroupType $type, ProductInterface $addedProduct, $productSaver)
-    {
+    function it_saves_a_group_and_added_products(
+        $objectManager,
+        $productSaver,
+        GroupInterface $group,
+        GroupType $type,
+        ProductInterface $addedProduct
+    ) {
         $group->getType()->willReturn($type);
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -46,8 +55,13 @@ class GroupSaverSpec extends ObjectBehavior
         $this->save($group, ['add_products' => [$addedProduct]]);
     }
 
-    function it_saves_a_group_and_removed_products($objectManager, GroupInterface $group, GroupType $type, ProductInterface $removedProduct, $productSaver)
-    {
+    function it_saves_a_group_and_removed_products(
+        $objectManager,
+        $productSaver,
+        GroupInterface $group,
+        GroupType $type,
+        ProductInterface $removedProduct
+    ) {
         $group->getType()->willReturn($type);
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -59,8 +73,30 @@ class GroupSaverSpec extends ObjectBehavior
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }
 
-    function it_saves_a_variant_group_and_copy_values_to_products($objectManager, GroupInterface $group, GroupType $type, ProductInterface $product, $templateApplier, ProductTemplateInterface $template, ArrayCollection $products)
-    {
+    function it_handles_media_values_of_variant_group_product_templates(
+        $templateMediaManager,
+        GroupInterface $group,
+        GroupType $type,
+        ProductTemplateInterface $template
+    ) {
+        $group->getType()->willReturn($type);
+        $type->isVariant()->willReturn(true);
+        $group->getProductTemplate()->willReturn($template);
+
+        $templateMediaManager->handleProductTemplateMedia($template)->shouldBeCalled();
+
+        $this->save($group);
+    }
+
+    function it_saves_a_variant_group_and_copies_values_to_products(
+        $objectManager,
+        $templateApplier,
+        GroupInterface $group,
+        GroupType $type,
+        ProductInterface $product,
+        ProductTemplateInterface $template,
+        ArrayCollection $products
+    ) {
         $group->getType()->willReturn($type);
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
