@@ -170,12 +170,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 'requiredCount' => $requiredCount,
                 'ratio'         => $ratio,
                 'channel'       => $normalizedReqs[$missingComp]['channel'],
-                'locale'        => $normalizedReqs[$missingComp]['locale']
+                'locale'        => $normalizedReqs[$missingComp]['locale'],
             );
 
             $completenesses[$missingComp] = array(
                 'object' => $compObject,
-                'ratio'  => $ratio
+                'ratio'  => $ratio,
             );
         }
 
@@ -332,7 +332,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $suffix .= sprintf('-%s', $channel->getCode());
         }
 
-        return $attribute->getCode() . $suffix;
+        return $attribute->getCode().$suffix;
     }
 
     /**

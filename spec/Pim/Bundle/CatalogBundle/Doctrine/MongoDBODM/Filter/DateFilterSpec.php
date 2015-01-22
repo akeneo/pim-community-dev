@@ -133,7 +133,7 @@ class DateFilterSpec extends ObjectBehavior
                 'array with 2 elements, string or \Datetime',
                 'filter',
                 'date',
-                print_r(123,true)
+                print_r(123, true)
             )
         )->during('addFieldFilter', ['release_date', '>', 123]);
     }
@@ -141,7 +141,13 @@ class DateFilterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_a_valid_date_format()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date', 'WRONG')
+            InvalidArgumentException::expected(
+                'release_date',
+                'a string with the format yyyy-mm-dd',
+                'filter',
+                'date',
+                'not a valid date format'
+            )
         )->during('addFieldFilter', ['release_date', '>', ['not a valid date format', 'WRONG']]);
     }
 
@@ -153,7 +159,7 @@ class DateFilterSpec extends ObjectBehavior
                 'array with 2 elements, string or \Datetime',
                 'filter',
                 'date',
-                print_r([123, 123],true)
+                123
             )
         )->during('addFieldFilter', ['release_date', '>', [123, 123]]);
     }
@@ -166,7 +172,7 @@ class DateFilterSpec extends ObjectBehavior
                 'array with 2 elements, string or \Datetime',
                 'filter',
                 'date',
-                print_r([123, 123, 'three'],true)
+                print_r([123, 123, 'three'], true)
             )
         )->during('addFieldFilter', ['release_date', '>', [123, 123, 'three']]);
     }

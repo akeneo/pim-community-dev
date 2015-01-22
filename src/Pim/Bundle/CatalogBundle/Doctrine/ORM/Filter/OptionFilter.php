@@ -84,7 +84,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $joinAlias = 'filter'.$attribute->getCode();
 
         // prepare join value condition
-        $optionAlias = $joinAlias .'.option';
+        $optionAlias = $joinAlias.'.option';
 
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
@@ -103,7 +103,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
             }
 
-            $condition .= ' AND ( '. $this->qb->expr()->in($optionAlias, $value) .' ) ';
+            $condition .= ' AND ( '.$this->qb->expr()->in($optionAlias, $value).' ) ';
 
             $this->qb->innerJoin(
                 $this->qb->getRootAlias().'.values',

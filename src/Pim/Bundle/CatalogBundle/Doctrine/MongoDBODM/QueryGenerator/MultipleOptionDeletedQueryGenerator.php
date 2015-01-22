@@ -24,7 +24,7 @@ class MultipleOptionDeletedQueryGenerator extends AbstractQueryGenerator
             $queries[] = [
                 [$attributeNormField => [ '$elemMatch' => ['code' => $entity->getCode()] ]],
                 ['$pull' => [$attributeNormField => ['code' => $entity->getCode()]]],
-                ['multiple' => true]
+                ['multiple' => true],
             ];
         }
 

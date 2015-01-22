@@ -78,7 +78,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
 
             $productsCount[] = [
                 'label' => $channel->getLabel(),
-                'total' => $qb->getQuery()->execute()->count()
+                'total' => $qb->getQuery()->execute()->count(),
             ];
         }
 

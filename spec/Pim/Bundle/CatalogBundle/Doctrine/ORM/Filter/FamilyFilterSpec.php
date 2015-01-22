@@ -56,7 +56,7 @@ class FamilyFilterSpec extends ObjectBehavior
     {
         $qb->getRootAlias()->shouldBeCalled()->willReturn('f');
         $qb->leftJoin('f.family', 'filterfamily')->shouldBeCalled()->willReturn($qb);
-        $qb->andWhere('filterfamily.id NOT IN(3)' . 'filterfamily.id IS NULL')->shouldBeCalled()->willReturn($qb);
+        $qb->andWhere('filterfamily.id NOT IN(3)'.'filterfamily.id IS NULL')->shouldBeCalled()->willReturn($qb);
         $qb->expr()->willReturn($expr);
 
         $expr->notIn('filterfamily'.'.id', [3])->shouldBeCalled()->willReturn('filterfamily.id NOT IN');
@@ -64,7 +64,7 @@ class FamilyFilterSpec extends ObjectBehavior
 
         $expr->orX('filterfamily.id NOT IN', 'filterfamily.id IS NULL')
             ->shouldBeCalled()
-            ->willReturn('filterfamily.id NOT IN(3)' . 'filterfamily.id IS NULL');
+            ->willReturn('filterfamily.id NOT IN(3)'.'filterfamily.id IS NULL');
 
         $this->addFieldFilter('family', 'NOT IN', [3]);
     }

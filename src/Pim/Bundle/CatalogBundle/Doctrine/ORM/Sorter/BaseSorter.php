@@ -44,7 +44,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
                 'pim_catalog_textarea',
                 'pim_catalog_number',
                 'pim_catalog_boolean',
-                'pim_catalog_date'
+                'pim_catalog_date',
             ],
             $supportedAttributes
         );

@@ -99,7 +99,7 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
                 'The option does not exist',
                 'setter',
                 'multi select',
-                print_r($data, true)
+                'unknown code'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

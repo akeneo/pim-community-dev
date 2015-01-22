@@ -20,10 +20,10 @@ class FamilyLabelUpdatedQueryGenerator extends AbstractQueryGenerator
             ['family' => $entity->getId()],
             [
                 '$set' => [
-                    sprintf('normalizedData.family.label.%s', $entity->getLocale()) => (string) $newValue
+                    sprintf('normalizedData.family.label.%s', $entity->getLocale()) => (string) $newValue,
                 ]
             ],
-            ['multiple' => true]
+            ['multiple' => true],
         ]];
     }
 }

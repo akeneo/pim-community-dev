@@ -45,7 +45,13 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function booleanExpected($name, $action, $type, $data)
     {
         return new self(
-            sprintf('Attribute or field "%s" expects a boolean as data, "%s" given (for %s %s).', $name, $data, $action, $type)
+            sprintf(
+                'Attribute or field "%s" expects a boolean as data, "%s" given (for %s %s).',
+                $name,
+                $data,
+                $action,
+                $type
+            )
         );
     }
 
@@ -138,10 +144,15 @@ class InvalidArgumentException extends \InvalidArgumentException
     public static function arrayExpected($name, $action, $type, $data)
     {
         return new self(
-            sprintf('Attribute or field "%s" expects an array as data, "%s" given (for %s %s).', $name, $data, $action, $type)
+            sprintf(
+                'Attribute or field "%s" expects an array as data, "%s" given (for %s %s).',
+                $name,
+                $data,
+                $action,
+                $type
+            )
         );
     }
-
 
     /**
      * @param string $attribute
@@ -272,5 +283,4 @@ class InvalidArgumentException extends \InvalidArgumentException
             $exception
         );
     }
-
 }

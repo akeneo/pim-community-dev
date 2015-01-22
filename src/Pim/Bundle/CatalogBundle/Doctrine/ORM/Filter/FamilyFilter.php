@@ -53,23 +53,23 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         $rootAlias  = $this->qb->getRootAlias();
-        $entityAlias = 'filter' . FieldFilterHelper::getCode($field);
-        $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
+        $entityAlias = 'filter'.FieldFilterHelper::getCode($field);
+        $this->qb->leftJoin($rootAlias.'.'.FieldFilterHelper::getCode($field), $entityAlias);
 
         if ($operator === Operators::IN_LIST) {
             $this->qb->andWhere(
-                $this->qb->expr()->in($entityAlias . '.id', $value)
+                $this->qb->expr()->in($entityAlias.'.id', $value)
             );
         } elseif ($operator === Operators::NOT_IN_LIST) {
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
-                    $this->qb->expr()->notIn($entityAlias . '.id', $value),
-                    $this->qb->expr()->isNull($entityAlias . '.id')
+                    $this->qb->expr()->notIn($entityAlias.'.id', $value),
+                    $this->qb->expr()->isNull($entityAlias.'.id')
                 )
             );
         } elseif ($operator === Operators::IS_EMPTY) {
             $this->qb->andWhere(
-                $this->qb->expr()->isNull($entityAlias . '.id')
+                $this->qb->expr()->isNull($entityAlias.'.id')
             );
         }
 

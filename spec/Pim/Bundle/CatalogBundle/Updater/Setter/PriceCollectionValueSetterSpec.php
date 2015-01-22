@@ -116,7 +116,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'prices collection',
-                'text'
+                gettype('text')
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -134,7 +134,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'currency',
                 'setter',
                 'prices collection',
-                gettype($data)
+                print_r($data, true)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

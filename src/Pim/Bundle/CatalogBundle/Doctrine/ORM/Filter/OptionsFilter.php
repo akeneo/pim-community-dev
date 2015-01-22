@@ -93,7 +93,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             );
 
             $this->qb
-                ->leftJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasOpt)
+                ->leftJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt)
                 ->andWhere($this->qb->expr()->isNull($backendField));
         } else {
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
@@ -108,7 +108,7 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
                     $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
                 )
                 ->innerJoin(
-                    $joinAlias .'.'. $attribute->getBackendType(),
+                    $joinAlias.'.'.$attribute->getBackendType(),
                     $joinAliasOpt,
                     'WITH',
                     $this->qb->expr()->in($backendField, $value)

@@ -61,7 +61,7 @@ class NamingUtility
 
             foreach ($codes as $code) {
                 foreach ($suffixes as $suffix) {
-                    $result[] = $code . $separator . $suffix;
+                    $result[] = $code.$separator.$suffix;
                 }
             }
         }
@@ -139,9 +139,9 @@ class NamingUtility
         $normFields = [
             (
                 null === $prefix ?
-                ProductQueryUtility::NORMALIZED_FIELD . ProductQueryUtility::ELEMENT_TOKEN_SEPARATOR :
+                ProductQueryUtility::NORMALIZED_FIELD.ProductQueryUtility::ELEMENT_TOKEN_SEPARATOR :
                 $prefix
-            ) . $attribute->getCode()
+            ).$attribute->getCode(),
         ];
 
         $normFields = $this->appendSuffixes($normFields, $localeCodes);

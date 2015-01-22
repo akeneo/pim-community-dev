@@ -56,7 +56,7 @@ class GroupsFilterSpec extends ObjectBehavior
     {
         $qb->getRootAlias()->shouldBeCalled()->willReturn('f');
         $qb->leftJoin('f.groups', 'filtergroups')->shouldBeCalled()->willReturn($qb);
-        $qb->andWhere('filtergroups.id NOT IN(3)' . 'filtergroups.id IS NULL')->shouldBeCalled()->willReturn($qb);
+        $qb->andWhere('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL')->shouldBeCalled()->willReturn($qb);
         $qb->expr()->willReturn($expr);
 
         $expr->notIn('filtergroups'.'.id', [3])->shouldBeCalled()->willReturn('filtergroups.id NOT IN');
@@ -64,7 +64,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
         $expr->orX('filtergroups.id NOT IN', 'filtergroups.id IS NULL')
             ->shouldBeCalled()
-            ->willReturn('filtergroups.id NOT IN(3)' . 'filtergroups.id IS NULL');
+            ->willReturn('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL');
 
         $this->addFieldFilter('groups', 'NOT IN', [3]);
     }

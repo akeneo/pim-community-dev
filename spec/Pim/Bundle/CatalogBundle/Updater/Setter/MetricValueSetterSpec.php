@@ -58,8 +58,7 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $measureManager->getUnitSymbolsForFamily('Weight')
             ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
-        ;
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $data = ['data' => 107, 'unit' => 'KILOGRAM'];
         $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
@@ -85,7 +84,13 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric', print_r($data, true))
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'data',
+                'setter',
+                'metric',
+                print_r($data, true)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -97,7 +102,8 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 'data value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric', print_r($data, true))
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric',
+                print_r($data, true))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -114,7 +120,7 @@ class MetricValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'metric',
-                'text'
+                'string'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -132,7 +138,7 @@ class MetricValueSetterSpec extends ObjectBehavior
                 'unit',
                 'setter',
                 'metric',
-                gettype(123)
+                123
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -148,8 +154,7 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $measureManager->getUnitSymbolsForFamily('Weight')
             ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
-        ;
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $this->shouldThrow(
             InvalidArgumentException::arrayInvalidKey(
@@ -183,8 +188,7 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $measureManager->getUnitSymbolsForFamily('Weight')
             ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
-        ;
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();

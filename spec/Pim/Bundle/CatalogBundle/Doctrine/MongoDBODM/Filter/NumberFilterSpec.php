@@ -51,5 +51,5 @@ class NumberFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('number_code');
         $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG')))
             ->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
-     }
+    }
 }

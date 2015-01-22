@@ -107,5 +107,5 @@ class StringFilterSpec extends ObjectBehavior
 
         $this->shouldThrow(InvalidArgumentException::stringExpected('attributeCode', 'filter', 'string', gettype(123)))
             ->during('addAttributeFilter', [$attribute, '=', 123, null, null, ['field' => 'attributeCode']]);
-     }
+    }
 }

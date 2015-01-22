@@ -66,7 +66,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
@@ -104,7 +104,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $this->shouldThrow(
@@ -134,7 +134,7 @@ class MediaValueSetterSpec extends ObjectBehavior
                 'a valid file path',
                 'setter',
                 'media',
-                $data['filePath']
+                '../../../../../../app/uploads/product/path/to/unknown/file'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -180,7 +180,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $value->setMedia($media)->shouldBeCalled();
@@ -205,7 +205,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $value->setMedia($media)->shouldBeCalled();
@@ -229,7 +229,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);

@@ -275,7 +275,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $resolver->setRequired(
             [
                 'locale',
-                'scope'
+                'scope',
             ]
         );
     }

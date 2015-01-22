@@ -138,7 +138,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 'array with 2 elements, string or \Datetime',
                 'filter',
                 'date',
-                print_r($value)
+                print_r($value, true)
             );
         }
 
@@ -173,7 +173,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 'array with 2 elements, string or \Datetime',
                 'filter',
                 'date',
-                print_r($value,true)
+                print_r($value, true)
             );
         }
 

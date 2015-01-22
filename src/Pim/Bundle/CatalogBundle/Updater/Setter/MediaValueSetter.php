@@ -183,10 +183,10 @@ class MediaValueSetter extends AbstractValueSetter
         }
 
         if (substr($uploadDir, -1) !== DIRECTORY_SEPARATOR) {
-            $uploadDir = $this->uploadDir . DIRECTORY_SEPARATOR;
+            $uploadDir = $this->uploadDir.DIRECTORY_SEPARATOR;
         }
 
-        $path  = $uploadDir . $data['filePath'];
+        $path  = $uploadDir.$data['filePath'];
         $value = ['filePath' => $path, 'originalFilename' => $data['originalFilename']];
 
         return $value;

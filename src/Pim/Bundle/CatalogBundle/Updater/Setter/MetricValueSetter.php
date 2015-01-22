@@ -40,7 +40,7 @@ class MetricValueSetter extends AbstractValueSetter
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
-        $this->metricFactory  = $metricFactory;
+        $this->metricFactory = $metricFactory;
         $this->measureManager = $measureManager;
         $this->supportedTypes = $supportedTypes;
     }
@@ -112,19 +112,19 @@ class MetricValueSetter extends AbstractValueSetter
                 'unit',
                 'setter',
                 'metric',
-                gettype($data)
+                $data['unit']
             );
         }
 
         if (!array_key_exists(
             $data['unit'],
             $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())
-        )) {
-
+        )
+        ) {
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'unit',
-                'The metric does not exist',
+                'The unit does not exist',
                 'setter',
                 'metric',
                 $data['unit']

@@ -96,7 +96,7 @@ abstract class AbstractValueCopier implements CopierInterface
         } catch (\LogicException $e) {
             throw InvalidArgumentException::expectedFromPreviousException(
                 $e,
-                $fromAttribute->getCode() . ' && ' . $toAttribute->getCode(),
+                $fromAttribute->getCode().' && '.$toAttribute->getCode(),
                 'copier',
                 $type
             );

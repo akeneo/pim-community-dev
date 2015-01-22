@@ -75,7 +75,12 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
 
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean', gettype($value));
+            throw InvalidArgumentException::booleanExpected(
+                $attribute->getCode(),
+                'filter',
+                'boolean',
+                gettype($value)
+            );
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
