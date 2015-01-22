@@ -412,6 +412,8 @@ class ProductRepository extends EntityRepository implements
         $stmt->bindValue('groupId', $variantGroupId);
         $stmt->bindValue('nbAxes', $nbAxes);
         $stmt->execute();
+
+        // TODO (JJ) impossible to do better ? see with Benoit
         $results = $stmt->fetchAll();
         $productIds = array_map(
             function ($row) {

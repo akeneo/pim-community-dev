@@ -44,7 +44,6 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
      */
     protected function doDenormalize($data, $format, array $context)
     {
-        /** @var GroupInterface $group */
         $group = $this->getEntity($data, $context);
         $this->setCode($group, $data);
         $this->setGroupType($group, $data);
@@ -73,7 +72,6 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     {
         if (isset($data['type'])) {
             $typeCode = $data['type'];
-            /** @var GroupType|null $type */
             $type = $this->groupTypeRepository->findOneByIdentifier($typeCode);
             if (!$type) {
                 throw new \LogicException(
@@ -117,7 +115,6 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
             if ($isLabel) {
                 $labelTokens = explode('-', $field);
                 $localeCode = $labelTokens[1];
-                /** @var GroupTranslation $translation */
                 $translation = $group->getTranslation($localeCode);
                 $translation->setLabel($value);
                 $group->addTranslation($translation);

@@ -15,10 +15,13 @@ use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
 class ProductTemplateRepository extends EntityRepository implements ProductTemplateRepositoryInterface
 {
     /**
+     * TODO (JJ) FQCN or add a use statement
+     *
      * @return ProductTemplateInterface[]
      */
     public function getTemplates()
     {
+        // TODO (JJ) findAll is more explicit no ?
         return $this->findBy([]);
     }
 }

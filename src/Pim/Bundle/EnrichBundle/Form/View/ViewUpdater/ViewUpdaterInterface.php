@@ -15,6 +15,8 @@ interface ViewUpdaterInterface
      * Update the given form view
      *
      * @param array $view
+     *
+     * TODO (JJ) TYPEHINT !!!!!!!
      */
     public function update($view);
 }

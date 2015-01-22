@@ -46,6 +46,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
             cascade:
                 - persist
+                # TODO (JJ) no need to cascade detach or refresh ?
             joinColumns:
                 product_template_id:
                     referencedColumnName: id

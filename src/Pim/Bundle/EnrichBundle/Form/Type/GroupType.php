@@ -21,14 +21,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class GroupType extends AbstractType
 {
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
     /** @var EventSubscriberInterface[] */
@@ -56,11 +52,8 @@ class GroupType extends AbstractType
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         $this->addTypeField($builder);
-
         $this->addLabelField($builder);
-
         $this->addAttributesField($builder);
-
         $this->addProductsField($builder);
 
         foreach ($this->subscribers as $subscriber) {
@@ -74,9 +67,10 @@ class GroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
+                //TODO (JJ) should not be hardcoded
                 'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
-            )
+            ]
         );
     }
 

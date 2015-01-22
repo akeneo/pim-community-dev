@@ -110,6 +110,7 @@ class VariantGroupController extends GroupController
 
         $groupType = $this->groupManager
             ->getGroupTypeRepository()
+            // TODO (JJ) findOneByIdentifier when reositories' PR is merged
             ->findOneBy(array('code' => 'VARIANT'));
         $group = $this->groupFactory->createGroup($groupType);
 
@@ -166,6 +167,8 @@ class VariantGroupController extends GroupController
     {
         $attributes = $group->getAttributes()->toArray();
 
+        // TODO (JJ) the code that retrieves possible values for a variant should be extracted in a business service
+        // (see my comment on VariantGroupAttributeController)
         $template = $group->getProductTemplate();
         if (null !== $template) {
             foreach (array_keys($template->getValuesData()) as $attributeCode) {

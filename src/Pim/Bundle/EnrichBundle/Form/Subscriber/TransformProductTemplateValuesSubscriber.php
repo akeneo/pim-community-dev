@@ -56,6 +56,7 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
             return;
         }
 
+        // TODO (JJ) class is weird, see other comments relative to this
         $values = $this->denormalizer->denormalize($data->getValuesData(), 'ProductValue[]', 'json');
         $data->setValues($values);
     }
@@ -73,6 +74,7 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
             return;
         }
 
+        // TODO (JJ) should be object not entity
         $valuesData = $this->normalizer->normalize($data->getValues(), 'json', ['entity' => 'product']);
         $data->setValuesData($valuesData);
     }

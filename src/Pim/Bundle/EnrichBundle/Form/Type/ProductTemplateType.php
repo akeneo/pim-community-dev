@@ -45,6 +45,7 @@ class ProductTemplateType extends AbstractType
      * @param ChannelManager                           $channelManager
      */
     public function __construct(
+        // TODO (JJ) should be the last param
         $productTemplateClass,
         ProductFormViewInterface $productFormView,
         TransformProductTemplateValuesSubscriber $valuesSubscriber,
@@ -117,6 +118,7 @@ class ProductTemplateType extends AbstractType
     /**
      * Returns attribute groups of the given values ordered by their sort order
      *
+     * TODO (JJ) FQCN or use statement
      * @param ProductValueInterface[]|ArrayCollection $values
      *
      * @return AttributeGroup[]

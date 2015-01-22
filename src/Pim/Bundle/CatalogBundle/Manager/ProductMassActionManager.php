@@ -45,8 +45,10 @@ class ProductMassActionManager
      *   - without value AND link to family
      *   - with value
      *
+     * TODO (JJ) FQCN or use statement
      * @param ProductInterface[] $products
      *
+     * TODO (JJ) FQCN or use statement
      * @return AttributeInterface[]
      */
     public function findCommonAttributes(array $products)
@@ -68,9 +70,12 @@ class ProductMassActionManager
 
     /**
      * Filter attribute by removing attributes coming from variants
+     * TODO (JJ) FQCN or use statement
      * @param AttributeInterface[] $attributes
+     * TODO (JJ) FQCN or use statement
      * @param ProductInterface[]   $products
      *
+     * TODO (JJ) FQCN or use statement
      * @return AttributeInterface[]
      */
     public function filterAttributesComingFromVariant(array $attributes, array $products)
@@ -79,6 +84,8 @@ class ProductMassActionManager
 
         $filteredAttributes = [];
         foreach ($attributes as $attribute) {
+            // TODO (JJ) kind of weird to make an in_array on AttributeInterface[], it works only if toString is
+            // implemented, which we can not be sure
             if (!in_array($attribute->getCode(), $variantAttributes)) {
                 $filteredAttributes[] = $attribute;
             }
@@ -90,6 +97,7 @@ class ProductMassActionManager
     /**
      * Filter the locale specific attributes
      *
+     * TODO (JJ) FQCN or use statement
      * @param AttributeInterface[] $attributes
      * @param string               $currentLocaleCode
      *
@@ -111,6 +119,7 @@ class ProductMassActionManager
 
     /**
      * Get common attributes coming also from variant groups
+     * TODO (JJ) FQCN or use statement
      * @param ProductInterface[] $products
      *
      * @return array
@@ -130,8 +139,10 @@ class ProductMassActionManager
 
     /**
      * Get attributes coming from variant groups
+     * TODO (JJ) FQCN or use statement
      * @param ProductInterface[] $products
      *
+     * TODO (JJ) FQCN or use statement
      * @return AttributeInterface[]
      */
     protected function getAttributesComingFromVariantGroups(array $products)

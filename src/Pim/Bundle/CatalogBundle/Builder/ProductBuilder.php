@@ -202,12 +202,14 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addMissingPrices(ProductValueInterface $value)
     {
+        // TODO (JJ) $activeCurrencyCodes
         $activeCurrencies = $this->currencyRepository->getActivatedCurrenciesCodes();
 
-        if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+        if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') { // TODO (JJ) why did you choose the dark side of the force ??
             $prices = $value->getPrices();
 
             foreach ($activeCurrencies as $activeCurrency) {
+                // TODO (JJ) maybe we should add a hasCurrency or hasCurrencyCode method in ProductPrice
                 $hasPrice = $prices->filter(
                     function ($price) use ($activeCurrency) {
                         return $activeCurrency === $price->getCurrency();
@@ -220,6 +222,7 @@ class ProductBuilder implements ProductBuilderInterface
             }
 
             foreach ($prices as $price) {
+                // TODO (JJ) weird to make an in_array with an object and a string, it works because __toString() is called, but it's bad to write it
                 if (!in_array($price->getCurrency(), $activeCurrencies)) {
                     $value->removePrice($price);
                 }

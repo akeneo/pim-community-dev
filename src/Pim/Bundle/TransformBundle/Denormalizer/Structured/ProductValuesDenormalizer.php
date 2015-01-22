@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 class ProductValuesDenormalizer implements DenormalizerInterface
 {
+    // TODO (JJ) that denormalization type is really weird
     /** @staticvar string */
     const PRODUCT_VALUES_TYPE = 'ProductValue[]';
 
@@ -53,6 +54,8 @@ class ProductValuesDenormalizer implements DenormalizerInterface
         $values = new ArrayCollection();
 
         foreach ($data as $attributeCode => $valuesData) {
+            // TODO (JJ) should not use Doctrine's magic calls
+            // TODO (JJ) ->findOneByIdentifier when repositories' PR is merged
             $attribute = $this->attributeRepository->findOneByCode($attributeCode);
             foreach ($valuesData as $valueData) {
                 $value = $this->denormalizer->denormalize(

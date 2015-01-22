@@ -21,9 +21,11 @@ class ChannelRepository extends ReferableEntityRepository implements ChannelRepo
 {
     /**
      * {@inheritdoc}
+     *
      */
     public function getChannels()
     {
+        // TODO (JJ) findAll ?
         return parent::findBy([]);
     }
 

@@ -58,6 +58,8 @@ class VariantViewUpdater implements ViewUpdaterInterface
      * Check if an attribute is updated by a variant group or not
      *
      * @param ProductValueInterface $productValue
+     *
+     * TODO (JJ) @return
      */
     protected function isUpdatedByVariant(ProductValueInterface $productValue)
     {

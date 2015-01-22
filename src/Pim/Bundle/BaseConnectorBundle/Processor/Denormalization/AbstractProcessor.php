@@ -133,7 +133,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /**
      * Detaches the object from the unit of work
      *
-     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should knows the
+     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
      * skipped items or we should use an explicit persist strategy
      *
      * @param mixed $object

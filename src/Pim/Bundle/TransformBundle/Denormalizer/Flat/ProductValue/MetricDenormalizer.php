@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Metric flat denormalizer used for attribute types:
@@ -44,14 +44,12 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         $this->configContext($resolver);
         $context = $resolver->resolve($context);
 
-        /** @var ProductValueInterface */
         $value = $context['value'];
         $matches = [];
         $singleFieldPattern = '/(?P<data>\d+(.\d+)?) (?P<unit>\w+)/';
 
         if (preg_match($singleFieldPattern, $data, $matches) === 0) {
             $metric = $this->addFromManyFields($value, $data);
-
         } else {
             $metric = $this->addFromSingleField($value, $matches['data'], $matches['unit']);
         }

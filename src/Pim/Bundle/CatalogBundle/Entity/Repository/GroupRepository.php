@@ -80,6 +80,7 @@ class GroupRepository extends ReferableEntityRepository implements GroupReposito
             ->where($qb->expr()->eq('type.variant', ':variant'))
             ->setParameter(':variant', false);
 
+        //JJ_TOOD: ensure it returns always an array, even empty
         return $qb->getQuery()->execute();
     }
 

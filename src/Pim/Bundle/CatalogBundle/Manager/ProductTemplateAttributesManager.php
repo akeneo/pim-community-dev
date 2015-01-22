@@ -60,20 +60,24 @@ class ProductTemplateAttributesManager
     public function addAttributes(ProductTemplateInterface $template, $attributes)
     {
         $valuesData = $template->getValuesData();
+        // TODO (JJ) weird to have ProductValue[] as class here + should not be hardcoded
         $values = $this->denormalizer->denormalize($valuesData, 'ProductValue[]', 'json');
 
         $product = new $this->productClass();
 
         foreach ($values as $value) {
+            // TODO (JJ) add only if product has not the value ? or maybe I missed something
             $product->addValue($value);
         }
 
         foreach ($attributes as $attribute) {
+            // TODO (JJ) add only if product has not the value ? or maybe I missed something
             $this->productBuilder->addAttributeToProduct($product, $attribute);
         }
 
         $this->productBuilder->addMissingProductValues($product);
 
+        // TODO (JJ) not entity, object to be like in the rule engine
         $valuesData = $this->normalizer->normalize($product->getValues(), 'json', ['entity' => 'product']);
         $template->setValuesData($valuesData);
     }

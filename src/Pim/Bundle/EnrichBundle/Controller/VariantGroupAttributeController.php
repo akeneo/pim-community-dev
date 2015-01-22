@@ -130,6 +130,7 @@ class VariantGroupAttributeController
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
+        // TODO (JJ) useless else
         } else {
             return $this->redirectToRoute('pim_enrich_variant_group_edit', ['id' => $groupId]);
         }
@@ -189,11 +190,15 @@ class VariantGroupAttributeController
      */
     protected function getAvailableAttributesForm(GroupInterface $group, AvailableAttributes $availableAttributes)
     {
+        // TODO (JJ) getAxisAttributes
         $attributes = $group->getAttributes()->toArray();
 
+        // TODO (JJ) the code that retrieves possible values for a variant should be extracted in a business service
         $template = $group->getProductTemplate();
         if (null !== $template) {
             foreach (array_keys($template->getValuesData()) as $attributeCode) {
+                // TODO (JJ) don't use Doctrine's magic calls, use findOneBy instead
+                // TODO (JJ) when repositories' PR is merged, ->findOneByIdentifier
                 $attributes[] = $this->attributeRepository->findOneByCode($attributeCode);
             }
         }

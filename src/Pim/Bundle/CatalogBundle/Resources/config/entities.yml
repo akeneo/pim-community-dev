@@ -23,4 +23,5 @@ parameters:
     pim_catalog.entity.metric.class:                 Pim\Bundle\CatalogBundle\Model\Metric
     pim_catalog.entity.product_media.class:          Pim\Bundle\CatalogBundle\Model\ProductMedia
     pim_catalog.entity.product_price.class:          Pim\Bundle\CatalogBundle\Model\ProductPrice
+    # TODO (JJ) please add the corresponding interface in models.yml
     pim_catalog.entity.product_template.class:       Pim\Bundle\CatalogBundle\Entity\ProductTemplate

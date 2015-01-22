@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 class ProductValuesDenormalizer implements DenormalizerInterface
 {
+    // TODO (JJ) that denormalization type is really weird
     /** @staticvar string */
     const PRODUCT_VALUES_TYPE = 'ProductValue[]';
 

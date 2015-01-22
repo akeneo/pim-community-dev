@@ -27,12 +27,16 @@ class ProductTemplate implements ProductTemplateInterface
     protected $valuesData = [];
 
     /**
+     * TODO (JJ) nope
+     *
      * {@inheritdoc}
      */
     protected $values = [];
 
     /**
      * {@inheritdoc}
+     *
+     * TODO (JJ) typehint array
      */
     public function setValues($values)
     {
@@ -48,6 +52,7 @@ class ProductTemplate implements ProductTemplateInterface
      */
     public function getValues()
     {
+        // TODO (JJ) you should return an array, not an ArrayCollection
         $values = new ArrayCollection();
 
         foreach ($this->values as $value) {
@@ -114,6 +119,9 @@ class ProductTemplate implements ProductTemplateInterface
     /**
      * Get attributes of the product template
      * TODO: this method could be optimized by storing the attributes appart in db
+     *
+     * TODO (JJ) either bad naming (it returns attribute codes) or bad return
+     *
      * @return array
      */
     public function getAttributes()

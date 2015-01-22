@@ -42,6 +42,7 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
         $code = $input->getArgument('code');
         $variantGroup = $this->getVariantGroup($code);
         if (!$variantGroup || $variantGroup->getType()->isVariant() === false) {
+            // TODO (JJ) The variant group %s does not exist ? like other messages
             $output->writeln(sprintf('<error>Variant group "%s" is unknown<error>', $code));
 
             return;
@@ -49,6 +50,7 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
 
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
+        // TODO (JJ) is it really useful ? ->toArray() on empty collections does not return [] ?
         $products = $products->count() > 0 ? $products->toArray() : [];
         $skipped = $this->apply($template, $products);
         $nbSkipped = count($skipped);
@@ -101,6 +103,7 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
      * @param ProductTemplateInterface $template
      * @param ProductInterface[]       $products
      *
+     * TODO (JJ) ConstraintViolationListInterface I guess
      * @return array $violations
      */
     protected function apply(ProductTemplateInterface $template, $products)
