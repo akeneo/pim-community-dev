@@ -244,7 +244,7 @@ pim_enrich:
         tooltip:
             from_variant:
                 title: Updated by a variant group
-                content: This field is updated from the following variant group
+                content: This field is updated by the following variant group
 
 # Entity and page header titles
 attribute:
