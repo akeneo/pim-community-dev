@@ -94,7 +94,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media', gettype($data))
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media', print_r($data, true))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -113,7 +113,7 @@ class MediaValueSetterSpec extends ObjectBehavior
                 'originalFilename',
                 'setter',
                 'media',
-                gettype($data)
+                print_r($data, true)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -131,10 +131,10 @@ class MediaValueSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'attributeCode',
-                'a valid file path ("../../../../../../app/uploads/product/path/to/unknown/file" given)',
+                'a valid file path',
                 'setter',
                 'media',
-                gettype($data)
+                $data['filePath']
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

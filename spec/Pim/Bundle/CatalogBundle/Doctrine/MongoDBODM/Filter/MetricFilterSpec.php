@@ -6,7 +6,7 @@ use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -220,7 +220,7 @@ class MetricFilterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'metric_code',
                 'unit',
-                'The unit "foo" does not exist in the attribute\'s family "length"',
+                'The unit does not exist',
                 'filter',
                 'metric',
                 'foo'

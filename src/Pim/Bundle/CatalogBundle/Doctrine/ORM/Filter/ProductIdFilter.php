@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 
 /**
@@ -37,7 +37,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_numeric($value) && !is_array($value)) {
-            throw InvalidArgumentException::expected($field, 'array or numeric value', 'filter', 'productId');
+            throw InvalidArgumentException::expected($field, 'array or numeric value', 'filter', 'productId', $value);
         }
 
         $field = current($this->qb->getRootAliases()).'.'.$field;

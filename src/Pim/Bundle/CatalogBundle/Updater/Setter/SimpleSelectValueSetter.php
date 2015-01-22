@@ -57,10 +57,10 @@ class SimpleSelectValueSetter extends AbstractValueSetter
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'code',
-                    sprintf('Option with code "%s" does not exist', $data),
+                    'The option does not exist',
                     'setter',
                     'simple select',
-                    gettype($data)
+                    $data
                 );
             }
         }

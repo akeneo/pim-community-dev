@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Prophecy\Argument;
 
 class CompletenessFilterSpec extends ObjectBehavior
@@ -126,7 +126,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_string()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness'))
+        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness', gettype(123)))
             ->during('addFieldFilter', ['completeness', '=', 123]);
     }
 }

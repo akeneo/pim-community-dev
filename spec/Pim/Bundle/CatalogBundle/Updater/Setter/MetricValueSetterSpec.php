@@ -85,7 +85,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric', gettype($data))
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric', print_r($data, true))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -97,7 +97,7 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 'data value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric', gettype($data))
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric', print_r($data, true))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -114,7 +114,7 @@ class MetricValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'metric',
-                gettype($data)
+                'text'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -132,7 +132,7 @@ class MetricValueSetterSpec extends ObjectBehavior
                 'unit',
                 'setter',
                 'metric',
-                gettype($data)
+                gettype(123)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -155,10 +155,10 @@ class MetricValueSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'attributeCode',
                 'unit',
-                '"incorrect unit" does not exist in any attribute\'s families',
+                'The unit does not exist',
                 'setter',
                 'metric',
-                gettype($data)
+                'incorrect unit'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

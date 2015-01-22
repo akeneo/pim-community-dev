@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -87,7 +86,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     'data',
                     'setter',
                     'prices collection',
-                    gettype($data)
+                    print_r($data, true)
                 );
             }
 
@@ -97,7 +96,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     'currency',
                     'setter',
                     'prices collection',
-                    gettype($data)
+                    print_r($data, true)
                 );
             }
 
@@ -107,7 +106,7 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                     'data',
                     'setter',
                     'prices collection',
-                    gettype($data)
+                    gettype($price['data'])
                 );
             }
 
@@ -115,10 +114,10 @@ class PriceCollectionValueSetter extends AbstractValueSetter
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'currency',
-                    sprintf('Currency "%s" does not exist', $price['currency']),
+                    'The currency does not exist',
                     'setter',
                     'prices collection',
-                    gettype($data)
+                    $price['currency']
                 );
             }
         }

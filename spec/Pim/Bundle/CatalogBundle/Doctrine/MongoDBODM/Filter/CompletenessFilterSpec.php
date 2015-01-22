@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -60,7 +60,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_string()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness'))
+        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness', gettype(123)))
             ->during('addFieldFilter', ['completeness', '=', 123]);
     }
 }

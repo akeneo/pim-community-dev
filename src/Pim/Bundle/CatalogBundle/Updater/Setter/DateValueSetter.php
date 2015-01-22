@@ -64,7 +64,8 @@ class DateValueSetter extends AbstractValueSetter
                 'datetime or string',
                 gettype($data),
                 'setter',
-                'date'
+                'date',
+                $data
             );
         }
 
@@ -112,7 +113,8 @@ class DateValueSetter extends AbstractValueSetter
                 'a string with the format yyyy-mm-dd',
                 'setter',
                 'date',
-                gettype($data)
+                gettype($data),
+                $data
             );
         }
     }

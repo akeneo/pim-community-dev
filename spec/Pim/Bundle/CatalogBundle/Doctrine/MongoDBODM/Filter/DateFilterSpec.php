@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -132,7 +132,8 @@ class DateFilterSpec extends ObjectBehavior
                 'release_date',
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r(123,true)
             )
         )->during('addFieldFilter', ['release_date', '>', 123]);
     }
@@ -140,7 +141,7 @@ class DateFilterSpec extends ObjectBehavior
     function it_throws_an_error_if_data_is_not_a_valid_date_format()
     {
         $this->shouldThrow(
-            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date')
+            InvalidArgumentException::expected('release_date', 'a string with the format yyyy-mm-dd', 'filter', 'date', 'WRONG')
         )->during('addFieldFilter', ['release_date', '>', ['not a valid date format', 'WRONG']]);
     }
 
@@ -151,7 +152,8 @@ class DateFilterSpec extends ObjectBehavior
                 'release_date',
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r([123, 123],true)
             )
         )->during('addFieldFilter', ['release_date', '>', [123, 123]]);
     }
@@ -163,7 +165,8 @@ class DateFilterSpec extends ObjectBehavior
                 'release_date',
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r([123, 123, 'three'],true)
             )
         )->during('addFieldFilter', ['release_date', '>', [123, 123, 'three']]);
     }

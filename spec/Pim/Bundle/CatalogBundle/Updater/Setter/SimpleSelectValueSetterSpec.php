@@ -87,10 +87,10 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
                 InvalidArgumentException::arrayInvalidKey(
                     'attributeCode',
                     'code',
-                    'Option with code "unknown code" does not exist',
+                    'The option does not exist',
                     'setter',
                     'simple select',
-                    gettype($data)
+                    $data
                 )
             )
             ->duringSetValue([], $attribute, $data, 'fr_FR', 'mobile');

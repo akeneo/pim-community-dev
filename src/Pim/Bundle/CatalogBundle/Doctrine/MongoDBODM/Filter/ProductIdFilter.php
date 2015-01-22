@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 
@@ -46,7 +46,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_string($value) && !is_array($value)) {
-            throw InvalidArgumentException::expected($field, 'array or string value', 'filter', 'productId');
+            throw InvalidArgumentException::expected($field, 'array or string value', 'filter', 'productId', $value);
         }
 
         $field = '_id';

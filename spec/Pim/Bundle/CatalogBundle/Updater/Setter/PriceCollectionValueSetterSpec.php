@@ -98,7 +98,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'prices collection',
-                gettype($data)
+                print_r($data, true)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -116,7 +116,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'prices collection',
-                gettype($data)
+                'text'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -153,10 +153,10 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'attributeCode',
                 'currency',
-                'Currency "invalid currency" does not exist',
+                'The currency does not exist',
                 'setter',
                 'prices collection',
-                gettype($data)
+                'invalid currency'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

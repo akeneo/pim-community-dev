@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
@@ -75,7 +75,7 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
 
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
+            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean', gettype($value));
         }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
@@ -90,7 +90,7 @@ class BooleanFilter extends AbstractAttributeFilter implements FieldFilterInterf
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean');
+            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean', gettype($value));
         }
 
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, FieldFilterHelper::getCode($field));

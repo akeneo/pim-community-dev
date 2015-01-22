@@ -96,10 +96,10 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'attributeCode',
                 'code',
-                'Option with code "unknown code" does not exist',
+                'The option does not exist',
                 'setter',
                 'multi select',
-                gettype($data)
+                print_r($data, true)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

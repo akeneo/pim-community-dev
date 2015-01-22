@@ -54,10 +54,10 @@ class MultiSelectValueSetter extends AbstractValueSetter
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'code',
-                    sprintf('Option with code "%s" does not exist', $optionCode),
+                    'The option does not exist',
                     'setter',
                     'multi select',
-                    gettype($data)
+                    $optionCode
                 );
             }
 

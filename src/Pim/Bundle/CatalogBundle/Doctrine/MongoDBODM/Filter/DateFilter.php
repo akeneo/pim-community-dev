@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
@@ -137,7 +137,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 $type,
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r($value)
             );
         }
 
@@ -171,7 +172,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 $type,
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r($value,true)
             );
         }
 
@@ -197,7 +199,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
                 $type,
                 'a string with the format yyyy-mm-dd',
                 'filter',
-                'date'
+                'date',
+                $value
             );
         }
     }

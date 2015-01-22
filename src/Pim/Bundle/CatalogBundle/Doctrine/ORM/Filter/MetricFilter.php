@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -159,7 +159,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function checkValue(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'metric');
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'metric', gettype($data));
         }
 
         if (!array_key_exists('data', $data)) {
@@ -209,11 +209,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'unit',
-                sprintf(
-                    'The unit "%s" does not exist in the attribute\'s family "%s"',
-                    $data['unit'],
-                    $attribute->getMetricFamily()
-                ),
+                'The unit does not exist',
                 'filter',
                 'metric',
                 $data['unit']

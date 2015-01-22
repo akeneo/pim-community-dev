@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -83,8 +82,7 @@ class MetricValueSetter extends AbstractValueSetter
                 'data',
                 'setter',
                 'metric',
-                //TODO: change getype by print_r
-                gettype($data)
+                print_r($data, true)
             );
         }
 
@@ -94,8 +92,7 @@ class MetricValueSetter extends AbstractValueSetter
                 'unit',
                 'setter',
                 'metric',
-                //TODO: change getype by print_r
-                gettype($data)
+                print_r($data, true)
             );
         }
 
@@ -105,8 +102,7 @@ class MetricValueSetter extends AbstractValueSetter
                 'data',
                 'setter',
                 'metric',
-                //TODO: change getype
-                gettype($data)
+                gettype($data['data'])
             );
         }
 
@@ -116,7 +112,6 @@ class MetricValueSetter extends AbstractValueSetter
                 'unit',
                 'setter',
                 'metric',
-                //TODO: change getype
                 gettype($data)
             );
         }
@@ -126,14 +121,13 @@ class MetricValueSetter extends AbstractValueSetter
             $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())
         )) {
 
-            //TODO: change msg exception
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'unit',
-                sprintf('"%s" does not exist in any attribute\'s families', $data['unit']),
+                'The metric does not exist',
                 'setter',
                 'metric',
-                gettype($data)
+                $data['unit']
             );
         }
     }

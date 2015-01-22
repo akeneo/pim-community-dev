@@ -124,7 +124,7 @@ class MediaValueSetter extends AbstractValueSetter
                 'originalFilename',
                 'setter',
                 'media',
-                gettype($data)
+                print_r($data, true)
             );
         }
 
@@ -134,7 +134,7 @@ class MediaValueSetter extends AbstractValueSetter
                 'filePath',
                 'setter',
                 'media',
-                gettype($data)
+                print_r($data, true)
             );
         }
     }
@@ -160,10 +160,10 @@ class MediaValueSetter extends AbstractValueSetter
         } catch (FileNotFoundException $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
-                sprintf('a valid file path ("%s" given)', $data['filePath']),
+                'a valid file path',
                 'setter',
                 'media',
-                gettype($data)
+                $data['filePath']
             );
         }
     }

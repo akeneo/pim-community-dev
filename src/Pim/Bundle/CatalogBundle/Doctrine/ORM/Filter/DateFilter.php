@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
@@ -221,7 +221,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $type,
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r($value)
             );
         }
 
@@ -255,7 +256,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $type,
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r($value,true)
             );
         }
 
@@ -281,7 +283,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $type,
                 'a string with the format yyyy-mm-dd',
                 'filter',
-                'date'
+                'date',
+                $value
             );
         }
     }
