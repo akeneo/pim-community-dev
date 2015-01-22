@@ -56,7 +56,7 @@ final class RuleEvents
      *
      * @staticvar string
      */
-    const SKIPPED = 'pim_rule_engine.rule.skipped';
+    const SKIP = 'pim_rule_engine.rule.skip';
 
     /**
      * This event is thrown after executing rule selection.

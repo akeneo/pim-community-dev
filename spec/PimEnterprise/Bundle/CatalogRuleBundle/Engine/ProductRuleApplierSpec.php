@@ -297,7 +297,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         $objectDetacher->detach($invalidProduct)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(RuleEvents::SKIPPED, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(RuleEvents::SKIP, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);

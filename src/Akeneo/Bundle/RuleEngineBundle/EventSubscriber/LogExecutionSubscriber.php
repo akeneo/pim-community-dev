@@ -45,13 +45,13 @@ class LogExecutionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RuleEvents::PRE_BUILD => 'preBuild',
-            RuleEvents::POST_BUILD => 'postBuild',
-            RuleEvents::PRE_SELECT => 'preSelect',
-            RuleEvents::SKIPPED => 'skipped',
+            RuleEvents::PRE_BUILD   => 'preBuild',
+            RuleEvents::POST_BUILD  => 'postBuild',
+            RuleEvents::PRE_SELECT  => 'preSelect',
+            RuleEvents::SKIP        => 'skip',
             RuleEvents::POST_SELECT => 'postSelect',
-            RuleEvents::PRE_APPLY => 'preApply',
-            RuleEvents::POST_APPLY => 'postApply'
+            RuleEvents::PRE_APPLY   => 'preApply',
+            RuleEvents::POST_APPLY  => 'postApply'
         ];
     }
 
@@ -96,14 +96,14 @@ class LogExecutionSubscriber implements EventSubscriberInterface
      *
      * @param SkippedSubjectRuleEvent $event
      */
-    public function skipped(SkippedSubjectRuleEvent $event)
+    public function skip(SkippedSubjectRuleEvent $event)
     {
         $skippedReasons = implode(', ', $event->getReasons());
         $patternItem = static::NAME_PATTERN . ': subject "%s" has been skipped due to "%s".';
         $messageItem = sprintf(
             $patternItem,
             $event->getDefinition()->getCode(),
-            RuleEvents::SKIPPED,
+            RuleEvents::SKIP,
             $event->getSubject()->getId(),
             $skippedReasons
         );

@@ -167,7 +167,7 @@ class ProductRuleApplier implements ApplierInterface
                     $reasons[] = sprintf('%s : %s', $violation->getInvalidValue(), $violation->getMessage());
                 }
                 $this->eventDispatcher->dispatch(
-                    RuleEvents::SKIPPED,
+                    RuleEvents::SKIP,
                     new SkippedSubjectRuleEvent($rule, $product, $reasons)
                 );
             }
