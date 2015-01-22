@@ -55,7 +55,7 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.manager.product_mass_action'
             - '@pim_serializer'
-            - '@pim_catalog.saver.product'
+            - '@pimee_workflow.saver.product_delegating'
             - '@security.context'
         tags:
             -
