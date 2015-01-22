@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product template media manager
@@ -17,12 +18,17 @@ class ProductTemplateMediaManager
     /** @var MediaManager */
     protected $mediaManager;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
-     * @param MediaManager $mediaManager
+     * @param MediaManager        $mediaManager
+     * @param NormalizerInterface $normalizer
      */
-    public function __construct(MediaManager $mediaManager)
+    public function __construct(MediaManager $mediaManager, NormalizerInterface $normalizer)
     {
         $this->mediaManager = $mediaManager;
+        $this->normalizer   = $normalizer;
     }
 
     /**
@@ -32,11 +38,17 @@ class ProductTemplateMediaManager
      */
     public function handleProductTemplateMedia(ProductTemplateInterface $template)
     {
+        $mediaHandled = false;
         foreach ($template->getValues() as $value) {
             if ($media = $value->getMedia()) {
+                $mediaHandled = true;
                 $filenamePrefix = $media->getFile() ? $this->generateFilenamePrefix($value) : null;
                 $this->mediaManager->handle($media, $filenamePrefix);
             }
+        }
+
+        if ($mediaHandled) {
+            $this->updateNormalizedValues($template);
         }
     }
 
@@ -55,5 +67,16 @@ class ProductTemplateMediaManager
             $value->getScope(),
             time()
         );
+    }
+
+    /**
+     * Updates normalized product template values (required after handling new media added to a template)
+     *
+     * @param ProductTemplateInterface $template
+     */
+    protected function updateNormalizedValues(ProductTemplateInterface $template)
+    {
+        $valuesData = $this->normalizer->normalize($template->getValues(), 'json', ['entity' => 'product']);
+        $template->setValuesData($valuesData);
     }
 }

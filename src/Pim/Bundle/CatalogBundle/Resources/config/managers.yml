@@ -154,6 +154,7 @@ services:
         class: %pim_catalog.manager.product_template_media.class%
         arguments:
             - '@pim_catalog.manager.media'
+            - '@pim_serializer'
 
     pim_catalog.applier.product_template:
         class: %pim_catalog.applier.product_template.class%

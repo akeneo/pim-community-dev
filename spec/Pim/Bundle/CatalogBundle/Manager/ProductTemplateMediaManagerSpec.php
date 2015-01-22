@@ -10,12 +10,13 @@ use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductTemplateMediaManagerSpec extends ObjectBehavior
 {
-    function let(MediaManager $mediaManager)
+    function let(MediaManager $mediaManager, NormalizerInterface $normalizer)
     {
-        $this->beConstructedWith($mediaManager);
+        $this->beConstructedWith($mediaManager, $normalizer);
     }
 
     function it_is_initializable()
@@ -25,6 +26,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
 
     function it_uses_the_media_manager_to_handle_the_media_of_product_templates(
         $mediaManager,
+        $normalizer,
         ProductTemplateInterface $template,
         ProductValueInterface $imageValue,
         ProductMediaInterface $imageMedia,
@@ -33,7 +35,9 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         ProductValueInterface $fileValue,
         ProductMediaInterface $fileMedia
     ) {
+        $normalizer->normalize(Argument::cetera())->willReturn([]);
         $template->getValues()->willReturn([$imageValue, $fileValue]);
+        $template->setValuesData([])->willReturn($template);
 
         $imageValue->getMedia()->willReturn($imageMedia);
         $imageMedia->getFile()->willReturn($imageFile);
@@ -48,6 +52,27 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $mediaManager->handle($fileMedia, null)->shouldBeCalled();
 
         $this->handleProductTemplateMedia($template);
+    }
+
+    function it_updates_normalized_product_template_values_if_media_values_have_been_handled(
+        $normalizer,
+        ProductTemplateInterface $imageTemplate,
+        ProductTemplateInterface $textTemplate,
+        ProductValueInterface $imageValue,
+        ProductValueInterface $textValue,
+        ProductMediaInterface $imageMedia
+    ) {
+        $normalizer->normalize(Argument::cetera())->willReturn([]);
+
+        $imageTemplate->getValues()->willReturn([$imageValue]);
+        $imageValue->getMedia()->willReturn($imageMedia);
+        $imageTemplate->setValuesData([])->shouldBeCalled();
+
+        $textTemplate->getValues()->willReturn([$textValue]);
+        $textTemplate->setValuesData([])->shouldNotBeCalled();
+
+        $this->handleProductTemplateMedia($imageTemplate);
+        $this->handleProductTemplateMedia($textTemplate);
     }
 
     function it_generates_the_media_filename_prefix(ProductValueInterface $fileValue, AttributeInterface $file)
