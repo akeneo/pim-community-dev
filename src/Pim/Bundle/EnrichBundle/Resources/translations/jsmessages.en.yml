@@ -101,5 +101,5 @@ pim_enrich:
             delete.label: Delete
             delete.error: Error during item deletion
         delete:
-            confirm.content: It is not possible not undo this action
+            confirm.content: It is not possible to undo this action
             confirm.title: Delete item
