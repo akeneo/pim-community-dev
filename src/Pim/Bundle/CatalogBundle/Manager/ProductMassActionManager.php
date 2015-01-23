@@ -115,7 +115,7 @@ class ProductMassActionManager
      *
      * @return array
      */
-    public function getCommonAttributesNotInVariant(array $products)
+    public function getCommonAttributesInVariant(array $products)
     {
         $variantAttributes = $this->getAttributesComingFromVariantGroups($products);
         $commonAttributes  = $this->findCommonAttributes($products);
@@ -125,7 +125,7 @@ class ProductMassActionManager
             $commonAttributeCodes[] = $attribute->getCode();
         }
 
-        return array_diff($variantAttributes, $commonAttributeCodes);
+        return array_intersect($variantAttributes, $commonAttributeCodes);
     }
 
     /**
@@ -148,6 +148,6 @@ class ProductMassActionManager
             }
         }
 
-        return $variantAttributes;
+        return array_unique($variantAttributes);
     }
 }
