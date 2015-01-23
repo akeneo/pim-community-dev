@@ -1,4 +1,4 @@
-# 1.2.x
+# 1.2.23 (2015-01-23)
 
 ## Bug fixes
 - PIM-3664: Fix product media stacktrace regression on missing media on filesystem during an export
