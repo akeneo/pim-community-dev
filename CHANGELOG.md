@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3664: Fix product media stacktrace regression on missing media on filesystem during an export
+- PIM-3677: Fix `Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection` saving problem
 
 # 1.2.22 (2015-01-21)
 - Crowdin Updated translations
