@@ -8,21 +8,21 @@ services:
     pimee_catalog_rule.validator.existing_field:
         class: %pimee_catalog_rule.validator.existing_field.class%
         arguments:
-            - '@pim_catalog.doctrine.query.filter_registry'
+            - '@pim_catalog.query.filter.registry'
         tags:
             - { name: validator.constraint_validator, alias: pimee_constraint_field_validator }
 
     pimee_catalog_rule.validator.product_rule.supported_operator_condition:
         class: %pimee_catalog_rule.validator.product_rule.supported_operator_condition.class%
         arguments:
-            - '@pim_catalog.doctrine.query.filter_registry'
+            - '@pim_catalog.query.filter.registry'
         tags:
             - { name: validator.constraint_validator, alias: pimee_supported_operator_condition_validator }
 
     pimee_catalog_rule.validator.product_rule.value_condition:
         class: %pimee_catalog_rule.validator.product_rule.value_condition.class%
         arguments:
-            - '@pim_catalog.doctrine.query.product_query_factory'
+            - '@pim_catalog.query.product_query_builder_factory'
         tags:
             - { name: validator.constraint_validator, alias: pimee_constraint_value_condition_validator }
 
