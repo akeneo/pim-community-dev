@@ -6,7 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
 use Doctrine\ORM\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -17,12 +17,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ProductRuleSelectorSpec extends ObjectBehavior
 {
     function let(
-        ProductQueryFactoryInterface $productQueryFactory,
+        ProductQueryBuilderFactoryInterface $ProductQueryBuilderFactory,
         ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
-            $productQueryFactory,
+            $ProductQueryBuilderFactory,
             $repo,
             $eventDispatcher,
             'Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet'
@@ -41,7 +41,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
 
     function it_selects_subjects_of_a_rule(
         $eventDispatcher,
-        $productQueryFactory,
+        $ProductQueryBuilderFactory,
         ProductQueryBuilderInterface $pqb,
         RuleInterface $rule,
         ProductConditionInterface $condition,
@@ -56,7 +56,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $condition->getLocale()->willReturn('fr_FR');
         $condition->getScope()->willReturn('ecommerce');
 
-        $productQueryFactory->create()->shouldBeCalled()->willReturn($pqb);
+        $ProductQueryBuilderFactory->create()->shouldBeCalled()->willReturn($pqb);
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
         $pqb->execute()->shouldBeCalled()->willReturn($cursor);
 
@@ -68,7 +68,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
 
     function it_selects_subject_of_a_rule_that_has_conditions(
         $eventDispatcher,
-        $productQueryFactory,
+        $ProductQueryBuilderFactory,
         ProductQueryBuilderInterface $pqb,
         RuleInterface $rule,
         ProductConditionInterface $condition,
@@ -82,7 +82,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $condition->getLocale()->willReturn('fr_FR');
         $condition->getScope()->willReturn('ecommerce');
 
-        $productQueryFactory->create()->shouldBeCalled()->willReturn($pqb);
+        $ProductQueryBuilderFactory->create()->shouldBeCalled()->willReturn($pqb);
         $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
