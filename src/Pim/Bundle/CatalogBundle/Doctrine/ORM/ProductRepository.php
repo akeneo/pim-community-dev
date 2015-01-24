@@ -28,7 +28,7 @@ class ProductRepository extends EntityRepository implements
     ModelRepositoryInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
-    protected $ProductQueryBuilderFactory;
+    protected $queryBuilderFactory;
 
     /** @var AttributeRepository */
     protected $attributeRepository;
@@ -38,7 +38,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
     {
-        $this->ProductQueryBuilderFactory = $factory;
+        $this->queryBuilderFactory = $factory;
     }
 
     /**
@@ -60,7 +60,7 @@ class ProductRepository extends EntityRepository implements
      */
     protected function buildByScope($scope)
     {
-        $productQb = $this->ProductQueryBuilderFactory->create();
+        $productQb = $this->queryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();
         $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
@@ -121,7 +121,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findByIds(array $ids)
     {
-        $productQb = $this->ProductQueryBuilderFactory->create();
+        $productQb = $this->queryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();
         $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
@@ -433,7 +433,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->ProductQueryBuilderFactory->create();
+        $pqb = $this->queryBuilderFactory->create();
         $qb = $pqb->getQueryBuilder();
         $attribute = $this->getIdentifierAttribute();
         $pqb->addFilter($attribute->getCode(), '=', $identifier);
@@ -447,7 +447,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneById($id)
     {
-        $pqb = $this->ProductQueryBuilderFactory->create();
+        $pqb = $this->queryBuilderFactory->create();
         $pqb->addFilter('id', '=', $id);
         $qb = $pqb->getQueryBuilder();
         $result = $qb->getQuery()->execute();
@@ -460,7 +460,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByWithValues($id)
     {
-        $productQb = $this->ProductQueryBuilderFactory->create();
+        $productQb = $this->queryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
         $this->addJoinToValueTables($qb);

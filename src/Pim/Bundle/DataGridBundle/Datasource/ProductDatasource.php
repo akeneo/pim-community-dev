@@ -21,8 +21,8 @@ class ProductDatasource extends Datasource
     protected $pqb;
 
     /**
-     * @param ObjectManager                $om
-     * @param HydratorInterface            $hydrator
+     * @param ObjectManager                       $om
+     * @param HydratorInterface                   $hydrator
      * @param ProductQueryBuilderFactoryInterface $factory
      */
     public function __construct(

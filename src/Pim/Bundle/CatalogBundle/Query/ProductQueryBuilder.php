@@ -45,11 +45,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Constructor
      *
-     * @param AttributeRepository          $attributeRepository
+     * @param AttributeRepository     $attributeRepository
      * @param FilterRegistryInterface $filterRegistry
      * @param SorterRegistryInterface $sorterRegistry
-     * @param CursorFactoryInterface       $cursorFactory
-     * @param array                        $defaultContext
+     * @param CursorFactoryInterface  $cursorFactory
+     * @param array                   $defaultContext
      */
     public function __construct(
         AttributeRepository $attributeRepository,

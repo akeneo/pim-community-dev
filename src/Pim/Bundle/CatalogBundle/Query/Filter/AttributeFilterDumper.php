@@ -23,7 +23,7 @@ class AttributeFilterDumper implements DumperInterface
 
     /**
      * @param FilterRegistryInterface $registry
-     * @param AttributeRepository          $repository
+     * @param AttributeRepository     $repository
      */
     public function __construct(FilterRegistryInterface $registry, AttributeRepository $repository)
     {

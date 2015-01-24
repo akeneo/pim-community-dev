@@ -37,7 +37,7 @@ class ProductRepository extends DocumentRepository implements
     ModelRepositoryInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
-    protected $ProductQueryBuilderFactory;
+    protected $queryBuilderFactory;
 
     /** @var EntityManager */
     protected $entityManager;
@@ -93,7 +93,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->ProductQueryBuilderFactory->create();
+        $pqb = $this->queryBuilderFactory->create();
         $qb = $pqb->getQueryBuilder();
         $attribute = $this->getIdentifierAttribute();
         $pqb->addFilter($attribute->getCode(), '=', $identifier);
@@ -107,7 +107,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneById($id)
     {
-        $pqb = $this->ProductQueryBuilderFactory->create();
+        $pqb = $this->queryBuilderFactory->create();
         $pqb->addFilter('id', '=', $id);
         $qb = $pqb->getQueryBuilder();
         $result = $qb->getQuery()->execute();
@@ -417,7 +417,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $productQueryBuilder = $this->ProductQueryBuilderFactory->create();
+        $productQueryBuilder = $this->queryBuilderFactory->create();
         $qb = $productQueryBuilder->getQueryBuilder();
 
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
@@ -437,7 +437,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
     {
-        $this->ProductQueryBuilderFactory = $factory;
+        $this->queryBuilderFactory = $factory;
 
         return $this;
     }
