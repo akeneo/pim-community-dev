@@ -1,50 +1,50 @@
 parameters:
-    pim_catalog.doctrine.query.product_query_factory.class:   Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory
-    pim_catalog.doctrine.query.product_query_builder.class:   Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder
-    pim_catalog.doctrine.query.filter_registry.class:         Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistry
-    pim_catalog.doctrine.query.sorter_registry.class:         Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistry
-    pim_catalog.doctrine.query.field_filter_dumper.class:     Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterDumper
-    pim_catalog.doctrine.query.attribute_filter_dumper.class: Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterDumper
-    pim_catalog.doctrine.query.filter.category.class:         Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
+    pim_catalog.query.product_query_builder_factory.class: Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory
+    pim_catalog.query.product_query_builder.class:         Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder
+    pim_catalog.query.filter.registry.class:               Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistry
+    pim_catalog.query.sorter.registry.class:               Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistry
+    pim_catalog.query.filter.field_dumper.class:           Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterDumper
+    pim_catalog.query.filter.attribute_dumper.class:       Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterDumper
+    pim_catalog.doctrine.query.filter.category.class:      Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
 
 services:
-    pim_catalog.doctrine.query.product_query_factory:
-        class: %pim_catalog.doctrine.query.product_query_factory.class%
+    pim_catalog.query.product_query_builder_factory:
+        class: %pim_catalog.query.product_query_builder_factory.class%
         arguments:
-            - '%pim_catalog.doctrine.query.product_query_builder.class%'
+            - '%pim_catalog.query.product_query_builder.class%'
             - @pim_catalog.object_manager.product
             - '%pim_catalog.entity.product.class%'
             - @pim_catalog.repository.attribute
-            - @pim_catalog.doctrine.query.filter_registry
-            - @pim_catalog.doctrine.query.sorter_registry
+            - @pim_catalog.query.filter.registry
+            - @pim_catalog.query.sorter.registry
             - @pim_catalog.factory.product_cursor
 
-    # deprecated : will be removed in 1.4, please use pim_catalog.doctrine.query.product_query_factory
+    # deprecated : will be removed in 1.4, please use pim_catalog.query.product_query_builder_factory
     pim_catalog.doctrine.product_query_builder:
-        class: %pim_catalog.doctrine.query.product_query_builder.class%
+        class: %pim_catalog.query.product_query_builder.class%
         arguments:
             - @pim_catalog.repository.attribute
-            - @pim_catalog.doctrine.query.filter_registry
-            - @pim_catalog.doctrine.query.sorter_registry
+            - @pim_catalog.query.filter.registry
+            - @pim_catalog.query.sorter.registry
             - @pim_catalog.factory.product_cursor
 
-    pim_catalog.doctrine.query.filter_registry:
-        class: %pim_catalog.doctrine.query.filter_registry.class%
+    pim_catalog.query.filter.registry:
+        class: %pim_catalog.query.filter.registry.class%
         arguments:
             - @pim_catalog.repository.attribute
 
-    pim_catalog.doctrine.query.sorter_registry:
-        class: %pim_catalog.doctrine.query.sorter_registry.class%
+    pim_catalog.query.sorter.registry:
+        class: %pim_catalog.query.sorter.registry.class%
 
-    pim_catalog.doctrine.query.field_filter_dumper:
-        class: %pim_catalog.doctrine.query.field_filter_dumper.class%
+    pim_catalog.query.filter.field_dumper:
+        class: %pim_catalog.query.filter.field_dumper.class%
         arguments:
-            - @pim_catalog.doctrine.query.filter_registry
+            - @pim_catalog.query.filter.registry
 
-    pim_catalog.doctrine.query.attribute_filter_dumper:
-        class: %pim_catalog.doctrine.query.attribute_filter_dumper.class%
+    pim_catalog.query.filter.attribute_dumper:
+        class: %pim_catalog.query.filter.attribute_dumper.class%
         arguments:
-            - @pim_catalog.doctrine.query.filter_registry
+            - @pim_catalog.query.filter.registry
             - @pim_catalog.repository.attribute
 
     # PQB common filter

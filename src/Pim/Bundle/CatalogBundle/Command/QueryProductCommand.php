@@ -124,7 +124,7 @@ class QueryProductCommand extends ContainerAwareCommand
      */
     protected function getProductQueryBuilder()
     {
-        $factory = $this->getContainer()->get('pim_catalog.doctrine.query.product_query_factory');
+        $factory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
 
         return $factory->create();
     }

@@ -19,7 +19,7 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
     const DEFAULT_PRIORITY = 25;
 
     /** @staticvar string */
-    const QUERY_FILTER_REGISTRY = 'pim_catalog.doctrine.query.filter_registry';
+    const QUERY_FILTER_REGISTRY = 'pim_catalog.query.filter.registry';
 
     /** @staticvar string */
     const QUERY_FILTER_TAG = 'pim_catalog.doctrine.query.filter';
