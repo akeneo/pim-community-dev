@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\MongoDB\Query\Expr;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
 /**

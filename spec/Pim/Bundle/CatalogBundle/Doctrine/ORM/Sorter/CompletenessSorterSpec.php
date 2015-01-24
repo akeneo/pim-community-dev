@@ -22,7 +22,7 @@ class CompletenessSorterSpec extends ObjectBehavior
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface');
     }
 
     function it_supports_the_completeness_field()

@@ -19,7 +19,7 @@ class AbstractAttributeFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface');
     }
 
     function it_throws_an_exception_when_locale_is_expected(

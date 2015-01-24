@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterInterface;
 
 /**
  * Abstract MongoDBODM filter

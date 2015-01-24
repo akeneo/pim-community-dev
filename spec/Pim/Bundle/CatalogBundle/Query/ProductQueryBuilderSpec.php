@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
+namespace spec\Pim\Bundle\CatalogBundle\Query;
 
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
@@ -9,20 +9,20 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior
 {
     function let(
         AttributeRepository $repository,
-        QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         QueryBuilder $qb
     ) {
@@ -38,7 +38,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_is_a_product_query_builder()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface');
     }
 
     function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)

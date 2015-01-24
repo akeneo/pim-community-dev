@@ -19,12 +19,12 @@ class BaseSorterSpec extends ObjectBehavior
 
     function it_is_an_attribute_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface');
     }
 
     function it_is_a_field_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface');
     }
 
     function it_supports_fields()

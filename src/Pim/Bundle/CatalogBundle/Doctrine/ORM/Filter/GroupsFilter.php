@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\Operators;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 
 /**
  * Entity filter

@@ -1,10 +1,12 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
+namespace Pim\Bundle\CatalogBundle\Query;
 
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductQueryFactory implements ProductQueryFactoryInterface
+class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 {
     /** @var string */
     protected $pqbClass;
@@ -29,31 +31,31 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     /** @var AttributeRepository */
     protected $attributeRepository;
 
-    /** QueryFilterRegistryInterface */
+    /** FilterRegistryInterface */
     protected $filterRegistry;
 
-    /** QuerySorterRegistryInterface */
+    /** SorterRegistryInterface */
     protected $sorterRegistry;
 
     /** CursorFactoryInterface */
     protected $cursorFactory;
 
     /**
-     * @param string                       $pqbClass
-     * @param ObjectManager                $om
-     * @param string                       $productClass
-     * @param AttributeRepository          $attributeRepository
-     * @param QueryFilterRegistryInterface $filterRegistry
-     * @param QuerySorterRegistryInterface $sorterRegistry
-     * @param CursorFactoryInterface       $cursorFactory
+     * @param string                  $pqbClass
+     * @param ObjectManager           $om
+     * @param string                  $productClass
+     * @param AttributeRepository     $attributeRepository
+     * @param FilterRegistryInterface $filterRegistry
+     * @param SorterRegistryInterface $sorterRegistry
+     * @param CursorFactoryInterface  $cursorFactory
      */
     public function __construct(
         $pqbClass,
         ObjectManager $om,
         $productClass,
         AttributeRepository $attributeRepository,
-        QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory
     ) {
         $this->pqbClass = $pqbClass;

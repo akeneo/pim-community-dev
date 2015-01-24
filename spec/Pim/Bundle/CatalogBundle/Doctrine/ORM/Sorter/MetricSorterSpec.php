@@ -21,7 +21,7 @@ class MetricSorterSpec extends ObjectBehavior
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface');
     }
 
     function it_supports_metric_attribute(AttributeInterface $metric)

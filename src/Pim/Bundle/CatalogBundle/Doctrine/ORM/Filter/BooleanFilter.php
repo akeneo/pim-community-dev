@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 

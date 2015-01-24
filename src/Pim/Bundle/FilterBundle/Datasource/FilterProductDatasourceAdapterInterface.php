@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Datasource;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 
 /**
  * Adapter to apply filters on product datasource

@@ -8,11 +8,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
 class DatasourceSpec extends ObjectBehavior
 {
-    function let(ObjectManager $manager, HydratorInterface $hydrator, ProductMassActionRepository $massActionRepo, ProductQueryFactoryInterface $factory)
+    function let(ObjectManager $manager, HydratorInterface $hydrator, ProductMassActionRepository $massActionRepo, ProductQueryBuilderFactoryInterface $factory)
     {
         $this->beConstructedWith($manager, $hydrator, $massActionRepo, $factory);
     }

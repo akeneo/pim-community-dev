@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 

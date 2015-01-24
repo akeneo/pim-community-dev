@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\DumperInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\DumperInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +41,7 @@ class QueryHelpProductCommand extends ContainerAwareCommand
      */
     protected function getFieldFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.doctrine.query.field_filter_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.field_dumper');
     }
 
     /**
@@ -49,6 +49,6 @@ class QueryHelpProductCommand extends ContainerAwareCommand
      */
     protected function getAttributeFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.doctrine.query.attribute_filter_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.attribute_dumper');
     }
 }
