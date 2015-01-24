@@ -33,7 +33,7 @@ class ProductRuleSelector implements SelectorInterface
     protected $subjectSetClass;
 
     /** @var ProductQueryBuilderFactory */
-    protected $ProductQueryBuilderFactory;
+    protected $queryBuilderFactory;
 
     /** @var ProductRepositoryInterface */
     protected $repo;
@@ -42,19 +42,19 @@ class ProductRuleSelector implements SelectorInterface
     protected $eventDispatcher;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface $ProductQueryBuilderFactory
-     * @param ProductRepositoryInterface   $repo
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $subjectSetClass should implement
-     *                                     \Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
+     * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
+     * @param ProductRepositoryInterface          $repo
+     * @param EventDispatcherInterface            $eventDispatcher
+     * @param string                              $subjectSetClass     should implement
+     *                                                                 \Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
      */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $ProductQueryBuilderFactory,
+        ProductQueryBuilderFactoryInterface $queryBuilderFactory,
         ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher,
         $subjectSetClass
     ) {
-        $this->ProductQueryBuilderFactory = $ProductQueryBuilderFactory;
+        $this->queryBuilderFactory = $queryBuilderFactory;
         $this->repo                = $repo;
         $this->eventDispatcher     = $eventDispatcher;
         $this->subjectSetClass     = $subjectSetClass;
@@ -68,7 +68,7 @@ class ProductRuleSelector implements SelectorInterface
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
         $subjectSet = new $this->subjectSetClass();
-        $pqb = $this->ProductQueryBuilderFactory->create();
+        $pqb = $this->queryBuilderFactory->create();
 
         foreach ($rule->getConditions() as $condition) {
             $pqb->addFilter(
