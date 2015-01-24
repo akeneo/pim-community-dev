@@ -20,7 +20,7 @@ class IsAssociatedSorterSpec extends ObjectBehavior
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\FieldSorterInterface');
     }
 
     function it_supports_the_is_associated_field()

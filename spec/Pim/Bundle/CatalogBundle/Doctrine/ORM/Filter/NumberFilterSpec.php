@@ -20,7 +20,7 @@ class NumberFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\AttributeFilterInterface');
     }
 
     function it_supports_operators()

@@ -22,7 +22,7 @@ class EntitySorterSpec extends ObjectBehavior
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\AttributeSorterInterface');
     }
 
     function it_supports_select_attributes(AttributeInterface $attribute)

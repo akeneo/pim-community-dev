@@ -18,7 +18,7 @@ class FamilySorterSpec extends ObjectBehavior
 
     function it_is_a_field_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\FieldSorterInterface');
     }
 
     function it_supports_family_field()
