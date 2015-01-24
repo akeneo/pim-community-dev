@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\FilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\FilterInterface;
+use Pim\Bundle\CatalogBundle\Query\QueryFilterRegistryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition;
 use Prophecy\Argument;

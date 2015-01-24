@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryFactory;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
