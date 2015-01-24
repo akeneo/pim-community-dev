@@ -9,12 +9,12 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Query\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\QuerySorterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
 class ProductQueryBuilderSpec extends ObjectBehavior

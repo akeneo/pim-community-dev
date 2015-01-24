@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Query\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\QuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 

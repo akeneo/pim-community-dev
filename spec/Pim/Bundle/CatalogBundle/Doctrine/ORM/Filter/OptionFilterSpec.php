@@ -26,7 +26,7 @@ class OptionFilterSpec extends ObjectBehavior
 
     function it_is_a_field_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface');
     }
 
     function it_supports_operators()

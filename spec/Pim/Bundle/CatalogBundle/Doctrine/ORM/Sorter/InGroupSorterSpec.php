@@ -20,7 +20,7 @@ class InGroupSorterSpec extends ObjectBehavior
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\FieldSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface');
     }
 
     function it_supports_the_in_group_field()

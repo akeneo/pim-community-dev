@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Query;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

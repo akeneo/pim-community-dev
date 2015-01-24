@@ -32,12 +32,12 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_is_a_field_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Query\FieldFilterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface');
     }
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface');
     }
 
     function it_supports_operators()

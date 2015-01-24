@@ -2,15 +2,21 @@
 
 namespace Pim\Bundle\CatalogBundle\Query;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
 /**
- * Builds a product query builder by using  shortcuts to easily select, filter or sort products
+ * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

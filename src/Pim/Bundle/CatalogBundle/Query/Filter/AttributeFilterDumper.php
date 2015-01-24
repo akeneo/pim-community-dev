@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query;
+namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\Console\Output\OutputInterface;

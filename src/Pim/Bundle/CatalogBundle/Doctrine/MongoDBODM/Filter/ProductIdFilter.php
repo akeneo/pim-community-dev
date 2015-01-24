@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Query\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 
 /**
  * Product id filter

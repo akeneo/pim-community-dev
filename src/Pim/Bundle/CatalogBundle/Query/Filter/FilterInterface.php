@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query;
+namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
 /**
- * Sorter interface
+ * Filter interface
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface SorterInterface
+interface FilterInterface
 {
     /**
      * Inject the query builder
@@ -17,4 +17,20 @@ interface SorterInterface
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
      */
     public function setQueryBuilder($queryBuilder);
+
+    /**
+     * This filter supports the operator
+     *
+     * @param string $operator
+     *
+     * @return boolean
+     */
+    public function supportsOperator($operator);
+
+    /**
+     * Filter operators
+     *
+     * @return array
+     */
+    public function getOperators();
 }
