@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\Prod
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition;
 use Prophecy\Argument;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 
 class SupportedOperatorConditionValidatorSpec extends ObjectBehavior
 {
-    function let(QueryFilterRegistryInterface $registry, ExecutionContextInterface $context)
+    function let(FilterRegistryInterface $registry, ExecutionContextInterface $context)
     {
         $this->beConstructedWith($registry);
         $this->initialize($context);
