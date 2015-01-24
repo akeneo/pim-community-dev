@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Query;
+namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
 /**
  * Filter operators
