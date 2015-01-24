@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule ;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Query\Operators;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition;
 use Prophecy\Argument;
