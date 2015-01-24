@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
@@ -23,12 +23,12 @@ class ProductDatasource extends Datasource
     /**
      * @param ObjectManager                $om
      * @param HydratorInterface            $hydrator
-     * @param ProductQueryFactoryInterface $factory
+     * @param ProductQueryBuilderFactoryInterface $factory
      */
     public function __construct(
         ObjectManager $om,
         HydratorInterface $hydrator,
-        ProductQueryFactoryInterface $factory
+        ProductQueryBuilderFactoryInterface $factory
     ) {
         $this->om       = $om;
         $this->hydrator = $hydrator;

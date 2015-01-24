@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Product repository
@@ -27,8 +27,8 @@ class ProductRepository extends EntityRepository implements
     ReferableEntityRepositoryInterface,
     ModelRepositoryInterface
 {
-    /** @var ProductQueryFactoryInterface */
-    protected $productQueryFactory;
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $ProductQueryBuilderFactory;
 
     /** @var AttributeRepository */
     protected $attributeRepository;
@@ -36,9 +36,9 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function setProductQueryFactory(ProductQueryFactoryInterface $factory)
+    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
     {
-        $this->productQueryFactory = $factory;
+        $this->ProductQueryBuilderFactory = $factory;
     }
 
     /**
@@ -60,7 +60,7 @@ class ProductRepository extends EntityRepository implements
      */
     protected function buildByScope($scope)
     {
-        $productQb = $this->productQueryFactory->create();
+        $productQb = $this->ProductQueryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();
         $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
@@ -121,7 +121,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findByIds(array $ids)
     {
-        $productQb = $this->productQueryFactory->create();
+        $productQb = $this->ProductQueryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();
         $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
@@ -433,7 +433,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->productQueryFactory->create();
+        $pqb = $this->ProductQueryBuilderFactory->create();
         $qb = $pqb->getQueryBuilder();
         $attribute = $this->getIdentifierAttribute();
         $pqb->addFilter($attribute->getCode(), '=', $identifier);
@@ -447,7 +447,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneById($id)
     {
-        $pqb = $this->productQueryFactory->create();
+        $pqb = $this->ProductQueryBuilderFactory->create();
         $pqb->addFilter('id', '=', $id);
         $qb = $pqb->getQueryBuilder();
         $result = $qb->getQuery()->execute();
@@ -460,7 +460,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findOneByWithValues($id)
     {
-        $productQb = $this->productQueryFactory->create();
+        $productQb = $this->ProductQueryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
         $this->addJoinToValueTables($qb);

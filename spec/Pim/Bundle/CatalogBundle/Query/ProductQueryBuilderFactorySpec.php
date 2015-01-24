@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
-class ProductQueryFactorySpec extends ObjectBehavior
+class ProductQueryBuilderFactorySpec extends ObjectBehavior
 {
     function let(
         AttributeRepository $attRepository,
@@ -33,7 +33,7 @@ class ProductQueryFactorySpec extends ObjectBehavior
 
     function it_is_a_product_query_factory()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\ProductQueryFactoryInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface');
     }
 
     function it_creates_a_product_query_builder_with_the_default_repository_method($om, ProductRepository $repository)

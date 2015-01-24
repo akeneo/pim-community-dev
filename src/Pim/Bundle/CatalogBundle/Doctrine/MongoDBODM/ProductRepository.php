@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -36,8 +36,8 @@ class ProductRepository extends DocumentRepository implements
     AssociationRepositoryInterface,
     ModelRepositoryInterface
 {
-    /** @var ProductQueryFactoryInterface */
-    protected $productQueryFactory;
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $ProductQueryBuilderFactory;
 
     /** @var EntityManager */
     protected $entityManager;
@@ -93,7 +93,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneByIdentifier($identifier)
     {
-        $pqb = $this->productQueryFactory->create();
+        $pqb = $this->ProductQueryBuilderFactory->create();
         $qb = $pqb->getQueryBuilder();
         $attribute = $this->getIdentifierAttribute();
         $pqb->addFilter($attribute->getCode(), '=', $identifier);
@@ -107,7 +107,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneById($id)
     {
-        $pqb = $this->productQueryFactory->create();
+        $pqb = $this->ProductQueryBuilderFactory->create();
         $pqb->addFilter('id', '=', $id);
         $qb = $pqb->getQueryBuilder();
         $result = $qb->getQuery()->execute();
@@ -417,7 +417,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $productQueryBuilder = $this->productQueryFactory->create();
+        $productQueryBuilder = $this->ProductQueryBuilderFactory->create();
         $qb = $productQueryBuilder->getQueryBuilder();
 
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
@@ -435,9 +435,9 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function setProductQueryFactory(ProductQueryFactoryInterface $factory)
+    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
     {
-        $this->productQueryFactory = $factory;
+        $this->ProductQueryBuilderFactory = $factory;
 
         return $this;
     }
