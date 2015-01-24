@@ -14,13 +14,13 @@ use Symfony\Component\Console\Helper\HelperSet;
  */
 class FieldFilterDumper implements DumperInterface
 {
-    /** @var QueryFilterRegistryInterface */
+    /** @var FilterRegistryInterface */
     protected $registry;
 
     /**
-     * @param QueryFilterRegistryInterface $registry
+     * @param FilterRegistryInterface $registry
      */
-    public function __construct(QueryFilterRegistryInterface $registry)
+    public function __construct(FilterRegistryInterface $registry)
     {
         $this->registry = $registry;
     }

@@ -9,8 +9,8 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
@@ -21,8 +21,8 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 {
     function let(
         AttributeRepository $repository,
-        QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         QueryBuilder $qb
     ) {

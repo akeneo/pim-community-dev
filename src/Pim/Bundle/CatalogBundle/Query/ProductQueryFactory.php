@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Query;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,10 +31,10 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
     /** @var AttributeRepository */
     protected $attributeRepository;
 
-    /** QueryFilterRegistryInterface */
+    /** FilterRegistryInterface */
     protected $filterRegistry;
 
-    /** QuerySorterRegistryInterface */
+    /** SorterRegistryInterface */
     protected $sorterRegistry;
 
     /** CursorFactoryInterface */
@@ -45,8 +45,8 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
      * @param ObjectManager                $om
      * @param string                       $productClass
      * @param AttributeRepository          $attributeRepository
-     * @param QueryFilterRegistryInterface $filterRegistry
-     * @param QuerySorterRegistryInterface $sorterRegistry
+     * @param FilterRegistryInterface $filterRegistry
+     * @param SorterRegistryInterface $sorterRegistry
      * @param CursorFactoryInterface       $cursorFactory
      */
     public function __construct(
@@ -54,8 +54,8 @@ class ProductQueryFactory implements ProductQueryFactoryInterface
         ObjectManager $om,
         $productClass,
         AttributeRepository $attributeRepository,
-        QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory
     ) {
         $this->pqbClass = $pqbClass;

@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
-class QuerySorterRegistrySpec extends ObjectBehavior
+class SorterRegistrySpec extends ObjectBehavior
 {
     function let(FieldSorterInterface $fieldSorter, AttributeSorterInterface $attributeSorter)
     {
@@ -17,7 +17,7 @@ class QuerySorterRegistrySpec extends ObjectBehavior
 
     function it_is_a_sorter_registry()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface');
     }
 
     function it_returns_a_supported_field_sorter($fieldSorter)

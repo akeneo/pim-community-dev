@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
@@ -15,8 +15,8 @@ class ProductQueryFactorySpec extends ObjectBehavior
 {
     function let(
         AttributeRepository $attRepository,
-        QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         ObjectManager $om
     ) {

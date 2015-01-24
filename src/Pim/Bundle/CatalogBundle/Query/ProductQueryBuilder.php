@@ -7,10 +7,10 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\QuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
@@ -30,10 +30,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var mixed */
     protected $qb;
 
-    /** QueryFilterRegistryInterface */
+    /** FilterRegistryInterface */
     protected $filterRegistry;
 
-    /** QuerySorterRegistryInterface */
+    /** SorterRegistryInterface */
     protected $sorterRegistry;
 
     /** @var array */
@@ -46,15 +46,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Constructor
      *
      * @param AttributeRepository          $attributeRepository
-     * @param QueryFilterRegistryInterface $filterRegistry
-     * @param QuerySorterRegistryInterface $sorterRegistry
+     * @param FilterRegistryInterface $filterRegistry
+     * @param SorterRegistryInterface $sorterRegistry
      * @param CursorFactoryInterface       $cursorFactory
      * @param array                        $defaultContext
      */
     public function __construct(
         AttributeRepository $attributeRepository,
-        QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         array $defaultContext
     ) {
