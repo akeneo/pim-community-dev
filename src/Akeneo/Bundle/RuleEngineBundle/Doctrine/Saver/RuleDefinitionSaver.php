@@ -15,7 +15,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver;
 use Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;

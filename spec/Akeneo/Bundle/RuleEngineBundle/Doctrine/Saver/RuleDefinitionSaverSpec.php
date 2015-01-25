@@ -5,7 +5,7 @@ namespace spec\Akeneo\Bundle\RuleEngineBundle\Doctrine\Saver;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
