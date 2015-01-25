@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
@@ -15,14 +15,14 @@ class CursorFactorySpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
-            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor',
+            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\Cursor',
             self::DEFAULT_BATCH_SIZE
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\CursorFactory');
+        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\CursorFactory');
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
@@ -13,7 +13,7 @@ class CursorFactorySpec extends ObjectBehavior
     function let(EntityManager $entityManager)
     {
         $this->beConstructedWith(
-            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor',
+            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor',
             $entityManager,
             self::DEFAULT_BATCH_SIZE
         );
@@ -21,7 +21,7 @@ class CursorFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\CursorFactory');
+        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory');
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
     }
 

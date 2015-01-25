@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 

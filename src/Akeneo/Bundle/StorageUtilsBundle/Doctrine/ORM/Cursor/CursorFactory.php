@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use Doctrine\ORM\EntityManager;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;

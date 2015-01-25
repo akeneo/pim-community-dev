@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor;
 
 use Doctrine\ODM\MongoDB\Cursor as CursorMongoDB;
 use Doctrine\ODM\MongoDB\Query\Builder;

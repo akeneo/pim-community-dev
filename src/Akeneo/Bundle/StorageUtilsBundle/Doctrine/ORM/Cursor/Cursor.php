@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use ArrayIterator;
 use Doctrine\ORM\EntityManager;

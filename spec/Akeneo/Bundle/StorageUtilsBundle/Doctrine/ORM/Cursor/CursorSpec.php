@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -24,7 +24,7 @@ class CursorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor');
+        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor');
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 
