@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;

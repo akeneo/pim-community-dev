@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollection;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollectionFactory;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollectionFactory;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;

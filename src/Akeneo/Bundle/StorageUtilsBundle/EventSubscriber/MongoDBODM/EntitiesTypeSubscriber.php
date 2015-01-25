@@ -2,8 +2,8 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollection;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollectionFactory;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollectionFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
@@ -161,7 +161,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     throw new \LogicException(
                         sprintf(
                             'Property "%s" of "%s" should be an instance of ' .
-                            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ReferencedCollection, got "%s"',
+                            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection, got "%s"',
                             $field,
                             get_class($document),
                             is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)

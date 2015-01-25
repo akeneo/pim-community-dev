@@ -1,5 +1,5 @@
 <?php
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
