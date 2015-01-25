@@ -18,6 +18,9 @@ use LogicException;
  */
 class Cursor extends AbstractCursor
 {
+    /** @var QueryBuilder */
+    protected $queryBuilder;
+
     /** @var int */
     protected $position = 0;
 

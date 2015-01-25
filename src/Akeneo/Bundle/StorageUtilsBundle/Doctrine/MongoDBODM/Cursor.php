@@ -15,6 +15,9 @@ use Akeneo\Component\StorageUtils\Cursor\AbstractCursor;
  */
 class Cursor extends AbstractCursor
 {
+    /** @var Builder */
+    protected $queryBuilder;
+
     /** @var CursorMongoDB */
     protected $cursor;
 
