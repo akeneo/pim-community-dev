@@ -11,8 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\Saver;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;

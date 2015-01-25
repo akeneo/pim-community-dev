@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;

@@ -26,8 +26,8 @@ class RuleDefinitionSaverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
-        $this->shouldHaveType('Akeneo\Component\Persistence\BulkSaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_saves_a_rule_object($entityManager, $optionsResolver)
