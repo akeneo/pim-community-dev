@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -22,8 +22,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactoryInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
