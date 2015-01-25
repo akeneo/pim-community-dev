@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Types;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Types\Type;
