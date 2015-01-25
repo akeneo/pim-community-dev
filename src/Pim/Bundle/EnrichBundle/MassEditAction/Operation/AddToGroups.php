@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;

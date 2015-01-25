@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;

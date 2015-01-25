@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Remover;
 
-use Akeneo\Component\Persistence\BulkRemoverInterface;
-use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 

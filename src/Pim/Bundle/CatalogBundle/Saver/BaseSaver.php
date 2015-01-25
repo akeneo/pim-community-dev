@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Saver;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 
 /**
  * Base saver, declared as different services for different classes

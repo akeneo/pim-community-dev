@@ -16,8 +16,8 @@ class BaseRemoverSpec extends ObjectBehavior
 
     function it_is_a_remover()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\RemoverInterface');
-        $this->shouldHaveType('Akeneo\Component\Persistence\BulkRemoverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface');
     }
 
     function it_removes_the_object_and_flushes_the_unit_of_work($objectManager, $optionsResolver, GroupTypeInterface $type)
