@@ -25,7 +25,7 @@ class CursorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor');
-        $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 
     function it_is_countable($queryBuilder, AbstractQuery $query, From $from)

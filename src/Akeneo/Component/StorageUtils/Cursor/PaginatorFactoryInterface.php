@@ -1,5 +1,5 @@
 <?php
-namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
+namespace Akeneo\Component\StorageUtils\Cursor;
 
 /**
  * Interface PaginatorFactoryInterface to instantiate paginator to iterate page of entities

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
 
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 /**
  * Class CursorFactory to instantiate cursor to iterate entities

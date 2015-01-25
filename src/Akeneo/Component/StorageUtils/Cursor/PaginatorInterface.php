@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
+namespace Akeneo\Component\StorageUtils\Cursor;
 
 /**
  * interface PaginatorInterface that paginate over cursors

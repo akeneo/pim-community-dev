@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Cursor;
+namespace Akeneo\Component\StorageUtils\Cursor;
 
 /**
  * Class AbstractCursor to iterate items

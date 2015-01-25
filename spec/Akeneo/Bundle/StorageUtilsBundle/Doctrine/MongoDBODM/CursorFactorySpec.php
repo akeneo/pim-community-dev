@@ -23,12 +23,12 @@ class CursorFactorySpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\CursorFactory');
-        $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
     }
 
     function it_create_a_cursor(Builder $queryBuilder)
     {
         $cursor = $this->createCursor($queryBuilder);
-        $cursor->shouldBeAnInstanceOf('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
+        $cursor->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 }

@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManager;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 /**
  * Class CursorFactory to instantiate cursor to iterate entities

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Cursor;
+namespace spec\Akeneo\Component\StorageUtils\Cursor;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 
 class PaginatorSpec extends ObjectBehavior
 {
@@ -16,8 +16,8 @@ class PaginatorSpec extends ObjectBehavior
 
     function it_is_a_paginator()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator');
-        $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Cursor\Paginator');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\PaginatorInterface');
     }
 
     function it_iterate_by_page_over_cursor(CursorInterface $cursor)

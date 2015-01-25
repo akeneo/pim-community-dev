@@ -4,7 +4,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Cursor as CursorMongoDB;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\AbstractCursor;
+use Akeneo\Component\StorageUtils\Cursor\AbstractCursor;
 
 /**
  * Class Cursor to iterate entities from Builder

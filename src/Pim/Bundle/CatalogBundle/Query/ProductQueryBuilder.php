@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 /**
  * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes

@@ -21,7 +21,7 @@ class CursorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor');
-        $this->shouldImplement('Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 
     function it_is_countable($queryBuilder, Query $query, Cursor $cursor)
