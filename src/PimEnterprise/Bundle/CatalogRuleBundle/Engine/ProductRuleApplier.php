@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
