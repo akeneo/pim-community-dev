@@ -1,27 +1,27 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Remover;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Resolve removing options for single or bulk remove
+ * Resolve saving options for single or bulk save
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseRemovingOptionsResolver
+class BaseSavingOptionsResolver
 {
     /**
-     * Resolve options for a single remove
+     * Resolve options for a single save
      *
      * @param array $options
      *
      * @return array
      */
-    public function resolveRemoveOptions(array $options)
+    public function resolveSaveOptions(array $options)
     {
         $resolver = $this->createOptionsResolver();
         $resolver->setOptional(['flush_only_object']);
@@ -33,13 +33,13 @@ class BaseRemovingOptionsResolver
     }
 
     /**
-     * Resolve options for a bulk remove
+     * Resolve options for a bulk save
      *
      * @param array $options
      *
      * @return array
      */
-    public function resolveRemoveAllOptions(array $options)
+    public function resolveSaveAllOptions(array $options)
     {
         $resolver = $this->createOptionsResolver();
         $options = $resolver->resolve($options);

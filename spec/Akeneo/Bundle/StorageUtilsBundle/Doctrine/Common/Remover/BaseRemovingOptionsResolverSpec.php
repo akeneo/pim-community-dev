@@ -1,37 +1,37 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Saver;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
-class BaseSavingOptionsResolverSpec extends ObjectBehavior
+class BaseRemovingOptionsResolverSpec extends ObjectBehavior
 {
-    function it_resolves_single_save_options()
+    function it_resolves_single_remove_options()
     {
         $this
-            ->resolveSaveOptions(['flush' => true, 'flush_only_object' => true])
+            ->resolveRemoveOptions(['flush' => true, 'flush_only_object' => true])
             ->shouldReturn(['flush' => true, 'flush_only_object' => true]);
     }
 
-    function it_resolves_default_values_for_single_save_options()
+    function it_resolves_default_values_for_single_remove_options()
     {
         $this
-            ->resolveSaveOptions([])
+            ->resolveRemoveOptions([])
             ->shouldReturn(['flush' => true, 'flush_only_object' => false]);
     }
 
-    function it_resolves_bulk_save_options()
+    function it_resolves_bulk_remove_options()
     {
         $this
-            ->resolveSaveAllOptions(['flush' => true])
+            ->resolveRemoveAllOptions(['flush' => true])
             ->shouldReturn(['flush' => true]);
     }
 
-    function it_resolves_default_values_for_bulk_save_options()
+    function it_resolves_default_values_for_bulk_remove_options()
     {
         $this
-            ->resolveSaveAllOptions([])
+            ->resolveRemoveAllOptions([])
             ->shouldReturn(['flush' => true]);
     }
 
@@ -39,6 +39,6 @@ class BaseSavingOptionsResolverSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(new InvalidOptionsException('The option "fake_option" does not exist. Known options are: "flush", "flush_only_object"'))
-            ->duringResolveSaveOptions(['fake_option' => true, 'flush' => false]);
+            ->duringResolveRemoveOptions(['fake_option' => true, 'flush' => false]);
     }
 }

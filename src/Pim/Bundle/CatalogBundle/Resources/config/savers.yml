@@ -1,8 +1,8 @@
 parameters:
-    pim_catalog.saver.base.class:                     Pim\Bundle\CatalogBundle\Saver\BaseSaver
+    pim_catalog.saver.base.class:                     Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    pim_catalog.saver.base_options_resolver.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver
     pim_catalog.saver.product.class:                  Pim\Bundle\CatalogBundle\Saver\ProductSaver
     pim_catalog.saver.product_options_resolver.class: Pim\Bundle\CatalogBundle\Saver\ProductSavingOptionsResolver
-    pim_catalog.saver.base_options_resolver.class:    Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver
 
 services:
     pim_catalog.saver.group_type:

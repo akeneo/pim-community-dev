@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Saver;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver;
 
 class BaseSaverSpec extends ObjectBehavior
 {

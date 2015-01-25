@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Remover;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Remover\BaseRemovingOptionsResolver;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
