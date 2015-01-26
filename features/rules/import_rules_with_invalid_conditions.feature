@@ -50,8 +50,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"name\" expects a string as data (for filter string)."
-    And I should see "actions[0]: Attribute \"name\" expects a string as data, \"integer\" given (for setter text)."
+    And I should see "conditions[0]: Attribute or field \"name\" expects a string as data, \"integer\" given (for filter string)."
+    And I should see "actions[0]: Attribute or field \"name\" expects a string as data, \"integer\" given (for setter text)."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
     Then I should see "Super Name"
@@ -102,8 +102,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"description\" expects a string as data (for filter string)."
-    And I should see "actions[0]: Attribute \"description\" expects a string as data, \"integer\" given (for setter text)."
+    And I should see "conditions[0]: Attribute or field \"description\" expects a string as data, \"integer\" given (for filter string)."
+    And I should see "actions[0]: Attribute or field \"description\" expects a string as data, \"integer\" given (for setter text)."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see "Another good description"
@@ -152,7 +152,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"SKU\" expects a string as data (for filter string)."
+    And I should see "conditions[0]: Attribute or field \"SKU\" expects a string as data, \"integer\" given (for filter string)."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see "Another good description"
@@ -195,7 +195,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"manufacturer\" expects an array as data (for filter option)."
+    And I should see "conditions[0]: Attribute or field \"manufacturer\" expects an array as data, \"string\" given (for filter option)."
     When I am on the "manufacturer" attribute page
     And I visit the "Rules" tab
     Then I should see "Volcom"
@@ -238,8 +238,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"weather_conditions\" expects an array as data (for filter options)."
-    And I should see "actions[0]: Attribute \"weather_conditions\" expects an array as data, \"string\" given (for setter multi select)."
+    And I should see "conditions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given (for filter options)."
+    And I should see "actions[0]: Attribute or field \"weather_conditions\" expects an array as data, \"string\" given (for setter multi select)."
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then I should see "dry"
@@ -332,8 +332,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"price\" expects an array as data (for filter price)."
-    And I should see "actions[0]: Attribute \"price\" expects an array as data, \"string\" given (for setter prices collection)."
+    And I should see "conditions[0]: Attribute or field \"price\" expects an array as data, \"string\" given (for filter price)."
+    And I should see "actions[0]: Attribute or field \"price\" expects an array as data, \"string\" given (for setter prices collection)."
     When I am on the "price" attribute page
     And I visit the "Rules" tab
     Then I should see "3"
@@ -377,8 +377,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"length\" expects an array as data (for filter metric)."
-    And I should see "actions[0]: Attribute \"length\" expects an array as data, \"string\" given (for setter metric)."
+    And I should see "conditions[0]: Attribute or field \"length\" expects an array as data, \"string\" given (for filter metric)."
+    And I should see "actions[0]: Attribute or field \"length\" expects an array as data, \"string\" given (for setter metric)."
     When I am on the "length" attribute page
     And I visit the "Rules" tab
     Then I should see "3"
@@ -425,8 +425,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"number_in_stock\" expects a numeric as data (for filter number)."
-    And I should see "actions[0]: Attribute \"number_in_stock\" expects a numeric as data, \"string\" given (for setter number)."
+    And I should see "conditions[0]: Attribute or field \"number_in_stock\" expects a numeric as data (for string filter)."
+    And I should see "actions[0]: Attribute or field \"number_in_stock\" expects a numeric as data (for string setter)."
     When I am on the "number_in_stock" attribute page
     And I visit the "Rules" tab
     Then I should see "42"
@@ -469,8 +469,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"handmade\" expects a boolean as data (for filter boolean)."
-    And I should see "actions[0]: Attribute \"handmade\" expects a boolean as data, \"string\" given (for setter boolean)."
+    And I should see "conditions[0]: Attribute or field \"handmade\" expects a boolean as data, \"string\" given (for filter boolean)."
+    And I should see "actions[0]: Attribute or field \"handmade\" expects a boolean as data, \"string\" given (for setter boolean)."
     When I am on the "handmade" attribute page
     And I visit the "Rules" tab
     Then I should see "true"
@@ -517,8 +517,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"release_date\" expects a string with the format yyyy-mm-dd as data (for filter date)."
-    And I should see "actions[0]: Attribute \"release_date\" expects a string with the format yyyy-mm-dd as data, \"string\" given (for setter date)."
+    And I should see "conditions[0]: Attribute or field \"release_date\" expects a string with the format yyyy-mm-dd as data, \"invalid\" given (for filter date)."
+    And I should see "actions[0]: Attribute or field \"release_date\" expects a string with the format yyyy-mm-dd as data, \"string\" given (for setter date)."
     When I am on the "release_date" attribute page
     And I visit the "Rules" tab
     Then I should see "1970-01-01"
@@ -567,8 +567,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data (for filter media)"
-    And I should see "actions[0]: Attribute \"side_view\" expects a valid file path"
+    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data"
+    And I should see "actions[0]: Attribute or field \"side_view\" expects a valid file path as data"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "SNKRS-1R"
