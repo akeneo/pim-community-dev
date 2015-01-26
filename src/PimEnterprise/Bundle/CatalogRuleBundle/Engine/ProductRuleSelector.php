@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactory;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
@@ -32,8 +32,8 @@ class ProductRuleSelector implements SelectorInterface
     /** @var string */
     protected $subjectSetClass;
 
-    /** @var ProductQueryFactory */
-    protected $productQueryFactory;
+    /** @var ProductQueryBuilderFactory */
+    protected $queryBuilderFactory;
 
     /** @var ProductRepositoryInterface */
     protected $repo;
@@ -42,19 +42,19 @@ class ProductRuleSelector implements SelectorInterface
     protected $eventDispatcher;
 
     /**
-     * @param ProductQueryFactoryInterface $productQueryFactory
-     * @param ProductRepositoryInterface   $repo
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $subjectSetClass should implement
-     *                                     \Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
+     * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
+     * @param ProductRepositoryInterface          $repo
+     * @param EventDispatcherInterface            $eventDispatcher
+     * @param string                              $subjectSetClass     should implement
+     *                                                                 \Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
      */
     public function __construct(
-        ProductQueryFactoryInterface $productQueryFactory,
+        ProductQueryBuilderFactoryInterface $queryBuilderFactory,
         ProductRepositoryInterface $repo,
         EventDispatcherInterface $eventDispatcher,
         $subjectSetClass
     ) {
-        $this->productQueryFactory = $productQueryFactory;
+        $this->queryBuilderFactory = $queryBuilderFactory;
         $this->repo                = $repo;
         $this->eventDispatcher     = $eventDispatcher;
         $this->subjectSetClass     = $subjectSetClass;
@@ -68,7 +68,7 @@ class ProductRuleSelector implements SelectorInterface
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
         $subjectSet = new $this->subjectSetClass();
-        $pqb = $this->productQueryFactory->create();
+        $pqb = $this->queryBuilderFactory->create();
 
         foreach ($rule->getConditions() as $condition) {
             $pqb->addFilter(

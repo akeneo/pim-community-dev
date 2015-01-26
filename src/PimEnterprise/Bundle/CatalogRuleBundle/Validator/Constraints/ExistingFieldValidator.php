@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -22,13 +22,13 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ExistingFieldValidator extends ConstraintValidator
 {
-    /** @var QueryFilterRegistryInterface */
+    /** @var FilterRegistryInterface */
     protected $registry;
 
     /**
-     * @param QueryFilterRegistryInterface $registry
+     * @param FilterRegistryInterface $registry
      */
-    public function __construct(QueryFilterRegistryInterface $registry)
+    public function __construct(FilterRegistryInterface $registry)
     {
         $this->registry = $registry;
     }

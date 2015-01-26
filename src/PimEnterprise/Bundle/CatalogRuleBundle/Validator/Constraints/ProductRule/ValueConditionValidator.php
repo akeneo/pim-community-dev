@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -22,14 +22,14 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ValueConditionValidator extends ConstraintValidator
 {
-    /** @var ProductQueryFactoryInterface */
+    /** @var ProductQueryBuilderFactoryInterface */
     protected $factory;
 
     /**
-     * @param ProductQueryFactoryInterface $factory
+     * @param ProductQueryBuilderFactoryInterface $factory
      */
     public function __construct(
-        ProductQueryFactoryInterface $factory
+        ProductQueryBuilderFactoryInterface $factory
     ) {
         $this->factory = $factory;
     }
