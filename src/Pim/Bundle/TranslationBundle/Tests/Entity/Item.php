@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Entity;
 
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 /**
  * Test class

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 
 /**
  * Base class of family mass edit operations
@@ -19,11 +19,11 @@ abstract class FamilyMassEditOperation extends AbstractMassEditAction
     public function perform()
     {
         foreach ($this->objects as $object) {
-            if (!$object instanceof Family) {
+            if (!$object instanceof FamilyInterface) {
                 throw new \LogicException(
                     sprintf(
                         'Cannot perform mass edit action "%s" on object of type "%s", '.
-                        'expecting "Pim\Bundle\CatalogBundle\Entity\Family"',
+                        'expecting "Pim\Bundle\CatalogBundle\Model\FamilyInterface"',
                         __CLASS__,
                         get_class($object)
                     )
@@ -36,7 +36,7 @@ abstract class FamilyMassEditOperation extends AbstractMassEditAction
     /**
      * Perform operation on the product instance
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      */
-    abstract protected function doPerform(Family $family);
+    abstract protected function doPerform(FamilyInterface $family);
 }

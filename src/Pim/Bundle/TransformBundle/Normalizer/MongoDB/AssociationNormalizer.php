@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -32,7 +31,7 @@ class AssociationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof Association && ProductNormalizer::FORMAT === $format);
+        return ($data instanceof AssociationInterface && ProductNormalizer::FORMAT === $format);
     }
 
     /**

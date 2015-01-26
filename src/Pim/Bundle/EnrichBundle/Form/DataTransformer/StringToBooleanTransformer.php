@@ -43,6 +43,5 @@ class StringToBooleanTransformer implements DataTransformerInterface
         }
 
         return (bool) $enabled;
-
     }
 }

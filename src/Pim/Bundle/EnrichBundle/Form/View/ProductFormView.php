@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\View;
 
-use Symfony\Component\Form\FormView;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\Form\FormView;
 
 /**
  * Custom form view for Product form
@@ -56,27 +56,27 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      */
-    protected function orderGroupAttributes(AttributeGroup $group)
+    protected function orderGroupAttributes(AttributeGroupInterface $group)
     {
         $this->view[$group->getId()]['attributes'] = $this->sortAttributes($this->view[$group->getId()]['attributes']);
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
-     * @return boolean
+     * @return bool
      */
-    protected function hasGroup(AttributeGroup $group)
+    protected function hasGroup(AttributeGroupInterface $group)
     {
         return isset($this->view[$group->getId()]);
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      */
-    protected function initializeGroup(AttributeGroup $group)
+    protected function initializeGroup(AttributeGroupInterface $group)
     {
         $this->view[$group->getId()] = array(
             'label'      => $group->getLabel(),
@@ -85,11 +85,11 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getAttributeClasses(AbstractAttribute $attribute)
+    protected function getAttributeClasses(AttributeInterface $attribute)
     {
         $classes = array();
         if ($attribute->isScopable()) {
@@ -127,13 +127,13 @@ class ProductFormView implements ProductFormViewInterface
     /**
      * Prepare attribute view
      *
-     * @param AbstractAttribute     $attribute
+     * @param AttributeInterface    $attribute
      * @param ProductValueInterface $value
      * @param FormView              $view
      *
      * @return array
      */
-    protected function prepareAttributeView(AbstractAttribute $attribute, ProductValueInterface $value, FormView $view)
+    protected function prepareAttributeView(AttributeInterface $attribute, ProductValueInterface $value, FormView $view)
     {
         $attributeView = array(
             'id'                 => $attribute->getId(),
@@ -164,12 +164,12 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param string            $locale
+     * @param AttributeInterface $attribute
+     * @param string             $locale
      *
      * @return ArrayCollection
      */
-    protected function getAttributeValues(AbstractAttribute $attribute, $locale)
+    protected function getAttributeValues(AttributeInterface $attribute, $locale)
     {
         $group = $attribute->getGroup();
         $key = $attribute->getCode();

@@ -1,0 +1,2 @@
+parameters:
+    pim_enrich.entity.sequential_edit.class: Pim\Bundle\EnrichBundle\Entity\SequentialEdit

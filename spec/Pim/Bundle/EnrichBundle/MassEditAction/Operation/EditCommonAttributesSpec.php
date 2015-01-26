@@ -2,37 +2,39 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Prophecy\Argument;
+use Akeneo\Component\Persistence\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
         ProductManager $productManager,
+        ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
         CurrencyManager $currencyManager,
-        Locale $en,
-        Locale $de,
+        LocaleInterface $en,
+        LocaleInterface $de,
         AttributeRepository $attributeRepository,
-        AbstractProductValue $productValue,
+        ProductValueInterface $productValue,
         CatalogContext $catalogContext,
-        ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
-        MetricFactory $metricFactory
+        NormalizerInterface $normalizer,
+        BulkSaverInterface $productSaver
     ) {
         $en->getCode()->willReturn('en_US');
         $de->getCode()->willReturn('de_DE');
@@ -51,12 +53,13 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $productManager,
+            $productUpdater,
             $userContext,
             $currencyManager,
             $catalogContext,
-            $productBuilder,
             $massActionManager,
-            $metricFactory,
+            $normalizer,
+            $productSaver,
             [
                 'product_price' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice',
                 'product_media' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia'
@@ -79,9 +82,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getValues()->shouldHaveCount(2);
     }
 
-    function it_stores_the_locale_the_product_is_being_edited_in($en, Locale $fr)
+    function it_stores_the_locale_the_product_is_being_edited_in($en, LocaleInterface $fr)
     {
-        $this->getLocale()->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\Locale');
         $this->getLocale()->shouldReturn($en);
 
         $this->setLocale($fr);
@@ -121,11 +123,9 @@ class EditCommonAttributesSpec extends ObjectBehavior
     }
 
     function it_initializes_the_operation_with_common_attributes_of_the_products(
-        $productRepository,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractAttribute $name,
-        $productManager,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        AttributeInterface $name,
         $massActionManager
     ) {
         $this->setObjectsToMassEdit([$product1, $product2]);
@@ -139,7 +139,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
         $name->getGroup()->willReturn(new AttributeGroup());
-        $name->getAvailableLocales()->willReturn(null);
+        $name->isLocaleSpecific()->willReturn(false);
 
         $massActionManager->findCommonAttributes([1, 2])->willReturn([$name]);
 

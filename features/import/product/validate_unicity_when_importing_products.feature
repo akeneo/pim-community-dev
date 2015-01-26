@@ -7,15 +7,15 @@ Feature: Validate values for unique attributes when importing products
   Background:
     Given an "footwear" catalog configuration
     And the following attributes:
-      | code                  | type   | group     | unique | scopable | localizable | useable_as_grid_column | useable_as_grid_filter |
-      | test_unique_attribute | text   | marketing | yes    | no       | no          | yes                    | yes                    |
-      | date                  | date   | marketing | yes    | no       | no          | yes                    | yes                    |
-      | number                | number | marketing | yes    | no       | no          | yes                    | yes                    |
-      | text                  | text   | marketing | yes    | no       | no          | yes                    | yes                    |
+      | code                  | type   | group     | unique | scopable | localizable | useableAsGridFilter |
+      | test_unique_attribute | text   | marketing | yes    | no       | no          | 1                   |
+      | date                  | date   | marketing | yes    | no       | no          | 1                   |
+      | number                | number | marketing | yes    | no       | no          | 1                   |
+      | text                  | text   | marketing | yes    | no       | no          | 1                   |
     And I am logged in as "Julia"
 
   Scenario: Successfully ignore duplicate unique date values
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;date
       SKU-001;2014-01-01
@@ -30,7 +30,7 @@ Feature: Validate values for unique attributes when importing products
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique number values
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;number
       SKU-001;123
@@ -45,7 +45,7 @@ Feature: Validate values for unique attributes when importing products
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique text values
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;text
       SKU-001;foo
@@ -66,7 +66,7 @@ Feature: Validate values for unique attributes when importing products
       | 17727158    | test                  |
       | AKNTS_BPXL  | 1200000011a           |
       | AKNTS_BPXXL | test2                 |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;test_unique_attribute
       17727158;1200000011a
@@ -88,7 +88,7 @@ Feature: Validate values for unique attributes when importing products
     And the grid should contain 1 elements
 
   Scenario: Import a file with same sku, duplicated products should not be imported
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku
       17727158

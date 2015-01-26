@@ -3,15 +3,14 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Job\Job;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
+use Gaufrette\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
 use Prophecy\Argument;
 
@@ -33,7 +32,8 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver');
     }
 
-    function it_creates_a_file_when_writer_is_valid($filesystem, $writer, $jobExecution, $jobInstance, $job, $step) {
+    function it_creates_a_file_when_writer_is_valid($filesystem, $writer, $jobExecution, $jobInstance, $job, $step)
+    {
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getJob()->willReturn($job);
@@ -100,7 +100,8 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $this->archive($jobExecution);
     }
 
-    function it_returns_the_name_of_the_archiver() {
+    function it_returns_the_name_of_the_archiver()
+    {
         $this->getName()->shouldReturn('output');
     }
 

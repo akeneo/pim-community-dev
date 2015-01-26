@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
  * Locale repository
@@ -26,7 +26,7 @@ class LocaleRepository extends ReferableEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('code' =>'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = array('code' => 'ASC'))
     {
         return parent::findOneBy($criteria, $orderBy);
     }
@@ -106,11 +106,11 @@ class LocaleRepository extends ReferableEntityRepository
     /**
      * Get the deleted locales of a channel (the channel is updated but not flushed yet).
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array the list of deleted locales
      */
-    public function getDeletedLocalesForChannel(Channel $channel)
+    public function getDeletedLocalesForChannel(ChannelInterface $channel)
     {
         $currentLocaleIds = array_map(
             function ($locale) {

@@ -3,8 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Abstract product completeness entity
@@ -15,47 +13,31 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  *
  * @ExclusionPolicy("all")
  */
-abstract class AbstractCompleteness
+abstract class AbstractCompleteness implements CompletenessInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var int|string */
     protected $id;
 
-    /**
-     * @var Locale $locale
-     */
+    /** @var LocaleInterface */
     protected $locale;
 
-    /**
-     * @var Channel $channel
-     */
+    /** @var ChannelInterface */
     protected $channel;
 
-    /**
-     * @var integer $ratio
-     */
+    /** @var int */
     protected $ratio = 100;
 
-    /**
-     * @var integer $missingCount
-     */
+    /** @var int */
     protected $missingCount = 0;
 
-    /**
-     * @var integer $requiredCount
-     */
+    /** @var int */
     protected $requiredCount = 0;
 
-    /**
-     * @var ProductInterface
-     */
+    /** @var ProductInterface */
     protected $product;
 
     /**
-     * Getter locale
-     *
-     * @return Locale
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -63,13 +45,9 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Setter locale
-     *
-     * @param Locale $locale
-     *
-     * @return AbstractCompleteness
+     * {@inheritdoc}
      */
-    public function setLocale(Locale $locale)
+    public function setLocale(LocaleInterface $locale)
     {
         $this->locale = $locale;
 
@@ -77,9 +55,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Getter channel
-     *
-     * @return Channel
+     * {@inheritdoc}
      */
     public function getChannel()
     {
@@ -87,13 +63,9 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Setter channel
-     *
-     * @param Channel $channel
-     *
-     * @return AbstractCompleteness
+     * {@inheritdoc}
      */
-    public function setChannel(Channel $channel)
+    public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
 
@@ -101,9 +73,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Getter ratio
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getRatio()
     {
@@ -111,11 +81,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Setter ratio
-     *
-     * @param integer $ratio
-     *
-     * @return AbstractCompleteness
+     * {@inheritdoc}
      */
     public function setRatio($ratio)
     {
@@ -125,9 +91,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Getter missing count
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getMissingCount()
     {
@@ -135,11 +99,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Setter missing count
-     *
-     * @param integer $missingCount
-     *
-     * @return AbstractCompleteness
+     * {@inheritdoc}
      */
     public function setMissingCount($missingCount)
     {
@@ -149,9 +109,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Getter required count
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getRequiredCount()
     {
@@ -159,11 +117,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Setter required count
-     *
-     * @param integer $requiredCount
-     *
-     * @return AbstractCompleteness
+     * {@inheritdoc}
      */
     public function setRequiredCount($requiredCount)
     {
@@ -173,9 +127,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Getter product
-     *
-     * @return Product
+     * {@inheritdoc}
      */
     public function getProduct()
     {
@@ -183,11 +135,7 @@ abstract class AbstractCompleteness
     }
 
     /**
-     * Setter product
-     *
-     * @param ProductInterface $product
-     *
-     * @return AbstractCompleteness
+     * {@inheritdoc}
      */
     public function setProduct(ProductInterface $product)
     {

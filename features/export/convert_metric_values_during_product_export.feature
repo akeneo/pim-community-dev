@@ -1,4 +1,3 @@
-@javascript
 Feature: Export of metric values
   In order to homogeneize exported metric values
   As a product manager
@@ -16,6 +15,7 @@ Feature: Export of metric values
       | Washing temperature |
       | Weight              |
 
+  @javascript
   Scenario: Successfully convert metric values
     Given the following channel "ecommerce" conversion options:
       | weight | GRAM |

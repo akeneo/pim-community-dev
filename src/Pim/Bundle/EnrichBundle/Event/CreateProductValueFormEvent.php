@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Event to dynamically update each product value form

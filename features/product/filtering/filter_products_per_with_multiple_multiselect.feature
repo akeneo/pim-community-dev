@@ -37,9 +37,9 @@ Feature: Filter products
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products page
     And I show the filter "Company"
-    And I filter by "Company" with value "[Red]"
+    And I filter by "Company" with value "Red"
     And I show the filter "Color"
-    And I filter by "Color" with value "[Green]"
+    And I filter by "Color" with value "Green"
     Then the grid should contain 3 elements
     And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
     And I hide the filter "Company"
@@ -48,9 +48,9 @@ Feature: Filter products
   Scenario: Successfully filter product without commons attributes
     Given I am on the products page
     And I show the filter "Company"
-    And I filter by "Company" with value "[Black]"
+    And I filter by "Company" with value "Black"
     And I show the filter "Color"
-    And I filter by "Color" with value "[Green]"
+    And I filter by "Color" with value "Green"
     Then the grid should contain 0 elements
     And I hide the filter "Company"
     And I hide the filter "Color"
@@ -58,9 +58,9 @@ Feature: Filter products
   Scenario: Successfully filter only one product
     Given I am on the products page
     And I show the filter "Company"
-    And I filter by "Company" with value "[White]"
+    And I filter by "Company" with value "White"
     And I show the filter "Color"
-    And I filter by "Color" with value "[Green]"
+    And I filter by "Color" with value "Green"
     Then the grid should contain 1 elements
     And I should see entities "MUG-1"
     And I hide the filter "Company"

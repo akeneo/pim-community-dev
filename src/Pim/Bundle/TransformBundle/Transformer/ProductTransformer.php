@@ -5,7 +5,7 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Cache\AttributeCache;
@@ -47,7 +47,7 @@ class ProductTransformer extends EntityTransformer
     protected $associationReader;
 
     /**
-     * @var AbstractAttribute
+     * @var AttributeInterface
      */
     protected $identifierAttribute;
 
@@ -258,8 +258,8 @@ class ProductTransformer extends EntityTransformer
     /**
      * Returns a ProductValue
      *
-     * @param ProductInterface $product
-     * @param array            $columnInfo
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $columnInfo
      *
      * @return ProductValueInterface
      */

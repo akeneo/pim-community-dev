@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 /**
  * Normalize a metric entity into an array
@@ -35,6 +35,6 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractMetric && in_array($format, $this->supportedFormats);
+        return $data instanceof MetricInterface && in_array($format, $this->supportedFormats);
     }
 }

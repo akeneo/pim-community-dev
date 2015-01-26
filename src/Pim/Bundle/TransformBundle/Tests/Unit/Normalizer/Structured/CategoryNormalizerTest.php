@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\CategoryNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Test class for CategoryNormalizer

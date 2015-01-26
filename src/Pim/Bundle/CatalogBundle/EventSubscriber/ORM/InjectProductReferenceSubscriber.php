@@ -2,16 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\ORM;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\PersistentCollection;
-use Doctrine\ORM\Mapping\ClassMetadata;
-
-use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\PersistentCollection;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Inject Product references into entities that needs them.
@@ -61,7 +59,7 @@ class InjectProductReferenceSubscriber implements EventSubscriber
         $entity = $args->getEntity();
         $entityManager = $args->getEntityManager();
 
-        if ($entity instanceof Group) {
+        if ($entity instanceof GroupInterface) {
             $this->setProductPersistentCollection(
                 $entity,
                 array(

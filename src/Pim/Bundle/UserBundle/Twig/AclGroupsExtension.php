@@ -45,7 +45,7 @@ class AclGroupsExtension extends \Twig_Extension
     /**
      * Get acl groups
      *
-     * @return string
+     * @return string[]
      */
     public function getAclGroups()
     {
@@ -71,6 +71,24 @@ class AclGroupsExtension extends \Twig_Extension
      */
     protected function getSortedGroupNames($config)
     {
+        $groups = $this->getGroups($config);
+        $groups = $this->sortGroups($groups);
+
+        $groupNames = [];
+        foreach ($groups as $group) {
+            $groupNames[] = $group['name'];
+        }
+
+        return $groupNames;
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function getGroups(array $config)
+    {
         $groups = [];
         foreach ($config as $groupName => $groupConfig) {
             $groups[] = [
@@ -79,6 +97,16 @@ class AclGroupsExtension extends \Twig_Extension
             ];
         }
 
+        return $groups;
+    }
+
+    /**
+     * @param array $groups
+     *
+     * @return array
+     */
+    protected function sortGroups(array $groups)
+    {
         usort(
             $groups,
             function ($first, $second) {
@@ -94,11 +122,6 @@ class AclGroupsExtension extends \Twig_Extension
             }
         );
 
-        $groupNames = [];
-        foreach ($groups as $group) {
-            $groupNames[] = $group['name'];
-        }
-
-        return $groupNames;
+        return $groups;
     }
 }

@@ -16,27 +16,27 @@ class UserPreferences extends Constraint
     /**
      * @var string Violation message for missing catalog locale
      */
-    public $missingLocaleMessage = 'Catalog locale may not be empty.';
+    public $missingLocaleMsg = 'Catalog locale may not be empty.';
 
     /**
      * @var string Violation message for missing catalog scope
      */
-    public $missingScopeMessage = 'Catalog scope may not be empty.';
+    public $missingScopeMsg = 'Catalog scope may not be empty.';
 
     /**
      * @var string Violation message for missing default tree
      */
-    public $missingTreeMessage = 'Default tree may not be empty.';
+    public $missingTreeMsg = 'Default tree may not be empty.';
 
     /**
      * @var string Violation message for inactive catalog locale
      */
-    public $inactiveLocaleMessage = 'This locale is not activated.';
+    public $inactiveLocaleMsg = 'This locale is not activated.';
 
     /**
      * @var string Violation message for invalid default tree
      */
-    public $invalidTreeMessage = 'This category is not a tree.';
+    public $invalidTreeMsg = 'This category is not a tree.';
 
     /**
      * {@inheritdoc}

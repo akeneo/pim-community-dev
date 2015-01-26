@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Add context in version data

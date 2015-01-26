@@ -2,23 +2,20 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Transformer;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer;
+use Prophecy\Argument;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class AttributeOptionTransformerSpec extends ObjectBehavior
 {
@@ -40,13 +37,13 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
         ManagerRegistry $doctrine,
         EntityManager $em,
         ReferableEntityRepositoryInterface $repository,
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ColumnInfo $columnInfo,
         ClassMetadata $metadata,
         GuesserInterface $guesser,
         DefaultTransformer $defaultTransformer,
-        AbstractAttribute $attribute
+        AttributeInterface $attribute
     ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
         $data = ['code' => 'blue', 'attribute' => 'color'];
@@ -71,7 +68,7 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
         ManagerRegistry $doctrine,
         EntityManager $em,
         ReferableEntityRepositoryInterface $repository,
-        AttributeOption $option,
+        AttributeOptionInterface $option,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ColumnInfo $columnInfo,
         ClassMetadata $metadata,

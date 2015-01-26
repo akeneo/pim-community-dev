@@ -1,0 +1,8 @@
+parameters:
+    pim_pdf_generator.builder.dompdf.class: Pim\Bundle\PdfGeneratorBundle\Builder\DompdfBuilder
+
+services:
+    pim_pdf_generator.builder.dompdf:
+        class: %pim_pdf_generator.builder.dompdf.class%
+        arguments:
+            - '%kernel.root_dir%'

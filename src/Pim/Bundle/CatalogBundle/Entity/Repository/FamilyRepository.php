@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Repository
@@ -29,11 +29,11 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     {
         if ($values) {
             $rootAlias = $qb->getRootAlias();
-                $valueWhereCondition =
-                    $inset
-                    ? $qb->expr()->in($rootAlias, $values)
-                    : $qb->expr()->notIn($rootAlias, $values);
-                $qb->andWhere($valueWhereCondition);
+            $valueWhereCondition =
+                $inset
+                ? $qb->expr()->in($rootAlias, $values)
+                : $qb->expr()->notIn($rootAlias, $values);
+            $qb->andWhere($valueWhereCondition);
         }
 
         if (null !== $qb->getDQLPart('where')) {
@@ -99,7 +99,8 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     protected function buildOneWithAttributes($id)
     {
         return $this
-            ->buildOne($id)
+            ->createQueryBuilder('family')
+            ->where('family.id = '.intval($id))
             ->addSelect('attribute')
             ->leftJoin('family.attributes', 'attribute')
             ->leftJoin('attribute.group', 'group')
@@ -110,12 +111,12 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     /**
      * Returns a querybuilder to get full requirements
      *
-     * @param Family $family
-     * @param string $localeCode
+     * @param FamilyInterface $family
+     * @param string          $localeCode
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getFullRequirementsQB(Family $family, $localeCode)
+    public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
         return $this->getEntityManager()
             ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
@@ -129,15 +130,15 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     }
 
     /**
-    * Returns all families code with their required attributes code
-    * Requirements can be restricted to a channel.
-    *
-    * @param Family  $family
-    * @param Channel $channel
-    *
-    * @return array
-    */
-    public function getFullFamilies(Family $family = null, Channel $channel = null)
+     * Returns all families code with their required attributes code
+     * Requirements can be restricted to a channel.
+     *
+     * @param FamilyInterface  $family
+     * @param ChannelInterface $channel
+     *
+     * @return array
+     */
+    public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null)
     {
         $qb = $this->createQueryBuilder('f')
             ->select('f, c, l, r, a, cu')

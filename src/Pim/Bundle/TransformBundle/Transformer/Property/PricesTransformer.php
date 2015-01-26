@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
  * Prices attribute transformer

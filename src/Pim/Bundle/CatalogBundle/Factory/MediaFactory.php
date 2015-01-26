@@ -27,10 +27,11 @@ class MediaFactory
     /**
      * @param File|null $file
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractProductMedia
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
      */
     public function createMedia(File $file = null)
     {
+        /** @var \Pim\Bundle\CatalogBundle\Model\ProductMediaInterface $media */
         $media = new $this->mediaClass();
         if ($file) {
             $media->setFile($file);

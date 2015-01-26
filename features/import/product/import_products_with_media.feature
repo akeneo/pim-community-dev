@@ -13,7 +13,7 @@ Feature: Import media with products
     And I am logged in as "Julia"
 
   Scenario: Successfully import media
-    Given the following file to import:
+    Given the following CSV file to import:
     """
     sku;family;groups;frontView;name-en_US;userManual;categories
     bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
@@ -38,7 +38,7 @@ Feature: Import media with products
       | userManual | fanatic-freewave-76.txt |
 
   Scenario: Successfully import partial products with media attributes
-    Given the following file to import:
+    Given the following CSV file to import:
     """
     sku;family;groups;frontView;name-en_US;userManual;categories
     bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection

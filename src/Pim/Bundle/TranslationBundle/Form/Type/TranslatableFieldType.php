@@ -2,15 +2,14 @@
 
 namespace Pim\Bundle\TranslationBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Translatable field type for translation entities
