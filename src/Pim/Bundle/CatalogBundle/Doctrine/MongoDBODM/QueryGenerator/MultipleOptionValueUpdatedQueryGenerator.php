@@ -25,7 +25,7 @@ class MultipleOptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
                 [
-                    $attributeNormField => ['$elemMatch' => ['code' => $entity->getOption()->getCode()]],
+                    $attributeNormField => ['$elemMatch' => ['code' => $entity->getOption()->getCode()]]
                 ],
                 [
                     '$set' => [
@@ -33,10 +33,10 @@ class MultipleOptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
                             '%s.$.optionValues.%s.value',
                             $attributeNormField,
                             $entity->getLocale()
-                        ) => $newValue,
+                        ) => $newValue
                     ]
                 ],
-                ['multiple' => true],
+                ['multiple' => true]
             ];
         }
 

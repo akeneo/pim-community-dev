@@ -209,7 +209,10 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'unit',
-                'The unit does not exist',
+                sprintf(
+                    'The unit does not exist in the attribute\'s family "%s"',
+                    $attribute->getMetricFamily()
+                ),
                 'filter',
                 'metric',
                 $data['unit']

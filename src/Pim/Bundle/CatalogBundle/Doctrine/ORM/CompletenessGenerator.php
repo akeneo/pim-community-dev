@@ -434,7 +434,7 @@ MAIN_SQL;
                         '%s.%s',
                         $prefix,
                         $mapping['joinTable']['inverseJoinColumns'][0]['name']
-                    ),
+                    )
                 );
 
             case ClassMetadataInfo::MANY_TO_ONE:
@@ -530,7 +530,7 @@ MAIN_SQL;
                         $prefix,
                         $prefix,
                         $mapping['joinTable']['joinColumns'][0]['name']
-                    ),
+                    )
                 );
 
             case ClassMetadataInfo::ONE_TO_MANY:
@@ -544,7 +544,7 @@ MAIN_SQL;
                         $prefix,
                         $prefix,
                         $relatedMapping['joinColumns'][0]['name']
-                    ),
+                    )
                 );
             case ClassMetadataInfo::ONE_TO_ONE:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
@@ -559,7 +559,7 @@ MAIN_SQL;
                         $prefix,
                         $prefix,
                         $joinColumn
-                    ),
+                    )
                 );
 
             default:

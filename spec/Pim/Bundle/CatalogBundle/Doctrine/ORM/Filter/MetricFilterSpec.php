@@ -150,7 +150,7 @@ class MetricFilterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'metric_code',
                 'unit',
-                'The unit does not exist',
+                'The unit does not exist in the attribute\'s family "length"',
                 'filter',
                 'metric',
                 'foo'
