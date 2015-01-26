@@ -27,8 +27,9 @@ class AddToVariantGroupType extends AbstractType
                 'class'    => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'required' => true,
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
                 'choices'  => $options['groups'],
+                'select2'  => true,
             )
         );
     }
