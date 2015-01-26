@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Updater;
+namespace Pim\Bundle\CatalogBundle\Exception;
 
 /**
  * Invalid argument exceptions the updater can throw when performing an action.

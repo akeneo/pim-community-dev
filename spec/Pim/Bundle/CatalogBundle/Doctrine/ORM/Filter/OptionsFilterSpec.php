@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;

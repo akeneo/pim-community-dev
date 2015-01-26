@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 /**
  * Field filter helper

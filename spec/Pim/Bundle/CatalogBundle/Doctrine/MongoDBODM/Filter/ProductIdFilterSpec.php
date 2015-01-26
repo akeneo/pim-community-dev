@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
