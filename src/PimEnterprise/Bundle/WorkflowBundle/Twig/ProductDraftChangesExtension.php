@@ -27,6 +27,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  * Twig extension to present product draft changes
  *
  * @author Gildas Quemener <gildas@akeneo.com>
+ *
+ * TODO: $attributeRepository should be an AttributeRepositoryInterface
  */
 class ProductDraftChangesExtension extends \Twig_Extension
 {
