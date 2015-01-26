@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
@@ -31,8 +33,8 @@ class ReferencedCollection extends AbstractLazyCollection
     /** @var boolean */
     protected $initialized = false;
 
-    /** @var boolean */
-    protected $isDirty = false;
+    /** @var ObjectManager */
+    protected $manager;
 
     /** @var object|null */
     protected $owner;
@@ -208,13 +210,11 @@ class ReferencedCollection extends AbstractLazyCollection
      */
     private function changed()
     {
-        if ($this->isDirty) {
-            return;
+        if (null === $this->manager) {
+            $this->manager = $this->registry->getManagerForClass(ClassUtils::getClass($this->owner));
         }
 
-        $this->isDirty = true;
-
-        $uow = $this->registry->getManagerForClass(get_class($this->owner))->getUnitOfWork();
+        $uow = $this->manager->getUnitOfWork();
         if (UnitOfWork::STATE_MANAGED === $uow->getDocumentState($this->owner)
             && !$uow->isScheduledForUpdate($this->owner)
         ) {
