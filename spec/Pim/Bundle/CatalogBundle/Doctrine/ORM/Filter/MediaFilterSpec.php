@@ -201,7 +201,7 @@ class MediaFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('media_code');
         $value = ['data' => 132, 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('media_code', 'filter', 'media', print_r($value, true))
+            InvalidArgumentException::stringExpected('media_code', 'filter', 'media', gettype($value))
         )->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 }

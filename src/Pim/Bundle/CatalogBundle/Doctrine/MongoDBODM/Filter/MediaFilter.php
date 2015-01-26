@@ -113,7 +113,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
                 $attribute->getCode(),
                 'filter',
                 'media',
-                print_r($value, true)
+                gettype($value)
             );
         }
     }

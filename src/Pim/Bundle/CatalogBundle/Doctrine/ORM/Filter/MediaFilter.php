@@ -162,7 +162,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function checkValue(AttributeInterface $attribute, $value)
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media', print_r($value, true));
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media', gettype($value));
         }
     }
 }
