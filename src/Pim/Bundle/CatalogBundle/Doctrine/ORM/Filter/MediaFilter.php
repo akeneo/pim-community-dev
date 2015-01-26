@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -162,7 +162,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function checkValue(AttributeInterface $attribute, $value)
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media');
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media', print_r($value, true));
         }
     }
 }

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -201,7 +201,7 @@ class MediaFilterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('media_code');
         $value = ['data' => 132, 'unit' => 'foo'];
         $this->shouldThrow(
-            InvalidArgumentException::stringExpected('media_code', 'filter', 'media')
+            InvalidArgumentException::stringExpected('media_code', 'filter', 'media', print_r($value, true))
         )->during('addAttributeFilter', [$attribute, '=', $value]);
     }
 }

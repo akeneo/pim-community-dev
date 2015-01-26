@@ -172,7 +172,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function checkValue(AttributeInterface $attribute, $data)
     {
         if (!is_array($data)) {
-            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'price');
+            throw InvalidArgumentException::arrayExpected($attribute->getCode(), 'filter', 'price', $data);
         }
 
         if (!array_key_exists('data', $data)) {
@@ -219,7 +219,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             throw InvalidArgumentException::arrayInvalidKey(
                 $attribute->getCode(),
                 'currency',
-                sprintf('The currency "%s" does not exist', $data['currency']),
+                'The currency does not exist',
                 'filter',
                 'price',
                 $data['currency']
