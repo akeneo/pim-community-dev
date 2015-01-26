@@ -3,7 +3,9 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
@@ -34,6 +36,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
 
     function it_does_not_update_products_when_no_actions(
         $productUpdater,
+        $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product
     ) {
@@ -42,11 +45,14 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $productUpdater->setValue(Argument::any())->shouldNotBeCalled();
         $productUpdater->copyValue(Argument::any())->shouldNotBeCalled();
 
+        $templateUpdater->update(Argument::any(), Argument::any())->shouldNotBeCalled();
+
         $this->update([$product], $rule);
     }
 
     function it_updates_product_when_the_rule_has_a_set_action(
         $productUpdater,
+        $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
         ProductSetValueActionInterface $action
@@ -57,13 +63,18 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $action->getLocale()->willReturn('en_US');
         $rule->getActions()->willReturn([$action]);
 
-        $productUpdater->setValue(Argument::any(), 'sku', 'foo', 'en_US', 'ecommerce')->shouldBeCalled();
+        $productUpdater->setValue(Argument::any(), 'sku', 'foo', 'en_US', 'ecommerce')
+            ->shouldBeCalled();
+
+        $templateUpdater->update(Argument::any(), Argument::any())
+            ->shouldNotBeCalled();
 
         $this->update([$product], $rule);
     }
 
     function it_updates_product_when_the_rule_has_a_copy_action(
         $productUpdater,
+        $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
         ProductCopyValueAction $action
@@ -80,6 +91,9 @@ class ProductsUpdaterSpec extends ObjectBehavior
             ->copyValue([$product], 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
             ->shouldBeCalled();
 
+        $templateUpdater->update(Argument::any(), Argument::any())
+            ->shouldNotBeCalled();
+
         $this->update([$product], $rule);
     }
 
@@ -92,5 +106,34 @@ class ProductsUpdaterSpec extends ObjectBehavior
 
         $this->shouldThrow(new \LogicException('The action "stdClass" is not supported yet.'))
             ->during('update', [[$product], $rule]);
+    }
+
+    function it_ensures_priority_of_variant_group_values_over_the_rule(
+        $productUpdater,
+        $templateUpdater,
+        RuleInterface $rule,
+        ProductInterface $product,
+        ProductCopyValueAction $action,
+        GroupInterface $group,
+        ProductTemplateInterface $productTemplate
+    ) {
+        $action->getFromField()->willReturn('sku');
+        $action->getToField()->willReturn('description');
+        $action->getFromLocale()->willReturn('fr_FR');
+        $action->getToLocale()->willReturn('fr_CH');
+        $action->getFromScope()->willReturn('ecommerce');
+        $action->getToScope()->willReturn('tablet');
+        $rule->getActions()->willReturn([$action]);
+
+        $productUpdater
+            ->copyValue([$product], 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
+            ->shouldBeCalled();
+
+        $product->getVariantGroup()->willReturn($group);
+        $group->getProductTemplate()->willReturn($productTemplate);
+        $templateUpdater->update($productTemplate, [$product])
+            ->shouldBeCalled();
+
+        $this->update([$product], $rule);
     }
 }

@@ -49,6 +49,16 @@ class ProductsUpdater
      */
     public function update(array $products, RuleInterface $rule)
     {
+        $this->updateFromRule($products, $rule);
+        $this->updateFromVariantGroup($products);
+    }
+
+    /**
+     * @param ProductInterface[] $products
+     * @param RuleInterface      $rule
+     */
+    public function updateFromRule(array $products, RuleInterface $rule)
+    {
         $actions = $rule->getActions();
         foreach ($actions as $action) {
             if ($action instanceof ProductSetValueActionInterface) {
@@ -61,8 +71,13 @@ class ProductsUpdater
                 );
             }
         }
+    }
 
-        // TODO add spec + behat for this
+    /**
+     * @param ProductInterface[] $products
+     */
+    public function updateFromVariantGroup(array $products)
+    {
         foreach ($products as $product) {
             $variantGroup = $product->getVariantGroup();
             $template = $variantGroup !== null ? $variantGroup->getProductTemplate() : null;
