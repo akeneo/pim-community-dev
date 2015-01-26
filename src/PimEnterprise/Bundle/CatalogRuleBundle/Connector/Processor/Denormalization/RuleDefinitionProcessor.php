@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -30,15 +30,15 @@ class RuleDefinitionProcessor extends AbstractProcessor
     protected $ruleClass;
 
     /**
-     * @param ReferableEntityRepositoryInterface $repository
-     * @param DenormalizerInterface              $denormalizer
-     * @param ValidatorInterface                 $validator
-     * @param ObjectDetacherInterface            $detacher
-     * @param string                             $ruleDefinitionClass
-     * @param string                             $ruleClass
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param DenormalizerInterface                 $denormalizer
+     * @param ValidatorInterface                    $validator
+     * @param ObjectDetacherInterface               $detacher
+     * @param string                                $ruleDefinitionClass
+     * @param string                                $ruleClass
      */
     public function __construct(
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,

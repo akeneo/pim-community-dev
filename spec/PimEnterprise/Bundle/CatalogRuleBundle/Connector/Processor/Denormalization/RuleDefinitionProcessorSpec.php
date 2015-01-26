@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denorm
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 class RuleDefinitionProcessorSpec extends ObjectBehavior
 {
     function let(
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher
@@ -30,7 +30,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
         );
 
-        $repository->getReferenceProperties()->willReturn(['code']);
+        $repository->getIdentifierProperties()->willReturn(['code']);
     }
 
     function it_is_initializable()
@@ -63,7 +63,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             ],
         ];
 
-        $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn(null);
+        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
             'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
@@ -161,7 +161,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             ]
         );
 
-        $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn($definition);
+        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn($definition);
         $denormalizer->denormalize(
             $item,
             'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
@@ -196,7 +196,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $violations->rewind()->willReturn(null);
         $violations->valid()->shouldBeCalled();
 
-        $repository->findByReference(Argument::any())->shouldBeCalled()->willReturn(null);
+        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
             'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
