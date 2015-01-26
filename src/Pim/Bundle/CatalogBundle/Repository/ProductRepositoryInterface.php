@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Product repository interface
@@ -93,11 +93,11 @@ interface ProductRepositoryInterface
     public function valueExists(ProductValueInterface $value);
 
     /**
-     * @param ProductQueryFactoryInterface $factory
+     * @param ProductQueryBuilderFactoryInterface $factory
      *
      * @return ProductRepositoryInterface
      */
-    public function setProductQueryFactory(ProductQueryFactoryInterface $factory);
+    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory);
 
     /**
      * Get available attribute ids from a product ids list

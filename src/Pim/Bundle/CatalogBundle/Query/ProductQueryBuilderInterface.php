@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
+namespace Pim\Bundle\CatalogBundle\Query;
 
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
 

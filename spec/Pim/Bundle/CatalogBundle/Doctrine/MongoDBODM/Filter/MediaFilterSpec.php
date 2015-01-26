@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -34,7 +35,7 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface');
     }
 
     function it_supports_operators()
@@ -149,5 +150,14 @@ class MediaFilterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->addAttributeFilter($image, 'EMPTY', null);
+    }
+
+    function it_throws_an_exception_if_value_is_not_valid($image)
+    {
+        $image->getCode()->willReturn('media_code');
+        $value = ['data' => 132, 'unit' => 'foo'];
+        $this->shouldThrow(
+            InvalidArgumentException::stringExpected('media_code', 'filter', 'media')
+        )->during('addAttributeFilter', [$image, '=', $value]);
     }
 }

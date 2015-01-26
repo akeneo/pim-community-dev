@@ -20,7 +20,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\FieldFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface');
     }
 
     function it_supports_operators()

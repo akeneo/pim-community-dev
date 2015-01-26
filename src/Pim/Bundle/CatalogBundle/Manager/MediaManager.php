@@ -59,6 +59,9 @@ class MediaManager
      * Handle the medias of a product
      *
      * @param ProductInterface $product
+     *
+     * @throws MediaManagementException
+     * @throws \Exception
      */
     public function handleProductMedias(ProductInterface $product)
     {
@@ -157,7 +160,9 @@ class MediaManager
      */
     public function copy(ProductMediaInterface $media, $targetDir)
     {
-        if (null === $path = $this->getFilePath($media)) {
+        try {
+            $path = $this->getFilePath($media);
+        } catch (FileNotFoundException $e) {
             return false;
         }
 
@@ -232,10 +237,6 @@ class MediaManager
      */
     public function getExportPath(ProductMediaInterface $media)
     {
-        if (null === $this->getFilePath($media)) {
-            return '';
-        }
-
         $value     = $media->getValue();
         $attribute = $value->getAttribute();
         $target    = sprintf(
@@ -349,16 +350,20 @@ class MediaManager
      */
     public function getFilePath(ProductMediaInterface $media)
     {
-        if ($this->fileExists($media)) {
-            $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
-            if (!is_readable($path)) {
-                throw new FileNotFoundException($path);
-            }
-
-            return $path;
+        if (null === $media->getFilename()) {
+            return null;
         }
 
-        return null;
+        if (!$this->fileExists($media)) {
+            throw new FileNotFoundException($media->getFilename());
+        }
+
+        $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
+        if (!is_readable($path)) {
+            throw new FileNotFoundException($path);
+        }
+
+        return $path;
     }
 
     /**

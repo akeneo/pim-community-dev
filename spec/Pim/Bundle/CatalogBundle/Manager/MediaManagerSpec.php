@@ -176,4 +176,26 @@ class MediaManagerSpec extends ObjectBehavior
 
         $this->createFromFilePath('/uploads/preview.jpg')->shouldReturn($media);
     }
+
+    function it_throws_an_exception_if_media_does_not_exists_during_duplicate(
+        ProductMediaInterface $source,
+        ProductMediaInterface $target
+    ) {
+        $this->shouldThrow(new \LogicException('File path should not be null'))->during(
+            'duplicate',
+            [$source, $target, 'publish']
+        );
+    }
+
+    function it_returns_false_if_media_does_not_exists_during_copy(ProductMediaInterface $media)
+    {
+        $media->getFilename()->willReturn('/tmp/invalid');
+        $this->copy($media, '/tmp/export/path/')->shouldReturn(false);
+    }
+
+    function it_returns_null_if_media_does_not_exists_during_get_file_path(ProductMediaInterface $media)
+    {
+        $media->getFilename()->willReturn(null);
+        $this->getFilePath($media, '/tmp/export/path/')->shouldReturn(null);
+    }
 }

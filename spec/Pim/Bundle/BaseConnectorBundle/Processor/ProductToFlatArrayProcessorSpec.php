@@ -13,7 +13,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
     function let(Serializer $serializer, ChannelManager $channelManager)
     {
-        $this->beConstructedWith($serializer, $channelManager);
+        $this->beConstructedWith($serializer, $channelManager, 'upload/path/');
     }
 
     function it_returns_flat_data_with_media(

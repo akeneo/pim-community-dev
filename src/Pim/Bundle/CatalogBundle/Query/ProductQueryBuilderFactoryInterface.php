@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
+namespace Pim\Bundle\CatalogBundle\Query;
 
 /**
  * Aims to create a product query builder
@@ -9,7 +9,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductQueryFactoryInterface
+interface ProductQueryBuilderFactoryInterface
 {
     /**
      * Create a product query builder

@@ -25,7 +25,7 @@
 - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
 - Move filter transformation to CatalogBundle
-- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable
+- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable 
 - Re-work the `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder` to provide a clear and extensible API to query products
 - Normalize the managers by introducing 4 interfaces, `Akeneo\Component\Persistence\SaverInterface`, `Akeneo\Component\Persistence\BulkSaverInterface`, `Akeneo\Component\Persistence\RemoverInterface` and `Pim\Component\Persistence\BulkRemoverInterface`
 - Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
@@ -164,6 +164,7 @@
 - removeAttributesAction and addAttributesAction have been move from `Pim\Bundle\EnrichBundle\Controller\ProductController` to a dedicated `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 - constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` has been updated and now receives `Akeneo\Component\Persistence\SaverInterface`, `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` as extra arguments
 - the method execute() of `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface` now return a `Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface`
+- Added a new parameter in `src/Pim/Bundle/CatalogBundle/Manager/MediaManager` that gives the uploaded directory
 - constructor of `Pim\Bundle\EnrichBundle\Form\View\ProductFormView` has been updated and now receives `Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry`
 - constructor of `Pim\Bundle\TransformBundle\Transformer\ProductTransformer` has been updated and now receives `Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface`
 - You cannot add product to multiple variant group anymore
@@ -173,6 +174,15 @@
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 - PIM-3548: Do not use the absolute file path of a media
+
+# 1.2.23 (2015-01-23)
+
+## Bug fixes
+- PIM-3664: Fix product media stacktrace regression on missing media on filesystem during an export
+- PIM-3677: Fix `Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection` saving problem
+
+# 1.2.22 (2015-01-21)
+- Crowdin Updated translations
 
 # 1.2.21 (2015-01-16)
 

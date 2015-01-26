@@ -1,27 +1,27 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Query;
+namespace spec\Pim\Bundle\CatalogBundle\Query;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QueryFilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\QuerySorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 
-class ProductQueryFactorySpec extends ObjectBehavior
+class ProductQueryBuilderFactorySpec extends ObjectBehavior
 {
     function let(
         AttributeRepository $attRepository,
-        QueryFilterRegistryInterface $filterRegistry,
-        QuerySorterRegistryInterface $sorterRegistry,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         ObjectManager $om
     ) {
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder',
+            'Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder',
             $om,
             'Pim\Bundle\CatalogBundle\Model\Product',
             $attRepository,
@@ -33,7 +33,7 @@ class ProductQueryFactorySpec extends ObjectBehavior
 
     function it_is_a_product_query_factory()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryFactoryInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface');
     }
 
     function it_creates_a_product_query_builder_with_the_default_repository_method($om, ProductRepository $repository)

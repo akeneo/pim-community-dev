@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Query;
+namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,17 +15,17 @@ use Symfony\Component\Console\Helper\HelperSet;
  */
 class AttributeFilterDumper implements DumperInterface
 {
-    /** @var QueryFilterRegistryInterface */
+    /** @var FilterRegistryInterface */
     protected $registry;
 
     /** @var AttributeRepository */
     protected $repository;
 
     /**
-     * @param QueryFilterRegistryInterface $registry
-     * @param AttributeRepository          $repository
+     * @param FilterRegistryInterface $registry
+     * @param AttributeRepository     $repository
      */
-    public function __construct(QueryFilterRegistryInterface $registry, AttributeRepository $repository)
+    public function __construct(FilterRegistryInterface $registry, AttributeRepository $repository)
     {
         $this->registry = $registry;
         $this->repository = $repository;

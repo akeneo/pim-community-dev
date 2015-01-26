@@ -4,7 +4,7 @@ namespace Pim\Bundle\FilterBundle\Datasource\MongoDbOdm;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 /**

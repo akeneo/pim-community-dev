@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 class CompletenessSorterSpec extends ObjectBehavior

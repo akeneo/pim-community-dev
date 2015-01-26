@@ -26,29 +26,28 @@ class ProductPdfRenderer implements RendererInterface
     /** @var EngineInterface */
     protected $templating;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $template;
 
-    /**
-     * @var PdfBuilderInterface
-     */
+    /** @var PdfBuilderInterface */
     protected $pdfBuilder;
 
     /**
      * @param EngineInterface     $templating
      * @param string              $template
      * @param PdfBuilderInterface $pdfBuilder
+     * @param string              $uploadDirectory
      */
     public function __construct(
         EngineInterface $templating,
         $template,
-        PdfBuilderInterface $pdfBuilder
+        PdfBuilderInterface $pdfBuilder,
+        $uploadDirectory
     ) {
-        $this->templating = $templating;
-        $this->template   = $template;
-        $this->pdfBuilder = $pdfBuilder;
+        $this->templating      = $templating;
+        $this->template        = $template;
+        $this->pdfBuilder      = $pdfBuilder;
+        $this->uploadDirectory = $uploadDirectory;
     }
 
     /**
@@ -69,6 +68,8 @@ class ProductPdfRenderer implements RendererInterface
         );
 
         $resolver->resolve($params);
+
+        $params['uploadDir'] = $this->uploadDirectory . DIRECTORY_SEPARATOR;
 
         return $this->pdfBuilder->buildPdfOutput(
             $this->templating->render($this->template, $params)
@@ -144,13 +145,13 @@ class ProductPdfRenderer implements RendererInterface
      */
     protected function configureOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('locale', 'scope', 'product'));
+        $resolver->setRequired(['locale', 'scope', 'product']);
         $resolver->setDefaults(
-            array(
+            [
                 'groupedAttributes' => [],
                 'imageAttributes' => [],
                 'renderingDate' => new \DateTime()
-            )
+            ]
         );
     }
 }
