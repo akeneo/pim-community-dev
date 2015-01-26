@@ -64,7 +64,6 @@ alert:
     save_before_edit_other: 他を編集する前に、あなたが他の行で行った変更を確定してください
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
     cancel_edition_on_new_option_title: 変更をキャンセル
 label:
   attribute_option:
