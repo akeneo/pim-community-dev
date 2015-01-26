@@ -6,10 +6,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
@@ -36,7 +35,7 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
     function it_transforms_array_to_attribute_option(
         ManagerRegistry $doctrine,
         EntityManager $em,
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         AttributeOptionInterface $option,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ColumnInfo $columnInfo,
@@ -50,8 +49,8 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
 
         $doctrine->getManagerForClass($class)->willReturn($em);
         $em->getRepository($class)->willReturn($repository);
-        $repository->getReferenceProperties()->willReturn(['attribute', 'code']);
-        $repository->findByReference('color.blue')->willReturn($option);
+        $repository->getIdentifierProperties()->willReturn(['attribute', 'code']);
+        $repository->findOneByIdentifier('color.blue')->willReturn($option);
 
         $columnInfoTransformer->transform($class, Argument::any())->willReturn($columnInfo);
         $columnInfo->getLabel()->willReturn('code');
@@ -67,7 +66,7 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
     function it_throws_exception_when_attribute_is_unknown(
         ManagerRegistry $doctrine,
         EntityManager $em,
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         AttributeOptionInterface $option,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         ColumnInfo $columnInfo,
@@ -80,8 +79,8 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
 
         $doctrine->getManagerForClass($class)->willReturn($em);
         $em->getRepository($class)->willReturn($repository);
-        $repository->getReferenceProperties()->willReturn(['attribute', 'code']);
-        $repository->findByReference('color.blue')->willReturn($option);
+        $repository->getIdentifierProperties()->willReturn(['attribute', 'code']);
+        $repository->findOneByIdentifier('color.blue')->willReturn($option);
 
         $columnInfoTransformer->transform($class, Argument::any())->willReturn($columnInfo);
         $columnInfo->getLabel()->willReturn('code');

@@ -55,14 +55,14 @@ class GroupDenormalizerSpec extends ObjectBehavior
 
     function it_denormalizes_group($repository, Group $group)
     {
-        $repository->findByReference('foo')->willReturn($group);
+        $repository->findOneByIdentifier('foo')->willReturn($group);
 
         $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($group);
     }
 
     function it_throws_an_exception_if_group_is_unknown($repository)
     {
-        $repository->findByReference('foo')->willReturn(false);
+        $repository->findOneByIdentifier('foo')->willReturn(null);
 
         $this->shouldThrow(
             new \Exception(

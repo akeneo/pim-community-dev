@@ -78,7 +78,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
      */
     protected function findEntity($identifier)
     {
-        return $this->repository->findByReference($identifier);
+        return $this->repository->findOneByIdentifier($identifier);
     }
 
     /**

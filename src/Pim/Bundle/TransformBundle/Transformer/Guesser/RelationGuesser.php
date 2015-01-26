@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo as ODMMongoDBClassMetadataInfo;
@@ -68,7 +69,7 @@ class RelationGuesser implements GuesserInterface
         }
 
         $mapping = $metadata->getAssociationMapping($columnInfo->getPropertyPath());
-        if (!($this->doctrine->getRepository($mapping['targetEntity']) instanceof ReferableEntityRepositoryInterface)) {
+        if (!$this->isRepositoryEligible($this->doctrine->getRepository($mapping['targetEntity']))) {
             return;
         }
 
@@ -95,7 +96,7 @@ class RelationGuesser implements GuesserInterface
             $mapping = $metadata->getFieldMapping($fieldName);
             $target = $mapping['targetEntity'];
 
-            if (!$this->doctrine->getRepository($target) instanceof ReferableEntityRepositoryInterface) {
+            if (!$this->isRepositoryEligible($this->doctrine->getRepository($target))) {
                 return;
             }
 
@@ -119,7 +120,7 @@ class RelationGuesser implements GuesserInterface
                     return;
             }
 
-            if (!$this->doctrine->getRepository($target) instanceof ReferableEntityRepositoryInterface) {
+            if (!$this->isRepositoryEligible($this->doctrine->getRepository($target))) {
                 return;
             }
 
@@ -131,5 +132,22 @@ class RelationGuesser implements GuesserInterface
                 )
             );
         }
+    }
+
+    /**
+     * @param $repository
+     *
+     * @return bool
+     */
+    protected function isRepositoryEligible($repository)
+    {
+        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
+            return true;
+        }
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
+            return true;
+        }
+
+        return false;
     }
 }

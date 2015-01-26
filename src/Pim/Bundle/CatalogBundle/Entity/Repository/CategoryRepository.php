@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
@@ -17,7 +18,8 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryRepository extends NestedTreeRepository implements ReferableEntityRepositoryInterface
+class CategoryRepository extends NestedTreeRepository implements
+ IdentifiableObjectRepositoryInterface, ReferableEntityRepositoryInterface
 {
     /**
      * Get query builder for all existitng category trees
@@ -160,7 +162,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         return $this->findOneBy(array('code' => $code));
     }
@@ -168,7 +170,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('code');
     }
@@ -357,5 +359,25 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         $queryBuilder->andWhere('c.root = :rootId')->setParameter('rootId', $treeRootId);
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

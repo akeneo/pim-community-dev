@@ -49,8 +49,8 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->will($this->returnValue('id'));
 
         $this->productRepository = $this->getMock(
-            'Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface',
-            ['getReferenceProperties', 'findByReference']
+            'Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface',
+            ['getIdentifierProperties', 'findOneByIdentifier']
         );
         $this->productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()

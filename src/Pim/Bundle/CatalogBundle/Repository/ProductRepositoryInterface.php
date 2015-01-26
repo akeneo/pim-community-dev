@@ -39,13 +39,6 @@ interface ProductRepositoryInterface
     public function buildByChannelAndCompleteness(ChannelInterface $channel);
 
     /**
-     * @param array $ids
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function findByIds(array $ids);
-
-    /**
      * Find all products in a variant group (by variant axis attribute values)
      *
      * @param GroupInterface $variantGroup the variant group

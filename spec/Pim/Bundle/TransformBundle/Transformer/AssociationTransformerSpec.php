@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Transformer;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Prophecy\Argument;
@@ -11,7 +12,6 @@ use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer;
@@ -26,7 +26,7 @@ class AssociationTransformerSpec extends ObjectBehavior
     function it_transforms_a_product_association(
         $doctrine,
         EntityManager $em,
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         AssociationTypeInterface $pack,
         ProductInterface $mug,
         $colInfoTransformer,
@@ -46,11 +46,11 @@ class AssociationTransformerSpec extends ObjectBehavior
 
         $doctrine->getManagerForClass($class)->willReturn($em);
         $em->getRepository($class)->willReturn($repository);
-        $repository->findByReference('PACK')->willReturn($pack);
+        $repository->findOneByIdentifier('PACK')->willReturn($pack);
 
         $doctrine->getManagerForClass('productClass')->willReturn($em);
         $em->getRepository('productClass')->willReturn($repository);
-        $repository->findByReference('mug-001')->willReturn($mug);
+        $repository->findOneByIdentifier('mug-001')->willReturn($mug);
 
         $mug->getAssociationForTypeCode('PACK')->shouldBeCalled();
 
@@ -68,7 +68,7 @@ class AssociationTransformerSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_owner_does_not_exist(
         $doctrine,
         EntityManager $em,
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         AssociationTypeInterface $pack
     ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
@@ -76,11 +76,11 @@ class AssociationTransformerSpec extends ObjectBehavior
 
         $doctrine->getManagerForClass($class)->willReturn($em);
         $em->getRepository($class)->willReturn($repository);
-        $repository->findByReference('PACK')->willReturn($pack);
+        $repository->findOneByIdentifier('PACK')->willReturn($pack);
 
         $doctrine->getManagerForClass('productClass')->willReturn($em);
         $em->getRepository('productClass')->willReturn($repository);
-        $repository->findByReference('mug-001')->willReturn(null);
+        $repository->findOneByIdentifier('mug-001')->willReturn(null);
 
         $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('transform', [$class, $data, []]);
     }
@@ -96,14 +96,14 @@ class AssociationTransformerSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_association_type_does_not_exist(
         $doctrine,
         EntityManager $em,
-        ReferableEntityRepositoryInterface $repository
+        IdentifiableObjectRepositoryInterface $repository
     ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
         $data  = ['owner' => 'mug-001'];
 
         $doctrine->getManagerForClass($class)->willReturn($em);
         $em->getRepository($class)->willReturn($repository);
-        $repository->findByReference('PACK')->willReturn(null);
+        $repository->findOneByIdentifier('PACK')->willReturn(null);
 
         $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('transform', [$class, $data, []]);
     }

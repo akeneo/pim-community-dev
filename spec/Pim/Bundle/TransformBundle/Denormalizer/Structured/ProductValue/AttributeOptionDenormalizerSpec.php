@@ -39,7 +39,7 @@ class AttributeOptionDenormalizerSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
 
         $repository
-            ->findByReference('color.red')
+            ->findOneByIdentifier('color.red')
             ->shouldBeCalled()
             ->willReturn($red);
 

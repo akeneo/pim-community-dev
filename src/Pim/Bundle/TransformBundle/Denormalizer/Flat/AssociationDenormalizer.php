@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**
@@ -106,11 +107,11 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
      *
      * @param string $identifier
      *
-     * @return AssociationType
+     * @return AssociationTypeInterface
      */
     protected function getAssociationType($identifier)
     {
-        return $this->getAssociationTypeRepository()->findByReference($identifier);
+        return $this->getAssociationTypeRepository()->findOneByIdentifier($identifier);
     }
 
     /**
