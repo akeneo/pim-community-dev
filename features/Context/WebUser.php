@@ -2002,7 +2002,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectVariantGroup($variant)
     {
-        $element = $this->getCurrentPage()->find('css', sprintf('.mass-edit-form input[type="radio"] + label:contains("%s")', $variant))->click();
+        $this->getCurrentPage()->fillField('Group', $variant);
     }
 
     /**
