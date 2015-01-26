@@ -32,9 +32,15 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     protected $stepExecution;
 
+    /**
+     * @var resource
+     */
     private $handler;
 
-    private $resolvedFilePath;
+    /**
+     * @var string|null
+     */
+    protected $resolvedFilePath;
 
     /**
      * Set the file path
