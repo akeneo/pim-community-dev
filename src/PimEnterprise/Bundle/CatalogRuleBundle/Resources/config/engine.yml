@@ -1,9 +1,12 @@
 parameters:
-    pimee_catalog_rule.applier.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier
-    pimee_catalog_rule.builder.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder
-    pimee_catalog_rule.selector.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
+    pimee_catalog_rule.applier.product.class:             PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier
+    pimee_catalog_rule.applier.product.updater.class:     PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater
+    pimee_catalog_rule.applier.product.validator.class:   PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator
+    pimee_catalog_rule.applier.product.saver.class:       PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver
+    pimee_catalog_rule.builder.product.class:             PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder
+    pimee_catalog_rule.selector.product.class:            PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
     pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactory
-    pimee_catalog_rule.paginator.class: Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator
+    pimee_catalog_rule.paginator.class:                   Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator
 
 services:
     pimee_catalog_rule.product.paginator:
@@ -31,13 +34,30 @@ services:
     pimee_catalog_rule.applier.product:
         class: %pimee_catalog_rule.applier.product.class%
         arguments:
+            - '@pimee_catalog_rule.product.paginator'
+            - '@pimee_catalog_rule.applier.product.updater'
+            - '@pimee_catalog_rule.applier.product.validator'
+            - '@pimee_catalog_rule.applier.product.saver'
+            - '@event_dispatcher'
+            - '@pim_transform.cache.product_cache_clearer'
+            - %akeneo_rule_engine.model.rule_definition.class%
+
+    pimee_catalog_rule.applier.product.updater:
+        class: %pimee_catalog_rule.applier.product.updater.class%
+        arguments:
             - '@pim_catalog.updater.product'
+            - '@pim_catalog.updater.product_template'
+
+    pimee_catalog_rule.applier.product.validator:
+        class: %pimee_catalog_rule.applier.product.validator.class%
+        arguments:
             - '@pim_validator'
-            - '@pim_catalog.saver.product'
             - '@event_dispatcher'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pimee_catalog_rule.applier.product.saver:
+        class: %pimee_catalog_rule.applier.product.saver.class%
+        arguments:
+            - '@pim_catalog.saver.product'
             - '@pim_versioning.manager.version'
-            - '@pim_transform.cache.product_cache_clearer'
             - '@translator'
-            - '@pimee_catalog_rule.product.paginator'
-            - %akeneo_rule_engine.model.rule_definition.class%
