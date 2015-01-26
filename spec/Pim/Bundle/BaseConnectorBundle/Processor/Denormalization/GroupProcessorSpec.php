@@ -56,7 +56,7 @@ class GroupProcessorSpec extends ObjectBehavior
 
     function it_requires_group_code_in_the_data($groupRepository)
     {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
         $this
             ->shouldThrow(new InvalidItemException('Code must be provided', []))
             ->duringProcess([]);
@@ -64,8 +64,8 @@ class GroupProcessorSpec extends ObjectBehavior
 
     function it_throws_exception_when_try_to_update_variant_group($groupRepository, Group $variantGroup, GroupType $variant)
     {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('bar')->willReturn($variantGroup);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('bar')->willReturn($variantGroup);
         $variantGroup->getId()->willReturn(42);
         $variantGroup->getType()->willReturn($variant);
         $variant->isVariant()->willReturn(true);
@@ -86,8 +86,8 @@ class GroupProcessorSpec extends ObjectBehavior
         Group $group,
         GroupType $type
     ) {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('akeneo_xsell')->willReturn($group);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('akeneo_xsell')->willReturn($group);
         $group->getId()->willReturn(42);
         $group->getType()->willReturn($type);
         $type->isVariant()->willReturn(false);
@@ -124,8 +124,8 @@ class GroupProcessorSpec extends ObjectBehavior
         Group $group,
         GroupType $type
     ) {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('akeneo_xsell')->willReturn($group);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('akeneo_xsell')->willReturn($group);
         $group->getId()->willReturn(null);
         $group->getType()->willReturn($type);
         $type->isVariant()->willReturn(false);
@@ -164,8 +164,8 @@ class GroupProcessorSpec extends ObjectBehavior
         Group $group,
         GroupType $type
     ) {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('akeneo xsell')->willReturn($group);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('akeneo xsell')->willReturn($group);
         $group->getId()->willReturn(null);
         $group->getType()->willReturn($type);
         $type->isVariant()->willReturn(false);

@@ -60,7 +60,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_requires_variant_group_code_in_the_data($groupRepository)
     {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
         $this
             ->shouldThrow(new MissingIdentifierException('No identifier column.'))
             ->duringProcess([]);
@@ -68,8 +68,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
     function it_throws_exception_when_try_to_update_standard_group($groupRepository, Group $group, GroupType $crossSell)
     {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('bar')->willReturn($group);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('bar')->willReturn($group);
         $group->getId()->willReturn(42);
         $group->getType()->willReturn($crossSell);
         $crossSell->isVariant()->willReturn(false);
@@ -90,8 +90,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         Group $variantGroup,
         GroupType $type
     ) {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('tshirt')->willReturn($variantGroup);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('tshirt')->willReturn($variantGroup);
         $variantGroup->getId()->willReturn(42);
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
@@ -133,8 +133,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('tshirt')->willReturn($variantGroup);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('tshirt')->willReturn($variantGroup);
         $variantGroup->getId()->willReturn(42);
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
@@ -213,8 +213,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ProductValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $groupRepository->getReferenceProperties()->willReturn(['code']);
-        $groupRepository->findByReference('tshirt')->willReturn($variantGroup);
+        $groupRepository->getIdentifierProperties()->willReturn(['code']);
+        $groupRepository->findOneByIdentifier('tshirt')->willReturn($variantGroup);
         $variantGroup->getId()->willReturn(42);
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);

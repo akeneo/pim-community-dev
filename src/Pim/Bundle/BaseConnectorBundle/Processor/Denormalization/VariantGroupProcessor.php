@@ -4,9 +4,9 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -46,17 +46,17 @@ class VariantGroupProcessor extends AbstractProcessor
     protected $format;
 
     /**
-     * @param ReferableEntityRepositoryInterface $groupRepository
-     * @param DenormalizerInterface              $groupValuesDenormalizer
-     * @param ValidatorInterface                 $validator
-     * @param NormalizerInterface                $valueNormalizer
-     * @param ObjectDetacherInterface            $detacher
-     * @param string                             $groupClass
-     * @param string                             $templateClass
-     * @param string                             $format
+     * @param IdentifiableObjectRepositoryInterface $groupRepository
+     * @param DenormalizerInterface                 $groupValuesDenormalizer
+     * @param ValidatorInterface                    $validator
+     * @param NormalizerInterface                   $valueNormalizer
+     * @param ObjectDetacherInterface               $detacher
+     * @param string                                $groupClass
+     * @param string                                $templateClass
+     * @param string                                $format
      */
     public function __construct(
-        ReferableEntityRepositoryInterface $groupRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $validator,
         NormalizerInterface $valueNormalizer,

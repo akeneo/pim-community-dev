@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Entity\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -13,12 +14,13 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends BaseGroupRepository implements ReferableEntityRepositoryInterface
+class GroupRepository extends BaseGroupRepository implements
+ IdentifiableObjectRepositoryInterface, ReferableEntityRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         return $this->findOneBy(array('name' => $code));
     }
@@ -52,14 +54,34 @@ class GroupRepository extends BaseGroupRepository implements ReferableEntityRepo
      */
     public function getDefaultUserGroup()
     {
-        return $this->findByReference(User::GROUP_DEFAULT);
+        return $this->findOneByIdentifier(User::GROUP_DEFAULT);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('name');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

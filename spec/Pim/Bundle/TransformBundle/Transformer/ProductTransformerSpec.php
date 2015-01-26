@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Transformer;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -13,8 +14,6 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\TransformBundle\Cache\AttributeCache;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
@@ -71,7 +70,7 @@ class ProductTransformerSpec extends ObjectBehavior
         ColumnInfo $columnInfoAssocGroups,
         ColumnInfo $columnInfoAssocProducts,
         ColumnInfo $columnInfoDesc,
-        ReferableEntityRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productRepository,
         ProductInterface $product,
         ObjectManager $objectManager,
         ClassMetadata $productMetadata,
@@ -178,7 +177,7 @@ class ProductTransformerSpec extends ObjectBehavior
         // find entity
         $productManager->getProductRepository()->willReturn($productRepository);
         $attributeSku->getCode()->willReturn('sku');
-        $productRepository->findByReference('AKNTS')->willReturn($product);
+        $productRepository->findOneByIdentifier('AKNTS')->willReturn($product);
 
         // set product properties
         $doctrine->getManagerForClass('Pim\Bundle\CatalogBundle\Model\Product')

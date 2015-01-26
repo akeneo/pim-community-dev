@@ -55,14 +55,14 @@ class CategoryDenormalizerSpec extends ObjectBehavior
 
     function it_denormalizes_category($repository, CategoryInterface $category)
     {
-        $repository->findByReference('foo')->willReturn($category);
+        $repository->findOneByIdentifier('foo')->willReturn($category);
 
         $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($category);
     }
 
     function it_throws_an_exception_if_category_is_unknown($repository)
     {
-        $repository->findByReference('foo')->willReturn(false);
+        $repository->findOneByIdentifier('foo')->willReturn(null);
 
         $this->shouldThrow(
             new \Exception(

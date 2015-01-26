@@ -71,7 +71,7 @@ class AssociationTransformer extends EntityTransformer
 
         $associationTypeRepo = $this->doctrine->getManagerForClass($this->associationTypeClass)
             ->getRepository($this->associationTypeClass);
-        $associationType = $associationTypeRepo->findByReference($data['association_type']);
+        $associationType = $associationTypeRepo->findOneByIdentifier($data['association_type']);
         if (!$associationType) {
             throw new InvalidItemException(
                 'The association type %association_type% does not exist',
@@ -82,7 +82,7 @@ class AssociationTransformer extends EntityTransformer
 
         $productRepository = $this->doctrine->getManagerForClass($this->productClass)
             ->getRepository($this->productClass);
-        $product = $productRepository->findByReference($data['owner']);
+        $product = $productRepository->findOneByIdentifier($data['owner']);
         if (!$product) {
             throw new InvalidItemException(
                 'No product with identifier %identifier%',

@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
@@ -16,6 +18,7 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeRepository extends EntityRepository implements
+    IdentifiableObjectRepositoryInterface,
     ReferableEntityRepositoryInterface,
     ChoicesProviderInterface
 {
@@ -276,7 +279,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         return $this->findOneBy(array('code' => $code));
     }
@@ -284,7 +287,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('code');
     }
@@ -443,7 +446,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * Get non identifier attributes
      *
-     * @return Attribute[]
+     * @return AttributeInterface[]
      */
     public function getNonIdentifierAttributes()
     {
@@ -454,5 +457,26 @@ class AttributeRepository extends EntityRepository implements
             ->setParameter(1, 'pim_catalog_identifier');
 
         return $qb->getQuery()->getResult();
+    }
+
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

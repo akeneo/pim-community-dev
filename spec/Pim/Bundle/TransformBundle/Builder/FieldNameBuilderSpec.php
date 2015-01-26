@@ -3,13 +3,13 @@
 namespace spec\Pim\Bundle\TransformBundle\Builder;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class FieldNameBuilderSpec extends ObjectBehavior
@@ -54,7 +54,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('bar');
-        $repository->findByReference('foo')->willReturn($attribute);
+        $repository->findOneByIdentifier('foo')->willReturn($attribute);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
 
         $this->extractAttributeFieldNameInfos('foo')->shouldReturn(
@@ -70,7 +70,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $managerRegistry,
         AttributeRepository $repository
     ) {
-        $repository->findByReference('foo')->willReturn(null);
+        $repository->findOneByIdentifier('foo')->willReturn(null);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
 
         $this->extractAttributeFieldNameInfos('foo')->shouldReturn(null);
@@ -79,8 +79,8 @@ class FieldNameBuilderSpec extends ObjectBehavior
     function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
         $managerRegistry,
         AttributeRepository $attributeRepository,
-        ReferableEntityRepositoryInterface $channelRepository,
-        ReferableEntityRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository,
         AttributeInterface $attribute,
         LocaleInterface $locale,
         ChannelInterface $channel
@@ -92,12 +92,12 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $managerRegistry->getRepository(self::CHANNEL_CLASS)->shouldBeCalled()->willReturn($channelRepository);
-        $channelRepository->findByReference('ecommerce')->shouldBeCalled()->willReturn($channel);
+        $channelRepository->findOneByIdentifier('ecommerce')->shouldBeCalled()->willReturn($channel);
 
         $managerRegistry->getRepository(self::LOCALE_CLASS)->shouldBeCalled()->willReturn($localeRepository);
-        $localeRepository->findByReference('en_US')->shouldBeCalled()->willReturn($locale);
+        $localeRepository->findOneByIdentifier('en_US')->shouldBeCalled()->willReturn($locale);
 
-        $attributeRepository->findByReference('foo')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attributeRepository);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(true);
@@ -153,7 +153,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()->willReturn('bar');
-        $repository->findByReference('foo')->willReturn($attribute);
+        $repository->findOneByIdentifier('foo')->willReturn($attribute);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
 
         // Test only scopable attribute
@@ -186,7 +186,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('prices');
-        $repository->findByReference('foo')->willReturn($attribute);
+        $repository->findOneByIdentifier('foo')->willReturn($attribute);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
 
         $this->extractAttributeFieldNameInfos('foo-USD')->shouldReturn(
@@ -232,7 +232,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('text');
-        $repository->findByReference('sku')->willReturn($attribute);
+        $repository->findOneByIdentifier('sku')->willReturn($attribute);
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formatted, attribute "sku" expects no locale, no scope, no currency'))
@@ -243,7 +243,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('text');
-        $repository->findByReference('name')->willReturn($attribute);
+        $repository->findOneByIdentifier('name')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "name" is not well-formatted, attribute "name" expects a locale, no scope, no currency'))
             ->duringExtractAttributeFieldNameInfos('name');
@@ -253,7 +253,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()->willReturn('prices');
-        $repository->findByReference('cost')->willReturn($attribute);
+        $repository->findOneByIdentifier('cost')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formatted, attribute "cost" expects a locale, a scope, an optional currency'))
             ->duringExtractAttributeFieldNameInfos('cost');
@@ -261,10 +261,10 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_channel_locale(
         $managerRegistry,
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         AttributeInterface $attribute,
-        ReferableEntityRepositoryInterface $channelRepository,
-        ReferableEntityRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository,
         LocaleInterface $locale,
         ChannelInterface $channel
     ) {
@@ -283,13 +283,13 @@ class FieldNameBuilderSpec extends ObjectBehavior
             ];
 
         $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
-        $repository->findByReference('description')->willReturn($attribute);
+        $repository->findOneByIdentifier('description')->willReturn($attribute);
 
         $managerRegistry->getRepository(self::CHANNEL_CLASS)->shouldBeCalled()->willReturn($channelRepository);
-        $channelRepository->findByReference($attributeInfos['scope_code'])->shouldBeCalled()->willReturn($channel);
+        $channelRepository->findOneByIdentifier($attributeInfos['scope_code'])->shouldBeCalled()->willReturn($channel);
 
         $managerRegistry->getRepository(self::LOCALE_CLASS)->shouldBeCalled()->willReturn($localeRepository);
-        $localeRepository->findByReference($attributeInfos['locale_code'])->shouldBeCalled()->willReturn($locale);
+        $localeRepository->findOneByIdentifier($attributeInfos['locale_code'])->shouldBeCalled()->willReturn($locale);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(false);
 

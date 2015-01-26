@@ -3,8 +3,8 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -32,15 +32,15 @@ class GroupProcessor extends AbstractProcessor
     protected $format;
 
     /**
-     * @param ReferableEntityRepositoryInterface $repository   repository to search the object in
-     * @param ValidatorInterface                 $validator    validator of the object
-     * @param DenormalizerInterface              $denormalizer denormalizer used to transform array to object
-     * @param ObjectDetacherInterface            $detacher     detacher to remove it from UOW when skip
-     * @param string                             $class        class of the object to instanciate in case if need
-     * @param string                             $format       format use to denormalize
+     * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
+     * @param ValidatorInterface                    $validator    validator of the object
+     * @param DenormalizerInterface                 $denormalizer denormalizer used to transform array to object
+     * @param ObjectDetacherInterface               $detacher     detacher to remove it from UOW when skip
+     * @param string                                $class        class of the object to instanciate in case if need
+     * @param string                                $format       format use to denormalize
      */
     public function __construct(
-        ReferableEntityRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,

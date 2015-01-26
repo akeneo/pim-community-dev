@@ -80,9 +80,9 @@ class AttributeTransformerTest extends EntityTransformerTestCase
     protected function setupRepositories($referable = true)
     {
         $this->repository = $this
-            ->getMock('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
+            ->getMock('Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface');
         $this->repository->expects($this->any())
-            ->method('getReferenceProperties')
+            ->method('getIdentifierProperties')
             ->will($this->returnValue(array('code')));
 
         $this->doctrine

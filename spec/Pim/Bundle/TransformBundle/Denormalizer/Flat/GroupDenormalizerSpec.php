@@ -64,7 +64,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
 
     function it_denormalizes_group($groupRepository, Group $group)
     {
-        $groupRepository->findByReference('foo')->willReturn($group);
+        $groupRepository->findOneByIdentifier('foo')->willReturn($group);
 
         $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($group);
     }
@@ -79,7 +79,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
         AttributeInterface $color,
         GroupTranslation $translationUS
     ) {
-        $groupRepository->findByReference('tshirt')->willReturn(null);
+        $groupRepository->findOneByIdentifier('tshirt')->willReturn(null);
         $groupTypeRepository->findByReference('VARIANT')->willReturn($type);
         $attributeRepository->findByReference('size')->willReturn($size);
         $attributeRepository->findByReference('color')->willReturn($color);
@@ -114,7 +114,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
         AttributeInterface $color,
         GroupTranslation $translationUS
     ) {
-        $groupRepository->findByReference('tshirt')->willReturn(null);
+        $groupRepository->findOneByIdentifier('tshirt')->willReturn(null);
 
         $group->getId()->willReturn(42);
         $group->setCode('tshirt')->shouldBeCalled();
@@ -138,7 +138,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_group_is_unknown($groupRepository)
     {
-        $groupRepository->findByReference('foo')->willReturn(false);
+        $groupRepository->findOneByIdentifier('foo')->willReturn(null);
 
         $this->shouldThrow(
             new \Exception(

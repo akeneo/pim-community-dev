@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
@@ -21,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
 
 /**
  * Product repository
@@ -32,9 +32,9 @@ use Akeneo\Bundle\StorageUtilsBundle\Cursor\ModelRepositoryInterface;
  */
 class ProductRepository extends DocumentRepository implements
     ProductRepositoryInterface,
+    IdentifiableObjectRepositoryInterface,
     ReferableEntityRepositoryInterface,
-    AssociationRepositoryInterface,
-    ModelRepositoryInterface
+    AssociationRepositoryInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
@@ -307,23 +307,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByIds(array $ids)
-    {
-        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
-        $qb->field('_id')->in($ids);
-
-        $cursor = $qb->getQuery()->execute();
-        $products = [];
-        foreach ($cursor as $product) {
-            $products[] = $product;
-        }
-
-        return $products;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
     {
         $qb = $this->createQueryBuilder()->eagerCursor(true);
@@ -399,15 +382,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
-    {
-        return $this->findOneByIdentifier($code);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array($this->attributeRepository->getIdentifierCode());
     }
@@ -704,5 +679,25 @@ class ProductRepository extends DocumentRepository implements
     protected function getIdentifierAttribute()
     {
         return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

@@ -2,7 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -139,13 +142,37 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      */
     protected function findEntity($identifier)
     {
-        $entity = $this->getRepository()->findByReference($identifier);
-        if (!$entity) {
+        $entity = $this->findOneByIdentifier($this->getRepository(), $identifier);
+
+        if (null === $entity) {
             throw new \LogicException(
                 sprintf('Entity "%s" with identifier "%s" not found', $this->entityClass, $identifier)
             );
         }
 
         return $entity;
+    }
+
+    /**
+     * Transitional method that will be removed in 1.4
+     *
+     * @param mixed  $repository
+     * @param string $identifier
+     *
+     * @return mixed|null
+     *
+     * @deprecated will be removed in 1.4
+     */
+    private function findOneByIdentifier($repository, $identifier)
+    {
+        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
+            return $repository->findOneByIdentifier($identifier);
+        }
+
+        if ($repository instanceof ReferableEntityRepositoryInterface) {
+            return $repository->findByReference($identifier);
+        }
+
+        return null;
     }
 }

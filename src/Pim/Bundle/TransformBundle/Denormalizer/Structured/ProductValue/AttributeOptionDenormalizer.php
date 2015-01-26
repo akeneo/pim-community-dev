@@ -42,7 +42,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 
         $code = $this->prepareOptionCode($attribute, $data);
 
-        return $this->repository->findByReference($code);
+        return $this->repository->findOneByIdentifier($code);
     }
 
     /**

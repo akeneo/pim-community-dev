@@ -31,7 +31,7 @@ class AttributeOptionDenormalizerSpec extends ObjectBehavior
         $productValueInterface->getAttribute()->shouldBeCalled()->willReturn($color);
         $color->getCode()->willReturn('color');
 
-        $repository->findByReference('color.1')->shouldBeCalled()->willReturn($red);
+        $repository->findOneByIdentifier('color.1')->shouldBeCalled()->willReturn($red);
 
         $this->denormalize($data, 'className', null, $context)->shouldReturn($red);
     }
