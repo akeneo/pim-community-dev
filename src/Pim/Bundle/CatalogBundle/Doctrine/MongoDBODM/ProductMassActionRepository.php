@@ -122,9 +122,9 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
             array(
                 '$group'  => array(
                     '_id'       => array('id' => '$_id', 'family' => '$family'),
-                    'attribute' => array( '$addToSet' => '$values.attribute'),
-                ),
-            ),
+                    'attribute' => array( '$addToSet' => '$values.attribute')
+                )
+            )
         );
 
         return $collection->aggregate($pipeline)->toArray();

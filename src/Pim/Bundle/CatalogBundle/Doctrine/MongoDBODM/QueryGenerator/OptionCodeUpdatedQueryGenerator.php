@@ -24,7 +24,7 @@ class OptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
             $queries[] = [
                 [$attributeNormField => [ '$exists' => true ]],
                 ['$set' => [sprintf('%s.code', $attributeNormField) => $newValue]],
-                ['multiple' => true],
+                ['multiple' => true]
             ];
         }
 

@@ -82,7 +82,7 @@ class CriteriaCondition
             $conditions[] = $this->prepareSingleCriteriaCondition($fieldName, $operator[$key], $value[$key]);
         }
 
-        return '('.implode(' OR ', $conditions).')';
+        return '(' . implode(' OR ', $conditions) . ')';
     }
 
     /**

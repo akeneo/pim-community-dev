@@ -508,10 +508,10 @@ class ProductRepository extends DocumentRepository implements
                 [
                     '$or' => [
                         [ 'products' => [ '$ne' => [] ] ],
-                        [ 'groups'   => [ '$ne' => [] ] ],
+                        [ 'groups'   => [ '$ne' => [] ] ]
                     ]
-                ],
-            ],
+                ]
+            ]
         ];
 
         $qb = $this->createQueryBuilder()
@@ -623,13 +623,13 @@ class ProductRepository extends DocumentRepository implements
                 [
                     'associations' => [
                         '$elemMatch' => [
-                            'products' => $mongoRef,
-                        ],
-                    ],
+                            'products' => $mongoRef
+                        ]
+                    ]
                 ],
                 [
                     '$pull' => [
-                        'associations.$.products' => $mongoRef,
+                        'associations.$.products' => $mongoRef
                     ]
                 ],
                 [ 'multiple' => 1 ]

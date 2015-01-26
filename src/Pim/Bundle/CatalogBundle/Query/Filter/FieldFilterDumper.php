@@ -42,7 +42,7 @@ class FieldFilterDumper implements DumperInterface
             'groups.id',
             'groups.code',
             'categories.id',
-            'categories.code',
+            'categories.code'
         ];
 
         $rows = [];

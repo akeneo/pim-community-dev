@@ -305,7 +305,7 @@ class ProductRepository extends EntityRepository implements
             ->from($this->_entityName, 'p', 'p.id');
 
         $isCheckedExpr =
-            'CASE WHEN '.
+            'CASE WHEN ' .
             '(:currentGroup MEMBER OF p.groups '.
             'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) '.
             'THEN true ELSE false END';
@@ -346,7 +346,7 @@ class ProductRepository extends EntityRepository implements
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
         $isCheckedExpr =
-            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) '.
+            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
         $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
@@ -365,7 +365,7 @@ class ProductRepository extends EntityRepository implements
     {
         $criteria = array(
             'attribute' => $value->getAttribute(),
-            $value->getAttribute()->getBackendType() => $value->getData(),
+            $value->getAttribute()->getBackendType() => $value->getData()
         );
         $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
 

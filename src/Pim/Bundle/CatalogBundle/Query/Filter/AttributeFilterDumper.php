@@ -55,7 +55,7 @@ class AttributeFilterDumper implements DumperInterface
                 $attribute->isScopable() ? 'yes' : 'no',
                 $attribute->getAttributeType(),
                 $class,
-                $operators,
+                $operators
             ];
         }
         $table = $helperSet->get('table');

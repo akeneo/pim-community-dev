@@ -348,7 +348,7 @@ MAIN_SQL;
     {
         return array(
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
-            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins()),
+            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins())
         );
     }
 

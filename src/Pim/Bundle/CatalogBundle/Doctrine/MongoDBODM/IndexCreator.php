@@ -213,7 +213,7 @@ class IndexCreator
 
         $indexOptions = [
             'background' => true,
-            'w'          => 0,
+            'w'          => 0
         ];
 
         foreach ($fields as $field) {

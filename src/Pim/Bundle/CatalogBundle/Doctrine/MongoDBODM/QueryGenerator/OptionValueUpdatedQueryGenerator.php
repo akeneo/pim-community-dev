@@ -24,17 +24,17 @@ class OptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
 
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
-                [$attributeNormField.'.code' => $entity->getOption()->getCode()],
+                [$attributeNormField . '.code' => $entity->getOption()->getCode()],
                 [
                     '$set' => [
                         sprintf(
                             '%s.optionValues.%s.value',
                             $attributeNormField,
                             $entity->getLocale()
-                        ) => $newValue,
+                        ) => $newValue
                     ]
                 ],
-                ['multiple' => true],
+                ['multiple' => true]
             ];
         }
 

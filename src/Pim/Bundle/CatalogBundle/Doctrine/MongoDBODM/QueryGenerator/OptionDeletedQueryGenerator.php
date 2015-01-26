@@ -22,9 +22,9 @@ class OptionDeletedQueryGenerator extends AbstractQueryGenerator
 
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
-                [$attributeNormField.'.code' => $entity->getCode()],
+                [$attributeNormField . '.code' => $entity->getCode()],
                 ['$unset' => [$attributeNormField => '']],
-                ['multiple' => true],
+                ['multiple' => true]
             ];
         }
 

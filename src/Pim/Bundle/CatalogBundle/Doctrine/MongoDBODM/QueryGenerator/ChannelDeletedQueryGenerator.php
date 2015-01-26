@@ -24,9 +24,9 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
         foreach ($attributes as $attribute) {
             $attributeNormFields = [
                 sprintf(
-                    ProductQueryUtility::NORMALIZED_FIELD.'.%s',
+                    ProductQueryUtility::NORMALIZED_FIELD . '.%s',
                     $attribute->getCode()
-                ),
+                )
             ];
 
             $localeCodes = $this->namingUtility->getLocaleCodes();
@@ -40,7 +40,7 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
                 $queries[] = [
                     [sprintf('%s', $attributeNormField) => [ '$exists' => true ]],
                     ['$unset' => [$attributeNormField => '']],
-                    ['multiple' => true],
+                    ['multiple' => true]
                 ];
             }
         }

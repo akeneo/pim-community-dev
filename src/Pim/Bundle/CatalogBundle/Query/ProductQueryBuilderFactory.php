@@ -79,7 +79,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         $pqb = $this->createProductQueryBuilder(
             [
                 'locale' => $options['default_locale'],
-                'scope' => $options['default_scope'],
+                'scope' => $options['default_scope']
             ]
         );
 
@@ -134,7 +134,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
                 'currentGroup',
                 'product',
                 'default_locale',
-                'default_scope',
+                'default_scope'
             ]
         );
         $resolver->setDefaults(
@@ -142,7 +142,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
                 'repository_method' => 'createQueryBuilder',
                 'repository_parameters' => 'o',
                 'default_locale' => null,
-                'default_scope' => null,
+                'default_scope' => null
             ]
         );
     }
