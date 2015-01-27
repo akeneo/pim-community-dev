@@ -68,4 +68,11 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * @return array
      */
     public function getAllVariantGroups();
+
+    /**
+     * Get all variant group ids
+     *
+     * @return array
+     */
+    public function getAllVariantGroupIds();
 }

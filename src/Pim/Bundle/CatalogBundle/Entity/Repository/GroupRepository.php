@@ -88,12 +88,36 @@ class GroupRepository extends ReferableEntityRepository implements GroupReposito
      */
     public function getAllVariantGroups()
     {
-        $qb = $this->createQueryBuilder('grp');
-        $qb->innerJoin('grp.type', 'type')
+        return $this->getAllVariantGroupsQB()->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllVariantGroupIds()
+    {
+        $variantGroupIds = $this->getAllVariantGroupsQB()
+            ->select('g.id')
+            ->getQuery()
+            ->execute(null, AbstractQuery::HYDRATE_ARRAY);
+
+        $variantGroupIds = array_map('current', $variantGroupIds);
+
+        return $variantGroupIds;
+    }
+
+    /**
+     * Get all variant groups query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getAllVariantGroupsQB()
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        return $qb->innerJoin('g.type', 'type')
             ->where($qb->expr()->eq('type.variant', ':variant'))
             ->setParameter(':variant', true);
-
-        return $qb->getQuery()->execute();
     }
 
     /**
