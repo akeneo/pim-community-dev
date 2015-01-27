@@ -55,10 +55,14 @@ class MetricValueSetter extends AbstractValueSetter
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
-        $this->checkData($attribute, $data);
 
-        $unit = $data['unit'];
-        $data = $data['data'];
+        if (null === $data) {
+            $unit = null;
+        } else {
+            $this->checkData($attribute, $data);
+            $unit = $data['unit'];
+            $data = $data['data'];
+        }
 
         foreach ($products as $product) {
             $this->setData($attribute, $product, $data, $unit, $locale, $scope);
@@ -144,7 +148,7 @@ class MetricValueSetter extends AbstractValueSetter
      * @param AttributeInterface $attribute
      * @param ProductInterface   $product
      * @param mixed              $data
-     * @param string             $unit
+     * @param string|null        $unit
      * @param string             $locale
      * @param string             $scope
      */
