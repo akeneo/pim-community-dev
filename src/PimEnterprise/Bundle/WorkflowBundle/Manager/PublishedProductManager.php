@@ -61,8 +61,8 @@ class PublishedProductManager
         $this->productManager  = $manager;
         $this->repository      = $repository;
         $this->eventDispatcher = $eventDispatcher;
-        $this->publisher = $publisher;
-        $this->unpublisher = $unpublisher;
+        $this->publisher       = $publisher;
+        $this->unpublisher     = $unpublisher;
     }
 
     /**
@@ -117,10 +117,11 @@ class PublishedProductManager
      * Publish a product
      *
      * @param ProductInterface $product
+     * @param array            $publishOptions
      *
      * @return PublishedProductInterface
      */
-    public function publish(ProductInterface $product)
+    public function publish(ProductInterface $product, array $publishOptions = [])
     {
         $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $product);
 
@@ -131,9 +132,14 @@ class PublishedProductManager
             $this->getObjectManager()->flush();
         }
 
-        $published = $this->publisher->publish($product);
+        $published = $this->publisher->publish($product, $publishOptions);
         $this->getObjectManager()->persist($published);
-        $this->getObjectManager()->flush();
+
+        $publishOptions = array_merge(['flush' => true], $publishOptions);
+
+        if (true === $publishOptions['flush']) {
+            $this->getObjectManager()->flush();
+        }
 
         $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
 
@@ -153,6 +159,46 @@ class PublishedProductManager
         $this->getObjectManager()->remove($published);
         $this->getObjectManager()->flush();
         $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
+    }
+
+    /**
+     * Bulk publish products
+     *
+     * @param array $products
+     */
+    public function publishAll(array $products)
+    {
+        foreach ($products as $product) {
+            $this->publish($product, ['with_associations' => false, 'flush' => false]);
+        }
+
+        $this->getObjectManager()->flush();
+
+        $this->publishAssociations($products);
+    }
+
+    /**
+     * Publish all associations where products appears in owner or owned side
+     *
+     * For instance,
+     *  A1- P1 -> cross-sell -> P2
+     *  A2- P3 -> cross-sell -> P4
+     *
+     * If P1 is passed in $products, association A1 is refreshed
+     * If P4 is passed in $products, association A2 is refreshed
+     *
+     * @param ProductInterface[] $products
+     */
+    protected function publishAssociations(array $products)
+    {
+        foreach ($products as $product) {
+            $published = $this->findPublishedProductByOriginal($product);
+            foreach ($product->getAssociations() as $association) {
+                $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
+                $published->addAssociation($copiedAssociation);
+            }
+        }
+        $this->getObjectManager()->flush();
     }
 
     /**

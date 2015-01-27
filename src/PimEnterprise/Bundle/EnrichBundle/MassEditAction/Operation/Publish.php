@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -83,40 +84,23 @@ class Publish extends AbstractMassEditAction
      */
     public function perform()
     {
-        foreach ($this->objects as $key => $object) {
-            if (!$object instanceof ProductInterface) {
+        foreach ($this->objects as $key => $product) {
+            if (!$product instanceof ProductInterface) {
                 throw new \LogicException(
                     sprintf(
-                        'Cannot perform mass edit action "%s" on object of type "%s", '.
+                        'Cannot perform mass edit action "%s" on object of type "%s", ' .
                         'expecting "Pim\Bundle\CatalogBundle\Model\ProductInterface"',
                         __CLASS__,
-                        get_class($object)
+                        ClassUtils::getClass($product)
                     )
                 );
             }
 
-            try {
-                $this->doPerform($object);
-            } catch (\RuntimeException $e) {
+            if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
                 unset($this->objects[$key]);
             }
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doPerform(ProductInterface $product)
-    {
-        if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot publish product "%s" because current user does not own it',
-                    (string) $product
-                )
-            );
-        }
-
-        $this->manager->publish($product);
+        $this->manager->publishAll($this->objects);
     }
 }
