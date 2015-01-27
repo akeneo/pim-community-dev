@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
@@ -40,8 +40,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields     = $supportedFields;
-        $this->supportedOperators  = $supportedOperators;
+        $this->supportedFields = $supportedFields;
+        $this->supportedOperators = $supportedOperators;
     }
 
     /**
@@ -84,7 +84,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
 
         if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -92,7 +92,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } elseif ($operator === Operators::NOT_BETWEEN) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -105,9 +105,9 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
             );
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
+            $condition .= ' AND ' . $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $condition
@@ -128,7 +128,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
             $value = $this->formatValues($field, $value);
         }
 
-        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $field = current($this->qb->getRootAliases()) . '.' . $field;
 
         switch ($operator) {
             case Operators::BETWEEN:
@@ -221,7 +221,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $type,
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r($value, true)
             );
         }
 
@@ -255,7 +256,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $type,
                 'array with 2 elements, string or \Datetime',
                 'filter',
-                'date'
+                'date',
+                print_r($value, true)
             );
         }
 
@@ -281,7 +283,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
                 $type,
                 'a string with the format yyyy-mm-dd',
                 'filter',
-                'date'
+                'date',
+                $value
             );
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
@@ -147,13 +147,13 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function checkValue($field, $value)
     {
         if (!is_string($value) && !is_array($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
         }
 
         if (is_array($value)) {
             foreach ($value as $stringValue) {
                 if (!is_string($stringValue)) {
-                    throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
+                    throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
                 }
             }
         }

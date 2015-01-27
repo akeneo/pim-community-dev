@@ -98,7 +98,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $commonAttSql = strtr(
             $commonAttSql,
             [
-                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids%' => '('.implode($productIds, ',').')',
                 '%product_ids_count%'  => count($productIds)
             ]
         );

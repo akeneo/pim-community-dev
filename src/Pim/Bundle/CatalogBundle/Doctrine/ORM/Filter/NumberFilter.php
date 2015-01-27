@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -51,7 +51,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
         if (!is_numeric($value) && null !== $value) {
-            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number');
+            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
         }
 
         $joinAlias = 'filter'.$attribute->getCode();

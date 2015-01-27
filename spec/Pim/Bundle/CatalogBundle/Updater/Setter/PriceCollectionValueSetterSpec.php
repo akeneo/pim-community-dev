@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -98,7 +98,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'prices collection',
-                gettype($data)
+                print_r($data, true)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -116,7 +116,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'prices collection',
-                gettype($data)
+                gettype('text')
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -134,7 +134,7 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
                 'currency',
                 'setter',
                 'prices collection',
-                gettype($data)
+                print_r($data, true)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -153,10 +153,10 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'attributeCode',
                 'currency',
-                'Currency "invalid currency" does not exist',
+                'The currency does not exist',
                 'setter',
                 'prices collection',
-                gettype($data)
+                'invalid currency'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

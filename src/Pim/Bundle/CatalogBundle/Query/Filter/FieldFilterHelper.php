@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 /**
  * Field filter helper
@@ -66,7 +66,7 @@ class FieldFilterHelper
     public static function checkArray($field, $value, $filter)
     {
         if (!is_array($value)) {
-            throw InvalidArgumentException::arrayExpected(static::getCode($field), 'filter', $filter);
+            throw InvalidArgumentException::arrayExpected(static::getCode($field), 'filter', $filter, gettype($value));
         }
     }
 
@@ -82,12 +82,12 @@ class FieldFilterHelper
         $invalidDefaultField = !static::hasProperty($field) && !is_numeric($value);
 
         if ($invalidIdField || $invalidDefaultField) {
-            throw InvalidArgumentException::numericExpected(static::getCode($field), 'filter', $filter);
+            throw InvalidArgumentException::numericExpected(static::getCode($field), 'filter', $filter, gettype($value));
         }
 
         $invalidStringField = static::hasProperty($field) && static::getProperty($field) !== 'id' && !is_string($value);
         if ($invalidStringField) {
-            throw InvalidArgumentException::stringExpected(static::getCode($field), 'filter', $filter);
+            throw InvalidArgumentException::stringExpected(static::getCode($field), 'filter', $filter, gettype($value));
         }
     }
 }

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -97,13 +97,13 @@ class OptionFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('option_code');
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('option_code', 'filter', 'option'))->during('addAttributeFilter', [$attribute, 'IN', 'WRONG', null, null, ['field' => 'option_code.id']]);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('option_code', 'filter', 'option', gettype('WRONG')))->during('addAttributeFilter', [$attribute, 'IN', 'WRONG', null, null, ['field' => 'option_code.id']]);
     }
 
     function it_throws_an_exception_if_the_content_of_value_are_not_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('option_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('option_code', 'filter', 'option'))
+        $this->shouldThrow(InvalidArgumentException::numericExpected('option_code', 'filter', 'option', gettype('not numeric')))
             ->during('addAttributeFilter', [$attribute, 'IN', [123, 'not numeric'], null, null, ['field' => 'option_code.id']]);
     }
 }

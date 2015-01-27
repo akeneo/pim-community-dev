@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -72,7 +72,7 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     protected function checkValue($field, $value, $locale, $scope)
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness');
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness', gettype($value));
         }
 
         if (null === $locale || null === $scope) {

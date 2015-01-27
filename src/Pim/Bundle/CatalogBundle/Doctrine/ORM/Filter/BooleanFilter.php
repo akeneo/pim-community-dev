@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
@@ -58,7 +58,12 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'boolean');
 
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'filter', 'boolean');
+            throw InvalidArgumentException::booleanExpected(
+                $attribute->getCode(),
+                'filter',
+                'boolean',
+                gettype($value)
+            );
         }
 
         $joinAlias    = 'filter'.$attribute->getCode();
@@ -82,10 +87,10 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_bool($value)) {
-            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean');
+            throw InvalidArgumentException::booleanExpected($field, 'filter', 'boolean', gettype($value));
         }
 
-        $field = current($this->qb->getRootAliases()) . '.' . FieldFilterHelper::getCode($field);
+        $field = current($this->qb->getRootAliases()).'.'.FieldFilterHelper::getCode($field);
         $condition = $this->prepareCriteriaCondition($field, $operator, $value);
         $this->qb->andWhere($condition);
 

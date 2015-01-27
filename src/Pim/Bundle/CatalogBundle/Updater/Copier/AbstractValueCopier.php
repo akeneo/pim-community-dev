@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -60,7 +60,7 @@ abstract class AbstractValueCopier implements CopierInterface
      * @param string             $scope
      * @param string             $type
      *
-     * @throws InvalidArgumentException
+     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
      */
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {
@@ -84,7 +84,7 @@ abstract class AbstractValueCopier implements CopierInterface
      * @param AttributeInterface $toAttribute
      * @param string             $type
      *
-     * @throws InvalidArgumentException
+     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
      */
     protected function checkUnitFamily(
         AttributeInterface $fromAttribute,

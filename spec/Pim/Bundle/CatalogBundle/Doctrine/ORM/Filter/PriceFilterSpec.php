@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr\Comparison;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -276,7 +276,7 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'price_code',
                 'currency',
-                'The currency "FOO" does not exist',
+                'The currency does not exist',
                 'filter',
                 'price',
                 'FOO'

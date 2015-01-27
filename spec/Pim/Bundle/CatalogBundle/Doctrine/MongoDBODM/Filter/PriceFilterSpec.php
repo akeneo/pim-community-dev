@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -188,7 +188,7 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'price_code',
                 'currency',
-                'The currency "FOO" does not exist',
+                'The currency does not exist',
                 'filter',
                 'price',
                 'FOO'

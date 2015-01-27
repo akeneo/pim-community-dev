@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -58,8 +58,7 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $measureManager->getUnitSymbolsForFamily('Weight')
             ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
-        ;
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $data = ['data' => 107, 'unit' => 'KILOGRAM'];
         $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
@@ -85,7 +84,13 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['unit' => 'KILOGRAM'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'data', 'setter', 'metric', gettype($data))
+            InvalidArgumentException::arrayKeyExpected(
+                'attributeCode',
+                'data',
+                'setter',
+                'metric',
+                print_r($data, true)
+            )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -97,7 +102,8 @@ class MetricValueSetterSpec extends ObjectBehavior
         $data = ['data' => 'data value'];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric', gettype($data))
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'unit', 'setter', 'metric',
+                print_r($data, true))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -114,7 +120,7 @@ class MetricValueSetterSpec extends ObjectBehavior
                 'data',
                 'setter',
                 'metric',
-                gettype($data)
+                'string'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -132,7 +138,7 @@ class MetricValueSetterSpec extends ObjectBehavior
                 'unit',
                 'setter',
                 'metric',
-                gettype($data)
+                123
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -148,17 +154,16 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $measureManager->getUnitSymbolsForFamily('Weight')
             ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
-        ;
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $this->shouldThrow(
             InvalidArgumentException::arrayInvalidKey(
                 'attributeCode',
                 'unit',
-                '"incorrect unit" does not exist in any attribute\'s families',
+                'The unit does not exist',
                 'setter',
                 'metric',
-                gettype($data)
+                'incorrect unit'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -183,8 +188,7 @@ class MetricValueSetterSpec extends ObjectBehavior
 
         $measureManager->getUnitSymbolsForFamily('Weight')
             ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g'])
-        ;
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();

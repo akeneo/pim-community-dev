@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -66,7 +66,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $this->setValue([], $attribute, $data, 'fr_FR', 'mobile');
@@ -94,7 +94,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media', gettype($data))
+            InvalidArgumentException::arrayKeyExpected('attributeCode', 'filePath', 'setter', 'media', print_r($data, true))
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
@@ -104,7 +104,7 @@ class MediaValueSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
 
         $data = [
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $this->shouldThrow(
@@ -113,7 +113,7 @@ class MediaValueSetterSpec extends ObjectBehavior
                 'originalFilename',
                 'setter',
                 'media',
-                gettype($data)
+                print_r($data, true)
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -131,10 +131,10 @@ class MediaValueSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'attributeCode',
-                'a valid file path ("../../../../../../app/uploads/product/path/to/unknown/file" given)',
+                'a valid file path',
                 'setter',
                 'media',
-                gettype($data)
+                '../../../../../../app/uploads/product/path/to/unknown/file'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }
@@ -180,7 +180,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $value->setMedia($media)->shouldBeCalled();
@@ -205,7 +205,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $value->setMedia($media)->shouldBeCalled();
@@ -229,7 +229,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);

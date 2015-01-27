@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -124,7 +124,7 @@ class MediaValueSetter extends AbstractValueSetter
                 'originalFilename',
                 'setter',
                 'media',
-                gettype($data)
+                print_r($data, true)
             );
         }
 
@@ -134,7 +134,7 @@ class MediaValueSetter extends AbstractValueSetter
                 'filePath',
                 'setter',
                 'media',
-                gettype($data)
+                print_r($data, true)
             );
         }
     }
@@ -143,7 +143,7 @@ class MediaValueSetter extends AbstractValueSetter
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws InvalidArgumentException If an invalid filePath is provided
+     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException If an invalid filePath is provided
      *
      * @return UploadedFile|null
      */
@@ -160,10 +160,10 @@ class MediaValueSetter extends AbstractValueSetter
         } catch (FileNotFoundException $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
-                sprintf('a valid file path ("%s" given)', $data['filePath']),
+                'a valid file path',
                 'setter',
                 'media',
-                gettype($data)
+                $data['filePath']
             );
         }
     }
@@ -183,10 +183,10 @@ class MediaValueSetter extends AbstractValueSetter
         }
 
         if (substr($uploadDir, -1) !== DIRECTORY_SEPARATOR) {
-            $uploadDir = $this->uploadDir . DIRECTORY_SEPARATOR;
+            $uploadDir = $this->uploadDir.DIRECTORY_SEPARATOR;
         }
 
-        $path  = $uploadDir . $data['filePath'];
+        $path  = $uploadDir.$data['filePath'];
         $value = ['filePath' => $path, 'originalFilename' => $data['originalFilename']];
 
         return $value;

@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -54,10 +54,10 @@ class MultiSelectValueSetter extends AbstractValueSetter
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'code',
-                    sprintf('Option with code "%s" does not exist', $optionCode),
+                    'The option does not exist',
                     'setter',
                     'multi select',
-                    gettype($data)
+                    $optionCode
                 );
             }
 

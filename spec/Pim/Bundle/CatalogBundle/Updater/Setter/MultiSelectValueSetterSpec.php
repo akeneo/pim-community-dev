@@ -8,8 +8,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -96,10 +96,10 @@ class MultiSelectValueSetterSpec extends ObjectBehavior
             InvalidArgumentException::arrayInvalidKey(
                 'attributeCode',
                 'code',
-                'Option with code "unknown code" does not exist',
+                'The option does not exist',
                 'setter',
                 'multi select',
-                gettype($data)
+                'unknown code'
             )
         )->during('setValue', [[], $attribute, $data, 'fr_FR', 'mobile']);
     }

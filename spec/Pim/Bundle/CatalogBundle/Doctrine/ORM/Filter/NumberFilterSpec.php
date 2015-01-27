@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -74,6 +74,6 @@ class NumberFilterSpec extends ObjectBehavior
     function it_throws_an_exception_if_value_is_not_a_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('number_code');
-        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number'))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::numericExpected('number_code', 'filter', 'number', gettype('WRONG')))->during('addAttributeFilter', [$attribute, '=', 'WRONG']);
     }
 }
