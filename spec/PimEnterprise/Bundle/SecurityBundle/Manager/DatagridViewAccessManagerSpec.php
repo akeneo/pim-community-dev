@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -23,7 +23,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
 
     function let(
         AttributeRepository $attributeRepository,
-        CategoryRepository $categoryRepository,
+        CategoryRepositoryInterface $categoryRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
         CategoryAccessManager $categoryAccessManager,
         DatagridView $view,

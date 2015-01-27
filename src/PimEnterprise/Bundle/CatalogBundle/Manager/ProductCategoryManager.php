@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -38,13 +38,13 @@ class ProductCategoryManager extends BaseProductCategoryManager
      * Constructor
      *
      * @param ProductCategoryRepositoryInterface $productRepo        Product repository
-     * @param CategoryRepository                 $categoryRepo       Category repository
+     * @param CategoryRepositoryInterface        $categoryRepo       Category repository
      * @param SecurityContextInterface           $securityContext    Security context
      * @param CategoryAccessRepository           $categoryAccessRepo Category Access repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
-        CategoryRepository $categoryRepo,
+        CategoryRepositoryInterface $categoryRepo,
         SecurityContextInterface $securityContext,
         CategoryAccessRepository $categoryAccessRepo
     ) {

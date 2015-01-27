@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Event;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -33,11 +33,11 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
 
     /**
      * @param PublishedProductRepositoryInterface $publishedRepository
-     * @param CategoryRepository                  $categoryRepository
+     * @param CategoryRepositoryInterface         $categoryRepository
      */
     public function __construct(
         PublishedProductRepositoryInterface $publishedRepository,
-        CategoryRepository $categoryRepository
+        CategoryRepositoryInterface $categoryRepository
     ) {
         $this->publishedRepository = $publishedRepository;
         $this->categoryRepository  = $categoryRepository;
