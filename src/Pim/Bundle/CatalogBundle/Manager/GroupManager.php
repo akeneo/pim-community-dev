@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\Persistence\RemoverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

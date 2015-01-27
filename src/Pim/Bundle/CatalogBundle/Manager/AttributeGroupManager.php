@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use Akeneo\Component\Persistence\RemoverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;

@@ -33,12 +33,12 @@ class AkeneoStorageUtilsBundle extends Bundle
         if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
             \Doctrine\ODM\MongoDB\Types\Type::registerType(
                 self::ODM_ENTITIES_TYPE,
-                'Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entities'
+                'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Types\Entities'
             );
 
             \Doctrine\ODM\MongoDB\Types\Type::registerType(
                 self::ODM_ENTITY_TYPE,
-                'Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entity'
+                'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Types\Entity'
             );
         }
     }

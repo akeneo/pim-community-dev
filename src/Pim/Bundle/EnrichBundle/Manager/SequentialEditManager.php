@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\Persistence\SaverInterface;
-use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;

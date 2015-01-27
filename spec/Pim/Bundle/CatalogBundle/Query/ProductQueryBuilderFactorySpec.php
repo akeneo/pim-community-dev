@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 class ProductQueryBuilderFactorySpec extends ObjectBehavior
 {

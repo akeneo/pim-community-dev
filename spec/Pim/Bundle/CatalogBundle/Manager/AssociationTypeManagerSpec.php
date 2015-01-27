@@ -22,12 +22,12 @@ class AssociationTypeManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\RemoverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_provides_all_association_types($repository)

@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\Persistence\SaverInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;

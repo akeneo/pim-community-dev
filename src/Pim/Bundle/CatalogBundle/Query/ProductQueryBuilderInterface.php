@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query;
 
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product

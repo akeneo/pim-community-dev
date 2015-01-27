@@ -17,12 +17,12 @@ class CommentManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\RemoverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_throws_exception_when_save_anything_else_than_a_comment()

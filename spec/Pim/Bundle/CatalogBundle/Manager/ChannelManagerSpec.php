@@ -20,7 +20,7 @@ class ChannelManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_initializable()
