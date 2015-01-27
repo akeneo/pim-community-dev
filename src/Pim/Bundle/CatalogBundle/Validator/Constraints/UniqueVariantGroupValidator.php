@@ -12,9 +12,6 @@ use Symfony\Component\Validator\ConstraintValidator;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO missing spec
- * TODO missing behat to imort products and check that there is only one variant group
  */
 class UniqueVariantGroupValidator extends ConstraintValidator
 {
@@ -24,20 +21,20 @@ class UniqueVariantGroupValidator extends ConstraintValidator
     public function validate($product, Constraint $constraint)
     {
         if ($product instanceof ProductInterface) {
-            $productVariantGroup = null;
+            $variantGroups = [];
             foreach ($product->getGroups() as $group) {
-                if ($group->getType()->isVariant() && null !== $productVariantGroup) {
-                    $this->context->addViolation(
-                        $constraint->message,
-                        array(
-                            '%group_one%' => $productVariantGroup,
-                            '%group_two%' => $group,
-                            '%product%'   => $product->getIdentifier()
-                        )
-                    );
-                } elseif ($group->getType()->isVariant()) {
-                    $productVariantGroup = $group;
+                if ($group->getType()->isVariant()) {
+                    $variantGroups[] = $group;
                 }
+            }
+            if (count($variantGroups) > 1) {
+                $this->context->addViolation(
+                    $constraint->message,
+                    array(
+                        '%groups%'  => $this->formatValues($variantGroups, ConstraintValidator::OBJECT_TO_STRING),
+                        '%product%' => $product->getIdentifier()
+                    )
+                );
             }
         }
     }
