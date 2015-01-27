@@ -86,7 +86,7 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      * @Template
-     * @AclAncestor("pim_enrich_group_index")
+     * @AclAncestor("pim_enrich_variant_group_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -100,7 +100,7 @@ class VariantGroupController extends GroupController
      * {@inheritdoc}
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_create")
+     * @AclAncestor("pim_enrich_variant_group_create")
      */
     public function createAction(Request $request)
     {
@@ -135,7 +135,7 @@ class VariantGroupController extends GroupController
      *
      * TODO: find a way to use param converter with interfaces
      *
-     * @AclAncestor("pim_enrich_group_edit")
+     * @AclAncestor("pim_enrich_variant_group_edit")
      * @Template
      */
     public function editAction(Group $group)
