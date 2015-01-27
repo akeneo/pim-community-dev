@@ -51,10 +51,10 @@ class ProductsValidator
     }
 
     /**
-     * @param ProductInterface[] $products
      * @param RuleInterface      $rule
+     * @param ProductInterface[] $products
      */
-    public function validate(array $products, RuleInterface $rule)
+    public function validate(RuleInterface $rule, array $products)
     {
         foreach ($products as $product) {
             $violations = $this->productValidator->validate($product);

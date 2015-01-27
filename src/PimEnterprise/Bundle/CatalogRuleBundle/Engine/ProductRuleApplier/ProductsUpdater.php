@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
@@ -44,10 +45,10 @@ class ProductsUpdater
     }
 
     /**
-     * @param ProductInterface[] $products
      * @param RuleInterface      $rule
+     * @param ProductInterface[] $products
      */
-    public function update(array $products, RuleInterface $rule)
+    public function update(RuleInterface $rule, array $products)
     {
         $this->updateFromRule($products, $rule);
         $this->updateFromVariantGroup($products);
@@ -81,7 +82,7 @@ class ProductsUpdater
         foreach ($products as $product) {
             $variantGroup = $product->getVariantGroup();
             $template = $variantGroup !== null ? $variantGroup->getProductTemplate() : null;
-            if ($template !== null) {
+            if (null !== $template) {
                 $this->templateUpdater->update($template, [$product]);
             }
         }

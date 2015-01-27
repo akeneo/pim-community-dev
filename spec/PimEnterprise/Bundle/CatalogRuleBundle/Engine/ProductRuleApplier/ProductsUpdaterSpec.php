@@ -47,7 +47,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
 
         $templateUpdater->update(Argument::any(), Argument::any())->shouldNotBeCalled();
 
-        $this->update([$product], $rule);
+        $this->update($rule, [$product]);
     }
 
     function it_updates_product_when_the_rule_has_a_set_action(
@@ -69,7 +69,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $templateUpdater->update(Argument::any(), Argument::any())
             ->shouldNotBeCalled();
 
-        $this->update([$product], $rule);
+        $this->update($rule, [$product]);
     }
 
     function it_updates_product_when_the_rule_has_a_copy_action(
@@ -94,7 +94,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $templateUpdater->update(Argument::any(), Argument::any())
             ->shouldNotBeCalled();
 
-        $this->update([$product], $rule);
+        $this->update($rule, [$product]);
     }
 
     function it_throws_exception_when_update_a_product_with_an_unknown_action(
@@ -105,7 +105,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $rule->getCode()->willReturn('test_rule');
 
         $this->shouldThrow(new \LogicException('The action "stdClass" is not supported yet.'))
-            ->during('update', [[$product], $rule]);
+            ->during('update', [$rule, [$product]]);
     }
 
     function it_ensures_priority_of_variant_group_values_over_the_rule(
@@ -134,6 +134,6 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $templateUpdater->update($productTemplate, [$product])
             ->shouldBeCalled();
 
-        $this->update([$product], $rule);
+        $this->update($rule, [$product]);
     }
 }

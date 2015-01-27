@@ -33,13 +33,13 @@ class ProductRuleApplier implements ApplierInterface
     /** @var PaginatorFactoryInterface */
     protected $paginatorFactory;
 
-    /** @var  ProductsUpdater */
+    /** @var ProductsUpdater */
     protected $productsUpdater;
 
-    /** @var  ProductsValidator */
+    /** @var ProductsValidator */
     protected $productsValidator;
 
-    /** @var  ProductsSaver */
+    /** @var ProductsSaver */
     protected $productsSaver;
 
     /** @var EventDispatcherInterface */
@@ -90,9 +90,9 @@ class ProductRuleApplier implements ApplierInterface
         $this->cacheClearer->addNonClearableEntity($this->ruleDefinitionClass);
 
         foreach ($paginator as $productsPage) {
-            $this->productsUpdater->update($productsPage, $rule);
-            $this->productsValidator->validate($productsPage, $rule);
-            $this->productsSaver->save($productsPage, $rule);
+            $this->productsUpdater->update($rule, $productsPage);
+            $this->productsValidator->validate($rule, $productsPage);
+            $this->productsSaver->save($rule, $productsPage);
 
             $this->cacheClearer->clear();
         }

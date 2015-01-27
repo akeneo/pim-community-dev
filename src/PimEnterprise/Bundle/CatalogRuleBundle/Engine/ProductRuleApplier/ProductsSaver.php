@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -48,10 +49,10 @@ class ProductsSaver
     }
 
     /**
-     * @param ProductInterface[] $products
      * @param RuleInterface      $rule
+     * @param ProductInterface[] $products
      */
-    public function save(array $products, RuleInterface $rule)
+    public function save(RuleInterface $rule, array $products)
     {
         $savingContext = $this->translator->trans(
             'pimee_catalog_rule.product.history',

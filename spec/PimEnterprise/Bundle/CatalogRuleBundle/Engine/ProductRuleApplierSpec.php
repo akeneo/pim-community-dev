@@ -125,9 +125,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
         $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
 
-        $productsUpdater->update(Argument::any(), $rule)->shouldBeCalled();
-        $productsValidator->validate(Argument::any(), $rule)->shouldBeCalled();
-        $productsSaver->save(Argument::any(), $rule)->shouldBeCalled();
+        $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
+        $productsValidator->validate($rule, Argument::any())->shouldBeCalled();
+        $productsSaver->save($rule, Argument::any())->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 

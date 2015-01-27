@@ -45,6 +45,6 @@ class ProductsSaverSpec extends ObjectBehavior
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $productSaver->saveAll(Argument::any(), ['recalculate' => false, 'schedule' => true])->shouldBeCalled();
 
-        $this->save([$product], $rule);
+        $this->save($rule, [$product]);
     }
 }

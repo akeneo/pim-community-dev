@@ -46,7 +46,7 @@ class ProductsValidatorSpec extends ObjectBehavior
         $objectDetacher->detach($validProduct)->shouldNotBeCalled();
         $eventDispatcher->dispatch(RuleEvents::SKIP, Argument::any())->shouldNotBeCalled();
 
-        $this->validate([$validProduct], $rule);
+        $this->validate($rule, [$validProduct]);
     }
 
     function it_dispatch_event_when_encounter_invalid_product(
@@ -64,6 +64,6 @@ class ProductsValidatorSpec extends ObjectBehavior
         $objectDetacher->detach($invalidProduct)->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::SKIP, Argument::any())->shouldBeCalled();
 
-        $this->validate([$invalidProduct], $rule);
+        $this->validate($rule, [$invalidProduct]);
     }
 }
