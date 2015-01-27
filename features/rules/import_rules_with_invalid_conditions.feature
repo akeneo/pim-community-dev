@@ -611,8 +611,9 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data (for filter media)."
-    And I should see "actions[0]: Attribute \"side_view\" expects an array with the key \"filePath\" as data, \"array\" given (for setter media)."
+    And I should see "conditions[0]: The key \"value\" is missing or empty."
+    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data"
+    And I should see "actions[0]: Attribute or field \"side_view\" expects an array with the key \"filePath\" as data"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "SNKRS-1R"
