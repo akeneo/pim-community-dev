@@ -18,7 +18,9 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface CategoryRepositoryInterface extends
- TreeRepositoryInterface, IdentifiableObjectRepositoryInterface, ObjectRepository
+    TreeRepositoryInterface,
+    IdentifiableObjectRepositoryInterface,
+    ObjectRepository
 {
     /**
      * Get query builder for all existing category trees
@@ -29,8 +31,8 @@ interface CategoryRepositoryInterface extends
     /**
      * Count children for a given category.
      *
-     * @param CategoryInterface $category the requested node
-     * @param boolean           $onlyDirect true to count only direct children
+     * @param CategoryInterface $category   the requested node
+     * @param bool              $onlyDirect true to count only direct children
      *
      * @return integer
      */
@@ -57,7 +59,7 @@ interface CategoryRepositoryInterface extends
     /**
      * Shortcut to get all children query builder
      *
-     * @param CategoryInterface $category the requested node
+     * @param CategoryInterface $category    the requested node
      * @param boolean           $includeNode true to include actual node in query result
      *
      * @return \Doctrine\ORM\QueryBuilder
@@ -123,7 +125,7 @@ interface CategoryRepositoryInterface extends
      * Criterias are joined with a AND operator
      *
      * @param integer $treeRootId Tree segment root id
-     * @param array   $criterias Criterias to apply
+     * @param array   $criterias  Criterias to apply
      *
      * @return ArrayCollection
      */

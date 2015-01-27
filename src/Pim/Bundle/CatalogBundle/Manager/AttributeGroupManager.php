@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\Persistence\SaverInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\Persistence\SaverInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
@@ -30,7 +30,7 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
      * Constructor
      *
      * @param ObjectManager                     $objectManager Object manager
-     * @param AttributeGroupRepositoryInterface $repository Repository
+     * @param AttributeGroupRepositoryInterface $repository    Repository
      */
     public function __construct(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
     {

@@ -22,7 +22,9 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class CategoryRepository extends NestedTreeRepository implements
- IdentifiableObjectRepositoryInterface, ReferableEntityRepositoryInterface, CategoryRepositoryInterface
+    IdentifiableObjectRepositoryInterface,
+    ReferableEntityRepositoryInterface,
+    CategoryRepositoryInterface
 {
     /**
      * Get query builder for all existitng category trees

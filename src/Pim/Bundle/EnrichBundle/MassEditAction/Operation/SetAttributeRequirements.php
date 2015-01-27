@@ -3,8 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -35,7 +33,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     protected $attRequirements;
 
     /**
-     * @param ChannelRepositoryInterface $channelRepository
+     * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributeRequirementFactory  $factory
      */

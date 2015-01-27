@@ -16,7 +16,8 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @deprecated will be removed in 1.4
  */
 class ReferableEntityRepository extends EntityRepository implements
- ReferableEntityRepositoryInterface, IdentifiableObjectRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}

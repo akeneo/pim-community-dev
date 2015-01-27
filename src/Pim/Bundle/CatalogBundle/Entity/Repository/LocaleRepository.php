@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
  *
  * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class LocaleRepository extends ReferableEntityRepository  implements LocaleRepositoryInterface
+class LocaleRepository extends ReferableEntityRepository implements LocaleRepositoryInterface
 {
     /**
      * {@inheritdoc}

@@ -80,7 +80,7 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface, Ass
      * @param int $id
      */
     public function cascadeChannelRemoval($id);
-    
+
     /**
      * @param int $productId
      * @param int $assocTypeCount
