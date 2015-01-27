@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify as BaseClassify;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;

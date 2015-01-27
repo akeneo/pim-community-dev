@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;

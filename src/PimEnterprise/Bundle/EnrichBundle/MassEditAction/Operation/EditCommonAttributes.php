@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;

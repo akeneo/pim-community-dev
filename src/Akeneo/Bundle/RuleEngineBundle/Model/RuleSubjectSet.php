@@ -11,7 +11,7 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Model;
 
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
  * Subjects set that will be impacted by a rule.

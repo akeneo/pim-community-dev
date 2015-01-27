@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Akeneo\Component\Persistence\BulkRemoverInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

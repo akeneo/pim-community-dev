@@ -5,7 +5,7 @@ namespace spec\Akeneo\Bundle\RuleEngineBundle\Doctrine\Saver;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Saver\BaseSavingOptionsResolver;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,8 +26,8 @@ class RuleDefinitionSaverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
-        $this->shouldHaveType('Akeneo\Component\Persistence\BulkSaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_saves_a_rule_object($entityManager, $optionsResolver)

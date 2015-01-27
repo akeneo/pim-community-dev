@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 
