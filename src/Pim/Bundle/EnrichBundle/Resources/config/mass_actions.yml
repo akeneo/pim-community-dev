@@ -115,6 +115,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.updater.product_template'
             - '@validator'
+            - '@pim_catalog.repository.product_mass_action'
         tags:
             -
                 name: pim_enrich.mass_edit_action
