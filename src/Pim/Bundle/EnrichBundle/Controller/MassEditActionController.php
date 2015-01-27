@@ -205,7 +205,7 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         $operator->initializeOperation();
-        $form = $this->getOperatorForm($operator);
+        $form = $this->getOperatorForm($operator, ['Default', 'configureAction']);
         $form->submit($this->request);
 
         if ($form->isValid()) {
@@ -271,16 +271,20 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * @param AbstractMassEditOperator $operator
+     * @param AbstractMassEditOperator  $operator
+     * @param array                     $validationGroups
      *
      * @return Form
      */
-    protected function getOperatorForm(AbstractMassEditOperator $operator)
+    protected function getOperatorForm(AbstractMassEditOperator $operator, array $validationGroups = [])
     {
         return $this->createForm(
             new MassEditOperatorType(),
             $operator,
-            array('operations' => $operator->getOperationChoices())
+            [
+                'operations' => $operator->getOperationChoices(),
+                'validation_groups' => $validationGroups
+            ]
         );
     }
 
