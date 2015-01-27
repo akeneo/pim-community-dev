@@ -568,7 +568,8 @@ abstract class AbstractProduct implements ProductInterface
                     return false;
                 }
 
-                if ($group->getProductTemplate()->hasValueForAttribute($attribute)) {
+                $template = $group->getProductTemplate();
+                if (null !== $template && $template->hasValueForAttribute($attribute)) {
                     return false;
                 }
             }
