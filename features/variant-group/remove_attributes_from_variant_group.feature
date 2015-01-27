@@ -25,3 +25,19 @@ Feature: Remove an attribute from a variant group
     And I remove the "Comment" attribute
     Then I should see flash message "Attribute successfully removed from the variant group"
     And I should see available attribute Comment in group "Other"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3697
+  Scenario: Successfully remove an attribute from a variant group and ensure the field is enabled back
+    Given I am on the "caterpillar_boots" variant group page
+    And I visit the "Attributes" tab
+    When I add available attribute Comment
+    And I visit the "Other" group
+    Then I should see the Name field
+    And I am on the "boot" product page
+    And the fields Comment should be disabled
+    And I should see that Comment is inherited from variant group attribute
+    And I am on the "caterpillar_boots" variant group page
+    And I visit the "Attributes" tab
+    When I remove the "Comment" attribute
+    And I am on the "boot" product page
+    And I should see that Comment is not inherited from variant group attribute
