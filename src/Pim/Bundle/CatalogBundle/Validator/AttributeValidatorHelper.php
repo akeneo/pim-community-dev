@@ -31,8 +31,10 @@ class AttributeValidatorHelper
      * @param LocaleRepositoryInterface  $localeRepository
      * @param ChannelRepositoryInterface $scopeRepository
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository, ChannelRepositoryInterface $scopeRepository)
-    {
+    public function __construct(
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $scopeRepository
+    ) {
         $this->localeRepository = $localeRepository;
         $this->scopeRepository = $scopeRepository;
     }

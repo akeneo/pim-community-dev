@@ -16,7 +16,8 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class AttributeOptionRepository extends EntityRepository implements
- ReferableEntityRepositoryInterface, AttributeOptionRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    AttributeOptionRepositoryInterface
 {
     /**
      * {@inheritdoc}

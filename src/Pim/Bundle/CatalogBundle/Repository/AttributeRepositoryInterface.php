@@ -14,7 +14,9 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface AttributeRepositoryInterface extends
- ChoicesProviderInterface, IdentifiableObjectRepositoryInterface, ObjectRepository
+    ChoicesProviderInterface,
+    IdentifiableObjectRepositoryInterface,
+    ObjectRepository
 {
     /**
      * @return AttributeInterface[]
@@ -80,8 +82,8 @@ interface AttributeRepositoryInterface extends
      * Get attribute as array indexed by code
      *
      * @param boolean $withLabel translated label should be joined
-     * @param string  $locale the locale code of the label
-     * @param array   $ids the attribute ids
+     * @param string  $locale    the locale code of the label
+     * @param array   $ids       the attribute ids
      *
      * @return array
      */

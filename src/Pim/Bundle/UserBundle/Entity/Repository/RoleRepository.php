@@ -17,7 +17,8 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @deprecated will be moved to Pim\Bundle\UserBundle\Doctrine\ORM\Repository in 1.4
  */
 class RoleRepository extends BaseRoleRepository implements
- IdentifiableObjectRepositoryInterface, ReferableEntityRepositoryInterface
+    IdentifiableObjectRepositoryInterface,
+    ReferableEntityRepositoryInterface
 {
     /**
      * {@inheritdoc}

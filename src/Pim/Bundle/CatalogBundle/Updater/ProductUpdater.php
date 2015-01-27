@@ -27,8 +27,8 @@ class ProductUpdater implements ProductUpdaterInterface
 
     /**
      * @param AttributeRepositoryInterface $repository
-     * @param SetterRegistryInterface $setterRegistry
-     * @param CopierRegistryInterface $copierRegistry
+     * @param SetterRegistryInterface      $setterRegistry
+     * @param CopierRegistryInterface      $copierRegistry
      */
     public function __construct(
         AttributeRepositoryInterface $repository,
