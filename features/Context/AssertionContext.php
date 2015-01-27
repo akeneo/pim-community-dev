@@ -491,6 +491,25 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     *
+     * @return bool
+     * @throws ExpectationException
+     * @Then /^I should see that (.*) is not inherited from variant group attribute$/
+     */
+    public function iShouldSeeThatAttributeIsNotInheritedFromVariantGroup($attribute)
+    {
+        $icons = $this->getCurrentPage()->findFieldIcons($attribute);
+        foreach ($icons as $icon) {
+            if (!$icon->hasClass('icon-lock')) {
+                return true;
+            }
+        }
+
+        throw $this->createExpectationException('Affected by a variant group icon is found and it should not');
+    }
+
+    /**
      * @return Page
      */
     protected function getCurrentPage()
