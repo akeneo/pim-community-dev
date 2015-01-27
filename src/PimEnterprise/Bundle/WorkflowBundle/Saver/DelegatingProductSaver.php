@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Saver\ProductSavingOptionsResolver;

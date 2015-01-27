@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager as BaseProductMassActionManager;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -39,13 +39,13 @@ class ProductMassActionManager extends BaseProductMassActionManager
      * Construct
      *
      * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepository                  $attributeRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
      * @param AttributeGroupAccessRepository       $attGroupAccessRepo
      * @param SecurityContext                      $securityContext
      */
     public function __construct(
         ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeGroupAccessRepository $attGroupAccessRepo,
         SecurityContext $securityContext
     ) {

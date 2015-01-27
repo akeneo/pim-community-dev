@@ -6,8 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Prophecy\Argument;
@@ -25,7 +25,7 @@ class CategoryManagerSpec extends ObjectBehavior
         CategoryAccessRepository $categoryAccessRepository,
         ObjectManager $om,
         EventDispatcherInterface $eventDispatcher,
-        CategoryRepository $categoryRepository,
+        CategoryRepositoryInterface $categoryRepository,
         SecurityContextInterface $context
     ) {
         $om->getRepository(Argument::any())->willReturn($categoryRepository);

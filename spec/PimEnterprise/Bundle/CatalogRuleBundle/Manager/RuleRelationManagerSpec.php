@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation;
@@ -16,7 +16,7 @@ use Prophecy\Argument;
 class RuleRelationManagerSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         RuleRelationRepositoryInterface $ruleRelationRepo
     ) {
         $this->beConstructedWith($ruleRelationRepo, $attributeRepository, 'Pim\Bundle\CatalogBundle\Entity\Attribute');
@@ -42,10 +42,10 @@ class RuleRelationManagerSpec extends ObjectBehavior
         $attribute1->__toString()->willReturn('attribute1');
         $attribute2->__toString()->willReturn('attribute2');
 
-        $attributeRepository->findByReference('to_field')->shouldBeCalled()->willReturn($attribute1);
-        $attributeRepository->findByReference('field')->shouldBeCalled()->willReturn($attribute2);
-        $attributeRepository->findByReference('field')->shouldBeCalled()->willReturn($attribute2);
-        $attributeRepository->findByReference('field_2')->shouldBeCalled()->willReturn(null);
+        $attributeRepository->findOneByIdentifier('to_field')->shouldBeCalled()->willReturn($attribute1);
+        $attributeRepository->findOneByIdentifier('field')->shouldBeCalled()->willReturn($attribute2);
+        $attributeRepository->findOneByIdentifier('field')->shouldBeCalled()->willReturn($attribute2);
+        $attributeRepository->findOneByIdentifier('field_2')->shouldBeCalled()->willReturn(null);
 
         $this->getImpactedAttributes($rule)->shouldReturn([$attribute1, $attribute2]);
     }

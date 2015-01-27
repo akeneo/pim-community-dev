@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 
-use Akeneo\Component\Persistence\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;

@@ -6,11 +6,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 {
-    function let(PublishedProductRepositoryInterface $publishedRepository, CategoryRepository $categoryRepository)
+    function let(PublishedProductRepositoryInterface $publishedRepository, CategoryRepositoryInterface $categoryRepository)
     {
         $this->beConstructedWith($publishedRepository, $categoryRepository);
     }

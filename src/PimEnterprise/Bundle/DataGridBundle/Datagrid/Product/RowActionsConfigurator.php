@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
@@ -39,20 +39,20 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var LocaleRepository */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
     /**
      * @param ConfigurationRegistry      $registry
      * @param SecurityContextInterface   $securityContext
      * @param ProductRepositoryInterface $productRepository
-     * @param LocaleRepository           $localeRepository
+     * @param LocaleRepositoryInterface  $localeRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
         ProductRepositoryInterface $productRepository,
-        LocaleRepository $localeRepository
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->registry = $registry;
         $this->securityContext = $securityContext;

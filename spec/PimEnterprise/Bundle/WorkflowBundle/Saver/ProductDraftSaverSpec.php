@@ -49,12 +49,12 @@ class ProductDraftSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\BulkSaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_creates_and_saves_a_draft(

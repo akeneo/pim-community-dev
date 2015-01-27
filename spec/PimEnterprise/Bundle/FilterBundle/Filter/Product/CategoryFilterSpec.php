@@ -8,8 +8,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -88,7 +87,7 @@ class CategoryFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         $manager,
-        CategoryRepository $repo,
+        CategoryRepositoryInterface $repo,
         CategoryInterface $tree,
         $accessRepository,
         $user,
@@ -111,7 +110,7 @@ class CategoryFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         $manager,
-        CategoryRepository $repo,
+        CategoryRepositoryInterface $repo,
         CategoryInterface $category
     ) {
         $manager->getCategoryRepository()->willReturn($repo);
@@ -126,7 +125,7 @@ class CategoryFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         $manager,
-        CategoryRepository $repo,
+        CategoryRepositoryInterface $repo,
         CategoryInterface $category,
         $accessRepository,
         $securityContext

@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -28,7 +28,7 @@ class ProductCategoryManagerSpec extends ObjectBehavior
     function let(
         SecurityContextInterface $securityContext,
         ProductCategoryRepositoryInterface $productRepo,
-        CategoryRepository $categoryRepo,
+        CategoryRepositoryInterface $categoryRepo,
         CategoryAccessRepository $accessRepo,
         TokenInterface $token,
         User $user

@@ -10,8 +10,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Akeneo\Component\Persistence\BulkRemoverInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
