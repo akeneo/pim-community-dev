@@ -5,9 +5,11 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -28,6 +30,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         NormalizerInterface $valueNormalizer,
         ObjectDetacherInterface $detacher,
+        ProductTemplateMediaManager $templateMediaManager,
         StepExecution $stepExecution
     ) {
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
@@ -38,6 +41,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             $validator,
             $detacher,
             $valueNormalizer,
+            $templateMediaManager,
             $groupClass,
             $templateClass,
             'csv'
@@ -149,14 +153,15 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             'Pim\Bundle\CatalogBundle\Entity\Group',
             'csv',
             ['entity' => $variantGroup]
-        )->shouldBeCalled()->willReturn($variantGroup);
+        )->willReturn($variantGroup);
 
         $variantGroup->getProductTemplate()->willReturn($template);
 
+        $values = new ArrayCollection([$value]);
+
         $denormalizer
             ->denormalize(['name' => 'Nice product'], 'ProductValue[]', 'csv')
-            ->shouldBeCalled()
-            ->willReturn([$value]);
+            ->willReturn($values);
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
@@ -165,17 +170,25 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->willReturn(new ConstraintViolationList());
 
         $valueNormalizer
-            ->normalize($value, 'json', ['entity' => 'product'])
-            ->shouldBeCalled()
+            ->normalize($values, 'json', ['entity' => 'product'])
             ->willReturn(
                 [
-                    'scope'  => null,
-                    'locale' => null,
-                    'value'  => 'Nice product'
+                    'name' => [
+                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                    ]
                 ]
             );
 
         $variantGroup->getProductTemplate()->willReturn($template);
+
+        $template
+            ->setValues($values)
+            ->shouldBeCalled();
+
+        $template
+            ->getValues()
+            ->willReturn($values);
+
         $template
             ->setValuesData(
                 [
@@ -236,7 +249,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $denormalizer
             ->denormalize(['name' => 'Nice product'], 'ProductValue[]', 'csv')
             ->shouldBeCalled()
-            ->willReturn([$value]);
+            ->willReturn(new ArrayCollection([$value]));
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
@@ -269,4 +282,3 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             );
     }
 }
-

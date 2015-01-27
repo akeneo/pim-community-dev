@@ -5,6 +5,8 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -37,7 +39,10 @@ class VariantGroupProcessor extends AbstractProcessor
     const LABEL_FIELD = 'label';
 
     /** @var NormalizerInterface */
-    protected $valueNormalizer;
+    protected $normalizer;
+
+    /** @var ProductTemplateMediaManager */
+    protected $templateMediaManager;
 
     /** @var string */
     protected $templateClass;
@@ -47,28 +52,31 @@ class VariantGroupProcessor extends AbstractProcessor
 
     /**
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param DenormalizerInterface                 $groupValuesDenormalizer
+     * @param DenormalizerInterface                 $denormalizer
      * @param ValidatorInterface                    $validator
      * @param ObjectDetacherInterface               $detacher
-     * @param NormalizerInterface                   $valueNormalizer
+     * @param NormalizerInterface                   $normalizer
+     * @param ProductTemplateMediaManager           $templateMediaManager
      * @param string                                $groupClass
      * @param string                                $templateClass
      * @param string                                $format
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $groupRepository,
-        DenormalizerInterface $groupValuesDenormalizer,
+        DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        NormalizerInterface $valueNormalizer,
+        NormalizerInterface $normalizer,
+        ProductTemplateMediaManager $templateMediaManager,
         $groupClass,
         $templateClass,
         $format
     ) {
-        parent::__construct($groupRepository, $groupValuesDenormalizer, $validator, $detacher, $groupClass);
-        $this->valueNormalizer = $valueNormalizer;
-        $this->templateClass   = $templateClass;
-        $this->format = $format;
+        parent::__construct($groupRepository, $denormalizer, $validator, $detacher, $groupClass);
+        $this->normalizer           = $normalizer;
+        $this->templateMediaManager = $templateMediaManager;
+        $this->templateClass        = $templateClass;
+        $this->format               = $format;
     }
 
     /**
@@ -140,7 +148,9 @@ class VariantGroupProcessor extends AbstractProcessor
             $values = $this->denormalizeValuesFromItemData($valuesData);
             $this->validateValues($variantGroup, $values, $item);
             $template = $this->getProductTemplate($variantGroup);
-            $structuredValuesData = $this->normalizeValuesToStructuredData($values);
+            $template->setValues($values);
+            $this->templateMediaManager->handleProductTemplateMedia($template);
+            $structuredValuesData = $this->normalizeValuesToStructuredData($template->getValues());
             $template->setValuesData($structuredValuesData);
         }
     }
@@ -184,13 +194,13 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * @param GroupInterface          $variantGroup
-     * @param ProductValueInterface[] $values
-     * @param array                   $item
+     * @param GroupInterface  $variantGroup
+     * @param ArrayCollection $values       Collection of ProductValueInterface
+     * @param array           $item
      *
      * @throw InvalidItemException
      */
-    protected function validateValues(GroupInterface $variantGroup, array $values, array $item)
+    protected function validateValues(GroupInterface $variantGroup, ArrayCollection $values, array $item)
     {
         foreach ($values as $value) {
             $violations = $this->validator->validate($value);
@@ -221,26 +231,15 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Normalize product values objects to JSON format
+     * Normalize product value objects to JSON format
      *
-     * @param ProductValueInterface[] $values
+     * @param ArrayCollection $values Collection of ProductValueInterface
      *
      * @return array
      */
-    protected function normalizeValuesToStructuredData(array $values)
+    protected function normalizeValuesToStructuredData(ArrayCollection $values)
     {
-        $normalizedValues = [];
-
-        foreach ($values as $value) {
-            $attributeCode = $value->getAttribute()->getCode();
-            $normalizedValues[$attributeCode][] = $this->valueNormalizer->normalize(
-                $value,
-                'json',
-                ['entity' => 'product']
-            );
-        }
-
-        return $normalizedValues;
+        return $this->normalizer->normalize($values, 'json', ['entity' => 'product']);
     }
 
     /**
