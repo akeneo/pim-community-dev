@@ -6,9 +6,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\SaverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AssociationTypeManager implements SaverInterface, RemoverInterface
 {
-    /** @var AssociationTypeRepository $repository */
+    /** @var AssociationTypeRepositoryInterface $repository */
     protected $repository;
 
     /** @var ObjectManager */
@@ -33,12 +33,12 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
     /**
      * Constructor
      *
-     * @param AssociationTypeRepository $repository
-     * @param ObjectManager             $objectManager
-     * @param EventDispatcherInterface  $eventDispatcher
+     * @param AssociationTypeRepositoryInterface $repository
+     * @param ObjectManager                      $objectManager
+     * @param EventDispatcherInterface           $eventDispatcher
      */
     public function __construct(
-        AssociationTypeRepository $repository,
+        AssociationTypeRepositoryInterface $repository,
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher
     ) {

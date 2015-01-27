@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Prophecy\Argument;
 
 class CategoryDenormalizerSpec extends ObjectBehavior
@@ -13,7 +13,7 @@ class CategoryDenormalizerSpec extends ObjectBehavior
     const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\CategoryInterface';
     const FORMAT_CSV   = 'csv';
 
-    function let(ManagerRegistry $registry, CategoryRepository $repository)
+    function let(ManagerRegistry $registry, CategoryRepositoryInterface $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 

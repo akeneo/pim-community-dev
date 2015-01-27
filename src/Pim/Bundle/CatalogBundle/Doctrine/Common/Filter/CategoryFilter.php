@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 
 /**
@@ -40,14 +40,14 @@ class CategoryFilter implements FieldFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param CategoryRepository                 $categoryRepository
+     * @param CategoryRepositoryInterface        $categoryRepository
      * @param ProductCategoryRepositoryInterface $productRepository
      * @param ObjectIdResolverInterface          $objectIdResolver
      * @param array                              $supportedFields
      * @param array                              $supportedOperators
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
+        CategoryRepositoryInterface $categoryRepository,
         ProductCategoryRepositoryInterface $productRepository,
         ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],

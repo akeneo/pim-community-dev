@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -18,7 +18,7 @@ class CategoryManagerSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        CategoryRepository $categoryRepository
+        CategoryRepositoryInterface $categoryRepository
     ) {
         $this->beConstructedWith($objectManager, self::CATEGORY_CLASS, $eventDispatcher);
 

@@ -6,20 +6,21 @@ use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInte
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface as MongoProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
@@ -34,7 +35,8 @@ class ProductRepository extends DocumentRepository implements
     ProductRepositoryInterface,
     IdentifiableObjectRepositoryInterface,
     ReferableEntityRepositoryInterface,
-    AssociationRepositoryInterface
+    AssociationRepositoryInterface,
+    MongoProductRepositoryInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
@@ -42,10 +44,10 @@ class ProductRepository extends DocumentRepository implements
     /** @var EntityManager */
     protected $entityManager;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var CategoryRepository */
+    /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
     /**
@@ -53,7 +55,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @param EntityManager $entityManager
      *
-     * @return ProductRepository $this
+     * @return ProductRepositoryInterface $this
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -63,11 +65,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * Set the attribute repository
      *
-     * @param AttributeRepository $attributeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      *
-     * @return ProductRepository
+     * @return ProductRepositoryInterface
      */
-    public function setAttributeRepository(AttributeRepository $attributeRepository)
+    public function setAttributeRepository(AttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
 
@@ -77,11 +79,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * Set the category repository
      *
-     * @param CategoryRepository $categoryRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      *
-     * @return ProductRepository
+     * @return ProductRepositoryInterface
      */
-    public function setCategoryRepository(CategoryRepository $categoryRepository)
+    public function setCategoryRepository(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
 
@@ -139,9 +141,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param AttributeInterface $attribute
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function findAllIdsForAttribute(AttributeInterface $attribute)
     {
@@ -156,9 +156,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param FamilyInterface $family
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function findAllIdsForFamily(FamilyInterface $family)
     {
@@ -173,9 +171,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param CategoryInterface $category
-     *
-     * @return ProductInterface[]
+     * {@inheritdoc}
      */
     public function findAllForCategory(CategoryInterface $category)
     {
@@ -187,9 +183,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param GroupInterface $group
-     *
-     * @return ProductInterface[]
+     * {@inheritdoc}
      */
     public function findAllForGroup(GroupInterface $group)
     {
@@ -201,7 +195,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeFamilyRemoval($id)
     {
@@ -214,7 +208,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeAttributeRemoval($id)
     {
@@ -228,7 +222,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeCategoryRemoval($id)
     {
@@ -241,7 +235,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeGroupRemoval($id)
     {
@@ -254,7 +248,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeAssociationTypeRemoval($id)
     {
@@ -268,7 +262,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeAttributeOptionRemoval($id)
     {
@@ -290,7 +284,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeChannelRemoval($id)
     {
@@ -470,9 +464,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $variantGroupId
-     *
-     * @return array product ids
+     * {@inheritdoc}
      */
     public function getEligibleProductIdsForVariantGroup($variantGroupId)
     {
@@ -562,11 +554,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * Set family repository
      *
-     * @param FamilyRepository $familyRepository
+     * @param FamilyRepositoryInterface $familyRepository
      *
-     * @return \Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
+     * @return ProductRepositoryInterface
      */
-    public function setFamilyRepository(FamilyRepository $familyRepository)
+    public function setFamilyRepository(FamilyRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
 
@@ -610,8 +602,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $productId
-     * @param integer $assocTypeCount
+     * {@inheritdoc}
      *
      * @TODO: Make some refactoring with PublishedProductRepository
      */

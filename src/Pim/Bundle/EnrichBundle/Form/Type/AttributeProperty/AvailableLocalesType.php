@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -34,7 +34,7 @@ class AvailableLocalesType extends AbstractType
                 'multiple' => true,
                 'select2' => true,
                 'class' => 'Pim\Bundle\CatalogBundle\Entity\Locale',
-                'query_builder' => function (LocaleRepository $repository) {
+                'query_builder' => function (LocaleRepositoryInterface $repository) {
                     return $repository->getActivatedLocalesQB();
                 }
             )

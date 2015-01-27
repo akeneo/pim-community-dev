@@ -7,9 +7,9 @@ use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\Persistence\SaverInterface;
 use Akeneo\Component\Persistence\BulkSaverInterface;
 use Akeneo\Component\Persistence\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 
 /**
  * Attribute group manager
@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class AttributeGroupManager implements SaverInterface, BulkSaverInterface, RemoverInterface
 {
-    /** @var AttributeGroupRepository */
+    /** @var AttributeGroupRepositoryInterface */
     protected $repository;
 
     /** @var ObjectManager */
@@ -29,10 +29,10 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
     /**
      * Constructor
      *
-     * @param ObjectManager            $objectManager Object manager
-     * @param AttributeGroupRepository $repository    Repository
+     * @param ObjectManager                     $objectManager Object manager
+     * @param AttributeGroupRepositoryInterface $repository Repository
      */
-    public function __construct(ObjectManager $objectManager, AttributeGroupRepository $repository)
+    public function __construct(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
     {
         $this->repository = $repository;
         $this->objectManager = $objectManager;

@@ -3,10 +3,9 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
@@ -29,13 +28,13 @@ class CsvProductReader extends CsvReader
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
 
-    /** @var ChannelRepository */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var LocaleRepository */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var CurrencyRepository */
+    /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
     /**
@@ -58,7 +57,6 @@ class CsvProductReader extends CsvReader
     ) {
         $this->fieldNameBuilder = $fieldNameBuilder;
 
-        /** @var AttributeRepository $attributeRepository */
         $attributeRepository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
 

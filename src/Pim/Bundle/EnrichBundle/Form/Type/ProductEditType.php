@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\StringToBooleanTransformer;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
@@ -25,7 +25,7 @@ class ProductEditType extends AbstractType
     /** @var ProductFormViewInterface */
     protected $productFormView;
 
-    /** @var FamilyRepository */
+    /** @var FamilyRepositoryInterface */
     protected $repository;
 
     /** @var string */
@@ -37,13 +37,13 @@ class ProductEditType extends AbstractType
     /**
      * Constructor
      *
-     * @param ProductFormViewInterface $productFormView
-     * @param FamilyRepository         $repository
-     * @param string                   $categoryClass
+     * @param ProductFormViewInterface  $productFormView
+     * @param FamilyRepositoryInterface $repository
+     * @param string                    $categoryClass
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
-        FamilyRepository $repository,
+        FamilyRepositoryInterface $repository,
         $categoryClass
     ) {
         $this->productFormView = $productFormView;

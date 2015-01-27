@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductRepository $productRepository, AssociationTypeRepository $assocTypeRepository)
+    function let(ProductRepositoryInterface $productRepository, AssociationTypeRepositoryInterface $assocTypeRepository)
     {
         $this->beConstructedWith($productRepository, $assocTypeRepository);
     }

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 
 /**
  * Repository
@@ -13,17 +13,13 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class FamilyRepository extends ReferableEntityRepository implements ChoicesProviderInterface
+class FamilyRepository extends ReferableEntityRepository implements FamilyRepositoryInterface
 {
     /**
-     * @param object  $qb
-     * @param boolean $inset
-     * @param mixed   $values
-     *
-     * @return null
-     *
-     * @TODO Move this code
+     * {@inheritdoc}
      */
     public function applyMassActionParameters($qb, $inset, $values)
     {
@@ -109,12 +105,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     }
 
     /**
-     * Returns a querybuilder to get full requirements
-     *
-     * @param FamilyInterface $family
-     * @param string          $localeCode
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
@@ -130,13 +121,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     }
 
     /**
-     * Returns all families code with their required attributes code
-     * Requirements can be restricted to a channel.
-     *
-     * @param FamilyInterface  $family
-     * @param ChannelInterface $channel
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null)
     {
@@ -163,7 +148,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {
@@ -188,11 +173,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     }
 
     /**
-     * Find attribute ids from family ids
-     *
-     * @param array $familyIds
-     *
-     * @return array '<f_id>' => array(<attribute ids>)
+     * {@inheritdoc}
      */
     public function findAttributeIdsFromFamilies(array $familyIds)
     {

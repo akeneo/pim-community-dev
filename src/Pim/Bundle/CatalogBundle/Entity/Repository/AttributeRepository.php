@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
  * Repository for attribute entity
@@ -16,19 +17,19 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class AttributeRepository extends EntityRepository implements
     IdentifiableObjectRepositoryInterface,
     ReferableEntityRepositoryInterface,
-    ChoicesProviderInterface
+    AttributeRepositoryInterface
 {
-    /**
-     * @var string $identifierCode
-     */
+    /** @var string $identifierCode */
     protected $identifierCode;
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * {@inheritdoc}
      */
     public function findAllWithTranslations()
     {
@@ -40,12 +41,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find attributes with related attribute groups
-     *
-     * @param array $attributeIds
-     * @param array $criterias
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function findWithGroups(array $attributeIds = array(), array $criterias = array())
     {
@@ -142,9 +138,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find all attributes that belongs to the default group
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function findAllInDefaultGroup()
     {
@@ -159,9 +153,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find all unique attribute codes
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function findUniqueAttributeCodes()
     {
@@ -182,9 +174,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find media attribute codes
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function findMediaAttributeCodes()
     {
@@ -210,11 +200,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find all attributes of type axis
-     * An axis define a variation of a variant group
-     * Axes are attributes with simple select option, not localizable and not scopable
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function findAllAxisQB()
     {
@@ -230,11 +216,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find all axis
-     *
-     * @see findAllAxisQB
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function findAllAxis()
     {
@@ -246,7 +228,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * Get available attributes as label
      *
-     * @return array
+     * @return AttributeInterface[]
      */
     protected function getAvailableAttributesAsLabel()
     {
@@ -260,9 +242,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get available attributes as label as a choice
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAvailableAttributesAsLabelChoice()
     {
@@ -293,13 +273,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get attribute as array indexed by code
-     *
-     * @param boolean $withLabel translated label should be joined
-     * @param string  $locale    the locale code of the label
-     * @param array   $ids       the attribute ids
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAttributesAsArray($withLabel = false, $locale = null, array $ids = [])
     {
@@ -339,12 +313,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get ids of attributes usable in grid
-     *
-     * @param array $codes
-     * @param array $groupIds
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null)
     {
@@ -370,11 +339,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get ids from codes
-     *
-     * @param mixed $codes the attribute codes
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAttributeIds($codes)
     {
@@ -390,7 +355,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {
@@ -419,10 +384,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get the identifier attribute
-     * Only one identifier attribute can exists
-     *
-     * @return AttributeInterface
+     * {@inheritdoc}
      */
     public function getIdentifier()
     {
@@ -430,9 +392,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get the identifier code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getIdentifierCode()
     {
@@ -444,9 +404,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Get non identifier attributes
-     *
-     * @return AttributeInterface[]
+     * {@inheritdoc}
      */
     public function getNonIdentifierAttributes()
     {
@@ -458,7 +416,6 @@ class AttributeRepository extends EntityRepository implements
 
         return $qb->getQuery()->getResult();
     }
-
 
     /**
      * {@inheritdoc}

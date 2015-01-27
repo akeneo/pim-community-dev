@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 /**
  * Channel repository
@@ -13,8 +14,10 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class ChannelRepository extends ReferableEntityRepository
+class ChannelRepository extends ReferableEntityRepository implements ChannelRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -33,9 +36,7 @@ class ChannelRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return the number of existing channels
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function countAll()
     {
@@ -48,7 +49,7 @@ class ChannelRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {
@@ -73,11 +74,7 @@ class ChannelRepository extends ReferableEntityRepository
     }
 
     /**
-     * Get the deleted locales of a channel (the channel is updated but not flushed yet).
-     *
-     * @param ChannelInterface $channel
-     *
-     * @return array the list of deleted locales
+     * {@inheritdoc}
      */
     public function getDeletedLocaleIdsForChannel(ChannelInterface $channel)
     {
@@ -119,9 +116,7 @@ SQL;
     }
 
     /**
-     * Return an array of channel codes
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getChannelCodes()
     {
@@ -139,9 +134,7 @@ SQL;
     }
 
     /**
-     * Get full channels with locales and currencies
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFullChannels()
     {

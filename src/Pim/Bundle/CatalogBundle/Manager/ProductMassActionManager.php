@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 
 /**
@@ -20,7 +20,7 @@ class ProductMassActionManager
     protected $massActionRepository;
 
     /**
-     * @var AttributeRepository $attributeRepository
+     * @var AttributeRepositoryInterface $attributeRepository
      */
     protected $attributeRepository;
 
@@ -28,11 +28,11 @@ class ProductMassActionManager
      * Constructor
      *
      * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepository                  $attributeRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
      */
     public function __construct(
         ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepository $attributeRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->massActionRepository = $massActionRepository;
         $this->attributeRepository  = $attributeRepository;

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Prophecy\Argument;
 
 class GroupDenormalizerSpec extends ObjectBehavior
@@ -13,7 +13,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
     const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
     const FORMAT_CSV   = 'csv';
 
-    function let(ManagerRegistry $registry, GroupRepository $repository)
+    function let(ManagerRegistry $registry, GroupRepositoryInterface $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 

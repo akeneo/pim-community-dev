@@ -3,12 +3,12 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 
 class DateTimeDenormalizerSpec extends ObjectBehavior
 {
-    function let(AttributeOptionRepository $repository)
+    function let(AttributeOptionRepositoryInterface $repository)
     {
         $this->beConstructedWith(
             ['pim_catalog_date'],

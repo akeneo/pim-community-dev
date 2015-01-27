@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Akeneo\Component\Persistence\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 /**
  * Channel manager
@@ -19,7 +19,7 @@ class ChannelManager implements SaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var ChannelRepository */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var CompletenessManager */
@@ -28,13 +28,13 @@ class ChannelManager implements SaverInterface
     /**
      * Constructor
      *
-     * @param ObjectManager       $objectManager
-     * @param ChannelRepository   $channelRepository
-     * @param CompletenessManager $completenessManager
+     * @param ObjectManager              $objectManager
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param CompletenessManager        $completenessManager
      */
     public function __construct(
         ObjectManager $objectManager,
-        ChannelRepository $channelRepository,
+        ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager
     ) {
         $this->objectManager = $objectManager;

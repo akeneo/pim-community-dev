@@ -3,10 +3,11 @@
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -27,24 +28,24 @@ class ChoiceFilter extends AjaxChoiceFilter
     /** @var UserContext */
     protected $userContext;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
      * Constructor
      *
-     * @param FormFactoryInterface $factory
-     * @param ProductFilterUtility $util
-     * @param UserContext          $userContext
-     * @param string               $optionRepoClass
-     * @param AttributeRepository  $attributeRepository
+     * @param FormFactoryInterface         $factory
+     * @param ProductFilterUtility         $util
+     * @param UserContext                  $userContext
+     * @param string                       $optionRepoClass
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
         $optionRepoClass,
-        AttributeRepository $attributeRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         parent::__construct($factory, $util);
 

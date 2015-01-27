@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Query;
 
 use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +28,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /** @var string */
     protected $productClass;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** FilterRegistryInterface */
@@ -41,19 +41,19 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     protected $cursorFactory;
 
     /**
-     * @param string                  $pqbClass
-     * @param ObjectManager           $om
-     * @param string                  $productClass
-     * @param AttributeRepository     $attributeRepository
-     * @param FilterRegistryInterface $filterRegistry
-     * @param SorterRegistryInterface $sorterRegistry
-     * @param CursorFactoryInterface  $cursorFactory
-     */
+     * @param string                       $pqbClass
+     * @param ObjectManager                $om
+     * @param string                       $productClass
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param FilterRegistryInterface      $filterRegistry
+     * @param SorterRegistryInterface      $sorterRegistry
+     * @param CursorFactoryInterface       $cursorFactory
+     */     
     public function __construct(
         $pqbClass,
         ObjectManager $om,
         $productClass,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory

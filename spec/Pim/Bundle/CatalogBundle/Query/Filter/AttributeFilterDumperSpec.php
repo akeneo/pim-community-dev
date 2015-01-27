@@ -4,15 +4,15 @@ namespace spec\Pim\Bundle\CatalogBundle\Query\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\TableHelper;
 
 class AttributeFilterDumperSpec extends ObjectBehavior
 {
-    function let(FilterRegistryInterface $registry, AttributeRepository $repository)
+    function let(FilterRegistryInterface $registry, AttributeRepositoryInterface $repository)
     {
         $this->beConstructedWith($registry, $repository);
     }

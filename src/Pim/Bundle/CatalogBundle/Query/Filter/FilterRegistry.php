@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Aims to register and retrieve filters useable on product query builder
@@ -20,13 +20,13 @@ class FilterRegistry implements FilterRegistryInterface
     /** @var FieldSorterInterface[] priorized field filters */
     protected $fieldFilters = [];
 
-    /** @var AttributeRepository  */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
-     * @param AttributeRepository $attributeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(AttributeRepository $attributeRepository)
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

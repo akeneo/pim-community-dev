@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Prophecy\Argument;
 
@@ -16,10 +16,10 @@ class CsvProductReaderSpec extends ObjectBehavior
     function let(
         EntityManager $em,
         FieldNameBuilder $fieldNameBuilder,
-        AttributeRepository $attributeRepository,
-        ChannelRepository $channelRepository,
-        LocaleRepository $localeRepository,
-        CurrencyRepository $currencyRepository
+        AttributeRepositoryInterface $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        CurrencyRepositoryInterface $currencyRepository
     ) {
         $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Attribute')->willReturn($attributeRepository);
         $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Channel')->willReturn($channelRepository);

@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Akeneo\Component\Persistence\RemoverInterface;
 use Akeneo\Component\Persistence\SaverInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Event\GroupEvents;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -224,8 +225,8 @@ class GroupManager implements SaverInterface, RemoverInterface
 
     /**
      * Get the attribute repository
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
+
+     * @return AttributeRepositoryInterface
      */
     protected function getAttributeRepository()
     {

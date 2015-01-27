@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 
 /**
@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository in 1.4
  */
 class CompletenessRepository implements CompletenessRepositoryInterface
 {
@@ -27,7 +29,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
     protected $channelManager;
 
     /**
-     * @var CategoryRepository
+     * @var CategoryRepositoryInterface
      */
     protected $categoryRepository;
 
@@ -37,15 +39,15 @@ class CompletenessRepository implements CompletenessRepositoryInterface
     protected $productClass;
 
     /**
-     * @param DocumentManager    $documentManager
-     * @param ChannelManager     $channelManager
-     * @param CategoryRepository $categoryRepository
-     * @param string             $productClass
+     * @param DocumentManager             $documentManager
+     * @param ChannelManager              $channelManager
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param string                      $productClass
      */
     public function __construct(
         DocumentManager $documentManager,
         ChannelManager $channelManager,
-        CategoryRepository $categoryRepository,
+        CategoryRepositoryInterface $categoryRepository,
         $productClass
     ) {
         $this->documentManager    = $documentManager;

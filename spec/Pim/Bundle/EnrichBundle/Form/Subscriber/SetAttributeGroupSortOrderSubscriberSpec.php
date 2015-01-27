@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
 
 class SetAttributeGroupSortOrderSubscriberSpec extends ObjectBehavior
 {
-    function let(AttributeGroupRepository $repository)
+    function let(AttributeGroupRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * Attribute option denormalizer used for following attribute types:
@@ -15,14 +15,14 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var AttributeOptionRepository */
+    /** @var AttributeOptionRepositoryInterface */
     protected $repository;
 
     /**
-     * @param string[]                  $supportedTypes
-     * @param AttributeOptionRepository $repository
+     * @param string[]                           $supportedTypes
+     * @param AttributeOptionRepositoryInterface $repository
      */
-    public function __construct(array $supportedTypes, AttributeOptionRepository $repository)
+    public function __construct(array $supportedTypes, AttributeOptionRepositoryInterface $repository)
     {
         parent::__construct($supportedTypes);
 

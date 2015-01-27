@@ -5,8 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Prophecy\Argument;
@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class FamilyManagerSpec extends ObjectBehavior
 {
     function let(
-        FamilyRepository $repository,
+        FamilyRepositoryInterface $repository,
         UserContext $userContext,
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,

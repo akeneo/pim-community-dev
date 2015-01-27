@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Helper\SortHelper;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
@@ -146,7 +146,7 @@ class ChannelType extends AbstractType
                 'multiple'      => true,
                 'select2'       => true,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Currency',
-                'query_builder' => function (CurrencyRepository $repository) {
+                'query_builder' => function (CurrencyRepositoryInterface $repository) {
                     return $repository->getActivatedCurrenciesQB();
                 }
             )
@@ -186,7 +186,7 @@ class ChannelType extends AbstractType
                 'select2'       => true,
                 'by_reference'  => false,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
-                'query_builder' => function (LocaleRepository $repository) {
+                'query_builder' => function (LocaleRepositoryInterface $repository) {
                     return $repository->getLocalesQB();
                 },
                 'preferred_choices' => $this->localeManager->getActiveLocales()
