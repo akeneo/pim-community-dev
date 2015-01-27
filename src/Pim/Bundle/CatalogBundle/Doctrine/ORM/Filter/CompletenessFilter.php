@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
 
@@ -38,7 +38,7 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness');
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness', gettype($value));
         }
 
         $alias = 'filterCompleteness';

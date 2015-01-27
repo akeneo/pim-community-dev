@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +22,7 @@ class AvailableAttributesType extends AbstractType
     /** @var string */
     protected $attributeClass;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var UserContext */
@@ -34,14 +34,14 @@ class AvailableAttributesType extends AbstractType
     /**
      * Constructor
      *
-     * @param string              $attributeClass
-     * @param AttributeRepository $attributeRepository
-     * @param UserContext         $userContext
-     * @param TranslatorInterface $translator
+     * @param string                       $attributeClass
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param UserContext                  $userContext
+     * @param TranslatorInterface          $translator
      */
     public function __construct(
         $attributeClass,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         UserContext $userContext,
         TranslatorInterface $translator
     ) {

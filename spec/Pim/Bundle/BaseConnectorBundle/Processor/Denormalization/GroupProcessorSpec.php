@@ -4,15 +4,11 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,7 +19,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 class GroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        GroupRepository $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,

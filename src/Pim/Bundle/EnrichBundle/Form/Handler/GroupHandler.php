@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Akeneo\Component\Persistence\SaverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

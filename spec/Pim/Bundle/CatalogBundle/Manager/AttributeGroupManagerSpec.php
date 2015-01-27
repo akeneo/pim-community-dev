@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 
 class AttributeGroupManagerSpec extends ObjectBehavior
 {
@@ -15,24 +15,24 @@ class AttributeGroupManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager');
     }
 
-    function let(ObjectManager $objectManager, AttributeGroupRepository $repository)
+    function let(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
     {
         $this->beConstructedWith($objectManager, $repository);
     }
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\BulkSaverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\RemoverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_throws_an_exception_when_removing_an_attribute_group_and_the_default_group_does_not_exist(

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
 class GroupsFilterSpec extends ObjectBehavior
@@ -56,7 +56,7 @@ class GroupsFilterSpec extends ObjectBehavior
     {
         $qb->getRootAlias()->shouldBeCalled()->willReturn('f');
         $qb->leftJoin('f.groups', 'filtergroups')->shouldBeCalled()->willReturn($qb);
-        $qb->andWhere('filtergroups.id NOT IN(3)' . 'filtergroups.id IS NULL')->shouldBeCalled()->willReturn($qb);
+        $qb->andWhere('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL')->shouldBeCalled()->willReturn($qb);
         $qb->expr()->willReturn($expr);
 
         $expr->notIn('filtergroups'.'.id', [3])->shouldBeCalled()->willReturn('filtergroups.id NOT IN');
@@ -64,7 +64,7 @@ class GroupsFilterSpec extends ObjectBehavior
 
         $expr->orX('filtergroups.id NOT IN', 'filtergroups.id IS NULL')
             ->shouldBeCalled()
-            ->willReturn('filtergroups.id NOT IN(3)' . 'filtergroups.id IS NULL');
+            ->willReturn('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL');
 
         $this->addFieldFilter('groups', 'NOT IN', [3]);
     }
@@ -77,11 +77,11 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups'))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('WRONG')))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
     }
 
     function it_throws_an_exception_if_values_in_array_are_not_integers()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups'))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('groups', 'filter', 'groups', gettype('WRONG')))->during('addFieldFilter', ['groups', 'IN', 'WRONG']);
     }
 }

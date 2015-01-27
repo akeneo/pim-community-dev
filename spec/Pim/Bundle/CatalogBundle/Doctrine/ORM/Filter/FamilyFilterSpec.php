@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
 
 class FamilyFilterSpec extends ObjectBehavior
@@ -56,7 +56,7 @@ class FamilyFilterSpec extends ObjectBehavior
     {
         $qb->getRootAlias()->shouldBeCalled()->willReturn('f');
         $qb->leftJoin('f.family', 'filterfamily')->shouldBeCalled()->willReturn($qb);
-        $qb->andWhere('filterfamily.id NOT IN(3)' . 'filterfamily.id IS NULL')->shouldBeCalled()->willReturn($qb);
+        $qb->andWhere('filterfamily.id NOT IN(3)'.'filterfamily.id IS NULL')->shouldBeCalled()->willReturn($qb);
         $qb->expr()->willReturn($expr);
 
         $expr->notIn('filterfamily'.'.id', [3])->shouldBeCalled()->willReturn('filterfamily.id NOT IN');
@@ -64,7 +64,7 @@ class FamilyFilterSpec extends ObjectBehavior
 
         $expr->orX('filterfamily.id NOT IN', 'filterfamily.id IS NULL')
             ->shouldBeCalled()
-            ->willReturn('filterfamily.id NOT IN(3)' . 'filterfamily.id IS NULL');
+            ->willReturn('filterfamily.id NOT IN(3)'.'filterfamily.id IS NULL');
 
         $this->addFieldFilter('family', 'NOT IN', [3]);
     }
@@ -77,11 +77,11 @@ class FamilyFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family', gettype('WRONG')))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 
     function it_throws_an_exception_if_values_in_array_are_not_integers()
     {
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family'))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::arrayExpected('family', 'filter', 'family', gettype('WRONG')))->during('addFieldFilter', ['family', 'IN', 'WRONG']);
     }
 }

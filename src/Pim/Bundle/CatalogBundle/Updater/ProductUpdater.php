@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
  */
 class ProductUpdater implements ProductUpdaterInterface
 {
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var SetterRegistryInterface */
@@ -26,12 +26,12 @@ class ProductUpdater implements ProductUpdaterInterface
     protected $copierRegistry;
 
     /**
-     * @param AttributeRepository     $repository
-     * @param SetterRegistryInterface $setterRegistry
-     * @param CopierRegistryInterface $copierRegistry
+     * @param AttributeRepositoryInterface $repository
+     * @param SetterRegistryInterface      $setterRegistry
+     * @param CopierRegistryInterface      $copierRegistry
      */
     public function __construct(
-        AttributeRepository $repository,
+        AttributeRepositoryInterface $repository,
         SetterRegistryInterface $setterRegistry,
         CopierRegistryInterface $copierRegistry
     ) {

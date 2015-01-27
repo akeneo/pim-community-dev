@@ -7,9 +7,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 
@@ -20,9 +20,9 @@ class GroupDenormalizerSpec extends ObjectBehavior
 
     function let(
         ManagerRegistry $registry,
-        GroupRepository $groupRepository,
-        GroupTypeRepository $groupTypeRepository,
-        AttributeRepository $attributeRepository
+        GroupRepositoryInterface $groupRepository,
+        GroupTypeRepositoryInterface $groupTypeRepository,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($groupRepository);
 
@@ -80,9 +80,9 @@ class GroupDenormalizerSpec extends ObjectBehavior
         GroupTranslation $translationUS
     ) {
         $groupRepository->findOneByIdentifier('tshirt')->willReturn(null);
-        $groupTypeRepository->findByReference('VARIANT')->willReturn($type);
-        $attributeRepository->findByReference('size')->willReturn($size);
-        $attributeRepository->findByReference('color')->willReturn($color);
+        $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
+        $attributeRepository->findOneByIdentifier('size')->willReturn($size);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
 
         $group->getId()->willReturn(null);
         $group->setCode('tshirt')->shouldBeCalled();

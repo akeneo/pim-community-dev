@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -27,7 +27,7 @@ abstract class AbstractAttributeFilter extends AbstractFilter implements Attribu
      * @param string             $scope
      * @param string             $type
      *
-     * @throws InvalidArgumentException
+     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
      */
     protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope, $type)
     {

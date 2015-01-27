@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 class ProductIdFilterSpec extends ObjectBehavior
 {
@@ -38,6 +38,6 @@ class ProductIdFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_value_is_not_a_numeric_or_an_array()
     {
-        $this->shouldThrow(InvalidArgumentException::expected('id', 'array or numeric value', 'filter', 'productId'))->during('addFieldFilter', ['id', '=', 'WRONG']);
+        $this->shouldThrow(InvalidArgumentException::expected('id', 'array or numeric value', 'filter', 'productId', 'WRONG'))->during('addFieldFilter', ['id', '=', 'WRONG']);
     }
 }

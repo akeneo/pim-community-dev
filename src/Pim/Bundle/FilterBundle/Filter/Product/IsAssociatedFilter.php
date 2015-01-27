@@ -7,9 +7,9 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -26,7 +26,7 @@ class IsAssociatedFilter extends BooleanFilter
     /** @var RequestParametersExtractorInterface */
     protected $extractor;
 
-    /** @var AssociationTypeRepository */
+    /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
 
     /** @var ProductManager */
@@ -38,14 +38,14 @@ class IsAssociatedFilter extends BooleanFilter
      * @param FormFactoryInterface                $factory
      * @param FilterUtility                       $util
      * @param RequestParametersExtractorInterface $extractor
-     * @param AssociationTypeRepository           $repo
+     * @param AssociationTypeRepositoryInterface  $repo
      * @param ProductManager                      $manager
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         RequestParametersExtractorInterface $extractor,
-        AssociationTypeRepository $repo,
+        AssociationTypeRepositoryInterface $repo,
         ProductManager $manager
     ) {
         parent::__construct($factory, $util);

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
@@ -109,7 +109,12 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     public function checkValue(AttributeInterface $attribute, $value)
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media');
+            throw InvalidArgumentException::stringExpected(
+                $attribute->getCode(),
+                'filter',
+                'media',
+                gettype($value)
+            );
         }
     }
 }

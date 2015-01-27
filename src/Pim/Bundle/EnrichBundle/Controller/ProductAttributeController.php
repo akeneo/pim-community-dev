@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -35,22 +35,22 @@ class ProductAttributeController
     /** @var ProductManager */
     protected $productManager;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
      * Constructor
      *
-     * @param RouterInterface      $router
-     * @param FormFactoryInterface $formFactory
-     * @param ProductManager       $productManager
-     * @param AttributeRepository  $attributeRepository
+     * @param RouterInterface              $router
+     * @param FormFactoryInterface         $formFactory
+     * @param ProductManager               $productManager
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         RouterInterface $router,
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
-        AttributeRepository $attributeRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->router          = $router;
         $this->formFactory     = $formFactory;

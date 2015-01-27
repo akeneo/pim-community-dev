@@ -3,11 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -19,19 +19,19 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class SimpleSelectValueSetter extends AbstractValueSetter
 {
-    /** @var AttributeOptionRepository */
+    /** @var AttributeOptionRepositoryInterface */
     protected $attrOptionRepository;
 
     /**
-     * @param ProductBuilderInterface   $productBuilder
-     * @param AttributeValidatorHelper  $attrValidatorHelper
-     * @param AttributeOptionRepository $attrOptionRepository
-     * @param array                     $supportedTypes
+     * @param ProductBuilderInterface            $productBuilder
+     * @param AttributeValidatorHelper           $attrValidatorHelper
+     * @param AttributeOptionRepositoryInterface $attrOptionRepository
+     * @param array                              $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        AttributeOptionRepository $attrOptionRepository,
+        AttributeOptionRepositoryInterface $attrOptionRepository,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
@@ -57,10 +57,10 @@ class SimpleSelectValueSetter extends AbstractValueSetter
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'code',
-                    sprintf('Option with code "%s" does not exist', $data),
+                    'The option does not exist',
                     'setter',
                     'simple select',
-                    gettype($data)
+                    $data
                 );
             }
         }

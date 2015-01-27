@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
-use Akeneo\Component\Persistence\SaverInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 

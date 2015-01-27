@@ -1,11 +1,11 @@
 <?php
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Group flat denormalizer
@@ -31,8 +31,8 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
-        ReferableEntityRepositoryInterface $groupTypeRepository,
-        ReferableEntityRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $groupTypeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         parent::__construct($managerRegistry, $entityClass);
         $this->groupTypeRepository = $groupTypeRepository;
@@ -74,7 +74,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
         if (isset($data['type'])) {
             $typeCode = $data['type'];
             /** @var GroupType|null $type */
-            $type = $this->groupTypeRepository->findByReference($typeCode);
+            $type = $this->groupTypeRepository->findOneByIdentifier($typeCode);
             if (!$type) {
                 throw new \LogicException(
                     sprintf('Group Type with identifier "%s" not found', $typeCode)
@@ -94,7 +94,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
             $axisCodes = explode(',', $data['axis']);
             $attributes = [];
             foreach ($axisCodes as $code) {
-                $attribute = $this->attributeRepository->findByReference($code);
+                $attribute = $this->attributeRepository->findOneByIdentifier($code);
                 if (!$attribute) {
                     throw new \LogicException(
                         sprintf('Attribute with identifier "%s" not found', $code)

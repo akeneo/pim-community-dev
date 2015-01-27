@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class GroupColumnsConfigurator extends ColumnsConfigurator
 {
-    /** @var GroupRepository */
+    /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
     /**
@@ -36,14 +36,14 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     protected $requestParams;
 
     /**
-     * @param ConfigurationRegistry $registry
-     * @param RequestParameters     $requestParams
-     * @param GroupRepository       $groupRepository
+     * @param ConfigurationRegistry    $registry
+     * @param RequestParameters        $requestParams
+     * @param GroupRepositoryInterface $groupRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
         RequestParameters $requestParams,
-        GroupRepository $groupRepository
+        GroupRepositoryInterface $groupRepository
     ) {
         parent::__construct($registry);
         $this->requestParams   = $requestParams;

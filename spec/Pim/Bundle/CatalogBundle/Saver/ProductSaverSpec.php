@@ -21,12 +21,12 @@ class ProductSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\BulkSaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_persists_flushes_schedule_and_recalculate_completeness_of_products_in_database(

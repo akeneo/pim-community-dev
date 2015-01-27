@@ -2,20 +2,20 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class AddToVariantGroupSpec extends ObjectBehavior
 {
     function let(
-        GroupRepository $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         BulkSaverInterface $productSaver,
         GroupInterface $shirts,
         GroupInterface $pants,

@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -11,9 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Component\Persistence\SaverInterface;
 use Prophecy\Argument;
 
 class VariantGroupWriterSpec extends ObjectBehavior

@@ -3,18 +3,18 @@
 namespace spec\Pim\Bundle\CatalogBundle\Query;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 class ProductQueryBuilderFactorySpec extends ObjectBehavior
 {
     function let(
-        AttributeRepository $attRepository,
+        AttributeRepositoryInterface $attRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,

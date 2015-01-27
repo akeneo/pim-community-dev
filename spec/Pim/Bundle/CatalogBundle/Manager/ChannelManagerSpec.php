@@ -4,15 +4,15 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 class ChannelManagerSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        ChannelRepository $repository,
+        ChannelRepositoryInterface $repository,
         CompletenessManager $completenessManager
     ) {
         $this->beConstructedWith($objectManager, $repository, $completenessManager);
@@ -20,7 +20,7 @@ class ChannelManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_initializable()
@@ -43,14 +43,14 @@ class ChannelManagerSpec extends ObjectBehavior
             ->during('save', [$anythingElse]);
     }
 
-    function it_provides_channels(ObjectManager $objectManager, ChannelRepository $repository)
+    function it_provides_channels(ObjectManager $objectManager, ChannelRepositoryInterface $repository)
     {
         $repository->findBy(array())->willReturn(array('mobile', 'ecommerce'));
         $this->getChannels()->shouldBeArray();
         $this->getChannels()->shouldHaveCount(2);
     }
 
-    function it_provides_channel_choices(ObjectManager $objectManager, ChannelRepository $repository, ChannelInterface $mobile, ChannelInterface $ecommerce)
+    function it_provides_channel_choices(ObjectManager $objectManager, ChannelRepositoryInterface $repository, ChannelInterface $mobile, ChannelInterface $ecommerce)
     {
         $repository->findBy(array())->willReturn(array($mobile, $ecommerce));
         $mobile->getCode()->willReturn('mobile');

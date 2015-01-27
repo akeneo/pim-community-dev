@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 class AttributeValidatorHelperSpec extends ObjectBehavior
 {
-    function let(LocaleRepository $localeRepository, ChannelRepository $scopeRepository)
+    function let(LocaleRepositoryInterface $localeRepository, ChannelRepositoryInterface $scopeRepository)
     {
         $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Validator\InitializedAttributeValidatorHelper');
         $this->beConstructedWith($localeRepository, $scopeRepository);

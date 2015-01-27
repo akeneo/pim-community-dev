@@ -4,13 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\Persistence\SaverInterface;
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Event\ProductValueEvent;
@@ -19,6 +16,9 @@ use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -56,29 +56,29 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var AssociationTypeRepository */
+    /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var AttributeOptionRepository */
+    /** @var AttributeOptionRepositoryInterface */
     protected $attOptionRepository;
 
     /**
      * Constructor
      *
-     * @param array                      $configuration
-     * @param ObjectManager              $objectManager
-     * @param SaverInterface             $productSaver
-     * @param BulkSaverInterface         $productBulkSaver
-     * @param EventDispatcherInterface   $eventDispatcher
-     * @param MediaManager               $mediaManager
-     * @param ProductBuilder             $builder
-     * @param ProductRepositoryInterface $productRepository
-     * @param AssociationTypeRepository  $assocTypeRepository
-     * @param AttributeRepository        $attributeRepository
-     * @param AttributeOptionRepository  $attOptionRepository
+     * @param array                              $configuration
+     * @param ObjectManager                      $objectManager
+     * @param SaverInterface                     $productSaver
+     * @param BulkSaverInterface                 $productBulkSaver
+     * @param EventDispatcherInterface           $eventDispatcher
+     * @param MediaManager                       $mediaManager
+     * @param ProductBuilder                     $builder
+     * @param ProductRepositoryInterface         $productRepository
+     * @param AssociationTypeRepositoryInterface $assocTypeRepository
+     * @param AttributeRepositoryInterface       $attributeRepository
+     * @param AttributeOptionRepositoryInterface $attOptionRepository
      */
     public function __construct(
         $configuration,
@@ -89,9 +89,9 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         MediaManager $mediaManager,
         ProductBuilder $builder,
         ProductRepositoryInterface $productRepository,
-        AssociationTypeRepository $assocTypeRepository,
-        AttributeRepository $attributeRepository,
-        AttributeOptionRepository $attOptionRepository
+        AssociationTypeRepositoryInterface $assocTypeRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeOptionRepositoryInterface $attOptionRepository
     ) {
         $this->configuration = $configuration;
         $this->productSaver = $productSaver;

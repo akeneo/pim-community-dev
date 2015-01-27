@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -134,19 +134,19 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = 'LIKE';
-                $value    = $value . '%';
+                $value    = $value.'%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = 'LIKE';
-                $value    = '%' . $value;
+                $value    = '%'.$value;
                 break;
             case Operators::CONTAINS:
                 $operator = 'LIKE';
-                $value    = '%' . $value . '%';
+                $value    = '%'.$value.'%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = 'NOT LIKE';
-                $value    = '%' . $value . '%';
+                $value    = '%'.$value.'%';
                 break;
             default:
                 break;
@@ -162,7 +162,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function checkValue(AttributeInterface $attribute, $value)
     {
         if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media');
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'filter', 'media', gettype($value));
         }
     }
 }

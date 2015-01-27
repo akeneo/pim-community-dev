@@ -5,11 +5,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,9 +35,29 @@ class GroupManagerSpec extends ObjectBehavior
         );
     }
 
+    function it_is_a_saver()
+    {
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+    }
+
     function it_is_a_remover()
     {
-        $this->shouldHaveType('Akeneo\Component\Persistence\RemoverInterface');
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
+    }
+
+    function it_throws_exception_when_save_anything_else_than_a_group()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->during('save', [$anythingElse]);
     }
 
     function it_throws_exception_when_remove_anything_else_than_a_group()
@@ -75,7 +95,7 @@ class GroupManagerSpec extends ObjectBehavior
 
     function it_provides_available_axis(
         $registry,
-        AttributeRepository $attRepository,
+        AttributeRepositoryInterface $attRepository,
         AttributeInterface $attribute1,
         AttributeInterface $attribute2
     ) {
@@ -87,7 +107,7 @@ class GroupManagerSpec extends ObjectBehavior
 
     function it_provides_available_axis_as_a_sorted_choice(
         $registry,
-        AttributeRepository $attRepository,
+        AttributeRepositoryInterface $attRepository,
         AttributeInterface $attribute1,
         AttributeInterface $attribute2
     ) {
@@ -103,7 +123,7 @@ class GroupManagerSpec extends ObjectBehavior
         $this->getAvailableAxisChoices()->shouldReturn([2 => 'Bar', 1 => 'Foo']);
     }
 
-    function it_provides_the_group_repository($registry, GroupRepository $groupRepository)
+    function it_provides_the_group_repository($registry, GroupRepositoryInterface $groupRepository)
     {
         $registry->getRepository(self::GROUP_CLASS)->willReturn($groupRepository);
 
@@ -112,7 +132,7 @@ class GroupManagerSpec extends ObjectBehavior
 
     function it_provides_the_group_type_repository(
         $registry,
-        GroupTypeRepository $groupTypeRepository
+        GroupTypeRepositoryInterface $groupTypeRepository
     ) {
         $registry->getRepository(self::GROUP_TYPE_CLASS)->willReturn($groupTypeRepository);
 

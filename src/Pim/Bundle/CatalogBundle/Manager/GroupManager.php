@@ -4,7 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Akeneo\Component\Persistence\RemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -16,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupManager implements RemoverInterface
+class GroupManager implements SaverInterface, RemoverInterface
 {
     /** @var RegistryInterface */
     protected $doctrine;
@@ -225,8 +227,8 @@ class GroupManager implements RemoverInterface
 
     /**
      * Get the attribute repository
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
+
+     * @return AttributeRepositoryInterface
      */
     protected function getAttributeRepository()
     {

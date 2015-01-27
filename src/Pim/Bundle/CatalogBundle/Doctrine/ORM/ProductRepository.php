@@ -6,13 +6,13 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositor
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
@@ -32,7 +32,7 @@ class ProductRepository extends EntityRepository implements
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
@@ -46,11 +46,11 @@ class ProductRepository extends EntityRepository implements
     /**
      * Set attribute repository
      *
-     * @param AttributeRepository $attributeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      *
      * @return ProductRepository
      */
-    public function setAttributeRepository(AttributeRepository $attributeRepository)
+    public function setAttributeRepository(AttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
 
@@ -257,7 +257,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array($this->getAttributeRepository()->getIdentifierCode());
+        return array($this->attributeRepository->getIdentifierCode());
     }
 
     /**
@@ -376,9 +376,7 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * @param integer $variantGroupId
-     *
-     * @return array product ids
+     * {@inheritdoc}
      */
     public function getEligibleProductIdsForVariantGroup($variantGroupId)
     {

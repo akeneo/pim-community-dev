@@ -3,9 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 
 /**
  * Repository for AttributeOption entity
@@ -13,11 +12,12 @@ use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class AttributeOptionRepository extends EntityRepository implements
-    OptionRepositoryInterface,
     ReferableEntityRepositoryInterface,
-    IdentifiableObjectRepositoryInterface
+    AttributeOptionRepositoryInterface
 {
     /**
      * {@inheritdoc}

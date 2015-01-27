@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -40,13 +40,13 @@ class AddToVariantGroup extends ProductMassEditOperation
     protected $warningMessages = null;
 
     /**
-     * @param GroupRepository                 $groupRepository
+     * @param GroupRepositoryInterface        $groupRepository
      * @param BulkSaverInterface              $productSaver
      * @param ProductTemplateUpdaterInterface $templateUpdater
      * @param ValidatorInterface              $validator
      */
     public function __construct(
-        GroupRepository $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         BulkSaverInterface $productSaver,
         ProductTemplateUpdaterInterface $templateUpdater,
         ValidatorInterface $validator

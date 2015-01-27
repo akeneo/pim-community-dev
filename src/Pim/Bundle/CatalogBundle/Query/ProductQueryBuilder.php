@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Query;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
@@ -11,9 +10,10 @@ use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 /**
  * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes
@@ -24,7 +24,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
  */
 class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var mixed */
@@ -45,14 +45,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Constructor
      *
-     * @param AttributeRepository     $attributeRepository
-     * @param FilterRegistryInterface $filterRegistry
-     * @param SorterRegistryInterface $sorterRegistry
-     * @param CursorFactoryInterface  $cursorFactory
-     * @param array                   $defaultContext
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param FilterRegistryInterface      $filterRegistry
+     * @param SorterRegistryInterface      $sorterRegistry
+     * @param CursorFactoryInterface       $cursorFactory
+     * @param array                        $defaultContext
      */
     public function __construct(
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,

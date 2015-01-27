@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface;
@@ -15,7 +15,7 @@ use Prophecy\Argument;
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         SetterRegistryInterface $setterRegistry,
         CopierRegistryInterface $copierRegistry
     ) {

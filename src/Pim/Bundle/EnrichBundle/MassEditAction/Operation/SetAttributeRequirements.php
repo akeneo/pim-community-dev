@@ -3,11 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 /**
  * Set attribute requirements
@@ -20,10 +20,10 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
  */
 class SetAttributeRequirements extends FamilyMassEditOperation
 {
-    /** @var ChannelRepository */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var AttributeRequirementFactory */
@@ -33,13 +33,13 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     protected $attRequirements;
 
     /**
-     * @param ChannelRepository           $channelRepository
-     * @param AttributeRepository         $attributeRepository
-     * @param AttributeRequirementFactory $factory
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param AttributeRequirementFactory  $factory
      */
     public function __construct(
-        ChannelRepository $channelRepository,
-        AttributeRepository $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory
     ) {
         $this->channelRepository = $channelRepository;

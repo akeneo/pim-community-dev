@@ -5,15 +5,15 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
@@ -35,9 +35,9 @@ class ProductManagerSpec extends ObjectBehavior
         MediaManager $mediaManager,
         ProductBuilder $builder,
         ProductRepositoryInterface $productRepository,
-        AssociationTypeRepository $associationTypeRepository,
-        AttributeRepository $attributeRepository,
-        AttributeOptionRepository $attributeOptionRepository
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
         $entityConfig = array(
             'product_class' => self::PRODUCT_CLASS,
@@ -64,17 +64,17 @@ class ProductManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\BulkSaverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\RemoverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_has_a_product_repository(ProductRepositoryInterface $productRepository)
@@ -82,7 +82,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->getProductRepository()->shouldReturn($productRepository);
     }
 
-    function it_has_an_attribute_option_repository(AttributeOptionRepository $attributeOptionRepository)
+    function it_has_an_attribute_option_repository(AttributeOptionRepositoryInterface $attributeOptionRepository)
     {
         $this->getAttributeOptionRepository()->shouldReturn($attributeOptionRepository);
     }
@@ -97,7 +97,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->createProductValue()->shouldReturnAnInstanceOf(self::VALUE_CLASS);
     }
 
-    function it_provides_the_identifier_attribute(AttributeRepository $attributeRepository, AttributeInterface $sku)
+    function it_provides_the_identifier_attribute(AttributeRepositoryInterface $attributeRepository, AttributeInterface $sku)
     {
         $attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier'])->willReturn($sku);
 

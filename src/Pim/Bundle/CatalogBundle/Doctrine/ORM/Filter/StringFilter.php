@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -85,10 +85,10 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
+            $condition .= ' AND '.$this->prepareCondition($backendField, $operator, $value);
 
             $this->qb->innerJoin(
-                $this->qb->getRootAlias() . '.values',
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition
@@ -120,19 +120,19 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = 'LIKE';
-                $value    = $value . '%';
+                $value    = $value.'%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = 'LIKE';
-                $value    = '%' . $value;
+                $value    = '%'.$value;
                 break;
             case Operators::CONTAINS:
                 $operator = 'LIKE';
-                $value    = '%' . $value . '%';
+                $value    = '%'.$value.'%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = 'NOT LIKE';
-                $value    = '%' . $value . '%';
+                $value    = '%'.$value.'%';
                 break;
             default:
                 break;
@@ -150,13 +150,13 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
     protected function checkValue($field, $value)
     {
         if (!is_string($value) && !is_array($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
         }
 
         if (is_array($value)) {
             foreach ($value as $stringValue) {
                 if (!is_string($stringValue)) {
-                    throw InvalidArgumentException::stringExpected($field, 'filter', 'string');
+                    throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
                 }
             }
         }

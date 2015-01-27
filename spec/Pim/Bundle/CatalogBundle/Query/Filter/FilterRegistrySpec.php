@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class FilterRegistrySpec extends ObjectBehavior
@@ -14,7 +15,7 @@ class FilterRegistrySpec extends ObjectBehavior
     function let(
         FieldFilterInterface $fieldFilter,
         AttributeFilterInterface $attributeFilter,
-        AttributeRepository $attributeRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith($attributeRepository);
         $this->register($fieldFilter);

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -49,8 +49,8 @@ class VariantGroupProcessor extends AbstractProcessor
      * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param DenormalizerInterface                 $groupValuesDenormalizer
      * @param ValidatorInterface                    $validator
-     * @param NormalizerInterface                   $valueNormalizer
      * @param ObjectDetacherInterface               $detacher
+     * @param NormalizerInterface                   $valueNormalizer
      * @param string                                $groupClass
      * @param string                                $templateClass
      * @param string                                $format
@@ -59,8 +59,8 @@ class VariantGroupProcessor extends AbstractProcessor
         IdentifiableObjectRepositoryInterface $groupRepository,
         DenormalizerInterface $groupValuesDenormalizer,
         ValidatorInterface $validator,
-        NormalizerInterface $valueNormalizer,
         ObjectDetacherInterface $detacher,
+        NormalizerInterface $valueNormalizer,
         $groupClass,
         $templateClass,
         $format

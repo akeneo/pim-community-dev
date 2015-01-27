@@ -7,17 +7,16 @@ use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Manages completeness
- *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,17 +24,17 @@ use Symfony\Component\Validator\ValidatorInterface;
 class CompletenessManager
 {
     /**
-     * @var FamilyRepository
+     * @var FamilyRepositoryInterface
      */
     protected $familyRepository;
 
     /**
-     * @var ChannelRepository
+     * @var ChannelRepositoryInterface
      */
     protected $channelRepository;
 
     /**
-     * @var LocaleRepository
+     * @var LocaleRepositoryInterface
      */
     protected $localeRepository;
 
@@ -57,17 +56,17 @@ class CompletenessManager
     /**
      * Constructor
      *
-     * @param FamilyRepository               $familyRepository
-     * @param ChannelRepository              $channelRepository
-     * @param LocaleRepository               $localeRepository
+     * @param FamilyRepositoryInterface      $familyRepository
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param CompletenessGeneratorInterface $generator
      * @param ValidatorInterface             $validator
      * @param string                         $class
      */
     public function __construct(
-        FamilyRepository $familyRepository,
-        ChannelRepository $channelRepository,
-        LocaleRepository $localeRepository,
+        FamilyRepositoryInterface $familyRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator,
         $class

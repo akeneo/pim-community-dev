@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,14 +18,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var AttributeOptionRepository */
+    /** @var AttributeOptionRepositoryInterface */
     protected $repository;
 
     /**
-     * @param string[]                  $supportedTypes
-     * @param AttributeOptionRepository $repository
+     * @param string[]                           $supportedTypes
+     * @param AttributeOptionRepositoryInterface $repository
      */
-    public function __construct(array $supportedTypes, AttributeOptionRepository $repository)
+    public function __construct(array $supportedTypes, AttributeOptionRepositoryInterface $repository)
     {
         parent::__construct($supportedTypes);
 

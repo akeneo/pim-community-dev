@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
@@ -161,7 +161,7 @@ class GroupType extends AbstractType
                     'required' => true,
                     'multiple' => true,
                     'class'    => $this->attributeClass,
-                    'query_builder' => function (AttributeRepository $repository) {
+                    'query_builder' => function (AttributeRepositoryInterface $repository) {
                         return $repository->findAllAxisQB();
                     },
                     'help'     => 'pim_enrich.group.axis.help',

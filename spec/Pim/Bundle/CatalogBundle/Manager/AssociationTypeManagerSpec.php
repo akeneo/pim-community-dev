@@ -4,16 +4,16 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AssociationTypeManagerSpec extends ObjectBehavior
 {
     function let(
-        AssociationTypeRepository $repository,
+        AssociationTypeRepositoryInterface $repository,
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher
     ) {
@@ -22,12 +22,12 @@ class AssociationTypeManagerSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\SaverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Component\Persistence\RemoverInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_provides_all_association_types($repository)

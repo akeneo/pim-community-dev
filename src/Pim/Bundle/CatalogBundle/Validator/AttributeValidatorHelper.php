@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
  * AttributeValidatorHelper
@@ -15,10 +15,10 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class AttributeValidatorHelper
 {
-    /** @var LocaleRepository */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var ChannelRepository */
+    /** @var ChannelRepositoryInterface */
     protected $scopeRepository;
 
     /** @var array */
@@ -28,11 +28,13 @@ class AttributeValidatorHelper
     protected static $scopeCodes;
 
     /**
-     * @param LocaleRepository  $localeRepository
-     * @param ChannelRepository $scopeRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param ChannelRepositoryInterface $scopeRepository
      */
-    public function __construct(LocaleRepository $localeRepository, ChannelRepository $scopeRepository)
-    {
+    public function __construct(
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $scopeRepository
+    ) {
         $this->localeRepository = $localeRepository;
         $this->scopeRepository = $scopeRepository;
     }

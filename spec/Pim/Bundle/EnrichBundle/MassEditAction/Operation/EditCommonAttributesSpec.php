@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -229,7 +228,6 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productBuilder->addMissingPrices($nameProductValue)->shouldBeCalled();
         $productBuilder->createProductValue($price, 'en_US')->willReturn($priceProductValue);
         $productBuilder->addMissingPrices($priceProductValue)->shouldBeCalled();
-
 
         $this->initialize();
 

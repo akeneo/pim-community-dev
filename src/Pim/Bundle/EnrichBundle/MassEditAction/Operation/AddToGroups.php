@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\Persistence\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 
 /**
  * Adds many products to many groups
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class AddToGroups extends ProductMassEditOperation
 {
-    /** @var GroupRepository */
+    /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
     /** @var ArrayCollection */
@@ -26,10 +26,10 @@ class AddToGroups extends ProductMassEditOperation
     protected $warningMessages;
 
     /**
-     * @param GroupRepository    $groupRepository
-     * @param BulkSaverInterface $productSaver
+     * @param GroupRepositoryInterface $groupRepository
+     * @param BulkSaverInterface       $productSaver
      */
-    public function __construct(GroupRepository $groupRepository, BulkSaverInterface $productSaver)
+    public function __construct(GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver)
     {
         parent::__construct($productSaver);
 

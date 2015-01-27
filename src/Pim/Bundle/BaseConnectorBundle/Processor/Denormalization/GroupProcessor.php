@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ObjectDetacherInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

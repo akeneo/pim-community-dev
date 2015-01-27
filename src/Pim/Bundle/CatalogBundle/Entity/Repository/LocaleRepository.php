@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
  * Locale repository
@@ -12,8 +13,10 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class LocaleRepository extends ReferableEntityRepository
+class LocaleRepository extends ReferableEntityRepository implements LocaleRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -32,9 +35,7 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return an array of activated locales
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getActivatedLocales()
     {
@@ -44,9 +45,7 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return an array of activated locales codes
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getActivatedLocaleCodes()
     {
@@ -64,9 +63,7 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return a query builder for activated locales
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function getActivatedLocalesQB()
     {
@@ -78,9 +75,7 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return a query builder for all locales
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function getLocalesQB()
     {
@@ -91,7 +86,7 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {
@@ -104,11 +99,7 @@ class LocaleRepository extends ReferableEntityRepository
     }
 
     /**
-     * Get the deleted locales of a channel (the channel is updated but not flushed yet).
-     *
-     * @param ChannelInterface $channel
-     *
-     * @return array the list of deleted locales
+     * {@inheritdoc}
      */
     public function getDeletedLocalesForChannel(ChannelInterface $channel)
     {
