@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Query;
 
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
