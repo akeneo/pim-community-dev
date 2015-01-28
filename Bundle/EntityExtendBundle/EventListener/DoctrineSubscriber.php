@@ -32,6 +32,9 @@ class DoctrineSubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
+        // HOT FIX for PIM-3683, when using MongoDB with PIM some queries are executed before that the schema is created
+        return;
+
         /** @var OroEntityManager $em */
         $em = $event->getEntityManager();
 
