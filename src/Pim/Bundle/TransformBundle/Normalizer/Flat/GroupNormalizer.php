@@ -22,10 +22,26 @@ class GroupNormalizer extends Structured\GroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(GroupInterface $group)
+    protected function normalizeAxisAttributes(GroupInterface $group)
     {
-        $attributes = parent::normalizeAttributes($group);
+        $attributes = parent::normalizeAxisAttributes($group);
 
         return implode(',', $attributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function normalizeVariantGroupValues(GroupInterface $group)
+    {
+        $valuesData = [];
+        if ($group->getType()->isVariant() && null !== $group->getProductTemplate()) {
+            $template = $group->getProductTemplate();
+            $valuesData = $template->getValuesData();
+            $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
+            $valuesData = $this->serializer->normalize($values, 'csv', ['entity' => 'product']);
+        }
+
+        return $valuesData;
     }
 }

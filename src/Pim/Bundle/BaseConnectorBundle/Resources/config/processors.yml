@@ -9,8 +9,9 @@ parameters:
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
 
-    pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
-    pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
+    pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
+    pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor
+    pim_base_connector.processor.dummy.class:                           Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
 
 services:
     pim_base_connector.processor.csv_serializer:
@@ -155,5 +156,8 @@ services:
         parent: pim_base_connector.processor.csv_serializer
 
     pim_base_connector.processor.normalization.csv_variant_group:
-        class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
-        parent: pim_base_connector.processor.csv_serializer
+        class: %pim_base_connector.processor.normalization.csv_variant_group.class%
+        arguments:
+            - '@pim_serializer'
+            - %upload_dir%
+            - 'csv'
