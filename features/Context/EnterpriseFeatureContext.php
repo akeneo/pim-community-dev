@@ -393,4 +393,50 @@ class EnterpriseFeatureContext extends FeatureContext
         $runner = $this->getContainer()->get('akeneo_rule_engine.runner.chained');
         $runner->run($rule);
     }
+
+    /**
+     * @Then /^I should see the smart icon for the attribute "([^"]*)"$/
+     */
+    public function iShouldSeeTheSmartIconForTheAttribute($attributeLabel)
+    {
+        $this->getAttributeIcon('i.from-smart', $attributeLabel);
+    }
+
+    /**
+     * @Given /^I display the tooltip for the "([^"]*)" rule icon/
+     */
+    public function iDisplayTheTooltipForTheAttribute($attributeLabel)
+    {
+        $icon = $this->getAttributeIcon('i.from-smart', $attributeLabel);
+
+        $icon->mouseOver();
+    }
+
+    /**
+     * @Then /^I should see "([^"]*)" in the popover$/
+     */
+    public function iShouldSeeInThePopover($search)
+    {
+        $this->wait();
+        $popoverContent = $this->getSession()->getPage()
+            ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
+
+        if (!$popoverContent) {
+            throw $this->createExpectationException(sprintf('The popover does not contain %s', $search));
+        }
+    }
+
+    protected function getAttributeIcon($iconSelector, $attributeLabel)
+    {
+        $icon = $this->getSession()->getPage()
+            ->find('css', sprintf('.attribute-field label:contains("%s")', $attributeLabel))
+            ->getParent()
+            ->find('css', $iconSelector);
+
+        if (!$icon) {
+            throw $this->createExpectationException('From rule icon was not found');
+        }
+
+        return $icon;
+    }
 }
