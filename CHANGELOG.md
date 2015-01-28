@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.17 (2015-01-28)
 
 ## Bug fixes
 - PIM-3712: Fix installation issue related to the tag of gedmo/doctrine-extensions v2.3.11, we freeze to v2.3.10
