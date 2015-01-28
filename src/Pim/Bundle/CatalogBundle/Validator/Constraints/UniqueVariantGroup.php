@@ -18,7 +18,7 @@ class UniqueVariantGroup extends Constraint
      *
      * @var string
      */
-    public $message = 'The product "%product%" cannot belongs to many variant groups "%group_one%" and "%group_two%"';
+    public $message = 'The product "%product%" cannot belong to many variant groups: "%groups%"';
 
     /**
      * {@inheritdoc}
