@@ -36,7 +36,7 @@ Feature: Add attributes to a variant group
     And I should not see available attribute Price in group "Marketing"
 
   @javascript
-  Scenario: Update values of products in a variant group when a new attribute is added to the group
+  Scenario: Update values of products in a variant group only after saving the group (not immediately after adding a new attribute)
     Given the following product:
       | sku  | groups            | name-en_US |
       | boot | caterpillar_boots | foo        |
@@ -44,6 +44,8 @@ Feature: Add attributes to a variant group
     Then the english Name of "boot" should be "foo"
     When I visit the "Attributes" tab
     And I add available attribute Name
+    Then the english Name of "boot" should be "foo"
+    When I save the variant group
     Then the english Name of "boot" should be ""
 
   @javascript

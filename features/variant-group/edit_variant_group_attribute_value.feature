@@ -97,7 +97,7 @@ Feature: Editing attribute values of a variant group also updates products
       | name-en_US | In a galaxy far far away |
 
   Scenario: Change a pim_catalog_textarea attribute of a variant group
-    When I change the "tablet Description" to "The best boots !"
+    When I change the "tablet Description" to "The best boots!"
     And I save the variant group
     Then the product "boot" should have the following values:
       | description-en_US-tablet | The best boots! |
