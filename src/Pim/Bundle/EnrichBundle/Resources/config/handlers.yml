@@ -36,6 +36,15 @@ services:
             - @pim_catalog.saver.group
             - @pim_catalog.repository.product
 
+    pim_enrich.form.handler.variant_group:
+        class: %pim_enrich.form.handler.group.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.variant_group'
+            - '@request'
+            - '@pim_catalog.manager.group'
+            - '@pim_catalog.manager.product'
+
     pim_enrich.form.handler.group_type:
         class: %pim_enrich.form.handler.base.class%
         scope: request

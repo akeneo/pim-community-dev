@@ -37,7 +37,7 @@
             {{ elements.backLink(path('pim_enrich_variant_group_index')) }}
             {{ elements.deleteLink(
                 path('pim_enrich_variant_group_remove', { id: form.vars.value.id }),
-                'pim_enrich_group_remove',
+                'pim_enrich_variant_group_remove',
                 path('pim_enrich_variant_group_index'),
                 'confirmation.remove.variant group'|trans({'%name%': form.vars.value.label}),
                 'flash.variant group.removed'|trans

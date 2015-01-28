@@ -60,6 +60,17 @@ pim_enrich:
             product.title:  Products
             property.title: Properties
             history.title:  History
+    # Variant group
+    variant_group:
+        type:
+            VARIANT:    Variant
+            X_SELL:     X-Sell
+            ADDITIONAL: Additional
+            RELATED:    Related
+        tab:
+            product.title:  Products
+            property.title: Properties
+            history.title:  History
             attribute.title: Attributes
         info:
             no_attributes: This variant group has no attributes yet

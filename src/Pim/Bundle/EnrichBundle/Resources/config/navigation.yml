@@ -72,7 +72,7 @@ oro_menu_config:
         pim_enrich_variant_group:
             label: pim_menu.item.variant_group
             route: pim_enrich_variant_group_index
-            aclResourceId: pim_enrich_group_index
+            aclResourceId: pim_enrich_variant_group_index
             extras:
                 routes: ['/^pim_enrich_variant_group_\w+$/']
                 position: 30
