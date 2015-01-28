@@ -125,8 +125,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function findByIds(array $ids)
     {
-        $productQb = $this->queryBuilderFactory->create();
-        $qb = $productQb->getQueryBuilder();
+        $qb = $this->createQueryBuilder('Product');
         $this->addJoinToValueTables($qb);
         $rootAlias = current($qb->getRootAliases());
         $qb->andWhere(
