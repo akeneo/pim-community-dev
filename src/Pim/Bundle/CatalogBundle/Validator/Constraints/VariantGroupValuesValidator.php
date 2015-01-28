@@ -27,46 +27,43 @@ class VariantGroupValuesValidator extends ConstraintValidator
     /**
      * Don't allow having axis or identifier as value in the product template
      *
-     * @param object     $variantGroup
+     * @param object     $group
      * @param Constraint $constraint
      */
-    public function validate($variantGroup, Constraint $constraint)
+    public function validate($group, Constraint $constraint)
     {
         /** @var GroupInterface */
-        if ($variantGroup instanceof GroupInterface && $variantGroup->getType()->isVariant()) {
-            if ($variantGroup->getProductTemplate() !== null) {
-                $this->validateProductValues($variantGroup, $constraint);
+        if ($group instanceof GroupInterface && $group->getType()->isVariant()) {
+            if ($group->getProductTemplate() !== null) {
+                $this->validateProductTemplateValues($group, $constraint);
             }
         }
     }
 
     /**
-     * Validate variant group product values
+     * Validate variant group product template values
      *
      * @param GroupInterface $variantGroup
      * @param Constraint     $constraint
      */
-    protected function validateProductValues(GroupInterface $variantGroup, Constraint $constraint)
+    protected function validateProductTemplateValues(GroupInterface $variantGroup, Constraint $constraint)
     {
         $template = $variantGroup->getProductTemplate();
-        $forbiddenAttributes = is_array($variantGroup->getAxisAttributes()) ?
-            $variantGroup->getAxisAttributes() :
-            $variantGroup->getAxisAttributes()->toArray();
-        $forbiddenAttributes[] = $this->attributeRepository->getIdentifier();
+        $valuesData = $template->getValuesData();
 
-        $notValidAttributes = [];
-        foreach ($forbiddenAttributes as $attribute) {
-            if ($template->hasValueForAttribute($attribute)) {
-                $notValidAttributes[] = $attribute->getCode();
-            }
+        $forbiddenAttributeCodes = $this->attributeRepository->findUniqueAttributeCodes();
+        foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
+            $forbiddenAttributeCodes[] = $axisAttribute->getCode();
         }
 
-        if (count($notValidAttributes) > 0) {
+        $invalidAttributeCodes = array_intersect($forbiddenAttributeCodes, array_keys($valuesData));
+
+        if (count($invalidAttributeCodes) > 0) {
             $this->context->addViolation(
                 $constraint->message,
                 array(
-                    '%variant group%' => $variantGroup->getCode(),
-                    '%attributes%'    => implode(', ', $notValidAttributes)
+                    '%group%'      => $variantGroup->getCode(),
+                    '%attributes%' => $this->formatValues($invalidAttributeCodes)
                 )
             );
         }

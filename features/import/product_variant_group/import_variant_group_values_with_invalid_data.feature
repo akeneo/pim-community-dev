@@ -2,7 +2,7 @@
 Feature: Execute an import
   In order to update existing product information
   As a product manager
-  I need to be able to be notified when I use not valid values in variant group
+  I need to be be notified when I use invalid values in variant group
 
   # what's tested here ?
   # -----------------------------|---------------|-------------
@@ -40,11 +40,11 @@ Feature: Execute an import
       | SANDAL  | Sandal    | size, color | VARIANT | sandal-white-37, sandal-white-38, sandal-white-39, sandal-red-37, sandal-red-38, sandal-red-39 |
       | SANDAL2 | SandalTwo | size, color | VARIANT | sandal2-white-37, sandal2-white-38, sandal2-red-37, sandal2-red-38                             |
     And the following attributes:
-      | code                | label-en_US         | type | scopable | unique | max_characters | validation_rule | validation_regexp |
-      | custom_desc         | Desc                | text | no       | no     |                |                 |                   |
-      | title               | Title               | text | no       | no     | 22             |                 |                   |
-      | barcode             | Barcode             | text | no       | yes    |                | regexp          | /^0\d*$/          |
-      | link                | Link                | text | no       | no     |                | url             |                   |
+      | code        | label-en_US | type | scopable | max_characters | validation_rule | validation_regexp |
+      | custom_desc | Desc        | text | no       |                |                 |                   |
+      | title       | Title       | text | no       | 22             |                 |                   |
+      | barcode     | Barcode     | text | no       |                | regexp          | /^0\d*$/          |
+      | link        | Link        | text | no       |                | url             |                   |
     And I am logged in as "Julia"
 
   Scenario: Skip variant group when a text value is too long (default max_characters to 255)
@@ -101,4 +101,25 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "This value is not a valid URL.: ThisIsNotAnUrl"
+    And I should see "Skipped 1"
+
+  Scenario: Fail to add unique attributes to variant group during import
+    Given the following attributes:
+      | code               | unique |
+      | unique_description | yes    |
+      | unique_label       | yes    |
+    And the following CSV file to import:
+      """
+      code;unique_description;unique_label
+      caterpillar_boots;foo;bar
+      """
+    And the following job "footwear_variant_group_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_variant_group_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_variant_group_import" job to finish
+    Then I should see:
+    """
+    Variant group "caterpillar_boots" cannot contain values for axis or unique attributes: "unique_description", "unique_label"
+    """
     And I should see "Skipped 1"

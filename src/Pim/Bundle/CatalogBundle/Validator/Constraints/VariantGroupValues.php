@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint for variant group values constraint (forbid axis and identifier)
+ * Constraint for variant group values (forbid axis and unique attributes)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class VariantGroupValues extends Constraint
 {
     /** @var string */
-    public $message = 'Variant group "%variant group%" cannot contains axis or identifier as values (%attributes%)';
+    public $message = 'Variant group "%group%" cannot contain values for axis or unique attributes: %attributes%';
 
     /**
      * {@inheritdoc}
