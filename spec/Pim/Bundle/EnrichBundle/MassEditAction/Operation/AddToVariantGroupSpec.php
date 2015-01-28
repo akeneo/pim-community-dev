@@ -54,7 +54,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
         $commonAttributes = [];
 
         $productMassActionRepo->findCommonAttributeIds(Argument::type('array'))->willReturn($commonAttributes);
-        $groupRepository->getVariantGroupsByAttributes($commonAttributes)->willReturn([$shirts, $pants]);
+        $groupRepository->getVariantGroupsByAttributeIds($commonAttributes)->willReturn([$shirts, $pants]);
 
         $groupRepository->getAllVariantGroups()->willReturn([$shirts, $pants]);
         $this->setObjectsToMassEdit([$product1]);
@@ -85,8 +85,10 @@ class AddToVariantGroupSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $groupRepository->getAllVariantGroups()->willReturn([]);
         $this->setObjectsToMassEdit([$product1, $product2]);
+
+        $groupRepository->countVariantGroups()->willReturn(0);
+        $groupRepository->getAllVariantGroups()->willReturn([]);
 
         $this->getWarningMessages()->shouldReturn([[
             'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.no_variant_group',
@@ -101,12 +103,6 @@ class AddToVariantGroupSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $commonAttributes = [];
-        $shoes->__toString()->willReturn('shoes');
-
-        $groupRepository->getAllVariantGroups()->willReturn([$shoes]);
-        $productMassActionRepo->findCommonAttributeIds(Argument::type('array'))->willReturn($commonAttributes);
-        $groupRepository->getVariantGroupsByAttributes($commonAttributes)->willReturn([$shoes]);
 
         $product1->getVariantGroup()->willReturn(null);
         $product1->getIdentifier()->shouldNotBeCalled();
@@ -117,11 +113,91 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
+
+        $productMassActionRepo->findCommonAttributeIds(Argument::type('array'))->willReturn([]);
+        $groupRepository->getVariantGroupsByAttributeIds([])->willReturn([$shoes]);
+
+        $shoes->getId()->willReturn(42);
+        $groupRepository->getAllVariantGroupsWithoutIds([42])->willReturn([]);
+
+        $groupRepository->countVariantGroups()->willReturn(1);
+
         $this->getFormOptions();
 
         $this->getWarningMessages()->shouldReturn([[
             'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid',
             'options' => ['%products%' => 'shirt_000']
+        ]]);
+    }
+
+    function it_generates_warning_message_if_there_is_no_valid_variant_group(
+        $groupRepository,
+        $productMassActionRepo,
+        CustomGroupInterface $shoes,
+        ProductInterface $product1,
+        ProductInterface $product2
+    ) {
+        $shoes->getLabel()->willReturn('Shoes');
+        $shoes->getCode()->willReturn('shoes');
+
+        $product1->getVariantGroup()->willReturn(null);
+        $product2->getVariantGroup()->willReturn(null);
+
+        $this->setObjectsToMassEdit([$product1, $product2]);
+
+        $product1->getId()->willReturn(1);
+        $product2->getId()->willReturn(2);
+        $productMassActionRepo->findCommonAttributeIds([1,2])->willReturn([]);
+        $groupRepository->getVariantGroupsByAttributeIds([])->willReturn([]);
+
+        $groupRepository->countVariantGroups()->willReturn(1);
+        $groupRepository->getAllVariantGroups()->willReturn([$shoes]);
+
+        $this->getFormOptions();
+
+        $this->getWarningMessages()->shouldReturn([
+            [
+                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.no_valid_variant_group',
+                'options' => []
+            ],
+            [
+                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.some_variant_groups_are_skipped',
+                'options' => ['%groups%' => 'Shoes [shoes]']
+            ]
+        ]);
+    }
+
+    function it_generates_warning_message_if_variant_group_without_common_attribute_is_skipped(
+        $groupRepository,
+        $productMassActionRepo,
+        CustomGroupInterface $shoes,
+        CustomGroupInterface $glasses,
+        ProductInterface $product1,
+        ProductInterface $product2
+    ) {
+        $product1->getVariantGroup()->willReturn(null);
+        $product2->getVariantGroup()->willReturn(null);
+
+        $this->setObjectsToMassEdit([$product1, $product2]);
+
+        $product1->getId()->willReturn(1);
+        $product2->getId()->willReturn(2);
+
+        $productMassActionRepo->findCommonAttributeIds([1,2])->willReturn([42]);
+        $groupRepository->getVariantGroupsByAttributeIds([42])->willReturn([$glasses]);
+
+        $glasses->getId()->willReturn(100);
+        $groupRepository->getAllVariantGroupsWithoutIds([100])->willReturn([$shoes]);
+        $shoes->getLabel()->willReturn('Shoes');
+        $shoes->getCode()->willReturn('shoes');
+
+        $groupRepository->countVariantGroups()->willReturn(2);
+
+        $this->getFormOptions();
+
+        $this->getWarningMessages()->shouldReturn([[
+            'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.some_variant_groups_are_skipped',
+            'options' => ['%groups%' => 'Shoes [shoes]']
         ]]);
     }
 
