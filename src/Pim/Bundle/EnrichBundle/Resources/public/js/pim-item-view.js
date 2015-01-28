@@ -6,6 +6,7 @@ define(
         return Backbone.View.extend({
             tagName: 'tr',
             template: '',
+            itemName: 'item',
             events: {
                 'click .delete-row': 'deleteItem'
             },
@@ -32,8 +33,8 @@ define(
             },
             deleteItem: function () {
                 Dialog.confirm(
-                    __('pim_enrich.item.delete.confirm.content'),
-                    __('pim_enrich.item.delete.confirm.title'),
+                    __('pim_enrich.item.delete.confirm.content', {'itemName': this.itemName}),
+                    __('pim_enrich.item.delete.confirm.title', {'itemName': this.itemName}),
                     _.bind(function () {
                         this.parent.deleteItem(this);
                     }, this)
