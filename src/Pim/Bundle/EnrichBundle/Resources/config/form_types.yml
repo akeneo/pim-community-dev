@@ -199,8 +199,6 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - %pim_catalog.entity.attribute.class%
-        calls:
-            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
         tags:
             - { name: form.type, alias: pim_enrich_group }
 
@@ -209,6 +207,8 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - %pim_catalog.entity.attribute.class%
+        calls:
+            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
         tags:
             - { name: form.type, alias: pim_enrich_variant_group }
 
