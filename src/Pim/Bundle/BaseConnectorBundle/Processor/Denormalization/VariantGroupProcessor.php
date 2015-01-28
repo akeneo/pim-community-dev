@@ -36,7 +36,7 @@ class VariantGroupProcessor extends AbstractProcessor
     const AXIS_FIELD = 'axis';
 
     /** @staticvar string */
-    const LABEL_FIELD = 'label';
+    const LABEL_PATTERN = 'label-';
 
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -182,7 +182,7 @@ class VariantGroupProcessor extends AbstractProcessor
     {
         foreach (array_keys($item) as $field) {
             $isCodeOrAxis = in_array($field, [self::CODE_FIELD, self::TYPE_FIELD, self::AXIS_FIELD]);
-            $isLabel = false !== strpos($field, self::LABEL_FIELD, 0);
+            $isLabel = 0 === strpos($field, self::LABEL_PATTERN);
             if ($keepOnlyFields && !$isCodeOrAxis && !$isLabel) {
                 unset($item[$field]);
             } elseif (!$keepOnlyFields && ($isCodeOrAxis || $isLabel)) {

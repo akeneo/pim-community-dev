@@ -25,16 +25,13 @@ class GroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const TYPE_FIELD = 'type';
 
-    /** @staticvar string */
-    const LABEL_FIELD = 'label';
-
     /** @var string */
     protected $format;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
-     * @param ValidatorInterface                    $validator    validator of the object
      * @param DenormalizerInterface                 $denormalizer denormalizer used to transform array to object
+     * @param ValidatorInterface                    $validator    validator of the object
      * @param ObjectDetacherInterface               $detacher     detacher to remove it from UOW when skip
      * @param string                                $class        class of the object to instanciate in case if need
      * @param string                                $format       format use to denormalize
