@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 /**

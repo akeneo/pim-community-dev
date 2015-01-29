@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Product template model, aims to store common product values for different products in order to copy them to products
  * later, used by groups of type variant group, may be used linked to other objects or as standalone template
@@ -26,9 +28,9 @@ interface ProductTemplateInterface
     public function getValues();
 
     /**
-     * @param ArrayCollection $values Collection of ProductValueInterface
+     * @param ProductValueInterface[] $values
      *
-     * @return ProductTemplateInterface
+     * @return ProductTemplateInterface[]|ArrayCollection
      */
     public function setValues($values);
 
@@ -47,19 +49,19 @@ interface ProductTemplateInterface
     /**
      * @param ProductValueInterface $value
      *
-     * @return boolean
+     * @return bool
      */
     public function hasValue(ProductValueInterface $value);
 
     /**
      * @param AttributeInterface $attribute
      *
-     * @return boolean
+     * @return bool
      */
     public function hasValueForAttribute(AttributeInterface $attribute);
 
     /**
      * @return array
      */
-    public function getAttributes();
+    public function getAttributeCodes();
 }

@@ -42,15 +42,14 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
         $code = $input->getArgument('code');
         $variantGroup = $this->getVariantGroup($code);
         if (!$variantGroup || $variantGroup->getType()->isVariant() === false) {
-            $output->writeln(sprintf('<error>Variant group "%s" is unknown<error>', $code));
+            $output->writeln(sprintf('<error>The variant group "%s" does not exist.<error>', $code));
 
             return;
         }
 
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
-        $products = $products->count() > 0 ? $products->toArray() : [];
-        $skipped = $this->apply($template, $products);
+        $skipped = $this->apply($template, $products->toArray());
         $nbSkipped = count($skipped);
 
         $output->writeln(

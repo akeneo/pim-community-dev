@@ -14,10 +14,10 @@ use Symfony\Component\Validator\Constraint;
 class VariantGroupAxis extends Constraint
 {
     /** @var string */
-    public $expectedAxisMessage = 'Variant group "%variant group%" must be defined with axis';
+    public $expectedAxisMessage = 'Variant group "%variant group%" must be defined with at least one axis';
 
     /** @var string */
-    public $unexpectedAxisMessage = 'Group "%group%" cannot be defined with axis (only for variant group)';
+    public $unexpectedAxisMessage = 'Group "%group%", which is not variant, can not be defined with axes';
 
     /**
      * {@inheritdoc}

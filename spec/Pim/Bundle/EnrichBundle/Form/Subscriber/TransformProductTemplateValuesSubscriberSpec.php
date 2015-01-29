@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -45,9 +46,11 @@ class TransformProductTemplateValuesSubscriberSpec extends ObjectBehavior
     ) {
         $event->getData()->willReturn($template);
         $template->getValuesData()->willReturn(['foo' => 'bar']);
-        $denormalizer->denormalize(['foo' => 'bar'], 'ProductValue[]', 'json')->willReturn([$value]);
+        $collection = new ArrayCollection([$value]);
 
-        $template->setValues([$value])->shouldBeCalled();
+        $denormalizer->denormalize(['foo' => 'bar'], 'ProductValue[]', 'json')->willReturn($collection);
+
+        $template->setValues($collection)->shouldBeCalled();
 
         $this->preSetData($event);
     }

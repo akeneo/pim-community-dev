@@ -57,6 +57,6 @@ class CurrencyManager
      */
     public function getActiveCodes()
     {
-        return $this->repository->getActivatedCurrenciesCodes();
+        return $this->repository->getActivatedCurrencyCodes();
     }
 }

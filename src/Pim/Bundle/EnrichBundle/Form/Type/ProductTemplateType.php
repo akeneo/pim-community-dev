@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber;
@@ -38,24 +39,24 @@ class ProductTemplateType extends AbstractType
     protected $channelManager;
 
     /**
-     * @param string                                   $productTemplateClass
      * @param ProductFormViewInterface                 $productFormView
      * @param TransformProductTemplateValuesSubscriber $valuesSubscriber
      * @param UserContext                              $userContext
      * @param ChannelManager                           $channelManager
+     * @param string                                   $productTemplateClass
      */
     public function __construct(
-        $productTemplateClass,
         ProductFormViewInterface $productFormView,
         TransformProductTemplateValuesSubscriber $valuesSubscriber,
         UserContext $userContext,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        $productTemplateClass
     ) {
-        $this->productTemplateClass = $productTemplateClass;
         $this->productFormView      = $productFormView;
         $this->valuesSubscriber     = $valuesSubscriber;
         $this->userContext          = $userContext;
         $this->channelManager       = $channelManager;
+        $this->productTemplateClass = $productTemplateClass;
     }
 
     /**
@@ -117,7 +118,7 @@ class ProductTemplateType extends AbstractType
     /**
      * Returns attribute groups of the given values ordered by their sort order
      *
-     * @param ProductValueInterface[]|ArrayCollection $values
+     * @param ArrayCollection $values Collection of ProductValueInterface
      *
      * @return AttributeGroup[]
      */

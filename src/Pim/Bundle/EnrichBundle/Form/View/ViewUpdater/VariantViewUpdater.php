@@ -31,7 +31,7 @@ class VariantViewUpdater implements ViewUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($view)
+    public function update(array $view)
     {
         if (isset($view['value'])) {
             $valueFormViews = [$view['value']];
@@ -58,10 +58,11 @@ class VariantViewUpdater implements ViewUpdaterInterface
      * Check if an attribute is updated by a variant group or not
      *
      * @param ProductValueInterface $productValue
+     *
+     * @return bool
      */
     protected function isUpdatedByVariant(ProductValueInterface $productValue)
     {
-        /** @var ProductInterface $product */
         $product = $productValue->getEntity();
 
         //In case of mass edit the product is null

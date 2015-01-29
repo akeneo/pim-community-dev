@@ -202,29 +202,25 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addMissingPrices(ProductValueInterface $value)
     {
-        $activeCurrencies = $this->currencyRepository->getActivatedCurrenciesCodes();
+        $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
 
-        if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+        if ('pim_catalog_price_collection' === $value->getAttribute()->getAttributeType()) {
             $prices = $value->getPrices();
 
-            foreach ($activeCurrencies as $activeCurrency) {
-                $hasPrice = $prices->filter(
-                    function ($price) use ($activeCurrency) {
-                        return $activeCurrency === $price->getCurrency();
-                    }
-                )->count() > 0;
-
-                if (!$hasPrice) {
-                    $this->addPriceForCurrency($value, $activeCurrency);
+            foreach ($activeCurrencyCodes as $currencyCode) {
+                if (null === $value->getPrice($currencyCode)) {
+                    $this->addPriceForCurrency($value, $currencyCode);
                 }
             }
 
             foreach ($prices as $price) {
-                if (!in_array($price->getCurrency(), $activeCurrencies)) {
+                if (!in_array($price->getCurrency(), $activeCurrencyCodes)) {
                     $value->removePrice($price);
                 }
             }
         }
+
+        return $value;
     }
 
     /**
@@ -257,6 +253,8 @@ class ProductBuilder implements ProductBuilderInterface
                 return $price;
             }
         }
+
+        return null;
     }
 
     /**

@@ -21,14 +21,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class GroupType extends AbstractType
 {
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
     /** @var EventSubscriberInterface[] */

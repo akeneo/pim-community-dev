@@ -103,7 +103,7 @@ class VariantGroupProcessor extends AbstractProcessor
     protected function findOrCreateVariantGroup(array $groupData)
     {
         $variantGroup = $this->findOrCreateObject($this->repository, $groupData, $this->class);
-        $isExistingGroup = $variantGroup->getId() !== null && $variantGroup->getType()->isVariant() === false;
+        $isExistingGroup = (null !== $variantGroup->getType() && false === $variantGroup->getType()->isVariant());
         if ($isExistingGroup) {
             $this->skipItemWithMessage(
                 $groupData,
@@ -118,13 +118,13 @@ class VariantGroupProcessor extends AbstractProcessor
      * Update the variant group fields
      *
      * @param GroupInterface $variantGroup
-     * @param array          $item
+     * @param array          $groupData
      *
      * @return GroupInterface
      */
-    protected function updateVariantGroup(GroupInterface $variantGroup, array $item)
+    protected function updateVariantGroup(GroupInterface $variantGroup, array $groupData)
     {
-        $variantGroupData = $this->filterVariantGroupData($item, true);
+        $variantGroupData = $this->filterVariantGroupData($groupData, true);
         $variantGroup = $this->denormalizer->denormalize(
             $variantGroupData,
             $this->class,
@@ -139,14 +139,14 @@ class VariantGroupProcessor extends AbstractProcessor
      * Update the variant group values
      *
      * @param GroupInterface $variantGroup
-     * @param array          $item
+     * @param array          $groupData
      */
-    protected function updateVariantGroupValues(GroupInterface $variantGroup, array $item)
+    protected function updateVariantGroupValues(GroupInterface $variantGroup, array $groupData)
     {
-        $valuesData = $this->filterVariantGroupData($item, false);
+        $valuesData = $this->filterVariantGroupData($groupData, false);
         if (!empty($valuesData)) {
             $values = $this->denormalizeValuesFromItemData($valuesData);
-            $this->validateValues($variantGroup, $values, $item);
+            $this->validateValues($variantGroup, $values, $groupData);
             $template = $this->getProductTemplate($variantGroup);
             $template->setValues($values);
             $this->templateMediaManager->handleProductTemplateMedia($template);
@@ -157,62 +157,62 @@ class VariantGroupProcessor extends AbstractProcessor
 
     /**
      * @param GroupInterface $variantGroup
-     * @param array          $item
+     * @param array          $groupData
      *
      * @throws InvalidItemException
      */
-    protected function validateVariantGroup(GroupInterface $variantGroup, array $item)
+    protected function validateVariantGroup(GroupInterface $variantGroup, array $groupData)
     {
         $violations = $this->validator->validate($variantGroup);
         if ($violations->count() !== 0) {
             $this->detachObject($variantGroup);
-            $this->skipItemWithConstraintViolations($item, $violations);
+            $this->skipItemWithConstraintViolations($groupData, $violations);
         }
     }
 
     /**
      * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
      *
-     * @param array $item
+     * @param array $groupData
      * @param bool  $keepOnlyFields if true keep only code, axis, labels, else keep only values
      *
      * @return array
      */
-    protected function filterVariantGroupData(array $item, $keepOnlyFields = true)
+    protected function filterVariantGroupData(array $groupData, $keepOnlyFields = true)
     {
-        foreach (array_keys($item) as $field) {
+        foreach (array_keys($groupData) as $field) {
             $isCodeOrAxis = in_array($field, [self::CODE_FIELD, self::TYPE_FIELD, self::AXIS_FIELD]);
             $isLabel = 0 === strpos($field, self::LABEL_PATTERN);
             if ($keepOnlyFields && !$isCodeOrAxis && !$isLabel) {
-                unset($item[$field]);
+                unset($groupData[$field]);
             } elseif (!$keepOnlyFields && ($isCodeOrAxis || $isLabel)) {
-                unset($item[$field]);
+                unset($groupData[$field]);
             }
         }
 
-        return $item;
+        return $groupData;
     }
 
     /**
      * @param GroupInterface  $variantGroup
      * @param ArrayCollection $values       Collection of ProductValueInterface
-     * @param array           $item
+     * @param array           $groupData
      *
      * @throw InvalidItemException
      */
-    protected function validateValues(GroupInterface $variantGroup, ArrayCollection $values, array $item)
+    protected function validateValues(GroupInterface $variantGroup, ArrayCollection $values, array $groupData)
     {
         foreach ($values as $value) {
             $violations = $this->validator->validate($value);
             if ($violations->count() !== 0) {
                 $this->detachObject($variantGroup);
-                $this->skipItemWithConstraintViolations($item, $violations);
+                $this->skipItemWithConstraintViolations($groupData, $violations);
             }
         }
     }
 
     /**
-     * Filter empt values then denormalize the product values objects from CSV fields
+     * Filter empty values then denormalize the product values objects from CSV fields
      *
      * @param array $rawProductValues
      *

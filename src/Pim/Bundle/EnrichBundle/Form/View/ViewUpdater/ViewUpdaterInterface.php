@@ -16,5 +16,5 @@ interface ViewUpdaterInterface
      *
      * @param array $view
      */
-    public function update($view);
+    public function update(array $view);
 }

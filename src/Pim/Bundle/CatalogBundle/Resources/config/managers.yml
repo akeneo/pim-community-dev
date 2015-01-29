@@ -148,6 +148,7 @@ services:
             - '@pim_serializer'
             - '@pim_serializer'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.repository.attribute'
             - %pim_catalog.entity.product.class%
 
     pim_catalog.manager.product_template_media:

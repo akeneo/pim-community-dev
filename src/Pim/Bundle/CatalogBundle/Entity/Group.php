@@ -375,5 +375,7 @@ class Group implements GroupInterface
     public function setProductTemplate(ProductTemplateInterface $productTemplate)
     {
         $this->productTemplate = $productTemplate;
+
+        return $this;
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Group flat denormalizer
@@ -16,23 +17,23 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
  */
 class GroupDenormalizer extends AbstractEntityDenormalizer
 {
-    /** @var ReferableEntityRepositoryInterface */
+    /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
-    /** @var ReferableEntityRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
-     * @param ManagerRegistry                    $managerRegistry
-     * @param string                             $entityClass
-     * @param ReferableEntityRepositoryInterface $groupTypeRepository
-     * @param ReferableEntityRepositoryInterface $attributeRepository
+     * @param ManagerRegistry              $managerRegistry
+     * @param string                       $entityClass
+     * @param GroupTypeRepositoryInterface $groupTypeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
-        IdentifiableObjectRepositoryInterface $groupTypeRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        GroupTypeRepositoryInterface $groupTypeRepository,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         parent::__construct($managerRegistry, $entityClass);
         $this->groupTypeRepository = $groupTypeRepository;
@@ -44,7 +45,6 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
      */
     protected function doDenormalize($data, $format, array $context)
     {
-        /** @var GroupInterface $group */
         $group = $this->getEntity($data, $context);
         $this->setCode($group, $data);
         $this->setGroupType($group, $data);
@@ -117,7 +117,6 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
             if ($isLabel) {
                 $labelTokens = explode('-', $field);
                 $localeCode = $labelTokens[1];
-                /** @var GroupTranslation $translation */
                 $translation = $group->getTranslation($localeCode);
                 $translation->setLabel($value);
                 $group->addTranslation($translation);

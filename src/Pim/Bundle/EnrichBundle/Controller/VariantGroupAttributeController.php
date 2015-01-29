@@ -34,13 +34,13 @@ class VariantGroupAttributeController
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** @var GroupRepository */
+    /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
     /** @var SaverInterface */
     protected $groupSaver;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var ProductTemplateFactory */
@@ -130,9 +130,9 @@ class VariantGroupAttributeController
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
-        } else {
-            return $this->redirectToRoute('pim_enrich_variant_group_edit', ['id' => $groupId]);
         }
+
+        return $this->redirectToRoute('pim_enrich_variant_group_edit', ['id' => $groupId]);
     }
 
     /**
@@ -162,7 +162,7 @@ class VariantGroupAttributeController
      *
      * @param integer $id
      *
-     * @return Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      *
      * @throws NotFoundHttpException
      */
@@ -189,26 +189,11 @@ class VariantGroupAttributeController
      */
     protected function getAvailableAttributesForm(GroupInterface $group, AvailableAttributes $availableAttributes)
     {
-        $attributes = $group->getAxisAttributes()->toArray();
-
-        $template = $group->getProductTemplate();
-        if (null !== $template) {
-            foreach (array_keys($template->getValuesData()) as $attributeCode) {
-                $attributes[] = $this->attributeRepository->findOneByCode($attributeCode);
-            }
-        }
-
-        $uniqueAttributes = $this->attributeRepository->findBy(['unique' => true]);
-        foreach ($uniqueAttributes as $attribute) {
-            if (!in_array($attribute, $attributes)) {
-                $attributes[] = $attribute;
-            }
-        }
-
         return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes,
-            ['attributes' => $attributes]
+            // TODO: this key is really not well named...
+            ['attributes' => $this->tplAttributesManager->getNonEligibleAttributes($group)]
         );
     }
 

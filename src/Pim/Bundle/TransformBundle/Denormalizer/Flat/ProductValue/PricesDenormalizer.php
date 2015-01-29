@@ -44,7 +44,6 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $this->configContext($resolver);
         $context = $resolver->resolve($context);
 
-        /** @var ProductValueInterface $value */
         $value  = $context['value'];
         $prices = $this->extractPrices($data, $context);
         foreach ($prices as $price) {

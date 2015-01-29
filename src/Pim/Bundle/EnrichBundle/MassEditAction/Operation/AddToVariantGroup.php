@@ -24,7 +24,7 @@ class AddToVariantGroup extends ProductMassEditOperation
     /** @var array */
     protected $skippedObjects = [];
 
-    /** @var GroupRepository */
+    /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
     /** @var ProductTemplateUpdaterInterface */
@@ -61,21 +61,21 @@ class AddToVariantGroup extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function setObjectsToMassEdit(array $objects)
+    public function setObjectsToMassEdit(array $products)
     {
         $this->objects        = [];
         $this->skippedObjects = [];
 
-        foreach ($objects as $object) {
-            $violations = $this->validator->validate($object, ['pim_catalog_variant_group']);
+        foreach ($products as $product) {
+            $violations = $this->validator->validate($product, ['pim_catalog_variant_group']);
 
-            if ($object instanceof ProductInterface &&
-                null === $object->getVariantGroup() &&
+            if ($product instanceof ProductInterface &&
+                null === $product->getVariantGroup() &&
                 count($violations) === 0
             ) {
-                $this->objects[] = $object;
+                $this->objects[] = $product;
             } else {
-                $this->skippedObjects[] = $object;
+                $this->skippedObjects[] = $product;
             }
         }
 
