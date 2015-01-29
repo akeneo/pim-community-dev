@@ -192,7 +192,7 @@ options:
     black_main:
         code: black
         attribute: main_color
-        labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'S  chwarz' }
+        labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'Schwarz' }
         sortOrder: 2
     grey_main:
         code: grey
@@ -202,7 +202,7 @@ options:
     blue_main:
         code: blue
         attribute: main_color
-        labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
+        labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: 'Blau' }
         sortOrder: 4
     purple_main:
         code: purple
@@ -252,7 +252,7 @@ options:
     blue_secondary:
         code: blue
         attribute: secondary_color
-        labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
+        labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: 'Blau' }
         sortOrder: 8
     purple_secondary:
         code: purple
