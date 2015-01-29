@@ -49,7 +49,7 @@ define(
         };
 
         var valueTemplates = {
-            'metric': _.template('<%= value.data %> <%= value.unit %><%= value.data > 1 ? \'S\' : \'\' %>'),
+            'metric': _.template('<%= value.data %> <%= value.unit %>'),
             'collection': _.template(
                 '<% for (var i in value) { %>' +
                     '<%= renderValue(value[i]) %> ' +
