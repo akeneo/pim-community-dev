@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Saver;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
