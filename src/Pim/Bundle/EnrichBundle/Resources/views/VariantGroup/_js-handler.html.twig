@@ -22,6 +22,8 @@
                 });
 
                 mediator.trigger('pim:reinit');
+
+                {{ view_elements('pim_enrich_variant_edit.after_form_init') }}
             });
         }
     );

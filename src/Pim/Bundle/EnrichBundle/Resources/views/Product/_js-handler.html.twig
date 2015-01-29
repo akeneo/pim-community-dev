@@ -92,6 +92,8 @@
                     new DialogForm('#create-product');
                     $('#create-product').click();
                 {% endif %}
+
+                {{ view_elements('pim_enrich_product_edit.after_form_init') }}
             });
         }
     );
