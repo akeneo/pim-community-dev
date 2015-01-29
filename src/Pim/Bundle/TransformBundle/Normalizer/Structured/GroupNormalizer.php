@@ -49,7 +49,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
         $results += $this->transNormalizer->normalize($object, $format, $context);
 
         if (isset($context['with_variant_group_values']) && true === $context['with_variant_group_values']) {
-            $variantGroupValues = $this->normalizeVariantGroupValues($object);
+            $variantGroupValues = $this->normalizeVariantGroupValues($object, $format, $context);
             if (!empty($variantGroupValues)) {
                 $results += $variantGroupValues;
             }
@@ -88,10 +88,12 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
      * Normalize the variant group values
      *
      * @param GroupInterface $group
+     * @param string         $format
+     * @param array          $context
      *
      * @return array
      */
-    protected function normalizeVariantGroupValues(GroupInterface $group)
+    protected function normalizeVariantGroupValues(GroupInterface $group, $format, array $context)
     {
         $valuesData = [];
         if ($group->getType()->isVariant() && null !== $group->getProductTemplate()) {

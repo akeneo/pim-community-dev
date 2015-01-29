@@ -32,16 +32,28 @@ class GroupNormalizer extends Structured\GroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeVariantGroupValues(GroupInterface $group)
+    protected function normalizeVariantGroupValues(GroupInterface $group, $format, array $context)
     {
-        $valuesData = [];
-        if ($group->getType()->isVariant() && null !== $group->getProductTemplate()) {
-            $template = $group->getProductTemplate();
-            $valuesData = $template->getValuesData();
-            $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
-            $valuesData = $this->serializer->normalize($values, 'csv', ['entity' => 'product']);
+        if (!$group->getType()->isVariant() || null === $group->getProductTemplate()) {
+            return [];
         }
 
-        return $valuesData;
+        $valuesData = $group->getProductTemplate()->getValuesData();
+        $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
+
+        // TODO: Fix flat collection normalizer and use this
+        // $normalizedValues = $this->serializer->normalize($values, $format, ['entity' => 'product'] + $context);
+        $normalizedValues = [];
+        foreach ($values as $value) {
+            $normalizedValues = array_merge(
+                $normalizedValues,
+                $this->serializer->normalize($value, $format, ['entity' => 'product'] + $context)
+            );
+        }
+
+        // TODO: maybe sort the values - just like in product export?
+        // ksort($normalizedValues);
+
+        return $normalizedValues;
     }
 }
