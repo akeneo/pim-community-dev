@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Saver;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,7 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Saver\ProductSavingOptionsResolver;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;

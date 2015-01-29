@@ -21,5 +21,7 @@ Feature: Delete a rule
     Given I am on the "description" attribute page
     And I visit the "Rules" tab
     And I delete the rule "set_tees_description"
+    And I should see "Delete this rule"
+    And I should see "Are you sure you want to delete this rule? It is not possible to undo this action"
     And I confirm the deletion
     Then I should see "No rule for now"

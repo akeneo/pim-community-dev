@@ -106,6 +106,7 @@ define(
 
         return ItemView.extend({
             className: 'rule-row',
+            itemName: 'rule',
             template: _.template(
                 '<!-- PimEnterprise/Bundle/CatalogRuleBundle/Resources/public/js/ruleitemview.js -->' +
                 '<td class="rule-cell rule-code"><%= rule.code %></td>' +
