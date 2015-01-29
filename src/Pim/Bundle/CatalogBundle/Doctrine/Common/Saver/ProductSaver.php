@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Saver;
+namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
