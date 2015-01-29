@@ -40,6 +40,7 @@ class ProductTemplateMediaManager
     {
         $mediaHandled = false;
         foreach ($template->getValues() as $value) {
+            // TODO (JJ) null !== $media = ...
             if ($media = $value->getMedia()) {
                 $mediaHandled = true;
                 $filenamePrefix = $media->getFile() ? $this->generateFilenamePrefix($value) : null;
@@ -56,6 +57,8 @@ class ProductTemplateMediaManager
      * @param ProductValueInterface $value
      *
      * @return string
+     *
+     * TODO (JJ) don't we have that in the media manager already ?
      */
     public function generateFilenamePrefix(ProductValueInterface $value)
     {
@@ -76,6 +79,7 @@ class ProductTemplateMediaManager
      */
     protected function updateNormalizedValues(ProductTemplateInterface $template)
     {
+        // TODO (JJ) object, not entity
         $valuesData = $this->normalizer->normalize($template->getValues(), 'json', ['entity' => 'product']);
         $template->setValuesData($valuesData);
     }

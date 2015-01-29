@@ -21,9 +21,11 @@ class CurrencyRepository extends ReferableEntityRepository implements CurrencyRe
      */
     public function getActivatedCurrenciesCodes()
     {
+        // TODO (JJ) useless var
         $criterias = array('activated' => true);
         $currencies = $this->findBy($criterias);
 
+        // TODO (JJ) we could do that directly in the query :p
         return array_map(
             function ($value) {
                 return $value->getCode();

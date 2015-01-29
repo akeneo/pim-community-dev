@@ -23,11 +23,12 @@ class VariantGroupAxisValidator extends ConstraintValidator
      */
     public function validate($variantGroup, Constraint $constraint)
     {
-        /** @var GroupInterface */
         if ($variantGroup instanceof GroupInterface) {
             $isNew = $variantGroup->getId() === null;
+            // TODO (JJ) why not create a method isVariant in Group as we do those check everywhere ?
             $isVariantGroup = $variantGroup->getType()->isVariant();
             $hasAxis = count($variantGroup->getAxisAttributes()) > 0;
+            // TODO (JJ) why the isNew check is done only here ? either for both if or for none
             if ($isNew && $isVariantGroup && !$hasAxis) {
                 $this->context->addViolation(
                     $constraint->expectedAxisMessage,

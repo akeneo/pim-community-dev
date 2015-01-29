@@ -64,10 +64,13 @@ class GroupSaver implements SaverInterface
             );
         }
 
+        // TODO (JJ) options resolver ?
         $defaultOptions = [
             'flush' => true,
             'copy_values_to_products' => false,
+            // TODO (JJ) don't understand this option, why it's not a bool ? or bad naming ? products_to_add ?
             'add_products' => [],
+            // TODO (JJ) don't understand this option, why it's not a bool ? or bad naming ? products_to_remove ?
             'remove_products' => []
         ];
         $options = array_merge($defaultOptions, $options);
@@ -97,6 +100,8 @@ class GroupSaver implements SaverInterface
     }
 
     /**
+     * TODO (JJ) ProductInterface[]
+     *
      * @param array $products
      */
     protected function addProducts(array $products)
@@ -105,6 +110,8 @@ class GroupSaver implements SaverInterface
     }
 
     /**
+     * TODO (JJ) ProductInterface[]
+     *
      * @param array $products
      */
     protected function removeProducts(array $products)

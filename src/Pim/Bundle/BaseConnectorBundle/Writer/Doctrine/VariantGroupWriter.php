@@ -55,6 +55,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
 
     /**
      * {@inheritdoc}
+     *
+     * TODO (JJ) rename $items to $variantGroups
      */
     public function write(array $items)
     {
@@ -132,8 +134,11 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     {
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
+        // TODO (JJ) create a $template->hasValues() method ?
         if ($template && count($template->getValuesData()) > 0 && count($products) > 0) {
+            // TODO (JJ) useless, you already checked  count($products) > 0 before
             $products = $products->count() > 0 ? $products->toArray() : [];
+            // TODO (JJ) is should not return skipped messages, but a ConstraintViolationListInterface
             $skippedMessages = $this->productTemplateApplier->apply($template, $products);
             $nbSkipped = count($skippedMessages);
             $nbUpdated = count($products) - $nbSkipped;
@@ -161,16 +166,20 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
      */
     protected function incrementUpdatedProductsCount($nbProducts)
     {
+        //TODO (JJ) useless var
         $summaryKey = 'update_products';
         $this->stepExecution->incrementSummaryInfo($summaryKey, $nbProducts);
     }
 
     /**
      * @param integer $nbSkippedProducts
-     * @param array   $skippedMessages
+     * @param array   $skippedMessages  TODO (JJ) not an array, a ConstraintViolationListInterface
+     *
+     * TODO (JJ) typehint $skippedMessage
      */
     protected function incrementSkippedProductsCount($nbSkippedProducts, $skippedMessages)
     {
+        //TODO (JJ) useless var
         $summaryKey = 'skip_products';
         $this->stepExecution->incrementSummaryInfo($summaryKey, $nbSkippedProducts);
 

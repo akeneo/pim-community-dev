@@ -79,9 +79,12 @@ interface ProductBuilderInterface
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);
 
     /**
-     * Add missing prices from a product value
+     * Add missing prices to a product value
      *
      * @param ProductValueInterface $value
+     *
+     * TODO (JJ) rename addMissingPricesToProductValue to be constistent with other methods
+     * TODO (JJ) normal it returns nothing ?
      */
     public function addMissingPrices(ProductValueInterface $value);
 

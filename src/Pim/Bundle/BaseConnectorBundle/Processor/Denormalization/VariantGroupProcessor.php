@@ -103,7 +103,7 @@ class VariantGroupProcessor extends AbstractProcessor
     protected function findOrCreateVariantGroup(array $groupData)
     {
         $variantGroup = $this->findOrCreateObject($this->repository, $groupData, $this->class);
-        $isExistingGroup = $variantGroup->getId() !== null && $variantGroup->getType()->isVariant() === false;
+        $isExistingGroup = $variantGroup->getId() !== null && $variantGroup->getType()->isVariant() === false; //TODO (JJ) yoda and parenthesis => difficult to read
         if ($isExistingGroup) {
             $this->skipItemWithMessage(
                 $groupData,
@@ -118,7 +118,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * Update the variant group fields
      *
      * @param GroupInterface $variantGroup
-     * @param array          $item
+     * @param array          $item            TODO (JJ) could be renamed groupData as in the previous method
      *
      * @return GroupInterface
      */
@@ -139,7 +139,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * Update the variant group values
      *
      * @param GroupInterface $variantGroup
-     * @param array          $item
+     * @param array          $item         TODO (JJ) could be renamed groupData as in the previous method
      */
     protected function updateVariantGroupValues(GroupInterface $variantGroup, array $item)
     {
@@ -157,7 +157,7 @@ class VariantGroupProcessor extends AbstractProcessor
 
     /**
      * @param GroupInterface $variantGroup
-     * @param array          $item
+     * @param array          $item          TODO (JJ) could be renamed groupData as in the previous method
      *
      * @throws InvalidItemException
      */
@@ -173,7 +173,7 @@ class VariantGroupProcessor extends AbstractProcessor
     /**
      * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
      *
-     * @param array $item
+     * @param array $item   TODO (JJ) could be renamed groupData as in the previous method
      * @param bool  $keepOnlyFields if true keep only code, axis, labels, else keep only values
      *
      * @return array
@@ -196,7 +196,7 @@ class VariantGroupProcessor extends AbstractProcessor
     /**
      * @param GroupInterface  $variantGroup
      * @param ArrayCollection $values       Collection of ProductValueInterface
-     * @param array           $item
+     * @param array           $item             TODO (JJ) could be renamed groupData as in the previous method
      *
      * @throw InvalidItemException
      */
@@ -212,7 +212,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Filter empt values then denormalize the product values objects from CSV fields
+     * Filter empty values then denormalize the product values objects from CSV fields
      *
      * @param array $rawProductValues
      *
@@ -220,13 +220,15 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function denormalizeValuesFromItemData(array $rawProductValues)
     {
-        $nonEmptyValues = $rawProductValues;
+        $nonEmptyValues = $rawProductValues;  // TODO (JJ) why ? you don't use $rawProductValues anywhere
         foreach ($nonEmptyValues as $index => $data) {
             if (trim($data) === "") {
                 unset($nonEmptyValues[$index]);
             }
         }
 
+        // TODO (JJ) ProductValue should not be hardcoded, and ProductValue[] is really weird
+        // TODO (JJ) really need the format ? we don't use a custom denormalizer or chained denormalizer whose purpose is to handle only VG ?
         return $this->denormalizer->denormalize($nonEmptyValues, 'ProductValue[]', 'csv');
     }
 

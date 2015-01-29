@@ -99,6 +99,7 @@ class AddToGroups extends ProductMassEditOperation
     {
         $messages = [];
 
+        // TODO (JJ) do a count query in the repository
         if (count($this->groupRepository->getAllGroupsExceptVariant()) === 0) {
             $messages[] = [
                 'key'     => 'pim_enrich.mass_edit_action.add-to-groups.no_group',

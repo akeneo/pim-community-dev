@@ -22,6 +22,8 @@ class UniqueVariantGroupValidator extends ConstraintValidator
     {
         if ($product instanceof ProductInterface) {
             $variantGroups = [];
+            // TODO (JJ) should be extracted in a sub method hasSeveralVG that loops over the groups and returns
+            // true when 2 VG are found. This will avoid to loop over ALL the groups for nothing like here
             foreach ($product->getGroups() as $group) {
                 if ($group->getType()->isVariant()) {
                     $variantGroups[] = $group;

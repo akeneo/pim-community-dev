@@ -41,7 +41,7 @@ class GroupProcessor extends AbstractProcessor
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        $class, // TODO responsibility of the denormalizer ?!
+        $class, // TODO responsibility of the denormalizer ?! (TODO (JJ) impossible if we use SF denormalizer interface and no registry)
         $format
     ) {
         parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
@@ -82,9 +82,12 @@ class GroupProcessor extends AbstractProcessor
     protected function findOrCreateGroup(array $groupData)
     {
         $group = $this->findOrCreateObject($this->repository, $groupData, $this->class);
-        $isNewVariantGroup = null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT';
+        $isNewVariantGroup = null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT'; //TODO (JJ) yoda and parenthesis => difficult to read
         $isExistingVariantGroup = null !== $group->getId() && $group->getType()->isVariant();
         if ($isNewVariantGroup || $isExistingVariantGroup) {
+            // TODO (JJ) naming pb, I don't understand why $isExistingVariantGroup is not !$isNewVariantGroup
+            // could be better to  have
+            // $isVG = false; if (your bunch of condition) { $isVG = true; } if ($isVg) { skip item }
             $this->skipItemWithMessage(
                 $groupData,
                 sprintf('Cannot process variant group "%s", only groups are accepted', $groupData[self::CODE_FIELD])

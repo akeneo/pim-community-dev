@@ -47,12 +47,13 @@ class GroupReader extends AbstractConfigurableStepElement implements
         if (!$this->executed) {
             $this->executed = true;
             $this->results = $this->repository->getAllGroupsExceptVariant();
+            // TODO (JJ) how is it possible ? getAllGroupsExceptVariant should always return an array, even empty
             if (!$this->results instanceof \Iterator) {
                 $this->results = new \ArrayIterator($this->results);
             }
         }
 
-        if ($result = $this->results->current()) {
+        if ($result = $this->results->current()) { // TODO (JJ) I don't understand that, is it normal ? anyway, we should not have if ($var = expr)
             $this->results->next();
             $this->stepExecution->incrementSummaryInfo('read');
         }

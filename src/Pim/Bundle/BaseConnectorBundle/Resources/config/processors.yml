@@ -127,7 +127,7 @@ services:
         arguments:
             - %pim_catalog.entity.group.class%
 
-    pim_base_connector.processor.denormalization.csv_group:
+    pim_base_connector.processor.denormalization.csv_group: # TODO (JJ)  why csv here ?
         class: %pim_base_connector.processor.denormalization.csv_group.class%
         arguments:
             - '@pim_catalog.repository.group'
@@ -137,7 +137,7 @@ services:
             - %pim_catalog.entity.group.class%
             - 'csv'
 
-    pim_base_connector.processor.denormalization.csv_variant_group:
+    pim_base_connector.processor.denormalization.csv_variant_group: # TODO (JJ)  why csv here ?
         class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
         arguments:
             - '@pim_catalog.repository.group'
@@ -150,10 +150,10 @@ services:
             - %pim_catalog.entity.product_template.class%
             - 'csv'
 
-    pim_base_connector.processor.normalization.csv_group:
+    pim_base_connector.processor.normalization.csv_group: # TODO (JJ)  why csv here ?
         class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
         parent: pim_base_connector.processor.csv_serializer
 
-    pim_base_connector.processor.normalization.csv_variant_group:
+    pim_base_connector.processor.normalization.csv_variant_group: # TODO (JJ)  why csv here ?
         class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
         parent: pim_base_connector.processor.csv_serializer

@@ -18,7 +18,9 @@ class ViewUpdaterRegistry
      * Register a view updater
      *
      * @param ViewUpdaterInterface $updater
-     * @param integer              $position
+     * @param int                  $position
+     *
+     * TODO (JJ) register (not in this PR, but we should really normalize our registries, see Sylius Registry component)
      */
     public function registerUpdater(ViewUpdaterInterface $updater, $position)
     {

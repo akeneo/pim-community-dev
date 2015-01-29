@@ -23,14 +23,15 @@ class AddToVariantGroupType extends AbstractType
         $builder->add(
             'group',
             'entity',
-            array(
+            [
+                //TODO (JJ) should not be hardcoded
                 'class'    => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'choices'  => $options['groups'],
                 'select2'  => true,
-            )
+            ]
         );
     }
 
@@ -41,6 +42,7 @@ class AddToVariantGroupType extends AbstractType
     {
         $resolver->setDefaults(
             [
+                //TODO (JJ) should not be hardcoded
                 'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\AddToVariantGroup',
                 'groups' => array()
             ]

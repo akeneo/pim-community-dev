@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Price collection flat denormalizer used for attribute type:
@@ -44,7 +44,6 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $this->configContext($resolver);
         $context = $resolver->resolve($context);
 
-        /** @var ProductValueInterface $value */
         $value  = $context['value'];
         $prices = $this->extractPrices($data, $context);
         foreach ($prices as $price) {
@@ -69,6 +68,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
         $matches = [];
         $singleFieldPattern = '/(?P<data>\d+(.\d+)?) (?P<currency>\w+)/';
 
+        // TODO (JJ) don't we have some helpers that does this ? could be useful elsewhere no ?
         if (preg_match_all($singleFieldPattern, $pricesData, $matches) === 0) {
             $prices[] = ['data' => $pricesData, 'currency' => $context['price_currency']];
         } else {

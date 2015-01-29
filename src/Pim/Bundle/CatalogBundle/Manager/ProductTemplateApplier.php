@@ -46,6 +46,7 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
         $this->productSaver     = $productSaver;
     }
 
+    // TODO (JJ) dou da dou di
     public function apply(ProductTemplateInterface $template, array $products)
     {
         $this->templateUpdater->update($template, $products);
@@ -64,6 +65,10 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
      * @param ProductInterface[] $products
      *
      * @return array ['products' => ProductInterface[], 'violations' => []]
+     *
+     * TODO (JJ) it should only validate products and return violations
+     * if you need to know which products have been skipped or actually validated, please use
+     * a kind of collection appart from that method
      */
     protected function validateProducts(array $products)
     {

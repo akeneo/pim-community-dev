@@ -480,6 +480,8 @@ class ProductRepository extends DocumentRepository implements
 
         $qb = $this->createQueryBuilder()->hydrate(false)->select('_id');
 
+        // TODO (JJ) this whole statement is bad, we should be able to do this
+        // without another request, see with Benoit
         $otherVariantGroupsSQL = 'SELECT g.id as group_id ' .
             'FROM pim_catalog_group as g ' .
             'JOIN pim_catalog_group_type as gt on gt.id = g.type_id ' .

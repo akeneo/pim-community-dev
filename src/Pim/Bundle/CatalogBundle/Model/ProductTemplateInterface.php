@@ -12,9 +12,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
  */
 interface ProductTemplateInterface
 {
-    /**
-     * @return int
-     */
+    /** @return int */
     public function getId();
 
     /**
@@ -29,6 +27,8 @@ interface ProductTemplateInterface
      * @param ArrayCollection $values Collection of ProductValueInterface
      *
      * @return ProductTemplateInterface
+     *
+     * TODO (JJ) typehint array
      */
     public function setValues($values);
 

@@ -18,6 +18,7 @@ interface ProductTemplateApplierInterface
      * @param ProductTemplateInterface $template
      * @param ProductInterface[]       $products
      *
+     * TODO (JJ) should explain that the array keys contain the identifiers, would be even better to have a "SkippedSubjectSet" collection or something like that
      * @return array $violations
      */
     public function apply(ProductTemplateInterface $template, array $products);

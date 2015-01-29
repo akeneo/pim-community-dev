@@ -252,7 +252,7 @@ class EditCommonAttributes extends ProductMassEditOperation
      * @param array  $products
      * @param string $locale
      *
-     * @return Attributeinterface[]
+     * @return AttributeInterface[]
      */
     protected function generateCommonAttributes(array $products, $locale)
     {

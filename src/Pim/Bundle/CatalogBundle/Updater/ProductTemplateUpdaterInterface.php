@@ -15,9 +15,12 @@ interface ProductTemplateUpdaterInterface
 {
     /**
      * @param ProductTemplateInterface $template
+     * TODO (JJ) use FQCN or use statement
      * @param ProductInterface[]       $products
      *
      * @return ProductTemplateUpdaterInterface
+     *
+     * TODO (JJ) updateProducts ?
      */
     public function update(ProductTemplateInterface $template, array $products);
 }

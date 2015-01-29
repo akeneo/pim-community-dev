@@ -60,6 +60,8 @@ class AddToVariantGroup extends ProductMassEditOperation
 
     /**
      * {@inheritdoc}
+     *
+     * TODO (JJ) rename $objects to $products
      */
     public function setObjectsToMassEdit(array $objects)
     {
@@ -167,6 +169,7 @@ class AddToVariantGroup extends ProductMassEditOperation
         $messages = [];
 
         // TODO properly handle this case
+        // TODO (JJ) do a count query in the repository
         if (count($this->groupRepository->getAllVariantGroups()) === 0) {
             $messages[] = [
                 'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.no_variant_group',
