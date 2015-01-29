@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\Saver;
+namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
