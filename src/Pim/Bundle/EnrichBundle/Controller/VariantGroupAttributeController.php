@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\CatalogBundle\Factory\ProductTemplateFactory;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Saver\GroupSaver;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,7 +37,7 @@ class VariantGroupAttributeController
     /** @var GroupRepository */
     protected $groupRepository;
 
-    /** @var GroupSaver */
+    /** @var SaverInterface */
     protected $groupSaver;
 
     /** @var AttributeRepository */
@@ -52,18 +52,18 @@ class VariantGroupAttributeController
     /**
      * @param RouterInterface                  $router
      * @param FormFactoryInterface             $formFactory
-     * @param GroupRepository                  $groupRepository
-     * @param GroupSaver                       $groupSaver
-     * @param AttributeRepository              $attributeRepository
+     * @param GroupRepositoryInterface         $groupRepository
+     * @param SaverInterface                   $groupSaver
+     * @param AttributeRepositoryInterface     $attributeRepository
      * @param ProductTemplateFactory           $templateFactory
      * @param ProductTemplateAttributesManager $tplAttributesManager
      */
     public function __construct(
         RouterInterface $router,
         FormFactoryInterface $formFactory,
-        GroupRepository $groupRepository,
-        GroupSaver $groupSaver,
-        AttributeRepository $attributeRepository,
+        GroupRepositoryInterface $groupRepository,
+        SaverInterface $groupSaver,
+        AttributeRepositoryInterface $attributeRepository,
         ProductTemplateFactory $templateFactory,
         ProductTemplateAttributesManager $tplAttributesManager
     ) {
@@ -189,7 +189,7 @@ class VariantGroupAttributeController
      */
     protected function getAvailableAttributesForm(GroupInterface $group, AvailableAttributes $availableAttributes)
     {
-        $attributes = $group->getAttributes()->toArray();
+        $attributes = $group->getAxisAttributes()->toArray();
 
         $template = $group->getProductTemplate();
         if (null !== $template) {

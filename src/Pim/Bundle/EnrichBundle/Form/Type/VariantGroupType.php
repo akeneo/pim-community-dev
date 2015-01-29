@@ -2,15 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 /**
  * Class VariantGroupType
  *

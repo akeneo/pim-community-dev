@@ -4,11 +4,11 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -32,23 +32,23 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class VariantGroupController extends GroupController
 {
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param GroupManager             $groupManager
-     * @param HandlerInterface         $groupHandler
-     * @param Form                     $groupForm
-     * @param GroupFactory             $groupFactory
-     * @param AttributeRepository      $attributeRepository
+     * @param Request                      $request
+     * @param EngineInterface              $templating
+     * @param RouterInterface              $router
+     * @param SecurityContextInterface     $securityContext
+     * @param FormFactoryInterface         $formFactory
+     * @param ValidatorInterface           $validator
+     * @param TranslatorInterface          $translator
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param GroupManager                 $groupManager
+     * @param HandlerInterface             $groupHandler
+     * @param Form                         $groupForm
+     * @param GroupFactory                 $groupFactory
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         Request $request,
@@ -63,7 +63,7 @@ class VariantGroupController extends GroupController
         HandlerInterface $groupHandler,
         Form $groupForm,
         GroupFactory $groupFactory,
-        AttributeRepository $attributeRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         parent::__construct(
             $request,
@@ -164,7 +164,7 @@ class VariantGroupController extends GroupController
      */
     protected function getAvailableAttributesForm(GroupInterface $group)
     {
-        $attributes = $group->getAttributes()->toArray();
+        $attributes = $group->getAxisAttributes()->toArray();
 
         $template = $group->getProductTemplate();
         if (null !== $template) {

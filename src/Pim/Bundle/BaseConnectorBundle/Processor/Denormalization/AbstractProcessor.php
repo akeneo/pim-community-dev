@@ -92,7 +92,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param IdentifiableObjectRepositoryInterface $repository the repository to search inside
      * @param array                                 $data       the data that is currently processed
      * @param string                                $class      the class to instanciate in case the
-     *                                                       object has not been found
+     *                                                          object has not been found
      *
      * @return object
      */
