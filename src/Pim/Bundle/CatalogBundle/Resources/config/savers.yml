@@ -3,7 +3,7 @@ parameters:
     pim_catalog.saver.base_options_resolver.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver
     pim_catalog.saver.product.class:                  Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
     pim_catalog.saver.product_options_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver
-    pim_catalog.saver.group.class:                    Pim\Bundle\CatalogBundle\Saver\GroupSaver
+    pim_catalog.saver.group.class:                    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
 
 services:
     pim_catalog.saver.group_type:
