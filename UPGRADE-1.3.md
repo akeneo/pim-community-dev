@@ -71,9 +71,9 @@ Here are the other changes:
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber`
-     
-Please note that former services, and containter parameter `pim_catalog.storage_driver` are still supported thanks to aliases until version 1.4. 
- 
+
+Please note that former services, and containter parameter `pim_catalog.storage_driver` are still supported thanks to aliases until version 1.4.
+
 In case you used one the classes or services listed above, you can easily update your code by doing the following:
 
 ```
@@ -100,3 +100,14 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\CatalogBundle\EventS
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber/Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber/g'
 
 ```
+
+## Functionnal changes
+
+### Products in more than one variant group are not allowed anymore
+
+To detect and remove all products assigned in more than one variant groups, you can run
+
+    php ./upgrades/1.2-1.3/common/remove_multiple_variant_groups.php --env=dev
+
+This script will show you the concerned products and generate a csv file of invalid products.
+You can now remove all the irrelevant associations and import the file using the native csv product import.

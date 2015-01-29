@@ -23,7 +23,7 @@ Feature: Edit a variant group adding/removing products
       | MUG_3  | mug       |       | S    |
       | POSTIT | furniture | Blue  | M    |
     And the following product groups:
-      | code   | label      | attributes  | type    |
+      | code   | label      | axis        | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "Julia"

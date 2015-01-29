@@ -32,6 +32,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
@@ -298,6 +299,109 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param array|string $data
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     *
+     * @Given /^a "([^"]*)" variant group$/
+     */
+    public function createVariantGroup($data)
+    {
+        if (is_string($data)) {
+            $data = ['code' => $data];
+        }
+
+        $variantGroup = $this->getVariantGroup($data['code']);
+
+        // Clear product transformer cache
+        $this
+            ->getContainer()
+            ->get('pim_transform.transformer.product')
+            ->reset();
+
+        // Reset product import validator
+        $this
+            ->getContainer()
+            ->get('pim_base_connector.validator.product_import')
+            ->reset();
+
+        $data['sku'] = $data['code'];
+        unset($data['code']);
+        unset($data['group']);
+        $product = $this->loadFixture('products', $data);
+        // Setup the template with an existing product
+        $productValues = $product->getValues()->toArray();
+        // TODO HotFix to skip images until we add support
+        $skipAttributeTypes = ['pim_catalog_identifier'];
+        $skipAxisAttributes = [];
+        foreach ($variantGroup->getAttributes() as $axis) {
+            $skipAxisAttributes[]= $axis->getCode();
+        }
+
+        foreach ($productValues as $valueIdx => $value) {
+            if (in_array($value->getAttribute()->getAttributeType(), $skipAttributeTypes)) {
+                unset($productValues[$valueIdx]);
+            }
+            if (in_array($value->getAttribute()->getCode(), $skipAxisAttributes)) {
+                unset($productValues[$valueIdx]);
+            }
+        }
+        $productValuesData = $this->normalizeVariantGroupToDB($productValues);
+
+        if ($variantGroup->getProductTemplate()) {
+            $template = $variantGroup->getProductTemplate();
+        } else {
+            $template = new ProductTemplate();
+            $variantGroup->setProductTemplate($template);
+        }
+
+        $productValuesData = array_merge($template->getValuesData(), $productValuesData);
+        $template->setValuesData($productValuesData);
+        $this->saveVariantGroup($variantGroup);
+
+        return $variantGroup;
+    }
+
+    /**
+     * @param ProductValueInterface[] $productValues
+     *
+     * @return array
+     */
+    protected function normalizeVariantGroupToDB(array $productValues)
+    {
+        $normalizer = $this->getContainer()->get('pim_serializer');
+        $normalizedValues = [];
+
+        foreach ($productValues as $value) {
+            $normalizedValues[$value->getAttribute()->getCode()][] = $normalizer->normalize($value, 'json', ['entity' => 'product']);
+        }
+
+        return $normalizedValues;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Group
+     */
+    protected function getVariantGroup($code)
+    {
+        $repository = $this->getContainer()->get('pim_catalog.repository.group');
+        $group      = $repository->findOneByCode($code);
+
+        return $group;
+    }
+
+    /**
+     * @param Group $group
+     */
+    protected function saveVariantGroup(Group $group)
+    {
+        $saver = $this->getContainer()->get('pim_catalog.saver.group');
+        $saver->save($group);
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following products?:$/
@@ -444,6 +548,35 @@ class FixturesContext extends RawMinkContext
             ];
 
             $this->createProduct($data);
+        }
+
+        $this->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following variant group values?:$/
+     */
+    public function theFollowingVariantGroupValues(TableNode $table)
+    {
+        $groups = [];
+
+        foreach ($table->getHash() as $row) {
+            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
+
+            $attributeCode = $row['attribute'];
+            if ($row['locale']) {
+                $attributeCode .= '-' . $row['locale'];
+            }
+            if ($row['scope']) {
+                $attributeCode .= '-' . $row['scope'];
+            }
+            $groups[$row['group']][$attributeCode] = $this->replacePlaceholders($row['value']);
+        }
+
+        foreach ($groups as $code => $data) {
+            $this->createVariantGroup(['code' => $code] + $data);
         }
 
         $this->flush();
@@ -680,12 +813,12 @@ class FixturesContext extends RawMinkContext
 
             if ($group->getType()->isVariant()) {
                 $attributes = [];
-                foreach ($group->getAttributes() as $attribute) {
+                foreach ($group->getAxisAttributes() as $attribute) {
                     $attributes[] = $attribute->getCode();
                 }
                 asort($attributes);
                 $attributes = implode(',', $attributes);
-                assertEquals($data['attributes'], $attributes);
+                assertEquals($data['axis'], $attributes);
             }
         }
     }
@@ -776,8 +909,8 @@ class FixturesContext extends RawMinkContext
             $label = $data['label'];
             $type = $data['type'];
 
-            $attributes = (!isset($data['attributes']) || $data['attributes'] == '')
-                ? [] : explode(', ', $data['attributes']);
+            $attributes = (!isset($data['axis']) || $data['axis'] == '')
+                ? [] : explode(', ', $data['axis']);
 
             $products = (isset($data['products'])) ? explode(', ', $data['products']) : [];
 

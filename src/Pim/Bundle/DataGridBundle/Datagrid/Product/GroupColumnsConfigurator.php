@@ -97,7 +97,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             function ($attribute) {
                 return $attribute->getCode();
             },
-            $this->getGroup()->getAttributes()->toArray()
+            $this->getGroup()->getAxisAttributes()->toArray()
         );
         $this->axisColumns = array();
 

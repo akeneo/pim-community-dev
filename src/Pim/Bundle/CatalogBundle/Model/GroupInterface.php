@@ -108,7 +108,7 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
     /**
      * Add attribute
      *
-     * TODO : should be re-maned, these attributes are axis
+     * @deprecated will be removed in 1.4, use addAxisAttribute()
      *
      * @param AttributeInterface $attribute
      *
@@ -119,7 +119,7 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
     /**
      * Remove attribute
      *
-     * TODO : should be re-maned, these attributes are axis
+     * @deprecated will be removed in 1.4, use removeAxisAttribute()
      *
      * @param AttributeInterface $attribute
      *
@@ -132,29 +132,75 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
     /**
      * Get attributes
      *
-     * TODO : should be re-maned, these attributes are axis
+     * @deprecated will be removed in 1.4, use getAxisAttributes()
      *
      * @return ArrayCollection
      */
     public function getAttributes();
 
     /**
-     * Get attribute ids
-     *
-     * TODO : should be re-maned, these attributes are axis
-     *
-     * @return integer[]
-     */
-    public function getAttributeIds();
-
-    /**
      * Setter for attributes property
      *
-     * TODO : should be re-maned, these attributes are axis
+     * @deprecated will be removed in 1.4, use setAxisAttributes()
      *
      * @param AttributeInterface[] $attributes
      *
      * @return GroupInterface
      */
     public function setAttributes(array $attributes = array());
+
+    /**
+     * Get attribute ids
+     *
+     * @deprecated will be removed in 1.4
+     *
+     * @return integer[]
+     */
+    public function getAttributeIds();
+
+    /**
+     * Add axis attribute
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return GroupInterface
+     */
+    public function addAxisAttribute(AttributeInterface $attribute);
+
+    /**
+     * Remove axis attribute
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return GroupInterface
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function removeAxisAttribute(AttributeInterface $attribute);
+
+    /**
+     * Get axis attributes
+     *
+     * @return ArrayCollection
+     */
+    public function getAxisAttributes();
+
+    /**
+     * Setter for axis attributes property
+     *
+     * @param AttributeInterface[] $attributes
+     *
+     * @return GroupInterface
+     */
+    public function setAxisAttributes(array $attributes = array());
+
+    /**
+     * @return ProductTemplateInterface
+     */
+    public function getProductTemplate();
+
+    /**
+     * @param ProductTemplateInterface $productTemplate
+     */
+    public function setProductTemplate(ProductTemplateInterface $productTemplate);
 }

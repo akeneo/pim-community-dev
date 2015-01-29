@@ -36,7 +36,7 @@ class VersionManager
     /**
      * Versioning context
      *
-     * @var string|null
+     * @var array
      */
     protected $context;
 
@@ -56,8 +56,9 @@ class VersionManager
      */
     public function __construct(SmartManagerRegistry $registry, VersionBuilder $versionBuilder)
     {
-        $this->registry       = $registry;
-        $this->versionBuilder = $versionBuilder;
+        $this->registry           = $registry;
+        $this->versionBuilder     = $versionBuilder;
+        $this->context['default'] = null;
     }
 
     /**
@@ -95,21 +96,31 @@ class VersionManager
     /**
      * Set context
      *
-     * @param string $context
+     * @param string      $context
+     * @param string|null $fqcn
      */
-    public function setContext($context)
+    public function setContext($context, $fqcn = null)
     {
-        $this->context = $context;
+        if ($fqcn) {
+            $this->context[$fqcn] = $context;
+        } else {
+            $this->context['default'] = $context;
+        }
     }
 
     /**
      * Get context
      *
-     * @return string|null
+     * @param null $fqcn
+     *
+     * @return null|string
      */
-    public function getContext()
+    public function getContext($fqcn = null)
     {
-        return $this->context;
+        if (isset($this->context[$fqcn])) {
+            return $this->context[$fqcn];
+        }
+        return $this->context['default'];
     }
 
     /**
@@ -120,7 +131,7 @@ class VersionManager
      *
      * @return Version[]
      */
-    public function buildVersion($versionable, array $changeset = array())
+    public function buildVersion($versionable, array $changeset = [])
     {
         $createdVersions = [];
 
@@ -143,10 +154,20 @@ class VersionManager
             }
 
             $createdVersions[] = $this->versionBuilder
-                ->buildVersion($versionable, $this->username, $previousVersion, $this->context);
+                ->buildVersion(
+                    $versionable,
+                    $this->username,
+                    $previousVersion,
+                    $this->getContext(ClassUtils::getClass($versionable))
+                );
         } else {
             $createdVersions[] = $this->versionBuilder
-                ->createPendingVersion($versionable, $this->username, $changeset, $this->context);
+                ->createPendingVersion(
+                    $versionable,
+                    $this->username,
+                    $changeset,
+                    $this->getContext(ClassUtils::getClass($versionable))
+                );
         }
 
         return $createdVersions;

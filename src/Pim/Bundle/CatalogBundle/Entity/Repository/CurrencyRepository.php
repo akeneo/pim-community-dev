@@ -19,6 +19,22 @@ class CurrencyRepository extends ReferableEntityRepository implements CurrencyRe
     /**
      * {@inheritdoc}
      */
+    public function getActivatedCurrenciesCodes()
+    {
+        $criterias = array('activated' => true);
+        $currencies = $this->findBy($criterias);
+
+        return array_map(
+            function ($value) {
+                return $value->getCode();
+            },
+            $currencies
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getActivatedCurrencies()
     {
         $qb = $this->getActivatedCurrenciesQB();

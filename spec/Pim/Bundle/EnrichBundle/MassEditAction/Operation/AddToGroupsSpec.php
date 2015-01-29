@@ -25,22 +25,6 @@ class AddToGroupsSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
-    function it_stores_groups_to_add_the_products_to($shirts, $pants)
-    {
-        $groups = $this->getGroups();
-        $groups->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
-        $groups->shouldBeEmpty();
-
-        $this->setGroups([$shirts, $pants]);
-
-        $groups = $this->getGroups();
-        $groups->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
-
-        $groups->shouldHaveCount(2);
-        $groups->first()->shouldReturn($shirts);
-        $groups->last()->shouldReturn($pants);
-    }
-
     function it_provides_a_form_type()
     {
         $this->getFormType()->shouldReturn('pim_enrich_mass_add_to_groups');
@@ -48,7 +32,7 @@ class AddToGroupsSpec extends ObjectBehavior
 
     function it_provides_form_options($groupRepository, $shirts, $pants)
     {
-        $groupRepository->findAll()->willReturn([$shirts, $pants]);
+        $groupRepository->getAllGroupsExceptVariant()->willReturn([$shirts, $pants]);
 
         $this->getFormOptions()->shouldReturn(['groups' => [$shirts, $pants]]);
     }

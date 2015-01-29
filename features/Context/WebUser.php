@@ -1998,6 +1998,14 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I select the "([^"]*)" variant group$/
+     */
+    public function iSelectVariantGroup($variant)
+    {
+        $this->getCurrentPage()->fillField('Group', $variant);
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *

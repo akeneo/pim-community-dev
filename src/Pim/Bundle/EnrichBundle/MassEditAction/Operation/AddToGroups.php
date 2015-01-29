@@ -22,6 +22,9 @@ class AddToGroups extends ProductMassEditOperation
     /** @var ArrayCollection */
     protected $groups;
 
+    /** @var string[] */
+    protected $warningMessages;
+
     /**
      * @param GroupRepositoryInterface $groupRepository
      * @param BulkSaverInterface       $productSaver
@@ -29,6 +32,7 @@ class AddToGroups extends ProductMassEditOperation
     public function __construct(GroupRepositoryInterface $groupRepository, BulkSaverInterface $productSaver)
     {
         parent::__construct($productSaver);
+
         $this->groupRepository = $groupRepository;
         $this->groups = new ArrayCollection();
     }
@@ -59,7 +63,7 @@ class AddToGroups extends ProductMassEditOperation
     public function getFormOptions()
     {
         return [
-            'groups' => $this->groupRepository->findAll(),
+            'groups' => $this->groupRepository->getAllGroupsExceptVariant()
         ];
     }
 
@@ -69,6 +73,40 @@ class AddToGroups extends ProductMassEditOperation
     public function getFormType()
     {
         return 'pim_enrich_mass_add_to_groups';
+    }
+
+    /**
+     * Get warning messages
+     *
+     * @return string[]
+     */
+    public function getWarningMessages()
+    {
+        if (null === $this->warningMessages) {
+            $this->warningMessages = $this->generateWarningMessages($this->objects);
+        }
+
+        return $this->warningMessages;
+    }
+
+    /**
+     * Get warning messages to display during the mass edit action
+     * @param ProductInterface[] $products
+     *
+     * @return string[]
+     */
+    protected function generateWarningMessages(array $products)
+    {
+        $messages = [];
+
+        if (count($this->groupRepository->getAllGroupsExceptVariant()) === 0) {
+            $messages[] = [
+                'key'     => 'pim_enrich.mass_edit_action.add-to-groups.no_group',
+                'options' => []
+            ];
+        }
+
+        return $messages;
     }
 
     /**

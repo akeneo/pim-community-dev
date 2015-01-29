@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -18,7 +17,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupManager implements SaverInterface, RemoverInterface
+class GroupManager implements RemoverInterface
 {
     /** @var RegistryInterface */
     protected $doctrine;
@@ -143,24 +142,6 @@ class GroupManager implements SaverInterface, RemoverInterface
     public function getGroupTypeRepository()
     {
         return $this->doctrine->getRepository($this->groupTypeClass);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($group, array $options = [])
-    {
-        if (!$group instanceof GroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.', get_class($group))
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->doctrine->getManager()->persist($group);
-        if (true === $options['flush']) {
-            $this->doctrine->getManager()->flush();
-        }
     }
 
     /**

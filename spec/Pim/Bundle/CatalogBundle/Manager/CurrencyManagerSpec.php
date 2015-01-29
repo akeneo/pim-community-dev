@@ -17,6 +17,7 @@ class CurrencyManagerSpec extends ObjectBehavior
         $this->beConstructedWith($repository);
         $repository->findBy(array('activated' => true))->willReturn([$eur, $usd]);
         $repository->findBy(array())->willReturn([$eur, $usd, $gbp]);
+        $repository->getActivatedCurrenciesCodes()->willReturn(['EUR', 'USD']);
 
         $eur->getCode()->willReturn('EUR');
         $usd->getCode()->willReturn('USD');

@@ -115,7 +115,7 @@ class EditCommonAttributesType extends AbstractType
                 'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
                 'locales' => [],
                 'common_attributes' => [],
-                'current_locale'    => null,
+                'current_locale'    => null
             ]
         );
     }

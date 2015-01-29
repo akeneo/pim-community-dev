@@ -93,7 +93,7 @@ class Edit extends Form
      */
     public function switchLocale($locale)
     {
-        $elt = $this->getElement('Locales dropdown')->find('css', 'span.dropdown-toggle');
+        $elt = $this->getElement('Locales dropdown')->find('css', '.dropdown-toggle');
         if (!$elt) {
             throw new \Exception('Could not find locale switcher.');
         }

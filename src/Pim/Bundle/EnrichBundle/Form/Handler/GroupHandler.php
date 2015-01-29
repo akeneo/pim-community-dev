@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,30 +23,30 @@ class GroupHandler implements HandlerInterface
     /** @var Request */
     protected $request;
 
-    /** @var GroupManager */
-    protected $groupManager;
+    /** @var SaverInterface */
+    protected $groupSaver;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /**
      * Constructor for handler
      *
-     * @param FormInterface  $form
-     * @param Request        $request
-     * @param GroupManager   $groupManager
-     * @param ProductManager $productManager
+     * @param FormInterface              $form
+     * @param Request                    $request
+     * @param SaverInterface             $groupSaver
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        GroupManager $groupManager,
-        ProductManager $productManager
+        SaverInterface $groupSaver,
+        ProductRepositoryInterface $productRepository
     ) {
-        $this->form           = $form;
-        $this->request        = $request;
-        $this->groupManager   = $groupManager;
-        $this->productManager = $productManager;
+        $this->form       = $form;
+        $this->request    = $request;
+        $this->groupSaver = $groupSaver;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -57,9 +57,9 @@ class GroupHandler implements HandlerInterface
         $this->form->setData($group);
 
         if ($this->request->isMethod('POST')) {
-            // Load products when ODM storage is used to enable validation
+            // TODO : how to fix this ? Load products when ODM storage is used to enable validation
             if (null === $group->getProducts()) {
-                $products = $this->productManager->getProductRepository()->findAllForGroup($group)->toArray();
+                $products = $this->productRepository->findAllForGroup($group)->toArray();
                 $group->setProducts($products);
             }
 
@@ -82,12 +82,15 @@ class GroupHandler implements HandlerInterface
      */
     protected function onSuccess(GroupInterface $group)
     {
-        $this->groupManager->save($group);
-
         $appendProducts = $this->form->get('appendProducts')->getData();
         $removeProducts = $this->form->get('removeProducts')->getData();
-        $products = $appendProducts + $removeProducts;
-
-        $this->productManager->saveAll($products, ['recalculate' => false, 'schedule' => false]);
+        $options = [
+            'add_products' => $appendProducts,
+            'remove_products' => $removeProducts
+        ];
+        if ($group->getType()->isVariant()) {
+            $options['copy_values_to_products'] = true;
+        }
+        $this->groupSaver->save($group, $options);
     }
 }

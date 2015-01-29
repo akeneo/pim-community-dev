@@ -422,13 +422,13 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValues()
     {
-        $_values = new ArrayCollection();
+        $values = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $_values[ProductValueKeyGenerator::getKey($value)] = $value;
+            $values[ProductValueKeyGenerator::getKey($value)] = $value;
         }
 
-        return $_values;
+        return $values;
     }
 
     /**
@@ -567,6 +567,11 @@ abstract class AbstractProduct implements ProductInterface
                 if ($group->getAttributes()->contains($attribute)) {
                     return false;
                 }
+
+                $template = $group->getProductTemplate();
+                if (null !== $template && $template->hasValueForAttribute($attribute)) {
+                    return false;
+                }
             }
         }
 
@@ -602,6 +607,25 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups->removeElement($group);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * TODO: This method should be reworked before merge on master
+     */
+    public function getVariantGroup()
+    {
+        $groups = $this->getGroups();
+
+        /** @var GroupInterface $group */
+        foreach ($groups as $group) {
+            if ($group->getType()->isVariant()) {
+                // TODO : will have only one after PIM-2448, add short cut getVariantGroup() ?
+                return $group;
+            }
+        }
+
+        return null;
     }
 
     /**

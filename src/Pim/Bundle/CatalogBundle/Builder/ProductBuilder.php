@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
@@ -28,35 +28,35 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $productPriceClass;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepository */
+    protected $channelRepository;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepository */
+    protected $localeRepository;
 
-    /** @var CurrencyManager */
-    protected $currencyManager;
+    /** @var CurrencyRepository */
+    protected $currencyRepository;
 
     /**
      * Constructor
      *
-     * @param ChannelManager  $channelManager  Channel Manager
-     * @param LocaleManager   $localeManager   Locale Manager
-     * @param CurrencyManager $currencyManager Currency manager
-     * @param array           $classes         Product, product value and price classes
+     * @param ChannelRepository  $channelRepository  Channel repository
+     * @param LocaleRepository   $localeRepository   Locale repository
+     * @param CurrencyRepository $currencyRepository Currency repository
+     * @param array              $classes            Product, product value and price classes
      */
     public function __construct(
-        ChannelManager $channelManager,
-        LocaleManager $localeManager,
-        CurrencyManager $currencyManager,
+        ChannelRepository $channelRepository,
+        LocaleRepository $localeRepository,
+        CurrencyRepository $currencyRepository,
         array $classes
     ) {
-        $this->channelManager    = $channelManager;
-        $this->localeManager     = $localeManager;
-        $this->currencyManager   = $currencyManager;
-        $this->productClass      = $classes['product'];
-        $this->productValueClass = $classes['product_value'];
-        $this->productPriceClass = $classes['product_price'];
+        $this->channelRepository  = $channelRepository;
+        $this->localeRepository   = $localeRepository;
+        $this->currencyRepository = $currencyRepository;
+        $this->productClass       = $classes['product'];
+        $this->productValueClass  = $classes['product_value'];
+        $this->productPriceClass  = $classes['product_price'];
     }
 
     /**
@@ -79,7 +79,7 @@ class ProductBuilder implements ProductBuilderInterface
             $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
         }
 
-        $this->addMissingPrices($product);
+        $this->addMissingPricesToProduct($product);
     }
 
     /**
@@ -152,7 +152,21 @@ class ProductBuilder implements ProductBuilderInterface
         $locale = null,
         $scope = null
     ) {
-        $value = $this->createProductValue();
+        $value = $this->createProductValue($attribute, $locale, $scope);
+
+        $product->addValue($value);
+
+        return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
+    {
+        $class = $this->getProductValueClass();
+
+        $value = new $class();
         $value->setAttribute($attribute);
         if ($attribute->isLocalizable()) {
             if ($locale !== null) {
@@ -166,6 +180,7 @@ class ProductBuilder implements ProductBuilderInterface
                 );
             }
         }
+
         if ($attribute->isScopable()) {
             if ($scope !== null) {
                 $value->setScope($scope);
@@ -178,9 +193,38 @@ class ProductBuilder implements ProductBuilderInterface
                 );
             }
         }
-        $product->addValue($value);
 
         return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addMissingPrices(ProductValueInterface $value)
+    {
+        $activeCurrencies = $this->currencyRepository->getActivatedCurrenciesCodes();
+
+        if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+            $prices = $value->getPrices();
+
+            foreach ($activeCurrencies as $activeCurrency) {
+                $hasPrice = $prices->filter(
+                    function ($price) use ($activeCurrency) {
+                        return $activeCurrency === $price->getCurrency();
+                    }
+                )->count() > 0;
+
+                if (!$hasPrice) {
+                    $this->addPriceForCurrency($value, $activeCurrency);
+                }
+            }
+
+            foreach ($prices as $price) {
+                if (!in_array($price->getCurrency(), $activeCurrencies)) {
+                    $value->removePrice($price);
+                }
+            }
+        }
     }
 
     /**
@@ -237,18 +281,6 @@ class ProductBuilder implements ProductBuilderInterface
         }
 
         return $attributes;
-    }
-
-    /**
-     * Create a product value
-     *
-     * @return ProductValueInterface
-     */
-    protected function createProductValue()
-    {
-        $class = $this->getProductValueClass();
-
-        return new $class();
     }
 
     /**
@@ -340,32 +372,10 @@ class ProductBuilder implements ProductBuilderInterface
      *
      * @return null
      */
-    protected function addMissingPrices(ProductInterface $product)
+    protected function addMissingPricesToProduct(ProductInterface $product)
     {
-        $activeCurrencies = $this->currencyManager->getActiveCodes();
-
         foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $prices = $value->getPrices();
-
-                foreach ($activeCurrencies as $activeCurrency) {
-                    $hasPrice = $prices->filter(
-                        function ($price) use ($activeCurrency) {
-                            return $activeCurrency === $price->getCurrency();
-                        }
-                    )->count() > 0;
-
-                    if (!$hasPrice) {
-                        $this->addPriceForCurrency($value, $activeCurrency);
-                    }
-                }
-
-                foreach ($prices as $price) {
-                    if (!in_array($price->getCurrency(), $activeCurrencies)) {
-                        $value->removePrice($price);
-                    }
-                }
-            }
+            $this->addMissingPrices($value);
         }
     }
 
@@ -378,7 +388,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getLocaleRows(AttributeInterface $attribute)
     {
-        $locales = $this->localeManager->getActiveLocales();
+        $locales = $this->localeRepository->getActivatedLocales();
         $localeRows = array();
         foreach ($locales as $locale) {
             $localeRows[] = array(
@@ -398,7 +408,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getScopeRows(AttributeInterface $attribute)
     {
-        $channels = $this->channelManager->getChannels();
+        $channels = $this->channelRepository->getChannels();
         $scopeRows = array();
         foreach ($channels as $channel) {
             $scopeRows[] = array(
@@ -418,7 +428,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getScopeToLocaleRows(AttributeInterface $attribute)
     {
-        $channels = $this->channelManager->getChannels();
+        $channels = $this->channelRepository->getChannels();
         $scopeToLocaleRows = array();
         foreach ($channels as $channel) {
             foreach ($channel->getLocales() as $locale) {

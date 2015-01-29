@@ -38,6 +38,7 @@ class MediaDenormalizer extends AbstractValueDenormalizer
             return null;
         }
 
-        return $this->manager->createFromFilename($data);
+        // TODO : double check with revert, add specs and behat
+        return $this->manager->createFromFilename($data, false);
     }
 }

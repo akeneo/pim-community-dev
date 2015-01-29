@@ -16,6 +16,13 @@ use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 interface CurrencyRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
+     * Return an array of activated currencies codes
+     *
+     * @return array
+     */
+    public function getActivatedCurrenciesCodes();
+
+    /**
      * Return an array of activated currencies
      *
      * @return CurrencyInterface[]

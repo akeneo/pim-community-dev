@@ -153,6 +153,7 @@
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber`
+- ProductBuilder now takes `Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository`, `Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository` and not anymore Managers
 - constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator` to remove ProductManager
 - following constructors have been changed to add `Akeneo\Component\Persistence\BulkSaverInterface` as argument:
   * `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus`
@@ -164,6 +165,10 @@
 - constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` has been updated and now receives `Akeneo\Component\Persistence\SaverInterface`, `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` as extra arguments
 - the method execute() of `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilderInterface` now return a `Akeneo\Bundle\StorageUtilsBundle\Cursor\CursorInterface`
 - Added a new parameter in `src/Pim/Bundle/CatalogBundle/Manager/MediaManager` that gives the uploaded directory
+- constructor of `Pim\Bundle\EnrichBundle\Form\View\ProductFormView` has been updated and now receives `Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry`
+- constructor of `Pim\Bundle\TransformBundle\Transformer\ProductTransformer` has been updated and now receives `Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface`
+- You cannot add product to multiple variant group anymore
+- constructor of `Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository` to add ProductTemplateUpdaterInterface and Validator interface
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
@@ -194,7 +199,7 @@
 
 ## Bug fixes
 - PIM-3556: Fix memory leak on versionning
-- PIM-3548: Do not rely on the absolute file path of a media 
+- PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.2.18 (2014-12-23)
 

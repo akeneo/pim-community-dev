@@ -270,3 +270,17 @@ attributes:
         group: other
         decimalsAllowed:     false
         negativeAllowed:     false
+    destocking_date:
+        labels:
+            en_US: Destocking date
+        type:  pim_catalog_date
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           25
+    handmade:
+        labels:
+            en_US: Handmade
+        type:  pim_catalog_boolean
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           30

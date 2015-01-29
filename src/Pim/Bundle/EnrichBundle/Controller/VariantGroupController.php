@@ -4,9 +4,24 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Variant group controller
@@ -17,10 +32,61 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class VariantGroupController extends GroupController
 {
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param Request                      $request
+     * @param EngineInterface              $templating
+     * @param RouterInterface              $router
+     * @param SecurityContextInterface     $securityContext
+     * @param FormFactoryInterface         $formFactory
+     * @param ValidatorInterface           $validator
+     * @param TranslatorInterface          $translator
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param GroupManager                 $groupManager
+     * @param HandlerInterface             $groupHandler
+     * @param Form                         $groupForm
+     * @param GroupFactory                 $groupFactory
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
+        GroupManager $groupManager,
+        HandlerInterface $groupHandler,
+        Form $groupForm,
+        GroupFactory $groupFactory,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $eventDispatcher,
+            $groupManager,
+            $groupHandler,
+            $groupForm,
+            $groupFactory
+        );
+
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      * @Template
-     * @AclAncestor("pim_enrich_group_index")
+     * @AclAncestor("pim_enrich_variant_group_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -34,7 +100,7 @@ class VariantGroupController extends GroupController
      * {@inheritdoc}
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_create")
+     * @AclAncestor("pim_enrich_variant_group_create")
      */
     public function createAction(Request $request)
     {
@@ -67,20 +133,57 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      *
-     * TODO : find a way to use param converter with interfaces
+     * TODO: find a way to use param converter with interfaces
      *
-     * @AclAncestor("pim_enrich_group_edit")
+     * @AclAncestor("pim_enrich_variant_group_edit")
      * @Template
      */
     public function editAction(Group $group)
     {
+        if (!$group->getType()->isVariant()) {
+            throw new NotFoundHttpException(sprintf('Variant group with id %d not found.', $group->getId()));
+        }
+
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.variant group.updated');
         }
 
         return array(
-            'form'         => $this->groupForm->createView(),
-            'currentGroup' => $group->getId()
+            'form'           => $this->groupForm->createView(),
+            'currentGroup'   => $group->getId(),
+            'attributesForm' => $this->getAvailableAttributesForm($group)->createView(),
+        );
+    }
+
+    /**
+     * Get the AvailbleAttributes form
+     *
+     * @param GroupInterface $group
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function getAvailableAttributesForm(GroupInterface $group)
+    {
+        $attributes = $group->getAxisAttributes()->toArray();
+
+        $template = $group->getProductTemplate();
+        if (null !== $template) {
+            foreach (array_keys($template->getValuesData()) as $attributeCode) {
+                $attributes[] = $this->attributeRepository->findOneByCode($attributeCode);
+            }
+        }
+
+        $uniqueAttributes = $this->attributeRepository->findBy(['unique' => true]);
+        foreach ($uniqueAttributes as $attribute) {
+            if (!in_array($attribute, $attributes)) {
+                $attributes[] = $attribute;
+            }
+        }
+
+        return $this->createForm(
+            'pim_available_attributes',
+            new AvailableAttributes(),
+            ['attributes' => $attributes]
         );
     }
 }
