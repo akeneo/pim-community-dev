@@ -16,7 +16,8 @@ class RequestVoter extends UriVoter
     {
         $this->request = $request;
 
-        $this->setUri($request->getRequestUri());
+        // PIM-3695 : bump knp menu version to 2.0.0, remove the call to a deprecated method
+        // $this->setUri($request->getRequestUri());
 
         return $this;
     }
