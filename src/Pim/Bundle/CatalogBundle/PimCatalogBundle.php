@@ -28,7 +28,6 @@ class PimCatalogBundle extends AkeneoStorageUtilsBundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('pim_repository'))
             ->addCompilerPass(new RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new RegisterAttributeTypePass())
@@ -37,10 +36,37 @@ class PimCatalogBundle extends AkeneoStorageUtilsBundle
             ->addCompilerPass(new RegisterProductQuerySorterPass())
             ->addCompilerPass(new RegisterProductUpdaterPass());
 
-        $productMappings = array(
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
-        );
+        parent::build($container);
+    }
 
-        $this->registerDoctrineMappingDriver($container, $productMappings);
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDoctrineMappingDriverConfig()
+    {
+        return [$this->getDoctrineMappingDriverDirectory('model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getModelInterfaces()
+    {
+        return array(
+            'Symfony\Component\Security\Core\User\UserInterface'   => 'oro_user.entity.class',
+            'Pim\Bundle\CatalogBundle\Model\AssociationInterface'  => 'pim_catalog.entity.association.class',
+            'Pim\Bundle\CatalogBundle\Model\AttributeInterface'    => 'pim_catalog.entity.attribute.class',
+            'Pim\Bundle\CatalogBundle\Model\CompletenessInterface' => 'pim_catalog.entity.completeness.class',
+            'Pim\Bundle\CatalogBundle\Model\LocaleInterface'       => 'pim_catalog.entity.locale.class',
+            'Pim\Bundle\CatalogBundle\Model\MetricInterface'       => 'pim_catalog.entity.metric.class',
+            'Pim\Bundle\CatalogBundle\Model\ProductInterface'      => 'pim_catalog.entity.product.class',
+            'Pim\Bundle\CatalogBundle\Model\ProductMediaInterface' => 'pim_catalog.entity.product_media.class',
+            'Pim\Bundle\CatalogBundle\Model\ProductPriceInterface' => 'pim_catalog.entity.product_price.class',
+            'Pim\Bundle\CatalogBundle\Model\ProductValueInterface' => 'pim_catalog.entity.product_value.class',
+            'Pim\Bundle\CatalogBundle\Model\CategoryInterface'     => 'pim_catalog.entity.category.class',
+            'Pim\Bundle\CatalogBundle\Model\CurrencyInterface'     => 'pim_catalog.entity.currency.class',
+            'Pim\Bundle\CatalogBundle\Model\FamilyInterface'       => 'pim_catalog.entity.family.class',
+            'Pim\Bundle\CatalogBundle\Model\ChannelInterface'      => 'pim_catalog.entity.channel.class',
+        );
     }
 }
