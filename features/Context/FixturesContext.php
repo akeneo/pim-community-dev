@@ -32,7 +32,6 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
@@ -311,72 +310,10 @@ class FixturesContext extends RawMinkContext
             $data = ['code' => $data];
         }
 
-        $variantGroup = $this->getVariantGroup($data['code']);
-
-        // Clear product transformer cache
-        $this
-            ->getContainer()
-            ->get('pim_transform.transformer.product')
-            ->reset();
-
-        // Reset product import validator
-        $this
-            ->getContainer()
-            ->get('pim_base_connector.validator.product_import')
-            ->reset();
-
-        $data['sku'] = $data['code'];
-        unset($data['code']);
-        unset($data['group']);
-        $product = $this->loadFixture('products', $data);
-        // Setup the template with an existing product
-        $productValues = $product->getValues()->toArray();
-        // TODO HotFix to skip images until we add support
-        $skipAttributeTypes = ['pim_catalog_identifier'];
-        $skipAxisAttributes = [];
-        foreach ($variantGroup->getAttributes() as $axis) {
-            $skipAxisAttributes[]= $axis->getCode();
-        }
-
-        foreach ($productValues as $valueIdx => $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), $skipAttributeTypes)) {
-                unset($productValues[$valueIdx]);
-            }
-            if (in_array($value->getAttribute()->getCode(), $skipAxisAttributes)) {
-                unset($productValues[$valueIdx]);
-            }
-        }
-        $productValuesData = $this->normalizeVariantGroupToDB($productValues);
-
-        if ($variantGroup->getProductTemplate()) {
-            $template = $variantGroup->getProductTemplate();
-        } else {
-            $template = new ProductTemplate();
-            $variantGroup->setProductTemplate($template);
-        }
-
-        $productValuesData = array_merge($template->getValuesData(), $productValuesData);
-        $template->setValuesData($productValuesData);
+        $variantGroup = $this->loadFixture('variant_groups', $data);
         $this->saveVariantGroup($variantGroup);
 
         return $variantGroup;
-    }
-
-    /**
-     * @param ProductValueInterface[] $productValues
-     *
-     * @return array
-     */
-    protected function normalizeVariantGroupToDB(array $productValues)
-    {
-        $normalizer = $this->getContainer()->get('pim_serializer');
-        $normalizedValues = [];
-
-        foreach ($productValues as $value) {
-            $normalizedValues[$value->getAttribute()->getCode()][] = $normalizer->normalize($value, 'json', ['entity' => 'product']);
-        }
-
-        return $normalizedValues;
     }
 
     /**
