@@ -28,7 +28,7 @@ Feature: Define user rights
       | Create a channel            | channels                                 | Create channel          |
       | Create a family             | families                                 | Create family           |
       | Create a group              | product groups                           | Create group            |
-      | Create a group              | variant groups                           | Create variant group    |
+      | Create a variant group      | variant groups                           | Create variant group    |
       | Create a group type         | group types                              | Create group type       |
       | Create a product            | products                                 | Create product          |
       | Create an attribute         | attributes                               | Create attribute        |
@@ -40,7 +40,7 @@ Feature: Define user rights
       | Remove a channel            | "mobile" channel                         | Delete                  |
       | Remove a family             | "boots" family                           | Delete                  |
       | Remove a group              | "similar_boots" product group            | Delete                  |
-      | Remove a group              | "caterpillar_boots" variant group        | Delete                  |
+      | Remove a variant group      | "caterpillar_boots" variant group        | Delete                  |
       | Remove a group type         | "RELATED" group type                     | Delete                  |
       | Remove a product            | "boot" product                           | Delete                  |
       | Download the product as PDF | "boot" product                           | Pdf                     |

@@ -11,7 +11,7 @@
                     {{ form_widget(attributeView.value) }}
                 </div>
         {% endif %}
-        {% if attributeView.isRemovable and resource_granted('pim_enrich_group_remove_attribute') %}
+        {% if attributeView.isRemovable and resource_granted('pim_enrich_variant_group_remove_attribute') %}
             <i {{ elements.deleteLinkAttributes(
                 path('pim_enrich_variant_group_remove_attribute', { 'groupId': form.vars.data.id, 'attributeId': attributeView.id, 'dataLocale': dataLocale }),
                 path('pim_enrich_variant_group_edit', { 'id': form.vars.data.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),

@@ -15,6 +15,7 @@ parameters:
     pim_enrich.form.type.currency.class:         Pim\Bundle\EnrichBundle\Form\Type\CurrencyType
     pim_enrich.form.type.channel.class:          Pim\Bundle\EnrichBundle\Form\Type\ChannelType
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
+    pim_enrich.form.type.variant_group.class:    Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType
     pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
     pim_enrich.form.type.category.class:         Pim\Bundle\EnrichBundle\Form\Type\CategoryType
     pim_enrich.form.type.group_type.class:       Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType
@@ -198,10 +199,18 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_group }
+
+    pim_enrich.form.type.variant_group:
+        class: %pim_enrich.form.type.variant_group.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+            - %pim_catalog.entity.attribute.class%
         calls:
             - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
         tags:
-            - { name: form.type, alias: pim_enrich_group }
+            - { name: form.type, alias: pim_enrich_variant_group }
 
     pim_enrich.form.type.group_type:
         class: %pim_enrich.form.type.group_type.class%
