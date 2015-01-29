@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
@@ -22,10 +23,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AddVersionSubscriber implements EventSubscriber
 {
     /** @var object[] */
-    protected $versionableEntities = array();
+    protected $versionableEntities = [];
 
     /** @var string[] */
-    protected $versionedEntities = array();
+    protected $versionedEntities = [];
 
     /** @var VersionManager */
     protected $versionManager;
@@ -60,7 +61,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush', 'postFlush');
+        return ['onFlush', 'postFlush'];
     }
 
     /**
@@ -112,7 +113,7 @@ class AddVersionSubscriber implements EventSubscriber
         }
 
         $versionedCount = count($this->versionableEntities);
-        $this->versionableEntities = array();
+        $this->versionableEntities = [];
 
         if ($versionedCount) {
             $this->versionManager->getObjectManager()->flush();

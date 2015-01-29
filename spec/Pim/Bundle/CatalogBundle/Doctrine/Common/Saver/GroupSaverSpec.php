@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 class GroupSaverSpec extends ObjectBehavior
 {
@@ -19,9 +20,17 @@ class GroupSaverSpec extends ObjectBehavior
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
         ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $templateApplier
+        ProductTemplateApplierInterface $templateApplier,
+        VersionManager $versionManager
     ) {
-        $this->beConstructedWith($objectManager, $productSaver, $templateMediaManager, $templateApplier);
+        $this->beConstructedWith(
+            $objectManager,
+            $productSaver,
+            $templateMediaManager,
+            $templateApplier,
+            $versionManager,
+            'Pim\Bundle\CatalogBundle\Model'
+        );
     }
 
     function it_is_a_saver()
@@ -32,6 +41,7 @@ class GroupSaverSpec extends ObjectBehavior
     function it_saves_a_group_and_flushes_by_default($objectManager, GroupInterface $group, GroupType $type)
     {
         $group->getType()->willReturn($type);
+        $group->getCode()->willReturn('my_code');
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $this->save($group);
@@ -45,6 +55,7 @@ class GroupSaverSpec extends ObjectBehavior
         ProductInterface $addedProduct
     ) {
         $group->getType()->willReturn($type);
+        $group->getCode()->willReturn('my_code');
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
@@ -63,6 +74,7 @@ class GroupSaverSpec extends ObjectBehavior
         ProductInterface $removedProduct
     ) {
         $group->getType()->willReturn($type);
+        $group->getCode()->willReturn('my_code');
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
@@ -80,6 +92,7 @@ class GroupSaverSpec extends ObjectBehavior
         ProductTemplateInterface $template
     ) {
         $group->getType()->willReturn($type);
+        $group->getCode()->willReturn('my_code');
         $type->isVariant()->willReturn(true);
         $group->getProductTemplate()->willReturn($template);
 
@@ -98,6 +111,7 @@ class GroupSaverSpec extends ObjectBehavior
         ArrayCollection $products
     ) {
         $group->getType()->willReturn($type);
+        $group->getCode()->willReturn('my_code');
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 

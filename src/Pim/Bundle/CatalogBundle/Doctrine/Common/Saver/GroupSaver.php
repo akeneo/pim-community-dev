@@ -9,6 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -32,22 +33,34 @@ class GroupSaver implements SaverInterface
     /** @var ProductTemplateApplierInterface */
     protected $productTemplateApplier;
 
+    /** @var VersionManager */
+    protected $versionManager;
+
+    /** @var string */
+    protected $productClassName;
+
     /**
      * @param ObjectManager                   $objectManager
      * @param BulkSaverInterface              $productSaver
      * @param ProductTemplateMediaManager     $templateMediaManager
      * @param ProductTemplateApplierInterface $productTemplateApplier
+     * @param VersionManager                  $versionManager
+     * @param string                          $productClassName
      */
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
         ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $productTemplateApplier
+        ProductTemplateApplierInterface $productTemplateApplier,
+        VersionManager $versionManager,
+        $productClassName
     ) {
         $this->objectManager          = $objectManager;
         $this->productSaver           = $productSaver;
         $this->templateMediaManager   = $templateMediaManager;
         $this->productTemplateApplier = $productTemplateApplier;
+        $this->versionManager         = $versionManager;
+        $this->productClassName       = $productClassName;
     }
 
     /**
@@ -72,6 +85,10 @@ class GroupSaver implements SaverInterface
             'remove_products' => []
         ];
         $options = array_merge($defaultOptions, $options);
+        $this->versionManager->setContext(
+            sprintf('Comes from variant group %s', $group->getCode()),
+            $this->productClassName
+        );
         $this->objectManager->persist($group);
         if (true === $options['flush']) {
             $this->objectManager->flush();

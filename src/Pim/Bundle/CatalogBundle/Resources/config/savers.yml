@@ -34,6 +34,8 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.manager.product_template_media'
             - '@pim_catalog.applier.product_template'
+            - '@pim_versioning.manager.version'
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.saver.base_options_resolver:
         class: %pim_catalog.saver.base_options_resolver.class%
