@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\RuleEngineBundle\Doctrine\Saver;
+namespace spec\Akeneo\Bundle\RuleEngineBundle\Doctrine\Common\Saver;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;

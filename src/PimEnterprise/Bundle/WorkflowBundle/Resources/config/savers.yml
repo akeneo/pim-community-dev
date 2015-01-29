@@ -1,6 +1,6 @@
 parameters:
-    pimee_workflow.saver.product_draft.class:      PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver
-    pimee_workflow.saver.product_delegating.class: PimEnterprise\Bundle\WorkflowBundle\Saver\DelegatingProductSaver
+    pimee_workflow.saver.product_draft.class:      PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\ProductDraftSaver
+    pimee_workflow.saver.product_delegating.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\DelegatingProductSaver
 
 services:
     # product working copy saver, we alias the product saver from community edition to make the behavior more explicit
