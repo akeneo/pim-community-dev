@@ -66,7 +66,14 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
             }
         }
 
-        $data['variant_group'] = $this->normalizer->normalize($item, $this->format, ['with_variant_group_values' => true]);
+        $data['variant_group'] = $this->normalizer->normalize(
+            $item,
+            $this->format,
+            [
+                'with_variant_group_values' => true,
+                'identifier'                => $item->getCode()
+            ]
+        );
 
         return $data;
     }
