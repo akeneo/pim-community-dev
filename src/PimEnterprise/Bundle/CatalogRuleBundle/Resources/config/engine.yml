@@ -5,8 +5,8 @@ parameters:
     pimee_catalog_rule.applier.product.saver.class:       PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver
     pimee_catalog_rule.builder.product.class:             PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder
     pimee_catalog_rule.selector.product.class:            PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleSelector
-    pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Bundle\StorageUtilsBundle\Cursor\PaginatorFactory
-    pimee_catalog_rule.paginator.class:                   Akeneo\Bundle\StorageUtilsBundle\Cursor\Paginator
+    pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Component\StorageUtils\Cursor\PaginatorFactory
+    pimee_catalog_rule.paginator.class:                   Akeneo\Component\StorageUtils\Cursor\Paginator
 
 services:
     pimee_catalog_rule.product.paginator:
