@@ -50,15 +50,22 @@ class VersionManager
      */
     protected $versionBuilder;
 
+    /** @var VersionContext */
+    protected $versionContext;
+
     /**
      * @param SmartManagerRegistry $registry
      * @param VersionBuilder       $versionBuilder
+     * @param VersionContext       $versionContext
      */
-    public function __construct(SmartManagerRegistry $registry, VersionBuilder $versionBuilder)
-    {
-        $this->registry           = $registry;
-        $this->versionBuilder     = $versionBuilder;
-        $this->context['default'] = null;
+    public function __construct(
+        SmartManagerRegistry $registry,
+        VersionBuilder $versionBuilder,
+        VersionContext $versionContext
+    ) {
+        $this->registry       = $registry;
+        $this->versionBuilder = $versionBuilder;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -91,37 +98,6 @@ class VersionManager
     public function isRealTimeVersioning()
     {
         return $this->realTimeVersioning;
-    }
-
-    /**
-     * Set context
-     *
-     * @param string      $context
-     * @param string|null $fqcn
-     */
-    public function setContext($context, $fqcn = null)
-    {
-        if ($fqcn) {
-            $this->context[$fqcn] = $context;
-        } else {
-            $this->context['default'] = $context;
-        }
-    }
-
-    /**
-     * Get context
-     *
-     * @param null $fqcn
-     *
-     * @return null|string
-     */
-    public function getContext($fqcn = null)
-    {
-        if (isset($this->context[$fqcn])) {
-            return $this->context[$fqcn];
-        }
-
-        return $this->context['default'];
     }
 
     /**
@@ -159,7 +135,7 @@ class VersionManager
                     $versionable,
                     $this->username,
                     $previousVersion,
-                    $this->getContext(ClassUtils::getClass($versionable))
+                    $this->versionContext->getContext(ClassUtils::getClass($versionable))
                 );
         } else {
             $createdVersions[] = $this->versionBuilder
@@ -167,7 +143,7 @@ class VersionManager
                     $versionable,
                     $this->username,
                     $changeset,
-                    $this->getContext(ClassUtils::getClass($versionable))
+                    $this->versionContext->getContext(ClassUtils::getClass($versionable))
                 );
         }
 
