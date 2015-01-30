@@ -1,3 +1,8 @@
+# 1.2.*
+
+## Bug fixes
+- PIM-3718: load tinymce only on textarea click
+
 # 1.2.24 (2015-01-28)
 
 ## Bug fixes
@@ -27,7 +32,7 @@
 
 ## Bug fixes
 - PIM-3556: Fix memory leak on versionning
-- PIM-3548: Do not rely on the absolute file path of a media 
+- PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.2.18 (2014-12-23)
 

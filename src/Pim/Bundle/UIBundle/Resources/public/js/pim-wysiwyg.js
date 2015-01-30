@@ -57,9 +57,7 @@ define(
                     options
                 );
 
-                setTimeout(_.bind(function() {
-                    tinymce.init(this);
-                }, this.settings[$el.attr('id')]), 0);
+                $el.on('click', _.bind(function() { tinymce.init(this); }, this.settings[$el.attr('id')]));
 
                 return this;
             },
