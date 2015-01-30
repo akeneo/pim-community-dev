@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
@@ -36,21 +37,27 @@ class AddVersionSubscriber implements EventSubscriber
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var VersionContext */
+    protected $versionContext;
+
     /**
      * Constructor
      *
      * @param VersionManager       $versionManager
      * @param ChainedUpdateGuesser $guesser
      * @param NormalizerInterface  $normalizer
+     * @param VersionContext       $versionContext
      */
     public function __construct(
         VersionManager $versionManager,
         ChainedUpdateGuesser $guesser,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        VersionContext $versionContext
     ) {
         $this->versionManager = $versionManager;
         $this->guesser        = $guesser;
         $this->normalizer     = $normalizer;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -216,6 +223,6 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function getObjectHash($object)
     {
-        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionManager->getContext()));
+        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionContext->getContext()));
     }
 }

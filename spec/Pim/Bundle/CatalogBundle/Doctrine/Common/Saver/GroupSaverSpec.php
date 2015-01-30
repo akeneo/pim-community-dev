@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 
 class GroupSaverSpec extends ObjectBehavior
 {
@@ -21,14 +21,14 @@ class GroupSaverSpec extends ObjectBehavior
         BulkSaverInterface $productSaver,
         ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $templateApplier,
-        VersionManager $versionManager
+        VersionContext $versionContext
     ) {
         $this->beConstructedWith(
             $objectManager,
             $productSaver,
             $templateMediaManager,
             $templateApplier,
-            $versionManager,
+            $versionContext,
             'Pim\Bundle\CatalogBundle\Model'
         );
     }
