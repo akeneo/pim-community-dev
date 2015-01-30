@@ -18,8 +18,8 @@ Feature: Disable attribute fields in mass edit if it comes from a variant group
     And the following "options" attribute options: Blue
     And the following "color" attribute options: Red, black and Green
     And the following product groups:
-      | code              | label             | attributes | type    |
-      | tshirt_akeneo     | Akeneo T-Shirt    | color      | VARIANT |
+      | code          | label          | axis  | type    |
+      | tshirt_akeneo | Akeneo T-Shirt | color | VARIANT |
     And the following variant group values:
       | group         | attribute   | value            | locale | scope     |
       | tshirt_akeneo | name        | Great sneakers   | fr_FR  |           |
@@ -36,4 +36,4 @@ Feature: Disable attribute fields in mass edit if it comes from a variant group
     And I mass-edit products sku1
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Color in group "Other"
-    And I should see "They are not available for mass edition : name, dimension, options, description, price, length."
+    And I should see "They are not available for mass edition: name, dimension, options, description, price, length."

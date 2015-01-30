@@ -49,8 +49,7 @@ class GroupNormalizer extends Structured\GroupNormalizer
             );
         }
 
-        // TODO: maybe sort the values - just like in product export?
-        // ksort($normalizedValues);
+        ksort($normalizedValues);
 
         return $normalizedValues;
     }
