@@ -82,9 +82,15 @@ class GroupProcessor extends AbstractProcessor
     protected function findOrCreateGroup(array $groupData)
     {
         $group = $this->findOrCreateObject($this->repository, $groupData, $this->class);
-        $isNewVariantGroup = null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT';
-        $isExistingVariantGroup = null !== $group->getId() && $group->getType()->isVariant();
-        if ($isNewVariantGroup || $isExistingVariantGroup) {
+
+        $isVariantGroup = false;
+        if ((null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT') ||
+            (null !== $group->getId() && $group->getType()->isVariant())
+        ) {
+            $isVariantGroup = true;
+        }
+
+        if ($isVariantGroup) {
             $this->skipItemWithMessage(
                 $groupData,
                 sprintf('Cannot process variant group "%s", only groups are accepted', $groupData[self::CODE_FIELD])

@@ -6,6 +6,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -35,20 +36,24 @@ class VariantGroupController extends GroupController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ProductTemplateAttributesManager */
+    protected $tplAttributesManager;
+
     /**
-     * @param Request                      $request
-     * @param EngineInterface              $templating
-     * @param RouterInterface              $router
-     * @param SecurityContextInterface     $securityContext
-     * @param FormFactoryInterface         $formFactory
-     * @param ValidatorInterface           $validator
-     * @param TranslatorInterface          $translator
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param GroupManager                 $groupManager
-     * @param HandlerInterface             $groupHandler
-     * @param Form                         $groupForm
-     * @param GroupFactory                 $groupFactory
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param Request                          $request
+     * @param EngineInterface                  $templating
+     * @param RouterInterface                  $router
+     * @param SecurityContextInterface         $securityContext
+     * @param FormFactoryInterface             $formFactory
+     * @param ValidatorInterface               $validator
+     * @param TranslatorInterface              $translator
+     * @param EventDispatcherInterface         $eventDispatcher
+     * @param GroupManager                     $groupManager
+     * @param HandlerInterface                 $groupHandler
+     * @param Form                             $groupForm
+     * @param GroupFactory                     $groupFactory
+     * @param AttributeRepositoryInterface     $attributeRepository
+     * @param ProductTemplateAttributesManager $tplAttributesManager
      */
     public function __construct(
         Request $request,
@@ -63,7 +68,8 @@ class VariantGroupController extends GroupController
         HandlerInterface $groupHandler,
         Form $groupForm,
         GroupFactory $groupFactory,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        ProductTemplateAttributesManager $tplAttributesManager
     ) {
         parent::__construct(
             $request,
@@ -81,6 +87,7 @@ class VariantGroupController extends GroupController
         );
 
         $this->attributeRepository = $attributeRepository;
+        $this->tplAttributesManager = $tplAttributesManager;
     }
 
     /**
@@ -164,26 +171,11 @@ class VariantGroupController extends GroupController
      */
     protected function getAvailableAttributesForm(GroupInterface $group)
     {
-        $attributes = $group->getAxisAttributes()->toArray();
-
-        $template = $group->getProductTemplate();
-        if (null !== $template) {
-            foreach (array_keys($template->getValuesData()) as $attributeCode) {
-                $attributes[] = $this->attributeRepository->findOneByCode($attributeCode);
-            }
-        }
-
-        $uniqueAttributes = $this->attributeRepository->findBy(['unique' => true]);
-        foreach ($uniqueAttributes as $attribute) {
-            if (!in_array($attribute, $attributes)) {
-                $attributes[] = $attribute;
-            }
-        }
-
         return $this->createForm(
             'pim_available_attributes',
             new AvailableAttributes(),
-            ['attributes' => $attributes]
+            // TODO: this key is really not well named...
+            ['attributes' => $this->tplAttributesManager->getNonEligibleAttributes($group)]
         );
     }
 }

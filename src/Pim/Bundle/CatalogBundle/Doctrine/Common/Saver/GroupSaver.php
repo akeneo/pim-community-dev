@@ -9,6 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Group saver, contains custom logic for variant group products saving
@@ -97,7 +98,7 @@ class GroupSaver implements SaverInterface
     }
 
     /**
-     * @param array $products
+     * @param ProductInterface[] $products
      */
     protected function addProducts(array $products)
     {
@@ -105,7 +106,7 @@ class GroupSaver implements SaverInterface
     }
 
     /**
-     * @param array $products
+     * @param ProductInterface[] $products
      */
     protected function removeProducts(array $products)
     {

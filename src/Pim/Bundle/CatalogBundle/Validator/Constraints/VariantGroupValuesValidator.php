@@ -32,7 +32,6 @@ class VariantGroupValuesValidator extends ConstraintValidator
      */
     public function validate($group, Constraint $constraint)
     {
-        /** @var GroupInterface */
         if ($group instanceof GroupInterface && $group->getType()->isVariant()) {
             if ($group->getProductTemplate() !== null) {
                 $this->validateProductTemplateValues($group, $constraint);

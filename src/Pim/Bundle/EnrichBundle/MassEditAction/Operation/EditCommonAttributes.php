@@ -250,7 +250,7 @@ class EditCommonAttributes extends ProductMassEditOperation
      * @param array  $products
      * @param string $locale
      *
-     * @return Attributeinterface[]
+     * @return AttributeInterface[]
      */
     protected function generateCommonAttributes(array $products, $locale)
     {
@@ -298,12 +298,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         $messages = [];
 
-        $variantAttributes = $this->massActionManager->getCommonAttributesInVariant($products);
-
-        if (count($variantAttributes) > 0) {
+        $variantAttributeCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
+        if (count($variantAttributeCodes) > 0) {
             $messages[] = [
                 'key'     => 'pim_enrich.mass_edit_action.edit-common-attributes.truncated_by_variant_attribute.warning',
-                'options' => ['%attributes%' => implode(', ', $variantAttributes)]
+                'options' => ['%attributes%' => implode(', ', $variantAttributeCodes)]
             ];
         }
 

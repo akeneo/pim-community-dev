@@ -49,8 +49,8 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
             ]
        ];
 
-        $attributeRepository->findOneByCode('name')->willReturn($name);
-        $attributeRepository->findOneByCode('color')->willReturn($color);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
 
         $denormalizer
             ->denormalize($data['name'][0], 'ProductValue', 'json', ['attribute' => $name])

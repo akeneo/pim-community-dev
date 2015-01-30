@@ -46,6 +46,9 @@ class ProductTemplateApplier implements ProductTemplateApplierInterface
         $this->productSaver     = $productSaver;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply(ProductTemplateInterface $template, array $products)
     {
         $this->templateUpdater->update($template, $products);

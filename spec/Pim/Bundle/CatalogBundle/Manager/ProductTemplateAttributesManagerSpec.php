@@ -2,20 +2,33 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductTemplateAttributesManagerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer, ProductBuilder $productBuilder)
-    {
-        $this->beConstructedWith($normalizer, $denormalizer, $productBuilder, 'Pim\Bundle\CatalogBundle\Model\Product');
+    function let(
+        NormalizerInterface $normalizer,
+        DenormalizerInterface $denormalizer,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductBuilder $productBuilder
+    ) {
+        $this->beConstructedWith(
+            $normalizer,
+            $denormalizer,
+            $productBuilder,
+            $attributeRepository,
+            'Pim\Bundle\CatalogBundle\Model\Product'
+        );
     }
 
     function it_is_initializable()
@@ -23,7 +36,31 @@ class ProductTemplateAttributesManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager');
     }
 
-    function it_can_add_attributes_to_a_product_template(
+    function it_returns_non_eligible_attributes(
+        $attributeRepository,
+        GroupInterface $group,
+        ProductTemplateInterface $template,
+        AttributeInterface $length,
+        AttributeInterface $name,
+        AttributeInterface $color,
+        AttributeInterface $identifier,
+        Collection $collection
+    ) {
+        $group->getProductTemplate()->willReturn($template);
+        $group->getAxisAttributes()->willReturn($collection);
+        $collection->toArray()->willReturn([$length]);
+
+        $template->getValuesData()->willReturn(['name' => 'foo', 'color' => 'bar']);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+        $attributeRepository->findBy(['unique' => true])->willReturn([$name, $identifier]);
+
+        $attributes = [$length, $name, $color, $identifier];
+        $this->getNonEligibleAttributes($group)->shouldReturn($attributes);
+    }
+
+    function it_adds_attributes_to_a_product_template(
         $denormalizer,
         $normalizer,
         $productBuilder,
@@ -61,7 +98,7 @@ class ProductTemplateAttributesManagerSpec extends ObjectBehavior
         $this->addAttributes($template, [$name]);
     }
 
-    function it_can_remove_attributes_from_a_product_template(
+    function it_removes_attributes_from_a_product_template(
         ProductTemplateInterface $template,
         AttributeInterface $name
     ) {

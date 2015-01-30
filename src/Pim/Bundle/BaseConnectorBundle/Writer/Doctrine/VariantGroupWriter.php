@@ -56,9 +56,9 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $variantGroups)
     {
-        foreach ($items as $variantGroup) {
+        foreach ($variantGroups as $variantGroup) {
             $this->saveVariantGroup($variantGroup);
             if ($this->isCopyValues()) {
                 $this->copyValuesToProducts($variantGroup);
@@ -133,8 +133,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
         if ($template && count($template->getValuesData()) > 0 && count($products) > 0) {
-            $products = $products->count() > 0 ? $products->toArray() : [];
-            $skippedMessages = $this->productTemplateApplier->apply($template, $products);
+            $skippedMessages = $this->productTemplateApplier->apply($template, $products->toArray());
             $nbSkipped = count($skippedMessages);
             $nbUpdated = count($products) - $nbSkipped;
             $this->incrementUpdatedProductsCount($nbUpdated);
@@ -161,8 +160,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
      */
     protected function incrementUpdatedProductsCount($nbProducts)
     {
-        $summaryKey = 'update_products';
-        $this->stepExecution->incrementSummaryInfo($summaryKey, $nbProducts);
+        $this->stepExecution->incrementSummaryInfo('update_products', $nbProducts);
     }
 
     /**
@@ -171,8 +169,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
      */
     protected function incrementSkippedProductsCount($nbSkippedProducts, $skippedMessages)
     {
-        $summaryKey = 'skip_products';
-        $this->stepExecution->incrementSummaryInfo($summaryKey, $nbSkippedProducts);
+        $this->stepExecution->incrementSummaryInfo('skip_products', $nbSkippedProducts);
 
         foreach ($skippedMessages as $productIdentifier => $messages) {
             $this->stepExecution->addWarning(

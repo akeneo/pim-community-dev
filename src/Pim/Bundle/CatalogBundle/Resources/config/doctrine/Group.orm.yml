@@ -46,6 +46,8 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
             cascade:
                 - persist
+                - remove
+                - detach
             joinColumns:
                 product_template_id:
                     referencedColumnName: id

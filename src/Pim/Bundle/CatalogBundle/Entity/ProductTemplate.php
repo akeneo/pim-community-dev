@@ -20,15 +20,10 @@ class ProductTemplate implements ProductTemplateInterface
     /** @var integer $id */
     protected $id;
 
-    /** @var Group $group */
-    protected $group;
-
     /** @var array */
     protected $valuesData = [];
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @var array of ProductValueInterface */
     protected $values = [];
 
     /**
@@ -36,15 +31,19 @@ class ProductTemplate implements ProductTemplateInterface
      */
     public function setValues($values)
     {
-        $this->values = $values;
+        $tmp = new ArrayCollection();
+
+        foreach ($values as $value) {
+            $tmp[ProductValueKeyGenerator::getKey($value)] = $value;
+        }
+
+        $this->values = $tmp;
 
         return $this;
     }
 
     /**
-     * Get values
-     *
-     * @return ProductValueInterface[]
+     * {@inheritdoc}
      */
     public function getValues()
     {
@@ -116,7 +115,7 @@ class ProductTemplate implements ProductTemplateInterface
      * TODO: this method could be optimized by storing the attributes appart in db
      * @return array
      */
-    public function getAttributes()
+    public function getAttributeCodes()
     {
         return array_keys($this->valuesData);
     }

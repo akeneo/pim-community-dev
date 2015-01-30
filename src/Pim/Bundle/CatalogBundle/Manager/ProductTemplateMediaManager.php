@@ -40,7 +40,7 @@ class ProductTemplateMediaManager
     {
         $mediaHandled = false;
         foreach ($template->getValues() as $value) {
-            if ($media = $value->getMedia()) {
+            if (null !== $media = $value->getMedia()) {
                 $mediaHandled = true;
                 $filenamePrefix = $media->getFile() ? $this->generateFilenamePrefix($value) : null;
                 $this->mediaManager->handle($media, $filenamePrefix);

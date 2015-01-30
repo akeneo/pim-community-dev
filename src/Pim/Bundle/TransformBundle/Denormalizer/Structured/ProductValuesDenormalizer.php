@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -21,7 +21,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var string */
@@ -31,13 +31,13 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     protected $supportedFormats = ['json'];
 
     /**
-     * @param DenormalizerInterface $denormalizer
-     * @param AttributeRepository   $attributeRepository
-     * @param string                $valueClass
+     * @param DenormalizerInterface        $denormalizer
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param string                       $valueClass
      */
     public function __construct(
         DenormalizerInterface $denormalizer,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         $valueClass
     ) {
         $this->denormalizer        = $denormalizer;
@@ -53,7 +53,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
         $values = new ArrayCollection();
 
         foreach ($data as $attributeCode => $valuesData) {
-            $attribute = $this->attributeRepository->findOneByCode($attributeCode);
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             foreach ($valuesData as $valueData) {
                 $value = $this->denormalizer->denormalize(
                     $valueData,

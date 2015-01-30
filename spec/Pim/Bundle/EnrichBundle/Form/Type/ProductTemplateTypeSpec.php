@@ -18,7 +18,7 @@ class ProductTemplateTypeSpec extends ObjectBehavior
         UserContext $userContext,
         ChannelManager $channelManager
     ) {
-        $this->beConstructedWith('ProductTemplate', $formView, $subscriber, $userContext, $channelManager);
+        $this->beConstructedWith($formView, $subscriber, $userContext, $channelManager, 'ProductTemplate');
     }
 
     function it_is_initializable()

@@ -44,14 +44,12 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         $this->configContext($resolver);
         $context = $resolver->resolve($context);
 
-        /** @var ProductValueInterface */
         $value = $context['value'];
         $matches = [];
         $singleFieldPattern = '/(?P<data>\d+(.\d+)?) (?P<unit>\w+)/';
 
         if (preg_match($singleFieldPattern, $data, $matches) === 0) {
             $metric = $this->addFromManyFields($value, $data);
-
         } else {
             $metric = $this->addFromSingleField($value, $matches['data'], $matches['unit']);
         }
