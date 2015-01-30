@@ -16,6 +16,6 @@ Feature: Export groups
     And I should see "Written 1"
     And exported file of "footwear_group_export" should contain:
     """
-    code;type;attributes;label-en_US
-    similar_boots;RELATED;;"Similar boots"
+    code;type;label-en_US
+    similar_boots;RELATED;"Similar boots"
     """

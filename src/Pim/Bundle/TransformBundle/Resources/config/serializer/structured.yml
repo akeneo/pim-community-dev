@@ -27,6 +27,7 @@ parameters:
     pim_serializer.denormalizer.metric.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer
     pim_serializer.denormalizer.datetime.class:          Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
     pim_serializer.denormalizer.media.class:             Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MediaDenormalizer
+    pim_serializer.denormalizer.boolean.class:           Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BooleanDenormalizer
 
 services:
     # Normalizers
@@ -155,7 +156,7 @@ services:
     pim_serializer.denormalizer.base_value:
         class: %pim_serializer.denormalizer.base_value.class%
         arguments:
-            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number', 'pim_catalog_boolean']
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number']
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -202,5 +203,12 @@ services:
         arguments:
             - ['pim_catalog_image', 'pim_catalog_file']
             - '@pim_catalog.manager.media'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.denormalizer.boolean:
+        class: %pim_serializer.denormalizer.boolean.class%
+        arguments:
+            - ['pim_catalog_boolean']
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

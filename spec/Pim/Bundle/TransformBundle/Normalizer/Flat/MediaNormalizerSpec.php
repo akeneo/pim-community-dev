@@ -37,7 +37,7 @@ class MediaNormalizerSpec extends ObjectBehavior
         $manager,
         ProductMediaInterface $media
     ) {
-        $manager->getExportPath($media)->willReturn('files/foo.jpg');
+        $manager->getExportPath($media, null)->willReturn('files/foo.jpg');
 
         $this
             ->normalize($media, null, ['field_name' => 'front'])
@@ -48,11 +48,22 @@ class MediaNormalizerSpec extends ObjectBehavior
         $manager,
         ProductMediaInterface $media
     ) {
-        $manager->getExportPath($media)->willReturn('files/foo.jpg');
+        $manager->getExportPath($media, null)->willReturn('files/foo.jpg');
 
         $this
             ->normalize($media, null, ['field_name' => 'front', 'versioning' => false])
             ->shouldReturn(['front' => 'files/foo.jpg']);
+    }
+
+    function it_passes_custom_identifier_to_media_manager_if_given_in_the_context(
+        $manager,
+        ProductMediaInterface $media
+    ) {
+        $manager->getExportPath($media, 'foobar')->willReturn('files/foobar/foo.jpg');
+
+        $this
+            ->normalize($media, null, ['field_name' => 'front', 'identifier' => 'foobar'])
+            ->shouldReturn(['front' => 'files/foobar/foo.jpg']);
     }
 
     function it_normalizes_media_by_keeping_the_media_filename(ProductMediaInterface $media)
@@ -65,7 +76,7 @@ class MediaNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_media_by_using_file_and_export_path_to_prepare_the_copy(ProductMediaInterface $media, $manager)
     {
-        $manager->getExportPath($media)->willReturn('files/sku/attribute/foo.jpg');
+        $manager->getExportPath($media, null)->willReturn('files/sku/attribute/foo.jpg');
         $manager->getFilePath($media)->willReturn('/tmp/file/foo.jpg');
 
         $this

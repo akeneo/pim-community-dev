@@ -54,13 +54,13 @@ class GroupNormalizerTest extends NormalizerTestCase
                     'type'        => 'VARIANT',
                     'label-en_US' => 'My variant group',
                     'label-fr_FR' => 'Mon groupe variant',
-                    'attributes'  => array('color', 'size')
+                    'axis'        => array('color', 'size')
                 ),
                 array(
-                    'code'       => 'my_group',
-                    'type'       => 'RELATED',
-                    'label'      => array('en' => 'My group', 'fr' => 'Mon group'),
-                    'attributes' => array()
+                    'code'  => 'my_group',
+                    'type'  => 'RELATED',
+                    'label' => array('en' => 'My group', 'fr' => 'Mon group'),
+                    'axis'  => array()
                 )
             ),
         );
@@ -112,7 +112,7 @@ class GroupNormalizerTest extends NormalizerTestCase
     protected function getAttributes($data)
     {
         $attributes = array();
-        $codes = $data['attributes'];
+        $codes = $data['axis'];
         foreach ($codes as $code) {
             $attribute = new Attribute();
             $attribute->setCode($code);

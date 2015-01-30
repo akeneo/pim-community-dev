@@ -134,6 +134,7 @@ class MediaManagerSpec extends ObjectBehavior
         $media->getOriginalFilename()->willReturn('akeneo.jpg');
 
         $this->getExportPath($media)->shouldReturn('files/my-sku/thumbnail/en_US/mobile/akeneo.jpg');
+        $this->getExportPath($media, 'custom-sku')->shouldReturn('files/custom-sku/thumbnail/en_US/mobile/akeneo.jpg');
     }
 
     function it_generates_filename_prefix(ProductInterface $product, ProductValueInterface $value, AttributeInterface $attribute)

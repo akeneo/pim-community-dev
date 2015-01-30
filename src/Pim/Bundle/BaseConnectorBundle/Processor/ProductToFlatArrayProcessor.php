@@ -61,7 +61,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function process($item)
     {
         $data['media'] = [];
-        if (count($item->getMedia()) > 0) {
+        if (count($item->getMedia()) > 0) { // TODO depreciate the getMedia and rename this !!
             try {
                 $data['media'] = $this->serializer->normalize(
                     $item->getMedia(),

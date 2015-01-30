@@ -763,7 +763,7 @@ pim_enrich.mass_edit_action:
         success_flash: Product(s) attribute(s) have been updated
         message.warning: There is no attribute in common for the selected products. Please change your selection.
         no_attribute.warning: There is no attribute in common for the selected products. Please change your selection.
-        truncated_by_variant_attribute.warning: "Some common attributes from selected products come from a variant group. They are not available for mass edition : %attributes%."
+        truncated_by_variant_attribute.warning: "Some common attributes from selected products come from a variant group. They are not available for mass edition: %attributes%."
     classify:
         label:         Classify products in categories
         description:   The products will be positioned into following categories, the existing placement is kept.

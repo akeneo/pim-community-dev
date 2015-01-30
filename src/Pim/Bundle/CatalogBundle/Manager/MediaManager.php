@@ -235,18 +235,17 @@ class MediaManager
      *   - files/sku-004/insurance
      *
      * @param ProductMediaInterface $media
+     * @param string                $identifier Can be used to override the default identifier
      *
      * @return string
      */
-    public function getExportPath(ProductMediaInterface $media)
+    public function getExportPath(ProductMediaInterface $media, $identifier = null)
     {
         $value     = $media->getValue();
         $attribute = $value->getAttribute();
-        $target    = sprintf(
-            'files/%s/%s',
-            $value->getEntity()->getIdentifier(),
-            $attribute->getCode()
-        );
+
+        $identifier = null !== $identifier ? $identifier : $value->getEntity()->getIdentifier();
+        $target = sprintf('files/%s/%s', $identifier, $attribute->getCode());
 
         if ($attribute->isLocalizable()) {
             $target .= '/' . $value->getLocale();
