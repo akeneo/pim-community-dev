@@ -9,6 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Group saver, contains custom logic for variant group products saving
@@ -31,22 +32,27 @@ class GroupSaver implements SaverInterface
     /** @var ProductTemplateApplierInterface */
     protected $productTemplateApplier;
 
+    /** @var VersionManager  */
+    protected $versionManager;
     /**
      * @param ObjectManager                   $objectManager
      * @param BulkSaverInterface              $productSaver
      * @param ProductTemplateMediaManager     $templateMediaManager
      * @param ProductTemplateApplierInterface $productTemplateApplier
+     * @param VersionManager                  $versionManager
      */
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
         ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $productTemplateApplier
+        ProductTemplateApplierInterface $productTemplateApplier,
+        VersionManager $versionManager
     ) {
         $this->objectManager          = $objectManager;
         $this->productSaver           = $productSaver;
         $this->templateMediaManager   = $templateMediaManager;
         $this->productTemplateApplier = $productTemplateApplier;
+        $this->versionManager         = $versionManager;
     }
 
     /**
@@ -119,8 +125,13 @@ class GroupSaver implements SaverInterface
      */
     protected function copyVariantGroupValues(GroupInterface $group)
     {
+        $realTimeVersioning = $this->versionManager->isRealTimeVersioning();
+        $this->versionManager->setRealTimeVersioning(false);
+
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
         $this->productTemplateApplier->apply($template, $products);
+
+        $this->versionManager->setRealTimeVersioning($realTimeVersioning);
     }
 }
