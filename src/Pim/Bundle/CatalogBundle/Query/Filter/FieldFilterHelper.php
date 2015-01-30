@@ -82,7 +82,12 @@ class FieldFilterHelper
         $invalidDefaultField = !static::hasProperty($field) && !is_numeric($value);
 
         if ($invalidIdField || $invalidDefaultField) {
-            throw InvalidArgumentException::numericExpected(static::getCode($field), 'filter', $filter, gettype($value));
+            throw InvalidArgumentException::numericExpected(
+                static::getCode($field),
+                'filter',
+                $filter,
+                gettype($value)
+            );
         }
 
         $invalidStringField = static::hasProperty($field) && static::getProperty($field) !== 'id' && !is_string($value);
