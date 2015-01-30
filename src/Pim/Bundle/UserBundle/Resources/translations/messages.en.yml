@@ -6,7 +6,6 @@ pim_user:
             group_and_role.title:        Groups and Roles
             password.title:              Password
             business_unit.title:         Business Units
-            email_synchronization.title: Email synchronization settings
 
 # user grids
 oro.user.controller:

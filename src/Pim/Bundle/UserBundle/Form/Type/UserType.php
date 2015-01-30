@@ -122,7 +122,6 @@ class UserType extends OroUserType
                     'label'          => ' '
                 )
             )
-            ->add('imapConfiguration', 'oro_imap_configuration')
             ->add(
                 'change_password',
                 'oro_change_password'

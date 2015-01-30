@@ -1,10 +1,9 @@
 parameters:
-    pim_user.view_element.user.tab.general.template:               'PimUserBundle:User:Tab/general.html.twig'
-    pim_user.view_element.user.tab.additional.template:            'PimUserBundle:User:Tab/additional.html.twig'
-    pim_user.view_element.user.tab.group_and_role.template:        'PimUserBundle:User:Tab/group_and_role.html.twig'
-    pim_user.view_element.user.tab.password.template:              'PimUserBundle:User:Tab/password.html.twig'
-    pim_user.view_element.user.tab.business_unit.template:         'PimUserBundle:User:Tab/business_unit.html.twig'
-    pim_user.view_element.user.tab.email_synchronization.template: 'PimUserBundle:User:Tab/email_synchronization.html.twig'
+    pim_user.view_element.user.tab.general.template:        'PimUserBundle:User:Tab/general.html.twig'
+    pim_user.view_element.user.tab.additional.template:     'PimUserBundle:User:Tab/additional.html.twig'
+    pim_user.view_element.user.tab.group_and_role.template: 'PimUserBundle:User:Tab/group_and_role.html.twig'
+    pim_user.view_element.user.tab.password.template:       'PimUserBundle:User:Tab/password.html.twig'
+    pim_user.view_element.user.tab.business_unit.template:  'PimUserBundle:User:Tab/business_unit.html.twig'
 
 services:
     pim_user.view_element.user.tab.general:
@@ -50,11 +49,3 @@ services:
             - %pim_user.view_element.user.tab.business_unit.template%
         tags:
             - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 130 }
-
-    pim_user.view_element.user.tab.email_synchronization:
-        parent: pim_enrich.view_element.base
-        arguments:
-            - 'pim_user.user.tab.email_synchronization'
-            - %pim_user.view_element.user.tab.email_synchronization.template%
-        tags:
-            - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 140 }
