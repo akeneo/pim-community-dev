@@ -288,6 +288,23 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findByIds(array $ids)
+    {
+        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
+        $qb->field('_id')->in($ids);
+
+        $cursor   = $qb->getQuery()->execute();
+        $products = [];
+        foreach ($cursor as $product) {
+            $products[] = $product;
+        }
+
+        return $products;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function cascadeChannelRemoval($id)
     {
         $this->createQueryBuilder('p')

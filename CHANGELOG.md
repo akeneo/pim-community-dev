@@ -25,7 +25,7 @@
 - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
 - Make classes of `Pim\Bundle\CatalogBundle\Model` consistent with the interfaces
 - Move filter transformation to CatalogBundle
-- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable 
+- Re-work `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` to make it more readable
 - Re-work the `Pim\Bundle\CatalogBundle\Doctrine\Query\ProductQueryBuilder` to provide a clear and extensible API to query products
 - Normalize the managers by introducing 4 interfaces, `Akeneo\Component\Persistence\SaverInterface`, `Akeneo\Component\Persistence\BulkSaverInterface`, `Akeneo\Component\Persistence\RemoverInterface` and `Pim\Component\Persistence\BulkRemoverInterface`
 - Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
@@ -50,6 +50,7 @@
 - Use `Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeGroup`
 - Use `Pim\Bundle\CatalogBundle\Model\ChannelInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Channel`
 - Use `Pim\Bundle\CatalogBundle\Model\CurrencyInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Currency`
+- Removed `icecat_demo` from fixtures
 
 ## BC breaks
 - Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelsPass`

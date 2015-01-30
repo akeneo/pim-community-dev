@@ -34,9 +34,9 @@ groups:
     akeneo_long_sleeve_tshirt:
         type: VARIANT
         labels:
-            en_US: Akeneo T-Shirts
-            fr_FR: T-Shirts Akeneo
-            de_DE: T-Shirts Akeneo
+            en_US: Akeneo long sleeve T-Shirts
+            fr_FR: T-Shirts à manche longue Akeneo
+            de_DE: T-Shirts Langarm Akeneo
         attributes:
             - main_color
             - secondary_color
@@ -45,9 +45,9 @@ groups:
     akeneo_vneck_tshirt:
         type: VARIANT
         labels:
-            en_US: Akeneo T-Shirts
-            fr_FR: T-Shirts Akeneo
-            de_DE: T-Shirts Akeneo
+            en_US: Akeneo vneck T-Shirts
+            fr_FR: T-Shirts col en V Akeneo
+            de_DE: T-Shirts mit V-Ausschnitt Akeneo
         attributes:
             - main_color
             - secondary_color
