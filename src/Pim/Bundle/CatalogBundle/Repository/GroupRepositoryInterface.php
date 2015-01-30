@@ -41,6 +41,13 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     public function countVariantGroupAxis(AttributeInterface $attribute);
 
     /**
+     * Return the number of variant groups
+     *
+     * @return int
+     */
+    public function countVariantGroups();
+
+    /**
      * @return mixed
      */
     public function createDatagridQueryBuilder();
@@ -70,9 +77,28 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     public function getAllVariantGroups();
 
     /**
+     * Get all variant groups where $variantGroupIds are $include or not
+     *
+     * @param array $variantGroupIds
+     * @param bool  $include
+     *
+     * @return array
+     */
+    public function getVariantGroupsByIds(array $variantGroupIds, $include = true);
+
+    /**
      * Get all variant group ids
      *
      * @return array
      */
     public function getAllVariantGroupIds();
+
+    /**
+     * Get variant groups where all their attributes are in $attributeIds
+     *
+     * @param array $attributeIds
+     *
+     * @return array
+     */
+    public function getVariantGroupsByAttributeIds(array $attributeIds);
 }

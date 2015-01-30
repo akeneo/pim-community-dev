@@ -14,3 +14,4 @@ Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup:
         group:
             - Valid:
                 traverse: true
+            - NotNull: { groups: [configureAction] }
