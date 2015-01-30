@@ -16,6 +16,7 @@
 - Introduce a `PimEnterprise\Bundle\WorkflowBundle\Saver\ProductDraftSaver` and a `PimEnterprise\Bundle\WorkflowBundle\Saver\DelegatingProductSaver` with corresponding services to allow to save working copy, product draft or save both depending on permissions
 - Add a command to run a rule or all rules in database
 - Add a rule view on attribute edit page
+- Removed `icecat_demo` from fixtures
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.
