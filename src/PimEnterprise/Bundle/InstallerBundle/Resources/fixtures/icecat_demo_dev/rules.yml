@@ -138,5 +138,5 @@ rules:
             - type:   set_value
               field:  picture
               value:
-                  filePath:         ../../../src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo/images/AKNTS_PB.jpg
+                  filePath:         ../../../src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/images/AKNTS_PB.jpg
                   originalFilename: akeneo
