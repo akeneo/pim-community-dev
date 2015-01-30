@@ -231,8 +231,6 @@ class EditCommonAttributes extends ProductMassEditOperation
      *   - without value AND not link to family
      *   - is not common to every products
      *
-     * @param array $products
-     *
      * @return array
      */
     public function getCommonAttributes()
@@ -300,10 +298,11 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         $messages = [];
 
-        $variantAttributes = $this->massActionManager->getCommonAttributesNotInVariant($products);
+        $variantAttributes = $this->massActionManager->getCommonAttributesInVariant($products);
+
         if (count($variantAttributes) > 0) {
             $messages[] = [
-                'key' => 'pim_enrich.mass_edit_action.edit-common-attributes.truncated_by_variant_attribute.warning',
+                'key'     => 'pim_enrich.mass_edit_action.edit-common-attributes.truncated_by_variant_attribute.warning',
                 'options' => ['%attributes%' => implode(', ', $variantAttributes)]
             ];
         }
