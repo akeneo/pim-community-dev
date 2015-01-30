@@ -17,3 +17,4 @@ services:
             - %pimee_catalog_rule.view_element.common.from_smart.template%
         tags:
             - { name: pim_enrich.view_element, type: pim_enrich_product_edit.after_form_init, position: 100 }
+            - { name: pim_enrich.view_element, type: pim_enrich_product_mass_edit.after_form_init, position: 100 }
