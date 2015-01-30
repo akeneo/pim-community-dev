@@ -342,7 +342,7 @@ options:
     long_sleeve:
         code: long_sleeve
         attribute: tshirt_style
-        labels: { fr_FR: 'Manches longues', en_US: 'Long sleeve', de_DE: 'Lange Ärmel ' }
+        labels: { fr_FR: 'Manches longues', en_US: 'Long sleeve', de_DE: 'Lange Ärmel' }
         sortOrder: 5
     short_sleeve:
         code: short_sleeve
