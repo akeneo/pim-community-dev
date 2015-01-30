@@ -17,6 +17,7 @@ use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 
 /**
  * Product rule runner
@@ -41,8 +42,7 @@ class ProductRuleRunner implements DryRunnerInterface
      * @param BuilderInterface  $builder
      * @param SelectorInterface $selector
      * @param ApplierInterface  $applier
-     * @param string            $productCondClass should implement
-     *                                            \PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface
+     * @param string            $productCondClass should implement ProductConditionInterface
      */
     public function __construct(
         BuilderInterface $builder,

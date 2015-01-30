@@ -45,8 +45,7 @@ class ProductRuleSelector implements SelectorInterface
      * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
      * @param ProductRepositoryInterface          $repo
      * @param EventDispatcherInterface            $eventDispatcher
-     * @param string                              $subjectSetClass     should implement
-     *                                                                 \Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface
+     * @param string                              $subjectSetClass     should implement RuleSubjectSetInterface
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $queryBuilderFactory,
