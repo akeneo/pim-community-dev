@@ -77,13 +77,14 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
     public function getAllVariantGroups();
 
     /**
-     * Get all variant groups with ids NOT IN $variantGroupIds
+     * Get all variant groups where $variantGroupIds are $include or not
      *
      * @param array $variantGroupIds
+     * @param bool  $include
      *
      * @return array
      */
-    public function getAllVariantGroupsWithoutIds(array $variantGroupIds);
+    public function getVariantGroupsByIds(array $variantGroupIds, $include = true);
 
     /**
      * Get all variant group ids

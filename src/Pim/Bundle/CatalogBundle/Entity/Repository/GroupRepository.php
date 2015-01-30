@@ -109,14 +109,18 @@ class GroupRepository extends ReferableEntityRepository implements GroupReposito
     /**
      * {@inheritdoc}
      */
-    public function getAllVariantGroupsWithoutIds(array $variantGroupIds)
+    public function getVariantGroupsByIds(array $variantGroupIds, $include = true)
     {
         $qb = $this->createQueryBuilder('g');
 
-        $qb->where($qb->expr()->notIn('g.id', ':ids'))
-            ->setParameter(':ids', $variantGroupIds);
+        if ($include) {
+            $qb = $qb->where($qb->expr()->in('g.id', ':ids'));
+        } else {
+            $qb = $qb->where($qb->expr()->notIn('g.id', ':ids'));
+        }
 
-        return $qb->getQuery()->execute();
+        return $qb->setParameter(':ids', $variantGroupIds)
+            ->getQuery()->execute();
     }
 
     /**

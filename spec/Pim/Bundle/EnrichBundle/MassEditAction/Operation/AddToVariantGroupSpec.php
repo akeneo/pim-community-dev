@@ -118,7 +118,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
         $groupRepository->getVariantGroupsByAttributeIds([])->willReturn([$shoes]);
 
         $shoes->getId()->willReturn(42);
-        $groupRepository->getAllVariantGroupsWithoutIds([42])->willReturn([]);
+        $groupRepository->getVariantGroupsByIds([42], false)->willReturn([]);
 
         $groupRepository->countVariantGroups()->willReturn(1);
 
@@ -187,7 +187,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
         $groupRepository->getVariantGroupsByAttributeIds([42])->willReturn([$glasses]);
 
         $glasses->getId()->willReturn(100);
-        $groupRepository->getAllVariantGroupsWithoutIds([100])->willReturn([$shoes]);
+        $groupRepository->getVariantGroupsByIds([100], false)->willReturn([$shoes]);
         $shoes->getLabel()->willReturn('Shoes');
         $shoes->getCode()->willReturn('shoes');
 

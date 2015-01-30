@@ -261,13 +261,11 @@ class AddToVariantGroup extends ProductMassEditOperation
         // @TODO: Avoid getting all variant groups
         // For now, we show all label and code of skipped groups (not good if too many)
         if ($validVariantGroups) {
-
             $validIds = array_map(function ($validGroup) {
                 return $validGroup->getId();
             }, $validVariantGroups);
 
-            $invalidVariantGroups = $this->groupRepository->getAllVariantGroupsWithoutIds($validIds);
-
+            $invalidVariantGroups = $this->groupRepository->getVariantGroupsByIds($validIds, false);
         } else {
             $invalidVariantGroups = $this->groupRepository->getAllVariantGroups();
         }
