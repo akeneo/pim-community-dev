@@ -41,8 +41,6 @@ class GroupNormalizer extends Structured\GroupNormalizer
         $valuesData = $group->getProductTemplate()->getValuesData();
         $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
 
-        // TODO: Fix flat collection normalizer and use this
-        // $normalizedValues = $this->serializer->normalize($values, $format, ['entity' => 'product'] + $context);
         $normalizedValues = [];
         foreach ($values as $value) {
             $normalizedValues = array_merge(

@@ -11,8 +11,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
  */
 class CsvVariantGroupWriter extends CsvWriter
 {
-    // TODO: avoid to use the media manager here ?!
-
     /**
      * {@inheritdoc}
      */

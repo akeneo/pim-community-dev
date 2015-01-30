@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 
 /**
- * The abstract repository reader
+ * Abstract repository reader, returns items one by one
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -22,9 +22,6 @@ abstract class AbstractReader extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var boolean */
-    protected $executed = false;
-
     /** @var \ArrayIterator */
     protected $results;
 
@@ -33,13 +30,12 @@ abstract class AbstractReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if (!$this->executed) {
-            $this->executed = true;
+        if (null === $this->results) {
             $items = $this->readItems();
             $this->results = new \ArrayIterator($items);
         }
 
-        if ($result = $this->results->current()) {
+        if (null !== $result = $this->results->current()) {
             $this->results->next();
             $this->stepExecution->incrementSummaryInfo('read');
         }
@@ -52,7 +48,7 @@ abstract class AbstractReader extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

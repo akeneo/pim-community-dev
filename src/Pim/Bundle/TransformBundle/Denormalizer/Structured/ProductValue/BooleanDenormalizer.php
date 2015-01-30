@@ -7,7 +7,7 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
  * - pim_catalog_boolean
  *
  * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class BooleanDenormalizer extends AbstractValueDenormalizer

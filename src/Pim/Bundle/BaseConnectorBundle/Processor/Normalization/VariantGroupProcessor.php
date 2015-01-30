@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -117,7 +118,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      *
      * @param ProductTemplateInterface|null $template
      *
-     * @return ProductValueInterface[]
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[]
      */
     protected function getProductTemplateMediaValues(ProductTemplateInterface $template = null)
     {
