@@ -45,7 +45,7 @@ class SmartViewUpdater implements ViewUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($attributeView)
+    public function update(array $attributeView)
     {
         $this->checkIfSmartAttribute($attributeView);
     }

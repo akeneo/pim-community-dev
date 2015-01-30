@@ -39,7 +39,7 @@ class DraftViewUpdater implements ViewUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($attributeView)
+    public function update(array $attributeView)
     {
         if ((isset($attributeView['value'])
             && $this->applier->isMarkedAsModified($attributeView))
