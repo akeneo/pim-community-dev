@@ -34,8 +34,8 @@ Feature: Editing attribute values of a variant group also updates products
       | caterpillar_boots | name               | Old name      | en_US  |        |
       | caterpillar_boots | description        | A product.    | en_US  | tablet |
     And the following products:
-      | sku  | groups            |
-      | boot | caterpillar_boots |
+      | sku  | groups            | color | size |
+      | boot | caterpillar_boots | black | 40   |
     And the following attributes:
       | code                  | label-en_US           | type | group | allowedExtensions    |
       | technical_description | Technical description | file | media | gif,png,jpeg,jpg,txt |
