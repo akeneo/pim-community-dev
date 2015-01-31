@@ -41,7 +41,7 @@ class GroupProcessor extends AbstractProcessor
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        $class, // TODO responsibility of the denormalizer ?!
+        $class,
         $format
     ) {
         parent::__construct($repository, $denormalizer, $validator, $detacher, $class);

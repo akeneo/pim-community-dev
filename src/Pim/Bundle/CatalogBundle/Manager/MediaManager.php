@@ -187,7 +187,6 @@ class MediaManager
      */
     public function createFromFilename($filename, $isUploaded = true)
     {
-        // TODO : double check with revert, add specs and behat scenario
         if ($isUploaded) {
             $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $filename;
         } else {
