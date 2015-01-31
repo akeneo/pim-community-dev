@@ -2,11 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
+use PimEnterprise\Bundle\CatalogRuleBundle\CustomMatcher;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -16,12 +18,14 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher
     ) {
         $this->beConstructedWith(
             $repository,
             $denormalizer,
             $validator,
+            $detacher,
             'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition',
             'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
         );
@@ -36,7 +40,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
 
     function it_is_an_import_processor()
     {
-        $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject\AbstractProcessor');
+        $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor');
     }
 
     function it_processes_a_new_valid_item(

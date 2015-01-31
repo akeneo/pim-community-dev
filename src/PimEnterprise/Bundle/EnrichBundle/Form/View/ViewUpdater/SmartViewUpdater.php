@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -44,9 +45,9 @@ class SmartViewUpdater implements ViewUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update(array $views, $key, $name)
+    public function update(array $attributeView)
     {
-        $this->checkIfSmartAttribute($views, $key, $name);
+        $this->checkIfSmartAttribute($attributeView);
     }
 
     /**
@@ -78,26 +79,23 @@ class SmartViewUpdater implements ViewUpdaterInterface
     /**
      * Check if an attribute is smart or not
      *
-     * @param array  $views
-     * @param string $key
-     * @param string $name
+     * @param FormView $attributeView
      */
-    protected function checkIfSmartAttribute(array $views, $key, $name)
+    protected function checkIfSmartAttribute($attributeView)
     {
-        $attribute = $views[$key]['attributes'][$name];
-        if ((isset($attribute['value'])
-            && $this->ruleRelationManager->isAttributeImpacted($attribute['id']))
+        if ((isset($attributeView['value'])
+            && $this->ruleRelationManager->isAttributeImpacted($attributeView['id']))
         ) {
             $this->markAttributeAsSmart(
-                $attribute['value'],
-                $attribute['id']
+                $attributeView['value'],
+                $attributeView['id']
             );
-        } elseif (isset($attribute['values'])) {
-            foreach (array_keys($attribute['values']) as $scope) {
-                if ($this->ruleRelationManager->isAttributeImpacted($attribute['id'])) {
+        } elseif (isset($attributeView['values'])) {
+            foreach (array_keys($attributeView['values']) as $scope) {
+                if ($this->ruleRelationManager->isAttributeImpacted($attributeView['id'])) {
                     $this->markAttributeAsSmart(
-                        $attribute['values'][$scope],
-                        $attribute['id']
+                        $attributeView['values'][$scope],
+                        $attributeView['id']
                     );
                 }
             }

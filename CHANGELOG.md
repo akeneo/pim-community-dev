@@ -17,6 +17,7 @@
 - Add a command to run a rule or all rules in database
 - Add a rule view on attribute edit page
 - Removed `icecat_demo` from fixtures
+- Add a form view updater registry to update the attributes form views dynamically
 
 ## BC breaks
 - Remove service `pimee_workflow.repository.product_draft_ownership`. Now, `pimee_workflow.repository.product_draft` should be used instead.

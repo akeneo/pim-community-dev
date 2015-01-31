@@ -44,6 +44,8 @@ services:
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - %pim_catalog.entity.group.class%
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 

@@ -58,8 +58,12 @@ class ProductMassActionManager extends BaseProductMassActionManager
     /**
      * {@inheritdoc}
      */
-    public function findCommonAttributes(array $productIds)
+    public function findCommonAttributes(array $products)
     {
+        $productIds = [];
+        foreach ($products as $product) {
+            $productIds[] = $product->getId();
+        }
         $attributeIds = $this->massActionRepository->findCommonAttributeIds($productIds);
 
         $subQB = $this
