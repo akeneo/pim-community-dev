@@ -49,8 +49,8 @@ Feature: Export variant groups
     And I should see "Written 1"
     And exported file of "footwear_variant_group_export" should contain:
     """
-    code;type;axis;label-en_US;manufacturer;weather_conditions;description-en_US-mobile;comment;price-EUR;price-USD;side_view;length;length-unit;number_in_stock;destocking_date;handmade;attachment
-    caterpillar_boots;VARIANT;color,size;"Caterpillar boots";Caterpillar;dry;"Nice boots";"Best worn in winter";100.00;150.00;files/caterpillar_boots/side_view/akeneo.jpg;30.0000;CENTIMETER;50;2015-03-05;1;files/caterpillar_boots/attachment/akeneo.txt
+    code;type;axis;label-en_US;attachment;comment;description-en_US-mobile;destocking_date;handmade;length;length-unit;manufacturer;number_in_stock;price-EUR;price-USD;side_view;weather_conditions
+    caterpillar_boots;VARIANT;color,size;"Caterpillar boots";files/caterpillar_boots/attachment/akeneo.txt;"Best worn in winter";"Nice boots";2015-03-05;1;30.0000;CENTIMETER;Caterpillar;50;100.00;150.00;files/caterpillar_boots/side_view/akeneo.jpg;dry
     """
     And export directory of "footwear_variant_group_export" should contain the following media:
       | files/caterpillar_boots/side_view/akeneo.jpg  |
