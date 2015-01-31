@@ -283,7 +283,9 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
     /**
      * Get all the media of the product
      *
-     * @return ProductMedia[]
+     * @deprecated will be removed in 1.4
+     *
+     * @return ProductMediaInterface[]
      */
     public function getMedia();
 

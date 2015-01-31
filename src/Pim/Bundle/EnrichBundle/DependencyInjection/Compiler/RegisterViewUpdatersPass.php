@@ -34,7 +34,7 @@ class RegisterViewUpdatersPass implements CompilerPassInterface
      */
     public function __construct(ReferenceFactory $factory)
     {
-        $this->factory = $factory; //TODO :remove this factory
+        $this->factory = $factory;
     }
 
     /**
