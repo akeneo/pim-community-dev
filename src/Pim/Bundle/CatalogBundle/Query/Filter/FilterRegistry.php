@@ -60,8 +60,6 @@ class FilterRegistry implements FilterRegistryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: make this protected
      */
     public function getFieldFilter($field)
     {
@@ -76,8 +74,6 @@ class FilterRegistry implements FilterRegistryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: make this protected
      */
     public function getAttributeFilter(AttributeInterface $attribute)
     {

@@ -142,6 +142,13 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
     public function getOrderedGroups();
 
     /**
+     * Get the variant group of the product
+     *
+     * @return GroupInterface|null
+     */
+    public function getVariantGroup();
+
+    /**
      * Get a string with groups
      *
      * @return string
@@ -276,7 +283,9 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
     /**
      * Get all the media of the product
      *
-     * @return ProductMedia[]
+     * @deprecated will be removed in 1.4
+     *
+     * @return ProductMediaInterface[]
      */
     public function getMedia();
 

@@ -178,22 +178,33 @@ class MediaManager
     /**
      * Create a media and load file information
      *
-     * @param string $filename
+     * @param string  $filename
+     * @param boolean $isUploaded
      *
      * @return ProductMediaInterface
      *
      * @throws \InvalidArgumentException When file does not exist
      */
-    public function createFromFilename($filename)
+    public function createFromFilename($filename, $isUploaded = true)
     {
-        $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $filename;
-        if (!$this->filesystem->has($filename)) {
+        if ($isUploaded) {
+            $filePath = $this->uploadDirectory . DIRECTORY_SEPARATOR . $filename;
+        } else {
+            $filePath = $filename;
+        }
+
+        if ($isUploaded && !$this->filesystem->has($filename)) {
             throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $filePath));
         }
         $media = $this->factory->createMedia();
         $media->setOriginalFilename($filename);
         $media->setFilename($filename);
-        $media->setMimeType($this->filesystem->mimeType($filename));
+
+        if (!$isUploaded) {
+            $media->setFile(new File($filename));
+        } else {
+            $media->setMimeType($this->filesystem->mimeType($filename));
+        }
 
         return $media;
     }
@@ -223,18 +234,17 @@ class MediaManager
      *   - files/sku-004/insurance
      *
      * @param ProductMediaInterface $media
+     * @param string                $identifier Can be used to override the default identifier
      *
      * @return string
      */
-    public function getExportPath(ProductMediaInterface $media)
+    public function getExportPath(ProductMediaInterface $media, $identifier = null)
     {
         $value     = $media->getValue();
         $attribute = $value->getAttribute();
-        $target    = sprintf(
-            'files/%s/%s',
-            $value->getEntity()->getIdentifier(),
-            $attribute->getCode()
-        );
+
+        $identifier = null !== $identifier ? $identifier : $value->getEntity()->getIdentifier();
+        $target = sprintf('files/%s/%s', $identifier, $attribute->getCode());
 
         if ($attribute->isLocalizable()) {
             $target .= '/' . $value->getLocale();

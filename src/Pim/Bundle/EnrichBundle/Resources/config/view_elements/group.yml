@@ -1,7 +1,7 @@
 parameters:
-    pim_enrich.view_element.group.tab.product.template:  'PimEnrichBundle:Group:Tab/product.html.twig'
-    pim_enrich.view_element.group.tab.property.template: 'PimEnrichBundle:Group:Tab/property.html.twig'
-    pim_enrich.view_element.group.tab.history.template:  'PimEnrichBundle:Group:Tab/history.html.twig'
+    pim_enrich.view_element.group.tab.product.template:   'PimEnrichBundle:Group:Tab/product.html.twig'
+    pim_enrich.view_element.group.tab.property.template:  'PimEnrichBundle:Group:Tab/property.html.twig'
+    pim_enrich.view_element.group.tab.history.template:   'PimEnrichBundle:Group:Tab/history.html.twig'
 
 services:
     pim_enrich.view_element.group.tab.product:

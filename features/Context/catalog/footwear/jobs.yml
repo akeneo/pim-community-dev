@@ -82,6 +82,15 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    footwear_variant_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_variant_group_export
+        label:     Footwear variant group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
     footwear_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -120,3 +129,14 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    footwear_variant_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_variant_group_import
+        label:     Footwear variant group import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+            copyValues: true

@@ -13,9 +13,7 @@ use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
  */
 class CurrencyManager
 {
-    /**
-     * @var CurrencyRepositoryInterface $repository
-     */
+    /** @var CurrencyRepositoryInterface $repository */
     protected $repository;
 
     /**
@@ -59,11 +57,6 @@ class CurrencyManager
      */
     public function getActiveCodes()
     {
-        return array_map(
-            function ($value) {
-                return $value->getCode();
-            },
-            $this->getActiveCurrencies()
-        );
+        return $this->repository->getActivatedCurrencyCodes();
     }
 }

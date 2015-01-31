@@ -298,6 +298,47 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param array|string $data
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     *
+     * @Given /^a "([^"]*)" variant group$/
+     */
+    public function createVariantGroup($data)
+    {
+        if (is_string($data)) {
+            $data = ['code' => $data];
+        }
+
+        $variantGroup = $this->loadFixture('variant_groups', $data);
+        $this->saveVariantGroup($variantGroup);
+
+        return $variantGroup;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Group
+     */
+    protected function getVariantGroup($code)
+    {
+        $repository = $this->getContainer()->get('pim_catalog.repository.group');
+        $group      = $repository->findOneByCode($code);
+
+        return $group;
+    }
+
+    /**
+     * @param Group $group
+     */
+    protected function saveVariantGroup(Group $group)
+    {
+        $saver = $this->getContainer()->get('pim_catalog.saver.group');
+        $saver->save($group);
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following products?:$/
@@ -444,6 +485,35 @@ class FixturesContext extends RawMinkContext
             ];
 
             $this->createProduct($data);
+        }
+
+        $this->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following variant group values?:$/
+     */
+    public function theFollowingVariantGroupValues(TableNode $table)
+    {
+        $groups = [];
+
+        foreach ($table->getHash() as $row) {
+            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
+
+            $attributeCode = $row['attribute'];
+            if ($row['locale']) {
+                $attributeCode .= '-' . $row['locale'];
+            }
+            if ($row['scope']) {
+                $attributeCode .= '-' . $row['scope'];
+            }
+            $groups[$row['group']][$attributeCode] = $this->replacePlaceholders($row['value']);
+        }
+
+        foreach ($groups as $code => $data) {
+            $this->createVariantGroup(['code' => $code] + $data);
         }
 
         $this->flush();
@@ -680,12 +750,12 @@ class FixturesContext extends RawMinkContext
 
             if ($group->getType()->isVariant()) {
                 $attributes = [];
-                foreach ($group->getAttributes() as $attribute) {
+                foreach ($group->getAxisAttributes() as $attribute) {
                     $attributes[] = $attribute->getCode();
                 }
                 asort($attributes);
                 $attributes = implode(',', $attributes);
-                assertEquals($data['attributes'], $attributes);
+                assertEquals($data['axis'], $attributes);
             }
         }
     }
@@ -776,8 +846,8 @@ class FixturesContext extends RawMinkContext
             $label = $data['label'];
             $type = $data['type'];
 
-            $attributes = (!isset($data['attributes']) || $data['attributes'] == '')
-                ? [] : explode(', ', $data['attributes']);
+            $attributes = (!isset($data['axis']) || $data['axis'] == '')
+                ? [] : explode(', ', $data['axis']);
 
             $products = (isset($data['products'])) ? explode(', ', $data['products']) : [];
 

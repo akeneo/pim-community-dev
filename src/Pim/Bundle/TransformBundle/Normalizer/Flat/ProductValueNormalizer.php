@@ -119,6 +119,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     protected function getFieldValue($value)
     {
+        // TODO : should be extracted
         $suffix = '';
 
         if ($value->getAttribute()->isLocalizable()) {

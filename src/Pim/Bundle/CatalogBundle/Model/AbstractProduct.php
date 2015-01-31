@@ -422,13 +422,13 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValues()
     {
-        $_values = new ArrayCollection();
+        $values = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $_values[ProductValueKeyGenerator::getKey($value)] = $value;
+            $values[ProductValueKeyGenerator::getKey($value)] = $value;
         }
 
-        return $_values;
+        return $values;
     }
 
     /**
@@ -567,6 +567,11 @@ abstract class AbstractProduct implements ProductInterface
                 if ($group->getAttributes()->contains($attribute)) {
                     return false;
                 }
+
+                $template = $group->getProductTemplate();
+                if (null !== $template && $template->hasValueForAttribute($attribute)) {
+                    return false;
+                }
             }
         }
 
@@ -605,6 +610,23 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getVariantGroup()
+    {
+        $groups = $this->getGroups();
+
+        /** @var GroupInterface $group */
+        foreach ($groups as $group) {
+            if ($group->getType()->isVariant()) {
+                return $group;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -614,6 +636,8 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
      */
     public function getMedia()
     {

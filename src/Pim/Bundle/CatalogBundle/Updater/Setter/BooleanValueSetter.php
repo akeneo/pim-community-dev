@@ -52,7 +52,7 @@ class BooleanValueSetter extends AbstractValueSetter
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (!is_bool($data)) {
+        if (!is_bool($data) && $data !== '0' && $data !== '1' && $data !== 0 && $data !== 1) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean', gettype($data));
         }
     }
@@ -72,6 +72,7 @@ class BooleanValueSetter extends AbstractValueSetter
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
+        $data = (bool) $data;
         $value->setData($data);
     }
 }

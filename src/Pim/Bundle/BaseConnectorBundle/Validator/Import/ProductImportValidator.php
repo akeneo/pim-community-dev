@@ -77,6 +77,11 @@ class ProductImportValidator extends ImportValidator
             $errors[$data['sku']] = [[$e->getMessage()]];
         }
 
+        $groupsViolations = $this->validator->validate($entity, ['pim_catalog_variant_group']);
+        if ($groupsViolations->count()) {
+            $errors['groups'] = $this->getErrorArray($groupsViolations);
+        }
+
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute()) {
                 $violations = $this->validateProductValue($entity, $columnInfo);

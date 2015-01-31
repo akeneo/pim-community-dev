@@ -3,6 +3,7 @@ parameters:
     pim_catalog.saver.base_options_resolver.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver
     pim_catalog.saver.product.class:                  Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
     pim_catalog.saver.product_options_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver
+    pim_catalog.saver.group.class:                    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
 
 services:
     pim_catalog.saver.group_type:
@@ -25,6 +26,16 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.saver.product_options_resolver'
+
+    pim_catalog.saver.group:
+        class: %pim_catalog.saver.group.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.manager.product_template_media'
+            - '@pim_catalog.applier.product_template'
+            - '@pim_versioning.manager.version'
+            - '%pim_catalog.entity.product.class%'
 
     pim_catalog.saver.base_options_resolver:
         class: %pim_catalog.saver.base_options_resolver.class%

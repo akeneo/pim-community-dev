@@ -31,9 +31,9 @@ class RegisterViewElementsPass implements CompilerPassInterface
     /**
      * @param ReferenceFactory $factory
      */
-    public function __construct(ReferenceFactory $factory = null)
+    public function __construct(ReferenceFactory $factory)
     {
-        $this->factory = $factory ?: new ReferenceFactory();
+        $this->factory = $factory;
     }
 
     /**

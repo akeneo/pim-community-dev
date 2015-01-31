@@ -54,7 +54,7 @@ interface ProductBuilderInterface
      * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return ProductPriceInterface
+     * @return null|ProductPriceInterface
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency);
 
@@ -79,6 +79,15 @@ interface ProductBuilderInterface
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);
 
     /**
+     * Add missing prices to a product value
+     *
+     * @param ProductValueInterface $value
+     *
+     * @return ProductValueInterface
+     */
+    public function addMissingPrices(ProductValueInterface $value);
+
+    /**
      * Add a missing value to the product
      *
      * @param ProductInterface   $product
@@ -94,4 +103,15 @@ interface ProductBuilderInterface
         $locale = null,
         $scope = null
     );
+
+    /**
+     * Create a productValue
+     *
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
+     *
+     * @return ProductValueInterface
+     */
+    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null);
 }

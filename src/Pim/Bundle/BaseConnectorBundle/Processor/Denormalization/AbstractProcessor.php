@@ -1,12 +1,13 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\ArrayToObject;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -15,7 +16,11 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Abstract processor to transform array data to object
+ * Abstract processor to provide a way to denormalize array data to object by,
+ * - fetch an existing object or create it
+ * - denormalize item to update the object
+ * - validate the object
+ * - skip the object if it contains invalid data
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -37,24 +42,30 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var string */
     protected $class;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
-     * @param ValidatorInterface                    $validator    validator of the object
      * @param DenormalizerInterface                 $denormalizer denormalizer used to transform array to object
+     * @param ValidatorInterface                    $validator    validator of the object
+     * @param ObjectDetacherInterface               $detacher     object detacher
      * @param string                                $class        class of the object to instanciate in case if need
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
         $class
     ) {
         $this->repository = $repository;
         $this->denormalizer = $denormalizer;
         $this->validator = $validator;
+        $this->detacher = $detacher;
         $this->class = $class;
     }
 
@@ -101,6 +112,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param array                                 $data       the data that is currently processed
      *
      * @return object|null
+     *
      * @throws MissingIdentifierException in case the processed data do not allow to retrieve an object
      *                                    by its identifiers properly
      */
@@ -119,20 +131,34 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     }
 
     /**
-     * Sets an item as skipped and throws an invalid item exception.
+     * Detaches the object from the unit of work
+     *
+     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
+     * skipped items or we should use an explicit persist strategy
+     *
+     * @param mixed $object
+     */
+    protected function detachObject($object)
+    {
+        $this->detacher->detach($object);
+    }
+
+    /**
+     * Sets an item as skipped and throws an invalid item exception
      *
      * @param array      $item
-     * @param \Exception $e
+     * @param \Exception $previousException
+     * @param string     $message
      *
      * @throws InvalidItemException
      */
-    protected function handleExceptionOnItem(array $item, \Exception $e)
+    protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
 
-        throw new InvalidItemException($e->getMessage(), $item);
+        throw new InvalidItemException($message, $item, [], 0, $previousException);
     }
 
     /**
@@ -140,11 +166,15 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      *
      * @param array                            $item
      * @param ConstraintViolationListInterface $violations
+     * @param \Exception                       $previousException
      *
      * @throws InvalidItemException
      */
-    protected function handleConstraintViolationsOnItem(array $item, ConstraintViolationListInterface $violations)
-    {
+    protected function skipItemWithConstraintViolations(
+        array $item,
+        ConstraintViolationListInterface $violations,
+        \Exception $previousException = null
+    ) {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
         }
@@ -152,9 +182,22 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
         $errors = [];
         /** @var ConstraintViolationInterface $violation */
         foreach ($violations as $violation) {
-            $errors[] = sprintf("%s: %s\n", $violation->getPropertyPath(), $violation->getMessage());
+            // TODO re-format the message, property path doesn't exist for class constraint
+            // for instance cf VariantGroupAxis
+            $invalidValue = $violation->getInvalidValue();
+            if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
+                $invalidValue = (string) $invalidValue;
+            } elseif (is_object($invalidValue)) {
+                $invalidValue = get_class($invalidValue);
+            }
+            $errors[] = sprintf(
+                "%s: %s: %s\n",
+                $violation->getPropertyPath(),
+                $violation->getMessage(),
+                $invalidValue
+            );
         }
 
-        throw new InvalidItemException(implode("\n", $errors), $item);
+        throw new InvalidItemException(implode("\n", $errors), $item, [], 0, $previousException);
     }
 }

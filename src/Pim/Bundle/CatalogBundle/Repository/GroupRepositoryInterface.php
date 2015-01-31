@@ -54,4 +54,25 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * {@inheritdoc}
      */
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array());
+
+    /**
+     * Get all non variant groups
+     *
+     * @return array
+     */
+    public function getAllGroupsExceptVariant();
+
+    /**
+     * Get all variant groups
+     *
+     * @return array
+     */
+    public function getAllVariantGroups();
+
+    /**
+     * Get all variant group ids
+     *
+     * @return array
+     */
+    public function getAllVariantGroupIds();
 }

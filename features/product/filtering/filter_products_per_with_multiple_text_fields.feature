@@ -28,7 +28,7 @@ Feature: Filter products
       | POST-2 | furniture | red color      |       |
       | POST-3 | furniture | black color    |       |
     And the following product groups:
-      | code   | label  | attributes        | type    | products                           |
+      | code   | label  | axis              | type    | products                           |
       | MUG    | Mug    | name, description | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5  |
       | POSTIT | Postit | description       | X_SELL  | POST-1, POST-2, POST-3             |
       | EMPTY  | Empty  |                   | X_SELL  |                                    |

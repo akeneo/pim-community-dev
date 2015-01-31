@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,29 +25,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Group implements GroupInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer $id */
     protected $id;
 
-    /**
-     * @var string $code
-     */
+    /** @var string $code */
     protected $code;
 
-    /**
-     * @var GroupTypeInterface
-     */
+    /** @var GroupTypeInterface */
     protected $type;
 
-    /**
-     * @var ArrayCollection $products
-     */
+    /**  @var ArrayCollection $products */
     protected $products;
 
-    /**
-     * @var ArrayCollection $attributes
-     */
+    /**  @var ArrayCollection $attributes */
     protected $attributes;
 
     /**
@@ -57,10 +48,11 @@ class Group implements GroupInterface
      */
     protected $locale;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     */
+    /**  @var \Doctrine\Common\Collections\ArrayCollection $translations */
     protected $translations;
+
+    /**  @var ProductTemplateInterface */
+    protected $productTemplate;
 
     /**
      * Constructor
@@ -253,7 +245,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttribute(AttributeInterface $attribute)
+    public function addAxisAttribute(AttributeInterface $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes[] = $attribute;
@@ -265,7 +257,15 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAttribute(AttributeInterface $attribute)
+    public function addAttribute(AttributeInterface $attribute)
+    {
+        return $this->addAxisAttribute($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAxisAttribute(AttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
 
@@ -275,9 +275,25 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes()
+    public function removeAttribute(AttributeInterface $attribute)
+    {
+        return $this->removeAxisAttribute($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAxisAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributes()
+    {
+        return $this->getAxisAttributes();
     }
 
     /**
@@ -296,11 +312,26 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributes(array $attributes = array())
+    public function setAxisAttributes(array $newAttributes = array())
     {
-        $this->attributes = $attributes;
+        foreach ($this->attributes as $attribute) {
+            if (!in_array($attribute, $newAttributes)) {
+                $this->removeAxisAttribute($attribute);
+            }
+        }
+        foreach ($newAttributes as $attribute) {
+            $this->addAxisAttribute($attribute);
+        }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributes(array $attributes = array())
+    {
+        return $this->setAxisAttributes($attributes);
     }
 
     /**
@@ -328,5 +359,23 @@ class Group implements GroupInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductTemplate()
+    {
+        return $this->productTemplate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductTemplate(ProductTemplateInterface $productTemplate)
+    {
+        $this->productTemplate = $productTemplate;
+
+        return $this;
     }
 }

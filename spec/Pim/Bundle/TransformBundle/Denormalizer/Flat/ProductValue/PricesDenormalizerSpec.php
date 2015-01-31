@@ -22,15 +22,81 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_denormalizes_a_price_collection(ProductValueInterface $priceValue, $productBuilder, ProductPriceInterface $productPrice)
-    {
+    function it_denormalizes_a_price_collection_from_many_fields(
+        ProductValueInterface $priceValue,
+        $productBuilder,
+        ProductPriceInterface $productPriceEur,
+        ProductPriceInterface $productPriceUsd
+    ) {
+        $productBuilder->addPriceForCurrency($priceValue, 'EUR')
+            ->willReturn($productPriceEur)
+            ->shouldBeCalled();
+        $productPriceEur->setCurrency('EUR')
+            ->shouldBeCalled();
+        $productPriceEur->setData('100')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceEur)
+            ->shouldBeCalled();
+
+        $productBuilder->addPriceForCurrency($priceValue, 'USD')
+            ->willReturn($productPriceUsd)
+            ->shouldBeCalled();
+        $productPriceUsd->setCurrency('USD')
+            ->shouldBeCalled();
+        $productPriceUsd->setData('25')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceUsd)
+            ->shouldBeCalled();
+
+        $priceValue->getPrices()->shouldBeCalled();
+
         $context = ['value' => $priceValue, 'price_currency' => 'EUR'];
+        $this->denormalize('100', 'className', null, $context);
 
-        $productBuilder->addPriceForCurrency($priceValue, 'EUR')->willReturn($productPrice);
-        $productPrice->setCurrency('EUR')->shouldBeCalled();
-        $productPrice->setData('100')->shouldBeCalled();
+        $context = ['value' => $priceValue, 'price_currency' => 'USD'];
+        $this->denormalize('25', 'className', null, $context);
+    }
 
-        $this->denormalize('100', 'className', null, $context)->shouldReturn($productPrice);
+    function it_denormalizes_a_price_collection_from_a_single_field(
+        ProductValueInterface $priceValue,
+        $productBuilder,
+        ProductPriceInterface $productPriceEur,
+        ProductPriceInterface $productPriceUsd
+    ) {
+        $productBuilder->addPriceForCurrency($priceValue, 'EUR')
+            ->willReturn($productPriceEur)
+            ->shouldBeCalled();
+        $productPriceEur->setCurrency('EUR')
+            ->shouldBeCalled();
+        $productPriceEur->setData('120.00')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceEur)
+            ->shouldBeCalled();
+
+        $productBuilder->addPriceForCurrency($priceValue, 'USD')
+            ->willReturn($productPriceUsd)
+            ->shouldBeCalled();
+        $productPriceUsd->setCurrency('USD')
+            ->shouldBeCalled();
+        $productPriceUsd->setData('145.40')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceUsd)
+            ->shouldBeCalled();
+
+        $productBuilder->addPriceForCurrency($priceValue, 'CHF')
+            ->willReturn($productPriceUsd)
+            ->shouldBeCalled();
+        $productPriceUsd->setCurrency('CHF')
+            ->shouldBeCalled();
+        $productPriceUsd->setData('100')
+            ->shouldBeCalled();
+        $priceValue->addPrice($productPriceUsd)
+            ->shouldBeCalled();
+
+        $priceValue->getPrices()->shouldBeCalled();
+
+        $context = ['value' => $priceValue, 'price_currency' => 'WillNotBeUsed'];
+        $this->denormalize('120.00 EUR, 145.40 USD, 100 CHF', 'className', null, $context);
     }
 
     function it_returns_null_if_the_data_is_empty(ProductValueInterface $productValueInterface)
