@@ -15,9 +15,9 @@ Feature: Ensure variant group values priority when execute a rule
       | group | attribute | value                   | locale | scope  |
       | vboot | name      | Name from variant group | en_US  |        |
     And the following product:
-      | sku       | groups |
-      | boot      | vboot  |
-      | otherboot |        |
+      | sku       | groups | color | size |
+      | boot      | vboot  | black | 40   |
+      | otherboot |        |       |      |
     And the following product values:
       | product | attribute | value                   | locale | scope  |
       | boot    | name      | Name from variant group | en_US  |        |
