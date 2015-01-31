@@ -168,6 +168,8 @@ class GroupManager implements RemoverInterface
     /**
      * Returns an array containing a limited number of product groups, and the total number of products
      *
+     * TODO: will not work with MONGODB install, move this method in a repository, cf PIM-3730
+     *
      * @param GroupInterface $group
      * @param integer        $maxResults
      *
