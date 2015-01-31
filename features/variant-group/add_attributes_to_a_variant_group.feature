@@ -38,8 +38,8 @@ Feature: Add attributes to a variant group
   @javascript
   Scenario: Update values of products in a variant group only after saving the group (not immediately after adding a new attribute)
     Given the following product:
-      | sku  | groups            | name-en_US |
-      | boot | caterpillar_boots | foo        |
+      | sku  | groups            | name-en_US | color | size |
+      | boot | caterpillar_boots | foo        | black | 39   |
     And I am on the "caterpillar_boots" variant group page
     Then the english Name of "boot" should be "foo"
     When I visit the "Attributes" tab
@@ -51,8 +51,8 @@ Feature: Add attributes to a variant group
   @javascript
   Scenario: Update products when values are changed on the variant group page
     Given the following products:
-      | sku  | groups            |
-      | boot | caterpillar_boots |
+      | sku  | groups            | color | size |
+      | boot | caterpillar_boots | black | 39   |
     And I am on the "caterpillar_boots" variant group page
     When I visit the "Attributes" tab
     And I add available attribute Name
