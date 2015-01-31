@@ -188,7 +188,6 @@ class ProductTransformer extends EntityTransformer
      */
     protected function setProductValuesFromVariantGroup(ProductInterface $product)
     {
-        // TODO only update when attached to a new VG ?!
         $variantGroup = $product->getVariantGroup();
         if ($variantGroup !== null && $variantGroup->getProductTemplate() !== null) {
             $template = $variantGroup->getProductTemplate();

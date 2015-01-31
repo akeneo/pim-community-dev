@@ -611,7 +611,6 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * {@inheritdoc}
-     * TODO: This method should be reworked before merge on master
      */
     public function getVariantGroup()
     {
@@ -620,7 +619,6 @@ abstract class AbstractProduct implements ProductInterface
         /** @var GroupInterface $group */
         foreach ($groups as $group) {
             if ($group->getType()->isVariant()) {
-                // TODO : will have only one after PIM-2448, add short cut getVariantGroup() ?
                 return $group;
             }
         }

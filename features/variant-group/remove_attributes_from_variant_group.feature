@@ -7,8 +7,8 @@ Feature: Remove an attribute from a variant group
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku  | groups            | comment |
-      | boot | caterpillar_boots | foo     |
+      | sku  | groups            | comment | color | size |
+      | boot | caterpillar_boots | foo     | black | 40   |
     And I am logged in as "Julia"
 
   Scenario: Successfully remove an attribute from a variant group

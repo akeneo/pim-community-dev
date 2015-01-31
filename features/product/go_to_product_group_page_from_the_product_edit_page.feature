@@ -7,9 +7,9 @@ Feature: Go to product group page from the product edit page
   Scenario: Successfully display a readonly form for a product in a variant group
     Given the "footwear" catalog configuration
     And the following products:
-      | sku        | groups            |
-      | big_boot   | caterpillar_boots |
-      | small_boot | similar_boots     |
+      | sku        | color | size | groups            |
+      | big_boot   | black | 40   | caterpillar_boots |
+      | small_boot |       |      | similar_boots     |
     And I am logged in as "Julia"
     When I am on the "big_boot" product page
     And I press the "Caterpillar boots" button

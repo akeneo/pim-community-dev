@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -70,14 +70,13 @@ class QueryProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param mixed $products
-     * @param int   $maxRows
+     * @param CursorInterface $products
+     * @param int             $maxRows
      *
      * @return \Symfony\Component\Console\Helper\HelperInterface
      */
-    protected function buildTable($products, $maxRows)
+    protected function buildTable(CursorInterface $products, $maxRows)
     {
-        //TODO typehint the $products parameter
         $helperSet = $this->getHelperSet();
         $rows = [];
         $ind = 0;
@@ -99,7 +98,7 @@ class QueryProductCommand extends ContainerAwareCommand
     /**
      * @param array $filters
      *
-     * @return ProductInterface[]
+     * @return CursorInterface
      */
     protected function getProducts(array $filters)
     {

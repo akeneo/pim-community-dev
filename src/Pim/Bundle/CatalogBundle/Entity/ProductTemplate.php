@@ -112,7 +112,7 @@ class ProductTemplate implements ProductTemplateInterface
 
     /**
      * Get attributes of the product template
-     * TODO: this method could be optimized by storing the attributes appart in db
+     *
      * @return array
      */
     public function getAttributeCodes()

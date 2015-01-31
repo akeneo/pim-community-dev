@@ -121,4 +121,4 @@ Feature: Import groups
     And I wait for the "footwear_group_import" job to finish
     Then I should see "Read 1"
     And I should see "skipped 1"
-    And I should see "Group \"STANDARD_WITH_AXIS\" cannot be defined with axis (only for variant group)"
+    And I should see "Group \"STANDARD_WITH_AXIS\", which is not variant, can not be defined with axes"

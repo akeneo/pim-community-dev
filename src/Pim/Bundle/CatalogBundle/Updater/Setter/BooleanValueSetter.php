@@ -52,7 +52,6 @@ class BooleanValueSetter extends AbstractValueSetter
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        // TODO : re-work the rule engine, no need to explicitly cast
         if (!is_bool($data) && $data !== '0' && $data !== '1' && $data !== 0 && $data !== 1) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean', gettype($data));
         }

@@ -9,7 +9,7 @@ Feature: Disable attribute fields in mass edit if it comes from a variant group
     And the following attributes:
       | code        | label       | type         | scopable | localizable | metric_family | default_metric_unit |
       | options     | Options     | multiselect  | yes      | no          |               |                     |
-      | color       | Color       | simpleselect | no       | yes         |               |                     |
+      | color       | Color       | simpleselect | no       | no          |               |                     |
       | name        | Name        | text         | no       | yes         |               |                     |
       | description | Description | textarea     | no       | no          |               |                     |
       | dimension   | Dimension   | number       | yes      | yes         |               |                     |
@@ -29,8 +29,8 @@ Feature: Disable attribute fields in mass edit if it comes from a variant group
       | tshirt_akeneo | price-EUR   | 10.0             |        |           |
       | tshirt_akeneo | length      | 15.0 CENTIMETER  |        |           |
     And the following products:
-      | sku  | color-en_US | groups        |
-      | sku1 | red         | tshirt_akeneo |
+      | sku  | color | groups        |
+      | sku1 | red   | tshirt_akeneo |
     And I am logged in as "Julia"
     And I am on the products page
     And I mass-edit products sku1
