@@ -3,10 +3,12 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
@@ -19,9 +21,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_media(
         ChannelInterface $channel,
         $channelManager,
-        ProductInterface $item,
+        ProductInterface $product,
         ProductMediaInterface $media1,
         ProductMediaInterface $media2,
+        ProductValueInterface $value1,
+        ProductValueInterface $value2,
+        AttributeInterface $attribute,
         $serializer
     ) {
         $media1->getFilename()->willReturn('media_name');
@@ -30,38 +35,43 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $media2->getFilename()->willReturn('media_name');
         $media2->getOriginalFilename()->willReturn('media_original_name');
 
-        $item->getMedia()->willReturn([$media1, $media2]);
+        $value1->getAttribute()->willReturn($attribute);
+        $value1->getData()->willReturn($media1);
+        $value2->getAttribute()->willReturn($attribute);
+        $value2->getData()->willReturn($media2);
+        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $product->getValues()->willReturn([$value1, $value2]);
 
         $serializer
             ->normalize([$media1, $media2], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
             ->willReturn(['normalized_media1', 'normalized_media2']);
 
         $serializer
-            ->normalize($item, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
-        $this->process($item)->shouldReturn(['media' => ['normalized_media1', 'normalized_media2'], 'product' => ['normalized_product']]);
+        $this->process($product)->shouldReturn(['media' => ['normalized_media1', 'normalized_media2'], 'product' => ['normalized_product']]);
     }
 
     function it_returns_flat_data_without_media(
         ChannelInterface $channel,
         ChannelManager $channelManager,
-        ProductInterface $item,
+        ProductInterface $product,
         Serializer $serializer
     ) {
-        $item->getMedia()->willReturn([]);
+        $product->getValues()->willReturn([]);
 
         $serializer
-            ->normalize($item, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
-        $this->process($item)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
+        $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
 
 }

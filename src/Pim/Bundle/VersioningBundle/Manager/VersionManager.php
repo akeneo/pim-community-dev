@@ -120,6 +120,7 @@ class VersionManager
         if (isset($this->context[$fqcn])) {
             return $this->context[$fqcn];
         }
+
         return $this->context['default'];
     }
 

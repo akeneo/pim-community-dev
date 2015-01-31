@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\View\ViewUpdater;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;

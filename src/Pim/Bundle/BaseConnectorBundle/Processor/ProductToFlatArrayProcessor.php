@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -58,13 +59,14 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($product)
     {
         $data['media'] = [];
-        if (count($item->getMedia()) > 0) { // TODO depreciate the getMedia and rename this !!
+        $productMedias = $this->getProductMedias($product);
+        if (count($productMedias) > 0) {
             try {
                 $data['media'] = $this->serializer->normalize(
-                    $item->getMedia(),
+                    $productMedias,
                     'flat',
                     ['field_name' => 'media', 'prepare_copy' => true]
                 );
@@ -72,14 +74,14 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
                 throw new InvalidItemException(
                     $e->getMessage(),
                     [
-                        'item'            => $item->getOriginalProduct()->getIdentifier()->getData(),
+                        'item'            => $product->getOriginalProduct()->getIdentifier()->getData(),
                         'uploadDirectory' => $this->uploadDirectory,
                     ]
                 );
             }
         }
 
-        $data['product'] = $this->serializer->normalize($item, 'flat', $this->getNormalizerContext());
+        $data['product'] = $this->serializer->normalize($product, 'flat', $this->getNormalizerContext());
 
         return $data;
     }
@@ -156,5 +158,27 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $channel = $this->channelManager->getChannelByCode($channelCode);
 
         return $channel->getLocaleCodes();
+    }
+
+    /**
+     * Fetch product medias
+     *
+     * @param ProductInterface $product
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductMediaInterface[]
+     */
+    protected function getProductMedias(ProductInterface $product)
+    {
+        $media = array();
+        foreach ($product->getValues() as $value) {
+            if (in_array(
+                $value->getAttribute()->getAttributeType(),
+                array('pim_catalog_image', 'pim_catalog_file')
+            )) {
+                $media[] = $value->getData();
+            }
+        }
+
+        return $media;
     }
 }
