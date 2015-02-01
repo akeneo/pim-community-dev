@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 
 class GroupsFilterSpec extends ObjectBehavior
 {

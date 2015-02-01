@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
  * Product builder
@@ -40,15 +40,15 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * Constructor
      *
-     * @param ChannelRepository  $channelRepository  Channel repository
-     * @param LocaleRepository   $localeRepository   Locale repository
-     * @param CurrencyRepository $currencyRepository Currency repository
-     * @param array              $classes            Product, product value and price classes
+     * @param ChannelRepositoryInterface  $channelRepository  Channel repository
+     * @param LocaleRepositoryInterface   $localeRepository   Locale repository
+     * @param CurrencyRepositoryInterface $currencyRepository Currency repository
+     * @param array                       $classes            Product, product value and price classes
      */
     public function __construct(
-        ChannelRepository $channelRepository,
-        LocaleRepository $localeRepository,
-        CurrencyRepository $currencyRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        CurrencyRepositoryInterface $currencyRepository,
         array $classes
     ) {
         $this->channelRepository  = $channelRepository;
