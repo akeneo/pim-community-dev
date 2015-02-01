@@ -51,7 +51,7 @@ class ProductValueFormFactory
      *
      * @return FormInterface
      */
-    public function buildProductValueForm(ProductValueInterface $value, array $context)
+    public function createProductValueForm(ProductValueInterface $value, array $context)
     {
         $attributeTypeAlias = $value->getAttribute()->getAttributeType();
         $attributeType = $this->attTypeRegistry->get($attributeTypeAlias);

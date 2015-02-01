@@ -40,7 +40,7 @@ class AddProductValueFieldSubscriberSpec extends ObjectBehavior
 
         $form->getRoot()->willReturn($rootForm);
         $rootForm->getName()->willReturn('pim_catalog_edit');
-        $factory->buildProductValueForm($value, ['root_form_name' => 'pim_catalog_edit'])->willReturn($field);
+        $factory->createProductValueForm($value, ['root_form_name' => 'pim_catalog_edit'])->willReturn($field);
         $form->add($field)->shouldBeCalled();
 
         $this->preSetData($event);
@@ -54,6 +54,6 @@ class AddProductValueFieldSubscriberSpec extends ObjectBehavior
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(null);
 
-        $factory->buildProductValueForm()->shouldNotBeCalled();
+        $factory->createProductValueForm()->shouldNotBeCalled();
     }
 }
