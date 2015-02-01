@@ -61,7 +61,6 @@ class RuleDefinitionProcessor extends AbstractProcessor
 
         $violations = $this->validator->validate($rule);
         if ($violations->count()) {
-            // TODO detach ????
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
@@ -82,7 +81,6 @@ class RuleDefinitionProcessor extends AbstractProcessor
             $rule = $this->denormalizer
                 ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
         } catch (\LogicException $e) {
-            $this->detachObject($definition);
             $this->skipItemWithMessage($item, $e->getMessage());
         }
 
