@@ -404,7 +404,11 @@ class ProductRepository extends EntityRepository implements
             'WHERE gt.code = "VARIANT" ' .
             'AND g.id != :groupId';
 
-        $sql = sprintf('SELECT * FROM (%s) as p WHERE p.product_id NOT IN (%s);', $elligibleProductsSQL, $alreadyInGroupSQL);
+        $sql = sprintf(
+            'SELECT * FROM (%s) as p WHERE p.product_id NOT IN (%s);',
+            $elligibleProductsSQL,
+            $alreadyInGroupSQL
+        );
         $sql = QueryBuilderUtility::prepareDBALQuery($this->_em, $this->_entityName, $sql);
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);

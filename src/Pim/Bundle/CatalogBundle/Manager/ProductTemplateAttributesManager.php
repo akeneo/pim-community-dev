@@ -69,7 +69,7 @@ class ProductTemplateAttributesManager
      */
     public function getNonEligibleAttributes(GroupInterface $group)
     {
-        $attributes = $group->getAxisAttributes()->toArray();;
+        $attributes = $group->getAxisAttributes()->toArray();
 
         $template = $group->getProductTemplate();
         if (null !== $template) {

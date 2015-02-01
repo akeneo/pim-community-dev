@@ -50,7 +50,6 @@ class PricesDenormalizer extends AbstractValueDenormalizer
             $this->addPriceForCurrency($value, $price['data'], $price['currency']);
         }
 
-        // TODO : apply this change to the 1.0.x
         return $value->getPrices();
     }
 
