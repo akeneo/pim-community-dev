@@ -185,8 +185,7 @@ class VariantGroupAttributeController
         return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes,
-            // TODO: this key is really not well named, it filters attributes
-            ['attributes' => $this->templateBuilder->getNonEligibleAttributes($group)]
+            ['excluded_attributes' => $this->templateBuilder->getNonEligibleAttributes($group)]
         );
     }
 

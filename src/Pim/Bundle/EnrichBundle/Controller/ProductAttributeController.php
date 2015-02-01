@@ -171,7 +171,7 @@ class ProductAttributeController
         return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('attributes' => $attributes)
+            array('excluded_attributes' => $attributes)
         );
     }
 

@@ -175,8 +175,7 @@ class VariantGroupController extends GroupController
         return $this->createForm(
             'pim_available_attributes',
             new AvailableAttributes(),
-            // TODO: this key is really not well named...
-            ['attributes' => $this->templateBuilder->getNonEligibleAttributes($group)]
+            ['excluded_attributes' => $this->templateBuilder->getNonEligibleAttributes($group)]
         );
     }
 }
