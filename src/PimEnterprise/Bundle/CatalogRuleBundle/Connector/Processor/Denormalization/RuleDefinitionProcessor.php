@@ -82,7 +82,7 @@ class RuleDefinitionProcessor extends AbstractProcessor
             $rule = $this->denormalizer
                 ->denormalize($item, $this->ruleClass, null, ['definitionObject' => $definition]);
         } catch (\LogicException $e) {
-            // TODO detach ????
+            $this->detachObject($definition);
             $this->skipItemWithMessage($item, $e->getMessage());
         }
 
