@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter;
@@ -18,7 +18,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
 {
     function let(
         ObjectRepository $valueRepository,
-        ReferableEntityRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
         PresenterInterface $attributePresenter,
@@ -64,7 +64,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\AttributeInterface $attribute,
         Model\ProductValueInterface $value
     ) {
-        $attributeRepository->findByReference('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
 
         $attributePresenter->supports($attribute, ['__context__' => ['attribute' => 'description']])->willReturn(true);
         $attributePresenter->present($attribute, ['__context__' => ['attribute' => 'description']])->willReturn('Name');
