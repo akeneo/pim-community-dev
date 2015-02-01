@@ -59,6 +59,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
             $this->userContext->getUser(),
             Attributes::VIEW_ATTRIBUTES
         );
+        $excludedAttributeIds = array_unique(array_merge($options['excluded_attributes'], $revokedAttributeIds));
 
         $builder->add(
             'attributes',
@@ -66,7 +67,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
             [
                 'repository' => $this->attributeRepository,
                 'repository_options' => [
-                    'excluded_attribute_ids' => array_unique(array_merge($options['attributes'], $revokedAttributeIds)),
+                    'excluded_attribute_ids' => $excludedAttributeIds,
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                     'default_group_label'    => $this->translator->trans(
                         'Other',
