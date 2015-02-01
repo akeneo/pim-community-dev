@@ -25,7 +25,8 @@ interface FamilyRepositoryInterface extends
      * @param mixed   $values
      *
      * @return null
-     * @TODO Move this code
+     *
+     * @deprecated will be removed in 1.4
      */
     public function applyMassActionParameters($qb, $inset, $values);
 

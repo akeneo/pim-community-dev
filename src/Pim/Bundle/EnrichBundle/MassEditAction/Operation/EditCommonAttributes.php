@@ -299,16 +299,17 @@ class EditCommonAttributes extends ProductMassEditOperation
         $messages = [];
 
         $variantAttributeCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
+        $rootMessageKey = 'pim_enrich.mass_edit_action.edit-common-attributes';
         if (count($variantAttributeCodes) > 0) {
             $messages[] = [
-                'key'     => 'pim_enrich.mass_edit_action.edit-common-attributes.truncated_by_variant_attribute.warning',
+                'key'     => $rootMessageKey.'.truncated_by_variant_attribute.warning',
                 'options' => ['%attributes%' => implode(', ', $variantAttributeCodes)]
             ];
         }
 
         if (count($this->getCommonAttributes()) < 1) {
             $messages[] = [
-                'key' => 'pim_enrich.mass_edit_action.edit-common-attributes.no_attribute.warning',
+                'key' => $rootMessageKey.'.no_attribute.warning',
                 'options' => []
             ];
         }
