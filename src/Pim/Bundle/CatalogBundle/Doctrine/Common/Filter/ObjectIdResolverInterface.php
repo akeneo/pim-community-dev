@@ -1,11 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common;
+namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 /**
  * Object id resolver interface
- *
- * TODO: move it to StorageUtilsBundle
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

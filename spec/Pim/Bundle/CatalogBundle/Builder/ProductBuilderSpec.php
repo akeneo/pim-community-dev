@@ -2,9 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -12,18 +9,21 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 
 class ProductBuilderSpec extends ObjectBehavior
 {
-    const PRODUCT_CLASS   = 'Pim\Bundle\CatalogBundle\Model\Product';
-    const VALUE_CLASS     = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
-    const PRICE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
+    const PRODUCT_CLASS = 'Pim\Bundle\CatalogBundle\Model\Product';
+    const VALUE_CLASS   = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
+    const PRICE_CLASS   = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
 
     function let(
-        ChannelRepository $channelRepository,
-        LocaleRepository $localeRepository,
-        CurrencyRepository $currencyRepository
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        CurrencyRepositoryInterface $currencyRepository
     ) {
         $entityConfig = array(
             'product' => self::PRODUCT_CLASS,

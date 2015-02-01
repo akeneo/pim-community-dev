@@ -1,4 +1,5 @@
 parameters:
+    # @deprecated: will ne removed in 1.4
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
 
 services:

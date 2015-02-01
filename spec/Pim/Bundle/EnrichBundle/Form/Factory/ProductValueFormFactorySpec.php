@@ -22,7 +22,7 @@ class ProductValueFormFactorySpec extends ObjectBehavior
         $this->beConstructedWith($formFactory, $attributeTypeRegistry, $dispatcher);
     }
 
-    function it_builds_product_value_form(
+    function it_creates_product_value_form(
         FormInterface $form,
         ProductValueInterface $value,
         AttributeInterface $sku,
@@ -45,6 +45,6 @@ class ProductValueFormFactorySpec extends ObjectBehavior
 
         $formFactory->createNamed(Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
 
-        $this->buildProductValueForm($value, ['root_form_name' => 'pim_product_edit']);
+        $this->createProductValueForm($value, ['root_form_name' => 'pim_product_edit']);
     }
 }
