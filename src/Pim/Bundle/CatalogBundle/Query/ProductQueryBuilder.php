@@ -142,7 +142,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
 
-        //TODO: make this transparent by adding it the sorter registry
         if ($attribute !== null) {
             $sorter = $this->sorterRegistry->getAttributeSorter($attribute);
         } else {

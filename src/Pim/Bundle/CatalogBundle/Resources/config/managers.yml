@@ -15,8 +15,9 @@ parameters:
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
     pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
-    pim_catalog.manager.product_template_media.class:      Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
-    pim_catalog.applier.product_template.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
+    pim_catalog.manager.product_template_media.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
+    pim_catalog.applier.product_template.class:          Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
+    pim_catalog.resolver.variant_group_attributes.class: Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver
 
 services:
     # Managers
@@ -154,3 +155,8 @@ services:
             - '@pim_validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_catalog.saver.product'
+
+    pim_catalog.resolver.variant_group_attributes:
+        class: %pim_catalog.resolver.variant_group_attributes.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'

@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
+use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -45,6 +46,9 @@ class VariantGroupAttributeController
     /** @var ProductTemplateBuilderInterface */
     protected $templateBuilder;
 
+    /** @var VariantGroupAttributesResolver */
+    protected $groupAttributesResolver;
+
     /**
      * @param RouterInterface                 $router
      * @param FormFactoryInterface            $formFactory
@@ -52,6 +56,7 @@ class VariantGroupAttributeController
      * @param SaverInterface                  $groupSaver
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductTemplateBuilderInterface $templateBuilder
+     * @param VariantGroupAttributesResolver  $groupAttributesResolver
      */
     public function __construct(
         RouterInterface $router,
@@ -59,7 +64,8 @@ class VariantGroupAttributeController
         GroupRepositoryInterface $groupRepository,
         SaverInterface $groupSaver,
         AttributeRepositoryInterface $attributeRepository,
-        ProductTemplateBuilderInterface $templateBuilder
+        ProductTemplateBuilderInterface $templateBuilder,
+        VariantGroupAttributesResolver $groupAttributesResolver
     ) {
         $this->router              = $router;
         $this->formFactory         = $formFactory;
@@ -67,6 +73,7 @@ class VariantGroupAttributeController
         $this->groupSaver          = $groupSaver;
         $this->attributeRepository = $attributeRepository;
         $this->templateBuilder     = $templateBuilder;
+        $this->groupAttributesResolver = $groupAttributesResolver;
     }
 
     /**
@@ -185,7 +192,7 @@ class VariantGroupAttributeController
         return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes,
-            ['excluded_attributes' => $this->templateBuilder->getNonEligibleAttributes($group)]
+            ['excluded_attributes' => $this->groupAttributesResolver->getNonEligibleAttributes($group)]
         );
     }
 

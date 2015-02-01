@@ -3,10 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -28,9 +26,6 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     /** @var ProductBuilder */
     protected $productBuilder;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var string */
     protected $productTemplateClass;
 
@@ -38,25 +33,22 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     protected $productClass;
 
     /**
-     * @param NormalizerInterface          $normalizer
-     * @param DenormalizerInterface        $denormalizer
-     * @param ProductBuilder               $productBuilder
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param string                       $productTemplateClass
-     * @param string                       $productClass
+     * @param NormalizerInterface   $normalizer
+     * @param DenormalizerInterface $denormalizer
+     * @param ProductBuilder        $productBuilder
+     * @param string                $productTemplateClass
+     * @param string                $productClass
      */
     public function __construct(
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
         ProductBuilder $productBuilder,
-        AttributeRepositoryInterface $attributeRepository,
         $productTemplateClass,
         $productClass
     ) {
         $this->normalizer           = $normalizer;
         $this->denormalizer         = $denormalizer;
         $this->productBuilder       = $productBuilder;
-        $this->attributeRepository  = $attributeRepository;
         $this->productTemplateClass = $productTemplateClass;
         $this->productClass         = $productClass;
     }
@@ -89,30 +81,6 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
         unset($valuesData[$attribute->getCode()]);
 
         $template->setValuesData($valuesData);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNonEligibleAttributes(GroupInterface $group)
-    {
-        $attributes = $group->getAxisAttributes()->toArray();
-
-        $template = $group->getProductTemplate();
-        if (null !== $template) {
-            foreach (array_keys($template->getValuesData()) as $attributeCode) {
-                $attributes[] = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            }
-        }
-
-        $uniqueAttributes = $this->attributeRepository->findBy(['unique' => true]);
-        foreach ($uniqueAttributes as $attribute) {
-            if (!in_array($attribute, $attributes)) {
-                $attributes[] = $attribute;
-            }
-        }
-
-        return $attributes;
     }
 
     /**

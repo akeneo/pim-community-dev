@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 /**
@@ -37,15 +36,4 @@ interface ProductTemplateBuilderInterface
      * @param AttributeInterface       $attribute
      */
     public function removeAttribute(ProductTemplateInterface $template, AttributeInterface $attribute);
-
-    /**
-     * Get non eligible attributes to a product template
-     *
-     * TODO: move this out of template builder, a template can be used without been related to a group
-     *
-     * @param GroupInterface $group
-     *
-     * @return AttributeInterface[]
-     */
-    public function getNonEligibleAttributes(GroupInterface $group);
 }
