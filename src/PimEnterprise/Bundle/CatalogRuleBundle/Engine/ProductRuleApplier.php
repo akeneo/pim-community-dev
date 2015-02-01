@@ -99,5 +99,4 @@ class ProductRuleApplier implements ApplierInterface
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
     }
-
 }
