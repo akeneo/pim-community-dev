@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Manager;
+namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductTemplateAttributesManagerSpec extends ObjectBehavior
+class ProductTemplateBuilderSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
@@ -27,13 +27,19 @@ class ProductTemplateAttributesManagerSpec extends ObjectBehavior
             $denormalizer,
             $productBuilder,
             $attributeRepository,
+            'Pim\Bundle\CatalogBundle\Entity\ProductTemplate',
             'Pim\Bundle\CatalogBundle\Model\Product'
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder');
+    }
+
+    function it_creates_product_templates()
+    {
+        $this->createProductTemplate()->shouldReturnAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductTemplate');
     }
 
     function it_returns_non_eligible_attributes(

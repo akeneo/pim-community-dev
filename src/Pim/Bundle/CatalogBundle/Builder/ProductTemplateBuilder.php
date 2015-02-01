@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Manager;
+namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -12,17 +11,13 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product template attributes manager
+ * Product template builder, allows to create new product template and update them
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO not comfortable with the naming of ProductTemplateAttributesManager we could maybe merge
- * ProductTemplateAttributesManager and ProductTemplateFactory to a ProductTemplateBuilder
- * with create(), addAttributes(), removeAttribute() methods
  */
-class ProductTemplateAttributesManager
+class ProductTemplateBuilder implements ProductTemplateBuilderInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -37,6 +32,9 @@ class ProductTemplateAttributesManager
     protected $attributeRepository;
 
     /** @var string */
+    protected $productTemplateClass;
+
+    /** @var string */
     protected $productClass;
 
     /**
@@ -44,6 +42,7 @@ class ProductTemplateAttributesManager
      * @param DenormalizerInterface        $denormalizer
      * @param ProductBuilder               $productBuilder
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param string                       $productTemplateClass
      * @param string                       $productClass
      */
     public function __construct(
@@ -51,21 +50,49 @@ class ProductTemplateAttributesManager
         DenormalizerInterface $denormalizer,
         ProductBuilder $productBuilder,
         AttributeRepositoryInterface $attributeRepository,
+        $productTemplateClass,
         $productClass
     ) {
-        $this->normalizer          = $normalizer;
-        $this->denormalizer        = $denormalizer;
-        $this->productBuilder      = $productBuilder;
-        $this->attributeRepository = $attributeRepository;
-        $this->productClass        = $productClass;
+        $this->normalizer           = $normalizer;
+        $this->denormalizer         = $denormalizer;
+        $this->productBuilder       = $productBuilder;
+        $this->attributeRepository  = $attributeRepository;
+        $this->productTemplateClass = $productTemplateClass;
+        $this->productClass         = $productClass;
     }
 
     /**
-     * Get non eligible attributes to a product template
-     *
-     * @param GroupInterface $group
-     *
-     * @return AttributeInterface[]
+     * {@inheritdoc}
+     */
+    public function createProductTemplate()
+    {
+        return new $this->productTemplateClass();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAttributes(ProductTemplateInterface $template, array $attributes)
+    {
+        $values     = $this->buildProductValuesFromTemplateValuesData($template, $attributes);
+        $valuesData = $this->normalizer->normalize($values, 'json', ['entity' => 'product']);
+        $template->setValuesData($valuesData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAttribute(ProductTemplateInterface $template, AttributeInterface $attribute)
+    {
+        $valuesData = $template->getValuesData();
+
+        unset($valuesData[$attribute->getCode()]);
+
+        $template->setValuesData($valuesData);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getNonEligibleAttributes(GroupInterface $group)
     {
@@ -86,34 +113,6 @@ class ProductTemplateAttributesManager
         }
 
         return $attributes;
-    }
-
-    /**
-     * Add required value(s) that link an attribute to a product template
-     *
-     * @param ProductTemplateInterface $template
-     * @param AttributeInterface[]     $attributes
-     */
-    public function addAttributes(ProductTemplateInterface $template, array $attributes)
-    {
-        $values     = $this->buildProductValuesFromTemplateValuesData($template, $attributes);
-        $valuesData = $this->normalizer->normalize($values, 'json', ['entity' => 'product']);
-        $template->setValuesData($valuesData);
-    }
-
-    /**
-     * Delete values that link an attribute to the product template
-     *
-     * @param ProductTemplateInterface $template
-     * @param AttributeInterface       $attribute
-     */
-    public function removeAttribute(ProductTemplateInterface $template, AttributeInterface $attribute)
-    {
-        $valuesData = $template->getValuesData();
-
-        unset($valuesData[$attribute->getCode()]);
-
-        $template->setValuesData($valuesData);
     }
 
     /**

@@ -189,7 +189,7 @@ services:
             - '@pim_enrich.form.variant_group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.manager.product_template_attributes'
+            - '@pim_catalog.builder.product_template'
 
     pim_enrich.controller.group_type:
         scope: request
@@ -247,5 +247,4 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.saver.group'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.factory.product_template'
-            - '@pim_catalog.manager.product_template_attributes'
+            - '@pim_catalog.builder.product_template'

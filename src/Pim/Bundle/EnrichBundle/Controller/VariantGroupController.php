@@ -3,10 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductTemplateBuilder;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -36,24 +37,24 @@ class VariantGroupController extends GroupController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductTemplateAttributesManager */
+    /** @var ProductTemplateBuilder */
     protected $tplAttributesManager;
 
     /**
-     * @param Request                          $request
-     * @param EngineInterface                  $templating
-     * @param RouterInterface                  $router
-     * @param SecurityContextInterface         $securityContext
-     * @param FormFactoryInterface             $formFactory
-     * @param ValidatorInterface               $validator
-     * @param TranslatorInterface              $translator
-     * @param EventDispatcherInterface         $eventDispatcher
-     * @param GroupManager                     $groupManager
-     * @param HandlerInterface                 $groupHandler
-     * @param Form                             $groupForm
-     * @param GroupFactory                     $groupFactory
-     * @param AttributeRepositoryInterface     $attributeRepository
-     * @param ProductTemplateAttributesManager $tplAttributesManager
+     * @param Request                      $request
+     * @param EngineInterface              $templating
+     * @param RouterInterface              $router
+     * @param SecurityContextInterface     $securityContext
+     * @param FormFactoryInterface         $formFactory
+     * @param ValidatorInterface           $validator
+     * @param TranslatorInterface          $translator
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param GroupManager                 $groupManager
+     * @param HandlerInterface             $groupHandler
+     * @param Form                         $groupForm
+     * @param GroupFactory                 $groupFactory
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ProductTemplateBuilder       $tplAttributesManager
      */
     public function __construct(
         Request $request,
@@ -69,7 +70,7 @@ class VariantGroupController extends GroupController
         Form $groupForm,
         GroupFactory $groupFactory,
         AttributeRepositoryInterface $attributeRepository,
-        ProductTemplateAttributesManager $tplAttributesManager
+        ProductTemplateBuilderInterface $templateBuilder
     ) {
         parent::__construct(
             $request,
@@ -87,7 +88,7 @@ class VariantGroupController extends GroupController
         );
 
         $this->attributeRepository = $attributeRepository;
-        $this->tplAttributesManager = $tplAttributesManager;
+        $this->templateBuilder = $templateBuilder;
     }
 
     /**
@@ -175,7 +176,7 @@ class VariantGroupController extends GroupController
             'pim_available_attributes',
             new AvailableAttributes(),
             // TODO: this key is really not well named...
-            ['attributes' => $this->tplAttributesManager->getNonEligibleAttributes($group)]
+            ['attributes' => $this->templateBuilder->getNonEligibleAttributes($group)]
         );
     }
 }
