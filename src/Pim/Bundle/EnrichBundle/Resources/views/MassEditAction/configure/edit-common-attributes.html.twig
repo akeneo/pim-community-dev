@@ -53,9 +53,6 @@
             {% endif %}
         </div>
     {% endfor %}
-
-
-
 {% endblock %}
 
 {% block head_script_component %}
@@ -153,6 +150,8 @@
                         $el.multiselect('widget').find('input[value="' + $(this).attr('data-id') + '"]').click();
                         $saveButton.click();
                     });
+
+                    {{ view_elements('pim_enrich_product_mass_edit.after_form_init') }}
                 });
             }
         );
