@@ -205,7 +205,7 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function getStorageDriver()
     {
-        return $this->getContainer()->getParameter('akeneo_storage_utils.storage_driver');
+        return $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
     }
 
     /**

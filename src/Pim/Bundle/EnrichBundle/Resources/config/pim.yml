@@ -25,7 +25,7 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }
 
 akeneo_storage_utils:
-    storage_driver: '%akeneo_storage_utils_storage_driver%'
+    storage_driver: '%pim_catalog_product_storage_driver%'
 
 services:
     oro.cache.abstract:

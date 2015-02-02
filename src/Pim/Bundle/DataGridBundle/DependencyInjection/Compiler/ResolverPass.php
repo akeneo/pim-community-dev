@@ -40,7 +40,7 @@ class ResolverPass implements CompilerPassInterface
         $datasourceResolver = $container->getDefinition(self::DATASOURCE_ADAPTER_RESOLVER_ID);
 
         if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM ===
-            $container->getParameter('akeneo_storage_utils.storage_driver')
+            $container->getParameter('pim_catalog_product_storage_driver')
         ) {
             $datasourceResolver->addMethodCall(
                 'setMongodbAdapterClass',
