@@ -28,7 +28,7 @@ $kernel->boot();
 $container = $kernel->getContainer();
 $connection = $container->get('doctrine')->getConnection();
 $identifierCode = $container->get('pim_catalog.repository.attribute')->getIdentifier()->getCode();
-$storageDriver = $container->getParameter('akeneo_storage_utils_storage_driver');
+$storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
 
 switch ($storageDriver) {
     case 'doctrine/orm':

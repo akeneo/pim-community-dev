@@ -42,13 +42,13 @@ The ProductPersister has been replaced by ProductSaver.
 
 All classes related to Akeneo dual storage (ORM and/or MongoDB) have been moved in a dedicated bundle called *AkeneoStorageUtilsBundle*.
 
-Normally you should not much be impacted by this internal change. The main change concerns the parameter `pim_catalog_storage_driver` that has been deprecated. You are encouraged to replace the parameter `pim_catalog_storage_driver` by `akeneo_storage_utils_storage_driver` in your `app/config/pim_parameters.yml` or `app/config/parameters.yml` configuration file. Please note that the parameter `pim_catalog_storage_driver` is still supported until version 1.4.
+Normally you should not much be impacted by this internal change. The main change concerns the parameter `pim_catalog_storage_driver` that has been renamed. You have to replace the parameter `pim_catalog_storage_driver` by `pim_catalog_product_storage_driver` in your `app/config/pim_parameters.yml` or `app/config/parameters.yml` configuration file.
 
 Here are the other changes:
  * the following constants have been moved:
   * `DOCTRINE_ORM` and `DOCTRINE_MONGODB_ODM` from `Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension` are now located in `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
   * `DOCTRINE_MONGODB`, `ODM_ENTITIES_TYPE` and `ODM_ENTITY_TYPE` from `Pim\Bundle\CatalogBundle\PimCatalogBundle` are now located in `Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle`
- * the container parameter `pim_catalog.storage_driver` has been renamed to `akeneo_storage_utils.storage_driver`
+ * the container parameter `pim_catalog.storage_driver` has been deleted
  * the following services have been renamed:
   * `pim_catalog.event_subscriber.resolve_target_repository` has been renamed to `akeneo_storage_utils.event_subscriber.resolve_target_repository`
   * `pim_catalog.doctrine.smart_manager_registry` has been renamed to `akeneo_storage_utils.doctrine.smart_manager_registry`
@@ -72,7 +72,7 @@ Here are the other changes:
   * `Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber`
   * `Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber` becomes `Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber`
 
-Please note that former services, and containter parameter `pim_catalog.storage_driver` are still supported thanks to aliases until version 1.4.
+Please note that former services are still supported thanks to aliases until version 1.4.
 
 In case you used one the classes or services listed above, you can easily update your code by doing the following:
 

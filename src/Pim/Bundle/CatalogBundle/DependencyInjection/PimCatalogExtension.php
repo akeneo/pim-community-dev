@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\DependencyInjection;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -15,7 +15,7 @@ use Symfony\Component\Finder\Finder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PimCatalogExtension extends AkeneoStorageUtilsExtension
+class PimCatalogExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ class PimCatalogExtension extends AkeneoStorageUtilsExtension
         $loader->load('models.yml');
 
         $this->loadValidationFiles($container);
-        $this->loadStorageDriver($container, __DIR__);
+        $this->loadStorageDriver($container);
     }
 
     /**
@@ -72,5 +72,20 @@ class PimCatalogExtension extends AkeneoStorageUtilsExtension
                 array_values($mappingFiles)
             )
         );
+    }
+
+    /**
+     * Load the mapping for product and product storage
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function loadStorageDriver(ContainerBuilder $container)
+    {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
+        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
+        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
+            $loader->load($storageConfig);
+        }
     }
 }
