@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
+use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
@@ -12,6 +13,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdater
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Pim Catalog Bundle
@@ -20,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimCatalogBundle extends AkeneoStorageUtilsBundle
+class PimCatalogBundle extends Bundle
 {
     /**
      * {@inheritdoc}
@@ -41,6 +43,23 @@ class PimCatalogBundle extends AkeneoStorageUtilsBundle
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
         );
 
-        $this->registerDoctrineMappingDriver($container, $productMappings);
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $productMappings,
+                ['doctrine.orm.entity_manager'],
+                'akeneo_storage_utils.storage_driver.doctrine/orm'
+            )
+        );
+
+        if (class_exists(AkeneoStorageUtilsBundle::DOCTRINE_MONGODB)) {
+            $mongoDBClass = AkeneoStorageUtilsBundle::DOCTRINE_MONGODB;
+            $container->addCompilerPass(
+                $mongoDBClass::createYamlMappingDriver(
+                    $productMappings,
+                    ['doctrine.odm.mongodb.document_manager'],
+                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
+                )
+            );
+        }
     }
 }

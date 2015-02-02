@@ -2,8 +2,6 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle;
 
-//TODO: should be trashed
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -56,32 +54,6 @@ class AkeneoStorageUtilsBundle extends Bundle
                 'Doctrine\ODM\MongoDB\Tools\ResolveTargetDocumentListener'
             );
             $definition->addTag('doctrine_mongodb.odm.event_listener', array('event' => 'loadClassMetadata'));
-        }
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $mappings
-     */
-    protected function registerDoctrineMappingDriver(ContainerBuilder $container, array $mappings)
-    {
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $mappings,
-                array('doctrine.orm.entity_manager'),
-                'akeneo_storage_utils.storage_driver.doctrine/orm'
-            )
-        );
-
-        if (class_exists(self::DOCTRINE_MONGODB)) {
-            $mongoDBClass = self::DOCTRINE_MONGODB;
-            $container->addCompilerPass(
-                $mongoDBClass::createYamlMappingDriver(
-                    $mappings,
-                    array('doctrine.odm.mongodb.document_manager'),
-                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
-                )
-            );
         }
     }
 }

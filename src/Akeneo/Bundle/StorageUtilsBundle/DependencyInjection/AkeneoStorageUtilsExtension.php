@@ -33,23 +33,15 @@ class AkeneoStorageUtilsExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
         self::$storageDriver = $config['storage_driver'];
 
-        $container->setParameter($this->getAlias() . '.storage_driver', $this->getStorageDriver());
+        $container->setParameter($this->getAlias() . '.storage_driver', self::$storageDriver);
         // Parameter defining if the mapping driver must be enabled or not
-        $container->setParameter($this->getAlias() . '.storage_driver.' . $this->getStorageDriver(), true);
+        $container->setParameter($this->getAlias() . '.storage_driver.' . self::$storageDriver, true);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('doctrine.yml');
         $loader->load('factories.yml');
 
         $this->loadStorageDriver($container, __DIR__);
-    }
-
-    /**
-     * @return string
-     */
-    public static function getStorageDriver()
-    {
-        return self::$storageDriver;
     }
 
     /**
@@ -72,16 +64,16 @@ class AkeneoStorageUtilsExtension extends Extension
      */
     protected function loadStorageDriver(ContainerBuilder $container, $path)
     {
-        if (!in_array($this->getStorageDriver(), $this->getSupportedStorageDrivers())) {
+        if (!in_array(self::$storageDriver, $this->getSupportedStorageDrivers())) {
             throw new \RuntimeException(
                 sprintf(
                     'The storage driver "%s" is not supported.',
-                    $this->getStorageDriver()
+                    self::$storageDriver
                 )
             );
         }
 
         $loader = new YamlFileLoader($container, new FileLocator($path . '/../Resources/config'));
-        $loader->load(sprintf('storage_driver/%s.yml', $this->getStorageDriver()));
+        $loader->load(sprintf('storage_driver/%s.yml', self::$storageDriver));
     }
 }
