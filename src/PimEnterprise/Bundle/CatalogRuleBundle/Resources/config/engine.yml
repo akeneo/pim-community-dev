@@ -60,4 +60,5 @@ services:
         arguments:
             - '@pim_catalog.saver.product'
             - '@pim_versioning.manager.version'
+            - '@pim_versioning.context.version'
             - '@translator'
