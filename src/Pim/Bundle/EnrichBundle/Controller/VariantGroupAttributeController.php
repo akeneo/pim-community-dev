@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Factory\ProductTemplateFactory;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateAttributesManager;
+use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
+use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -43,20 +43,20 @@ class VariantGroupAttributeController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductTemplateFactory */
-    protected $templateFactory;
+    /** @var ProductTemplateBuilderInterface */
+    protected $templateBuilder;
 
-    /** @var ProductTemplateAttributesManager */
-    protected $tplAttributesManager;
+    /** @var VariantGroupAttributesResolver */
+    protected $groupAttributesResolver;
 
     /**
-     * @param RouterInterface                  $router
-     * @param FormFactoryInterface             $formFactory
-     * @param GroupRepositoryInterface         $groupRepository
-     * @param SaverInterface                   $groupSaver
-     * @param AttributeRepositoryInterface     $attributeRepository
-     * @param ProductTemplateFactory           $templateFactory
-     * @param ProductTemplateAttributesManager $tplAttributesManager
+     * @param RouterInterface                 $router
+     * @param FormFactoryInterface            $formFactory
+     * @param GroupRepositoryInterface        $groupRepository
+     * @param SaverInterface                  $groupSaver
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ProductTemplateBuilderInterface $templateBuilder
+     * @param VariantGroupAttributesResolver  $groupAttributesResolver
      */
     public function __construct(
         RouterInterface $router,
@@ -64,16 +64,16 @@ class VariantGroupAttributeController
         GroupRepositoryInterface $groupRepository,
         SaverInterface $groupSaver,
         AttributeRepositoryInterface $attributeRepository,
-        ProductTemplateFactory $templateFactory,
-        ProductTemplateAttributesManager $tplAttributesManager
+        ProductTemplateBuilderInterface $templateBuilder,
+        VariantGroupAttributesResolver $groupAttributesResolver
     ) {
-        $this->router               = $router;
-        $this->formFactory          = $formFactory;
-        $this->groupRepository      = $groupRepository;
-        $this->groupSaver           = $groupSaver;
-        $this->attributeRepository  = $attributeRepository;
-        $this->templateFactory      = $templateFactory;
-        $this->tplAttributesManager = $tplAttributesManager;
+        $this->router              = $router;
+        $this->formFactory         = $formFactory;
+        $this->groupRepository     = $groupRepository;
+        $this->groupSaver          = $groupSaver;
+        $this->attributeRepository = $attributeRepository;
+        $this->templateBuilder     = $templateBuilder;
+        $this->groupAttributesResolver = $groupAttributesResolver;
     }
 
     /**
@@ -94,11 +94,11 @@ class VariantGroupAttributeController
 
         $template = $group->getProductTemplate();
         if (null === $template) {
-            $template = $this->templateFactory->createProductTemplate();
+            $template = $this->templateBuilder->createProductTemplate();
             $group->setProductTemplate($template);
         }
 
-        $this->tplAttributesManager->addAttributes($template, $availableAttributes->getAttributes());
+        $this->templateBuilder->addAttributes($template, $availableAttributes->getAttributes());
         $this->groupSaver->save($group, ['copy_values_to_products' => false]);
         $this->addFlash($request, 'success', 'flash.variant group.attributes_added');
 
@@ -124,7 +124,7 @@ class VariantGroupAttributeController
 
         $template = $group->getProductTemplate();
         if (null !== $template) {
-            $this->tplAttributesManager->removeAttribute($template, $attribute);
+            $this->templateBuilder->removeAttribute($template, $attribute);
             $this->groupSaver->save($group);
         }
 
@@ -192,8 +192,7 @@ class VariantGroupAttributeController
         return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes,
-            // TODO: this key is really not well named...
-            ['attributes' => $this->tplAttributesManager->getNonEligibleAttributes($group)]
+            ['excluded_attributes' => $this->groupAttributesResolver->getNonEligibleAttributes($group)]
         );
     }
 

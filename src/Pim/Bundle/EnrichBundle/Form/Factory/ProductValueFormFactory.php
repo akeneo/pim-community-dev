@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Build the product value form
+ * Aims to create an product value form
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -51,7 +51,7 @@ class ProductValueFormFactory
      *
      * @return FormInterface
      */
-    public function buildProductValueForm(ProductValueInterface $value, array $context)
+    public function createProductValueForm(ProductValueInterface $value, array $context)
     {
         $attributeTypeAlias = $value->getAttribute()->getAttributeType();
         $attributeType = $this->attTypeRegistry->get($attributeTypeAlias);

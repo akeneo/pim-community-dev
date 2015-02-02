@@ -4,8 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;

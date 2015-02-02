@@ -170,6 +170,7 @@
 - constructor of `Pim\Bundle\TransformBundle\Transformer\ProductTransformer` has been updated and now receives `Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface`
 - You cannot add product to multiple variant group anymore
 - constructor of `Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository` to add ProductTemplateUpdaterInterface and Validator interface
+- rename buildProductValueForm to createProductValueForm in `Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

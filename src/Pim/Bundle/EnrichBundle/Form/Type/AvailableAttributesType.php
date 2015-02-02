@@ -62,7 +62,7 @@ class AvailableAttributesType extends AbstractType
             [
                 'repository' => $this->attributeRepository,
                 'repository_options' => [
-                    'excluded_attribute_ids' => $options['attributes'],
+                    'excluded_attribute_ids' => $options['excluded_attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                 ],
                 'multiple' => true,
@@ -79,13 +79,13 @@ class AvailableAttributesType extends AbstractType
         $resolver->setDefaults(
             array(
                 'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
-                'attributes' => array(),
+                'excluded_attributes' => array(),
             )
         );
 
         $resolver->setNormalizers(
             [
-                'attributes' => function (Options $options, $value) {
+                'excluded_attributes' => function (Options $options, $value) {
                     foreach ($value as $key => $attribute) {
                         if (!$attribute instanceof $this->attributeClass) {
                             throw new \InvalidArgumentException(

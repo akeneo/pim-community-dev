@@ -563,7 +563,7 @@ class ProductController extends AbstractDoctrineController
         return $this->createForm(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('attributes' => $attributes)
+            array('excluded_attributes' => $attributes)
         );
     }
 

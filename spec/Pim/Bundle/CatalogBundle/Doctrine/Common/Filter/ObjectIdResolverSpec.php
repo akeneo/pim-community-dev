@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -47,6 +47,6 @@ class ObjectIdResolverSpec extends ObjectBehavior
 
         $camcorders->getId()->willReturn(2);
 
-        $this->shouldThrow('\Pim\Bundle\CatalogBundle\Doctrine\Common\ObjectNotFoundException')->during('getIdsFromCodes', ['family', ['camcorders', 'shirt', 'men']]);
+        $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')->during('getIdsFromCodes', ['family', ['camcorders', 'shirt', 'men']]);
     }
 }

@@ -1,13 +1,12 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common;
+namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 
 /**
  * Object id resolver
- *
- * TODO: move it to StorageUtilsBundle
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -42,7 +41,6 @@ class ObjectIdResolver implements ObjectIdResolverInterface
             ->getManagerForClass($this->fieldMapping[$entityName])
             ->getRepository($this->fieldMapping[$entityName]);
 
-        //TODO : do a proper query to fetch codes in one query (think about not found codes)
         $ids = [];
         foreach ($codes as $code) {
             $entity = $repository->findOneBy(['code' => $code]);

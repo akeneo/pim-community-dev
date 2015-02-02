@@ -1,11 +1,12 @@
 parameters:
-    pim_catalog.query.product_query_builder_factory.class: Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory
-    pim_catalog.query.product_query_builder.class:         Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder
-    pim_catalog.query.filter.registry.class:               Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistry
-    pim_catalog.query.sorter.registry.class:               Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistry
-    pim_catalog.query.filter.field_dumper.class:           Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterDumper
-    pim_catalog.query.filter.attribute_dumper.class:       Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterDumper
-    pim_catalog.doctrine.query.filter.category.class:      Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
+    pim_catalog.query.product_query_builder_factory.class:      Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory
+    pim_catalog.query.product_query_builder.class:              Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder
+    pim_catalog.query.filter.registry.class:                    Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistry
+    pim_catalog.query.sorter.registry.class:                    Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistry
+    pim_catalog.query.filter.field_dumper.class:                Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterDumper
+    pim_catalog.query.filter.attribute_dumper.class:            Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterDumper
+    pim_catalog.doctrine.query.filter.category.class:           Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
+    pim_catalog.doctrine.query.filter.object_id_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -47,13 +48,24 @@ services:
             - @pim_catalog.query.filter.registry
             - @pim_catalog.repository.attribute
 
+    # PQB common utils
+    pim_catalog.doctrine.query.filter.object_id_resolver:
+        class: %pim_catalog.doctrine.query.filter.object_id_resolver.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+        calls:
+            - [ addFieldMapping, ['family', %pim_catalog.entity.family.class%]]
+            - [ addFieldMapping, ['option', %pim_catalog.entity.attribute_option.class%]]
+            - [ addFieldMapping, ['category', %pim_catalog.entity.category.class%]]
+            - [ addFieldMapping, ['group', %pim_catalog.entity.group.class%]]
+
     # PQB common filter
     pim_catalog.doctrine.query.filter.category:
         class: %pim_catalog.doctrine.query.filter.category.class%
         arguments:
             - @pim_catalog.repository.category
             - @pim_catalog.repository.product_category
-            - @pim_catalog.resolver.object_id
+            - @pim_catalog.doctrine.query.filter.object_id_resolver
             - ['categories.id', 'categories.code']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
         tags:
@@ -112,7 +124,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.option.class%
         arguments:
             - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.resolver.object_id
+            - @pim_catalog.doctrine.query.filter.object_id_resolver
             - ['pim_catalog_simpleselect']
             - ['IN', 'EMPTY']
         tags:
@@ -122,7 +134,7 @@ services:
         class: %pim_catalog.doctrine.query.filter.options.class%
         arguments:
             - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.resolver.object_id
+            - @pim_catalog.doctrine.query.filter.object_id_resolver
             - ['pim_catalog_multiselect']
             - ['IN', 'EMPTY']
         tags:

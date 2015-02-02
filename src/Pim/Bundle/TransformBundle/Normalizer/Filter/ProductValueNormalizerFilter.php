@@ -29,11 +29,12 @@ class ProductValueNormalizerFilter implements NormalizerFilterInterface
                     throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
                 }
 
-                if (!empty($locales) && $value->getAttribute()->isLocalizable() && !in_array($value->getLocale(), $locales)) {
+                $attribute = $value->getAttribute();
+                if (!empty($locales) && $attribute->isLocalizable() && !in_array($value->getLocale(), $locales)) {
                     return false;
                 }
 
-                if (!empty($channels) && $value->getAttribute()->isScopable() && !in_array($value->getScope(), $channels)) {
+                if (!empty($channels) && $attribute->isScopable() && !in_array($value->getScope(), $channels)) {
                     return false;
                 }
 
