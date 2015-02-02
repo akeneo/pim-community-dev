@@ -19,7 +19,7 @@ services:
             - '@event_dispatcher'
             - '@pimee_workflow.collector.product_submitted_changes'
             - '@pimee_workflow.change_set_computer'
-            - %akeneo_storage_utils.storage_driver%
+            - %pim_catalog_product_storage_driver%
 
     # this product saver delegates to draft or working copy savers depending on user permissions
     pimee_workflow.saver.product_delegating:
