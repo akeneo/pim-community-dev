@@ -59,7 +59,7 @@ class PendingMassPersisterSpec extends ObjectBehavior
         $date2->format(\DateTime::ISO8601)->willReturn('2014-07-16T10:20:37+02:00');
 
         $versionManager->getUsername()->willReturn('julia');
-        $versionContext->getContext()->willReturn('CSV Import');
+        $versionContext->getContextInfo()->willReturn('CSV Import');
 
         $normalizedProduct1 = [
             'sku'  => 'sku-001',

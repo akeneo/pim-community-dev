@@ -51,7 +51,7 @@ class AddContextSubscriber implements EventSubscriberInterface
     {
         $jobInstance = $event->getJobExecution()->getJobInstance();
         if ($jobInstance->getType() === JobInstance::TYPE_IMPORT) {
-            $this->versionContext->addContext(
+            $this->versionContext->addContextInfo(
                 sprintf('%s "%s"', JobInstance::TYPE_IMPORT, $jobInstance->getCode())
             );
         }

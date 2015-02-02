@@ -171,6 +171,12 @@
 - You cannot add product to multiple variant group anymore
 - constructor of `Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository` to add ProductTemplateUpdaterInterface and Validator interface
 - rename buildProductValueForm to createProductValueForm in `Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory`
+- The method `setContext` for the class `src/Pim/Bundle/VersioningBundle/Manager/VersionManager` has been moved to `src/Pim/Bundle/VersioningBundle/Manager/VersionContext` and renamed setContextInfo
+- The method `getContext` for the class `src/Pim/Bundle/VersioningBundle/Manager/VersionManager` has been moved to `src/Pim/Bundle/VersioningBundle/Manager/VersionContext` and renamed getContextInfo
+- constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Saver/GroupSaver` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext` instead of `Pim\Bundle\VersioningBundle\Manager\VersionManager`
+- constructor of `Pim/Bundle/VersioningBundle/Doctrine/AbstractPendingMassPersister` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
+- constructor of `Pim/Bundle/VersioningBundle/Doctrine/ORM/PendingMassPersister` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
+- constructor of `Pim/Bundle/VersioningBundle/EventSubscriber/AddVersionSubscriber` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

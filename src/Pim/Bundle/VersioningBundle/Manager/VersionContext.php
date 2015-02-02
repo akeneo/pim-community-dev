@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Manager;
 
 /**
- * Version manager
+ * Version context
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -11,45 +11,45 @@ namespace Pim\Bundle\VersioningBundle\Manager;
  */
 class VersionContext
 {
-    /** @var array Versioning context */
-    protected $context;
+    /** @var array */
+    protected $mapping;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->context['default'] = null;
+        $this->mapping['default'] = null;
     }
 
     /**
-     * Set context
+     * Add context
      *
+     * @param string|null $info
      * @param string      $context
-     * @param string|null $fqcn
      */
-    public function addContext($context, $fqcn = null)
+    public function addContextInfo($info, $context = null)
     {
-        if ($fqcn) {
-            $this->context[$fqcn] = $context;
+        if ($context) {
+            $this->mapping[$context] = $info;
         } else {
-            $this->context['default'] = $context;
+            $this->mapping['default'] = $info;
         }
     }
 
     /**
      * Get context
      *
-     * @param null $fqcn
+     * @param string|null $context
      *
      * @return null|string
      */
-    public function getContext($fqcn = null)
+    public function getContextInfo($context = null)
     {
-        if (isset($this->context[$fqcn])) {
-            return $this->context[$fqcn];
+        if (isset($this->mapping[$context])) {
+            return $this->mapping[$context];
         }
 
-        return $this->context['default'];
+        return $this->mapping['default'];
     }
 }

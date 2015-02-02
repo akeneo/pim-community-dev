@@ -62,7 +62,7 @@ abstract class AbstractPendingMassPersister
     public function persistPendingVersions(array $versionables)
     {
         $author = $this->versionManager->getUsername();
-        $context = $this->versionContext->getContext();
+        $context = $this->versionContext->getContextInfo();
 
         $pendingVersions = [];
         foreach ($versionables as $versionable) {

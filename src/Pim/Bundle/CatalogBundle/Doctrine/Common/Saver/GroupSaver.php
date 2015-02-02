@@ -85,7 +85,7 @@ class GroupSaver implements SaverInterface
             'remove_products' => []
         ];
         $options = array_merge($defaultOptions, $options);
-        $this->versionContext->addContext(
+        $this->versionContext->addContextInfo(
             sprintf('Comes from variant group %s', $group->getCode()),
             $this->productClassName
         );

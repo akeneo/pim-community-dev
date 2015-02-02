@@ -16,12 +16,12 @@ class VersionContextSpec extends ObjectBehavior
 {
     function it_adds_and_returns_a_default_context()
     {
-        $this->addContext('my super context');
-        $this->getContext()->shouldReturn('my super context');
+        $this->addContextInfo('my super context');
+        $this->getContextInfo()->shouldReturn('my super context');
     }
     function it_adds_and_returns_a_context_with_fqcn()
     {
-        $this->addContext('my super context with fqcn', 'MyClass');
-        $this->getContext('MyClass')->shouldReturn('my super context with fqcn');
+        $this->addContextInfo('my super context with fqcn', 'MyClass');
+        $this->getContextInfo('MyClass')->shouldReturn('my super context with fqcn');
     }
 }

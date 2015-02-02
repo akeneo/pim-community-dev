@@ -223,6 +223,6 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function getObjectHash($object)
     {
-        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionContext->getContext()));
+        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionContext->getContextInfo()));
     }
 }

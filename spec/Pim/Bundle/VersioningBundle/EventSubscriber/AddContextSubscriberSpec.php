@@ -39,7 +39,7 @@ class AddContextSubscriberSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn(JobInstance::TYPE_IMPORT);
         $jobInstance->getCode()->willReturn('foo');
 
-        $versionContext->addContext('import "foo"')->shouldBeCalled();
+        $versionContext->addContextInfo('import "foo"')->shouldBeCalled();
 
         $this->addContext($event);
     }
@@ -48,7 +48,7 @@ class AddContextSubscriberSpec extends ObjectBehavior
     {
         $jobInstance->getType()->willReturn(JobInstance::TYPE_EXPORT);
 
-        $versionContext->addContext(Argument::any())->shouldNotBeCalled();
+        $versionContext->addContextInfo(Argument::any())->shouldNotBeCalled();
 
         $this->addContext($event);
     }

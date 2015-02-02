@@ -135,7 +135,7 @@ class VersionManager
                     $versionable,
                     $this->username,
                     $previousVersion,
-                    $this->versionContext->getContext(ClassUtils::getClass($versionable))
+                    $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
                 );
         } else {
             $createdVersions[] = $this->versionBuilder
@@ -143,7 +143,7 @@ class VersionManager
                     $versionable,
                     $this->username,
                     $changeset,
-                    $this->versionContext->getContext(ClassUtils::getClass($versionable))
+                    $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
                 );
         }
 
