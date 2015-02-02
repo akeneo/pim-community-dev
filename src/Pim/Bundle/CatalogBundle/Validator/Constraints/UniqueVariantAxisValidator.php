@@ -9,7 +9,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validator for unique variant group axis values constraint
+ * Validator for unique variant group axes values constraint.
+ * This validator should be called after HasVariantAxesValidator, once we know that the
+ * product has all the axes of the variant.
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -112,19 +114,22 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      * Prepare query criteria for variant group
      *
      * @param GroupInterface   $variantGroup
-     * @param ProductInterface $entity
+     * @param ProductInterface $product
      *
      * @return array
      */
-    protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $entity)
+    protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $product)
     {
         $criteria = array();
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
-            $value = $entity->getValue($attribute->getCode());
-            $criteria[] = array(
-                'attribute' => $attribute,
-                'option'    => $value ? $value->getOption() : null,
-            );
+            $value = $product->getValue($attribute->getCode());
+            // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
+            if (null !== $value && null !== $value->getOption()) {
+                $criteria[] = [
+                    'attribute' => $attribute,
+                    'option'    => $value->getOption(),
+                ];
+            }
         }
 
         return $criteria;
