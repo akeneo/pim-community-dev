@@ -124,19 +124,3 @@ rules:
               value:
                 - sportwear
                 - vneck
-    set_purple_tshirt_picture:
-        priority: 90
-        conditions:
-            - field:    sku
-              operator: CONTAINS
-              value:    AKNTS_PB
-            - field:    main_color.code
-              operator: IN
-              value:
-                - purple
-        actions:
-            - type:   set_value
-              field:  picture
-              value:
-                  filePath:         ../../../src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/images/AKNTS_PB.jpg
-                  originalFilename: akeneo
