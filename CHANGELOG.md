@@ -1,4 +1,9 @@
-# 1.3.x (based on CE 1.3.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/master/CHANGELOG.md))
+# 1.3.x
+
+# 1.3.0-RC1 (2015-02-03)
+
+## Community Edition changes
+- Based on CE 1.3.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/master/CHANGELOG.md)
 
 ## Features
 - Rules engine and smart attributes
