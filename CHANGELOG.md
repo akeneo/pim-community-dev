@@ -1,5 +1,7 @@
 # 1.3.x
 
+# 1.3.0-RC1 (2015-02-03)
+
 ## Features
 - Export a product as PDF
 - Add a widget in the navigation bar to display notifications when import/export jobs finish
