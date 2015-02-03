@@ -3,10 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
@@ -15,15 +16,18 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class AssociationRepository extends EntityRepository implements
     AssociationRepositoryInterface,
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function countForAssociationType(AssociationType $associationType)
+    public function countForAssociationType(AssociationTypeInterface $associationType)
     {
         $qb = $this->createQueryBuilder('pa');
 
@@ -48,7 +52,7 @@ class AssociationRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         list($productCode, $associationCode) = explode('.', $code);
 
@@ -71,7 +75,7 @@ class AssociationRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('owner', 'associationType');
     }
@@ -89,5 +93,25 @@ class AssociationRepository extends EntityRepository implements
             ->setParameter(':productId', $product->getId());
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

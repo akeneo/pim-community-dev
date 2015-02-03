@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Pim\Bundle\UIBundle\Form\Transformer\IntegerTransformer;
+use Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -21,7 +21,7 @@ class NumberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new IntegerTransformer());
+        $builder->addViewTransformer(new NumberTransformer());
     }
 
     /**

@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 /**
  * Normalize a media entity into an array
@@ -14,6 +16,17 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
  */
 class MediaNormalizer implements NormalizerInterface
 {
+    /** @var MediaManager */
+    protected $manager;
+
+    /**
+     * @param MediaManager $manager
+     */
+    public function __construct(MediaManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @var string[] $supportedFormats
      */
@@ -24,7 +37,19 @@ class MediaNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        return $object->getOriginalFilename();
+        $file = $object->getFile();
+        if (null !== $file && $file instanceof UploadedFile) {
+            // happens in case of mass edition
+            return [
+                'originalFilename' => $file->getClientOriginalName(),
+                'filePath' => $file->getPathname(),
+            ];
+        }
+
+        return [
+            'originalFilename' => $object->getOriginalFilename(),
+            'filePath'         => $this->manager->getFilePath($object),
+        ];
     }
 
     /**
@@ -32,6 +57,6 @@ class MediaNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractProductMedia && in_array($format, $this->supportedFormats);
+        return $data instanceof ProductMediaInterface && in_array($format, $this->supportedFormats);
     }
 }

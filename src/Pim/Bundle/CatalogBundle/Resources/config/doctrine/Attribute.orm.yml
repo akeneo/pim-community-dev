@@ -20,11 +20,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         sortOrder:
             type: integer
             column: sort_order
-        useableAsGridColumn:
-            type: boolean
-            options:
-                default: false
-            column: useable_as_grid_column
         useableAsGridFilter:
             type: boolean
             options:
@@ -106,11 +101,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         unique:
             type: boolean
             column: is_unique
-        defaultValue:
-            type: text
-            length: 65532
-            nullable: true
-            column: default_value
         localizable:
             type: boolean
             column: is_localizable
@@ -165,7 +155,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                     onDelete: 'SET NULL'
     manyToMany:
         availableLocales:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
             joinTable:
                 name: pim_catalog_attribute_locale
                 joinColumns:
@@ -177,5 +167,5 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                         referencedColumnName: id
                         onDelete: CASCADE
         families:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
             mappedBy: attributes

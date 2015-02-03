@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 
 /**
  * Validator for job instance entity

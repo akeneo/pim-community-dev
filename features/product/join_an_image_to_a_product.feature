@@ -30,7 +30,6 @@ Feature: Join an image to a product
     And I follow "akeneo.jpg"
     Then I should see the uploaded image
 
-  @javascript
   Scenario: Successfully remove an image
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product

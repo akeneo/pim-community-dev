@@ -13,7 +13,7 @@ Feature: Browse variant groups
       | size      | Size       | simpleselect |
       | dimension | Dimensions | simpleselect |
     And the following product groups:
-      | code              | label             | attributes  | type    |
+      | code              | label             | axis        | type    |
       | tshirt_akeneo     | Akeneo T-Shirt    | size, color | VARIANT |
       | mug               | Mug               | color       | VARIANT |
       | sticker_akeneo    | Akeneo Sticker    | dimension   | VARIANT |

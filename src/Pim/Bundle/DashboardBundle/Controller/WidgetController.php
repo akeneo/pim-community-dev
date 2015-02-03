@@ -2,16 +2,11 @@
 
 namespace Pim\Bundle\DashboardBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\DashboardBundle\Widget\Registry;
+use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Widget controller
@@ -20,62 +15,66 @@ use Pim\Bundle\DashboardBundle\Widget\Registry;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WidgetController extends AbstractController
+class WidgetController
 {
     /** @var Registry */
     protected $widgetRegistry;
 
-    /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Registry                 $widgetRegistry
-     */
-    public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        Registry $widgetRegistry
-    ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher
-        );
+    /** @var EngineInterface */
+    protected $templating;
 
+    /**
+     * @param Registry        $widgetRegistry
+     * @param EngineInterface $templating
+     */
+    public function __construct(Registry $widgetRegistry, EngineInterface $templating)
+    {
         $this->widgetRegistry = $widgetRegistry;
+        $this->templating     = $templating;
     }
 
     /**
-     * Returned a rendered widget
+     * Renders dashboard widgets
+     *
+     * @return Response
+     */
+    public function listAction()
+    {
+        $output = '';
+        $widgets = $this->widgetRegistry->getAll();
+
+        foreach ($widgets as $widget) {
+            $output .= $this->renderWidget($widget);
+        }
+
+        return new Response($output);
+    }
+
+    /**
+     * Return data for a widget
      *
      * @param string $alias
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
-    public function showAction($alias)
+    public function dataAction($alias)
     {
-        if (null === $widget = $this->widgetRegistry->get($alias)) {
-            return $this->render('PimDashboardBundle:Widget:error.html.twig', array('alias' => $alias));
-        }
+        $widget = $this->widgetRegistry->get($alias);
 
-        return $this->render($widget->getTemplate(), array('widget' => $widget->getParameters()));
+        $data = null !== $widget ? $widget->getData() : null;
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * Returns a rendered widget template
+     *
+     * @param WidgetInterface $widget
+     *
+     * @return string
+     */
+    protected function renderWidget(WidgetInterface $widget)
+    {
+        return $this->templating->render($widget->getTemplate(), $widget->getParameters());
     }
 }

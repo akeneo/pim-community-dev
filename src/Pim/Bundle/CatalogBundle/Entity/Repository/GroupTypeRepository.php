@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Group type repository
@@ -10,16 +11,22 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class GroupTypeRepository extends ReferableEntityRepository
+class GroupTypeRepository extends ReferableEntityRepository implements GroupTypeRepositoryInterface
 {
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
-    public function buildAll()
+    public function getAllGroupsExceptVariantQB()
     {
-        return $this->build()
+        $qb = $this->createQueryBuilder('group_type')
+            ->andWhere('group_type.code != :variant')
+            ->setParameter('variant', 'VARIANT')
             ->addOrderBy('group_type.code', 'ASC');
+
+        return $qb;
     }
 
     /**
@@ -34,6 +41,7 @@ class GroupTypeRepository extends ReferableEntityRepository
             "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
             $rootAlias
         );
+
         $qb
             ->addSelect($rootAlias)
             ->addSelect(sprintf("%s AS label", $labelExpr));

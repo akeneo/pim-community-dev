@@ -2,14 +2,20 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Currency controller for configuration
@@ -20,6 +26,50 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
  */
 class CurrencyController extends AbstractDoctrineController
 {
+    /** @var SaverInterface */
+    protected $currencySaver;
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ManagerRegistry          $doctrine
+     * @param SaverInterface           $currencySaver
+     */
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
+        ManagerRegistry $doctrine,
+        SaverInterface $currencySaver
+    ) {
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $eventDispatcher,
+            $doctrine
+        );
+
+        $this->currencySaver = $currencySaver;
+    }
+
     /**
      * List currencies
      *
@@ -46,7 +96,7 @@ class CurrencyController extends AbstractDoctrineController
     {
         try {
             $currency->toggleActivation();
-            $this->getManagerForClass('PimCatalogBundle:Currency')->flush();
+            $this->currencySaver->save($currency);
 
             $this->addFlash('success', 'flash.currency.updated');
         } catch (\Exception $e) {

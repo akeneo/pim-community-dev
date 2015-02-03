@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * In group sorter
@@ -19,26 +18,30 @@ class InGroupSorter implements FieldSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /**
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * {@inheritdoc}
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function setQueryBuilder($queryBuilder)
     {
-        $this->qb      = $qb;
-        $this->context = $context;
+        $this->qb = $queryBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function supportsField($field)
+    {
+        return strpos($field, 'in_group_') !== false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
     {
         $field = sprintf("%s.%s", ProductQueryUtility::NORMALIZED_FIELD, $field);
         $this->qb->sort($field, $direction);
+        $this->qb->sort('_id');
 
         return $this;
     }

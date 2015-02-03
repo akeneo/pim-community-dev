@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+
 /**
  * Category interface
  *
@@ -9,10 +12,10 @@ namespace Pim\Bundle\CatalogBundle\Model;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface CategoryInterface
+interface CategoryInterface extends TranslatableInterface, ReferableInterface, VersionableInterface
 {
     /**
-     * @return integer
+     * @return int|string
      */
     public function getId();
 
@@ -129,15 +132,6 @@ interface CategoryInterface
     public function getChildren();
 
     /**
-     * Add a product in the category
-     *
-     * @param ProductInterface $product
-     *
-     * @return CategoryInterface
-     */
-    public function addProduct(ProductInterface $product);
-
-    /**
      * Predicate to know if this category has product(s) linked
      *
      * @return boolean
@@ -145,27 +139,9 @@ interface CategoryInterface
     public function hasProducts();
 
     /**
-     * Remove a product from a category
-     *
-     * @param ProductInterface $product
-     *
-     * @return CategoryInterface
-     */
-    public function removeProduct(ProductInterface $product);
-
-    /**
      * Get products for this category node
      *
      * @return ProductInterface[]
      */
     public function getProducts();
-
-    /**
-     * Set products for this category node
-     *
-     * @param ProductInterface[] $products
-     *
-     * @return CategoryInterface
-     */
-    public function setProducts($products);
 }

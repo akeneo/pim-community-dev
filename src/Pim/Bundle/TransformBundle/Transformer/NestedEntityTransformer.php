@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Transformer for nested entities

@@ -48,7 +48,7 @@ class AddParametersToGridListener
 
     /**
      * Bound parameters in query builder
-    *
+     *
      * @param BuildAfter $event
      */
     public function onBuildAfter(BuildAfter $event)

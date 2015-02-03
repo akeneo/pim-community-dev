@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WidgetMassAction;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WidgetMassAction;
 
 /**
  * Mass export action

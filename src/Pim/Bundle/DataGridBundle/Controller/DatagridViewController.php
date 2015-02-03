@@ -2,22 +2,21 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Datagrid view controller
@@ -114,7 +113,7 @@ class DatagridViewController extends AbstractDoctrineController
 
                 return new JsonResponse(['errors' => $messages]);
             } else {
-                $this->persist($view);
+                $this->datagridViewManager->save($view);
 
                 if ($creation) {
                     $this->addFlash('success', 'flash.datagrid view.created');
@@ -164,7 +163,7 @@ class DatagridViewController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
         }
 
-        $this->remove($view);
+        $this->datagridViewManager->remove($view);
         $this->addFlash('success', 'flash.datagrid view.removed');
 
         return new Response('', 204);

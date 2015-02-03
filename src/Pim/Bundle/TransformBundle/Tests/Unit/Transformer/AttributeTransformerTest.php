@@ -15,6 +15,7 @@ class AttributeTransformerTest extends EntityTransformerTestCase
 {
     protected $attribute;
     protected $attributeManager;
+    protected $attributeOptionManager;
     protected $doctrineCache;
     protected $transformer;
     protected $transformerRegistry;
@@ -27,10 +28,14 @@ class AttributeTransformerTest extends EntityTransformerTestCase
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\AttributeManager')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->attributeOptionManager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->attributeManager->expects($this->any())
             ->method('getAttributeClass')
             ->will($this->returnValue('Pim\Bundle\CatalogBundle\Entity\Attribute'));
-        $this->attributeManager->expects($this->any())
+        $this->attributeOptionManager->expects($this->any())
             ->method('getAttributeOptionClass')
             ->will($this->returnValue('Pim\Bundle\CatalogBundle\Entity\AttributeOption'));
         $this->doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
@@ -49,6 +54,7 @@ class AttributeTransformerTest extends EntityTransformerTestCase
             $this->columnInfoTransformer,
             $this->transformerRegistry,
             $this->attributeManager,
+            $this->attributeOptionManager,
             $this->doctrineCache
         );
         $this->addColumn('code');
@@ -74,9 +80,9 @@ class AttributeTransformerTest extends EntityTransformerTestCase
     protected function setupRepositories($referable = true)
     {
         $this->repository = $this
-            ->getMock('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
+            ->getMock('Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface');
         $this->repository->expects($this->any())
-            ->method('getReferenceProperties')
+            ->method('getIdentifierProperties')
             ->will($this->returnValue(array('code')));
 
         $this->doctrine

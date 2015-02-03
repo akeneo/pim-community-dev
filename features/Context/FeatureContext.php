@@ -47,6 +47,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('navigation', new NavigationContext());
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
+        $this->useContext('technical', new TechnicalContext());
     }
 
     /**
@@ -236,7 +237,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getStorageDriver()
     {
-        return $this->getContainer()->getParameter('pim_catalog.storage_driver');
+        return $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
     }
 
     /**

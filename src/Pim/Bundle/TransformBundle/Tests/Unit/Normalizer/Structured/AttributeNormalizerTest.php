@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeNormalizer;
-use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\AttributeNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 /**
  * Test class for AttributeNormalizer
@@ -64,7 +64,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
             $this->normalizer->normalize(
                 $attribute,
                 $this->format,
-                array('versioning' => true, 'locales' => ['en_US', 'fr_FR'])
+                ['versioning' => true, 'locales' => ['en_US', 'fr_FR']]
             )
         );
     }
@@ -84,8 +84,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'sort_order'             => '5',
                     'required'               => '0',
                     'unique'                 => '0',
-                    'default_options'        => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
-                    'default_value'          => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
                     'metric_family'          => '',
@@ -95,7 +93,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                         'green' => array('en' => 'Green', 'fr' => 'Vert'),
                         'red'   => array('en' => 'Red', 'fr' => 'Rouge')
                     ),
-                    'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '0',
                 )
             ),
@@ -108,15 +105,12 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'sort_order'             => '1',
                     'required'               => '1',
                     'unique'                 => '0',
-                    'default_value'          => 'No description',
-                    'default_options'        => array(),
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
                     'metric_family'          => '',
                     'default_metric_unit'    => '',
                     'scope'                  => 'Channel',
                     'options'                => array(),
-                    'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '1',
                     'max_characters'         => '200',
                     'validation_rule'        => 'regexp',
@@ -133,7 +127,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
     protected function getOptionalProperties()
     {
         return array(
-            'default_value',
             'max_characters',
             'validation_rule',
             'validation_regexp',
@@ -154,7 +147,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      */
     protected function createEntity(array $data)
     {
@@ -175,14 +168,12 @@ class AttributeNormalizerTest extends NormalizerTestCase
         $attribute->setUnique($data['unique']);
         $attribute->setLocalizable($data['localizable']);
         $attribute->setScopable(strtolower($data['scope']) !== 'global');
-        $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
         $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);
         $attribute->setMetricFamily($data['metric_family']);
         $attribute->setDefaultMetricUnit($data['default_metric_unit']);
 
         $this->addAvailableLocales($attribute, $data);
         $this->addOptions($attribute, $data);
-        $this->addDefaultOptions($attribute, $data);
 
         foreach ($this->getOptionalProperties() as $property) {
             if (isset($data[$property]) && $data[$property] !== '') {
@@ -203,10 +194,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addLabels(AbstractAttribute $attribute, $data)
+    protected function addLabels(AttributeInterface $attribute, $data)
     {
         foreach ($data['label'] as $locale => $label) {
             $translation = $attribute->getTranslation($locale);
@@ -215,10 +206,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addAvailableLocales(AbstractAttribute $attribute, $data)
+    protected function addAvailableLocales(AttributeInterface $attribute, $data)
     {
         foreach ($data['available_locales'] as $code) {
             $locale = new Locale();
@@ -230,10 +221,10 @@ class AttributeNormalizerTest extends NormalizerTestCase
     /**
      * Create attribute options
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addOptions(AbstractAttribute $attribute, $data)
+    protected function addOptions(AttributeInterface $attribute, $data)
     {
         if (count($data['options']) === 1) {
             $attribute->setBackendType('option');
@@ -250,25 +241,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                 $attributeOption->addOptionValue($optionValue);
             }
             $attribute->addOption($attributeOption);
-        }
-    }
-
-    /**
-     * Add attribute default options
-     *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
-     */
-    protected function addDefaultOptions(AbstractAttribute $attribute, $data)
-    {
-        $defaultOptions = array_keys($data['default_options']);
-        foreach ($defaultOptions as $code) {
-            $options = $attribute->getOptions();
-            foreach ($options as $option) {
-                if ($code == $option->getCode()) {
-                    $option->setDefault(true);
-                }
-            }
         }
     }
 }

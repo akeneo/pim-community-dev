@@ -1,6 +1,6 @@
 @javascript
 Feature:
-  In order to import valid files
+  In order to prevent importing invalid files
   As a product manager
   I need to see that mime type has been checked
 
@@ -10,7 +10,7 @@ Feature:
 
   Scenario: Import a file that is not a csv file
     Given I am on the "footwear_product_import" import job edit page
-    Then I fill in the following information:
+    And I fill in the following information:
       | File              | file.csv |
       | Delimiter         | \|       |
       | Enclosure         | '        |
@@ -19,6 +19,6 @@ Feature:
       | Family column     | fam      |
       | Groups column     | grp      |
     And I press the "Save" button
-    Then I am on the "footwear_product_import" import job page
+    When I am on the "footwear_product_import" import job page
     And I upload and import an invalid file "akeneo2.jpg"
     Then I should see a flash message "The file extension is not allowed (allowed extensions: csv, zip)."

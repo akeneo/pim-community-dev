@@ -1,0 +1,51 @@
+parameters:
+    pim_user.view_element.user.tab.general.template:        'PimUserBundle:User:Tab/general.html.twig'
+    pim_user.view_element.user.tab.additional.template:     'PimUserBundle:User:Tab/additional.html.twig'
+    pim_user.view_element.user.tab.group_and_role.template: 'PimUserBundle:User:Tab/group_and_role.html.twig'
+    pim_user.view_element.user.tab.password.template:       'PimUserBundle:User:Tab/password.html.twig'
+    pim_user.view_element.user.tab.business_unit.template:  'PimUserBundle:User:Tab/business_unit.html.twig'
+
+services:
+    pim_user.view_element.user.tab.general:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_user.user.tab.general'
+            - %pim_user.view_element.user.tab.general.template%
+        tags:
+            - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 90 }
+
+    pim_user.view_element.user.tab.additional:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_user.user.tab.additional'
+            - %pim_user.view_element.user.tab.additional.template%
+        tags:
+            - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 100 }
+
+    pim_user.view_element.user.tab.group_and_role:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_user.user.tab.group_and_role'
+            - %pim_user.view_element.user.tab.group_and_role.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_user.view_element.visibility_checker.groups_and_roles'] ]
+        tags:
+            - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 110 }
+
+    pim_user.view_element.user.tab.password:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_user.user.tab.password'
+            - %pim_user.view_element.user.tab.password.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[change_password]'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 120 }
+
+    pim_user.view_element.user.tab.business_unit:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_user.user.tab.business_unit'
+            - %pim_user.view_element.user.tab.business_unit.template%
+        tags:
+            - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 130 }

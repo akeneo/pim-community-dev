@@ -77,6 +77,13 @@ groups:
     yml:
         processor:         pim_base_connector.processor.group
 
+variant_groups:
+    order: 75
+    csv:
+        processor:         pim_base_connector.processor.denormalization.csv_variant_group
+    yml:
+        processor:         pim_base_connector.processor.group
+
 products:
     order: 80
     csv:

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Test related class

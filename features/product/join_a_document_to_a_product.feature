@@ -30,7 +30,6 @@ Feature: Join a document to a product
     And I open "akeneo.txt" in the current window
     Then I should see the "akeneo.txt" content
 
-  @javascript
   Scenario: Successfully remove a document
     When I attach file "akeneo.txt" to "Description"
     And I save the product

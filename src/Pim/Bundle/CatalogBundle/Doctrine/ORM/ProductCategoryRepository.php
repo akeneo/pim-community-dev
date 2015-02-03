@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 
 /**
  * Product category repository
@@ -16,6 +15,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 {
@@ -133,7 +134,6 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($include) {
             $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
-
         } else {
             $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
@@ -169,8 +169,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
                 ->select($rootAliasIn.'.id')
                 ->from($rootEntity, $rootAliasIn, $rootAliasIn.'.id')
                 ->leftJoin($rootAliasIn.'.categories', $alias)
-                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'))
-            ;
+                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'));
 
             $qb->andWhere($qb->expr()->notIn($rootAlias.'.id', $qbIn->getDQL()));
         }

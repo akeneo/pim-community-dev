@@ -7,9 +7,9 @@ Feature: Display product attributes in the grid
   Scenario: Successfully display values for simple and multi select attributes
     Given the "default" catalog configuration
     And the following attributes:
-      | code               | type         | label-en_US        | group | useable as grid column |
-      | manufacturer       | simpleselect | Manufacturer       | other | yes                    |
-      | weather_conditions | multiselect  | Weather conditions | other | yes                    |
+      | code               | type         | label-en_US        | group |
+      | manufacturer       | simpleselect | Manufacturer       | other |
+      | weather_conditions | multiselect  | Weather conditions | other |
     And the following "manufacturer" attribute options: Converse, adidas and lacoste
     And the following "weather_conditions" attribute options: dry, hot, cloudy and stormy
     And the following products:

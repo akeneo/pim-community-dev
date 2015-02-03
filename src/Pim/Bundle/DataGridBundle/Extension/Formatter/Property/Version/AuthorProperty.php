@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Renders the full name of the author of the version and adds context
@@ -16,15 +16,11 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
  */
 class AuthorProperty extends FieldProperty
 {
-    /**
-     * @var UserManager
-     */
+    /** @var UserManager */
     protected $userManager;
 
-    /**
-     * @var string[]
-     */
-    protected $cachedResults;
+    /** @var string[] */
+    protected $userCachedResults;
 
     /**
      * @param TranslatorInterface $translator
@@ -61,22 +57,23 @@ class AuthorProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
-        if (!isset($this->cachedResults[$value['author']])) {
+        if (!isset($this->userCachedResults[$value['author']])) {
             $user = $this->userManager->findUserByUsername($value['author']);
 
             if (null === $user) {
-                $result = sprintf('%s - %s', $value['author'], $this->translator->trans('Removed user'));
+                $userName = sprintf('%s - %s', $value['author'], $this->translator->trans('Removed user'));
             } else {
-                $result = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
+                $userName = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
             }
 
-            if (!empty($value['context'])) {
-                $result .= sprintf(' (%s)', $value['context']);
-            }
-
-            $this->cachedResults[$value['author']] = $result;
+            $this->userCachedResults[$value['author']] = $userName;
         }
 
-        return $this->cachedResults[$value['author']];
+        $result = $this->userCachedResults[$value['author']];
+        if (!empty($value['context'])) {
+            $result .= sprintf(' (%s)', $value['context']);
+        }
+
+        return $result;
     }
 }

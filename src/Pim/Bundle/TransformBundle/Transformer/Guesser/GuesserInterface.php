@@ -21,7 +21,7 @@ interface GuesserInterface
      * or null if the column is not supported.
      *
      * @param ColumnInfoInterface $columnInfo
-     * @param ClassMetadataInfo   $metadata
+     * @param ClassMetadata       $metadata
      *
      * @return array
      */

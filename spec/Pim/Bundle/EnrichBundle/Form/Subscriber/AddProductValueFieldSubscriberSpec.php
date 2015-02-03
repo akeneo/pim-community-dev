@@ -3,12 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
-use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class AddProductValueFieldSubscriberSpec extends ObjectBehavior
 {
@@ -42,7 +40,7 @@ class AddProductValueFieldSubscriberSpec extends ObjectBehavior
 
         $form->getRoot()->willReturn($rootForm);
         $rootForm->getName()->willReturn('pim_catalog_edit');
-        $factory->buildProductValueForm($value, ['root_form_name' => 'pim_catalog_edit'])->willReturn($field);
+        $factory->createProductValueForm($value, ['root_form_name' => 'pim_catalog_edit'])->willReturn($field);
         $form->add($field)->shouldBeCalled();
 
         $this->preSetData($event);
@@ -56,6 +54,6 @@ class AddProductValueFieldSubscriberSpec extends ObjectBehavior
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(null);
 
-        $factory->buildProductValueForm()->shouldNotBeCalled();
+        $factory->createProductValueForm()->shouldNotBeCalled();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * A normalizer to transform a group entity into a flat array
@@ -22,10 +22,35 @@ class GroupNormalizer extends Structured\GroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(Group $group)
+    protected function normalizeAxisAttributes(GroupInterface $group)
     {
-        $attributes = parent::normalizeAttributes($group);
+        $attributes = parent::normalizeAxisAttributes($group);
 
         return implode(',', $attributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function normalizeVariantGroupValues(GroupInterface $group, $format, array $context)
+    {
+        if (!$group->getType()->isVariant() || null === $group->getProductTemplate()) {
+            return [];
+        }
+
+        $valuesData = $group->getProductTemplate()->getValuesData();
+        $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
+
+        $normalizedValues = [];
+        foreach ($values as $value) {
+            $normalizedValues = array_merge(
+                $normalizedValues,
+                $this->serializer->normalize($value, $format, ['entity' => 'product'] + $context)
+            );
+        }
+
+        ksort($normalizedValues);
+
+        return $normalizedValues;
     }
 }

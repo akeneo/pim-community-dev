@@ -4,11 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Attribute Group entity
@@ -19,7 +17,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AttributeGroup implements TranslatableInterface, ReferableInterface, VersionableInterface
+class AttributeGroup implements AttributeGroupInterface
 {
     /** @staticvar string */
     const DEFAULT_GROUP_CODE = 'other';
@@ -40,12 +38,12 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     protected $sortOrder;
 
     /**
-     * @var datetime $created
+     * @var \DateTime $created
      */
     protected $created;
 
     /**
-     * @var datetime $updated
+     * @var \DateTime $updated
      */
     protected $updated;
 
@@ -78,9 +76,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Returns the label of the attribute group
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -88,9 +84,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -98,11 +92,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -112,9 +102,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -122,11 +110,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -136,9 +120,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Get sort order
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getSortOrder()
     {
@@ -146,11 +128,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Set sort order
-     *
-     * @param string $sortOrder
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
     public function setSortOrder($sortOrder)
     {
@@ -160,9 +138,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Get created
-     *
-     * @return dateTime
+     * {@inheritdoc}
      */
     public function getCreated()
     {
@@ -170,11 +146,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Set created datetime
-     *
-     * @param datetime $created
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
     public function setCreated($created)
     {
@@ -184,9 +156,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Get updated datetime
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getUpdated()
     {
@@ -194,11 +164,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Set updated datetime
-     *
-     * @param datetime $updated
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
     public function setUpdated($updated)
     {
@@ -208,13 +174,9 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Add attributes
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
-    public function addAttribute(AbstractAttribute $attribute)
+    public function addAttribute(AttributeInterface $attribute)
     {
         $this->attributes[] = $attribute;
         $attribute->setGroup($this);
@@ -223,13 +185,9 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Remove attributes
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
-    public function removeAttribute(AbstractAttribute $attribute)
+    public function removeAttribute(AttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
         $attribute->setGroup(null);
@@ -238,9 +196,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Get attributes
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getAttributes()
     {
@@ -248,19 +204,15 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Check if the group has an attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function hasAttribute(AbstractAttribute $attribute)
+    public function hasAttribute(AttributeInterface $attribute)
     {
         return $this->attributes->contains($attribute);
     }
 
     /**
-     * @return integer
+     * {@inheritdoc}
      */
     public function getMaxAttributeSortOrder()
     {
@@ -345,9 +297,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Get label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -357,11 +307,7 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {

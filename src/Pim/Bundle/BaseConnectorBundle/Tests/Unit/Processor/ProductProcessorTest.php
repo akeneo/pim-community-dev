@@ -23,6 +23,7 @@ class ProductProcessorTest extends TransformerProcessorTestCase
             $this->validator,
             $this->translator,
             $this->transformer,
+            $this->managerRegistry,
             'product_class'
         );
     }

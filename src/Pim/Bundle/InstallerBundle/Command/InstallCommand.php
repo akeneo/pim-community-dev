@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
+use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -72,7 +71,6 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         try {
-
             $this->cleanDirectory($this->getContainer()->getParameter('upload_dir'));
             $this->cleanDirectory($this->getContainer()->getParameter('archive_dir'));
 
@@ -161,7 +159,7 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Remove directory and all subcontent
      *
-     * @param string $directory
+     * @param string $folder
      */
     protected function cleanDirectory($folder)
     {

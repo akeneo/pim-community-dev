@@ -3,6 +3,7 @@
 namespace Context\Page\Product;
 
 use Context\Page\Base\Form;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
@@ -34,12 +35,13 @@ class Edit extends Form
                 'Locales selector'        => array('css' => '#pim_product_locales'),
                 'Enable switcher'         => array('css' => '#switch_status'),
                 'Image preview'           => array('css' => '#lbImage'),
-                'Completeness'            => array('css' => 'div#completeness'),
-                'Category pane'           => array('css' => '#categories'),
+                'Completeness'            => array('css' => '#pim_enrich-product-tab-completeness'),
+                'Category pane'           => array('css' => '#pim_enrich-product-tab-category'),
                 'Category tree'           => array('css' => '#trees'),
                 'Comparison dropdown'     => array('css' => '#comparison-switcher'),
                 'Copy selection dropdown' => array('css' => '#copy-selection-switcher'),
                 'Copy translations link'  => array('css' => 'a#copy-selection'),
+                'Comment threads'         => array('css' => '#comment_threads'),
             )
         );
     }
@@ -91,7 +93,7 @@ class Edit extends Form
      */
     public function switchLocale($locale)
     {
-        $elt = $this->getElement('Locales dropdown')->find('css', 'span.dropdown-toggle');
+        $elt = $this->getElement('Locales dropdown')->find('css', '.dropdown-toggle');
         if (!$elt) {
             throw new \Exception('Could not find locale switcher.');
         }
@@ -260,6 +262,7 @@ class Edit extends Form
      * Get the completeness content
      *
      * @return \Behat\Mink\Element\NodeElement
+     * @throws \InvalidArgumentException
      */
     public function findCompletenessContent()
     {
@@ -269,6 +272,173 @@ class Edit extends Form
         }
 
         return $completenessContent;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @throws \LogicException
+     */
+    public function createComment($message)
+    {
+        $textarea = $this->getElement('Comment threads')->find('css', 'li.comment-create textarea');
+        if (!$textarea) {
+            throw new \LogicException('Comment creation box not found !');
+        }
+
+        $textarea->click();
+        $textarea->setValue($message);
+        $this->getElement('Comment threads')->pressButton('Add a new comment');
+    }
+
+    /**
+     * @param NodeElement $comment
+     * @param string      $message
+     *
+     * @throws \LogicException
+     */
+    public function replyComment(NodeElement $comment, $message)
+    {
+        $comment->click();
+        $replyBox = $this->getElement('Comment threads')->find('css', 'li.comment-reply-action.toggle-active');
+        if (!$replyBox) {
+            throw new \LogicException('Comment reply box not found !');
+        }
+
+        $textarea = $replyBox->find('css', 'textarea');
+        if (!$textarea) {
+            throw new \LogicException('Comment reply textarea not found !');
+        }
+
+        $textarea->setValue($message);
+        $replyBox->pressButton('Reply');
+    }
+
+    /**
+     * Get the comment threads node
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed
+     * @throws \InvalidArgumentException
+     */
+    protected function findCommentTopics()
+    {
+        return $this->getElement('Comment threads')->findAll('css', 'li.comment-topic');
+    }
+
+    /**
+     * Get the comment replies node
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed
+     * @throws \InvalidArgumentException
+     */
+    protected function findCommentReplies()
+    {
+        return $this->getElement('Comment threads')->findAll('css', 'li.comment-reply');
+    }
+
+    /**
+     * @param string $message
+     * @param string $author
+     *
+     * @return NodeElement     the comment
+     * @throws \LogicException in case the comment does not exist
+     */
+    public function findComment($message, $author)
+    {
+        $comments = array_merge($this->findCommentTopics(), $this->findCommentReplies());
+        if (empty($comments)) {
+            throw new \InvalidArgumentException('No comment nodes found !');
+        }
+
+        $columnIdx = null;
+        foreach ($comments as $index => $thread) {
+
+            if (null !== $currentMessage = $this->findCommentMessage($thread)) {
+                $currentMessage = $currentMessage->getText();
+            }
+            if (null !== $currentAuthor = $this->findCommentAuthor($thread)) {
+                $currentAuthor = $currentAuthor->getText();
+            }
+
+            /*
+            if (null !== $currentDate = $this->findCommentDate($thread)) {
+                $currentDate = preg_replace('/[^a-zA-Z0-9 -]/', ' ', $currentDate->getText());
+                if (false !== $atIdx = strpos($currentDate, 'at')) {
+                    $currentDate = trim(substr($currentDate, 0, $atIdx));
+                }
+            }
+            */
+
+            if ($currentMessage === $message && $currentAuthor === $author) {
+                $columnIdx = $index;
+                break;
+            }
+        }
+
+        if (null === $columnIdx) {
+            throw new \LogicException(
+                sprintf('Comment "%s" from "%s" not found.', $message, $author)
+            );
+        }
+
+        return $comments[$columnIdx];
+    }
+
+    /**
+     * @param NodeElement $comment
+     *
+     * @throws \LogicException
+     */
+    public function deleteComment(NodeElement $comment)
+    {
+        $link = $comment->find('css', 'a.comment-delete-dialog');
+        if (null === $link) {
+            throw new \LogicException(
+                sprintf('Delete link of comment "%s" not found.', $comment->getText())
+            );
+        }
+        $link->click();
+    }
+
+    /**
+     * @param NodeElement $reply
+     * @param NodeElement $comment
+     *
+     * @return bool
+     */
+    public function isReplyOfComment(NodeElement $reply, NodeElement $comment)
+    {
+        return $reply->getParent()->getText() === $comment->getParent()->getText();
+    }
+
+    /**
+     * @param NodeElement $element
+     *
+     * @return NodeElement|mixed|null
+     */
+    protected function findCommentAuthor(NodeElement $element)
+    {
+        return $element->find('css', 'span.author');
+    }
+
+    /**
+     * @param NodeElement $element
+     *
+     * @return NodeElement|mixed|null
+     */
+    protected function findCommentDate(NodeElement $element)
+    {
+        return $element->find('css', 'span.date');
+    }
+
+    /**
+     * @param NodeElement $element
+     *
+     * @return NodeElement|mixed|null
+     */
+    protected function findCommentMessage(NodeElement $element)
+    {
+        return $element->find('css', 'span.message');
     }
 
     /**
