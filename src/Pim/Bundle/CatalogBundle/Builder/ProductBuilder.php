@@ -406,7 +406,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getScopeRows(AttributeInterface $attribute)
     {
-        $channels = $this->channelRepository->getChannels();
+        $channels = $this->channelRepository->findAll();
         $scopeRows = array();
         foreach ($channels as $channel) {
             $scopeRows[] = array(
@@ -426,7 +426,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getScopeToLocaleRows(AttributeInterface $attribute)
     {
-        $channels = $this->channelRepository->getChannels();
+        $channels = $this->channelRepository->findAll();
         $scopeToLocaleRows = array();
         foreach ($channels as $channel) {
             foreach ($channel->getLocales() as $locale) {

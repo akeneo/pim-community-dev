@@ -37,13 +37,6 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
     public function getDeletedLocaleIdsForChannel(ChannelInterface $channel);
 
     /**
-     * Return an array of channels
-     *
-     * @return array
-     */
-    public function getChannels();
-
-    /**
      * Return an array of channel codes
      *
      * @return array

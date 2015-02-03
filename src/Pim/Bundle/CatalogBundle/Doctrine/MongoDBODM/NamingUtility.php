@@ -2,7 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Provides util methods to get attributes codes
@@ -153,7 +157,7 @@ class NamingUtility
     /**
      * Get all channels
      *
-     * @return Channel[]
+     * @return ChannelInterface[]
      */
     public function getChannels()
     {
@@ -166,7 +170,7 @@ class NamingUtility
     /**
      * Get active currencies
      *
-     * @return Currency[]
+     * @return CurrencyInterface[]
      */
     public function getCurrencies()
     {
@@ -179,7 +183,7 @@ class NamingUtility
     /**
      * Get active locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getLocales()
     {
