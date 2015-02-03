@@ -8,19 +8,26 @@
 - Load dashboard widgets asynchronously and allow to refresh the data
 - Add filters for image and file attributes
 - Add values to variant group and be able to apply them on products belonging to the variant group
-
-## Improvements
-- Remove deprecated attribute property *Usable as a grid column*
-- Refactor of the attribute options screen to handle more than 100 options
+- Remove deprecated attribute property *Usable as a grid column* because all attributes are now useable as columns
+- Refactor of the attribute options screen to handle more than 100 options (AJAX)
+- Load all product grid filters asynchronously
+- Improve the UI of the datagrid column configuration popin
+- Enhance the display of permissions in the role permissions edit form
+- Better display on batch warnings
 - Redesign of the loading box
 - Add an information message when there is no common attribute in the mass-edit
 - Add ACL on entity history
-- Improve the UI of the datagrid column configuration popin
-- Load all product grid filters asynchronously
-- Enhance the display of permissions in the role permissions edition
-- Better display on batch warnings
+- Add a notice in manage attribute groups and manage categories
+- Re-design select all options in grid filters
+- Display symbol and not code for currencies in the grid
+- Enhance the product edit form header on small resolutions (1024)
 
 ## Technical improvements
+- Provide a cleaner ProductQueryBuilder API to ease the selection of products
+- Provide a ProductUpdater API to mass update products
+- Introduce the 'pim_validator' service to be able to validate products and cascade on values with dynamic constraints
+- Introduce commands to ease developer's life (`pim:product:query`, `pim:product:query-help`, `pim:product:update`, `pim:product:validate`)
+- Add flat / csv denormalizers for product data
 - Remove the fixed mysql socket location
 - Switch to stability stable
 - Base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
@@ -32,8 +39,6 @@
 - Add a view manager to help integrators to override and add elements to the UI (tabs, buttons, etc)
 - Add a check on passed values in ORM filters
 - Add a requirement regarding the need of the `exec()` function (for job executions)
-- Introduce the 'pim_validator' service to be able to validate products and cascade on values with dynamic constraints
-- Introduce commands to ease developer's life (`pim:product:query`, `pim:product:query-help`, `pim:product:update`, `pim:product:validate`)
 - Use `Pim\Bundle\CatalogBundle\Model\ProductInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractProduct`
 - Use `Pim\Bundle\CatalogBundle\Model\ProductValueInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractProductValue`
 - Use `Pim\Bundle\CatalogBundle\Model\ProductPriceInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractProductPrice`
@@ -41,7 +46,6 @@
 - Use `Pim\Bundle\CatalogBundle\Model\AttributeInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractAttribute`
 - Use `Pim\Bundle\CatalogBundle\Model\CompletenessInterface` instead of `Pim\Bundle\CatalogBundle\Model\AbstractCompleteness`
 - Allow to generate many versions in a single request
-- Add flat / csv denormalizers for product data
 - Introduce `Pim\Bundle\CatalogBundle\Model\GroupInterface` instead of `Pim\Bundle\CatalogBundle\Entity\Group`
 - Use `Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeOption`
 - Use `Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface` instead of `Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue`
