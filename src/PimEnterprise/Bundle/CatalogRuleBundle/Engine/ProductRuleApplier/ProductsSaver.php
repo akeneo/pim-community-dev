@@ -15,6 +15,7 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -33,19 +34,25 @@ class ProductsSaver
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var VersionContext */
+    protected $versionContext;
+
     /**
      * @param BulkSaverInterface  $productSaver
      * @param VersionManager      $versionManager
+     * @param VersionContext      $versionContext
      * @param TranslatorInterface $translator
      */
     public function __construct(
         BulkSaverInterface $productSaver,
         VersionManager $versionManager,
+        VersionContext $versionContext,
         TranslatorInterface $translator
     ) {
         $this->productSaver   = $productSaver;
         $this->versionManager = $versionManager;
         $this->translator     = $translator;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -61,7 +68,7 @@ class ProductsSaver
             'en'
         );
         $versioningState = $this->versionManager->isRealTimeVersioning();
-        $this->versionManager->setContext($savingContext);
+        $this->versionContext->addContextInfo($savingContext);
         $this->versionManager->setRealTimeVersioning(false);
         $this->productSaver->saveAll($products, ['recalculate' => false, 'schedule' => true]);
         $this->versionManager->setRealTimeVersioning($versioningState);
