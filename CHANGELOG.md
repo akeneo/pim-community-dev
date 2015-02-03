@@ -185,11 +185,14 @@
 - constructor of `Pim/Bundle/VersioningBundle/Doctrine/ORM/PendingMassPersister` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
 - constructor of `Pim/Bundle/VersioningBundle/EventSubscriber/AddVersionSubscriber` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
 - constructor of `src/Pim/Bundle/VersioningBundle/EventSubscriber/MongoDBODM/AddProductVersionSubscriber.php` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
+- constructor of `src/Pim/Bundle/CatalogBundle/Manager/GroupManager` has been updated and now receives `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface`
+- Added `getProductsByGroup` method in `Pim/Bundle/CatalogBundle/Repository/ProductRepositoryInterface`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 - PIM-3548: Do not use the absolute file path of a media
+- PIM-3730: Fix variant group link on product edit page
 
 # 1.2.*
 

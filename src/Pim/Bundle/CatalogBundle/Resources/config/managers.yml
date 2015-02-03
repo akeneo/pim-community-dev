@@ -111,6 +111,7 @@ services:
         arguments:
             - '@doctrine'
             - '@event_dispatcher'
+            - '@pim_catalog.repository.product'
             - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.group_type.class%
             - %pim_catalog.entity.product.class%

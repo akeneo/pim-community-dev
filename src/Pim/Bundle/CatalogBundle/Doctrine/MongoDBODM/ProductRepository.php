@@ -710,4 +710,32 @@ class ProductRepository extends DocumentRepository implements
     {
         return $this->findOneByIdentifier($code);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductsByGroup(GroupInterface $group, $maxResults)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->field('groupIds')->in([$group->getId()])
+            ->limit($maxResults);
+
+        $products = $qb->getQuery()->execute()->toArray();
+
+        return $products;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductCountByGroup(GroupInterface $group)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->field('groupIds')->in([$group->getId()]);
+
+        $count = $qb->getQuery()->execute()->count();
+
+        return $count;
+    }
 }

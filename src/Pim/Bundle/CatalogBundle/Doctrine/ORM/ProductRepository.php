@@ -553,4 +553,35 @@ class ProductRepository extends EntityRepository implements
     {
         return $this->findOneByIdentifier($code);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductsByGroup(GroupInterface $group, $maxResults)
+    {
+        $products = $this
+            ->createQueryBuilder('p')
+            ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
+            ->setParameter('group', $group)
+            ->getQuery()
+            ->setMaxResults($maxResults)
+            ->execute();
+
+        return $products;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductCountByGroup(GroupInterface $group)
+    {
+        $count = $this->createQueryBuilder('p')
+            ->select('COUNT(p)')
+            ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
+            ->setParameter('group', $group)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
 }
