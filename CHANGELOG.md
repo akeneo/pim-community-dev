@@ -1,7 +1,11 @@
 # 1.3.x (based on CE 1.3.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/master/CHANGELOG.md))
 
-## Improvements
+## Features
+- Rules engine and smart attributes
+- List of proposals to ease validation
 - Add a date filter in the proposal grid
+
+## Technical improvements
 - remove the fixed mysql socket location
 - switch to minimum-stability:stable in composer.json
 - base template has been moved from `app/Resources/views` to `PimEnrichBundle/Resources/views`
