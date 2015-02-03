@@ -7,6 +7,7 @@
 - Add comments on a product
 - Load dashboard widgets asynchronously and allow to refresh the data
 - Add filters for image and file attributes
+- Add values to variant group and be able to apply them on products belonging to the variant group
 
 ## Improvements
 - Remove deprecated attribute property *Usable as a grid column*
