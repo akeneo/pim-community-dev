@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
@@ -37,30 +38,36 @@ class GroupManager implements RemoverInterface
     /** @var string */
     protected $attributeClass;
 
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
     /**
      * Constructor
      *
-     * @param RegistryInterface        $doctrine
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $groupClass
-     * @param string                   $groupTypeClass
-     * @param string                   $productClass
-     * @param string                   $attributeClass
+     * @param RegistryInterface          $doctrine
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param ProductRepositoryInterface $productRepository
+     * @param string                     $groupClass
+     * @param string                     $groupTypeClass
+     * @param string                     $productClass
+     * @param string                     $attributeClass
      */
     public function __construct(
         RegistryInterface $doctrine,
         EventDispatcherInterface $eventDispatcher,
+        ProductRepositoryInterface $productRepository,
         $groupClass,
         $groupTypeClass,
         $productClass,
         $attributeClass
     ) {
-        $this->doctrine        = $doctrine;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->groupClass      = $groupClass;
-        $this->groupTypeClass  = $groupTypeClass;
-        $this->productClass    = $productClass;
-        $this->attributeClass  = $attributeClass;
+        $this->doctrine          = $doctrine;
+        $this->eventDispatcher   = $eventDispatcher;
+        $this->groupClass        = $groupClass;
+        $this->groupTypeClass    = $groupTypeClass;
+        $this->productClass      = $productClass;
+        $this->attributeClass    = $attributeClass;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -82,7 +89,7 @@ class GroupManager implements RemoverInterface
     {
         $attributes = $this->getAvailableAxis();
 
-        $choices = array();
+        $choices = [];
         foreach ($attributes as $attribute) {
             $choices[$attribute->getId()] = $attribute->getLabel();
         }
@@ -113,9 +120,9 @@ class GroupManager implements RemoverInterface
      */
     public function getTypeChoices($isVariant)
     {
-        $types = $this->getGroupTypeRepository()->findBy(array('variant' => $isVariant));
+        $types = $this->getGroupTypeRepository()->findBy(['variant' => $isVariant]);
 
-        $choices = array();
+        $choices = [];
         foreach ($types as $type) {
             $choices[$type->getId()] = $type->getLabel();
         }
@@ -168,8 +175,6 @@ class GroupManager implements RemoverInterface
     /**
      * Returns an array containing a limited number of product groups, and the total number of products
      *
-     * TODO: will not work with MONGODB install, move this method in a repository, cf PIM-3730
-     *
      * @param GroupInterface $group
      * @param integer        $maxResults
      *
@@ -177,33 +182,10 @@ class GroupManager implements RemoverInterface
      */
     public function getProductList(GroupInterface $group, $maxResults)
     {
-        $manager = $this->doctrine->getManager();
-        $products = $manager
-            ->createQueryBuilder()
-            ->select('p')
-            ->from($this->productClass, 'p')
-            ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
-            ->setParameter('group', $group)
-            ->getQuery()
-            ->setMaxResults($maxResults + 1)
-            ->execute();
+        $products = $this->productRepository->getProductsByGroup($group, $maxResults);
+        $count = $this->productRepository->getProductCountByGroup($group);
 
-        $count = count($products);
-        if ($count > $maxResults) {
-            array_pop($products);
-            $count = $manager->createQueryBuilder()
-                ->select('COUNT(p)')
-                ->from($this->productClass, 'p')
-                ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
-                ->setParameter('group', $group)
-                ->getQuery()
-                ->getSingleScalarResult();
-        }
-
-        return array(
-            'products'      => $products,
-            'productCount'  => $count
-        );
+        return ['products' => $products, 'productCount' => $count];
     }
 
     /**

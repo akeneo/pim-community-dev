@@ -53,7 +53,7 @@ interface ProductRepositoryInterface
      *
      * @return array
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array());
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
 
     /**
      * Returns all products that have the given attribute
@@ -116,7 +116,7 @@ interface ProductRepositoryInterface
      *
      * @return array
      */
-    public function getFullProducts(array $productIds, array $attributeIds = array());
+    public function getFullProducts(array $productIds, array $attributeIds = []);
 
     /**
      * @return ObjectManager
@@ -143,4 +143,19 @@ interface ProductRepositoryInterface
      * @return array product ids
      */
     public function getEligibleProductIdsForVariantGroup($variantGroupId);
+
+    /**
+     * @param GroupInterface $group
+     * @param                $maxResults
+     *
+     * @return array
+     */
+    public function getProductsByGroup(GroupInterface $group, $maxResults);
+
+    /**
+     * @param GroupInterface $group
+     *
+     * @return int
+     */
+    public function getProductCountByGroup(GroupInterface $group);
 }

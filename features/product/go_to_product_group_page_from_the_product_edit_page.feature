@@ -4,7 +4,6 @@ Feature: Go to product group page from the product edit page
   As a product manager
   I need to be able to go to the product group page from the product edit page
 
-  @skip @info does not work with Mongo, see PIM-3730
   Scenario: Successfully display a readonly form for a product in a variant group
     Given the "footwear" catalog configuration
     And the following products:
