@@ -178,6 +178,7 @@
 - constructor of `Pim/Bundle/VersioningBundle/Doctrine/AbstractPendingMassPersister` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
 - constructor of `Pim/Bundle/VersioningBundle/Doctrine/ORM/PendingMassPersister` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
 - constructor of `Pim/Bundle/VersioningBundle/EventSubscriber/AddVersionSubscriber` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
+- constructor of `src/Pim/Bundle/VersioningBundle/EventSubscriber/MongoDBODM/AddProductVersionSubscriber.php` has been updated and now receives `Pim\Bundle\VersioningBundle\Manager\VersionContext`
 
 ## Bug fixes
 - PIM-3332: Fix incompatibility with overriden category due to usage of ParamConverter in ProductController

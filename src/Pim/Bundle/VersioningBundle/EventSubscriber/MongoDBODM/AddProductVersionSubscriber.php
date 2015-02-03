@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,10 +21,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AddProductVersionSubscriber implements EventSubscriber
 {
     /** @var object[] */
-    protected $versionableObjects = array();
+    protected $versionableObjects = [];
 
     /** @var string[] */
-    protected $versionedObjects = array();
+    protected $versionedObjects = [];
 
     /** @var VersionManager */
     protected $versionManager;
@@ -31,16 +32,24 @@ class AddProductVersionSubscriber implements EventSubscriber
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var VersionContext */
+    protected $versionContext;
+
     /**
      * Constructor
      *
      * @param VersionManager      $versionManager
+     * @param VersionContext      $versionContext
      * @param NormalizerInterface $normalizer
      */
-    public function __construct(VersionManager $versionManager, NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        VersionManager $versionManager,
+        VersionContext $versionContext,
+        NormalizerInterface $normalizer
+    ) {
         $this->versionManager = $versionManager;
         $this->normalizer     = $normalizer;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -50,7 +59,7 @@ class AddProductVersionSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush', 'postFlush');
+        return ['onFlush', 'postFlush'];
     }
 
     /**
@@ -94,7 +103,7 @@ class AddProductVersionSubscriber implements EventSubscriber
             $this->versionedObjects[] = $oid;
         }
 
-        $this->versionableObjects = array();
+        $this->versionableObjects = [];
 
         foreach ($versions as $version) {
             $this->applyChangeSet($version);
@@ -158,6 +167,6 @@ class AddProductVersionSubscriber implements EventSubscriber
      */
     protected function getObjectHash($object)
     {
-        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionManager->getContext()));
+        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionContext->getContextInfo()));
     }
 }
