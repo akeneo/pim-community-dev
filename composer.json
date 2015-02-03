@@ -17,7 +17,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.3.*@dev",
+        "akeneo/pim-community-dev": "1.3.*@beta",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
@@ -93,7 +93,7 @@
             }
         },
         "branch-alias": {
-            "dev-master": "1.1.x-dev",
+            "dev-master": "1.3.x-dev",
             "dev-1.0": "1.0.x-dev"
         }
     }

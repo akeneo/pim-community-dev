@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.1.x-dev';
+    const VERSION = '1.3.x-dev';
 
     /** @staticvar string */
     const VERSION_CODENAME = '';

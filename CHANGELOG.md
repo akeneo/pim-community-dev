@@ -1,4 +1,4 @@
-# 1.1.x (based on CE 1.3.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/master/CHANGELOG.md))
+# 1.3.x (based on CE 1.3.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/master/CHANGELOG.md))
 
 ## Improvements
 - Add a date filter in the proposal grid
