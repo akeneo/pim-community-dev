@@ -18,3 +18,23 @@ Feature: Create product drafts for new attributes added to the product
     And I change the Comment to "tshirt"
     And I save the product
     Then I should see "Send for approval"
+
+  Scenario: Save a product draft with empty custom attribute values
+    Given a "clothing" catalog configuration
+    And the following family:
+      | code           | attributes                                                    |
+      | security_vests | sku,name,length,price,side_view,video,size,weather_conditions |
+    And I am logged in as "Mary"
+    And the following file to import:
+      """
+      sku;family;categories
+      bullet_proof_vest;security_vests;jackets
+      """
+    And the following job "clothing_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    And I am on the "bullet_proof_vest" product page
+    And I save the product
+    Then I should see "Send for approval"

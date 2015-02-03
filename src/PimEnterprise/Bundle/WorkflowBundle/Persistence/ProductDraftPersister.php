@@ -11,7 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
+use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -62,6 +68,12 @@ class ProductDraftPersister implements ProductPersister
     /** @var string */
     protected $storageDriver;
 
+    /** @var MetricFactory */
+    protected $metricFactory;
+
+    /** @var MediaFactory */
+    protected $mediaFactory;
+
     /**
      * @param ManagerRegistry                 $registry
      * @param CompletenessManager             $completenessManager
@@ -82,7 +94,9 @@ class ProductDraftPersister implements ProductPersister
         EventDispatcherInterface $dispatcher,
         ChangesCollector $collector,
         ChangeSetComputerInterface $changeSet,
-        $storageDriver
+        $storageDriver,
+        MetricFactory $metricFactory = null,
+        MediaFactory $mediaFactory = null
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
@@ -93,6 +107,8 @@ class ProductDraftPersister implements ProductPersister
         $this->collector = $collector;
         $this->changeSet = $changeSet;
         $this->storageDriver = $storageDriver;
+        $this->metricFactory = $metricFactory;
+        $this->mediaFactory = $mediaFactory;
     }
 
     /**
@@ -240,7 +256,7 @@ class ProductDraftPersister implements ProductPersister
                         }
                     }
                 } else {
-                    $value->setData(null);
+                    $this->eraseValueData($value);
                 }
             }
         } else {
@@ -260,6 +276,49 @@ class ProductDraftPersister implements ProductPersister
                 $product->addCategory($category);
             }
             $product->setAssociations($associations->toArray());
+        }
+    }
+
+    /**
+     * Handle each kind of attributes $value, to set to a null equivalent
+     * This is hackish, but no elegant solution has been found
+     *
+     * @param AbstractProductValue $value
+     */
+    protected function eraseValueData(AbstractProductValue $value)
+    {
+        $attributeType = $value->getAttribute()->getAttributeType();
+
+        switch ($attributeType) {
+            case 'pim_catalog_simpleselect':
+                $value->setOption();
+                break;
+
+            case 'pim_catalog_multiselect':
+            case 'pim_catalog_price_collection':
+                $value->setPrices(new ArrayCollection());
+                break;
+
+            case 'pim_catalog_metric':
+                if ($this->metricFactory) {
+                    $value->setMetric($this->metricFactory->createMetric(''));
+                } else {
+                    $value->setMetric(new Metric());
+                }
+                break;
+
+            case 'pim_catalog_image':
+            case 'pim_catalog_file':
+                if ($this->mediaFactory) {
+                    $value->setMedia($this->mediaFactory->createMedia());
+                } else {
+                    $value->setMedia(new ProductMedia());
+                }
+                break;
+
+            default:
+                $value->setData(null);
+                break;
         }
     }
 }

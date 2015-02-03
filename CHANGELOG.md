@@ -1,3 +1,8 @@
+# 1.0.*
+
+## Bug fixes
+- PIM-3717: Fix handling draft save with special attributes
+
 # 1.0.17 (2015-01-28)
 
 ## Bug fixes
