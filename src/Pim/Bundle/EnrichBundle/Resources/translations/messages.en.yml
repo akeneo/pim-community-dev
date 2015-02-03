@@ -145,6 +145,8 @@ pim_enrich:
             success_flash:                         Products were successfully added to the selected variant group
             already_in_variant_group_or_not_valid: You cannot group the following products (%products%) because they are already in a variant group or doesn't have the group axis.
             no_variant_group:                      No variant group for now. Please start by creating a variant group.
+            no_valid_variant_group:                No variant group is sharing attributes with selected products.
+            some_variant_groups_are_skipped:       The following variant groups have been skipped because they don't share attributes with selected products : %groups%
 
         set-attribute-requirements:
             label:         Set attribute requirements
