@@ -85,7 +85,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $ecom->getLocales()->willReturn([$en, $fr]);
         $print->getCode()->willReturn('print');
         $print->getLocales()->willReturn([$en, $fr]);
-        $channelRepository->getChannels()->willReturn([$ecom, $print]);
+        $channelRepository->findAll()->willReturn([$ecom, $print]);
 
         // get existing values
         $skuValue->getAttribute()->willReturn($sku);
