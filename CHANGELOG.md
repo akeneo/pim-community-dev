@@ -189,6 +189,16 @@
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 - PIM-3548: Do not use the absolute file path of a media
 
+# 1.2.*
+
+## Bug fixes
+- PIM-3718: load tinymce only on textarea click
+
+# 1.2.24 (2015-01-28)
+
+## Bug fixes
+- PIM-3712: Fix installation issue related to the tag of gedmo/doctrine-extensions v2.3.11, we freeze to v2.3.10
+
 # 1.2.23 (2015-01-23)
 
 ## Bug fixes
