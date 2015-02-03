@@ -9,7 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -33,8 +33,8 @@ class GroupSaver implements SaverInterface
     /** @var ProductTemplateApplierInterface */
     protected $productTemplateApplier;
 
-    /** @var VersionManager */
-    protected $versionManager;
+    /** @var VersionContext */
+    protected $versionContext;
 
     /** @var string */
     protected $productClassName;
@@ -44,7 +44,7 @@ class GroupSaver implements SaverInterface
      * @param BulkSaverInterface              $productSaver
      * @param ProductTemplateMediaManager     $templateMediaManager
      * @param ProductTemplateApplierInterface $productTemplateApplier
-     * @param VersionManager                  $versionManager
+     * @param VersionContext                  $versionContext
      * @param string                          $productClassName
      */
     public function __construct(
@@ -52,14 +52,14 @@ class GroupSaver implements SaverInterface
         BulkSaverInterface $productSaver,
         ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $productTemplateApplier,
-        VersionManager $versionManager,
+        VersionContext $versionContext,
         $productClassName
     ) {
         $this->objectManager          = $objectManager;
         $this->productSaver           = $productSaver;
         $this->templateMediaManager   = $templateMediaManager;
         $this->productTemplateApplier = $productTemplateApplier;
-        $this->versionManager         = $versionManager;
+        $this->versionContext         = $versionContext;
         $this->productClassName       = $productClassName;
     }
 
@@ -85,7 +85,7 @@ class GroupSaver implements SaverInterface
             'remove_products' => []
         ];
         $options = array_merge($defaultOptions, $options);
-        $this->versionManager->setContext(
+        $this->versionContext->addContextInfo(
             sprintf('Comes from variant group %s', $group->getCode()),
             $this->productClassName
         );

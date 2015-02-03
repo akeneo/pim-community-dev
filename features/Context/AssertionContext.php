@@ -206,34 +206,49 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistory(TableNode $table)
     {
-        $updates = array();
+        $updates = [];
         $rows = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
             $version = (int) $row->find('css', 'td.number-cell')->getHtml();
+            $author = $row->findAll('css', 'td.string-cell');
+            if (count($author) > 4) {
+                $author = $row->findAll('css', 'td.string-cell')[1]->getHtml();
+            } else {
+                $author = $row->findAll('css', 'td.string-cell')[0]->getHtml();
+            }
             $data = $row->findAll('css', 'td>ul');
             $data = end($data);
             $data = preg_replace('/\s+|\n+|\r+/m', ' ', $data->getHtml());
 
-            $updates[] = array(
+            $updates[] = [
                 'version' => $version,
-                'data'    => $data
-            );
+                'data'    => $data,
+                'author'  => $author,
+            ];
         }
 
         $valuePattern = '/(.)*<b>%s:<\/b>\s*%s\s*(.)*/';
 
         $expectedUpdates = $table->getHash();
         foreach ($expectedUpdates as $data) {
+            if (!array_key_exists('author', $data)) {
+                $data['author'] = '';
+            }
             $expectedPattern = sprintf(
                 $valuePattern,
                 $data['property'],
-                $data['value']
+                $data['value'],
+                $data['author']
             );
 
             $found = false;
             foreach ($updates as $update) {
+                if ('' === $data['author']) {
+                    $update['author'] = '';
+                }
                 if ((int) $data['version'] === $update['version']) {
-                    if (preg_match($expectedPattern, $update['data'])) {
+                    if (preg_match($expectedPattern, $update['data'])
+                        && $data['author'] === $update['author']) {
                         $found = true;
                         break;
                     }
@@ -243,8 +258,9 @@ class AssertionContext extends RawMinkContext
             if (!$found) {
                 throw $this->createExpectationException(
                     sprintf(
-                        'Expecting to see history update %d - %s - %s, not found',
+                        'Expecting to see history update %d - %s - %s - %s, not found',
                         $data['version'],
+                        $data['author'],
                         $data['property'],
                         $data['value']
                     )

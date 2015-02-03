@@ -38,3 +38,33 @@ Feature: Add products to a variant group
       | manufacturer | Converse    |
     And the product "sandal-white-39" should have the following value:
       | name-en_US   | old name    |
+
+  Scenario: Successfully add products in variant groups, history should be updated with a variant group context
+    Given I am on the "SANDAL" variant group page
+    Then the grid should contain 3 elements
+    And I should see products sandal-white-37
+    And I check the row "sandal-white-37"
+    And I press the "Save" button
+    Then I edit the "sandal-white-37" product
+    And I visit the "History" tab
+    And I should see history:
+      | version | author                                                            | property | value           |
+      | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
+      | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |
+
+  Scenario: Successfully delete a variant groups, product history should be updated without context
+    Given I am on the "SANDAL" variant group page
+    Then the grid should contain 3 elements
+    And I should see products sandal-white-37
+    And I check the row "sandal-white-37"
+    And I press the "Save" button
+    Then I am on the variant groups page
+    And I click on the "Delete" action of the row which contains "SANDAL"
+    And I confirm the deletion
+    Then I edit the "sandal-white-37" product
+    And I visit the "History" tab
+    And I should see history:
+      | version | author                                                            | property | value           |
+      | 3       | Julia Stark - Julia@example.com                                   | groups   |                 |
+      | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
+      | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |

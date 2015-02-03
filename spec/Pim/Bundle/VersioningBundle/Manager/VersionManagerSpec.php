@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
@@ -17,9 +18,10 @@ class VersionManagerSpec extends ObjectBehavior
         SmartManagerRegistry $registry,
         VersionBuilder $builder,
         ObjectManager $om,
-        VersionRepositoryInterface $versionRepository
+        VersionRepositoryInterface $versionRepository,
+        VersionContext $versionContext
     ) {
-        $this->beConstructedWith($registry, $builder);
+        $this->beConstructedWith($registry, $builder, $versionContext);
 
         $registry->getManagerForClass(Argument::any())->willReturn($om);
         $registry->getRepository(Argument::any())->willReturn($versionRepository);
@@ -34,20 +36,12 @@ class VersionManagerSpec extends ObjectBehavior
         $this->isRealTimeVersioning()->shouldReturn(false);
     }
 
-    function it_is_aware_of_the_versioning_context()
-    {
-        $this->getContext()->shouldReturn(null);
-        $this->setContext('import');
-        $this->getContext()->shouldReturn('import');
-    }
-
-    function it_uses_version_builder_to_build_versions(ProductInterface $product, $builder)
+    function it_uses_version_builder_to_build_versions($builder, $versionContext, ProductInterface $product)
     {
         $this->setUsername('julia');
-        $this->setContext('spec');
         $this->buildVersion($product);
 
-        $builder->buildVersion($product, 'julia', null, 'spec')->shouldHaveBeenCalled();
+        $builder->buildVersion($product, 'julia', null, null)->shouldHaveBeenCalled();
     }
 
     function it_builds_versions_for_versionable_entities(ProductInterface $product, $builder)
