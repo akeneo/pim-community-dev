@@ -64,6 +64,7 @@ define(
 
             _processResponse: function(data) {
                 _.each(data, function(channelResult) {
+                    channelResult.locales = channelResult.locales || {};
                     var divider = channelResult.total * _.keys(channelResult.locales).length;
 
                     channelResult.percentage = divider === 0 ?
