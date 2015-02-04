@@ -17,8 +17,6 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -35,9 +33,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Save product drafts, drafts will need to be approved to be merged in the working product data
@@ -100,8 +96,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         ChangesCollector $collector,
         ChangeSetComputerInterface $changeSet,
         $storageDriver,
-        MetricFactory $metricFactory = null,
-        MediaFactory $mediaFactory = null
+        MetricFactory $metricFactory,
+        MediaFactory $mediaFactory
     ) {
         $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
@@ -281,20 +277,12 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 break;
 
             case 'pim_catalog_metric':
-                if ($this->metricFactory) {
-                    $value->setMetric($this->metricFactory->createMetric(''));
-                } else {
-                    $value->setMetric(new Metric());
-                }
+                $value->setMetric($this->metricFactory->createMetric(''));
                 break;
 
             case 'pim_catalog_image':
             case 'pim_catalog_file':
-                if ($this->mediaFactory) {
-                    $value->setMedia($this->mediaFactory->createMedia());
-                } else {
-                    $value->setMedia(new ProductMedia());
-                }
+                $value->setMedia($this->mediaFactory->createMedia());
                 break;
 
             default:
