@@ -17,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
@@ -45,25 +44,19 @@ class PublishedProductManager
     /** @var  UnpublisherInterface */
     protected $unpublisher;
 
-    /** @var RelatedAssociationPublisher */
-    protected $associationPublisher;
-
     /**
-     * @param ProductManager                      $manager              the product manager
-     * @param PublishedProductRepositoryInterface $repository           the published repository
-     * @param EventDispatcherInterface            $eventDispatcher      the event dispatcher
-     * @param PublisherInterface                  $publisher            the product publisher
-     * @param UnpublisherInterface                $unpublisher          the product unpublisher
-     * @param RelatedAssociationPublisher         $associationPublisher the related associations publisher
+     * @param ProductManager                      $manager         the product manager
+     * @param PublishedProductRepositoryInterface $repository      the published repository
+     * @param EventDispatcherInterface            $eventDispatcher the event dispatcher
+     * @param PublisherInterface                  $publisher       the product publisher
+     * @param UnpublisherInterface                $unpublisher     the product unpublisher
      */
     public function __construct(
         ProductManager $manager,
         PublishedProductRepositoryInterface $repository,
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
-        UnpublisherInterface $unpublisher,
-        // TODO : drop the default null value when merge on master
-        RelatedAssociationPublisher $associationPublisher = null
+        UnpublisherInterface $unpublisher
     ) {
         $this->productManager  = $manager;
         $this->repository      = $repository;
