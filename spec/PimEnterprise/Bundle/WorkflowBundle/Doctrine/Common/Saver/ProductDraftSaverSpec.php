@@ -7,6 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
@@ -31,7 +33,9 @@ class ProductDraftSaverSpec extends ObjectBehavior
         ProductDraftRepositoryInterface $repository,
         EventDispatcherInterface $dispatcher,
         ChangesCollector $collector,
-        ChangeSetComputerInterface $changeSet
+        ChangeSetComputerInterface $changeSet,
+        MetricFactory $metricFactory,
+        MediaFactory $mediaFactory
 
     ) {
         $this->beConstructedWith(
@@ -43,7 +47,9 @@ class ProductDraftSaverSpec extends ObjectBehavior
             $dispatcher,
             $collector,
             $changeSet,
-            AkeneoStorageUtilsExtension::DOCTRINE_ORM
+            AkeneoStorageUtilsExtension::DOCTRINE_ORM,
+            $metricFactory,
+            $mediaFactory
         );
     }
 

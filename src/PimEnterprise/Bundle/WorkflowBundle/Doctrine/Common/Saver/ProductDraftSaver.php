@@ -12,6 +12,12 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -24,9 +30,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Save product drafts, drafts will need to be approved to be merged in the working product data
@@ -62,6 +66,12 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     /** @var string */
     protected $storageDriver;
 
+    /** @var MetricFactory */
+    protected $metricFactory;
+
+    /** @var MediaFactory */
+    protected $mediaFactory;
+
     /**
      * @param ObjectManager                   $objectManager
      * @param ProductSavingOptionsResolver    $optionsResolver
@@ -82,7 +92,9 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $dispatcher,
         ChangesCollector $collector,
         ChangeSetComputerInterface $changeSet,
-        $storageDriver
+        $storageDriver,
+        MetricFactory $metricFactory,
+        MediaFactory $mediaFactory
     ) {
         $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
@@ -93,6 +105,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $this->collector = $collector;
         $this->changeSet = $changeSet;
         $this->storageDriver = $storageDriver;
+        $this->metricFactory = $metricFactory;
+        $this->mediaFactory = $mediaFactory;
     }
 
     /**
@@ -216,7 +230,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                         }
                     }
                 } else {
-                    $value->setData(null);
+                    $this->eraseValueData($value);
                 }
             }
         } else {
@@ -236,6 +250,41 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 $product->addCategory($category);
             }
             $product->setAssociations($associations->toArray());
+        }
+    }
+
+    /**
+     * Handle each kind of attributes $value, to set to a null equivalent
+     * This is hackish, but no elegant solution has been found
+     *
+     * @param AbstractProductValue $value
+     */
+    protected function eraseValueData(AbstractProductValue $value)
+    {
+        $attributeType = $value->getAttribute()->getAttributeType();
+
+        switch ($attributeType) {
+            case 'pim_catalog_simpleselect':
+                $value->setOption();
+                break;
+
+            case 'pim_catalog_multiselect':
+            case 'pim_catalog_price_collection':
+                $value->setPrices(new ArrayCollection());
+                break;
+
+            case 'pim_catalog_metric':
+                $value->setMetric($this->metricFactory->createMetric(''));
+                break;
+
+            case 'pim_catalog_image':
+            case 'pim_catalog_file':
+                $value->setMedia($this->mediaFactory->createMedia());
+                break;
+
+            default:
+                $value->setData(null);
+                break;
         }
     }
 }

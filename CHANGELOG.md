@@ -55,7 +55,22 @@
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
 
-# 1.0.15
+# 1.0.*
+
+## Bug fixes
+- PIM-3717: Fix handling draft save with special attributes
+
+# 1.0.17 (2015-01-28)
+
+## Bug fixes
+- PIM-3712: Fix installation issue related to the tag of gedmo/doctrine-extensions v2.3.11, we freeze to v2.3.10
+
+# 1.0.16 (2015-01-23)
+
+## Bug fixes
+- PIM-3664: Fix product media stacktrace regression on missing media on filesystem during an export
+
+# 1.0.15 (2015-01-21)
 
 ## Bug fixes
 - PIM-3636: Fix the failing publish of associations when mass publish products
