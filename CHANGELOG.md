@@ -1,4 +1,4 @@
-# 1.2.*
+# 1.2.25 (2015-02-04)
 
 ## Bug fixes
 - PIM-3718: load tinymce only on textarea click
