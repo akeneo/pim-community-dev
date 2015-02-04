@@ -9,7 +9,7 @@ Feature: Export products
     And the following job "ecommerce_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And the following products:
-      | sku       | family  | categories                                        | price                 |
+      | sku       | family  | categories                   | price                 |
       | my-sandal | sandals | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP |
     And the following product values:
       | product   | attribute   | value                            | locale | scope     |
@@ -24,7 +24,7 @@ Feature: Export products
       | my-sandal | description | A really stylish white sandal    | en_US  | print     |
       | my-sandal | description | Ein sehr elegantes weißes Sandal | de_DE  | print     |
     And the following products:
-      | sku          | family  | categories                                        | price                 | size   | color | manufacturer     | material | country_of_manufacture |
+      | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
       | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:

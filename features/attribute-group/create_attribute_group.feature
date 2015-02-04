@@ -3,6 +3,7 @@ Feature: Attribute group creation
   As a product manager
   I need to be able to create an attribute group
 
+  @skip
   Scenario: Successfully create an attribute group
     Given the "default" catalog configuration
     And I am logged in as "Julia"
