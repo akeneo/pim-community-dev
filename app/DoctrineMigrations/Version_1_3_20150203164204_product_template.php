@@ -6,13 +6,13 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Class Version20150203164204_product_template
+ * Class Version_1_3_20150203164204_product_template
  *
  * @author    Stephane Chapeau <stephane.chapeau@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20150203164204_product_template extends AbstractMigration
+class Version_1_3_20150203164204_product_template extends AbstractMigration
 {
     public function up(Schema $schema)
     {

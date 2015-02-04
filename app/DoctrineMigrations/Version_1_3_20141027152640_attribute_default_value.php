@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20141027152640_attribute_default_value extends AbstractMigration implements ContainerAwareInterface
+class Version_1_3_20141027152640_attribute_default_value extends AbstractMigration implements ContainerAwareInterface
 {
     protected $container;
 
