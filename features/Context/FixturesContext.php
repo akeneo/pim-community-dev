@@ -1586,6 +1586,7 @@ class FixturesContext extends RawMinkContext
                 'code'     => null,
                 'label'    => null,
                 'families' => null,
+                'locales'  => null,
                 'type'     => 'text',
                 'group'    => 'other',
             ],
@@ -1602,6 +1603,9 @@ class FixturesContext extends RawMinkContext
         $families = $data['families'];
         unset($data['families']);
 
+        $locales = $data['locales'];
+        unset($data['locales']);
+
         $data['type'] = $this->getAttributeType($data['type']);
 
         foreach ($data as $key => $element) {
@@ -1615,6 +1619,12 @@ class FixturesContext extends RawMinkContext
         if ($families) {
             foreach ($this->listToArray($families) as $familyCode) {
                 $this->getFamily($familyCode)->addAttribute($attribute);
+            }
+        }
+
+        if ($locales) {
+            foreach ($this->listToArray($locales) as $localeCode) {
+                $attribute->addAvailableLocale($this->getLocale($localeCode));
             }
         }
 

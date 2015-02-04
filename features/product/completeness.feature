@@ -244,3 +244,25 @@ Feature: Display the completeness of a product
     Then the row "sandals" should contain:
      | column      | value |
      | complete    |  50%  |
+
+  @jira  https://akeneo.atlassian.net/browse/PIM-3386
+  Scenario: Successfully update the completeness of a product that contains attribute locale specific attributes (PIM-3386)
+    Given the following attributes:
+      | code      | families | locales      | group |
+      | text_fr   | sneakers | fr_FR        | info  |
+      | text_en   | sneakers | en_US        | info  |
+    And I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    And I switch the attribute "[text_fr]" requirement in channel "Mobile"
+    And I switch the attribute "[text_en]" requirement in channel "Tablet"
+    And I save the family
+    And I am on the "sneakers" product page
+    When I visit the "Completeness" tab
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale                  | state   | message          | ratio |
+      | tablet  | English (United States) | warning | 2 missing values | 80%   |
+      | tablet  | French (France)         | warning | 2 missing values | 80%   |
+      | mobile  | English (United States) | success | Complete         | 100%  |
+      | mobile  | French (France)         | warning | 1 missing values | 83%   |
+
