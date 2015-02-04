@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20140926142324 extends AbstractMigration implements ContainerAwareInterface
+class Version20140926142324_usable_as_a_grid_column extends AbstractMigration implements ContainerAwareInterface
 {
     protected $container;
 
