@@ -33,3 +33,6 @@ parameters:
     ## Uncomment to configure mongodb
     # mongodb_server: 'mongodb://localhost:27017'
     # mongodb_database: akeneo_pim
+
+    doctrine_migrations_dir: %kernel.root_dir%/DoctrineMigrations
+
