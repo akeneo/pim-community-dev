@@ -3,15 +3,14 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Pim\Bundle\CatalogBundle\Model;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ScalarComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute,
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute,
         PropertyAccessor $accessor
     ) {
         $value->getAttribute()->willReturn($attribute);

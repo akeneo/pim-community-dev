@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface;
 
 /**
  * Locale Access entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocaleAccess implements LocaleAccessInterface
 {
@@ -28,7 +28,7 @@ class LocaleAccess implements LocaleAccessInterface
     protected $id;
 
     /**
-     * @var Locale $locale
+     * @var LocaleInterface $locale
      */
     protected $locale;
 
@@ -64,7 +64,7 @@ class LocaleAccess implements LocaleAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale(Locale $locale)
+    public function setLocale(LocaleInterface $locale)
     {
         $this->locale = $locale;
 

@@ -11,6 +11,9 @@ job_profile_accesses:
     footwear_group_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
+    footwear_variant_group_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_option_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
@@ -28,6 +31,9 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
     footwear_group_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
+    footwear_variant_group_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
     footwear_option_import:

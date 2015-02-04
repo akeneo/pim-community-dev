@@ -1,0 +1,13 @@
+parameters:
+    pimee_catalog_rule.runner.product.class: PimEnterprise\Bundle\CatalogRuleBundle\Runner\ProductRuleRunner
+
+services:
+    pimee_catalog_rule.runner.product:
+        class: %pimee_catalog_rule.runner.product.class%
+        arguments:
+            - '@pimee_catalog_rule.builder.product'
+            - '@pimee_catalog_rule.selector.product'
+            - '@pimee_catalog_rule.applier.product'
+            - %pimee_catalog_rule.model.product_condition.class%
+        tags:
+            - { name: akeneo_rule_engine.runner }

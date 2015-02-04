@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product media publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class MediaPublisher implements PublisherInterface
 {
@@ -56,7 +56,7 @@ class MediaPublisher implements PublisherInterface
         $value = $options['value'];
         $copiedMedia = $this->createNewPublishedProductMedia();
 
-        if ($value->getData() &&  $value->getData()->getFilename()) {
+        if ($value->getData() && $value->getData()->getFilename()) {
             $prefix = sprintf(
                 '%s-%s',
                 self::PREFIX_FILE,
@@ -73,7 +73,7 @@ class MediaPublisher implements PublisherInterface
      */
     public function supports($object)
     {
-        return $object instanceof AbstractProductMedia;
+        return $object instanceof ProductMediaInterface;
     }
 
     /**

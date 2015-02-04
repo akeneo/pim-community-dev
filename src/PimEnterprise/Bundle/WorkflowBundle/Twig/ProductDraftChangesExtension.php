@@ -11,29 +11,29 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Twig extension to present product draft changes
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftChangesExtension extends \Twig_Extension
 {
     /** @var ObjectRepository */
     protected $valueRepository;
 
-    /** @var ReferableEntityRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var \Diff_Renderer_Html_Array */
@@ -55,16 +55,16 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected $twig;
 
     /**
-     * @param ObjectRepository                   $valueRepository
-     * @param ReferableEntityRepositoryInterface $attributeRepository
-     * @param RendererInterface                  $renderer
-     * @param TranslatorInterface                $translator
-     * @param ProductManager                     $productManager
-     * @param AttributeManager                   $attributeManager
+     * @param ObjectRepository                      $valueRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param RendererInterface                     $renderer
+     * @param TranslatorInterface                   $translator
+     * @param ProductManager                        $productManager
+     * @param AttributeManager                      $attributeManager
      */
     public function __construct(
         ObjectRepository $valueRepository,
-        ReferableEntityRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
         ProductManager $productManager,
@@ -123,9 +123,11 @@ class ProductDraftChangesExtension extends \Twig_Extension
      */
     public function presentAttribute(array $change, $default)
     {
-        if (isset($change['__context__']['attribute'])
-            && null !== $attribute = $this->attributeRepository->findByReference($change['__context__']['attribute'])) {
-            return $this->present($attribute, $change);
+        if (isset($change['__context__']['attribute'])) {
+            $attributeCode = $change['__context__']['attribute'];
+            if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
+                return $this->present($attribute, $change);
+            }
         }
 
         return $default;

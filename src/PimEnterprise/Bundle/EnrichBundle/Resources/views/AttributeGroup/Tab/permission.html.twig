@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'pimee/manage-permissions'],
+        function ($, managePermissions) {
+            'use strict';
+
+            $(function () {
+                var options = {
+                    elementId: '#{{form.permissions.vars.id}}',
+                    changeBlockLabel: '{{ 'Changes'|trans }}',
+                    grantMessage: 'permission-changes.attribute group.grant',
+                    revokeMessage: 'permission-changes.attribute group.revoke',
+                    update: {
+                        add: {
+                            '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.view.vars.id }}']
+                        },
+                        remove: {
+                            '{{ form.permissions.view.vars.id }}': ['{{ form.permissions.edit.vars.id }}'],
+                        }
+                    }
+                };
+                managePermissions(options);
+            });
+        });
+</script>
+
+<div class="tab-pane tab-permission {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+</div>

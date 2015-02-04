@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Job profile listener used to handle permissions
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobPermissionsSubscriber implements EventSubscriberInterface
 {

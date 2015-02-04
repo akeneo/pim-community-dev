@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product price publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PricePublisher implements PublisherInterface
 {
@@ -49,7 +49,7 @@ class PricePublisher implements PublisherInterface
      */
     public function supports($object)
     {
-        return $object instanceof AbstractProductPrice;
+        return $object instanceof ProductPriceInterface;
     }
 
     /**

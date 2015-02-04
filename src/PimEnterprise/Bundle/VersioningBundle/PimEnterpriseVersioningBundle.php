@@ -18,10 +18,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * Enterprise versioning bundle
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PimEnterpriseVersioningBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $container

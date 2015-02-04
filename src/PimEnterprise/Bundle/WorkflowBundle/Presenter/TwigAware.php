@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 /**
  * Provides twig capabilities default implementation
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 trait TwigAware
 {

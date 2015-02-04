@@ -13,13 +13,13 @@ namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductMassActionRepository as BaseProductMassActionRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository;
 
 /**
  * Overriden product mass action repository
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductMassActionRepository extends BaseProductMassActionRepository
 {
@@ -29,13 +29,13 @@ class ProductMassActionRepository extends BaseProductMassActionRepository
     /**
      * @param DocumentManager            $dm
      * @param string                     $documentName
-     * @param FamilyRepository           $familyRepository
+     * @param FamilyRepositoryInterface  $familyRepository
      * @param PublishedProductRepository $publishedRepository
      */
     public function __construct(
         DocumentManager $dm,
         $documentName,
-        FamilyRepository $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         PublishedProductRepository $publishedRepository
     ) {
         $this->dm = $dm;

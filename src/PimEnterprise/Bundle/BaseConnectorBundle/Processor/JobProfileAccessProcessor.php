@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\BaseConnectorBundle\Processor;
  * Job profile access import processor
  * Allows to bind data into a job profile access and validate them
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfileAccessProcessor extends AbstractAccessProcessor
 {

@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Published product manager
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductManager
 {
@@ -68,9 +68,8 @@ class PublishedProductManager
         $this->productManager  = $manager;
         $this->repository      = $repository;
         $this->eventDispatcher = $eventDispatcher;
-        $this->publisher = $publisher;
-        $this->unpublisher = $unpublisher;
-        $this->associationPublisher = $associationPublisher;
+        $this->publisher       = $publisher;
+        $this->unpublisher     = $unpublisher;
     }
 
     /**
@@ -118,14 +117,7 @@ class PublishedProductManager
      */
     public function findByIdentifier($identifier)
     {
-        return $this->repository->findOneBy(
-            [
-                [
-                    'attribute' => $this->productManager->getIdentifierAttribute(),
-                    'value' => $identifier
-                ]
-            ]
-        );
+        return $this->repository->findOneByIdentifier($identifier);
     }
 
     /**
@@ -149,7 +141,12 @@ class PublishedProductManager
 
         $published = $this->publisher->publish($product, $publishOptions);
         $this->getObjectManager()->persist($published);
-        $this->getObjectManager()->flush();
+
+        $publishOptions = array_merge(['flush' => true], $publishOptions);
+
+        if (true === $publishOptions['flush']) {
+            $this->getObjectManager()->flush();
+        }
 
         $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
 
@@ -172,6 +169,22 @@ class PublishedProductManager
     }
 
     /**
+     * Bulk publish products
+     *
+     * @param array $products
+     */
+    public function publishAll(array $products)
+    {
+        foreach ($products as $product) {
+            $this->publish($product, ['with_associations' => false, 'flush' => false]);
+        }
+
+        $this->getObjectManager()->flush();
+
+        $this->publishAssociations($products);
+    }
+
+    /**
      * Publish all associations where products appears in owner or owned side
      *
      * For instance,
@@ -183,17 +196,13 @@ class PublishedProductManager
      *
      * @param ProductInterface[] $products
      */
-    public function publishAssociations(array $products)
+    protected function publishAssociations(array $products)
     {
         foreach ($products as $product) {
             $published = $this->findPublishedProductByOriginal($product);
             foreach ($product->getAssociations() as $association) {
                 $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
                 $published->addAssociation($copiedAssociation);
-            }
-            // TODO : drop this if when merge on master
-            if ($this->associationPublisher !== null) {
-                $this->associationPublisher->publish($published);
             }
         }
         $this->getObjectManager()->flush();

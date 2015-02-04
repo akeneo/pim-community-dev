@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Row actions configurator for product grid
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class RowActionsConfigurator implements ConfiguratorInterface
 {
@@ -39,20 +39,20 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var LocaleRepository */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
     /**
      * @param ConfigurationRegistry      $registry
      * @param SecurityContextInterface   $securityContext
      * @param ProductRepositoryInterface $productRepository
-     * @param LocaleRepository           $localeRepository
+     * @param LocaleRepositoryInterface  $localeRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
         ProductRepositoryInterface $productRepository,
-        LocaleRepository $localeRepository
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->registry = $registry;
         $this->securityContext = $securityContext;
@@ -78,7 +78,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
+            $product = $this->productRepository->findOneById($record->getValue('id'));
             $locale = $this->localeRepository->findOneBy(['code' => $record->getValue('dataLocale')]);
 
             $editGranted = $this->securityContext->isGranted(Attributes::EDIT, $product);
@@ -103,7 +103,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function addDispatchAction()
     {
         $properties = $this->configuration->offsetGetByPath('[properties]');
-        $properties['row_action_link']= [
+        $properties['row_action_link'] = [
             'type'  => 'url',
             'route' => 'pimee_enrich_product_dispatch',
             'params' => ['id', 'dataLocale']
@@ -112,7 +112,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
 
         $actions = $this->configuration->offsetGetByPath('[actions]');
         unset($actions['edit']['rowAction']);
-        $actions['row_action']= [
+        $actions['row_action'] = [
             'type'      => 'tab-redirect',
             'label'     => 'Dispatch a product',
             'tab'       => 'attributes',
@@ -136,7 +136,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
             '[action_configuration]',
             $this->getActionConfigurationClosure()
         );
-
     }
 
     /**

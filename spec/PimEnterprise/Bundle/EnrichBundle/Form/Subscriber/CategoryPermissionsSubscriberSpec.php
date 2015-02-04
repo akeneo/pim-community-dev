@@ -2,14 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 class CategoryPermissionsSubscriberSpec extends ObjectBehavior
 {
@@ -17,7 +17,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         CategoryAccessManager $accessManager,
         SecurityFacade $securityFacade,
         FormEvent $event,
-        Category $category,
+        CategoryInterface $category,
         Form $form,
         Form $viewForm,
         Form $editForm,
@@ -118,7 +118,9 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $applyForm->getData()->willReturn(true);
 
         $accessManager->setAccess($category, ['one', 'two'], ['three'], ['three'], true)->shouldBeCalled();
-        $accessManager->updateChildrenAccesses($category, ['one', 'two'], ['three'], ['three'], [], [], [])->shouldBeCalled();
+        $accessManager
+            ->updateChildrenAccesses($category, ['one', 'two'], ['three'], ['three'], [], [], [])
+            ->shouldBeCalled();
 
         $this->postSubmit($event);
     }

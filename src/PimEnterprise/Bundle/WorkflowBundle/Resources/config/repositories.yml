@@ -1,6 +1,0 @@
-services:
-    pimee_workflow.repository.product_draft:
-        class: %pimee_workflow.repository.product_draft.class%
-        factory_service: pimee_workflow.object_manager.product_draft
-        factory_method: getRepository
-        arguments: [%pimee_workflow.model.product_draft.class%]

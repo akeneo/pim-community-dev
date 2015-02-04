@@ -1,0 +1,4 @@
+pimee_catalog_rule_rule_view_permissions:
+    type: action
+    label: pimee_catalog_rule.attribute.acl.rule.view_permissions
+    group_name: pim_enrich.acl_group.attribute

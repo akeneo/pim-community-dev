@@ -31,4 +31,3 @@ Feature: Browse products I have access to
     And I select the "Shoes" tree
     Then I should see products rangers and loafer
     And I select the "Slippers" tree
-

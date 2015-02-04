@@ -260,6 +260,12 @@
             <arg value="doctrine/mongodb-odm" />
             <arg value="v1.0.0-beta10@dev" />
         </exec>
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="require" />
+            <arg value="--no-update" />
+            <arg value="doctrine/mongodb-odm" />
+            <arg value="v1.0.0-beta10@dev" />
+        </exec>
     </target>
 
     <target name="vendors" description="Install vendors">
@@ -308,7 +314,7 @@
             </fileset>
         </replaceregexp>
 
-        <replaceregexp match="pim_catalog_storage_driver: doctrine/orm" replace="pim_catalog_storage_driver: doctrine/mongodb-odm" byline="true">
+        <replaceregexp match="pim_catalog_product_storage_driver: doctrine/orm" replace="pim_catalog_product_storage_driver: doctrine/mongodb-odm" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="pim_parameters*" />
             </fileset>
@@ -333,6 +339,16 @@
           <arg value="pim:install" />
           <arg value="--env=behat" />
           <arg value="--force" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+        </exec>
+        <exec executable="app/console" failonerror="true">
+          <arg value="cache:warmup" />
+          <arg value="--env=behat" />
+          <arg value="--no-debug" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />

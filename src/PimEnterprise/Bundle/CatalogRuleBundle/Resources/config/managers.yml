@@ -1,0 +1,11 @@
+parameters:
+    pimee_catalog_rule.manager.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager
+
+services:
+    # Managers
+    pimee_catalog_rule.manager.rule_relation:
+        class: %pimee_catalog_rule.manager.rule_relation.class%
+        arguments:
+            - '@pimee_catalog_rule.repository.rule_relation'
+            - '@pim_catalog.repository.attribute'
+            - %pim_catalog.entity.attribute.class%

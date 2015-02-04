@@ -16,7 +16,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 /**
  * Job profile access interface
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 interface JobProfileAccessInterface extends AccessInterface
 {

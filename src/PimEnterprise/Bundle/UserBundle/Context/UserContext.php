@@ -12,25 +12,24 @@
 namespace PimEnterprise\Bundle\UserBundle\Context;
 
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * User context that provides access to user locale, channel and default category tree
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class UserContext extends BaseUserContext
 {
-    /**
-     * @var CategoryManager
-     */
+    /** @var CategoryManager */
     protected $categoryManager;
 
     /**
      * Returns the current locale making sure that user has permissions for this locale
      *
-     * @return Locale
+     * @return LocaleInterface
      *
      * @throws \LogicException When there is no granted locale
      */
@@ -63,7 +62,7 @@ class UserContext extends BaseUserContext
      *
      * @param string $permissionLevel
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getGrantedUserLocales($permissionLevel = Attributes::VIEW_PRODUCTS)
     {

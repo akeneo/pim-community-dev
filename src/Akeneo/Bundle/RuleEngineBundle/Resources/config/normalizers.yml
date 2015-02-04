@@ -1,0 +1,18 @@
+parameters:
+    akeneo_rule_engine.normalizer.rule_collection.class: Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleCollectionNormalizer
+    akeneo_rule_engine.normalizer.rule_definition.class: Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer
+    akeneo_rule_engine.normalizer.rule.class:            Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleNormalizer
+
+services:
+   akeneo_rule_engine.normalizer.rule_collection:
+        class: %akeneo_rule_engine.normalizer.rule_collection.class%
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+   akeneo_rule_engine.normalizer.rule_definition:
+        class: %akeneo_rule_engine.normalizer.rule_definition.class%
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+   akeneo_rule_engine.normalizer.rule:
+        class: %akeneo_rule_engine.normalizer.rule.class%

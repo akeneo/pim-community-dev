@@ -13,7 +13,7 @@ services:
         factory_method: getRepository
         arguments: [%pimee_workflow.entity.published_product.class%]
         calls:
-            - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
+            - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_factory']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
         tags:
             - { name: 'pim_repository' }
@@ -33,8 +33,13 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pimee_workflow.repository.product_draft_ownership:
-        alias: pimee_workflow.repository.product_draft
+    pimee_workflow.repository.product_draft:
+        class: %pimee_workflow.repository.product_draft.class%
+        factory_service: pimee_workflow.object_manager.product_draft
+        factory_method: getRepository
+        arguments: [%pimee_workflow.model.product_draft.class%]
+        tags:
+            - { name: 'pim_repository' }
 
     pimee_workflow.repository.published_product_mass_action:
         class: %pim_catalog.repository.product_mass_action.class%

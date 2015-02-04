@@ -3,6 +3,9 @@
 pim_datagrid:
     resource: "@PimDataGridBundle/Resources/config/routing.yml"
 
+pim_dashboard:
+    resource: "@PimDashboardBundle/Resources/config/routing.yml"
+
 pim_enrich:
     resource: "@PimEnrichBundle/Resources/config/routing.yml"
 
@@ -23,6 +26,18 @@ pimee_workflow:
 
 pim_versioning:
     resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
+
+pim_comment:
+    resource: "@PimCommentBundle/Resources/config/routing.yml"
+
+pim_pdf_generator:
+    resource: "@PimEnterprisePdfGeneratorBundle/Resources/config/routing.yml"
+
+pim_notification:
+    resource: "@PimNotificationBundle/Resources/config/routing.yml"
+
+pim_catalog_rule:
+    resource: "@PimEnterpriseCatalogRuleBundle/Resources/config/routing.yml"
 
 # Oro platform
 

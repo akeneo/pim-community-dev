@@ -2,16 +2,15 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
+use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
-use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class JobPermissionsSubscriberSpec extends ObjectBehavior
 {

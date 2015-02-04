@@ -62,9 +62,11 @@
         {% if form.permissions is defined %}
             {% set navbarTabs = navbarTabs|merge(['Permissions']) %}
         {% endif %}
-        {% set navbarTabs = navbarTabs|merge(['History']) %}
+        {% if resource_granted('pim_importexport_' ~ form.vars.value.type ~ '_profile_history') %}
+            {% set navbarTabs = navbarTabs|merge(['History']) %}
+        {% endif %}
 
-        {{ elements.form_navbar(navbarTabs) }}
+        {{ elements.form_navbar(navbarTabs, '') }}
 
         <div class="row-fluid tab-content">
             <div class="tab-pane buffer-top active" id="general-properties">
@@ -91,9 +93,11 @@
             </div>
             {% endif %}
 
-            <div class="tab-pane" id="history">
-                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
-            </div>
+            {% if resource_granted('pim_importexport_' ~ form.vars.value.type ~ '_profile_history') %}
+                <div class="tab-pane" id="history">
+                    {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+                </div>
+            {% endif %}
         </div>
 
     {{ form_end(form) }}
