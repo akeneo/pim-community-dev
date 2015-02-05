@@ -25,10 +25,6 @@ class Version_1_3_20150203164202_comment extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE pim_comment_comment DROP FOREIGN KEY FK_2A32D03D727ACA70');
-        $this->addSql('DROP TABLE pim_comment_comment');
-
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

@@ -32,9 +32,7 @@ class Version_1_3_20141027152640_attribute_default_value extends AbstractMigrati
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql(sprintf('ALTER TABLE %s ADD default_value LONGTEXT DEFAULT NULL', $this->getTableName()));
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 
     protected function getTableName()

@@ -26,10 +26,6 @@ class Version_1_3_20150203164205_user_notification extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE pim_notification_user_notification DROP FOREIGN KEY FK_342AA855BF5476CA');
-        $this->addSql('DROP TABLE pim_notification_user_notification');
-        $this->addSql('DROP TABLE pim_notification_notification');
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

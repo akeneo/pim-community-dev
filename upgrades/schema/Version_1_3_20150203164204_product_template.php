@@ -26,9 +26,6 @@ class Version_1_3_20150203164204_product_template extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('DROP TABLE pim_catalog_product_template');
-        $this->addSql('ALTER TABLE pim_catalog_group DROP product_template_id');
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

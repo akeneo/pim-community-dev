@@ -25,9 +25,6 @@ class Version_1_3_20140918172020_sequential_edit extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('DROP TABLE pim_enrich_sequential_edit');
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

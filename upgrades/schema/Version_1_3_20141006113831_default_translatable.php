@@ -32,9 +32,7 @@ class Version_1_3_20141006113831_default_translatable extends AbstractMigration 
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql(sprintf('ALTER TABLE %s ADD is_default TINYINT(1) NOT NULL, ADD is_translatable TINYINT(1) NOT NULL', $this->getTableName()));
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 
     protected function getTableName()

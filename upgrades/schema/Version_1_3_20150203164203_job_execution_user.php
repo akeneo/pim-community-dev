@@ -23,9 +23,6 @@ class Version_1_3_20150203164203_job_execution_user extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE akeneo_batch_job_execution DROP `user`');
-
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

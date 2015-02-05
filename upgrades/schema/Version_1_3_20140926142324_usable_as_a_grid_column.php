@@ -32,9 +32,7 @@ class Version_1_3_20140926142324_usable_as_a_grid_column extends AbstractMigrati
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql(sprintf('ALTER TABLE %s ADD useable_as_grid_column TINYINT(1) DEFAULT \'0\' NOT NULL', $this->getTableName()));
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 
     protected function getTableName()
