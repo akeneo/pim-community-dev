@@ -37,6 +37,6 @@ Feature: Execute an import
     And I should see "Updated 2"
     And I should see "Updated products 3"
     And the product "sandal-white-37" should have the following value:
-      | name-en_US   | My new name |
+      | name-en_US | My new name |
     And the product "sandal-red-37" should have the following value:
-      | name-en_US   | old name |
+      | name-en_US | old name |

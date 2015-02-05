@@ -172,9 +172,9 @@ Feature: Execute an import
     And I should see "Updated 1"
     And I should see "Updated products 6"
     And the product "sandal-white-37" should have the following value:
-      | handmade | |
+      | handmade |  |
     And the product "sandal-white-38" should have the following value:
-      | handmade | |
+      | handmade |  |
 
   Scenario: Successfully import a csv file of variant group values with prices as many fields
     Given the following CSV file to import:
@@ -269,8 +269,8 @@ Feature: Execute an import
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     And import directory of "footwear_variant_group_import" contains the following media:
-      | bic-core-148.gif        |
-      | bic-core-148.txt        |
+      | bic-core-148.gif |
+      | bic-core-148.txt |
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish

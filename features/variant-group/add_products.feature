@@ -12,8 +12,8 @@ Feature: Add products to a variant group
       | sandal-white-38 | sandals | winter_collection | 38   | white | old name   |
       | sandal-white-39 | sandals | winter_collection | 39   | white | old name   |
     And the following product groups:
-      | code    | label   | axis        | type    |
-      | SANDAL  | Sandal  | size, color | VARIANT |
+      | code   | label  | axis        | type    |
+      | SANDAL | Sandal | size, color | VARIANT |
     And the following variant group values:
       | group  | attribute    | value       | locale | scope |
       | SANDAL | manufacturer | Converse    |        |       |
@@ -37,7 +37,7 @@ Feature: Add products to a variant group
       | comment      | New comment |
       | manufacturer | Converse    |
     And the product "sandal-white-39" should have the following value:
-      | name-en_US   | old name    |
+      | name-en_US | old name |
 
   Scenario: Successfully add products in variant groups, history should be updated with a variant group context
     Given I am on the "SANDAL" variant group page

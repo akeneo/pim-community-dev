@@ -7,11 +7,11 @@ Feature: Import groups
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code           | label          | type    | axis        |
-      | ORO_TSHIRT     | Oro T-shirt    | VARIANT | size, color |
-      | AKENEO_TSHIRT  | Akeneo T-shirt | VARIANT | size        |
-      | ORO_XSELL      | Oro X          | XSELL   |             |
-      | AKENEO_XSELL   | Akeneo X       | XSELL   |             |
+      | code          | label          | type    | axis        |
+      | ORO_TSHIRT    | Oro T-shirt    | VARIANT | size, color |
+      | AKENEO_TSHIRT | Akeneo T-shirt | VARIANT | size        |
+      | ORO_XSELL     | Oro X          | XSELL   |             |
+      | AKENEO_XSELL  | Akeneo X       | XSELL   |             |
     And I am logged in as "Julia"
 
   Scenario: Successfully import standard groups to create and update products (no variant groups)
@@ -33,13 +33,13 @@ Feature: Import groups
     And I should see "Updated 2"
     And I should not see "Skip"
     Then there should be the following groups:
-      | code           | label-en_US    | label-fr_FR          | type    | axis       |
-      | ORO_TSHIRT     | Oro T-shirt    |                      | VARIANT | color,size |
-      | AKENEO_TSHIRT  | Akeneo T-shirt |                      | VARIANT | size       |
-      | ORO_XSELL      | Oro X          |                      | XSELL   |            |
-      | AKENEO_XSELL   | Akeneo XSell   | Akeneo Vente Croisée | XSELL   |            |
-      | AKENEO_NEW     | US             | FR                   | XSELL   |            |
-      | default        |                |                      | RELATED |            |
+      | code          | label-en_US    | label-fr_FR          | type    | axis       |
+      | ORO_TSHIRT    | Oro T-shirt    |                      | VARIANT | color,size |
+      | AKENEO_TSHIRT | Akeneo T-shirt |                      | VARIANT | size       |
+      | ORO_XSELL     | Oro X          |                      | XSELL   |            |
+      | AKENEO_XSELL  | Akeneo XSell   | Akeneo Vente Croisée | XSELL   |            |
+      | AKENEO_NEW    | US             | FR                   | XSELL   |            |
+      | default       |                |                      | RELATED |            |
 
   Scenario: Skip the line when encounter the change of a type with import
     Given the following CSV file to import:
@@ -56,11 +56,11 @@ Feature: Import groups
     And I should see "Read 1"
     And I should see "Skipped 1"
     Then there should be the following groups:
-      | code           | label-en_US    | label-fr_FR          | type    | axis       |
-      | ORO_TSHIRT     | Oro T-shirt    |                      | VARIANT | color,size |
-      | AKENEO_TSHIRT  | Akeneo T-shirt |                      | VARIANT | size       |
-      | ORO_XSELL      | Oro X          |                      | XSELL   |            |
-      | AKENEO_XSELL   | Akeneo X       |                      | XSELL   |            |
+      | code          | label-en_US    | label-fr_FR | type    | axis       |
+      | ORO_TSHIRT    | Oro T-shirt    |             | VARIANT | color,size |
+      | AKENEO_TSHIRT | Akeneo T-shirt |             | VARIANT | size       |
+      | ORO_XSELL     | Oro X          |             | XSELL   |            |
+      | AKENEO_XSELL  | Akeneo X       |             | XSELL   |            |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip the line when encounter an empty code

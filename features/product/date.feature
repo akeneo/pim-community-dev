@@ -18,8 +18,8 @@ Feature: Check that imported date is properly displayed
     Given I am on the products page
     And I display the columns sku, family, release, complete, created and updated
     Then the row "postit" should contain:
-     | column      | value |
-     | release     | May 1, 2014 |
+     | column  | value       |
+     | release | May 1, 2014 |
 
   Scenario: Successfully display a date in the product edit form (PIM-2971)
     Given I am on the "postit" product page
@@ -32,8 +32,8 @@ Feature: Check that imported date is properly displayed
     And I press the "Save" button
     When I visit the "History" tab
     Then I should see this exact history:
-      | version | property | before  | after       |
-      | 2       |   sku    | postit  | nice_postit |
-      | 1       |   sku    |         | postit      |
-      | 1       | release  |         | 2014-05-01  |
-      | 1       | enabled  |         |      1      |
+      | version | property | before | after       |
+      | 2       | sku      | postit | nice_postit |
+      | 1       | sku      |        | postit      |
+      | 1       | release  |        | 2014-05-01  |
+      | 1       | enabled  |        | 1           |

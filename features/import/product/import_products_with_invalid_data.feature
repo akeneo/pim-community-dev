@@ -145,7 +145,7 @@ Feature: Execute a job
     And the product "SKU-001" should have the following value:
       | number_in_stock | 4000 |
     And the product "SKU-002" should have the following value:
-      | number_in_stock | 100  |
+      | number_in_stock | 100 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with non-existing media attributes during an import
@@ -172,7 +172,7 @@ Feature: Execute a job
     And I should see "frontView: File not found"
     And I should see "userManual: File not found"
     And the product "fanatic-freewave-76" should have the following values:
-      | name-en_US | Fanatic Freewave 76 |
+      | name-en_US | Fanatic Freewave 76     |
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
 

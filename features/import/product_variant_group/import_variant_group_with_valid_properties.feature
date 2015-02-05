@@ -47,6 +47,6 @@ Feature: Execute an import
     Then I should see "Read 1"
     And I should see "Updated 1"
     And there should be the following groups:
-      | code    | label-en_US  | label-fr_FR | axis       | type    |
-      | SANDAL  | My new label |             | color,size | VARIANT |
-      | NOT_VG  | Not VG       |             |            | RELATED |
+      | code   | label-en_US  | label-fr_FR | axis       | type    |
+      | SANDAL | My new label |             | color,size | VARIANT |
+      | NOT_VG | Not VG       |             |            | RELATED |

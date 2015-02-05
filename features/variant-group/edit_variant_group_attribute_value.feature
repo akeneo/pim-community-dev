@@ -49,46 +49,46 @@ Feature: Editing attribute values of a variant group also updates products
     And I check the "Handmade" switch
     And I save the variant group
     Then the product "boot" should have the following values:
-      | handmade  | 1 |
+      | handmade | 1 |
 
   Scenario: Change a pim_catalog_date attribute of a variant group
     When I change the "Destocking date" to "2001-01-01"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | destocking_date  | 2001-01-01 |
+      | destocking_date | 2001-01-01 |
 
   Scenario: Change a pim_catalog_metric attribute of a variant group
     When I change the "Length" to "5"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | length  | 5.0000 CENTIMETER |
+      | length | 5.0000 CENTIMETER |
 
   Scenario: Change a pim_catalog_multiselect attribute of a variant group
     When I change the "Weather conditions" to "Wet, Cold"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | weather_conditions  | Wet, Cold |
+      | weather_conditions | Wet, Cold |
 
   Scenario: Change a pim_catalog_number attribute of a variant group
     When I visit the "Other" group
     And I change the "Number in stock" to "8000"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | number_in_stock  | 8000.0000 |
+      | number_in_stock | 8000.0000 |
 
   Scenario: Change a pim_catalog_price_collection attribute of a variant group
     When I visit the "Marketing" group
     And I change the "€ Price" to "89"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | price  | 89.00 EUR |
+      | price | 89.00 EUR |
 
   Scenario: Change a pim_catalog_simpleselect attribute of a variant group
     When I visit the "Marketing" group
     And I change the "Rating" to "5"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | rating  | 5 stars |
+      | rating | 5 stars |
 
   Scenario: Change a pim_catalog_text attribute of a variant group
     When I change the "Name" to "In a galaxy far far away"

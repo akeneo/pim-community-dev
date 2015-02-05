@@ -12,11 +12,11 @@ Feature: Leave a comment on a product
       | high-heels |
     And the following product comments:
       | product    | # | author | message                                                        | parent | created_at |
-      | high-heels | 1 | Mary   | The price is outdated.                                         |        | 27-Aug-14   |
-      | high-heels | 2 | Julia  | Waiting for the confirmation of our manufacturer to update it. | 1      | 29-Aug-14   |
-      | high-heels | 3 | Mary   | Ok, thanks Jul's.                                              | 1      | 01-Sep-14   |
-      | high-heels | 4 | Julia  | Does not belong to the Summer Collection anymore.              |        | 25-Aug-14   |
-      | high-heels | 5 | Mary   | Should be associated with red heel.                            |        | 28-Aug-14   |
+      | high-heels | 1 | Mary   | The price is outdated.                                         |        | 27-Aug-14  |
+      | high-heels | 2 | Julia  | Waiting for the confirmation of our manufacturer to update it. | 1      | 29-Aug-14  |
+      | high-heels | 3 | Mary   | Ok, thanks Jul's.                                              | 1      | 01-Sep-14  |
+      | high-heels | 4 | Julia  | Does not belong to the Summer Collection anymore.              |        | 25-Aug-14  |
+      | high-heels | 5 | Mary   | Should be associated with red heel.                            |        | 28-Aug-14  |
 
   @javascript
   Scenario: Successfully add a new comment on a product

@@ -52,7 +52,7 @@ Feature: Add attribute options
     And I wait for options to load
     And I edit the code "green" to turn it to "yellow" and cancel
     Then I should see a confirm dialog with the following content:
-      | title   | Cancel modification                                                                                   |
+      | title   | Cancel modification                                                                                    |
       | content | Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ? |
     And I confirm the cancellation
     And I wait for options to load

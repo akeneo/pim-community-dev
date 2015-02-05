@@ -41,9 +41,9 @@ Feature: Execute an import
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | axis       | type    |
-      | SANDAL  | Sandal      |             | color,size | VARIANT |
-      | NOT_VG  | Not VG      |             |            | RELATED |
+      | code   | label-en_US | label-fr_FR | axis       | type    |
+      | SANDAL | Sandal      |             | color,size | VARIANT |
+      | NOT_VG | Not VG      |             |            | RELATED |
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to remove the axis size)
     Given the following CSV file to import:
@@ -60,9 +60,9 @@ Feature: Execute an import
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | axis       | type    |
-      | SANDAL  | Sandal      |             | color,size | VARIANT |
-      | NOT_VG  | Not VG      |             |            | RELATED |
+      | code   | label-en_US | label-fr_FR | axis       | type    |
+      | SANDAL | Sandal      |             | color,size | VARIANT |
+      | NOT_VG | Not VG      |             |            | RELATED |
 
   Scenario: Skip the line when encounter a new variant group with no axis
     Given the following CSV file to import:
@@ -79,9 +79,9 @@ Feature: Execute an import
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | axis       | type    |
-      | SANDAL  | Sandal      |             | color,size | VARIANT |
-      | NOT_VG  | Not VG      |             |            | RELATED |
+      | code   | label-en_US | label-fr_FR | axis       | type    |
+      | SANDAL | Sandal      |             | color,size | VARIANT |
+      | NOT_VG | Not VG      |             |            | RELATED |
 
   Scenario: Skip the line when encounter an existing group which is not a variant group
     Given the following CSV file to import:
@@ -98,6 +98,6 @@ Feature: Execute an import
     And I should see "Read 1"
     And I should see "Skipped 1"
     And there should be the following groups:
-      | code    | label-en_US | label-fr_FR | axis       | type    |
-      | SANDAL  | Sandal      |             | color,size | VARIANT |
-      | NOT_VG  | Not VG      |             |            | RELATED |
+      | code   | label-en_US | label-fr_FR | axis       | type    |
+      | SANDAL | Sandal      |             | color,size | VARIANT |
+      | NOT_VG | Not VG      |             |            | RELATED |

@@ -18,8 +18,8 @@ Feature: Disable attribute fields updated by a variant group
     And the following "options" attribute options: Blue
     And the following "color" attribute options: Red, black and Green
     And the following product groups:
-      | code              | label             | axis       | type    |
-      | tshirt_akeneo     | Akeneo T-Shirt    | color      | VARIANT |
+      | code          | label          | axis  | type    |
+      | tshirt_akeneo | Akeneo T-Shirt | color | VARIANT |
     And the following variant group values:
       | group         | attribute   | value            | locale | scope     |
       | tshirt_akeneo | name        | Great sneakers   | fr_FR  |           |

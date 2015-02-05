@@ -89,8 +89,8 @@ Feature: Execute a job
 
   Scenario: Successfully update an existing product
     Given the following product:
-      | sku     | name-en_US   |
-      | SKU-001 | FooBar |
+      | sku     | name-en_US |
+      | SKU-001 | FooBar     |
     And the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
@@ -147,7 +147,7 @@ Feature: Execute a job
 
   Scenario: Successfully update existing products prices
     Given the following product:
-      | sku     | price           |
+      | sku     | price            |
       | SKU-001 | 100 EUR, 150 USD |
     And the following CSV file to import:
       """

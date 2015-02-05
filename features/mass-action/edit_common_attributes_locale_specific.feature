@@ -7,8 +7,8 @@ Feature: Edit common attributes of many products at once with locale specific ca
   Background:
     Given the "apparel" catalog configuration
     And the following products:
-    | sku    | family   |
-    | tshirt | tshirts  |
+    | sku    | family  |
+    | tshirt | tshirts |
     And I am logged in as "Julia"
     And I am on the products page
 
