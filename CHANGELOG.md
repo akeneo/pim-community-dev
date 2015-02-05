@@ -135,11 +135,11 @@
 - Add methods isLocaleSpecific and getLocaleSpecificCodes in AttributeInterface
 - AssociationTransformer constructor now expects a $associationTypeClass as last argument
 - Inject the GroupFactory as las constructor argument in GroupController and VariantGroupController
-- The following constants have been moved:
+- (Akeneo storage) The following constants have been moved:
   * `DOCTRINE_ORM` and `DOCTRINE_MONGODB_ODM` from `Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension` are now located in `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
   * `DOCTRINE_MONGODB`, `ODM_ENTITIES_TYPE` and `ODM_ENTITY_TYPE` from `Pim\Bundle\CatalogBundle\PimCatalogBundle` are now located in `Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle`
-- The container parameter `pim_catalog.storage_driver` has been deleted
-- The following services have been renamed:
+- (Akeneo storage) The container parameter `pim_catalog.storage_driver` has been deleted
+- (Akeneo storage) The following services have been renamed:
   * `pim_catalog.event_subscriber.resolve_target_repository` has been renamed to `akeneo_storage_utils.event_subscriber.resolve_target_repository`
   * `pim_catalog.doctrine.smart_manager_registry` has been renamed to `akeneo_storage_utils.doctrine.smart_manager_registry`
   * `pim_catalog.doctrine.table_name_builder` has been renamed to `akeneo_storage_utils.doctrine.table_name_builder`
@@ -148,7 +148,7 @@
   * `pim_catalog.event_subscriber.mongodb.entities_type` has been renamed to `akeneo_storage_utils.event_subscriber.mongodb.entities_type`
   * `pim_catalog.event_subscriber.mongodb.entity_type` has been renamed to `akeneo_storage_utils.event_subscriber.mongodb.entity_type`
   * `pim_catalog.mongodb.mongo_objects_factory` has been renamed to `akeneo_storage_utils.mongodb.mongo_objects_factory`
-- The following classes have been renamed or moved:
+- (Akeneo storage) The following classes have been renamed or moved:
   * `Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory` becomes `Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory`
   * `Pim\Bundle\CatalogBundle\MongoDB\Type\Entities` becomes `Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entities`
   * `Pim\Bundle\CatalogBundle\MongoDB\Type\Entity` becomes `Akeneo\Bundle\StorageUtilsBundle\MongoDB\Type\Entity`
