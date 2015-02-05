@@ -15,22 +15,33 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class AttributeOptionCreateType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code', 'text', array('required' => true))
+            ->add('code', 'text', ['required' => true])
             ->add(
                 'optionValues',
                 'collection',
-                array(
+                [
                     'type'         => 'pim_enrich_attribute_option_value',
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'by_reference' => false
-                )
+                ]
             );
     }
 
@@ -40,9 +51,9 @@ class AttributeOptionCreateType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 

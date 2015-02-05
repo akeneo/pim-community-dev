@@ -31,24 +31,30 @@ class AvailableAttributesType extends AbstractType
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var string */
+    protected $dataClass;
+
     /**
      * Constructor
      *
-     * @param string                       $attributeClass
      * @param AttributeRepositoryInterface $attributeRepository
      * @param UserContext                  $userContext
      * @param TranslatorInterface          $translator
+     * @param string                       $attributeClass
+     * @param string                       $dataClass
      */
     public function __construct(
-        $attributeClass,
         AttributeRepositoryInterface $attributeRepository,
         UserContext $userContext,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        $attributeClass,
+        $dataClass
     ) {
         $this->attributeClass      = $attributeClass;
         $this->attributeRepository = $attributeRepository;
         $this->userContext         = $userContext;
         $this->translator          = $translator;
+        $this->dataClass           = $dataClass;
     }
 
     /**
@@ -77,10 +83,10 @@ class AvailableAttributesType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
-                'excluded_attributes' => array(),
-            )
+            [
+                'data_class'          => $this->dataClass,
+                'excluded_attributes' => [],
+            ]
         );
 
         $resolver->setNormalizers(

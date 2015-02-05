@@ -15,6 +15,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class AttributeOptionType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,6 +40,7 @@ class AttributeOptionType extends AbstractType
 
     /**
      * Add field id to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldId(FormBuilderInterface $builder)
@@ -38,15 +50,17 @@ class AttributeOptionType extends AbstractType
 
     /**
      * Add option code
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code', 'text', array('required' => true));
+        $builder->add('code', 'text', ['required' => true]);
     }
 
     /**
      * Add options values to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldOptionValues(FormBuilderInterface $builder)
@@ -54,12 +68,12 @@ class AttributeOptionType extends AbstractType
         $builder->add(
             'optionValues',
             'collection',
-            array(
+            [
                 'type'         => 'pim_enrich_attribute_option_value',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-            )
+            ]
         );
     }
 
@@ -69,10 +83,10 @@ class AttributeOptionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class'      => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
+            [
+                'data_class'      => $this->dataClass,
                 'csrf_protection' => false
-            )
+            ]
         );
     }
 

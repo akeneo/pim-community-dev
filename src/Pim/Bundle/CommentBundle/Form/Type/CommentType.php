@@ -25,18 +25,18 @@ class CommentType extends AbstractType
     protected $translator;
 
     /** @var string */
-    protected $className;
+    protected $dataClass;
 
     /**
      * @param CommentRepositoryInterface $repository
      * @param TranslatorInterface        $translator
-     * @param string                     $className
+     * @param string                     $dataClass
      */
-    public function __construct(CommentRepositoryInterface $repository, TranslatorInterface $translator, $className)
+    public function __construct(CommentRepositoryInterface $repository, TranslatorInterface $translator, $dataClass)
     {
         $this->repository = $repository;
         $this->translator = $translator;
-        $this->className = $className;
+        $this->dataClass  = $dataClass;
     }
 
     /**
@@ -68,8 +68,8 @@ class CommentType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => $this->className,
-                'is_reply' => false
+                'data_class' => $this->dataClass,
+                'is_reply'   => false
             ]
         );
     }

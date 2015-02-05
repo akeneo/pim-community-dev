@@ -15,6 +15,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class MetricType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +44,7 @@ class MetricType extends AbstractType
             ->add('id', 'hidden')
             ->add('data', 'pim_number')
             ->add('unit', 'choice', $unitOptions)
-            ->add('family', 'hidden', array('data' => $options['family']));
+            ->add('family', 'hidden', ['data' => $options['family']]);
     }
 
     /**
@@ -42,12 +53,12 @@ class MetricType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Metric',
-                'units'        => array(),
+            [
+                'data_class'   => $this->dataClass,
+                'units'        => [],
                 'default_unit' => null,
                 'family'       => null
-            )
+            ]
         );
     }
 

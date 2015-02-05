@@ -25,25 +25,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ChannelType extends AbstractType
 {
-    /**
-     * @var LocaleManager
-     */
+    /** @var LocaleManager */
     protected $localeManager;
 
-    /**
-     * @var LocaleHelper
-     */
+    /** @var LocaleHelper */
     protected $localeHelper;
 
-    /**
-     * @var ColorsProvider
-     */
+    /** @var ColorsProvider */
     protected $colorsProvider;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $categoryClass;
+
+    /** @var string */
+    protected $dataClass;
 
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
@@ -52,17 +47,20 @@ class ChannelType extends AbstractType
      * @param LocaleHelper   $localeHelper
      * @param ColorsProvider $provider
      * @param string         $categoryClass
+     * @param string         $dataClass
      */
     public function __construct(
         LocaleManager $localeManager,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
-        $categoryClass
+        $categoryClass,
+        $dataClass
     ) {
         $this->localeManager = $localeManager;
         $this->localeHelper  = $localeHelper;
         $this->provider      = $provider;
         $this->categoryClass = $categoryClass;
+        $this->dataClass     = $dataClass;
     }
 
     /**
@@ -102,7 +100,7 @@ class ChannelType extends AbstractType
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
-        $builder->add('label', 'text', array('label' => 'Default label'));
+        $builder->add('label', 'text', ['label' => 'Default label']);
 
         return $this;
     }
@@ -141,7 +139,7 @@ class ChannelType extends AbstractType
         $builder->add(
             'currencies',
             'entity',
-            array(
+            [
                 'required'      => true,
                 'multiple'      => true,
                 'select2'       => true,
@@ -149,7 +147,7 @@ class ChannelType extends AbstractType
                 'query_builder' => function (CurrencyRepositoryInterface $repository) {
                     return $repository->getActivatedCurrenciesQB();
                 }
-            )
+            ]
         );
 
         return $this;
@@ -180,17 +178,17 @@ class ChannelType extends AbstractType
         $builder->add(
             'locales',
             'entity',
-            array(
-                'required'      => true,
-                'multiple'      => true,
-                'select2'       => true,
-                'by_reference'  => false,
-                'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
-                'query_builder' => function (LocaleRepositoryInterface $repository) {
+            [
+                'required'          => true,
+                'multiple'          => true,
+                'select2'           => true,
+                'by_reference'      => false,
+                'class'             => 'Pim\Bundle\CatalogBundle\Entity\Locale',
+                'query_builder'     => function (LocaleRepositoryInterface $repository) {
                     return $repository->getLocalesQB();
                 },
                 'preferred_choices' => $this->localeManager->getActiveLocales()
-            )
+            ]
         );
 
         return $this;
@@ -207,7 +205,7 @@ class ChannelType extends AbstractType
         $builder->add(
             'category',
             'entity',
-            array(
+            [
                 'label'         => 'Category tree',
                 'required'      => true,
                 'select2'       => true,
@@ -215,7 +213,7 @@ class ChannelType extends AbstractType
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->getTreesQB();
                 }
-            )
+            ]
         );
 
         return $this;
@@ -271,9 +269,9 @@ class ChannelType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Channel',
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 

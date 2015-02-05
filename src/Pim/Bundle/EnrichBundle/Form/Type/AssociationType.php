@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,47 +18,45 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class AssociationType extends AbstractType
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /**
-     * @var EntityRepository
-     */
+    /** @var EntityRepository */
     protected $groupRepository;
 
-    /**
-     * @var EntityRepository
-     */
+    /** @var EntityRepository */
     protected $assocTypeRepository;
 
+    /** @var string */
+    protected $dataClass;
+
     /**
-     * Costructor
+     * Constructor
      *
-     * @param string                     $productClass
      * @param ProductRepositoryInterface $productRepository
      * @param EntityManager              $entityManager
+     * @param string                     $productClass
      * @param string                     $assocTypeClass
      * @param string                     $groupClass
+     * @param string                     $dataClass
      */
     public function __construct(
-        $productClass,
         ProductRepositoryInterface $productRepository,
         EntityManager $entityManager,
+        $productClass,
         $assocTypeClass,
-        $groupClass
+        $groupClass,
+        $dataClass
     ) {
         $this->productClass = $productClass;
         $this->productRepository = $productRepository;
 
         $this->groupRepository = $entityManager->getRepository($groupClass);
         $this->assocTypeRepository = $entityManager->getRepository($assocTypeClass);
+        $this->dataClass = $dataClass;
     }
 
     /**
@@ -69,50 +68,50 @@ class AssociationType extends AbstractType
             ->add(
                 'associationType',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->assocTypeRepository,
-                    'multiple' => false
-                )
+                    'multiple'   => false
+                ]
             )
             ->add(
                 'appendProducts',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->productRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
-                )
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
+                ]
             )
             ->add(
                 'removeProducts',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->productRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
-                )
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
+                ]
             )
             ->add(
                 'appendGroups',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->groupRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
-                )
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
+                ]
             )
             ->add(
                 'removeGroups',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->groupRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
-                )
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
+                ]
             );
     }
 
@@ -122,9 +121,9 @@ class AssociationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Association'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 
