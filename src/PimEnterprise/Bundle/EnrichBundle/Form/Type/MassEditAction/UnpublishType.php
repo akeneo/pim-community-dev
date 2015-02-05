@@ -22,6 +22,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class UnpublishType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +48,7 @@ class UnpublishType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'PimEnterprise\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\Unpublish',
+                'data_class' => $this->dataClass,
             ]
         );
     }

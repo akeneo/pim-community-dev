@@ -22,6 +22,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ClassifyType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +48,7 @@ class ClassifyType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'PimEnterprise\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\Classify',
+                'data_class' => $this->dataClass,
             ]
         );
     }
