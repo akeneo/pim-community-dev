@@ -4,6 +4,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Pim\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,18 +28,14 @@ class Version_1_3_20141006113831_default_translatable extends AbstractMigration 
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql(sprintf('ALTER TABLE %s DROP is_default, DROP is_translatable', $this->getTableName()));
+        $tableHelper = new SchemaHelper($this->container);
+        $this->addSql(
+            sprintf('ALTER TABLE %s DROP is_default, DROP is_translatable', $tableHelper->getTableOrCollection('attribute_option'))
+        );
     }
 
     public function down(Schema $schema)
     {
         throw new \RuntimeException('No revert is provided for the migrations.');
-    }
-
-    protected function getTableName()
-    {
-        $class = $this->container->getParameter('pim_catalog.entity.attribute_option.class');
-
-        return $this->container->get('doctrine.orm.entity_manager')->getClassMetadata($class)->getTableName();
     }
 }
