@@ -89,6 +89,3 @@ pim_enrich:
     list:
       delete.label: Löschen
       delete.error: Fehler beim Löschen des Elementes
-    delete:
-      confirm.content: Diese Aktion kann nicht rückgängig gemacht werden
-      confirm.title: Element löschen

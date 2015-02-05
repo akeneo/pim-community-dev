@@ -129,6 +129,8 @@ job_execution.summary:
   skip: ignoré
   create: créé
   update: mis à jour
+  update_products: produits mis à jour
+  skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:
     title: 'Encodage du fichier :'
