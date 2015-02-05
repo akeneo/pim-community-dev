@@ -45,7 +45,8 @@ Feature: Add products to a variant group
     And I should see products sandal-white-37
     And I check the row "sandal-white-37"
     And I press the "Save" button
-    Then I edit the "sandal-white-37" product
+    Then I should be redirected on the variant groups page
+    When I edit the "sandal-white-37" product
     And I visit the "History" tab
     And I should see history:
       | version | author                                                            | property | value           |

@@ -431,6 +431,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeRedirectedOnThePage($page)
     {
+        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
         $this->assertAddress($this->getPage($page)->getUrl());
     }
 
