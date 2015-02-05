@@ -27,7 +27,7 @@ define(
                 // Place code that we need to run on every page load here
 
                 $target.find('.remove-attribute').each(function () {
-                    var target = $(this).parent().find('.icons-container').first();
+                    var target = $(this).parent().find('.icons-container');
                     if (target.length) {
                         $(this).appendTo(target).attr('tabIndex', -1);
                     }
@@ -47,9 +47,9 @@ define(
                     }
                 });
                 $target.find('.attribute-field.localizable').each(function () {
-                    var $iconsContainer = $(this).find('div.controls').find('.icons-container').eq(0);
-                    if (!$iconsContainer.find('i.icon-globe').length) {
-                        $iconsContainer.prepend($localizableIcon.clone());
+                    var $iconsContainers = $(this).find('div.controls').find('.icons-container');
+                    if (!$iconsContainers.find('i.icon-globe').length) {
+                        $iconsContainers.prepend($localizableIcon.clone());
                     }
                 });
 
