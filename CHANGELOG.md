@@ -193,6 +193,7 @@
 - PIM-3069: Fix image file prefixes not well generated on product creation (import and fixtures)
 - PIM-3548: Do not use the absolute file path of a media
 - PIM-3730: Fix variant group link on product edit page
+- PIM-3632: Correctly show scopable attribute icons on scope change
 
 # 1.2.*
 
