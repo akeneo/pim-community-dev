@@ -10,7 +10,7 @@ Feature: Mass edit products through product draft
       | family                    | jackets                 |
       | categories                | winter_top              |
       | sku                       | my-first-jacket         |
-      | name-en_US                | First jacket      |
+      | name-en_US                | First jacket            |
       | description-en_US-mobile  | An awesome first jacket |
       | number_in_stock-ecommerce | 2                       |
       | number_in_stock-mobile    | 4                       |

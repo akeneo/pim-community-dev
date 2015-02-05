@@ -11,7 +11,7 @@ Feature: Validate file attributes of a product
       | brief      | Brief       | file | no       | 0.01          | jpg                | info  |
       | attachment | Attachment  | file | yes      | 0.01          | jpg                | info  |
     And the following family:
-      | code | label-en_US | attributes                 |
+      | code | label-en_US | attributes             |
       | baz  | Baz         | sku, brief, attachment |
     And the following product:
       | sku | family | categories        |

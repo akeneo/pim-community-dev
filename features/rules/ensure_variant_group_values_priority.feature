@@ -12,15 +12,15 @@ Feature: Ensure variant group values priority when execute a rule
       | code  | label   | axis        | type    |
       | vboot | VG boot | size, color | VARIANT |
     And the following variant group values:
-      | group | attribute | value                   | locale | scope  |
-      | vboot | name      | Name from variant group | en_US  |        |
+      | group | attribute | value                   | locale | scope |
+      | vboot | name      | Name from variant group | en_US  |       |
     And the following product:
       | sku       | groups | color | size |
       | boot      | vboot  | black | 40   |
       | otherboot |        |       |      |
     And the following product values:
-      | product | attribute | value                   | locale | scope  |
-      | boot    | name      | Name from variant group | en_US  |        |
+      | product | attribute | value                   | locale | scope |
+      | boot    | name      | Name from variant group | en_US  |       |
     And the following product rules:
       | code     | priority |
       | set_name | 10       |
@@ -28,8 +28,8 @@ Feature: Ensure variant group values priority when execute a rule
       | rule     | field | operator | value |
       | set_name | sku   | CONTAINS | boot  |
     And the following product rule setter actions:
-      | rule     | field | value          | locale | scope  |
-      | set_name | name  | Name from rule | en_US  |        |
+      | rule     | field | value          | locale | scope |
+      | set_name | name  | Name from rule | en_US  |       |
 
   Scenario: Successfully display values coming from variant group
     Given  the product rule "set_name" is executed

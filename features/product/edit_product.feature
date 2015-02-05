@@ -7,12 +7,12 @@ Feature: Edit a product I have access
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
     And the following categories:
-      | code         | label-en_US   | parent    |
-      | shoes        | Shoes         |           |
-      | vintage      | Vintage       | shoes     |
-      | trendy       | Trendy        | shoes     |
-      | classy       | Classy        | shoes     |
-      | boots        | Boots         |           |
+      | code    | label-en_US | parent |
+      | shoes   | Shoes       |        |
+      | vintage | Vintage     | shoes  |
+      | trendy  | Trendy      | shoes  |
+      | classy  | Classy      | shoes  |
+      | boots   | Boots       |        |
     And the following category accesses:
       | category        | user group | access |
       | 2014_collection | Manager    |        |

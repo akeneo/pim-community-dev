@@ -49,23 +49,23 @@ Feature: Read multiple products with applied rules
   @javascript
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
-    | sku         | family  |
-    | my-loafer   | sandals |
-    | boot        | sandals |
-    | mug         |         |
-    | fork        |         |
-    | rangers     | sandals |
+    | sku       | family  |
+    | my-loafer | sandals |
+    | boot      | sandals |
+    | mug       |         |
+    | fork      |         |
+    | rangers   | sandals |
     And the following product values:
-    | product     | attribute | value          | locale | scope  |
-    | my-loafer   | name      | White loafer   | en_US  |        |
-    | my-loafer   | name      | Mocassin blanc | fr_FR  |        |
-    | boot        | name      | Boots          | en_US  | mobile |
-    | mug         | name      | Mug            | en_US  | mobile |
-    | mug         | name      |                | fr_FR  | mobile |
-    | fork        | name      | Fork           | en_US  | mobile |
-    | fork        | name      |                | frFR   | mobile |
-    | rangers     | name      | Rangers        | en_US  | mobile |
-    | rangers     | name      |                | fr_FR  | mobile |
+    | product   | attribute | value          | locale | scope  |
+    | my-loafer | name      | White loafer   | en_US  |        |
+    | my-loafer | name      | Mocassin blanc | fr_FR  |        |
+    | boot      | name      | Boots          | en_US  | mobile |
+    | mug       | name      | Mug            | en_US  | mobile |
+    | mug       | name      |                | fr_FR  | mobile |
+    | fork      | name      | Fork           | en_US  | mobile |
+    | fork      | name      |                | frFR   | mobile |
+    | rangers   | name      | Rangers        | en_US  | mobile |
+    | rangers   | name      |                | fr_FR  | mobile |
     And the following product rules:
     | code      | priority |
     | copy_name | 10       |

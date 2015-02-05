@@ -36,11 +36,11 @@ Feature: Display proposal widget
   Scenario: Successfully display new proposals that I can review
     Given a "clothing" catalog configuration
     And the following product:
-      | sku          | family  | categories |
-      | my-tee-shirt | tees    | tees       |
+      | sku          | family | categories |
+      | my-tee-shirt | tees   | tees       |
     And the following product drafts:
-      | product      | author | status      |
-      | my-tee-shirt | mary   | ready       |
+      | product      | author | status |
+      | my-tee-shirt | mary   | ready  |
     And I am logged in as "Peter"
     When I edit the "my-tee-shirt" product
     And I visit the "Categories" tab
@@ -62,12 +62,12 @@ Feature: Display proposal widget
   Scenario: Successfully hide proposals belonging to the last category I was owner of that was removed
     Given a "clothing" catalog configuration
     And the following product:
-      | sku          | family  | categories |
-      | my-jacket    | jackets | jackets    |
+      | sku       | family  | categories |
+      | my-jacket | jackets | jackets    |
     And the following product drafts:
-      | product      | author | status      |
-      | my-jacket    | mary   | ready       |
-      | my-jacket    | john   | in progress |
+      | product   | author | status      |
+      | my-jacket | mary   | ready       |
+      | my-jacket | john   | in progress |
     And I am logged in as "Peter"
     When I am on the "jackets" category page
     When I press the "Delete" button

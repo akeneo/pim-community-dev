@@ -11,11 +11,11 @@ Feature: Delete a rule
       | code                 | priority |
       | set_tees_description | 10       |
     And the following product rule conditions:
-      | rule                 | field           | operator | value | locale | scope  |
-      | set_tees_description | categories.code | IN       | tees  |        |        |
+      | rule                 | field           | operator | value | locale | scope |
+      | set_tees_description | categories.code | IN       | tees  |        |       |
     And the following product rule setter actions:
-      | rule                 | field         | value                | locale | scope  |
-      | set_tees_description | description   | an other description | fr_FR  | tablet |
+      | rule                 | field       | value                | locale | scope  |
+      | set_tees_description | description | an other description | fr_FR  | tablet |
 
   Scenario: Successfully delete rules of an attribute
     Given I am on the "description" attribute page

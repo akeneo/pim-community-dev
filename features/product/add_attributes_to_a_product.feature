@@ -6,8 +6,8 @@ Feature: Add attributes to a product
   Background:
     Given a "clothing" catalog configuration
     And the following products:
-      | sku     | family  |
-      | jacket  | jackets |
+      | sku    | family  |
+      | jacket | jackets |
     And I am logged in as "Julia"
 
   Scenario: Successfully display only attributes I have edit permissions access

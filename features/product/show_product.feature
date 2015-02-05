@@ -7,9 +7,9 @@ Feature: Show a product
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
     And the following categories:
-      | code    | label-en_US |
-      | shoes   | Shoes       |
-      | boots   | Boots       |
+      | code  | label-en_US |
+      | shoes | Shoes       |
+      | boots | Boots       |
     And the following category accesses:
       | category        | user group | access |
       | 2014_collection | Manager    |        |

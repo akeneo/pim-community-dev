@@ -27,7 +27,7 @@ Feature: Unpublish many products at once
     When I choose the "Unpublish products" operation
     Then I should see "You're not the owner of all the selected products. You can't unpublish the products \"teafortwo\""
     And I should see "Confirm"
-    
+
   Scenario: Forbid to unpublish if user is not the owner of at least one product
     And I am logged in as "Mary"
     And I am on the published page
