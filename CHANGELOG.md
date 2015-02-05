@@ -194,6 +194,7 @@
 - PIM-3548: Do not use the absolute file path of a media
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
+- PIM-3583: Fix the bad parsed filter value with spaces
 
 # 1.2.*
 
