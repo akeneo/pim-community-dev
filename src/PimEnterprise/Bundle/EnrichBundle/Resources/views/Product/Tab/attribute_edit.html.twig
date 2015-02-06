@@ -5,6 +5,10 @@
             <li class="tab{% if loop.index == 1 %} active{% endif %}">
                 <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.label }}</a>
             </li>
+            {% else %}
+                <li class="tab active">
+                    <a href="#tabs-0" data-toggle="tab">{{ 'pimee_enrich.groups.empty'|trans }}</a>
+                </li>
             {% endfor %}
         </ul>
     </div>
@@ -74,15 +78,17 @@
                     {% include 'PimEnrichBundle:Product:_edit_without_comparison.html.twig' %}
                 {% endif %}
             </div>
+        {% else %}
+            <div id="tabs-0" class="tab-pane fullheight">
+                <h3>{{ 'pimee_enrich.attributes.empty'|trans }}</h3>
+                <div class="alert alert-info">
+                    {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
+                </div>
+            </div>
         {% endfor %}
     </div>
 
     {% if comparisonLocale is not null %}
         {% include 'PimEnrichBundle:Product:_comparison-handler.html.twig' %}
-    {% endif %}
-    {% if not form.vars.groups %}
-        <div class="alert alert-info">
-            {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
-        </div>
     {% endif %}
 </div>
