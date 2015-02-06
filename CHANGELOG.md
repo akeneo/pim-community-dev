@@ -1,5 +1,8 @@
 # 1.3.x
 
+## Improvements
+- PIM-3738: Lazy load some part of product value for better edit performance
+
 ## Bug fixes
 - PIM-1235: Fix information message when trying to delete a category tree used by a channel
 - PIM-3068: Darken navigation arrows in product grid
