@@ -25,13 +25,22 @@ locale.permissions:
   edit.help: "Permet d'éditer les informations produits dans cette locale (sous entend les droits de lecture)"
   no_access_to_products: "Vous n'avez accès à aucune information produit dans aucune locale, contactez votre administrateur pour résoudre le problème"
 pimee_enrich:
-  acl.product_ownership.title: Propriété
-  groups:
-    label: Groupes propriétaires
-    empty: aucun
+  attribute_group:
+    tab:
+      permission.title: Autorisations 
+  product:
+    tab:
+      proposal.title: Propositions
+  category:
+    tab:
+      permission.title: Autorisations 
 btn:
   save working copy: Enregistrer la version de travail
   save draft: Enregistrer le brouillon
+  save working copy and next: Enregistrer la copie de travail et poursuivre
+  save draft and next: Enregistrer le brouillon et continuer
+  save working copy and finish: Enregistrer la copie de travail et terminer
+  save draft and finish: Enregistrer le brouillon et terminer
   send for approval: Soumettre pour validation
   sent for approval: Soumis à la validation
 pim_enrich:

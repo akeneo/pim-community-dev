@@ -1,9 +1,9 @@
 pimee_dashboard:
   widget:
     product_drafts:
-      title: Propositions à revoir
+      title: Propositions à relire
       date: Date
       author: Auteur
       product: Produit
-      review: Revoir
-      empty: Aucune proposition à revoir
+      review: Relire
+      empty: Aucun brouillon de produit à relire
