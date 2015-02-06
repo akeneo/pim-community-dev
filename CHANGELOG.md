@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-1235: Fix information message when trying to delete a category tree used by a channel
+- PIM-2103: Display a loading when deleting a category tree
 
 # 1.3.0-RC1 (2015-02-03)
 
