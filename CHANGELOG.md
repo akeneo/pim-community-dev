@@ -8,6 +8,7 @@
 - PIM-2103: Display a loading when deleting a category tree
 - PIM-3394: Improve forgotten password screen
 - PIM-3398: Translate units on metric fields on product edit form
+- PIM-3575: Sort csv column in a determinist way (alphabetically) on export
 
 ## BC breaks
 - Add a TranslatorInterface argument in MetricType::__construct
