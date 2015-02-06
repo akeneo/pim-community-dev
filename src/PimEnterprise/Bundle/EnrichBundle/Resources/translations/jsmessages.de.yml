@@ -1,0 +1,15 @@
+View the product: Produkt ansehen
+pimee_enrich.product_history.action.revert: Diese Version wiederherstellen
+permission-changes:
+  category:
+    grant: 'Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie <strong>{{ permission }}</strong> sein'
+    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie nicht <strong>{{ permission }}</strong> sein'
+  locale:
+    grant: 'Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema <strong>{{ permission }}</strong> sein'
+    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema nicht <strong>{{ permission }}</strong> sein'
+  attribute group:
+    grant: 'Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein'
+    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein'
+  job profile:
+    grant: 'Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> sein'
+    revoke: 'Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> sein'
