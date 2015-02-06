@@ -6,6 +6,10 @@
 - PIM-2094: Regroup attributes validation properties in a subpanel
 - PIM-3700: Fix comment display on long words
 - PIM-2103: Display a loading when deleting a category tree
+- PIM-3398: Translate units on metric fields on product edit form
+
+## BC breaks
+- Add a TranslatorInterface argument in MetricType::__construct
 
 # 1.3.0-RC1 (2015-02-03)
 
