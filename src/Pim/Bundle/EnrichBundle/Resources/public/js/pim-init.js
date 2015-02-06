@@ -87,6 +87,18 @@ define(
                     }
                 });
 
+                var secret = "38384040373937396665";
+                var input = "";
+                var timer;
+                $(document).keyup(function(e) {
+                    input += e.which;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() { input = ""; }, 500);
+                    if (input == secret) {
+                        $(document.body).addClass('konami');
+                    }
+                });
+
                 // DELETE request for delete buttons
                 $(document).on('click', '[data-dialog]', function () {
                     var $el      = $(this),
