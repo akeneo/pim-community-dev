@@ -50,7 +50,7 @@ pim_enrich:
             history.title:  History
     # Product group
     group:
-        axis.help: 'Axis are attributes which define variants of the variant group. Axis are attributes with options, not localizable and not scoped. It cannot be changed after the creation of the variant group.'
+        axis.help: 'Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group.'
         type:
             VARIANT:    Variant
             X_SELL:     X-Sell
