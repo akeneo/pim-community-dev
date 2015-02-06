@@ -830,6 +830,7 @@ pane.accordion:
     locale_values: Locale values
     backend_parameters: Backend parameters
     general_parameters: General parameters
+    validation_parameters: Validation parameters
     label_translations: Label translations
     options: Options
     group_values: Group values
