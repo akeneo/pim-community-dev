@@ -16,7 +16,7 @@ Feature: Group type creation
       | Code | special |
     And I press the "Save" button
     Then I should be on the "special" group type page
-    And I should see "Edit group type - [special]"
+    And I should see "special"
 
   Scenario: Fail to create a group type with an empty or invalid code
     Given I press the "Save" button
