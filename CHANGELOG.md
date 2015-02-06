@@ -58,7 +58,7 @@
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
 
-# 1.0.*
+# 1.0.18 (2015-02-04)
 
 ## Bug fixes
 - PIM-3717: Fix handling draft save with special attributes
