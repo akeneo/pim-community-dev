@@ -1,9 +1,0 @@
-{% set tabs = ['Properties']%}
-{% if form.permissions is defined %}
-    {% set tabs = tabs|merge(['Permissions']) %}
-{% endif %}
-{% if form.vars.value.id %}
-    {% set tabs = tabs|merge(['History']) %}
-{% endif %}
-
-{{ elements.form_navbar(tabs) }}

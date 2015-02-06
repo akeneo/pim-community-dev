@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
@@ -19,28 +19,28 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositor
 /**
  * Product unpublisher
  *
- * @author    Julien Janvier <nicolas@akeneo.com>
+ * @author Julien Janvier <nicolas@akeneo.com>
  */
 class ProductUnpublisher implements UnpublisherInterface
 {
     /** @var PublishedAssociationRepositoryInterface */
-    protected $publishedAssociationRepository;
+    protected $publishedAssocRepo;
 
-    /** @var AssociationTypeRepository */
-    protected $associationTypeRepository;
+    /** @var AssociationTypeRepositoryInterface */
+    protected $associationTypeRepo;
 
     /**
      * The constructor
      *
-     * @param PublishedAssociationRepositoryInterface $publishedAssociationRepository
-     * @param AssociationTypeRepository               $associationTypeRepository
+     * @param PublishedAssociationRepositoryInterface $publishedAssocRepo
+     * @param AssociationTypeRepositoryInterface      $associationTypeRepo
      */
     public function __construct(
-        PublishedAssociationRepositoryInterface $publishedAssociationRepository,
-        AssociationTypeRepository $associationTypeRepository
+        PublishedAssociationRepositoryInterface $publishedAssocRepo,
+        AssociationTypeRepositoryInterface $associationTypeRepo
     ) {
-        $this->publishedAssociationRepository = $publishedAssociationRepository;
-        $this->associationTypeRepository = $associationTypeRepository;
+        $this->publishedAssocRepo = $publishedAssocRepo;
+        $this->associationTypeRepo = $associationTypeRepo;
     }
 
     /**
@@ -66,7 +66,7 @@ class ProductUnpublisher implements UnpublisherInterface
      */
     protected function updateRelatedAssociations(PublishedProductInterface $published)
     {
-        $nbAssociationsTypes = $this->associationTypeRepository->countAll();
-        $this->publishedAssociationRepository->removePublishedProduct($published, $nbAssociationsTypes);
+        $nbAssociationTypes = $this->associationTypeRepo->countAll();
+        $this->publishedAssocRepo->removePublishedProduct($published, $nbAssociationTypes);
     }
 }

@@ -1,0 +1,10 @@
+pimee_catalog_rule:
+  attribute:
+    tab:
+      rule.title: Règles
+    acl:
+      rule.view_permissions: Voir les règles
+  product:
+    tooltip:
+      loading.title: Chargement en cours...
+    history: 'Règle appliquée "%rule%"'

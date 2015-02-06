@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * A product value diff presenter
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 abstract class AbstractProductValuePresenter implements PresenterInterface, RendererAwareInterface
 {
@@ -27,7 +27,7 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
      */
     public function supports($data, array $change)
     {
-        return $data instanceof AbstractProductValue && $this->supportsChange($change);
+        return $data instanceof ProductValueInterface && $this->supportsChange($change);
     }
 
     /**

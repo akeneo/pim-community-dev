@@ -1,0 +1,34 @@
+parameters:
+    pimee_catalog_rule.validator.existing_field.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFieldValidator
+    pimee_catalog_rule.validator.product_rule.supported_operator_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator
+    pimee_catalog_rule.validator.product_rule.value_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator
+    pimee_catalog_rule.validator.product_rule.value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueActionValidator
+
+services:
+    pimee_catalog_rule.validator.existing_field:
+        class: %pimee_catalog_rule.validator.existing_field.class%
+        arguments:
+            - '@pim_catalog.query.filter.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_field_validator }
+
+    pimee_catalog_rule.validator.product_rule.supported_operator_condition:
+        class: %pimee_catalog_rule.validator.product_rule.supported_operator_condition.class%
+        arguments:
+            - '@pim_catalog.query.filter.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_supported_operator_condition_validator }
+
+    pimee_catalog_rule.validator.product_rule.value_condition:
+        class: %pimee_catalog_rule.validator.product_rule.value_condition.class%
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_value_condition_validator }
+
+    pimee_catalog_rule.validator.product_rule.value_action:
+        class: %pimee_catalog_rule.validator.product_rule.value_action.class%
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_value_action_validator }

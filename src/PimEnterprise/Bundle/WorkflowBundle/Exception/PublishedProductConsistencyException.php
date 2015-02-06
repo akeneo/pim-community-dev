@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Exception;
 /**
  * Exception raises when try to remove an entity linked to published product
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PublishedProductConsistencyException extends \Exception
 {

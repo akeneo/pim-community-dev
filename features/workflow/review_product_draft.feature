@@ -26,8 +26,8 @@ Feature: Review a product draft
 
   Scenario: Successfully accept an identifier attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
-      | field | value        |
-      | SKU   | your-jacket  |
+      | field | value       |
+      | SKU   | your-jacket |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
@@ -109,8 +109,8 @@ Feature: Review a product draft
 
   Scenario: Successfully accept a multiselect attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
-      | field              | value     |
-      | Weather conditions | Hot, Cold |
+      | field              | value               |
+      | Weather conditions | Hot, Cold, Dry, Wet |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab

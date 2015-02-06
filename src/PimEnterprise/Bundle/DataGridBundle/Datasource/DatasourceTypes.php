@@ -16,7 +16,7 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes as BaseDatasourceTypes;
 /**
  * Existing datasource types
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class DatasourceTypes extends BaseDatasourceTypes
 {

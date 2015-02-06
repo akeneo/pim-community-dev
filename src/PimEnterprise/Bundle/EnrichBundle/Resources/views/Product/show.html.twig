@@ -5,8 +5,15 @@
 {% block content %}
     {% set title = 'product.title'|trans %}
 
+    {% block sequentialEdit %}
+        {% include 'PimEnterpriseEnrichBundle:Product:_sequentialEdit.html.twig' %}
+    {% endblock %}
+
     {% set buttons %}
         {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
+        {% if resource_granted('pim_pdf_generator_product_download') %}
+            {{ elements.link('btn.download_pdf', path('pim_pdf_generator_download_product_pdf', { id: product.id, dataLocale: dataLocale }), { icon: 'download', class: 'no-hash', id: 'download-btn'}) }}
+        {% endif %}
     {% endset %}
 
     {% set subtitle %}
@@ -43,36 +50,12 @@
 
     <form class="form-horizontal product-edit product-view">
         <div class="layout-content">
-            {% set form_tabs = ['Attributes', 'Completeness'] %}
-            {{ elements.form_navbar(form_tabs) }}
+            {{ elements.form_navbar(view_element_aliases('pim_product_show.form_tab')) }}
 
             <div class="row-fluid tab-content">
-                <div class="tab-pane active" id="attributes">
-                    {% for group in group_product_values(product.values, dataLocale) %}
-                        <div class="row-fluid">
-                            <h3>
-                                {{ group.groupLabel }}
-                            </h3>
-                            {% for value in group.values %}
-                                <div class="control-group attribute-field{{ value.attribute.localizable ? ' localizable' : '' }}">
-                                    <label class="control-label">
-                                        {{ value.attribute }}{{ value.attribute.scopable ? ' - ' ~ value.scope : '' }}
-                                    </label>
-                                    <div class="controls">
-                                        <div class="value-field">
-                                            {{ present_product_value(value) }}
-                                        </div>
-                                        <div class="icons-container"></div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
-                        </div>
-                    {% endfor %}
-                </div>
+
+                {{ view_elements('pim_product_show.form_tab') }}
+
                 <div class="tab-pane" id="completeness" data-url="{{ path('pim_enrich_product_completeness', { id: product.id, dataLocale: dataLocale }) }}">
                 </div>
             </div>

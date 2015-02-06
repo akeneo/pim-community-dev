@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Enterprise Catalog extension
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PimEnterpriseCatalogExtension extends Extension
 {
@@ -32,7 +32,7 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
 
-        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
         if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
             $loader->load($storageConfig);

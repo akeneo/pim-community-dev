@@ -92,7 +92,7 @@ Feature: Submit a modification on a product draft
     And I should see that Manufacturer is a modified value
 
   Scenario: Successfully propose a multi select attribute change
-    When I change the "Weather conditions" to "Hot, Cold"
+    When I change the "Weather conditions" to "Dry, Wet, Hot, Cold"
     And I save the product
     Then the options "weather_conditions" of product my-jacket should be:
       | value |

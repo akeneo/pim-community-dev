@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 /**
  * Present changes on date data
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class DatePresenter extends AbstractProductValuePresenter
 {

@@ -11,22 +11,22 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
  * Comparator which calculate change set for metrics
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  *
- * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class MetricComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(AbstractProductValue $value)
+    public function supportsComparison(ProductValueInterface $value)
     {
         return 'pim_catalog_metric' === $value->getAttribute()->getAttributeType();
     }
@@ -34,7 +34,7 @@ class MetricComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(ProductValueInterface $value, $submittedData)
     {
         // Submitted metric is invalid (data was read only for example)
         if (!isset($submittedData['metric']['data']) || !isset($submittedData['metric']['unit'])) {

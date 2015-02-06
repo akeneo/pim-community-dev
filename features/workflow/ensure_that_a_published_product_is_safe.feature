@@ -93,6 +93,8 @@ Feature: Ensure that a published product is safe
     Given I am on the "manufacturer" attribute page
     And I visit the "Values" tab
     And I remove the "Volcom" option
+    And I confirm the deletion
+    And I confirm the error message
     When I save the attribute
     Then the Options section should contain 4 options
 
@@ -100,6 +102,7 @@ Feature: Ensure that a published product is safe
     Given I am on the "manufacturer" attribute page
     And I visit the "Values" tab
     And I remove the "Desigual" option
+    And I confirm the deletion
     When I save the attribute
     Then the Options section should contain 3 options
 
@@ -107,6 +110,8 @@ Feature: Ensure that a published product is safe
     Given I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I remove the "dry" option
+    And I confirm the deletion
+    And I confirm the error message
     When I save the attribute
     Then the Options section should contain 5 options
 
@@ -114,5 +119,6 @@ Feature: Ensure that a published product is safe
     Given I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
     And I remove the "hot" option
+    And I confirm the deletion
     When I save the attribute
     Then the Options section should contain 4 options

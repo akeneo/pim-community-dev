@@ -11,20 +11,20 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryManager extends BaseCategoryManager
 {
@@ -128,13 +128,11 @@ class CategoryManager extends BaseCategoryManager
     protected function filterGrantedFilledTree(&$filledTree)
     {
         foreach ($filledTree as $categoryIdx => &$categoryData) {
-
             $isLeaf = is_object($categoryData);
             $category = $isLeaf ? $categoryData : $categoryData['item'];
 
             if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
                 unset($filledTree[$categoryIdx]);
-
             } elseif (!$isLeaf) {
                 $this->filterGrantedFilledTree($categoryData['__children']);
             }

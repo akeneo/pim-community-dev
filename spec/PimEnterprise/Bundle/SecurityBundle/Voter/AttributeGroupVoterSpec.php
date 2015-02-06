@@ -2,15 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\User;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AttributeGroupVoterSpec extends ObjectBehavior
 {
@@ -38,7 +37,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
     function it_returns_denied_access_if_user_has_no_access(
         $accessManager,
         $token,
-        AttributeGroup $attGroup,
+        AttributeGroupInterface $attGroup,
         User $user
     ) {
         $token->getUser()->willReturn($user);
@@ -54,7 +53,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
     function it_returns_granted_access_if_user_has_access(
         $accessManager,
         $token,
-        AttributeGroup $attGroup,
+        AttributeGroupInterface $attGroup,
         User $user
     ) {
         $token->getUser()->willReturn($user);

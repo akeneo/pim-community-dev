@@ -1,0 +1,4 @@
+config:
+    paths:
+        pimee/catalogrule/ruleitemview:  pimenterprisecatalogrule/js/ruleitemview
+        pimee/catalogrule/ruletableview: pimenterprisecatalogrule/js/ruletableview

@@ -23,6 +23,9 @@ job_profile_accesses:
     tablet_product_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
+    variant_group_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
 
     association_type_import:
         executeJobProfile: [IT support, Manager, Redactor]
@@ -40,5 +43,8 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
     product_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
+    variant_group_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]

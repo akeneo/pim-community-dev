@@ -1,0 +1,9 @@
+<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    <div id="attribute-rule-list" data-attribute-id="{{ form.vars.value.id }}"></div>
+
+    <script type="text/javascript">
+        require(['jquery', 'pimee/catalogrule/ruletableview'], function($, ruletableview) {
+            ruletableview($('#attribute-rule-list'));
+        });
+    </script>
+</div>

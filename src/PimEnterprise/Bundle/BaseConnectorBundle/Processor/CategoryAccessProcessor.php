@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\BaseConnectorBundle\Processor;
  * Category access import processor
  * Allows to bind data into a category access and validate them
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class CategoryAccessProcessor extends AbstractAccessProcessor
 {

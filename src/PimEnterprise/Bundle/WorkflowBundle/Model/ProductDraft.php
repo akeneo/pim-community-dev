@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 /**
  * Product draft
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraft
 {
@@ -109,7 +109,7 @@ class ProductDraft
     /**
      * @param \DateTime $createdAt
      *
-    * @return ProductDraft
+     * @return ProductDraft
      */
     public function setCreatedAt(\DateTime $createdAt)
     {

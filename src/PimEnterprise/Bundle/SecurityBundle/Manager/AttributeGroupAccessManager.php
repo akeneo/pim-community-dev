@@ -14,17 +14,17 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group as UserGroup;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Attribute group access manager
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class AttributeGroupAccessManager
 {
@@ -53,15 +53,14 @@ class AttributeGroupAccessManager
     /**
      * Check if a user is granted to an attribute on a given permission
      *
-     * @param UserInterface  $user
-     * @param AttributeGroup $group
-     * @param string         $permission
+     * @param UserInterface           $user
+     * @param AttributeGroupInterface $group
+     * @param string                  $permission
      *
      * @return bool
-     *
      * @throws \LogicException
      */
-    public function isUserGranted(UserInterface $user, AttributeGroup $group, $permission)
+    public function isUserGranted(UserInterface $user, AttributeGroupInterface $group, $permission)
     {
         if (Attributes::EDIT_ATTRIBUTES === $permission) {
             $grantedUserGroups = $this->getEditUserGroups($group);
@@ -83,11 +82,11 @@ class AttributeGroupAccessManager
     /**
      * Get user groups that have view access to an attribute group
      *
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
      * @return UserGroup[]
      */
-    public function getViewUserGroups(AttributeGroup $group)
+    public function getViewUserGroups(AttributeGroupInterface $group)
     {
         return $this->getRepository()->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES);
     }
@@ -95,11 +94,11 @@ class AttributeGroupAccessManager
     /**
      * Get user groups that have edit access to an attribute group
      *
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
      * @return UserGroup[]
      */
-    public function getEditUserGroups(AttributeGroup $group)
+    public function getEditUserGroups(AttributeGroupInterface $group)
     {
         return $this->getRepository()->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES);
     }
@@ -107,11 +106,11 @@ class AttributeGroupAccessManager
     /**
      * Grant access on an attribute group to specified user group
      *
-     * @param AttributeGroup $attributeGroup
-     * @param UserGroup[]    $viewUserGroups
-     * @param UserGroup[]    $editGroups
+     * @param AttributeGroupInterface $attributeGroup
+     * @param UserGroup[]             $viewUserGroups
+     * @param UserGroup[]             $editGroups
      */
-    public function setAccess(AttributeGroup $attributeGroup, $viewUserGroups, $editGroups)
+    public function setAccess(AttributeGroupInterface $attributeGroup, $viewUserGroups, $editGroups)
     {
         $grantedUserGroups = [];
         foreach ($editGroups as $userGroup) {
@@ -133,13 +132,17 @@ class AttributeGroupAccessManager
     /**
      * Grant specified access on an attribute group for the provided user group
      *
-     * @param AttributeGroup $attributeGroup
-     * @param UserGroup      $userGroup
-     * @param string         $accessLevel
-     * @param boolean        $flush
+     * @param AttributeGroupInterface $attributeGroup
+     * @param UserGroup               $userGroup
+     * @param string                  $accessLevel
+     * @param boolean                 $flush
      */
-    public function grantAccess(AttributeGroup $attributeGroup, UserGroup $userGroup, $accessLevel, $flush = false)
-    {
+    public function grantAccess(
+        AttributeGroupInterface $attributeGroup,
+        UserGroup $userGroup,
+        $accessLevel,
+        $flush = false
+    ) {
         $access = $this->getAttributeGroupAccess($attributeGroup, $userGroup);
         $access
             ->setViewAttributes(true)
@@ -154,12 +157,12 @@ class AttributeGroupAccessManager
     /**
      * Get AttributeGroupAccess entity for an attribute group and user group
      *
-    * @param AttributeGroup $attributeGroup
-    * @param UserGroup      $userGroup
-    *
-    * @return AttributeGroupAccess
+     * @param AttributeGroupInterface $attributeGroup
+     * @param UserGroup               $userGroup
+     *
+     * @return AttributeGroupAccess
      */
-    protected function getAttributeGroupAccess(AttributeGroup $attributeGroup, UserGroup $userGroup)
+    protected function getAttributeGroupAccess(AttributeGroupInterface $attributeGroup, UserGroup $userGroup)
     {
         $access = $this->getRepository()
             ->findOneBy(
@@ -184,12 +187,12 @@ class AttributeGroupAccessManager
      * Revoke access to an attribute group
      * If $excludedUserGroups are provided, access will not be revoked for groups with them
      *
-     * @param AttributeGroup $attributeGroup
-     * @param UserGroup[]    $excludedUserGroups
+     * @param AttributeGroupInterface $attributeGroup
+     * @param UserGroup[]             $excludedUserGroups
      *
      * @return integer
      */
-    protected function revokeAccess(AttributeGroup $attributeGroup, array $excludedUserGroups = [])
+    protected function revokeAccess(AttributeGroupInterface $attributeGroup, array $excludedUserGroups = [])
     {
         return $this->getRepository()->revokeAccess($attributeGroup, $excludedUserGroups);
     }
