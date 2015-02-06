@@ -1,0 +1,6 @@
+pimee_enrich.acl.locale.edit_permissions: Gebietsschema Berechtigungen verwalten
+pimee_enrich.acl.category.edit_permissions: Kategorieberechtigungen verwalten
+pimee_enrich.acl.attribute_group.edit_permissions: Attributgruppenberechtigungen verwalten
+pimee_importexport.acl.export_profile.edit_permissions: Export-Profil Berechtigungen verwalten
+pimee_importexport.acl.import_profile.edit_permissions: Import-Profil Berechtigungen verwalten
+pimee_enrich.groups.label: Eigentümer-Gruppen
