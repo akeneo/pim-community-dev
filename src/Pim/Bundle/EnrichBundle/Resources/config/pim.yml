@@ -47,3 +47,8 @@ services:
             -
               db_table:       oro_session
               db_id_col:      id
+
+doctrine_migrations:
+    dir_name: %doctrine_migrations_dir%
+    namespace: Pim\Upgrade\Schema
+    name: PIM Migrations

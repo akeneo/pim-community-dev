@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Migrations;
+namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
@@ -12,7 +12,7 @@ use Doctrine\DBAL\Schema\Schema;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20140918172020 extends AbstractMigration
+class Version_1_3_20140918172020_sequential_edit extends AbstractMigration
 {
     public function up(Schema $schema)
     {
@@ -25,9 +25,6 @@ class Version20140918172020 extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('DROP TABLE pim_enrich_sequential_edit');
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

@@ -1,9 +1,10 @@
 <?php
 
-namespace Application\Migrations;
+namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Pim\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Version20141027152640 extends AbstractMigration implements ContainerAwareInterface
+class Version_1_3_20141027152640_attribute_default_value extends AbstractMigration implements ContainerAwareInterface
 {
     protected $container;
 
@@ -27,20 +28,12 @@ class Version20141027152640 extends AbstractMigration implements ContainerAwareI
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql(sprintf('ALTER TABLE %s DROP default_value', $this->getTableName()));
+        $tableHelper = new SchemaHelper($this->container);
+        $this->addSql(sprintf('ALTER TABLE %s DROP default_value', $tableHelper->getTableOrCollection('attribute')));
     }
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql(sprintf('ALTER TABLE %s ADD default_value LONGTEXT DEFAULT NULL', $this->getTableName()));
-    }
-
-    protected function getTableName()
-    {
-        $class = $this->container->getParameter('pim_catalog.entity.attribute.class');
-
-        return $this->container->get('doctrine.orm.entity_manager')->getClassMetadata($class)->getTableName();
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }
