@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Metric attribute type
@@ -23,6 +24,9 @@ class MetricType extends AbstractAttributeType
     /** @var MetricFactory $metricFactory */
     protected $metricFactory;
 
+    /** @var TranslatorInterface $translator */
+    protected $translator;
+
     /**
      * Constructor
      *
@@ -31,18 +35,21 @@ class MetricType extends AbstractAttributeType
      * @param ConstraintGuesserInterface $constraintGuesser the form type
      * @param MeasureManager             $manager           the measure manager
      * @param MetricFactory              $metricFactory     the metric factory
+     * @param TranslatorInterface        $translator        the translator for units
      */
     public function __construct(
         $backendType,
         $formType,
         ConstraintGuesserInterface $constraintGuesser,
         MeasureManager $manager,
-        MetricFactory $metricFactory
+        MetricFactory $metricFactory,
+        TranslatorInterface $translator
     ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->manager = $manager;
         $this->metricFactory = $metricFactory;
+        $this->translator = $translator;
     }
 
     /**
@@ -50,12 +57,19 @@ class MetricType extends AbstractAttributeType
      */
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
+        $unitsList = $this->manager->getUnitSymbolsForFamily($value->getAttribute()->getMetricFamily());
+        $unitNames = array_combine(array_keys($unitsList), array_keys($unitsList));
+        $units = array_map(
+            function ($unit) {
+                return $this->translator->trans($unit, [], 'measures');
+            },
+            $unitNames
+        );
+
         $options = array_merge(
             parent::prepareValueFormOptions($value),
             array(
-                'units'        => $this->manager->getUnitSymbolsForFamily(
-                    $value->getAttribute()->getMetricFamily()
-                ),
+                'units'        => $units,
                 'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
                 'family'       => $value->getAttribute()->getMetricFamily()
             )
