@@ -5,7 +5,6 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-
 /**
  * Class Version_1_3_20150205103241_workflow_file_path
  *
@@ -17,17 +16,21 @@ class Version_1_3_20150205103241_workflow_file_path extends AbstractMigration
 {
     public function up(Schema $schema)
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $helper = new UpgradeHelper($this->container);
+        if (!$helper->areProductsStoredInMongo()) {
 
-        $this->addSql('ALTER TABLE pimee_workflow_published_product_media DROP file_path');
+            $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+            $this->addSql('ALTER TABLE pimee_workflow_published_product_media DROP file_path');
+        }
     }
 
     public function down(Schema $schema)
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $helper = new UpgradeHelper($this->container);
+        if (!$helper->areProductsStoredInMongo()) {
 
-        $this->addSql('ALTER TABLE pimee_workflow_published_product_media ADD file_path VARCHAR(500) DEFAULT NULL');
+            $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+            $this->addSql('ALTER TABLE pimee_workflow_published_product_media ADD file_path VARCHAR(500) DEFAULT NULL');
+        }
     }
 }
