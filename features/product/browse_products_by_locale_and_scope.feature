@@ -21,6 +21,7 @@ Feature: Browse products by locale and scope
     And I am on the products page
     And I display the columns sku, name, image, description and family
 
+  @skip
   Scenario: Successfully display english data on products page
     Given I switch the locale to "English (United States)"
     Then I should see product postit
@@ -41,6 +42,7 @@ Feature: Browse products by locale and scope
       | description |             |
       | family      | [furniture] |
 
+  @skip
   Scenario: Successfully display french data on products page
     Given I switch the locale to "French (France)"
     Then I should see product postit
