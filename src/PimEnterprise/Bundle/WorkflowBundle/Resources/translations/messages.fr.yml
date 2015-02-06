@@ -4,11 +4,18 @@ pimee_workflow:
     created: Proposé le
     changes: Changements
     locale: Locale contextuelle
+    product:
+      label: Libellé du produit
     status:
       label: Statut
       working_copy: Version de travail
       in_progress: En cours
       ready: En attente d’approbation
+      can_not_be_approved: Ne peut pas être approuvé ou refusé
+      can_not_be_deleted: Ne peut pas être supprimé
+    status_message:
+      can_not_be_approved: "Vous ne pouvez pas approuver ou refuser cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits."
+      can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits."
     action:
       approve: Accepter
       refuse: Refuser
@@ -28,11 +35,13 @@ btn.publish: Publier
 btn.unpublish: Dépublier
 flash.product.published: Le produit a été publié avec succès.
 flash.product.unpublished: Le produit a été depublié avec succès.
-flash.product_draft.approve.success: Le brouillon du produit a été appliqué avec succès.
-flash.product_draft.approve.error: "Le brouillon du produit ne peut pas être appliqué en raison de l'erreur suivante. %error%"
+flash.product_draft.approve.success: La proposition a été appliquée avec succès.
+flash.product_draft.approve.error: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
+flash.product_draft.refuse.success: La proposition a été refusée.
 pim_menu:
   item:
     published_product: Produits publiés
+    proposal: Propositions
 pim_title:
   published_product:
     index: Produits publiés
@@ -40,8 +49,11 @@ pim_title:
   product:
     dispatch: 'Produits %product.sku%'
     show: 'Produits %product.sku% | Voir'
+  proposal:
+    index: Propositions
 btn.editworkingcopy: Editer la copie de travail
 confirmation:
   product:
     publish: Êtes-vous sûr de vouloir publier ce produit ?
     unpublish: Êtes-vous sûr de vouloir dépublier ce produit ?
+proposal.overview: Propositions

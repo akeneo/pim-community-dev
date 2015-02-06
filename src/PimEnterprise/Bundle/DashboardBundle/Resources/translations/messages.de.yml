@@ -1,0 +1,9 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Zu prüfende Vorschläge
+      date: Datum
+      author: Autor
+      product: Produkt
+      review: Überprüfung
+      empty: Keine Produktentwürfe zu überprüfen

@@ -1,0 +1,59 @@
+pimee_workflow:
+  product_draft:
+    author: Autor
+    created: Vorgeschlagen am
+    changes: Änderungen
+    locale: Gebietsschemakontext
+    product:
+      label: Produktbezeichnung
+    status:
+      label: Status
+      working_copy: Arbeitskopie
+      in_progress: In Arbeit
+      ready: Auf Genehmigung warten
+      can_not_be_approved: Kann nicht genehmigt oder abgelehnt werden
+      can_not_be_deleted: Kann nicht gelöscht werden
+    status_message:
+      can_not_be_approved: Sie können diesen Vorschlag nicht genehmigen oder ablehnen da er Werte enthält, die Sie nicht bearbeiten dürfen. Bitte kontaktieren Sie Ihren Administrator damit Ihre Rechte angepasst werden können.
+      can_not_be_deleted: Sie können diesen Vorschlag nicht löschen da er Werte enthält, die Sie nicht bearbeiten dürfen. Bitte kontaktieren Sie Ihren Administrator damit Ihre Rechte angepasst werden können.
+    action:
+      approve: Genehmigen
+      refuse: Ablehnen
+      remove: Entfernen
+  published_product:
+    index: Veröffentlichte Produkte
+    title: Veröffentlichtes Produkt
+  acl.published_product:
+    index: Veröffentlichte Produkte verwalten
+  product:
+    permission:
+      label: Berechtigungen
+      own: Überprüfung / Veröffentlichen
+      edit: Bearbeiten
+      view: Ansehen
+btn.publish: Veröffentlichen
+btn.unpublish: Veröffentlichung entziehen
+flash.product.published: Das Produkt wurde erfolgreich veröffentlicht.
+flash.product.unpublished: Die Veröffentlichung des Produktes wurde erfolgreich entzogen.
+flash.product_draft.approve.success: Der Vorschlag wurde erfolgreich freigegeben.
+flash.product_draft.approve.error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
+flash.product_draft.refuse.success: Der Vorschlag wurde abgelehnt.
+pim_menu:
+  item:
+    published_product: Veröffentlichte Produkte
+    proposal: Vorschläge
+pim_title:
+  published_product:
+    index: Veröffentlichte Produkte
+    view: 'Veröffentlichte Produkte %product.sku% | Ansehen'
+  product:
+    dispatch: 'Produkte %product.sku%'
+    show: 'Produkte %product.sku% | Zeigen'
+  proposal:
+    index: Vorschläge
+btn.editworkingcopy: Arbeitskopie bearbeiten
+confirmation:
+  product:
+    publish: Sind Sie sicher, dass Sie dieses Produkt veröffentlichen möchten?
+    unpublish: Sind Sie sicher, dass Sie diesem Produkt die Veröffentlichung entziehen möchten?
+proposal.overview: Vorschläge
