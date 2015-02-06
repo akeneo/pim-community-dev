@@ -195,6 +195,7 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+- PIM-3700: Fix comment display on long words
 
 # 1.2.25 (2015-02-04)
 
