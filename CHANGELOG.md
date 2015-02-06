@@ -196,6 +196,7 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 - PIM-3700: Fix comment display on long words
+- PIM-2094: Regroup attributes validation properties in a subpanel
 
 # 1.2.25 (2015-02-04)
 

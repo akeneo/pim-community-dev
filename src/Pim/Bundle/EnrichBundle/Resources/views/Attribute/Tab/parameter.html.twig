@@ -32,16 +32,18 @@
             </div>
             {{ form_row(form.availableLocales) }}
         {% endif %}
+    {% endset %}
 
-        {% set optionalFields = ['dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
-            'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
-            'allowedExtensions', 'validationRule', 'validationRegexp', 'minimumInputLength', 'defaultValue', 'sortOrder'] %}
+    {% set validationParameters %}
+        {% set validationFields = ['dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
+        'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
+        'allowedExtensions', 'validationRule', 'validationRegexp', 'minimumInputLength', 'defaultValue', 'sortOrder'] %}
 
         {% for property in form.vars.value.properties|keys %}
-            {% set optionalFields = optionalFields|merge([property]) %}
+            {% set validationFields = validationFields|merge([property]) %}
         {% endfor %}
 
-        {% for field in optionalFields %}
+        {% for field in validationFields %}
             {% if form[field] is defined %}
                 {{ form_row(form[field]) }}
             {% endif %}
@@ -54,5 +56,9 @@
         {{ form_row(form.useableAsGridFilter) }}
     {% endset %}
 
-    {{ elements.accordion({ 'pane.accordion.general_parameters': generalParameters, 'pane.accordion.backend_parameters': backendParameters }) }}
+    {{ elements.accordion({
+        'pane.accordion.general_parameters': generalParameters,
+        'pane.accordion.validation_parameters': validationParameters,
+        'pane.accordion.backend_parameters': backendParameters
+    }) }}
 </div>
