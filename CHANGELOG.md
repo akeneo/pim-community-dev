@@ -1,5 +1,8 @@
 # 1.3.x
 
+## Bug fixes
+- PIM-3617: Fix scope selection hidden by notification alert on product edit
+
 # 1.3.0-RC1 (2015-02-03)
 
 ## Community Edition changes

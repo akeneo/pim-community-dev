@@ -29,12 +29,6 @@ locale.permissions:
     edit.help: Allow to edit the product information in this locale (implies the view permission)
     no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
 
-pimee_enrich:
-    acl.product_ownership.title: Ownership
-    groups:
-        label: owner groups
-        empty: none
-
 btn:
     save working copy: Save working copy
     save draft: Save draft
@@ -113,3 +107,9 @@ pimee_enrich:
     category:
         tab:
             permission.title: Permissions
+    acl.product_ownership.title: Ownership
+    attributes:
+        empty: none
+    groups:
+        label: owner groups
+        empty: none
