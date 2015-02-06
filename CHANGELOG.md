@@ -1,5 +1,8 @@
 # 1.3.x
 
+## Bug fixes
+- PIM-1235: Fix information message when trying to delete a category tree used by a channel
+
 # 1.3.0-RC1 (2015-02-03)
 
 ## Features
