@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class MetricTypeSpec extends ObjectBehavior
 {
@@ -20,7 +21,8 @@ class MetricTypeSpec extends ObjectBehavior
         MeasureManager $manager,
         MetricFactory $metricFactory,
         ProductValueInterface $value,
-        AttributeInterface $size
+        AttributeInterface $size,
+        TranslatorInterface $translator
     ) {
         $value->getAttribute()->willReturn($size);
 
@@ -29,7 +31,8 @@ class MetricTypeSpec extends ObjectBehavior
             'pim_enrich_metric',
             $guesser,
             $manager,
-            $metricFactory
+            $metricFactory,
+            $translator
         );
     }
 
@@ -56,7 +59,7 @@ class MetricTypeSpec extends ObjectBehavior
     {
         $size->getLabel()->willReturn('size');
         $size->isRequired()->willReturn(false);
-        $manager->getUnitSymbolsForFamily('Weight')->willReturn('Kg');
+        $manager->getUnitSymbolsForFamily('Weight')->willReturn(['KILOGRAM', 'kg']);
         $size->getMetricFamily()->willReturn('Weight');
         $size->getDefaultMetricUnit()->willReturn('KILOGRAM');
 
