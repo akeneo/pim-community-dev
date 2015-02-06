@@ -6,6 +6,7 @@ pim_user:
       group_and_role.title: Gruppen und Rollen
       password.title: Kennwort
       business_unit.title: Geschäftsbereich
+      email_synchronization.title: Einstellungen für E-Mail Synchronisierung
 oro.user.controller:
   group.message.saved: Gruppe gespeichert
   role.message.saved: Rolle gespeichert

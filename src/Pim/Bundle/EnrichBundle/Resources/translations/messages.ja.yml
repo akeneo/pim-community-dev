@@ -523,8 +523,6 @@ pim_enrich.mass_edit_action:
     description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
     empty: 編集する属性を選択してください
     success_flash: 製品属性が更新されました
-    message:
-      warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
   classify:
     label: 製品をカテゴリに分類
     description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
