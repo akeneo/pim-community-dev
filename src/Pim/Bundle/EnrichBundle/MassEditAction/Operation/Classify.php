@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -14,26 +15,22 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class Classify extends ProductMassEditOperation
 {
-    /**
-     * @var CategoryManager $categoryManager
-     */
+    /** @var CategoryManager $categoryManager */
     protected $categoryManager;
 
-    /**
-     * @var CategoryInterface[]
-     */
+    /** @var CategoryInterface[] */
     protected $trees;
 
-    /**
-     * @var CategoryInterface[]
-     */
+    /** @var CategoryInterface[] */
     protected $categories;
 
     /**
-     * @param CategoryManager $categoryManager
+     * @param CategoryManager    $categoryManager
+     * @param BulkSaverInterface $productSaver
      */
-    public function __construct(CategoryManager $categoryManager)
+    public function __construct(CategoryManager $categoryManager, BulkSaverInterface $productSaver)
     {
+        parent::__construct($productSaver);
         $this->categoryManager = $categoryManager;
         $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
         $this->categories      = array();

@@ -1,0 +1,18 @@
+<li class="dropdown" id="header-notification-widget"></li>
+
+<script type="text/javascript">
+    require(
+        ['jquery', 'pim/notifications', 'oro/mediator'],
+        function ($, Notifications, mediator) {
+            $(function() {
+                Notifications.init({
+                    imgUrl: '{{ asset('bundles/pimimportexport/images/loading.gif') }}',
+                    loadingText: '{{ 'Loading ...'|trans }}',
+                    noNotificationsMessage: '{{ 'pim_notification.no_notifications'|trans }}',
+                    markAsReadMessage: '{{ 'pim_notification.mark_all_as_read'|trans }}',
+                    unreadCount: {{ notification_count() }}
+                });
+            });
+        }
+    );
+</script>

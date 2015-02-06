@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Context;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CatalogContextSpec extends ObjectBehavior
 {
@@ -32,5 +31,19 @@ class CatalogContextSpec extends ObjectBehavior
     {
         $this->setScopeCode('ecommerce')->shouldReturn($this);
         $this->getScopeCode()->shouldReturn('ecommerce');
+    }
+
+    function it_returns_presence_of_locale_code()
+    {
+        $this->hasLocaleCode()->shouldReturn(false);
+        $this->setConfiguration('localeCode', 'fr_FR');
+        $this->hasLocaleCode()->shouldReturn(true);
+    }
+
+    function it_returns_presence_of_scope_code()
+    {
+        $this->hasScopeCode()->shouldReturn(false);
+        $this->setConfiguration('scopeCode', 'mobile');
+        $this->hasScopeCode()->shouldReturn(true);
     }
 }

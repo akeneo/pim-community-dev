@@ -1,8 +1,11 @@
 parameters:
+    # @deprecated, will be remove in 1.4
     pim_base_connector.reader.doctrine.bulk_product.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\BulkProductReader
     pim_base_connector.reader.orm.entity.class:            Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
     pim_base_connector.reader.orm.category.class:          Pim\Bundle\BaseConnectorBundle\Reader\ORM\CategoryReader
     pim_base_connector.reader.orm.attribute_option.class:  Pim\Bundle\BaseConnectorBundle\Reader\ORM\AttributeOptionReader
+    pim_base_connector.reader.repository.group.class:         Pim\Bundle\BaseConnectorBundle\Reader\Repository\GroupReader
+    pim_base_connector.reader.repository.variant_group.class: Pim\Bundle\BaseConnectorBundle\Reader\Repository\VariantGroupReader
 
     pim_base_connector.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
     pim_base_connector.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
@@ -23,6 +26,7 @@ services:
             - '@pim_transform.converter.metric'
             - '@pim_catalog.object_manager.product'
 
+    # @deprecated, will be remove in 1.4
     pim_base_connector.reader.doctrine.bulk_product:
         parent: pim_base_connector.reader.doctrine.product
         class: %pim_base_connector.reader.doctrine.bulk_product.class%
@@ -50,11 +54,15 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.association_type.class%
 
-    pim_base_connector.reader.orm.group:
-        class: %pim_base_connector.reader.orm.entity.class%
+    pim_base_connector.reader.repository.group:
+        class: %pim_base_connector.reader.repository.group.class%
         arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - %pim_catalog.entity.group.class%
+            - '@pim_catalog.repository.group'
+
+    pim_base_connector.reader.repository.variant_group:
+        class: %pim_base_connector.reader.repository.variant_group.class%
+        arguments:
+            - '@pim_catalog.repository.group'
 
     pim_base_connector.reader.file.csv:
         class: %pim_base_connector.reader.file.csv.class%
@@ -68,11 +76,14 @@ services:
         class: %pim_base_connector.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - %pim_catalog.entity.attribute.class%
             - '@pim_transform.builder.field_name'
+            - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.channel.class%
             - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.currency.class%
+
+    pim_base_connector.reader.file.csv_variant_group:
+        alias: pim_base_connector.reader.file.csv_product
 
     pim_base_connector.reader.file.csv_attribute_option:
         parent: pim_base_connector.reader.file.csv

@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Enrich bundle
@@ -22,6 +23,9 @@ class PimEnrichBundle extends Bundle
     {
         $container
             ->addCompilerPass(new Compiler\RegisterMassEditOperatorsPass())
-            ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass());
+            ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass())
+            ->addCompilerPass(new Compiler\RegisterViewElementsPass(new ReferenceFactory()))
+            ->addCompilerPass(new Compiler\RegisterViewUpdatersPass(new ReferenceFactory()))
+            ->addCompilerPass(new Compiler\SerializerPass('pim_internal_api_serializer'));
     }
 }

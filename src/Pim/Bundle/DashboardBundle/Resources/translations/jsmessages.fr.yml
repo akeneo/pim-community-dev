@@ -1,0 +1,12 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Aucune opération trouvée
+      status: Statut
+      date: Date
+      type: Type
+      profile name: Nom du profil
+      details: Détails
+      job_type:
+        import: Import
+        export: Export

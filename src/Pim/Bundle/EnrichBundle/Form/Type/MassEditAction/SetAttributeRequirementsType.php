@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type of the SetAttributeRequirements operation

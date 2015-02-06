@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Form type related to availableLocales property of AbstractAttribute
+ * Form type related to availableLocales property of AttributeInterface
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -34,7 +34,7 @@ class AvailableLocalesType extends AbstractType
                 'multiple' => true,
                 'select2' => true,
                 'class' => 'Pim\Bundle\CatalogBundle\Entity\Locale',
-                'query_builder' => function (LocaleRepository $repository) {
+                'query_builder' => function (LocaleRepositoryInterface $repository) {
                     return $repository->getActivatedLocalesQB();
                 }
             )

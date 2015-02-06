@@ -51,12 +51,8 @@ class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
         }
 
         foreach ($data as $name => $value) {
-            if ($this->currentLocale && $value->getAttribute()->getAvailableLocales()) {
-                $availableCodes = $value->getAttribute()->getAvailableLocales()->map(
-                    function ($locale) {
-                        return $locale->getCode();
-                    }
-                )->toArray();
+            if ($this->currentLocale && $value->getAttribute()->isLocaleSpecific()) {
+                $availableCodes = $value->getAttribute()->getLocaleSpecificCodes();
                 if (!in_array($this->currentLocale, $availableCodes)) {
                     $form->remove($name);
                 }

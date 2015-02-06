@@ -1,0 +1,47 @@
+Pim\Bundle\CommentBundle\Entity\Comment:
+    type: entity
+    table: pim_comment_comment
+    indexes:
+        resource_name_resource_id_idx:
+            columns:
+                - resource_name
+                - resource_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        resourceName:
+            type: string
+            column: resource_name
+        resourceId:
+            type: string
+            column: resource_id
+            length: 24
+        body:
+            type: text
+        createdAt:
+            type: datetime
+            column: created_at
+        repliedAt:
+            type: datetime
+            column: replied_at
+    oneToMany:
+        children:
+            targetEntity: Pim\Bundle\CommentBundle\Entity\Comment
+            mappedBy: parent
+            orderBy:
+                createdAt: ASC
+
+    manyToOne:
+        parent:
+            targetEntity: Pim\Bundle\CommentBundle\Entity\Comment
+            inversedBy: children
+            joinColumn:
+                onDelete: CASCADE
+        author:
+            targetEntity: Oro\Bundle\UserBundle\Entity\User
+            joinColumn:
+                name: author_id
+                referencedColumnName: id

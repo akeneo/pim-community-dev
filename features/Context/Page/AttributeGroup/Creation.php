@@ -25,7 +25,7 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attributes' => array('css' => '#attributes table'),
+                'Attributes' => array('css' => '.tab-pane.tab-attribute table'),
             )
         );
     }

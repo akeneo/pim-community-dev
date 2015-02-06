@@ -77,15 +77,15 @@ Feature: Export products
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
       | tshirt-black | tshirts |                              | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
-      | product      | attribute   | value                                | locale | scope     |
-      | tshirt-white | name        | White t-shirt                        | en_US  |           |
-      | tshirt-white | name        | White t-shirt                        | en_GB  |           |
-      | tshirt-white | name        | T-shirt blanc                        | fr_FR  |           |
-      | tshirt-white | name        | Weißes T-Shirt                       | de_DE  |           |
-      | tshirt-black | name        | Black t-shirt                        | en_US  |           |
-      | tshirt-black | name        | Black t-shirt                        | en_GB  |           |
-      | tshirt-black | name        | T-shirt noir                         | fr_FR  |           |
-      | tshirt-black | name        | Schwarzes T-Shirt                    | de_DE  |           |
+      | product      | attribute | value             | locale | scope |
+      | tshirt-white | name      | White t-shirt     | en_US  |       |
+      | tshirt-white | name      | White t-shirt     | en_GB  |       |
+      | tshirt-white | name      | T-shirt blanc     | fr_FR  |       |
+      | tshirt-white | name      | Weißes T-Shirt    | de_DE  |       |
+      | tshirt-black | name      | Black t-shirt     | en_US  |       |
+      | tshirt-black | name      | Black t-shirt     | en_GB  |       |
+      | tshirt-black | name      | T-shirt noir      | fr_FR  |       |
+      | tshirt-black | name      | Schwarzes T-Shirt | de_DE  |       |
     And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "tablet_product_export" export job page

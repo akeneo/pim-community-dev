@@ -2,7 +2,8 @@ require({
     paths: {
         'jquery.uniform':             'pimui/lib/jquery/jquery.uniform.min',
         'oro/navigation':             'pimnavigation/js/navigation',
-        'oro/security-access-levels': 'pimuser/js/security-access-levels'
+        'oro/security-access-levels': 'pimuser/js/security-access-levels',
+        'oro/app':                    'pimui/js/app'
     },
     map: {
         '*': {
@@ -26,7 +27,7 @@ require({
             'oro/navigation/dotmenu/view': 'oro/navigation/dotmenu/view'
         },
         'pimfilter/js/datafilter/filters-manager': {
-            'oro/datafilter/filters-manager': 'orofilter/js/datafilter/filters-manager'
+            'oro/datafilter/filters-manager': 'pimfilter/js/datafilter/oro-filters-manager'
         }
     }
 });

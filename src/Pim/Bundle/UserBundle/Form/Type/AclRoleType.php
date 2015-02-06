@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 use Oro\Bundle\UserBundle\Form\Type\AclRoleType as OroAclRoleType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Overriden AclRoleType to remove ACLs for disabled locales

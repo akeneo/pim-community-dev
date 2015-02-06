@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\UserBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AclGroupsExtensionSpec extends ObjectBehavior
 {

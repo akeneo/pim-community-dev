@@ -1,0 +1,12 @@
+{% set warningMessages = form.operation.vars.data.getWarningMessages %}
+{% if warningMessages|length > 0 %}
+    <div class="alert alert-info">
+        <div class="message">
+            <ul>
+                {% for message in warningMessages %}
+                    <li>{{ message.key|trans(message.options) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

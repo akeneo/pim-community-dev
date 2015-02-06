@@ -2,22 +2,32 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 
 class AssociationTypeManagerSpec extends ObjectBehavior
 {
     function let(
-        AssociationTypeRepository $repository,
+        AssociationTypeRepositoryInterface $repository,
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith($repository, $objectManager, $eventDispatcher);
+    }
+
+    function it_is_a_saver()
+    {
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+    }
+
+    function it_is_a_remover()
+    {
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_provides_all_association_types($repository)
@@ -30,7 +40,7 @@ class AssociationTypeManagerSpec extends ObjectBehavior
     function it_dispatches_an_event_when_removing_an_association_type(
         $eventDispatcher,
         $objectManager,
-        AssociationType $associationType
+        AssociationTypeInterface $associationType
     ) {
         $eventDispatcher->dispatch(
             AssociationTypeEvents::PRE_REMOVE,
@@ -41,5 +51,35 @@ class AssociationTypeManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $this->remove($associationType);
+    }
+
+    function it_throws_exception_when_save_anything_else_than_an_assoccation_type()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringSave($anythingElse);
+    }
+
+    function it_throws_exception_when_remove_anything_else_than_an_assocation_type()
+    {
+        $anythingElse = new \stdClass();
+        $this
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    sprintf(
+                        'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
+                        get_class($anythingElse)
+                    )
+                )
+            )
+            ->duringRemove($anythingElse);
     }
 }

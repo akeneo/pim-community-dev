@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Constraint
@@ -21,7 +21,7 @@ class NotDecimalValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof AbstractMetric || $value instanceof AbstractProductPrice) {
+        if ($value instanceof MetricInterface || $value instanceof ProductPriceInterface) {
             $propertyPath = 'data';
             $value = $value->getData();
         }

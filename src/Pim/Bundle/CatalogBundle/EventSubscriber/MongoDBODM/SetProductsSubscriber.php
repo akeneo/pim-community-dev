@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Gedmo\References\LazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Gedmo\References\LazyCollection;
 
 /**
  * ORM subscriber registered when Product is a mongo document

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DashboardBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Dashboard bundle

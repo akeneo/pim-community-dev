@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Product mass action manager
@@ -14,25 +16,21 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
  */
 class ProductMassActionManager
 {
-    /**
-     * @var ProductMassActionRepositoryInterface $productRepository
-     */
+    /** @var ProductMassActionRepositoryInterface */
     protected $massActionRepository;
 
-    /**
-     * @var AttributeRepository $attributeRepository
-     */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
      * Constructor
      *
      * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepository                  $attributeRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
      */
     public function __construct(
         ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepository $attributeRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->massActionRepository = $massActionRepository;
         $this->attributeRepository  = $attributeRepository;
@@ -45,21 +43,109 @@ class ProductMassActionManager
      *   - without value AND link to family
      *   - with value
      *
-     * @param array $productIds
+     * @param ProductInterface[] $products
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
+     * @return AttributeInterface[]
      */
-    public function findCommonAttributes(array $productIds)
+    public function findCommonAttributes(array $products)
     {
+        $productIds = [];
+        foreach ($products as $product) {
+            $productIds[] = $product->getId();
+        }
+
         $attributeIds = $this->massActionRepository->findCommonAttributeIds($productIds);
 
         return $this
             ->attributeRepository
             ->findWithGroups(
                 array_unique($attributeIds),
-                array(
-                    'conditions' => ['unique' => 0]
-                )
+                ['conditions' => ['unique' => 0]]
             );
+    }
+
+    /**
+     * Filter attribute by removing attributes coming from variants
+     * @param AttributeInterface[] $attributes
+     * @param ProductInterface[]   $products
+     *
+     * @return AttributeInterface[]
+     */
+    public function filterAttributesComingFromVariant(array $attributes, array $products)
+    {
+        $variantAttributeCodes = $this->getAttributeCodesComingFromVariantGroups($products);
+
+        $filteredAttributes = [];
+        foreach ($attributes as $attribute) {
+            if (!in_array($attribute->getCode(), $variantAttributeCodes)) {
+                $filteredAttributes[] = $attribute;
+            }
+        }
+
+        return $filteredAttributes;
+    }
+
+    /**
+     * Filter the locale specific attributes
+     *
+     * @param AttributeInterface[] $attributes
+     * @param string               $currentLocaleCode
+     *
+     * @return bool
+     */
+    public function filterLocaleSpecificAttributes(array $attributes, $currentLocaleCode)
+    {
+        foreach ($attributes as $key => $attribute) {
+            if ($attribute->isLocaleSpecific()) {
+                $availableCodes = $attribute->getLocaleSpecificCodes();
+                if (!in_array($currentLocaleCode, $availableCodes)) {
+                    unset($attributes[$key]);
+                }
+            }
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Get common attributes coming also from variant groups
+     * @param ProductInterface[] $products
+     *
+     * @return array
+     */
+    public function getCommonAttributeCodesInVariant(array $products)
+    {
+        $variantAttributeCodes = $this->getAttributeCodesComingFromVariantGroups($products);
+        $commonAttributes  = $this->findCommonAttributes($products);
+
+        $commonAttributeCodes = [];
+        foreach ($commonAttributes as $attribute) {
+            $commonAttributeCodes[] = $attribute->getCode();
+        }
+
+        return array_intersect($variantAttributeCodes, $commonAttributeCodes);
+    }
+
+    /**
+     * Get attributes coming from variant groups
+     * @param ProductInterface[] $products
+     *
+     * @return array
+     */
+    protected function getAttributeCodesComingFromVariantGroups(array $products)
+    {
+        $variantAttributeCodes = [];
+        foreach ($products as $product) {
+            $variantGroup = $product->getVariantGroup();
+
+            if (null !== $variantGroup && null !== $variantGroup->getProductTemplate()) {
+                $variantAttributeCodes = array_merge(
+                    $variantGroup->getProductTemplate()->getAttributeCodes(),
+                    $variantAttributeCodes
+                );
+            }
+        }
+
+        return array_unique($variantAttributeCodes);
     }
 }

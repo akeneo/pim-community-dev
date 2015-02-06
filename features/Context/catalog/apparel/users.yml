@@ -33,4 +33,3 @@ users:
         last_name:     Harvey
         roles:         [ ROLE_USER ]
         groups:        [ Redactor ]
-

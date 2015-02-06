@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\GroupNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
 /**
  * Test related class
@@ -51,14 +51,14 @@ class GroupNormalizerTest extends Structured\GroupNormalizerTest
                     'type'        => 'VARIANT',
                     'label-en_US' => 'My variant group',
                     'label-fr_FR' => 'Mon groupe variant',
-                    'attributes'  => 'color,size'
+                    'axis'        => 'color,size'
                 ),
                 array(
                     'code'        => 'my_group',
                     'type'        => 'RELATED',
                     'label-en_US' => 'My group',
                     'label-fr_FR' => 'Mon groupe',
-                    'attributes'  => ''
+                    'axis'        => ''
                 )
             ),
         );
@@ -80,7 +80,7 @@ class GroupNormalizerTest extends Structured\GroupNormalizerTest
      */
     protected function getAttributes($data)
     {
-        $data['attributes'] = explode(',', $data['attributes']);
+        $data['axis'] = explode(',', $data['axis']);
 
         return parent::getAttributes($data);
     }

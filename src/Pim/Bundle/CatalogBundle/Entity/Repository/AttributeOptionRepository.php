@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Repository for AttributeOption entity
@@ -12,10 +12,12 @@ use Doctrine\ORM\EntityRepository;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class AttributeOptionRepository extends EntityRepository implements
-    OptionRepositoryInterface,
-    ReferableEntityRepositoryInterface
+    ReferableEntityRepositoryInterface,
+    AttributeOptionRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -60,6 +62,13 @@ class AttributeOptionRepository extends EntityRepository implements
                     $qb->expr()->in('o.id', ':ids')
                 )
                 ->setParameter('ids', $options['ids']);
+        }
+
+        if (isset($options['limit'])) {
+            $qb->setMaxResults((int) $options['limit']);
+            if (isset($options['page'])) {
+                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] -1));
+            }
         }
 
         $results = array();
@@ -113,7 +122,7 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         list($attributeCode, $optionCode) = explode('.', $code);
 
@@ -130,8 +139,28 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('attribute', 'code');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

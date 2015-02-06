@@ -1,0 +1,14 @@
+parameters:
+    pim_enrich.form.view.view_updater.registry.class: Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry
+    pim_enrich.form.view.view_updater.variant.class: Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\VariantViewUpdater
+
+services:
+    pim_enrich.form.view.view_updater.registry:
+        class: %pim_enrich.form.view.view_updater.registry.class%
+
+    pim_enrich.form.view.view_updater.variant:
+        class: %pim_enrich.form.view.view_updater.variant.class%
+        arguments:
+            - @property_accessor
+        tags:
+            - { name: 'pim_enrich.form.view_updater' }

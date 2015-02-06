@@ -3,8 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 class GroupNormalizerSpec extends ObjectBehavior
@@ -19,7 +18,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_group(Group $group)
+    function it_supports_normalization_in_mongodb_json_of_group(GroupInterface $group)
     {
         $this->supportsNormalization($group, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($group, 'json')->shouldBe(false);
@@ -28,7 +27,7 @@ class GroupNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_group(
         $normalizer,
-        Group $group
+        GroupInterface $group
     ) {
         $group->getCode()->willReturn('mongo');
         $normalizer->normalize($group, 'mongodb_json', [])->willReturn(['label' => 'translations']);

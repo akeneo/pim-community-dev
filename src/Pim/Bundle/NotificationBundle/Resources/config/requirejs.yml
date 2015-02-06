@@ -1,0 +1,5 @@
+config:
+    paths:
+        pim/indicator:         pimnotification/js/indicator
+        pim/notifications:     pimnotification/js/notifications
+        pim/notification-list: pimnotification/js/notification-list

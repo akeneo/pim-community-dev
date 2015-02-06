@@ -3,3 +3,5 @@ group_types:
         variant: 1
     RELATED:
         variant: 0
+    XSELL:
+        variant: 0

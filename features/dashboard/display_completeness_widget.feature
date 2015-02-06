@@ -1,3 +1,4 @@
+@javascript
 Feature: Display completeness widget
   In order to have a quick overview of products almost ready to be exported but incomplete
   As a regular user
@@ -14,7 +15,8 @@ Feature: Display completeness widget
     And I am logged in as "Mary"
     When I am on the dashboard page
     Then I should see "Completeness Over Channels and Locales"
-    And completeness of "Ecommerce" should be "13%"
+    When I wait for widgets to load
+    Then completeness of "Ecommerce" should be "13%"
     And "German (Germany)" completeness of "Ecommerce" should be "0%"
     And "English (United Kingdom)" completeness of "Ecommerce" should be "0%"
     And "English (United States)" completeness of "Ecommerce" should be "0%"

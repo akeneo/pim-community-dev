@@ -7,7 +7,6 @@ Feature: Edit a category
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully edit a category
     Given I edit the "Sandals" category
     Then I should see the Code field
@@ -25,7 +24,6 @@ Feature: Edit a category
     And I click on the "Summer collection" category
     Then I should be on the category "summer_collection" edit page
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I edit the "winter_boots" category
     When I fill in the following information:

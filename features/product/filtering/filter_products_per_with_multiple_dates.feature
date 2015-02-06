@@ -11,9 +11,9 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | code       | label      | type         | useable as grid filter |
-      | delivery   | Delivery   | date         | yes                    |
-      | supply     | Supply     | date         | yes                    |
+      | code     | label    | type | useable as grid filter |
+      | delivery | Delivery | date | yes                    |
+      | supply   | Supply   | date | yes                    |
     And the following "delivery" attribute options: Black and Green
     And the following "supply" attribute options: Black and White and Red
     And the following products:
@@ -28,10 +28,10 @@ Feature: Filter products
       | POST-2 | furniture | 2014-08-01 |            |
       | POST-3 | furniture | 2014-09-01 |            |
     And the following product groups:
-      | code   | label  | attributes       | type    | products                           |
-      | MUG    | Mug    | delivery, supply | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5  |
-      | POSTIT | Postit | supply           | X_SELL  | POST-1, POST-2, POST-3             |
-      | EMPTY  | Empty  |                  | X_SELL  |                                    |
+      | code   | label  | axis             | type    | products                          |
+      | MUG    | Mug    | delivery, supply | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5 |
+      | POSTIT | Postit | supply           | X_SELL  | POST-1, POST-2, POST-3            |
+      | EMPTY  | Empty  |                  | X_SELL  |                                   |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes

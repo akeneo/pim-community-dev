@@ -12,8 +12,8 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.2.25';
+    const VERSION = '1.3.0-RC1';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Acrobatty Bunny';
+    const VERSION_CODENAME = '';
 }

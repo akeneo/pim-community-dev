@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Aims to audit data updates on products stored in MongoDB
@@ -19,38 +20,36 @@ use Pim\Bundle\VersioningBundle\Model\Version;
  */
 class AddProductVersionSubscriber implements EventSubscriber
 {
-    /**
-     * Objects to version
-     *
-     * @var object[]
-     */
-    protected $versionableObjects = array();
+    /** @var object[] */
+    protected $versionableObjects = [];
 
-    /**
-     * @var integer[]
-     */
-    protected $versionedObjects = array();
+    /** @var string[] */
+    protected $versionedObjects = [];
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $normalizer;
+
+    /** @var VersionContext */
+    protected $versionContext;
 
     /**
      * Constructor
      *
      * @param VersionManager      $versionManager
+     * @param VersionContext      $versionContext
      * @param NormalizerInterface $normalizer
      */
-    public function __construct(VersionManager $versionManager, NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        VersionManager $versionManager,
+        VersionContext $versionContext,
+        NormalizerInterface $normalizer
+    ) {
         $this->versionManager = $versionManager;
         $this->normalizer     = $normalizer;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -60,7 +59,7 @@ class AddProductVersionSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush', 'postFlush');
+        return ['onFlush', 'postFlush'];
     }
 
     /**
@@ -98,12 +97,13 @@ class AddProductVersionSubscriber implements EventSubscriber
     {
         $versions = [];
         foreach ($this->versionableObjects as $versionable) {
+            $oid = $this->getObjectHash($versionable);
             $currentVersions = $this->createVersion($versionable);
             $versions = array_merge($versions, $currentVersions);
-            $this->versionedObjects[] = spl_object_hash($versionable);
+            $this->versionedObjects[] = $oid;
         }
 
-        $this->versionableObjects = array();
+        $this->versionableObjects = [];
 
         foreach ($versions as $version) {
             $this->applyChangeSet($version);
@@ -113,7 +113,7 @@ class AddProductVersionSubscriber implements EventSubscriber
     /**
      * @param object $versionable
      *
-     * @return Version
+     * @return Version[]
      */
     protected function createVersion($versionable)
     {
@@ -133,7 +133,7 @@ class AddProductVersionSubscriber implements EventSubscriber
     protected function addPendingVersioning($versionable)
     {
         if ($versionable instanceof ProductInterface) {
-            $oid = spl_object_hash($versionable);
+            $oid = $this->getObjectHash($versionable);
             if (!isset($this->versionableObjects[$oid]) && !in_array($oid, $this->versionedObjects)) {
                 $this->versionableObjects[$oid] = $versionable;
             }
@@ -155,5 +155,18 @@ class AddProductVersionSubscriber implements EventSubscriber
         } else {
             $om->remove($version);
         }
+    }
+
+    /**
+     * Get an object hash, provides different hashes depending on version manager context to allows to log different
+     * versions of a same object during a request
+     *
+     * @param object $object
+     *
+     * @return string
+     */
+    protected function getObjectHash($object)
+    {
+        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionContext->getContextInfo()));
     }
 }

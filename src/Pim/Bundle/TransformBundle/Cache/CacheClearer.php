@@ -52,7 +52,6 @@ class CacheClearer
     {
         $nonClearableEntities = $full ? [] : $this->nonClearableEntities;
         foreach ($this->managerRegistry->getManagers() as $objectManager) {
-
             $identityMap = $objectManager->getUnitOfWork()->getIdentityMap();
             $managedClasses = array_keys($identityMap);
             $nonClearableClasses = array_intersect($managedClasses, $nonClearableEntities);

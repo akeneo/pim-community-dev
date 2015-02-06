@@ -2,22 +2,21 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Manages completeness
- *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,17 +24,17 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 class CompletenessManager
 {
     /**
-     * @var FamilyRepository
+     * @var FamilyRepositoryInterface
      */
     protected $familyRepository;
 
     /**
-     * @var ChannelRepository
+     * @var ChannelRepositoryInterface
      */
     protected $channelRepository;
 
     /**
-     * @var LocaleRepository
+     * @var LocaleRepositoryInterface
      */
     protected $localeRepository;
 
@@ -57,17 +56,17 @@ class CompletenessManager
     /**
      * Constructor
      *
-     * @param FamilyRepository               $familyRepository
-     * @param ChannelRepository              $channelRepository
-     * @param LocaleRepository               $localeRepository
+     * @param FamilyRepositoryInterface      $familyRepository
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param CompletenessGeneratorInterface $generator
      * @param ValidatorInterface             $validator
      * @param string                         $class
      */
     public function __construct(
-        FamilyRepository $familyRepository,
-        ChannelRepository $channelRepository,
-        LocaleRepository $localeRepository,
+        FamilyRepositoryInterface $familyRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator,
         $class
@@ -93,9 +92,9 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function generateMissingForChannel(Channel $channel)
+    public function generateMissingForChannel(ChannelInterface $channel)
     {
         $this->generator->generateMissingForChannel($channel);
     }
@@ -124,9 +123,9 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all product
      * of a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      */
-    public function scheduleForFamily(Family $family)
+    public function scheduleForFamily(FamilyInterface $family)
     {
         if ($family->getId()) {
             $this->generator->scheduleForFamily($family);
@@ -137,9 +136,9 @@ class CompletenessManager
      * Schedule recalculation of completenesses for all products
      * of a channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function scheduleForChannel(Channel $channel)
+    public function scheduleForChannel(ChannelInterface $channel)
     {
         if ($channel->getId()) {
             $deletedLocaleIds = $this->channelRepository->getDeletedLocaleIdsForChannel($channel);
@@ -153,10 +152,10 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param ProductInterface $product
-     * @param array            $channels
-     * @param array            $locales
-     * @param string           $localeCode
+     * @param ProductInterface                           $product
+     * @param \Pim\Bundle\CatalogBundle\Entity\Channel[] $channels
+     * @param \Pim\Bundle\CatalogBundle\Entity\Locale[]  $locales
+     * @param string                                     $localeCode
      *
      * @return array
      */
@@ -204,14 +203,14 @@ class CompletenessManager
     /**
      * Adds a requirement to the completenesses
      *
-     * @param array                &$completenesses
-     * @param AttributeRequirement $requirement
-     * @param ArrayCollection      $productValues
-     * @param array                $localeCodes
+     * @param array                         &$completenesses
+     * @param AttributeRequirementInterface $requirement
+     * @param ArrayCollection               $productValues
+     * @param array                         $localeCodes
      */
     protected function addRequirementToCompleteness(
         array &$completenesses,
-        AttributeRequirement $requirement,
+        AttributeRequirementInterface $requirement,
         ArrayCollection $productValues,
         array $localeCodes
     ) {
@@ -233,13 +232,13 @@ class CompletenessManager
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param string            $locale
-     * @param string            $scope
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
      *
      * @return string
      */
-    protected function getValueCode(AbstractAttribute $attribute, $locale, $scope)
+    protected function getValueCode(AttributeInterface $attribute, $locale, $scope)
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isLocalizable()) {

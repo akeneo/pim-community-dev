@@ -16,18 +16,12 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
         code:
             type: string
             length: 100
-        default:
-            type: boolean
-            column: is_default
-        translatable:
-            type: boolean
-            column: is_translatable
         sortOrder:
             type: integer
             column: sort_order
     manyToOne:
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             inversedBy: options
             joinColumns:
                 attribute_id:
@@ -37,6 +31,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     oneToMany:
         optionValues:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
+            indexBy: locale
             cascade:
                 - persist
                 - remove

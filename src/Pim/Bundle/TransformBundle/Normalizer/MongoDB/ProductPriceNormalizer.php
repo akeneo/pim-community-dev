@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -32,7 +31,7 @@ class ProductPriceNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof ProductPrice && ProductNormalizer::FORMAT === $format);
+        return ($data instanceof ProductPriceInterface && ProductNormalizer::FORMAT === $format);
     }
 
     /**

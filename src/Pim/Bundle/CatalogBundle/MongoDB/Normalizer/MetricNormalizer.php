@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 /**
  * Normalize a product metric to store it as mongodb_json
@@ -38,6 +38,6 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractMetric && 'mongodb_json' === $format;
+        return $data instanceof MetricInterface && 'mongodb_json' === $format;
     }
 }

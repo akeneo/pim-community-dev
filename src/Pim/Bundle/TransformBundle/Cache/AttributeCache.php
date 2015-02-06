@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
@@ -109,11 +109,11 @@ class AttributeCache
     /**
      * Returns the attribute codes for a group
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return array
      */
-    protected function getGroupAttributeCodes(Group $group)
+    protected function getGroupAttributeCodes(GroupInterface $group)
     {
         $code = $group->getCode();
         if (!isset($this->groupAttributeCodes[$code])) {
@@ -126,11 +126,11 @@ class AttributeCache
     /**
      * Returns the attribute codes for a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return array
      */
-    protected function getFamilyAttributeCodes(Family $family)
+    protected function getFamilyAttributeCodes(FamilyInterface $family)
     {
         $code = $family->getCode();
         if (!isset($this->familyAttributeCodes[$code])) {

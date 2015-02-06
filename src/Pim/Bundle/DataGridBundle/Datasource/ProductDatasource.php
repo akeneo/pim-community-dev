@@ -2,7 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Product datasource, allows to prepare query builder from repository
@@ -13,6 +17,24 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
  */
 class ProductDatasource extends Datasource
 {
+    /** @var ProductQueryBuilderInterface */
+    protected $pqb;
+
+    /**
+     * @param ObjectManager                       $om
+     * @param HydratorInterface                   $hydrator
+     * @param ProductQueryBuilderFactoryInterface $factory
+     */
+    public function __construct(
+        ObjectManager $om,
+        HydratorInterface $hydrator,
+        ProductQueryBuilderFactoryInterface $factory
+    ) {
+        $this->om       = $om;
+        $this->hydrator = $hydrator;
+        $this->factory  = $factory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,5 +56,32 @@ class ProductDatasource extends Datasource
         $rows = $this->hydrator->hydrate($this->qb, $options);
 
         return $rows;
+    }
+
+    /**
+     * @return ProductQueryBuilderInterface
+     */
+    public function getProductQueryBuilder()
+    {
+        return $this->pqb;
+    }
+
+    /**
+     * @param string $method the query builder creation method
+     * @param array  $config the query builder creation config
+     *
+     * @return Datasource
+     */
+    protected function initializeQueryBuilder($method, array $config = [])
+    {
+        $factoryConfig['repository_parameters'] = $config;
+        $factoryConfig['repository_method'] = $method;
+        $factoryConfig['default_locale'] =  $this->getConfiguration('locale_code');
+        $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
+
+        $this->pqb = $this->factory->create($factoryConfig);
+        $this->qb = $this->pqb->getQueryBuilder();
+
+        return $this;
     }
 }

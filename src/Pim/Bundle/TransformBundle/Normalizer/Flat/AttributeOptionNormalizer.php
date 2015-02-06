@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 /**
@@ -24,7 +24,7 @@ class AttributeOptionNormalizer extends Structured\AttributeOptionNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOption && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -44,7 +44,7 @@ class AttributeOptionNormalizer extends Structured\AttributeOptionNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabel(AttributeOption $entity, $context)
+    protected function normalizeLabel(AttributeOptionInterface $entity, $context)
     {
         $labels = array();
         foreach ($context['locales'] as $locale) {

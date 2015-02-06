@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Family normalizer
@@ -52,17 +52,17 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Family && in_array($format, $this->supportedFormats);
+        return $data instanceof FamilyInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Normalize the attributes
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return array
      */
-    protected function normalizeAttributes(Family $family)
+    protected function normalizeAttributes(FamilyInterface $family)
     {
         $attributes = array();
         foreach ($family->getAttributes() as $attribute) {
@@ -75,11 +75,11 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * Normalize the requirements
      *
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return array
      */
-    protected function normalizeRequirements(Family $family)
+    protected function normalizeRequirements(FamilyInterface $family)
     {
         $required = array();
         foreach ($family->getAttributeRequirements() as $requirement) {

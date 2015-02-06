@@ -10,10 +10,10 @@ Feature: Browse products by locale and scope
       | code      |
       | furniture |
     And the following attributes:
-      | label       | localizable | scopable | useable as grid column |
-      | name        | yes         | no       | yes                    |
-      | image       | no          | yes      | yes                    |
-      | description | yes         | yes      | yes                    |
+      | label       | localizable | scopable |
+      | name        | yes         | no       |
+      | image       | no          | yes      |
+      | description | yes         | yes      |
     And the following product:
       | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile | image-ecommerce | image-mobile |
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
@@ -21,6 +21,7 @@ Feature: Browse products by locale and scope
     And I am on the products page
     And I display the columns sku, name, image, description and family
 
+  @skip
   Scenario: Successfully display english data on products page
     Given I switch the locale to "English (United States)"
     Then I should see product postit
@@ -41,6 +42,7 @@ Feature: Browse products by locale and scope
       | description |             |
       | family      | [furniture] |
 
+  @skip
   Scenario: Successfully display french data on products page
     Given I switch the locale to "French (France)"
     Then I should see product postit

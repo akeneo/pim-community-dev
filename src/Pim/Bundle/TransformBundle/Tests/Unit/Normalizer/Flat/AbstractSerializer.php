@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Abstract Serializer class to get a class implementing both

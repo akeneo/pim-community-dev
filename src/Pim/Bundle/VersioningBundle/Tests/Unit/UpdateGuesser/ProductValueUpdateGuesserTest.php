@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 /**
  * Test related class
@@ -52,6 +52,5 @@ class ProductValueUpdateGuesserTest extends AbstractUpdateGuesserTest
         $updates = $guesser->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($product, $updates[0]);
-
     }
 }

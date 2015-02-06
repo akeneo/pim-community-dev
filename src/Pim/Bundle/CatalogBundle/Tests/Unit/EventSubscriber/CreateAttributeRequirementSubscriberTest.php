@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventSubscriber;
 
 use Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 
 /**
  * Test related class
@@ -214,7 +215,7 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
     /**
      * @param string $attributeType
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     protected function getAttributeMock($attributeType)
     {
@@ -228,7 +229,7 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirementInterface
      */
     protected function getAttributeRequirementMock()
     {
