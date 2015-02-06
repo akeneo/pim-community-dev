@@ -2,6 +2,9 @@
 
 ## Bug fixes
 - PIM-1235: Fix information message when trying to delete a category tree used by a channel
+- PIM-3068: Darken navigation arrows in product grid
+- PIM-2094: Regroup attributes validation properties in a subpanel
+- PIM-3700: Fix comment display on long words
 - PIM-2103: Display a loading when deleting a category tree
 
 # 1.3.0-RC1 (2015-02-03)
@@ -199,8 +202,6 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
-- PIM-3700: Fix comment display on long words
-- PIM-2094: Regroup attributes validation properties in a subpanel
 
 # 1.2.25 (2015-02-04)
 
