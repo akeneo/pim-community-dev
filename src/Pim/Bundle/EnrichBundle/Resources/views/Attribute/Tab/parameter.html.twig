@@ -56,9 +56,11 @@
         {{ form_row(form.useableAsGridFilter) }}
     {% endset %}
 
-    {{ elements.accordion({
-        'pane.accordion.general_parameters': generalParameters,
-        'pane.accordion.validation_parameters': validationParameters,
-        'pane.accordion.backend_parameters': backendParameters
-    }) }}
+    {% set panes = {'pane.accordion.general_parameters': generalParameters} %}
+    {% if validationParameters|trim is not empty %}
+        {% set panes = panes|merge({'pane.accordion.validation_parameters': validationParameters}) %}
+    {% endif %}
+    {% set panes = panes|merge({'pane.accordion.backend_parameters': backendParameters}) %}
+
+    {{ elements.accordion(panes) }}
 </div>
