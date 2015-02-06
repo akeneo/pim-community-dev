@@ -21,7 +21,7 @@ class MetricType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $unitOptions = [
-            'choices' => array_combine(array_keys($options['units']), array_keys($options['units'])),
+            'choices' => $options['units'],
             'select2' => true
         ];
 
