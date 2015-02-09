@@ -14,9 +14,6 @@
             "": "src/",
             "Context": "features/",
             "OroEmail\\": "app/emails/"
-        },
-        "psr-4": {
-          "Pimee\\Upgrade\\": "upgrades/"
         }
     },
     "require": {
