@@ -16,8 +16,8 @@ Feature: Export variant groups
     And I should see "Written 1"
     And exported file of "footwear_variant_group_export" should contain:
     """
-    code;type;axis;label-en_US
-    caterpillar_boots;VARIANT;color,size;"Caterpillar boots"
+    code;axis;label-en_US;type
+    caterpillar_boots;color,size;"Caterpillar boots";VARIANT
     """
 
   @javascript
@@ -49,8 +49,8 @@ Feature: Export variant groups
     And I should see "Written 1"
     And exported file of "footwear_variant_group_export" should contain:
     """
-    code;type;axis;label-en_US;attachment;comment;description-en_US-mobile;destocking_date;handmade;length;length-unit;manufacturer;number_in_stock;price-EUR;price-USD;side_view;weather_conditions
-    caterpillar_boots;VARIANT;color,size;"Caterpillar boots";files/caterpillar_boots/attachment/akeneo.txt;"Best worn in winter";"Nice boots";2015-03-05;1;30.0000;CENTIMETER;Caterpillar;50;100.00;150.00;files/caterpillar_boots/side_view/akeneo.jpg;dry
+    code;attachment;axis;comment;description-en_US-mobile;destocking_date;handmade;label-en_US;length;length-unit;manufacturer;number_in_stock;price-EUR;price-USD;side_view;type;weather_conditions
+    caterpillar_boots;files/caterpillar_boots/attachment/akeneo.txt;color,size;"Best worn in winter";"Nice boots";2015-03-05;1;"Caterpillar boots";30.0000;CENTIMETER;Caterpillar;50;100.00;150.00;files/caterpillar_boots/side_view/akeneo.jpg;VARIANT;dry
     """
     And export directory of "footwear_variant_group_export" should contain the following media:
       | files/caterpillar_boots/side_view/akeneo.jpg  |
@@ -100,8 +100,8 @@ Feature: Export variant groups
     And I should see "Written 3"
     And exported file of "variant_group_export" should contain:
     """
-    code;type;axis;label-en_US;label-en_GB;label-fr_FR;label-de_DE;localizable_date-en_US;localizable_date-fr_FR;localizable_scopable_date-de_DE-print;localizable_scopable_date-en_GB-tablet;localizable_scopable_date-en_US-ecommerce;localizable_scopable_date-en_US-print;localizable_scopable_date-en_US-tablet;localizable_scopable_date-fr_FR-ecommerce;localizable_scopable_text-de_DE-print;localizable_scopable_text-en_GB-tablet;localizable_scopable_text-en_US-ecommerce;localizable_scopable_text-en_US-print;localizable_scopable_text-en_US-tablet;localizable_scopable_text-fr_FR-ecommerce;localizable_text-en_US;localizable_text-fr_FR;scopable_date-ecommerce;scopable_date-tablet;scopable_text-ecommerce;scopable_text-tablet
-    tshirts;variant;color,size;T-shirts;T-shirts;T-shirts;T-Shirts;2015-01-01;2015-01-02;2015-01-10;2015-01-08;2015-01-05;2015-01-09;2015-01-07;2015-01-06;text10;text8;text5;text9;text7;text6;text1;text2;2015-01-03;2015-01-04;text3;text4
-    sweaters;variant;color,size;Sweaters;Chandails;Sweaters;Pullovern;;;;;;;;;;;;;;;;;;;;
-    jackets;variant;chest_size,color,waist_size;Jackets;Jackets;Vestes;Jacken;;;;;;;;;;;;;;;;;;;;
+    code;axis;label-de_DE;label-en_GB;label-en_US;label-fr_FR;localizable_date-en_US;localizable_date-fr_FR;localizable_scopable_date-de_DE-print;localizable_scopable_date-en_GB-tablet;localizable_scopable_date-en_US-ecommerce;localizable_scopable_date-en_US-print;localizable_scopable_date-en_US-tablet;localizable_scopable_date-fr_FR-ecommerce;localizable_scopable_text-de_DE-print;localizable_scopable_text-en_GB-tablet;localizable_scopable_text-en_US-ecommerce;localizable_scopable_text-en_US-print;localizable_scopable_text-en_US-tablet;localizable_scopable_text-fr_FR-ecommerce;localizable_text-en_US;localizable_text-fr_FR;scopable_date-ecommerce;scopable_date-tablet;scopable_text-ecommerce;scopable_text-tablet;type
+    tshirts;color,size;T-Shirts;T-shirts;T-shirts;T-shirts;2015-01-01;2015-01-02;2015-01-10;2015-01-08;2015-01-05;2015-01-09;2015-01-07;2015-01-06;text10;text8;text5;text9;text7;text6;text1;text2;2015-01-03;2015-01-04;text3;text4;variant
+    sweaters;color,size;Pullovern;Chandails;Sweaters;Sweaters;;;;;;;;;;;;;;;;;;;;;variant
+    jackets;chest_size,color,waist_size;Jacken;Jackets;Jackets;Vestes;;;;;;;;;;;;;;;;;;;;;variant
     """
