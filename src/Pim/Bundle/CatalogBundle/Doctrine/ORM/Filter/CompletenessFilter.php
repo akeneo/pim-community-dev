@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 
 /**
  * Completeness filter
@@ -37,22 +38,35 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
-        if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness', gettype($value));
-        }
+        $this->checkValue($field, $value, $locale, $scope);
 
         $alias = 'filterCompleteness';
         $field = $alias.'.ratio';
         $util = new CompletenessJoin($this->qb);
         $util->addJoins($alias, $locale, $scope);
 
-        if ('=' === $operator) {
-            $this->qb->andWhere($this->qb->expr()->eq($field, '100'));
-        } else {
-            $this->qb->andWhere($this->qb->expr()->lt($field, '100'));
-        }
+        $this->qb->andWhere($this->prepareCriteriaCondition($field, $operator, $value));
 
         return $this;
+    }
+
+    /**
+     * Check if value is valid
+     *
+     * @param string      $field
+     * @param mixed       $value
+     * @param string|null $locale
+     * @param string|null $scope
+     */
+    protected function checkValue($field, $value, $locale, $scope)
+    {
+        if (!is_numeric($value)) {
+            throw InvalidArgumentException::numericExpected($field, 'filter', 'completeness', gettype($value));
+        }
+
+        if (null === $locale || null === $scope) {
+            throw InvalidArgumentException::localeAndScopeExpected($field, 'filter', 'completeness');
+        }
     }
 
     /**

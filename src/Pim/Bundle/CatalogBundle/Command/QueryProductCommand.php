@@ -5,9 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Command;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductQueryBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -19,6 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class QueryProductCommand extends ContainerAwareCommand
 {
+    /* @var integer */
+    const MAX_ROWS = 10;
+
     /**
      * {@inheritdoc}
      */
@@ -46,6 +50,12 @@ class QueryProductCommand extends ContainerAwareCommand
                 'json_filters',
                 InputArgument::REQUIRED,
                 sprintf("The product filters in json, for instance, '%s'", json_encode($filtersExample))
+            )
+            ->addOption(
+                'json-output',
+                false,
+                InputOption::VALUE_NONE,
+                'If defined, output the result in json format'
             );
     }
 
@@ -56,16 +66,23 @@ class QueryProductCommand extends ContainerAwareCommand
     {
         $filters = json_decode($input->getArgument('json_filters'), true);
         $products = $this->getProducts($filters);
+        if (!$input->getOption('json-output')) {
+            $table = $this->buildTable($products, self::MAX_ROWS);
+            $table->render($output);
 
-        $maxRows = 10;
-        $table = $this->buildTable($products, $maxRows);
-        $table->render($output);
+            $nbProducts = count($products);
+            if ($nbProducts > self::MAX_ROWS) {
+                $output->writeln(
+                    sprintf('<info>%d first products on %d matching these criterias<info>', self::MAX_ROWS, $nbProducts)
+                );
+            }
+        } else {
+            $result = [];
+            foreach ($products as $product) {
+                $result[] = $product->getIdentifier()->getData();
+            }
 
-        $nbProducts = count($products);
-        if ($nbProducts > $maxRows) {
-            $output->writeln(
-                sprintf('<info>%d first products on %d matching these criterias<info>', $maxRows, $nbProducts)
-            );
+            $output->write(json_encode($result));
         }
     }
 

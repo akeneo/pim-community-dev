@@ -5,6 +5,7 @@ namespace Pim\Bundle\FilterBundle\Filter\Product;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 
 /**
  * Overriding of boolean filter to filter by the product completeness
@@ -27,15 +28,17 @@ class CompletenessFilter extends BooleanFilter
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
-                $operator = '=';
+                $operator = Operators::EQUALS;
+                $value = 100;
                 break;
             case BooleanFilterType::TYPE_NO:
             default:
-                $operator = '<';
+                $operator = Operators::LOWER_THAN;
+                $value = 100;
                 break;
         }
 
-        $this->util->applyFilter($ds, 'completeness', $operator, '100');
+        $this->util->applyFilter($ds, 'completeness', $operator, $value);
 
         return true;
     }

@@ -262,6 +262,25 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
+     * @param string $name
+     * @param string $action
+     * @param string $type
+     *
+     * @return InvalidArgumentException
+     */
+    public static function localeAndScopeExpected($name, $action, $type)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects a valid scope and locale (for %s %s).',
+                $name,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
      * @param \Exception $exception
      * @param string     $name
      * @param string     $action

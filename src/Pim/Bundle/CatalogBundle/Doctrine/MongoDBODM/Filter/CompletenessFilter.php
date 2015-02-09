@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 
 /**
  * Completeness filter
@@ -71,14 +72,12 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
      */
     protected function checkValue($field, $value, $locale, $scope)
     {
-        if (!is_string($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'completeness', gettype($value));
+        if (!is_numeric($value)) {
+            throw InvalidArgumentException::numericExpected($field, 'filter', 'completeness', gettype($value));
         }
 
         if (null === $locale || null === $scope) {
-            throw new \InvalidArgumentException(
-                'Cannot prepare condition on completenesses without locale and scope'
-            );
+            throw InvalidArgumentException::localeAndScopeExpected($field, 'filter', 'completeness');
         }
     }
 
@@ -91,10 +90,22 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
      */
     protected function applyFilter($value, $field, $operator)
     {
-        if ($operator === '=') {
-            $this->qb->field($field)->equals($value);
-        } else {
-            $this->qb->field($field)->lt($value);
+        switch ($operator) {
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($value);
+                break;
+            case Operators::LOWER_THAN:
+                $this->qb->field($field)->lt($value);
+                break;
+            case Operators::GREATER_THAN:
+                $this->qb->field($field)->gt($value);
+                break;
+            case Operators::LOWER_OR_EQUAL_THAN:
+                $this->qb->field($field)->lte($value);
+                break;
+            case Operators::GREATER_OR_EQUAL_THAN:
+                $this->qb->field($field)->gte($value);
+                break;
         }
     }
 }
