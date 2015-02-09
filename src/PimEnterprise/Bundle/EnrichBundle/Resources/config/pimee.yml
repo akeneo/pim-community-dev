@@ -31,3 +31,8 @@ fos_rest:
             PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException: HTTP_CONFLICT
         messages:
             PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException: true
+
+doctrine_migrations:
+    dir_name: %doctrine_migrations_dir%
+    namespace: Pimee\Upgrade\Schema
+    name: PIM Enterprise Migrations

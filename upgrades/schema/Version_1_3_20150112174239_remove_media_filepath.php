@@ -1,10 +1,11 @@
 <?php
 
-namespace Pim\Upgrade\Schema;
+namespace Pimee\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Upgrade\UpgradeHelper;
+use Pimee\Upgrade\SchemaHelper;
+use Pimee\Upgrade\UpgradeHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,8 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Version_1_3_20150112174239_remove_media_filepath extends AbstractMigration implements ContainerAwareInterface
 {
-    const PRODUCT_COLLECTION = 'pim_catalog_product';
-
     /** @var ContainerInterface */
     protected $container;
 
@@ -32,9 +31,10 @@ class Version_1_3_20150112174239_remove_media_filepath extends AbstractMigration
 
     public function up(Schema $schema)
     {
-        $helper = new UpgradeHelper($this->container);
-        if (!$helper->areProductsStoredInMongo()) {
-            $this->addSql(sprintf('ALTER TABLE %s DROP file_path', $this->getOrmTableName()));
+        $upgradeHelper = new UpgradeHelper($this->container);
+        if (!$upgradeHelper->areProductsStoredInMongo()) {
+            $tableHelper = new SchemaHelper($this->container);
+            $this->addSql(sprintf('ALTER TABLE %s DROP file_path', $tableHelper->getTableOrCollection('product_media')));
         }
     }
 
@@ -45,16 +45,17 @@ class Version_1_3_20150112174239_remove_media_filepath extends AbstractMigration
 
     public function postUp(Schema $schema)
     {
-        $helper = new UpgradeHelper($this->container);
-        if ($helper->areProductsStoredInMongo()) {
-            $database = $helper->getMongoInstance();
+        $upgradeHelper = new UpgradeHelper($this->container);
+        if ($upgradeHelper->areProductsStoredInMongo()) {
+            $database = $upgradeHelper->getMongoInstance();
             $this->removeFilePathFromProductMedias($database);
         }
     }
 
     protected function removeFilePathFromProductMedias(\MongoDB $database)
     {
-        $productCollection = new \MongoCollection($database, self::PRODUCT_COLLECTION);
+        $tableHelper = new SchemaHelper($this->container);
+        $productCollection = new \MongoCollection($database, $tableHelper->getTableOrCollection('product'));
         $products = $productCollection->find();
 
         echo sprintf("Removing filePath from %s medias...\n", $products->count());
@@ -80,12 +81,5 @@ class Version_1_3_20150112174239_remove_media_filepath extends AbstractMigration
         }
 
         echo sprintf("FilePath removed from %s medias: <info>done</info>.\n", $products->count());
-    }
-
-    protected function getOrmTableName()
-    {
-        $class = $this->container->getParameter('pim_catalog.entity.product_media.class');
-
-        return $this->container->get('doctrine.orm.entity_manager')->getClassMetadata($class)->getTableName();
     }
 }

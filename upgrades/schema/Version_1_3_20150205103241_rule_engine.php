@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Upgrade\Schema;
+namespace Pimee\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
@@ -25,10 +25,6 @@ class Version_1_3_20150205103241_rule_engine extends AbstractMigration
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE pimee_catalog_rule_rule_relation DROP FOREIGN KEY FK_6FCDB8EE744E0351');
-        $this->addSql('DROP TABLE akeneo_rule_engine_rule_definition');
-        $this->addSql('DROP TABLE pimee_catalog_rule_rule_relation');
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

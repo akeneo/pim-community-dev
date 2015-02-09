@@ -1,10 +1,11 @@
 <?php
 
-namespace Pim\Upgrade\Schema;
+namespace Pimee\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Upgrade\UpgradeHelper;
+use Pimee\Upgrade\SchemaHelper;
+use Pimee\Upgrade\UpgradeHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -19,8 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Version_1_3_20141203150000_product_statuses extends AbstractMigration implements ContainerAwareInterface
 {
-    const PRODUCT_COLLECTION = 'pim_catalog_product';
-
     /** @var ContainerInterface */
     protected $container;
 
@@ -49,7 +48,8 @@ class Version_1_3_20141203150000_product_statuses extends AbstractMigration impl
 
     protected function normalizeProductStatuses(\MongoDB $database)
     {
-        $productCollection = new \MongoCollection($database, self::PRODUCT_COLLECTION);
+        $tableHelper = new SchemaHelper($this->container);
+        $productCollection = new \MongoCollection($database, $tableHelper->getTableOrCollection('product'));
         $products = $productCollection->find();
 
         echo sprintf("Migrating %s product status values...\n", $products->count());

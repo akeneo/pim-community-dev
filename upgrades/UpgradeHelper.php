@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Upgrade;
+namespace Pimee\Upgrade;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;

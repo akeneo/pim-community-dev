@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Upgrade\Schema;
+namespace Pimee\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Pimee\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,20 +28,12 @@ class Version_1_3_20140926142324_usable_as_a_grid_column extends AbstractMigrati
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql(sprintf('ALTER TABLE %s DROP useable_as_grid_column', $this->getTableName()));
+        $tableHelper = new SchemaHelper($this->container);
+        $this->addSql(sprintf('ALTER TABLE %s DROP useable_as_grid_column', $tableHelper->getTableOrCollection('attribute')));
     }
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql(sprintf('ALTER TABLE %s ADD useable_as_grid_column TINYINT(1) DEFAULT \'0\' NOT NULL', $this->getTableName()));
-    }
-
-    protected function getTableName()
-    {
-        $class = $this->container->getParameter('pim_catalog.entity.attribute.class');
-
-        return $this->container->get('doctrine.orm.entity_manager')->getClassMetadata($class)->getTableName();
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }

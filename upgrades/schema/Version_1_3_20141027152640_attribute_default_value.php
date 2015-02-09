@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Upgrade\Schema;
+namespace Pimee\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Pimee\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,20 +28,12 @@ class Version_1_3_20141027152640_attribute_default_value extends AbstractMigrati
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql(sprintf('ALTER TABLE %s DROP default_value', $this->getTableName()));
+        $tableHelper = new SchemaHelper($this->container);
+        $this->addSql(sprintf('ALTER TABLE %s DROP default_value', $tableHelper->getTableOrCollection('attribute')));
     }
 
     public function down(Schema $schema)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql(sprintf('ALTER TABLE %s ADD default_value LONGTEXT DEFAULT NULL', $this->getTableName()));
-    }
-
-    protected function getTableName()
-    {
-        $class = $this->container->getParameter('pim_catalog.entity.attribute.class');
-
-        return $this->container->get('doctrine.orm.entity_manager')->getClassMetadata($class)->getTableName();
+        throw new \RuntimeException('No revert is provided for the migrations.');
     }
 }
