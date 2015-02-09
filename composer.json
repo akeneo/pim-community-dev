@@ -13,9 +13,6 @@
             "": "src/",
             "Context": "features/",
             "OroEmail\\": "app/emails/"
-        },
-        "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/"
         }
     },
     "require": {
