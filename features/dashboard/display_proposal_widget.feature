@@ -29,8 +29,8 @@ Feature: Display proposal widget
     Then I should see "Proposals to review"
     When I wait for widgets to load
     Then I should see the following proposals:
-      | product   | author |
-      | my-jacket | mary   |
+      | product   | author     |
+      | my-jacket | Mary Smith |
 
   @javascript
   Scenario: Successfully display new proposals that I can review
@@ -55,8 +55,8 @@ Feature: Display proposal widget
     Then I should see "Proposals to review"
     When I wait for widgets to load
     Then I should see the following proposals:
-      | product      | author |
-      | my-tee-shirt | mary   |
+      | product      | author     |
+      | my-tee-shirt | Mary Smith |
 
   @javascript
   Scenario: Successfully hide proposals belonging to the last category I was owner of that was removed

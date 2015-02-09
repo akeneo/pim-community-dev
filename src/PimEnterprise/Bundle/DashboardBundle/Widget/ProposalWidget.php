@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
@@ -23,28 +24,30 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProposalWidget implements WidgetInterface
 {
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /**
-     * @var ProductDraftRepositoryInterface
-     */
+    /** @var ProductDraftRepositoryInterface */
     protected $repository;
+
+    /** @var UserManager */
+    protected $userManager;
 
     /**
      * Constructor
      *
      * @param SecurityContextInterface        $securityContext
      * @param ProductDraftRepositoryInterface $ownershipRepository
+     * @param UserManager                     $userManager
      */
     public function __construct(
         SecurityContextInterface $securityContext,
-        ProductDraftRepositoryInterface $ownershipRepository
+        ProductDraftRepositoryInterface $ownershipRepository,
+        UserManager $userManager
     ) {
         $this->securityContext = $securityContext;
         $this->repository      = $ownershipRepository;
+        $this->userManager     = $userManager;
     }
 
     /**
@@ -88,7 +91,7 @@ class ProposalWidget implements WidgetInterface
             $result[] = [
                 'productId'    => $proposal->getProduct()->getId(),
                 'productLabel' => $proposal->getProduct()->getLabel(),
-                'author'       => $proposal->getAuthor(),
+                'author'       => $this->getAuthorFullName($proposal->getAuthor()),
                 'createdAt'    => $proposal->getCreatedAt()->format('U')
             ];
         }
@@ -104,5 +107,24 @@ class ProposalWidget implements WidgetInterface
     protected function isDisplayable()
     {
         return $this->securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY);
+    }
+
+    /**
+     * Get author full name for given $authorUsername
+     *
+     * @param string $authorUsername
+     *
+     * @return string
+     */
+    protected function getAuthorFullName($authorUsername)
+    {
+        $user = $this->userManager->findUserByUsername($authorUsername);
+        $authorName = $authorUsername;
+
+        if ($user) {
+            $authorName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());
+        }
+
+        return $authorName;
     }
 }

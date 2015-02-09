@@ -2,6 +2,10 @@
 
 ## Bug fixes
 - PIM-3617: Fix scope selection hidden by notification alert on product edit
+- PIM-3526: Fix author in the "proposals to review" widget
+
+## BC breaks
+- Change constructor of `PimEnterprise/Bundle/DashboardBundle/Widget/ProposalWidget`, UserContext argument replaced by `Oro\Bundle\UserBundle\Entity\UserManager`
 
 # 1.3.0-RC1 (2015-02-03)
 

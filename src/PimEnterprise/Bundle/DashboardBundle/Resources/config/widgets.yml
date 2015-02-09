@@ -7,6 +7,6 @@ services:
         arguments:
             - '@security.context'
             - '@pimee_workflow.repository.product_draft'
-            - '@pim_user.context.user'
+            - '@oro_user.manager'
         tags:
             - { name: pim_dashboard.widget, position: 100 }
