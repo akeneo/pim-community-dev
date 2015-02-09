@@ -13,6 +13,7 @@ datagrid:
                 data_name: jobLabel
             alias:
                 label:     Job
+                type: translateable
                 data_name: jobAlias
             date:
                 label: Date

@@ -11,6 +11,7 @@ datagrid:
                 label: Label
             alias:
                 label:     Job
+                type: translateable
                 data_name: jobAlias
             connector:
                 label: Connector
