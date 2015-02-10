@@ -32,6 +32,7 @@ pim_import_export:
             error:   Import <strong>%label%</strong> failed
             warning: Import <strong>%label%</strong> finished with some warnings
             success: Import <strong>%label%</strong> finished
+    list: Select a job
 
 # Page titles:
 pim_title.export_profile.index:   Export profiles management
