@@ -11,6 +11,7 @@
 - PIM-3575: Sort csv column in a determinist way (alphabetically) on export
 - PIM-3752: Fixed the hard coded entry `Select Job` on import/export creation
 - PIM-3736: Fix wrong count of products in Variant group view
+- PIM-3628: Fixed products not being versioned when modifing a metric, price or media value
 
 ## BC breaks
 - Add a TranslatorInterface argument in MetricType::__construct
