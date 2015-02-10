@@ -69,3 +69,23 @@ Feature: Add products to a variant group
       | 3       | Julia Stark - Julia@example.com                                   | groups   |                 |
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3736
+  Scenario: Reject product addition in a variant group, products count should be correct
+    Given the following products:
+      | sku              | family  | categories        | size | color | name-en_US |
+      | sandal-white-37  | sandals | winter_collection | 37   | white | old name   |
+      | sandal-white-38  | sandals | winter_collection | 38   | white | old name   |
+      | sandal-white-39  | sandals | winter_collection | 39   | white | old name   |
+      | duplicate-sandal | sandals | winter_collection | 39   | white | old name   |
+    And I am on the "SANDAL" variant group page
+    Then the grid should contain 4 elements
+    And I check the row "sandal-white-37"
+    And I check the row "sandal-white-38"
+    And I check the row "sandal-white-39"
+    And I press the "Save" button
+    Then I should see "Products: 3"
+    And I check the row "duplicate-sandal"
+    And I press the "Save" button
+    Then I should see "Products: 3"
+    But the row "duplicate-sandal" should be checked

@@ -69,6 +69,9 @@ class GroupHandler implements HandlerInterface
                 $this->onSuccess($group);
 
                 return true;
+            } elseif ($group->getType()->isVariant() && $group->getId()) {
+                $products = $this->productRepository->findAllForVariantGroup($group);
+                $group->setProducts($products);
             }
         }
 

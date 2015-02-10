@@ -10,6 +10,7 @@
 - PIM-3398: Translate units on metric fields on product edit form
 - PIM-3575: Sort csv column in a determinist way (alphabetically) on export
 - PIM-3752: Fixed the hard coded entry `Select Job` on import/export creation
+- PIM-3736: Fix wrong count of products in Variant group view
 
 ## BC breaks
 - Add a TranslatorInterface argument in MetricType::__construct
