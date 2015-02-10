@@ -37,15 +37,24 @@ class AvailableAttributesType extends BaseAvailableAttributesType
      * @param UserContext                    $userContext
      * @param TranslatorInterface            $translator
      * @param AttributeGroupAccessRepository $attGroupAccessRepo
+     * @param string                         $attributeClass
+     * @param string                         $dataClass
      */
     public function __construct(
-        $attributeClass,
         AttributeRepository $attributeRepository,
         UserContext $userContext,
         TranslatorInterface $translator,
-        AttributeGroupAccessRepository $attGroupAccessRepo
+        AttributeGroupAccessRepository $attGroupAccessRepo,
+        $attributeClass,
+        $dataClass
     ) {
-        parent::__construct($attributeClass, $attributeRepository, $userContext, $translator);
+        parent::__construct(
+            $attributeRepository,
+            $userContext,
+            $translator,
+            $attributeClass,
+            $dataClass
+        );
 
         $this->attGroupAccessRepo = $attGroupAccessRepo;
     }
@@ -71,7 +80,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                     'default_group_label'    => $this->translator->trans(
                         'Other',
-                        array(),
+                        [],
                         null,
                         $this->userContext->getCurrentLocaleCode()
                     ),

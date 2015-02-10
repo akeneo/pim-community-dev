@@ -6,6 +6,8 @@
 
 ## BC breaks
 - Change constructor of `PimEnterprise/Bundle/DashboardBundle/Widget/ProposalWidget`, UserContext argument replaced by `Oro\Bundle\UserBundle\Entity\UserManager`
+- Change constructor of `PimEnterprise/Bundle/EnrichBundle/Form/Type/AvailableAttributesType`, hard coded classes are now passed in parameters
+- Change constructor of `PimEnterprise/Bundle/EnrichBundle/Form/Type/MassEditAction/EditCommonAttributesType`, hard coded classes are now passed in parameters
 
 # 1.3.0-RC1 (2015-02-03)
 
