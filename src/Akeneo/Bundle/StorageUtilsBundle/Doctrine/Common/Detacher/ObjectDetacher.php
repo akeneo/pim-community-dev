@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;

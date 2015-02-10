@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
+namespace Akeneo\Component\StorageUtils\Detacher;
 
 /**
  * Detacher, detaches an object from its ObjectManager
