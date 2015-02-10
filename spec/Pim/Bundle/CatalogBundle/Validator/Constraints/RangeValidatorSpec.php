@@ -17,6 +17,11 @@ class RangeValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\RangeValidator');
+    }
+
     function it_validates_a_value_in_range(
         $context,
         Range $constraint)
