@@ -39,4 +39,18 @@ class ProductValueCompleteSpec extends ObjectBehavior
 
         $this->getChannel()->shouldReturn($channel);
     }
+
+    function it_has_message_complete(ChannelInterface $channel)
+    {
+        $this->beConstructedWith(['channel' => $channel]);
+
+        $this->messageComplete->shouldBe('This value should be complete');
+    }
+
+    function it_has_message_not_null(ChannelInterface $channel)
+    {
+        $this->beConstructedWith(['channel' => $channel]);
+
+        $this->messageNotNull->shouldBe('This value should not be null');
+    }
 }
