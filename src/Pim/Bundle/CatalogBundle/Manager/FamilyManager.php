@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyManager implements SaverInterface, RemoverInterface
+class FamilyManager
 {
     /** @var FamilyRepositoryInterface */
     protected $repository;
@@ -33,10 +33,6 @@ class FamilyManager implements SaverInterface, RemoverInterface
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
-
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /**
      * Constructor
      *
@@ -44,20 +40,17 @@ class FamilyManager implements SaverInterface, RemoverInterface
      * @param UserContext               $userContext
      * @param ObjectManager             $objectManager
      * @param EventDispatcherInterface  $eventDispatcher
-     * @param CompletenessManager       $completenessManager
      */
     public function __construct(
         FamilyRepositoryInterface $repository,
         UserContext $userContext,
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        CompletenessManager $completenessManager
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->repository      = $repository;
         $this->userContext     = $userContext;
         $this->objectManager   = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->completenessManager = $completenessManager;
     }
 
     /**
@@ -70,52 +63,5 @@ class FamilyManager implements SaverInterface, RemoverInterface
         return $this->repository->getChoices(
             ['localeCode' => $this->userContext->getCurrentLocaleCode()]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($family, array $options = [])
-    {
-        if (!$family instanceof FamilyInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.',
-                    ClassUtils::getClass($family)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true, 'schedule' => true], $options);
-        $this->objectManager->persist($family);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-        if (true === $options['schedule']) {
-            $this->completenessManager->scheduleForFamily($family);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($family, array $options = [])
-    {
-        if (!$family instanceof FamilyInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.',
-                    ClassUtils::getClass($family)
-                )
-            );
-        }
-
-        $this->eventDispatcher->dispatch(FamilyEvents::PRE_REMOVE, new GenericEvent($family));
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->remove($family);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
     }
 }

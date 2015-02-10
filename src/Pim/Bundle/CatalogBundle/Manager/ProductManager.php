@@ -30,7 +30,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInterface
+class ProductManager
 {
     /** @var array */
     protected $configuration;
@@ -178,7 +178,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         }
 
         $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
-        $this->save($product, $options);
+        $this->productSaver->save($product, $options);
     }
 
     /**
@@ -200,23 +200,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         }
 
         $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
-        $this->save($product, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        $this->productSaver->save($object, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveAll(array $objects, array $options = [])
-    {
-        $this->productBulkSaver->saveAll($objects, $options);
+        $this->productSaver->save($product, $options);
     }
 
     /**
@@ -229,7 +213,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      */
     public function saveProduct(ProductInterface $product, array $options = [])
     {
-        $this->save($product, $options);
+        $this->productSaver->save($product, $options);
     }
 
     /**
@@ -242,7 +226,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      */
     public function saveAllProducts(array $products, array $options = [])
     {
-        $this->saveAll($products, $options);
+        $this->productBulkSaver->saveAll($products, $options);
     }
 
     /**
@@ -354,30 +338,6 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
                 $association->setAssociationType($associationType);
                 $product->addAssociation($association);
             }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($object));
-        $this->objectManager->remove($object);
-        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($object));
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
         }
     }
 

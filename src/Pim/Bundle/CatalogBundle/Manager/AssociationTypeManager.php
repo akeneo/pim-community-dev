@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeManager implements SaverInterface, RemoverInterface
+class AssociationTypeManager
 {
     /** @var AssociationTypeRepositoryInterface $repository */
     protected $repository;
@@ -55,51 +55,5 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
     public function getAssociationTypes()
     {
         return $this->repository->findAll();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        if (!$object instanceof AssociationTypeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if ($options['flush']) {
-            $this->objectManager->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof AssociationTypeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-        $this->eventDispatcher->dispatch(
-            AssociationTypeEvents::PRE_REMOVE,
-            new GenericEvent($object)
-        );
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->remove($object);
-        if ($options['flush']) {
-            $this->objectManager->flush();
-        }
     }
 }

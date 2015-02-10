@@ -29,21 +29,6 @@ class AttributeManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_saver()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
-    }
-
-    function it_is_a_bulk_saver()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
-    }
-
-    function it_is_a_remover()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
-    }
-
     function it_instantiates_an_attribute()
     {
         $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
@@ -59,56 +44,5 @@ class AttributeManagerSpec extends ObjectBehavior
         $registry->getAliases()->willReturn(['foo', 'bar']);
 
         $this->getAttributeTypes()->shouldReturn(['bar' => 'bar', 'foo' => 'foo']);
-    }
-
-    function it_dispatches_events_when_removing_an_attribute(
-        $eventDispatcher,
-        $objectManager,
-        AttributeInterface $attribute
-    ) {
-        $eventDispatcher->dispatch(
-            AttributeEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($attribute)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-
-        $eventDispatcher->dispatch(
-            AttributeEvents::POST_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $this->remove($attribute);
-    }
-
-    function it_throws_exception_when_save_anything_else_than_a_attribute()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringSave($anythingElse);
-    }
-
-    function it_throws_exception_when_remove_anything_else_than_a_attribute()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringRemove($anythingElse);
     }
 }

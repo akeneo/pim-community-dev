@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInterface
+class AttributeManager
 {
     /** @var string */
     protected $attributeClass;
@@ -108,67 +108,6 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
         asort($choices);
 
         return $choices;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        if (!$object instanceof AttributeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush($object);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveAll(array $objects, array $options = [])
-    {
-        $options = array_merge(['flush' => true], $options);
-        foreach ($objects as $object) {
-            $this->save($object, ['flush' => false]);
-        }
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof AttributeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($object));
-
-        $this->objectManager->remove($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        $this->eventDispatcher->dispatch(AttributeEvents::POST_REMOVE, new GenericEvent($object));
     }
 
     /**

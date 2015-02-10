@@ -56,7 +56,25 @@
 - Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MetricType` to accept `Pim\Bundle\CatalogBundle\Model\Metric` as a string for the first argument
 - Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/PriceType` to accept `Pim\Bundle\CatalogBundle\Model\Price` as a string for the first argument
 - Change of constructor of `Pim/Bundle/ImportExportBundle/Form/Type/JobInstanceType` to accept `Symfony\Component\Translation\TranslatorInterface` as for the second argument
-
+- Change of constructor of `Pim/Bundle/BaseConnectorBundle/Writer/Doctrine/ProductWriter` to accept `Pim\Bundle\CatalogBundle\Manager\MediaManager` as for the first argument instead of `Pim\Bundle\CatalogBundle\Manager\ProductManager`
+- Change of constructor of `Pim/Bundle/BaseConnectorBundle/Writer/Doctrine/ProductWriter` to accept `Pim\Bundle\CatalogBundle\Manager\MediaManager` as for the first argument instead of `Pim\Bundle\CatalogBundle\Manager\ProductManager`
+- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager` and remove methods `save` and `remove`
+- Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeGroupManager` and remove methods `save`, `remove` and `saveAll`
+- Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeManager` and remove methods `save`, `remove` and `saveAll`
+- Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/ProductManager` and remove methods `save`, `remove` and `saveAll`
+- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeOptionManager` and remove methods `save` and `remove`
+- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/CategoryManager` and remove methods `save` and `remove`
+- Remove interface `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/GroupManager` and remove method `remove`
+- Remove interface `SaverInterface` from `Pim/Bundle/CatalogBundle/Manager/ChannelManager` and remove method `save`
+- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove methods `save` and `remove`
+- Change of constructor of `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove `CompletenessManager`
+- Change of constructor of `Pim/Bundle/EnrichBundle/Controller/AttributeGroupController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface` as for the fourteenth and fifteenth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Controller/CategoryTreeController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\SaverInterface` as for the fourteenth and fifteenth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Controller/FamilyController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\SaverInterface` as for the fourteenth and fifteenth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Controller/GroupController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` as for the fourteenth  argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Controller/ProductController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` as for the fourteenth  argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Controller/VariantGroupController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` as for the fourteenth  argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Controller/VariantGroupController` and remove `Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface`
 
 # 1.3.0-RC1 (2015-02-03)
 

@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateBuilder;
 use Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -38,11 +37,8 @@ class VariantGroupController extends GroupController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductTemplateBuilder */
-    protected $templateBuilder;
-
     /** @var VariantGroupAttributesResolver */
-    protected $groupAttributesResolver;
+    protected $groupAttrResolver;
 
     /**
      * @param Request                        $request
@@ -58,8 +54,8 @@ class VariantGroupController extends GroupController
      * @param Form                           $groupForm
      * @param GroupFactory                   $groupFactory
      * @param AttributeRepositoryInterface   $attributeRepository
-     * @param ProductTemplateBuilder         $templateBuilder
-     * @param VariantGroupAttributesResolver $groupAttributesResolver
+     * @param VariantGroupAttributesResolver $groupAttrResolver
+     * @param RemoverInterface               $groupRemover
      */
     public function __construct(
         Request $request,
@@ -75,8 +71,8 @@ class VariantGroupController extends GroupController
         Form $groupForm,
         GroupFactory $groupFactory,
         AttributeRepositoryInterface $attributeRepository,
-        ProductTemplateBuilderInterface $templateBuilder,
-        VariantGroupAttributesResolver $groupAttributesResolver
+        VariantGroupAttributesResolver $groupAttrResolver,
+        RemoverInterface $groupRemover
     ) {
         parent::__construct(
             $request,
@@ -90,12 +86,12 @@ class VariantGroupController extends GroupController
             $groupManager,
             $groupHandler,
             $groupForm,
-            $groupFactory
+            $groupFactory,
+            $groupRemover
         );
 
         $this->attributeRepository = $attributeRepository;
-        $this->templateBuilder = $templateBuilder;
-        $this->groupAttributesResolver = $groupAttributesResolver;
+        $this->groupAttrResolver   = $groupAttrResolver;
     }
 
     /**
@@ -106,9 +102,9 @@ class VariantGroupController extends GroupController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(true))
-        );
+        ];
     }
 
     /**
@@ -125,7 +121,7 @@ class VariantGroupController extends GroupController
 
         $groupType = $this->groupManager
             ->getGroupTypeRepository()
-            ->findOneBy(array('code' => 'VARIANT'));
+            ->findOneBy(['code' => 'VARIANT']);
         $group = $this->groupFactory->createGroup($groupType);
 
         if ($this->groupHandler->process($group)) {
@@ -133,16 +129,16 @@ class VariantGroupController extends GroupController
 
             $url = $this->generateUrl(
                 'pim_enrich_variant_group_edit',
-                array('id' => $group->getId())
+                ['id' => $group->getId()]
             );
-            $response = array('status' => 1, 'url' => $url);
+            $response = ['status' => 1, 'url' => $url];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->groupForm->createView()
-        );
+        ];
     }
 
     /**
@@ -163,11 +159,11 @@ class VariantGroupController extends GroupController
             $this->addFlash('success', 'flash.variant group.updated');
         }
 
-        return array(
+        return [
             'form'           => $this->groupForm->createView(),
             'currentGroup'   => $group->getId(),
             'attributesForm' => $this->getAvailableAttributesForm($group)->createView(),
-        );
+        ];
     }
 
     /**
@@ -182,7 +178,7 @@ class VariantGroupController extends GroupController
         return $this->createForm(
             'pim_available_attributes',
             new AvailableAttributes(),
-            ['excluded_attributes' => $this->groupAttributesResolver->getNonEligibleAttributes($group)]
+            ['excluded_attributes' => $this->groupAttrResolver->getNonEligibleAttributes($group)]
         );
     }
 }

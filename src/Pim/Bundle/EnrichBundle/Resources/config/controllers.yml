@@ -49,6 +49,8 @@ services:
             - '@pim_enrich.form.handler.attribute_group'
             - '@pim_enrich.form.attribute_group'
             - '@pim_catalog.manager.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.remover.attribute_group'
             - %pim_catalog.entity.attribute.class%
 
     pim_enrich.controller.category_tree:
@@ -59,6 +61,8 @@ services:
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
             - '@oro_security.security_facade'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.cateogry'
 
     pim_enrich.controller.channel:
         scope: request
@@ -86,6 +90,8 @@ services:
             - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
+            - '@pim_catalog.saver.family'
+            - '@pim_catalog.remover.family'
             - %pim_catalog.entity.attribute.class%
 
     pim_enrich.controller.locale:
@@ -104,6 +110,9 @@ services:
             - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.version'
+            - '@pim_catalog.saver.attribute'
+            - '@pim_catalog.remover.attribute'
+            - '@pim_catalog.saver.attribute_option'
             - %akeneo_measure.measures_config%
             - %pim_catalog.entity.attribute.class%
 
@@ -117,6 +126,8 @@ services:
             - '@fos_rest.view_handler'
             - '@pim_catalog.manager.attribute'
             - '@pim_catalog.manager.attribute_option'
+            - '@pim_catalog.saver.attribute_option'
+            - '@pim_catalog.remover.attribute_option'
 
     pim_enrich.controller.product:
         scope: request
@@ -132,6 +143,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.manager.media'
             - '@pim_enrich.manager.sequential_edit'
+            - '@pim_catalog.remover.product'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -159,6 +171,7 @@ services:
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
             - '@pim_catalog.factory.group'
+            - '@pim_catalog.remover.group'
 
     pim_enrich.controller.association_type:
         scope: request
@@ -169,6 +182,7 @@ services:
             - '@pim_catalog.manager.association'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
+            - '@pim_catalog.remover.association_type'
 
     pim_enrich.controller.media:
         scope: request
@@ -189,8 +203,8 @@ services:
             - '@pim_enrich.form.variant_group'
             - '@pim_catalog.factory.group'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.builder.product_template'
             - '@pim_catalog.resolver.variant_group_attributes'
+            - '@pim_catalog.remover.group'
 
     pim_enrich.controller.group_type:
         scope: request

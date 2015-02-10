@@ -23,44 +23,4 @@ class AttributeOptionManagerSpec extends ObjectBehavior
             self::OPT_VALUE_CLASS
         );
     }
-
-    function it_is_a_saver()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
-    }
-
-    function it_is_a_remover()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
-    }
-
-    function it_throws_exception_when_save_anything_else_than_a_attribute_option()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringSave($anythingElse);
-    }
-
-    function it_throws_exception_when_remove_anything_else_than_a_attribute_option()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringRemove($anythingElse);
-    }
 }

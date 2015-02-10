@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupManager implements SaverInterface, BulkSaverInterface, RemoverInterface
+class AttributeGroupManager
 {
     /** @var AttributeGroupRepositoryInterface */
     protected $repository;
@@ -34,62 +34,8 @@ class AttributeGroupManager implements SaverInterface, BulkSaverInterface, Remov
      */
     public function __construct(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
     {
-        $this->repository = $repository;
+        $this->repository    = $repository;
         $this->objectManager = $objectManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        if (!$object instanceof AttributeGroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if ($options['flush']) {
-            $this->objectManager->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveAll(array $objects, array $options = [])
-    {
-        $options = array_merge(['flush' => true], $options);
-        foreach ($objects as $object) {
-            $this->save($object, ['flush' => false]);
-        }
-
-        if ($options['flush']) {
-            $this->objectManager->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof AttributeGroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $this->objectManager->remove($object);
-        $this->objectManager->flush();
     }
 
     /**

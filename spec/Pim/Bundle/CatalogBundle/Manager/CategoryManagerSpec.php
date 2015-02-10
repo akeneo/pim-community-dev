@@ -25,16 +25,6 @@ class CategoryManagerSpec extends ObjectBehavior
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }
 
-    function it_is_a_saver()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
-    }
-
-    function it_is_a_remover()
-    {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
-    }
-
     function it_provides_object_manager($objectManager)
     {
         $this->getObjectManager()->shouldReturn($objectManager);
@@ -73,75 +63,5 @@ class CategoryManagerSpec extends ObjectBehavior
         $categoryRepository->findOneBy(['code' => 'foo', 'parent' => null])->willReturn($tree);
 
         $this->getTreeByCode('foo')->shouldReturn($tree);
-    }
-
-    function it_dispatches_an_event_when_removing_a_category(
-        $eventDispatcher,
-        $objectManager,
-        CategoryInterface $category,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $category->isRoot()->willReturn(false);
-        $category->getProducts()->willReturn([$product1, $product2]);
-        $product1->removeCategory($category)->shouldBeCalled();
-        $product2->removeCategory($category)->shouldBeCalled();
-
-        $eventDispatcher->dispatch(
-            CategoryEvents::PRE_REMOVE_CATEGORY,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($category)->shouldBeCalled();
-
-        $this->remove($category, ['flush' => false]);
-    }
-
-    function it_dispatches_an_event_when_removing_a_tree(
-        $eventDispatcher,
-        $objectManager,
-        CategoryInterface $tree
-    ) {
-        $tree->isRoot()->willReturn(true);
-        $tree->getProducts()->willReturn([]);
-
-        $eventDispatcher->dispatch(
-            CategoryEvents::PRE_REMOVE_TREE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($tree)->shouldBeCalled();
-
-        $this->remove($tree, ['flush' => false]);
-    }
-
-    function it_throws_exception_when_save_anything_else_than_a_category()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringSave($anythingElse);
-    }
-
-    function it_throws_exception_when_remove_anything_else_than_a_category()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringRemove($anythingElse);
     }
 }
